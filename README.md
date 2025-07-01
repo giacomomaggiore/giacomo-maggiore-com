@@ -6,5 +6,5 @@ This site is built with **Next.js** and includes my bio, blog, bookshelf, and co
 ## Connect
 
 - [Instagram](https://instagram.com/giacomomaggiore)  
-- [LinkedIn](https://www.linkedin.com/in/giacomomaggiore)  
+- [LinkedIn](https://www.linkedin.com/in/giacomo-maggiore-499994263/)  
 - [Email](mailto:giaco.maggiore@gmail.com)
