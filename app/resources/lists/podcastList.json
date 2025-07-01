@@ -1,0 +1,17 @@
+[
+    {
+      "name": "State Management con Redux",
+      "link": "/redux-state",
+      "topic": "Frontend"
+    },
+    {
+      "name": "Come funziona Git?",
+      "link": "/git-basics",
+      "topic": "DevOps"
+    },
+    {
+      "name": "SQL per principianti",
+      "link": "/sql-intro",
+      "topic": "Database"
+    }
+  ]

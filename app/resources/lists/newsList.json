@@ -1,0 +1,12 @@
+[
+    {
+      "name": "Guida a Tailwind CSS",
+      "link": "/tailwind-guide",
+      "topic": "Frontend"
+    },
+    {
+      "name": "Cos'è un API REST?",
+      "link": "/rest-api",
+      "topic": "Backend"
+    }
+  ]

@@ -1,0 +1,22 @@
+[
+    {
+      "name": "Python per Data Science",
+      "link": "/python-ds",
+      "topic": "AI"
+    },
+    {
+      "name": "Testing con Jest",
+      "link": "/jest-testing",
+      "topic": "Frontend"
+    },
+    {
+      "name": "Docker: guida rapida",
+      "link": "/docker-guide",
+      "topic": "DevOps"
+    },
+    {
+      "name": "OAuth2 Explained",
+      "link": "/oauth2",
+      "topic": "Security"
+    }
+  ]

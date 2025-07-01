@@ -1,0 +1,17 @@
+[
+    {
+      "name": "Come usare React",
+      "link": "/react-guide",
+      "topic": "Frontend"
+    },
+    {
+      "name": "Introduzione a Next.js",
+      "link": "/nextjs-intro",
+      "topic": "Fullstack"
+    },
+    {
+      "name": "Machine Learning Basics",
+      "link": "/ml-basics",
+      "topic": "AI"
+    }
+  ]

@@ -1,0 +1,42 @@
+[
+    {
+      "title": "Deep Work",
+      "author": "Cal Newport",
+      "topic": "Productivity",
+      "date": "2016-01-05",
+      "link": "https://www.goodreads.com/book/show/25744928-deep-work",
+      "rating": "4.2"
+    },
+    {
+      "title": "Atomic Habits",
+      "author": "James Clear",
+      "topic": "Self-help",
+      "date": "2018-10-16",
+      "link": "https://www.goodreads.com/book/show/40121378-atomic-habits",
+      "rating": "4.4"
+    },
+    {
+      "title": "The Lean Startup",
+      "author": "Eric Ries",
+      "topic": "Entrepreneurship",
+      "date": "2011-09-13",
+      "link": "https://www.goodreads.com/book/show/10127019-the-lean-startup",
+      "rating": "4.1"
+    },
+    {
+      "title": "Thinking, Fast and Slow",
+      "author": "Daniel Kahneman",
+      "topic": "Psychology",
+      "date": "2011-10-25",
+      "link": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow",
+      "rating": "4.2"
+    },
+    {
+      "title": "Sapiens: A Brief History of Humankind",
+      "author": "Yuval Noah Harari",
+      "topic": "History",
+      "date": "2011-01-01",
+      "link": "https://www.goodreads.com/book/show/23692271-sapiens",
+      "rating": "4.4"
+    }
+  ]

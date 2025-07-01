@@ -1,0 +1,27 @@
+[
+    {
+      "name": "Costruire un portfolio con Next.js",
+      "link": "/nextjs-portfolio",
+      "topic": "Frontend"
+    },
+    {
+      "name": "Nozioni base di GraphQL",
+      "link": "/graphql-basics",
+      "topic": "Backend"
+    },
+    {
+      "name": "AI Generativa e LLM",
+      "link": "/generative-ai",
+      "topic": "AI"
+    },
+    {
+      "name": "CI/CD con GitHub Actions",
+      "link": "/ci-cd",
+      "topic": "DevOps"
+    },
+    {
+      "name": "Redux Toolkit: la guida definitiva",
+      "link": "/redux-toolkit",
+      "topic": "Frontend"
+    }
+  ]
