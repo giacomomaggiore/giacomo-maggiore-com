@@ -31,7 +31,7 @@ export default function Page() {
             {" "} {item.title} {" - "}
             </a>{" "}
              { item.author}
-             {" "}[{ item.topic}]</p>
+             </p>
           </span>
         ))}
       </div>
