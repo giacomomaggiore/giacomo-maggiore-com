@@ -1,42 +1,1554 @@
 [
-    {
-      "title": "Deep Work",
-      "author": "Cal Newport",
-      "topic": "Productivity",
-      "date": "2016-01-05",
-      "link": "https://www.goodreads.com/book/show/25744928-deep-work",
-      "rating": "4.2"
-    },
-    {
-      "title": "Atomic Habits",
-      "author": "James Clear",
-      "topic": "Self-help",
-      "date": "2018-10-16",
-      "link": "https://www.goodreads.com/book/show/40121378-atomic-habits",
-      "rating": "4.4"
-    },
-    {
-      "title": "The Lean Startup",
-      "author": "Eric Ries",
-      "topic": "Entrepreneurship",
-      "date": "2011-09-13",
-      "link": "https://www.goodreads.com/book/show/10127019-the-lean-startup",
-      "rating": "4.1"
-    },
-    {
-      "title": "Thinking, Fast and Slow",
-      "author": "Daniel Kahneman",
-      "topic": "Psychology",
-      "date": "2011-10-25",
-      "link": "https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow",
-      "rating": "4.2"
-    },
-    {
-      "title": "Sapiens: A Brief History of Humankind",
-      "author": "Yuval Noah Harari",
-      "topic": "History",
-      "date": "2011-01-01",
-      "link": "https://www.goodreads.com/book/show/23692271-sapiens",
-      "rating": "4.4"
-    }
-  ]
+  {
+    "title": "Working Backwards",
+    "author": "Bill Carr, Colin Bryar",
+    "topic": "Finance - Business",
+    "date": "2025-06",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "THE SAAS PLAYBOOK",
+    "author": "Rob Walling",
+    "topic": "Start-up",
+    "date": "2025-05",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "The Mom Test",
+    "author": "Rob Fitzpatrick",
+    "topic": "Start-up",
+    "date": "2025-04",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Venture Deals",
+    "author": "Brad Feld, Jason Mendelson",
+    "topic": "Finance - Business",
+    "date": "2025-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Il rischio. Da Pascal a Fukushima",
+    "author": "Simona Morini",
+    "topic": "Essay, Science",
+    "date": "2025-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Lost and Founder",
+    "author": "Rand Fishkin",
+    "topic": "Finance - Business",
+    "date": "2025-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Slow Productivity",
+    "author": "Cal Newport",
+    "topic": "Personal Growth",
+    "date": "2025-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "The Lean Startup",
+    "author": "Eric Ries",
+    "topic": "Finance - Business, Personal Growth",
+    "date": "2025-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Traction: How Any Startup Can Achieve Explosive Customer Growth",
+    "author": "Gabriel Weinberg, Justin Mares",
+    "topic": "Finance - Business",
+    "date": "2025-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "The Man Who Solved the Market: How Jim Simons Launched the Quant Revolution",
+    "author": "Gregory Zuckerman",
+    "topic": "Finance - Business",
+    "date": "2025-01",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Choose Strong: The Choice that Changes Everything",
+    "author": "Sally McRae",
+    "topic": "Biography, Running",
+    "date": "2025-01",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Your Complete Guide to Factor-Based Investing",
+    "author": "Andrew L Berkin, Larry Swedroe",
+    "topic": "Finance - Business",
+    "date": "2025-01",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Bushido The Spirit of the Samurai",
+    "author": "Inazo Nitobe",
+    "topic": "Essay, Personal Growth",
+    "date": "2024-12",
+    "link": "",
+    "rating": "2.0"
+  },
+  {
+    "title": "The Way of the Runner",
+    "author": "Adharanand Finn",
+    "topic": "Running",
+    "date": "2024-12",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Never Split the different",
+    "author": "Chris Voss",
+    "topic": "Essay, Finance - Business",
+    "date": "2024-12",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Istruzioni per rendersi infelici",
+    "author": "Paul Watzlawick",
+    "topic": "Essay",
+    "date": "2024-12",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Restaurant Man",
+    "author": "Joe Bastianich",
+    "topic": "Biography",
+    "date": "2024-12",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Authentic: memoir by the founder of Vans",
+    "author": "Paul Van Doren",
+    "topic": "Biography",
+    "date": "2024-12",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Ultra processed people",
+    "author": "Chris van Tulleken",
+    "topic": "Essay, Science",
+    "date": "2024-11",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "25 huors a day",
+    "author": "Nick Bare",
+    "topic": "Biography",
+    "date": "2024-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Company of one",
+    "author": "Simon Sinek",
+    "topic": "Finance - Business",
+    "date": "2024-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Rich Dad Poor Dad",
+    "author": "Robert Kiyosaki",
+    "topic": "Finance - Business, Personal Growth",
+    "date": "2024-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Il gioco dei bugiardi",
+    "author": "Michael Lewis",
+    "topic": "Finance - Business",
+    "date": "2024-10",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "The inner game of tennis",
+    "author": "W. Timothy Gallwey",
+    "topic": "Personal Growth",
+    "date": "2024-10",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "The education of a value investor",
+    "author": "Guy Spier",
+    "topic": "Biography, Finance - Business",
+    "date": "2024-10",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "23 cose che non ti hanno detto sul capitalismo",
+    "author": "Ha-Joon Chang",
+    "topic": "Finance - Business",
+    "date": "2024-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La decrescita felice",
+    "author": "Maurizio Pallante",
+    "topic": "Essay, Finance - Business",
+    "date": "2024-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "My Life as a Quant",
+    "author": "Emanuel Derman",
+    "topic": "Finance - Business",
+    "date": "2024-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "The Scout Mindset",
+    "author": "Julia Galef",
+    "topic": "Personal Growth",
+    "date": "2024-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "THE FUND",
+    "author": "Rob Copeland",
+    "topic": "Finance - Business",
+    "date": "2024-09",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Ergodicity",
+    "author": "Luca Dellanna",
+    "topic": "Essay, Finance - Business",
+    "date": "2024-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Necessary Endings",
+    "author": "Henry Cloud",
+    "topic": "Essay, Personal Growth",
+    "date": "2024-09",
+    "link": "https://www.youtube.com/watch?v=z44TmzwCMgc",
+    "rating": "4.0"
+  },
+  {
+    "title": "Discorso sulla servitù necessaria",
+    "author": "Etienne de La Boëtie",
+    "topic": "Essay, History",
+    "date": "2024-09",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Be useful, seven tools for life",
+    "author": "Arnold Schwarzenegger",
+    "topic": "Biography, Personal Growth",
+    "date": "2024-09",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Avanti tutta",
+    "author": "Simone Perotti",
+    "topic": "Finance - Business",
+    "date": "2024-08",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Così bravo  che non potranno ignorarti",
+    "author": "Cal Newport",
+    "topic": "Essay, Personal Growth",
+    "date": "2024-08",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Steal like an artist",
+    "author": "Austin Kleon",
+    "topic": "Art - Design, Personal Growth",
+    "date": "2024-08",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Volevo solo vendere pizza",
+    "author": "Luigi Furini, Marco Travaglio",
+    "topic": "Finance - Business",
+    "date": "2024-08",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "New York metro per metro",
+    "author": "Piero Armenti",
+    "topic": "Novel",
+    "date": "2024-06",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "L’almanacco di Naval Ravikant",
+    "author": "Eric Jorgenson",
+    "topic": "Novel, Personal Growth",
+    "date": "2024-06",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Early Retirement Extreme",
+    "author": "Jacob Fisker",
+    "topic": "Finance - Business",
+    "date": "2024-06",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "I miei giorni alla libreria Morisaki",
+    "author": "Satoshi Yagisawa",
+    "topic": "Novel",
+    "date": "2024-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "The Four Pillars of Investing",
+    "author": "William Bernstein",
+    "topic": "Finance - Business",
+    "date": "2024-04",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Frontiera",
+    "author": "Francesco Costa",
+    "topic": "History, Politics",
+    "date": "2024-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Come sempre",
+    "author": "Morgan Houssel",
+    "topic": "Personal Growth",
+    "date": "2024-03",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Nudge. La spinta gentile",
+    "author": "Cass Sunstein, Richard Thaler",
+    "topic": "Essay",
+    "date": "2024-02",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Rischiare grosso",
+    "author": "Nassin Nicholas Taleb",
+    "topic": "Essay, Finance - Business",
+    "date": "2024-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "L’ultimo Gol",
+    "author": "Luigi Garlando",
+    "topic": "Novel",
+    "date": "2024-01",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Il Metodo Warren Buffet",
+    "author": "Robert Hagstrom",
+    "topic": "Finance - Business",
+    "date": "2024-01",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Da Zero alla Luna",
+    "author": "Gianlcuca Comandini",
+    "topic": "Finance - Business, Tech",
+    "date": "2023-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La grande scommessa",
+    "author": "Michael Lewis",
+    "topic": "Finance - Business",
+    "date": "2023-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Occupy Wall Street",
+    "author": "Collettivo OWS",
+    "topic": "Finance - Business, History",
+    "date": "2023-10",
+    "link": "https://www.youtube.com/watch?v=kGgZvjdaYhg",
+    "rating": "4.0"
+  },
+  {
+    "title": "L’album dei sogni",
+    "author": "Luigi Garlando",
+    "topic": "Novel",
+    "date": "2023-09",
+    "link": "",
+    "rating": "2.0"
+  },
+  {
+    "title": "La Psicologia dei Soldi",
+    "author": "Morgan Houssel",
+    "topic": "Finance - Business",
+    "date": "2023-09",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Design your life",
+    "author": "Bill Burnett, Dave Evans",
+    "topic": "Personal Growth",
+    "date": "2023-09",
+    "link": "https://youtu.be/xu4i5WrsrLQ?si=Jqw0LGXo1V80HlHa",
+    "rating": "5.0"
+  },
+  {
+    "title": "Eat & Run",
+    "author": "Scott Jurek",
+    "topic": "Running",
+    "date": "2023-08",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Le città dell’universo",
+    "author": "Annalisa Dominoni, Benedetto Quaquaro",
+    "topic": "Essay",
+    "date": "2023-07",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Storia della pizza",
+    "author": "Luca Cesari",
+    "topic": "History",
+    "date": "2023-07",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Finding Ultra",
+    "author": "Rich Roll",
+    "topic": "Running",
+    "date": "2023-07",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Buchi Bianchi",
+    "author": "Carlo Rovelli",
+    "topic": "Science",
+    "date": "2023-07",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "L’uomo più ricco del mondo",
+    "author": "Gianlcuca Comandini",
+    "topic": "Finance - Business",
+    "date": "2023-06",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "I 199 giorni del Che",
+    "author": "Francesco Rosi",
+    "topic": "History",
+    "date": "2023-06",
+    "link": "",
+    "rating": "2.0"
+  },
+  {
+    "title": "L’Arte di Correre",
+    "author": "Haruki Murakami",
+    "topic": "Running",
+    "date": "2023-06",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "LSD. Il mio bambino difficile.",
+    "author": "Albert Hofmann",
+    "topic": "General",
+    "date": "2023-06",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Deep Work",
+    "author": "Cal Newport",
+    "topic": "Personal Growth",
+    "date": "2023-05",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Todo Cambia",
+    "author": "Niccolò Balini",
+    "topic": "Novel",
+    "date": "2023-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Pedalande",
+    "author": "Beatrice Filippini",
+    "topic": "Novel",
+    "date": "2023-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La Mappa delle Culture",
+    "author": "Erin Meyer",
+    "topic": "Essay",
+    "date": "2023-04",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Ballando nudi nel campo della mente",
+    "author": "Kary Mullis",
+    "topic": "Biography",
+    "date": "2023-03",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Questa è l’America",
+    "author": "Francesco Costa",
+    "topic": "History, Politics",
+    "date": "2023-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "L’Arte di Correre in discesa",
+    "author": "Matthew McConaughey",
+    "topic": "Biography",
+    "date": "2023-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Il caso Olivetti",
+    "author": "Meryle Secrest",
+    "topic": "Biography",
+    "date": "2023-03",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Mentire con le statistiche",
+    "author": "Darrel Huff",
+    "topic": "Essay",
+    "date": "2023-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "When",
+    "author": "Daniel Pink",
+    "topic": "Essay",
+    "date": "2023-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Born To Run",
+    "author": "Christopher McDougall",
+    "topic": "Running",
+    "date": "2023-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Running with the Kenyans",
+    "author": "Adharanand Finn",
+    "topic": "Running",
+    "date": "2023-01",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Kitchen Confidential",
+    "author": "Anthony Bourdain",
+    "topic": "Biography",
+    "date": "2022-12",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "The way of the runner",
+    "author": "Adharanand Finn",
+    "topic": "Running",
+    "date": "2022-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Tu non sai cos’è la guerra",
+    "author": "Yeva Skalietska",
+    "topic": "Novel",
+    "date": "2022-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Carchitecture",
+    "author": "Thomas De Bruyne",
+    "topic": "Art - Design",
+    "date": "2022-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La sottile arte di fare quello che cazzo ti pare",
+    "author": "Mark Manson",
+    "topic": "Personal Growth",
+    "date": "2022-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "The Rise of the Ultra Runners",
+    "author": "Adharanand Finn",
+    "topic": "Running",
+    "date": "2022-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "What I learned losing a million dollars",
+    "author": "Brendan Moynihan, Jim Paul",
+    "topic": "Finance - Business",
+    "date": "2022-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "California",
+    "author": "Francesco Costa",
+    "topic": "Essay",
+    "date": "2022-10",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Antifragile",
+    "author": "Nassin Nicholas Taleb",
+    "topic": "Essay, Finance - Business",
+    "date": "2022-09",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Wanderlust USA",
+    "author": "Can Honan",
+    "topic": "Art - Design",
+    "date": "2022-09",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "New York: Portrait of a City",
+    "author": "Reuel Golden",
+    "topic": "Art - Design",
+    "date": "2022-09",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "L’arte dell’hacking",
+    "author": "Kevin Mitnick",
+    "topic": "Tech",
+    "date": "2022-07",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Ovunque",
+    "author": "Niccolò Balini",
+    "topic": "Novel",
+    "date": "2022-07",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La Traiettoria",
+    "author": "Alessandro Benetton",
+    "topic": "Biography",
+    "date": "2022-06",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Giocati dal Caso",
+    "author": "Nassin Nicholas Taleb",
+    "topic": "Essay, Finance - Business",
+    "date": "2022-06",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Steve Jobs non abita qui",
+    "author": "Michele Masneri",
+    "topic": "Novel, Tech",
+    "date": "2022-05",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La vera storia del genio che ha fondato McDonald",
+    "author": "Ray Krog",
+    "topic": "Biography",
+    "date": "2022-05",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "La Sostanza Instabile",
+    "author": "Giulia Lombezzi",
+    "topic": "Novel",
+    "date": "2022-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Helgoland",
+    "author": "Carlo Rovelli",
+    "topic": "Science",
+    "date": "2022-04",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Una Terra Promessa",
+    "author": "Barack Obama",
+    "topic": "Biography",
+    "date": "2022-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La felicità non va interrotta",
+    "author": "Anna Bardazzi",
+    "topic": "Novel",
+    "date": "2022-03",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Corro perchè mia madre mi picchia",
+    "author": "Franz Rossi, Giovanni Storti",
+    "topic": "Novel, Running",
+    "date": "2022-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Cercasi Banksy Disperatamente",
+    "author": "Ippocampo",
+    "topic": "Art - Design",
+    "date": "2022-01",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Mordere la nebbia",
+    "author": "Alessio Boni",
+    "topic": "Novel",
+    "date": "2022-01",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Il Libro delle case",
+    "author": "Andrea Bajani",
+    "topic": "Art - Design",
+    "date": "2022-01",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Una notte ho sognato New York",
+    "author": "Piero Armenti",
+    "topic": "Novel",
+    "date": "2022-01",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "La felicità del lupo",
+    "author": "Paolo Cognetti",
+    "topic": "Novel",
+    "date": "2021-12",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Sei pezzi facili",
+    "author": "Richard Feynman",
+    "topic": "Science",
+    "date": "2021-11",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Io, Robot",
+    "author": "Isaac Asimov",
+    "topic": "Novel",
+    "date": "2021-10",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "La Scienza di Guerre Stellari",
+    "author": "Luca Perri",
+    "topic": "Novel, Science",
+    "date": "2021-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Gli Squali",
+    "author": "Giacomo Mazzariol",
+    "topic": "Novel",
+    "date": "2021-09",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "I Principi del Successo",
+    "author": "Ray Dalio",
+    "topic": "Essay, Finance - Business",
+    "date": "2021-09",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Grande Atlante del Design",
+    "author": "Enrico Morteo",
+    "topic": "Art - Design",
+    "date": "2021-09",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Il Cigno Nero",
+    "author": "Nassin Nicholas Taleb",
+    "topic": "Essay, Finance - Business",
+    "date": "2021-09",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "La Banalità del Male",
+    "author": "Hannah Arendt",
+    "topic": "Essay, Novel",
+    "date": "2021-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Faccio il giornalista",
+    "author": "Luigi Garlando",
+    "topic": "Novel",
+    "date": "2021-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Chino verso nord",
+    "author": "Willy Mulonia",
+    "topic": "Novel",
+    "date": "2021-08",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La mucca viola",
+    "author": "Seth Godin",
+    "topic": "Finance - Business",
+    "date": "2021-08",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La catastrofa",
+    "author": "Paolo di Stefano",
+    "topic": "Novel",
+    "date": "2021-08",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La concessione del telefono",
+    "author": "Andrea Camilleri",
+    "topic": "Novel",
+    "date": "2021-08",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Con i piedi nel fango",
+    "author": "Gianrico Carofiglio",
+    "topic": "Novel",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Fiore di roccia",
+    "author": "Ilaria Tuti",
+    "topic": "Novel",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Una questione privata",
+    "author": "Beppe Fenoglio",
+    "topic": "Novel",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La valle oscura",
+    "author": "Anna Wiener",
+    "topic": "Novel, Tech",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Io e il papu",
+    "author": "Luigi Garlando",
+    "topic": "Novel",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Un anno sull'altipiano",
+    "author": "Emilio Lussu",
+    "topic": "Novel",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Baciarsi",
+    "author": "Elisabetta Moro, Marino Niola",
+    "topic": "Novel",
+    "date": "2021-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La montagna dentro",
+    "author": "Hervè Barmasse",
+    "topic": "Biography, Novel",
+    "date": "2021-06",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Allegro Occidentale",
+    "author": "Francesco Piccolo",
+    "topic": "Novel",
+    "date": "2021-06",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Lo zen e l'arte di manutenzione della motocicletta",
+    "author": "Robert Pirsig",
+    "topic": "Novel, Personal Growth",
+    "date": "2021-05",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Prima persona singolare",
+    "author": "Haruki Murakami",
+    "topic": "Novel",
+    "date": "2021-05",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Business Adventures",
+    "author": "John Brooks",
+    "topic": "Finance - Business, Novel",
+    "date": "2021-05",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Il metodo warren buffet",
+    "author": "Robert Hagstrom",
+    "topic": "Biography, Finance - Business",
+    "date": "2021-05",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Disocorso sul metodo",
+    "author": "Renè Descartes",
+    "topic": "Essay",
+    "date": "2021-05",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Pensieri",
+    "author": "Marco Aurelio",
+    "topic": "Biography, Personal Growth",
+    "date": "2021-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Gli scomparsi",
+    "author": "Alessia Tripaldi",
+    "topic": "Novel",
+    "date": "2021-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Bauhaus",
+    "author": "Magdalena Droste",
+    "topic": "Art - Design",
+    "date": "2021-04",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Da zero a uno",
+    "author": "Peter Thiel",
+    "topic": "Finance - Business, Tech",
+    "date": "2021-04",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Il Complotto",
+    "author": "Umberto Eco",
+    "topic": "Essay",
+    "date": "2021-04",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Homo Sapiens",
+    "author": "Yuval Noah Harari",
+    "topic": "Essay",
+    "date": "2021-04",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Olocaustico",
+    "author": "Alessandro Caviglia",
+    "topic": "Novel",
+    "date": "2021-04",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Il piacere tra le righe",
+    "author": "Camilla Baresani",
+    "topic": "Novel",
+    "date": "2021-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "New Green Deal",
+    "author": "Jeremy Rifkin",
+    "topic": "Science, Tech",
+    "date": "2021-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Momenti di trascurabile felicità",
+    "author": "Francesco Piccolo",
+    "topic": "Novel",
+    "date": "2021-03",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Il giorno mangia la notte",
+    "author": "Silvia Bottani",
+    "topic": "Novel",
+    "date": "2021-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Tim Cook",
+    "author": "Leander Kahney",
+    "topic": "Biography, Tech",
+    "date": "2021-03",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Vendetta Pubblic",
+    "author": "Edoardo Vigna, Marcello Bortolato",
+    "topic": "Novel",
+    "date": "2021-02",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Let my people go surfing",
+    "author": "Yvon Chouinard",
+    "topic": "Biography",
+    "date": "2021-02",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "Giulio Cesare",
+    "author": "Barbara Biscotti",
+    "topic": "History, Novel",
+    "date": "2021-02",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'uomo e il cane",
+    "author": "Carlo Cassola",
+    "topic": "Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Il fascismo eterno",
+    "author": "Umberto Eco",
+    "topic": "Essay, Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Migrazioni e intolleranza",
+    "author": "Umberto Eco",
+    "topic": "Essay, Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Costruire il nemico",
+    "author": "Umberto Eco",
+    "topic": "Essay, Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Fahreneith 451",
+    "author": "Ray Bradbury",
+    "topic": "Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Le stagioni di Giacomo ",
+    "author": "Mario Rigoni Stern",
+    "topic": "Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Vita di Galileo",
+    "author": "Bertold Brecht",
+    "topic": "History, Novel",
+    "date": "2021-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Il Grande Gatsby",
+    "author": "Francis Scott Fitzgerald",
+    "topic": "Novel",
+    "date": "2020-12",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'arte di correre",
+    "author": "Haruki Murakami",
+    "topic": "Running",
+    "date": "2020-12",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Le tre del mattino",
+    "author": "Gianrico Carofiglio",
+    "topic": "Novel",
+    "date": "2020-12",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'unica regola è che non ci sono regole",
+    "author": "Meyer, Reed Hastings",
+    "topic": "Tech",
+    "date": "2020-12",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "New York è una città senza tende",
+    "author": "Paolo Cognetti",
+    "topic": "Novel",
+    "date": "2020-11",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Norvegian Wood",
+    "author": "Haruki Murakami",
+    "topic": "Novel",
+    "date": "2020-11",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "The Hate u Give",
+    "author": "Angie Thomas",
+    "topic": "Novel",
+    "date": "2020-11",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "After Dark",
+    "author": "Haruki Murakami",
+    "topic": "Novel",
+    "date": "2020-11",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "La mia vita per la libertà",
+    "author": "Gandhi",
+    "topic": "Biography, History",
+    "date": "2020-11",
+    "link": "",
+    "rating": "3.0"
+  },
+  {
+    "title": "Il Potere delle Abitudini",
+    "author": "Charles Duhigg",
+    "topic": "Essay, Personal Growth",
+    "date": "2020-10",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Catalogo Walker&Dawn",
+    "author": "Davide Morosinotto",
+    "topic": "Novel",
+    "date": "2020-10",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Kafka sulla Spiaggia",
+    "author": "Haruki Murakami",
+    "topic": "Novel",
+    "date": "2020-10",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Esercizi di Memorioa",
+    "author": "Andrea Camilleri",
+    "topic": "Novel",
+    "date": "2020-10",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Un morto ogni tanto",
+    "author": "Paolo Borrometi",
+    "topic": "Novel",
+    "date": "2020-10",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Vieni via con me",
+    "author": "Roberto Saviano",
+    "topic": "Novel",
+    "date": "2020-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "MIGRANTES",
+    "author": "Flaviano Bianchini",
+    "topic": "Novel",
+    "date": "2020-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La Misura del Tempo",
+    "author": "Gianrico Carofiglio",
+    "topic": "Novel",
+    "date": "2020-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Economia all'Idrogeno",
+    "author": "Jeremy Rifkin",
+    "topic": "Science, Tech",
+    "date": "2020-09",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'ordine del Tempo",
+    "author": "Carlo Rovelli",
+    "topic": "Science",
+    "date": "2020-08",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Il NOme della Rosa",
+    "author": "Umberto Eco",
+    "topic": "Novel",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Luca Canali racconta l'Eneide",
+    "author": "Luca Canali",
+    "topic": "History, Novel",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Più in alto del mare",
+    "author": "Francesca Melandri",
+    "topic": "Novel",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Don Chisciotte della Mancia",
+    "author": "Miguel de Cervantes",
+    "topic": "Novel",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'estate che conobbi il Che",
+    "author": "Luigi Garlando",
+    "topic": "History, Novel",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "The Crucible",
+    "author": "Arthur Miller",
+    "topic": "Novel",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Apple Pixar Mania",
+    "author": "Cyril Fievet",
+    "topic": "Biography, Tech",
+    "date": "2020-07",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "OGM: tra leggenda e realtà",
+    "author": "Dario Bressanini",
+    "topic": "Science",
+    "date": "2020-06",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La Regola dell'Equilibrio",
+    "author": "Gianrico Carofiglio",
+    "topic": "Novel",
+    "date": "2020-06",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Errore di Sistema",
+    "author": "Edward Snowden",
+    "topic": "Biography, Tech",
+    "date": "2020-06",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'Arte della Guerra",
+    "author": "Sun Tzu",
+    "topic": "Essay",
+    "date": "2020-05",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "L'Arte della Vittoria",
+    "author": "Phil Knight",
+    "topic": "Biography",
+    "date": "2020-05",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Il Patrimonio",
+    "author": "Philip Roth",
+    "topic": "Novel",
+    "date": "2020-04",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "topic": "Novel",
+    "date": "2020-03",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Homod Deus",
+    "author": "Yuval Noah Harari",
+    "topic": "Essay",
+    "date": "2020-03",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "La Peste",
+    "author": "Albert Camus",
+    "topic": "Novel",
+    "date": "2020-03",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Da zero a uno",
+    "author": "Peter Thiel",
+    "topic": "Finance - Business, Tech",
+    "date": "2020-03",
+    "link": "",
+    "rating": "5.0"
+  },
+  {
+    "title": "FEBBRE",
+    "author": "Jonathan Bazzi",
+    "topic": "Novel",
+    "date": "2020-02",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Vendere tutto",
+    "author": "Brad Stone",
+    "topic": "Biography, Finance - Business",
+    "date": "2020-02",
+    "link": "",
+    "rating": "4.0"
+  },
+  {
+    "title": "Sulle spalle dei giganti",
+    "author": "Abdul-Jabbar",
+    "topic": "Biography",
+    "date": "2020-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Il Bar sotto il mare",
+    "author": "Stefano Benni",
+    "topic": "Novel",
+    "date": "2020-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Fine Pena: Ora",
+    "author": "Elvio Fassone",
+    "topic": "Essay, Novel",
+    "date": "2020-01",
+    "link": "",
+    "rating": ""
+  },
+  {
+    "title": "Steve Jobs",
+    "author": "Walter Isacson",
+    "topic": "Biography",
+    "date": "2020-01",
+    "link": "",
+    "rating": ""
+  }
+]

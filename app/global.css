@@ -155,3 +155,11 @@ table {
 .semi-title {
   @apply font-bold mb-4 mt-4 tracking-tighter text-gray-400;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE e Edge */
+  scrollbar-width: none;     /* Firefox */
+}
