@@ -1,17 +1,37 @@
 [
     {
-      "name": "State Management con Redux",
-      "link": "/redux-state",
-      "topic": "Frontend"
+      "name": "The Bull",
+      "link": "https://open.spotify.com/show/2cQw8L6e7XXA90K1LpZekV",
+      "topic": "Personal Finance - ITA"
     },
     {
-      "name": "Come funziona Git?",
-      "link": "/git-basics",
-      "topic": "DevOps"
+      "name": "Actually by Will Media",
+      "link": "https://open.spotify.com/show/2sFbDQA0RLyAXO193eeCr5",
+      "topic": "Affairs & politics - ITA"
     },
     {
-      "name": "SQL per principianti",
-      "link": "/sql-intro",
-      "topic": "Database"
+      "name": "Don Chisciotte by Will Media",
+      "link": "https://donchisciottepodcast.it/",
+      "topic": "Affairs & politics - ITA"
+    },
+    {
+      "name": "Any Surface Available",
+      "link": "https://francescopuppi.it/resources/podcast-2/",
+      "topic": "Running - ITA"
+    },
+    {
+      "name": "Algoritmi by DataPizza",
+      "link": "https://donchisciottepodcast.it/",
+      "topic": "AI, Data Science & Tech - ITA"
+    },
+    {
+      "name": "CaffèDesign",
+      "link": "https://open.spotify.com/show/2xBIU3k8M9QxEMKXMOfIY2",
+      "topic": "Design & Tech - ITA"
+    },
+    {
+      "name": "The Nick Bare Podcast",
+      "link": "https://open.spotify.com/show/0FqNvRhcHYBtfxnmhDSt2r",
+      "topic": "Health & Fitness - ENG"
     }
   ]

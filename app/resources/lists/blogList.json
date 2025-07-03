@@ -1,17 +1,38 @@
 [
     {
-      "name": "Come usare React",
+      "name": "Of Dollars & Data",
       "link": "/react-guide",
-      "topic": "Frontend"
+      "topic": "Personal Finance"
     },
     {
-      "name": "Introduzione a Next.js",
-      "link": "/nextjs-intro",
-      "topic": "Fullstack"
+      "name": "The Italian Leather Sofà",
+      "link": "https://theitalianleathersofa.com/",
+      "topic": "Personal Finance"
     },
     {
-      "name": "Machine Learning Basics",
-      "link": "/ml-basics",
-      "topic": "AI"
+      "name": "Dedalo Invest",
+      "link": "https://www.dedaloinvest.com/w-blogs",
+      "topic": "Personal Finance"
+    },
+    {
+      "name": "Ergodicity Economics",
+      "link": "https://ergodicityeconomics.com/",
+      "topic": "Economics"
+    },
+    {
+      "name": "Luca dell'Anna Blog",
+      "link": "https://luca-dellanna.com/",
+      "topic": "Economics"
+    },
+    {
+      "name": "Collab Fund",
+      "link": "Finance & Personal Finance",
+      "topic": "https://collabfund.com/"
+    },
+    {
+      "name": "Paul Graham",
+      "link": "Startup & Entrepreneurship",
+      "topic": "https://www.paulgraham.com/index.html"
     }
+
   ]

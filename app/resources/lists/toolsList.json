@@ -1,22 +1,22 @@
 [
     {
-      "name": "Python per Data Science",
-      "link": "/python-ds",
-      "topic": "AI"
+      "name": "Intervals.icu",
+      "link": "https://intervals.icu/fitness",
+      "topic": "Sport Analytics"
     },
     {
-      "name": "Testing con Jest",
-      "link": "/jest-testing",
-      "topic": "Frontend"
+      "name": "Scalable Capital",
+      "link": "https://intervals.icu/fitness",
+      "topic": "Broker"
     },
     {
-      "name": "Docker: guida rapida",
+      "name": "Revolut",
       "link": "/docker-guide",
-      "topic": "DevOps"
+      "topic": "Bank"
     },
     {
-      "name": "OAuth2 Explained",
-      "link": "/oauth2",
-      "topic": "Security"
+      "name": "SceneSnap",
+      "link": "https://scenesnap.co/",
+      "topic": "Study & Productivity"
     }
   ]

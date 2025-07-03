@@ -1,27 +1,71 @@
 [
     {
-      "name": "Costruire un portfolio con Next.js",
+      "name": "Mr Rip",
       "link": "/nextjs-portfolio",
-      "topic": "Frontend"
+      "topic": "Personal Finance"
     },
     {
-      "name": "Nozioni base di GraphQL",
-      "link": "/graphql-basics",
-      "topic": "Backend"
-    },
-    {
-      "name": "AI Generativa e LLM",
+      "name": "Paolo Coletti",
       "link": "/generative-ai",
-      "topic": "AI"
+      "topic": "Personal Finance"
     },
     {
-      "name": "CI/CD con GitHub Actions",
+      "name": "Marcello Ascani",
+      "link": "/graphql-basics",
+      "topic": "Entrepreneurship"
+    },
+    
+    {
+      "name": "Francesco Costa",
       "link": "/ci-cd",
-      "topic": "DevOps"
+      "topic": "USA & Culture"
     },
     {
-      "name": "Redux Toolkit: la guida definitiva",
-      "link": "/redux-toolkit",
-      "topic": "Frontend"
+      "name": "Enk",
+      "link": "/ci-cd",
+      "topic": "AI & Tech"
+    },
+    {
+      "name": "Francesco Costa",
+      "link": "/ci-cd",
+      "topic": "USA & Culture"
+    },
+    {
+      "name": "Alessandro Benetton",
+      "link": "/ci-cd",
+      "topic": "Entrepreneurship"
+    },
+    {
+      "name": "Chapeau",
+      "link": "/ci-cd",
+      "topic": "Entrepreneurship"
+    },
+    {
+      "name": "Nick Bare",
+      "link": "/ci-cd",
+      "topic": "Running"
+    },
+    {
+      "name": "Philly Bowden",
+      "link": "/ci-cd",
+      "topic": "Running"
+    },
+    
+    {
+      "name": "Jeremy Miller",
+      "link": "/ci-cd",
+      "topic": "Running"
+    },
+    {
+      "name": "Philly Bowden",
+      "link": "/ci-cd",
+      "topic": "Running"
+    },
+    {
+      "name": "Sam Long",
+      "link": "/ci-cd",
+      "topic": "Triathlon"
     }
+
+
   ]

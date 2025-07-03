@@ -1,12 +1,17 @@
 [
     {
-      "name": "Guida a Tailwind CSS",
-      "link": "/tailwind-guide",
-      "topic": "Frontend"
+      "name": "PMF by Guillermo Flor",
+      "link": "https://www.productmarketfit.tech/",
+      "topic": "Startup"
     },
     {
-      "name": "Cos'è un API REST?",
-      "link": "/rest-api",
-      "topic": "Backend"
+      "name": "Elevate",
+      "link": "https://addyo.substack.com/",
+      "topic": "Softare & Tech"
+    },
+    {
+      "name": "Cal Newport",
+      "link": "https://calnewport.com/",
+      "topic": "Productivity & Tech"
     }
   ]

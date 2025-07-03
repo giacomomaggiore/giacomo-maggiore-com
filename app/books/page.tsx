@@ -13,7 +13,7 @@ type Book = {
 export default function Page() {
   return (
     <section>
-      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Books</h1>
+      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Library</h1>
     
       <p className="mb-4">
         {`Below you'll find all my input
