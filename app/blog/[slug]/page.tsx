@@ -98,12 +98,23 @@ export default async function Blog({ params }: { params: { slug: string } }) {
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
-
-
-      <div>
+      <hr></hr>
+      <div className='mt-4 greetings  text-gray-600 italic '>
               {/* To be updated!!! */}
 
-        <p>If you like this article, consider supporting me here</p>
+        <p>
+          Thanks for reading.
+        
+
+        </p>
+        <p className='mt-1 mb-1'>
+          If you enjoy this article, please share it with a friend. <br></br>If you didn’t… well, share it anyway — maybe they have better taste. 
+
+                   
+        </p>
+        <p>
+          Giacomo
+        </p>
       </div>
     </section>
   )
