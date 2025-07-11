@@ -1,69 +1,60 @@
 [
     {
       "name": "Mr Rip",
-      "link": "/nextjs-portfolio",
+      "link": "https://www.youtube.com/@mr_rip",
       "topic": "Personal Finance"
     },
     {
       "name": "Paolo Coletti",
-      "link": "/generative-ai",
+      "link": "https://www.youtube.com/@PaoloColetti",
       "topic": "Personal Finance"
     },
     {
       "name": "Marcello Ascani",
-      "link": "/graphql-basics",
+      "link": "https://www.youtube.com/@marcelloascani",
       "topic": "Entrepreneurship"
     },
     
     {
       "name": "Francesco Costa",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@francescocosta21",
       "topic": "USA & Culture"
     },
     {
       "name": "Enk",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@enkk",
       "topic": "AI & Tech"
     },
     {
-      "name": "Francesco Costa",
-      "link": "/ci-cd",
-      "topic": "USA & Culture"
+      "name": "Salvatore Sanfilippo",
+      "link": "https://www.youtube.com/@antirez",
+      "topic": "Software Engineering"
     },
+
     {
       "name": "Alessandro Benetton",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@AlessandroBenetton",
       "topic": "Entrepreneurship"
     },
     {
       "name": "Chapeau",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@Chapeau_Project",
       "topic": "Entrepreneurship"
     },
     {
       "name": "Nick Bare",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@nickbarefitness",
       "topic": "Running"
     },
     {
       "name": "Philly Bowden",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@PhilyBowden",
       "topic": "Running"
     },
     
     {
-      "name": "Jeremy Miller",
-      "link": "/ci-cd",
-      "topic": "Running"
-    },
-    {
-      "name": "Philly Bowden",
-      "link": "/ci-cd",
-      "topic": "Running"
-    },
-    {
       "name": "Sam Long",
-      "link": "/ci-cd",
+      "link": "https://www.youtube.com/@SamYoYoYoLong",
       "topic": "Triathlon"
     }
 
