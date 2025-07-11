@@ -7,7 +7,7 @@ export default function Page() {
         Giacomo Maggiore
       </h1>
       <p className="mb-2">
-      I was born and raised in <a href='https://it.wikipedia.org/wiki/Milano' target='_blank'><b>Milan</b> </a>, and since I was a child, I’ve had a 
+      I was born and raised in <a href='https://it.wikipedia.org/wiki/Milano' target='_blank'><b>Milan</b></a>, and since I was a child, I’ve had a 
       strong passion for numbers, technology and physics. 
       <br></br><br></br>
       After high school, I studied <a target='_blank' href='https://www.polimi.it/formazione/corsi-di-laurea/dettaglio-corso/ingegneria-dellautomazione'><i>Automation Engineering</i> </a>
