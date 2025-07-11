@@ -25,10 +25,10 @@ export default function Page() {
     <section>
       <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Inputs</h1>
     
-      <p className="mb-4">
+      <p className="mb-2">
       All the inputs and resources I consume daily, some in Italian, mostly in English.
       </p>
-      <p>
+      <p className="mb-4">
         Feel free to reach out on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank"><b>Instagram</b></a> , <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"><b>Linkedin</b></a> or via <a href="mailto:giaco.maggiore@gmail.com" target="_blank"><b>Email</b></a> if you have any comments want to share your own resources!
       </p>
 

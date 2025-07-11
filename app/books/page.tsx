@@ -19,11 +19,11 @@ export default function Page() {
     <section>
       <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Library</h1>
     
+      <p className="mb-2">
+      All the the books I've read in the last years, some in Italian, mostly in English.
+      </p>
       <p className="mb-4">
-        {`Below you'll find all my input
-        
-        
-        on books I've read, including my thoughts and reviews. I hope you find them insightful and helpful in your own reading journey.`}
+        Feel free to reach out on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank"><b>Instagram</b></a> , <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"><b>Linkedin</b></a> or via <a href="mailto:giaco.maggiore@gmail.com" target="_blank"><b>Email</b></a> if you have any comments want to share your favourite readings.
       </p>
     
       <div className="flex flex-col gap-2 ml-5 mt-2">
