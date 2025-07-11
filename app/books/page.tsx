@@ -9,6 +9,10 @@ type Book = {
   rating: string;
 };
 
+export const metadata = {
+  title: 'Books',
+  description: 'All the books Giacomo Maggiore reads',
+}
 
 export default function Page() {
   return (

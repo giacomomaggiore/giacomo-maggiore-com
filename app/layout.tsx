@@ -16,9 +16,10 @@ import { baseUrl } from './sitemap'
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Giacomo Maggiorer',
-    template: '%s | Next.js Portfolio Starter',
+    default: 'Giacomo Maggiore',
+    template: '%s | Giacomo Maggiore',
   },
+  icons: {icon : '/icon.png'},
   description: 'Giacomo Maggiore Portfolio and personal website',
   openGraph: {
     title: 'Giacomo Maggiore',

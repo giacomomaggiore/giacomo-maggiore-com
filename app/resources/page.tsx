@@ -15,6 +15,11 @@ type Resource = {
   topic: string;
 };
 
+export const metadata = {
+  title: 'Resources',
+  description: 'All the resources Giacomo Maggiore reads',
+}
+
 export default function Page() {
   return (
     <section>
@@ -23,7 +28,10 @@ export default function Page() {
       <p className="mb-4">
       All the inputs and resources I consume daily, some in Italian, mostly in English.
       </p>
-    
+      <p>
+        Feel free to reach out on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank"><b>Instagram</b></a> , <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"><b>Linkedin</b></a> or via <a href="mailto:giaco.maggiore@gmail.com" target="_blank"><b>Email</b></a> if you have any comments want to share your own resources!
+      </p>
+
     
       <h1 className="semi-title">Blog</h1>
       <ul className="list-disc ml-5 mt-2 text-gray-300">

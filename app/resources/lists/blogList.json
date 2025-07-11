@@ -31,8 +31,13 @@
     },
     {
       "name": "Paul Graham",
-      "link": "Startup & Entrepreneurship",
-      "topic": "https://www.paulgraham.com/index.html"
+      "link": "https://www.paulgraham.com/index.html",
+      "topic": "Startups & Entrepreneurship"
+    },
+    {
+      "name": "Antirez | Salvatore Sanfilippo",
+      "link": "https://antirez.com/latest/0",
+      "topic": "Software Engineering & Tech"
     }
 
   ]
