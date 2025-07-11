@@ -8,7 +8,10 @@ import { Navbar } from './components/nav'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
 
-// instrumentation-client.js
+import { GoogleAnalytics } from '@next/third-parties/google'
+ 
+
+
 
             
 
@@ -65,6 +68,7 @@ export default function RootLayout({
             <Footer />
           </main>
       </body>
+      <GoogleAnalytics gaId="G-6E5X8EMEPL" />
     </html>
   )
 }
