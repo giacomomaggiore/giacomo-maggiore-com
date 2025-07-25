@@ -1,4 +1,5 @@
 import { BlogPosts } from 'app/components/posts'
+import 'katex/dist/katex.min.css';
 
 export const metadata = {
   title: 'Blog',
