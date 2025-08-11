@@ -37,8 +37,8 @@ export default function Page() {
         target="_blank"
         className="text-black font-bold hover:underline"
       >
-        {" "}{item.title}{" - "}
-      </a>
+        {" "}{item.title}
+      </a>{" - "}
       {item.author}
     </div>
   ))}
