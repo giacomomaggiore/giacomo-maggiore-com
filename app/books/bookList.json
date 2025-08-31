@@ -1,5 +1,46 @@
 [
   {
+    "title": "The Wealth Ladder",
+    "author": "Nick Magiulli",
+    "topic": "Personal Finance",
+    "date": "2025-09",
+    "link": "https://www.amazon.it/dp/B0DKXPRH5X/?bestFormat=true&k=the%20wealth%20ladder&ref_=nb_sb_ss_w_scx-ent-bk-ww_k0_1_13_de&crid=1GJLDZS5CPITG&sprefix=the%20wealth%20la",
+    "rating": "5.0"
+  },
+  {
+    "title": "L'Avversario",
+    "author": "Emanuele Carrère",
+    "topic": "Novel",
+    "date": "2025-09",
+    "link": "https://www.adelphi.it/libro/9788845927867",
+    "rating": "5.0"
+  },
+  {
+    "title": "Principles of Building AI Agents",
+    "author": "Sam Bhagwat",
+    "topic": "Coding - AI",
+    "date": "2025-09",
+    "link": "https://mastra.ai/book",
+    "rating": "4.0"
+  },
+  {
+    "title": "L'Economista sul Tapis Roulant",
+    "author": "Luciano Canova",
+    "topic": "Finance - Business",
+    "date": "2025-09",
+    "link": "https://www.amazon.it/Leconomista-roulant-allenarsi-parole-delleconomia/dp/884283243X/ref=sr_1_1?__mk_it_IT=ÅMÅŽÕÑ&crid=2MM054VWA3FRY&dib=eyJ2IjoiMSJ9.vC179OcBEleewGWybYQeiwin6ZDFFPt16198_JpI6e6ydKYFBX6to7ef6yW4rLn1RahYOdeW5HEOTb1-zlHxXpA7oMwyrgCpmww2Jsgzg9wDeK0Bnkqv0VwJoroxm_9q92Ng9DXeGaGIx5gz4MmYHqKC6-_4LkDSazpNUXR_GjvntUxKhZhhbaK11u0ReEzS57XY50W0WGgIER7Wts-Qb9wklSl6vDd5Y5-UqugZKrM.0k2d5Nd9l5FoTvA539vnX9ydDCo8lF36cbp7koptHhg&dib_tag=se&keywords=economista+tapis+roulant&qid=1756660005&sprefix=economista+tapis+roulant%2Cspecialty-aps%2C82&sr=8-1",
+    "rating": "5.0"
+  },
+  {
+    "title": "The Trading Game",
+    "author": "Gary Stevenson",
+    "topic": "Finance - Business",
+    "date": "2025-09",
+    "link": "https://www.amazon.it/Trading-game-Una-confessione/dp/8836017878/ref=sr_1_1?adgrpid=55104090400&dib=eyJ2IjoiMSJ9.gEa6SF6JcX3LgXdlRKeWT9N3qq7iZDL95Si14fWjg9wP3qRmVZ2zpzACZ_h6lub00_0Ptpuq75hQB04Gk36wKzGV7pSTNL0UtiQmMcEAORM7sFgYG6w0s7ophrvuoBItdNU8iqty2WHOmfRRGmacyj2hiLbABd7aTAIpZyu1qMLOB_VXlyuBGsmA_7957tLcIjSe2tghf-m4fz9BE420yTABPd2X0GkrDkg177iVU7h2QdzV4DpUtFgjvJwgsUkc3-uwmccabfOs674606hG2XERHHXf3SMYxWyN4tbaQNI.F8Vai_vmFyykxjXxxPmyz4lRosic_KmycdoObavf_5Q&dib_tag=se&hvadid=255178564680&hvdev=c&hvexpln=0&hvlocphy=9196346&hvnetw=g&hvocijid=2305782442624254330--&hvqmt=e&hvrand=2305782442624254330&hvtargid=kwd-295732291606&hydadcr=18636_1763932&keywords=the+trading+game&mcid=c0ab1aeec4a038e3a81e62951d450c62&qid=1756659959&sr=8-1",
+    "rating": "4.0"
+  },
+
+  {
     "title": "Mai Fermi",
     "author": "Alessandro Benetton",
     "topic": "Finance - Business",
