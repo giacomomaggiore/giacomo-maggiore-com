@@ -24,6 +24,10 @@ export default function Page() {
       applying mathematical models, economic theories and programming skills to this field
       with a<i> practic</i> approach.
     <br></br><br></br>
+    Then, I decided to shift my future studies in this direction, reason why I left Polimi and my startup 
+    to start a new adventure in <b>Zürich</b>, where I’m currently pursuing a Master in <b><a href="https://mtec.ethz.ch/studies.html" target="_blank">Economnics, Management & Technology</a></b>,
+    focusing on finane, quantitative methods and asset management.
+    <br></br><br></br>
     When I'm not working or studying, you can find me running and cycling.
     In 2024 I ran <a target='_blank' href='https://www.youtube.com/watch?v=vIGYlnaqcP8&t=451s'><b>my first marathon</b> </a>
     and completed my first ultramarathon, sharing my 
