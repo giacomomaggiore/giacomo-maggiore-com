@@ -1,0 +1,282 @@
+---
+title: 'Matematica Finanziaria: Appunti'
+publishedAt: '2025-09-06'
+summary: 'Explore the enduring debate between using spaces and tabs for code indentation, and why this choice matters more than you might think.'
+---
+
+
+## 01 - Leggi di Capitalizzazione
+
+Definiscono la quota di interessi in funzione del tempo a partire da un
+parametro che misura il tasso di interesse per unità di tempo (solitamente l'anno).
+
+Le leggi di capitalizzazione che descrivono il montante $ M $ in funzione del capitale iniziae $ C_0 $ e un tasso di interesse $ i $ sono:
+
+**Semplice**: $ M = C_0 \left( 1 + i \cdot t \right) $
+
+**Composta**: $ M = C_0 (1 + i)^t $
+
+**Continua (esponenziale)**: $ M = C_0 e^{i t} $
+
+Si noti come la capitalizzazione continua sia un modello limite dell’interesse composto, quando la capitalizzazione diventa continua (in ogni istante, non solo a intervalli discreti).
+
+E' inoltre importante distinguere il **Tasso di interesse Nominale** da quello **Reale**: il primo
+fornisce un indicatore sull'ammontare di denaro ricevuto come interesse per unità di denaro investita,
+ ma non fornisce un indicatore di remunerazione in termini di beni che posso acquistare in t = 1 in quanto 
+ non tiene conto delle variazioni del potere di acquisto (dell'inflazione).
+
+ Si può quindi scrivere:
+
+$$
+i_r = i_n - \pi
+$$
+
+### Tassi Spot e Forward
+Il tasso spot rappresenta il prezzo attuale di mercato di un asset: 
+è quello che pagheresti o riceveresti immediatamente. Il tasso forward, invece, rappresenta il prezzo a cui puoi acquistare o vendere lo stesso asset in una data futura.
+
+Il tasso forward non è casuale: incorpora il differenziale 
+tra i tassi di interesse dei due strumenti o valute coinvolte e il 
+tempo fino alla scadenza, oltre ad eventuali costi aggiuntivi come dividendi
+ o costi di stoccaggio.
+
+---
+
+## 02 - Struttura dei tassi e Bond
+
+Dai prezzi degli zero coupon bonds a pronti è possibile ricavare 
+la curva dei tassi a pronti di mercato utilizzando el leggi di capitalizzazione.
+
+**Tasso di interesse spot** in capitalizzazione semplice in $[t, T]$:
+$$
+L(t,T) = \frac{1 - p(t,T)}{T - t} \quad \text{oppure} \quad p(t,T) - 1 = -(T-t)L(t,T)
+$$
+
+**Tasso di interesse spot** in capitalizzazione esponenziale (yield rate) in $[t, T]$:
+$$
+y(t,T) = -\frac{\ln(p(t,T))}{T - t}
+$$
+
+**Tasso di interesse forward istantaneo** in $T$ definito in $t$
+$$
+f(t,T) = -\frac{\partial \ln(p(t,T))}{\partial T}
+$$
+
+A partire da queste formule, è possibile ricostruire la curva dei tassi.
+
+### Principio di Non Arbitraggio
+
+Non è possibile mettere in campo un'operazione di mercato 
+(acquisto e vendita di titoli scambiati o che si intende 
+scambiare sul mercato) che garantisce un flusso di denaro positivo 
+(non negativo ad ogni data e strettamente positivo almeno ad una data) 
+senza esborsi di denaro. 
+
+Di conseguenza, se fosse possibile costruire un arbitraggio nel mercato allora 
+i prezzi di mercato consentirebbero agli operatori la possibilità di arricchirsi
+ in modo eclatante. succedesse Se questo i prezzi di mercato dei titoli dovrebbero variare fino a eliminare 
+ le opportunità di arbitraggio.
+
+### Prezzo di Coupon Bond a partire da Zero Coupon Bond
+In base al Principio di Non Arbitraggio, il prezzo di un coupon bond può essere calcolato come la somma di tanti Zero Coupon Bond
+con scadenze diverse, pari alle cedole del coupon bond.
+
+Prezzo di un coupon bond con flussi $x = [x_1, x_2, \dots, x_N]$:
+$$
+p(t,x) = \sum_{n=1}^{N} x_n \, p(t,T_n)
+$$
+
+---
+
+### 03 - Valutazione degli Investimenti
+#### Criterio del Valore Attuale
+
+Si assume che la banca applica un **tasso di interesse annuale $i$** costante, sia per capitalizzazione che per attualizzazione, indipendentemente dal capitale.
+
+Per un'operazione finanziaria con flussi 
+$$\{x_0, x_1, x_2, \dots, x_T\}$$
+alle date 
+$$\{0,1,2,\dots,T\}$$
+
+- Il valore attuale di un flusso $x_t$ disponibile al tempo $t$ è:
+$$
+x_t \cdot (1+i)^{-t}
+$$
+
+- Il valore attuale dell'intera operazione al tempo 0:
+$$
+VA(0) = x_0 + \frac{x_1}{1+i} + \frac{x_2}{(1+i)^2} + \dots + \frac{x_T}{(1+i)^T}
+$$
+
+- Il valore dell'operazione al tempo $t$:
+$$
+VA(t) = VA(0) \cdot (1+i)^t
+$$
+
+È sufficiente valutare i progetti al tempo $t=0$, poiché il valore a tempi successivi cambia solo per un fattore moltiplicativo.
+
+Il progetto preferibile è quello con $VA$ più elevato, tuttavia, si ricordi che il VA dipende dal tasso $i$, infatti:
+$$  
+  VA_A(i) \ge VA_B(i) \not\Rightarrow VA_A(i') \ge VA_B(i')
+$$
+
+#### Criterio del TIR
+Per valutare un operazione finanziaria con tale metodo, si paerte calcolando con metodi numerici
+il TIR (Tasso interno di Rendimento), è quel tasso $i^*$ (o il fattore di sconto 
+
+$$
+v^* = \frac{1}{1+i^*}
+$$
+che rende **equilibrata l'operazione**, cioè tale che il valore attuale dei flussi sia nullo:
+
+$$
+\sum_{t=0}^{T} x_t \, (1+i)^{-t} = \sum_{t=0}^{T} x_t \, v^t = 0
+$$
+
+In altre parole, il TIR è il tasso di sconto che annulla il valore attuale netto (NPV) dell'operazione.
+Ovviamente, un TIR elevato è da preferire in quanto garantisce un rendimento più elevato dell'investimento.
+
+Il TIR non ha una formula chiusa nella maggior parte dei casi, quindi si ricorre spesso a metodi numerici:
+
+---
+
+### 04 - Rischio di Tasso, Indici Temporali e Principio di Immunizzazione
+
+Anche se siamo in un contesto privo di rischio 
+(i flussi di denaro futuri sono certi), acquistando un'obbligazione corriamo un rischio. 
+
+Il rischio riguarda il fatto che il prezzo del titolo possa variare in futuro a seguito
+ di una variazione dei tassi di interesse di mercato.
+
+Di conseguenza, nel caso dovessi rivendere il titolo prima della scadenza, 
+otterrei un rendimento elevato nel caso in cui il titolo aumenti di valore
+ (i tassi di interesse di mercato diminuiscono) e un rendimento basso nel
+  caso in cui il titolo diminuisca di valore (i tassi di interesse di mercato aumentano).
+Questo è noto come rischio di tasso.
+
+Si consideri il seguente esempio:
+
+- Cedola annuale: $R$  
+- Rimborso del valore nominale: $C$ al tempo $T$  
+- Flussi di cassa: $\{R, R, \dots, R + C\}$ alle date $\{1,2,\dots,T\}$  
+- Tasso cedolare: $R/C$
+
+Dati i tassi a pronti $i(0,t)$, è possibile calcolare il prezzo del titolo:
+$$
+P = \sum_{t=1}^{T} \frac{R}{(1+i(0,t))^t} + \frac{C}{(1+i(0,T))^T}
+$$
+
+Assumendo una struttura dei tassi piatta ($i(0,t) = i$) e definendo  $v = (1+i)^{-1}$  
+$$
+P = R v + R v^2 + \dots + R v^T + C v^T = R \frac{1-v^T}{1-v} + C v^T
+$$
+
+Si giungr quindi alla seguente interpretazione:
+- $R/C = i \implies P = C$ (titolo prezzato alla pari)  
+- $R/C > i \implies P > C$ (titolo prezzato sopra la pari)  
+- $R/C < i \implies P < C$ (titolo prezzato sotto la pari)
+
+Tassi alti → prezzo basso, tassi bassi → prezzo alto
+
+#### Indici temporali: Duration e Convexity
+
+La **duration di primo ordine** rappresenta il **momento medio dei flussi di cassa** rispetto al tempo corrente $t$, ponderato per il **valore attuale dei flussi**.
+
+- Flussi del titolo: $\{x_1, x_2, \dots, x_N\}$ alle date $\{T_1, T_2, \dots, T_N\}$
+- Distribuzione di probabilità dei flussi:
+$$
+m_n = \frac{x_n \, (1+i(t,T_n))^{-(T_n-t)}}{p(t,x)} > 0
+$$
+
+$$
+DU(t,x) = \sum_{n=1}^{N} (T_n - t) \, m_n
+$$
+
+La **duration di secondo ordine** misura il **momento quadratico dei flussi**, utile per considerare la **curvatura della relazione prezzo-tasso** (convexity):
+
+$$
+DU_2(t,x) = \sum_{n=1}^{N} (T_n - t)^2 \, m_n
+$$
+
+---
+
+#### Interpretazione pratica
+
+- $DU(t,x)$ → media ponderata delle date in cui il titolo consegna denaro  
+- $DU_2(t,x)$ → misura della dispersione dei flussi, legata alla convexity  
+- $DU_2(t,x)$ è fondamentale per migliorare le stime delle variazioni di 
+prezzo rispetto ai tassi di interesse non piccole
+
+#### Yield to Maturity 
+Lo **Yield to Maturity (YTM)**, o rendimento a scadenza, è il tasso di rendimento implicito di un’obbligazione se:
+
+- La compri oggi al prezzo di mercato $P$
+- Mantieni l’obbligazione fino alla scadenza
+- Tutti i flussi di cassa (cedole e rimborso del capitale) vengono reinvestiti allo stesso tasso
+
+In altre parole, è il tasso di interesse che rende il valore attuale netto dei flussi di cassa dell’obbligazione pari al suo prezzo di mercato.
+
+
+$$
+p(t,x) = \sum_{n=1}^{N} x_n e^{-y (T_n - t)}
+$$
+
+Nel caso di uno **zero coupon bond**, $y$ corrisponde al **tasso spot** in capitalizzazione esponenziale.
+
+### 2. Duration di Macaulay
+
+La **Duration di Macaulay** misura il **momento medio dei flussi di cassa** ponderato per il loro valore attuale:
+
+$$
+DU(t,x) = \frac{\sum_{n=1}^{N} (T_n - t) \, x_n e^{-y (T_n - t)}}{p(t,x)}
+$$
+
+$$
+DU_2(t,x) = \frac{\sum_{n=1}^{N} (T_n - t)^2 \, x_n e^{-y (T_n - t)}}{p(t,x)}
+$$
+
+A partire dalla Duration e dalla Duration di Macaulay, è possibile quindi definire la Duration
+Modificata come
+
+$$
+DU_m = \frac{DU}{1 + y}
+$$
+
+Essa tiene conto del tasso di rendimento e misura
+ la variazione percentuale del prezzo per una variazione infinitesimale del tasso:
+
+#### Convexity
+
+La **convexity** di un titolo misura la **curvatura della relazione prezzo-tasso** ed è definita come la **derivata seconda del valore di mercato rispetto al tasso i** in capitalizzazione composta, rapportata al prezzo del titolo:
+
+$$
+C(t,x) = \frac{1}{p(t,x)} \frac{d^2 p(t,x)}{di^2}
+$$
+
+Formula per un titolo con flussi $\{x_1, x_2, \dots, x_N\}$ alle date $\{T_1, \dots, T_N\}$:
+$$
+C(t,x) = \frac{1}{p(t,x)} \sum_{n=1}^{N} (T_n - t)(T_n - t + 1) \, x_n \, (1+i)^{-(T_n - t + 2)}
+$$
+
+In sintesi: una convexity positiva indica che il prezzo dell’obbligazione
+ **aumenta più del previsto quando i tassi scendono** e **diminuisce meno 
+ del previsto quando i tassi salgono**.
+
+Sfruttando questi risultati, in un contesto di struttura di tassi di 
+interesse piatta possiamo calcolare la variazione del prezzo del titolo 
+in via approssimata al primo e al secondo ordine.
+
+Una piccola variazione del tasso $\Delta i$ induce una variazione del valore di mercato $\Delta p(t,x)$:
+
+$$
+\Delta p(t,x) \approx - \frac{1}{1+i} \, DU(t,x) \, p(t,x) \, \Delta i
+$$
+
+Se consideriamo anche la **convexity**, otteniamo una stima più accurata per variazioni non piccole dei tassi:
+
+$$
+\Delta p(t,x) \approx - DU(t,x) \, p(t,x) \, \Delta i + p(t,x) \, C(t,x) \, (\Delta i)^2
+$$
+
+Il **termine lineare** cattura la sensibilità principale del prezzo ai tassi, mentre il 
+**termine quadratico** cattura la curvatura della relazione prezzo-tasso
