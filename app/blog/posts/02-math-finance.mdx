@@ -318,3 +318,158 @@ Il criterio del valore atteso ha sicuramente un suo signicato
 effettivamente saremmo chiamati a correre.
 
 ### Utilità Attesa
+
+La **teoria dell’utilità attesa** fornisce un modello per descrivere le scelte di un investitore in condizioni di incertezza.  
+L’idea centrale è che gli individui non massimizzano il **valore atteso della ricchezza**, ma piuttosto il **valore atteso di una funzione di utilità** della ricchezza.
+
+
+## Definizione
+
+Sia $X$ una variabile aleatoria che rappresenta la ricchezza finale di un investitore e sia $u(X)$ la funzione di utilità associata.
+
+L’<b>utilità attesa</b> è definita, nel caso continuo, come:
+
+$$
+\mathbb{E}[u(X)] = \int_{-\infty}^{+\infty} u(x) \, f(x) \, dx
+$$
+
+dove:
+- $x_i$: possibili esiti della ricchezza,
+- $p_i$: probabilità associate,
+- $f(x)$: densità di probabilità di $X$.
+
+
+## Principio dell'Utilità Attesa
+
+Un investitore **preferisce** un progetto/portafoglio $A$ rispetto a $B$ se:
+
+$$
+\mathbb{E}[u(X_A)] > \mathbb{E}[u(X_B)]
+$$
+
+La funzione di utilità definisce anche l'avversione al rischio di un individuo.
+
+Un individuo infatti, si dice:
+- avverso al rischio se a partire da qualsiasi livello di ricchezza detenuto con certezza non accetta o è indierente rispetto ad ogni lotteria attuarialmente equa
+- neutrale al rischio se ogni lotteria attuarialmente equa gli è indifferente
+- amante del rischio se accetta ogni lotteria attuarialmente equa
+
+Analogamente, un individuo si dice:
+- avverso al rischio se $u(X)$ è (strettamente) concava (ossia $U(X)'' < 0$)
+- neutrale al rischio se $u(X)$ è lineare e $U(X)'' = 0$ 
+- propenso al rischio se $u(X)$ di utilità è convessa (ossia $U(X)'' > 0$)
+
+A partire da $ u(X)$, è possibile introdurre il coefficiente assoluto di avversione al
+rischio $r_a(x) $, definito come:
+
+$$
+r_a(x) = - \frac{u''(x)}{u'(x)}.
+$$
+
+E, analogamente, il coefficiente relativo di avversione al rischio $r_r(x)$:
+
+$$
+r_r(x) = r_a(x)x
+$$
+
+La funzione di utilità $u(\cdot)$ può essere quindi classificata in 
+base all’andamento di $r_a(x)$
+
+**Avversione assoluta al rischio decrescente (DARA)**  
+  $$
+  (r_a)'(x) < 0 \quad \forall x \in \mathbb{R}^+ 
+  $$  
+L’avversione al rischio **diminuisce** all’aumentare della ricchezza (caso realistico per la maggior parte degli individui).
+
+**Avversione assoluta al rischio costante (CARA)**  
+  $$
+  (r_a)'(x) = 0 \quad \forall x \in \mathbb{R}^+ 
+  $$  
+L’avversione al rischio resta **invariata** al variare della ricchezza (tipica della funzione di utilità esponenziale):
+  $$
+  u(x) = -e^{-\alpha x}, \quad r_a(x) = \alpha.
+  $$
+
+**Avversione assoluta al rischio crescente (IARA)**  
+  $$
+  (r_a)'(x) > 0 \quad \forall x \in \mathbb{R}^+ 
+  $$  
+L’avversione al rischio **aumenta** all’aumentare della ricchezza (considerata poco realistica in economia comportamentale).
+
+
+### Premio per il rischio e Certo Equivalente
+
+La definizione che abbiamo appena dato di avversione al rischio 
+ci induce a pensare che un individuo sia disposto a pagare un prezzo positivo
+ per passare da una lotteria rischiosa ad una situazione caratterizzata 
+ dal suo valore atteso ottenuto con certezza. 
+ Tale prezzo è detto <b>premio per il rischio.</b>
+
+ Il **premio per il rischio** $rho_u(\tilde{x})$ di una lotteria $tilde{x}$ per un individuo con funzione di utilità $u(\cdot)$ rappresenta il **massimo ammontare di denaro** che l’individuo è disposto a pagare per ricevere **con certezza** il valore atteso della lotteria, al posto di affrontarne l’incertezza.
+
+---
+
+## Definizione formale
+
+Il premio per il rischio $ rho_u(\tilde{x}) $ è definito come il valore tale che:
+
+$$
+u\big( \mathbb{E}[\tilde{x}] - \rho_u(\tilde{x}) \big) = \mathbb{E}[u(\tilde{x})].
+$$
+
+
+
+- $\mathbb{E}[\tilde{x}]$: valore atteso della lotteria.  
+- $\mathbb{E}[u(\tilde{x})]$: utilità attesa della lotteria.  
+- $\rho_u(\tilde{x})$: misura la "penalità monetaria" che l’individuo associa al rischio.
+
+Se l’individuo è **avverso al rischio** (cioè $u(\cdot)$ è concava e crescente), l'individuo
+è disposto a rinunciare a una parte del valore atteso pur di evitare l'incertezza:
+  $$
+  \rho_u(\tilde{x}) \geq 0.
+  $$
+Se è **neutrale al rischio** ($u(x)$ lineare), allora:
+  $$
+  \rho_u(\tilde{x}) = 0.
+  $$
+
+Se è **propenso al rischio** ($u(x)$ convessa), l'individuo preferisce la lotteria al suo
+valore atteso:
+  $$
+  \rho_u(\tilde{x}) \leq 0.
+  $$
+
+Dato il premio per il rischio $\rho_u(\tilde{x})$, il **certo equivalente** di 
+una lotteria $\tilde{x}$ è definito come:
+
+$$
+CE(\tilde{x}) = \mathbb{E}[\tilde{x}] - \rho_u(\tilde{x}).
+$$
+
+---
+
+
+$ CE(\tilde{x})$ rappresenta la quantità certa di denaro che rende l’individuo **indifferente** tra:
+  - ricevere $CE(\tilde{x})$ con certezza,
+  - oppure partecipare alla lotteria $\tilde{x}$.
+
+Può essere interpretato come il **prezzo minimo** che un individuo è disposto
+ ad accettare per **cedere la lotteria**.
+
+Se l’individuo è **avverso al rischio**:
+  $$
+  CE(\tilde{x}) \leq \mathbb{E}[\tilde{x}].
+  $$
+
+Se è **neutrale al rischio**:
+  $$
+  CE(\tilde{x}) = \mathbb{E}[\tilde{x}].
+  $$
+
+Se è **propenso al rischio**:
+  $$
+  CE(\tilde{x}) \geq \mathbb{E}[\tilde{x}].
+  $$
+
+
+
