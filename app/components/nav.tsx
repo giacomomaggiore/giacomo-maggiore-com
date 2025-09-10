@@ -13,6 +13,9 @@ const navItems = {
   '/resources': {
     name: 'resources',
   },
+  '/cv': {
+    name: 'cv',
+  }
 }
 
 export function Navbar() {
