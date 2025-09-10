@@ -472,4 +472,290 @@ Se è **propenso al rischio**:
   $$
 
 
+---
 
+### 06 - Analisi Media Varianza
+
+Il **criterio Media-Varianza** è un metodo di confronto tra due 
+variabili aleatorie basato su rendimento atteso e varianza.
+
+Date due variabili aleatorie $\tilde{x}$ e $\tilde{y}$, si dice che:
+
+$$
+\tilde{x} \; \text{MV} \; \tilde{y}
+\;\;\Longleftrightarrow\;\;
+\mathbb{E}[\tilde{x}] \geq \mathbb{E}[\tilde{y}], 
+\quad
+\text{Var}(\tilde{x}) \leq \text{Var}(\tilde{y}).
+$$
+
+
+
+Quindi, secondo il criterio MV:
+- Un investimento $\tilde{x}$ è preferibile a $\tilde{y}$ se ha **rendimento atteso maggiore o uguale** e **varianza minore o uguale**.  
+- Se una delle due condizioni non è rispettata, non è possibile stabilire una dominanza chiara.
+
+
+
+Il criterio MV è alla base della **Teoria del Portafoglio di Markowitz**.  
+Gli investitori avversi al rischio scelgono combinazioni di portafogli che massimizzano il rendimento atteso **dato un certo livello di rischio**, o minimizzano il rischio **dato un certo rendimento atteso**.  
+Da qui nasce il concetto di **frontiera efficiente**.
+
+### Rendimento Atteso e Varianza di un Portafoglio di 2 Titoli Rischiosi
+
+Consideriamo due titoli rischiosi con rendimenti aleatori $\tilde{r}_1, \tilde{r}_2$ sull’orizzonte temporale $[0,1]$.  
+Supponiamo di avere una ricchezza iniziale $x = 1$.
+
+
+
+Definiamo un portafoglio con pesi $(w, 1-w)$, dove $w$: quota investita nel titolo 1
+e $1-w$: quota investita nel titolo 2
+
+Vi saranno dunque tre casi possibili:
+- $0 < w < 1$: investimento positivo in entrambi i titoli  
+- $w < 0$: vendita allo scoperto del titolo 1 e investimento maggiore in 2  
+- $w > 1$: vendita allo scoperto del titolo 2 e investimento maggiore in 1  
+
+In ogni caso, il rendimento del portafoglio sarà:
+
+$$
+\tilde{r} = w \tilde{r}_1 + (1-w)\tilde{r}_2
+$$
+
+e il suo valore atteso (lineare nei pesi):
+
+$$
+\mathbb{E}[\tilde{r}] = w \, \mathbb{E}[\tilde{r}_1] + (1-w)\mathbb{E}[\tilde{r}_2]
+$$
+
+
+La varianza del portafoglio (non lineare nei pesi) sarà:
+
+$$
+\sigma^2(\tilde{r}) = w^2 \sigma_1^2 + (1-w)^2 \sigma_2^2 + 2w(1-w)\rho \sigma_1 \sigma_2
+$$
+
+dove $\rho$ è la **correlazione** tra i due titoli:
+
+$$
+\rho = \frac{\text{Cov}(\tilde{r}_1, \tilde{r}_2)}{\sigma_1 \sigma_2}.
+$$
+I primi due termini: $ w^2\sigma_1^2 $ e $ \ (1-w)^2\sigma_2^2$
+  rappresentano il contributo delle **varianze individuali** dei titoli.  
+
+Il termine  $ 2w(1-w)\rho\sigma_1\sigma_2 $
+   rappresenta l’effetto della **correlazione** tra i due rendimenti.  
+
+Se $\rho < 1$, esiste un **beneficio di diversificazione**, cioè la varianza del portafoglio può risultare **inferiore** a quella dei singoli titoli.
+
+### <b> Principio di diversificazione </b>
+
+Dati due titoli rischiosi con egual rendimento atteso e varianza diversa, $ \sigma_1^2 > \sigma_2^2 $ e, 
+con correlazione nulla, $ \rho = 0$,
+il portafoglio ottimo (quello a varianza minima) si ottiene investendo nel primo titolo $ w_1 $ tale che:
+
+$$
+w^* = \frac{\sigma_2^2}{\sigma_1^2 + \sigma_2^2}
+$$
+
+Il portafoglio che minimizza il rischio è diversificato (ma non perfettamente) in quanto
+$ 0 < w_1 < 1 $.
+
+### <b>Prinipio di Assicurazione</b>
+
+Consideriamo due rendimenti aleatori $\tilde r_1,\tilde r_2$ con deviazioni 
+standard $\sigma_1,\sigma_2$ e correlazione
+$\rho=\mathrm{corr}(\tilde r_1,\tilde r_2)$. 
+Un portafoglio con peso $w$ sul primo titolo ha rendimento
+
+$$
+\tilde r = w\tilde r_1+(1-w)\tilde r_2
+$$
+
+ e varianza
+
+$$
+\sigma^2(w)=w^2\sigma_1^2+(1-w)^2\sigma_2^2+2w(1-w)\rho\sigma_1\sigma_2.
+$$
+
+
+Se vale
+$$
+\tilde r_1 = a + b\,\tilde r_2,
+$$
+allora
+$$
+\mathrm{Cov}(\tilde r_1,\tilde r_2)=b\,\mathrm{Var}(\tilde r_2),\qquad
+\rho=\frac{\mathrm{Cov}(\tilde r_1,\tilde r_2)}{\sigma_1\sigma_2}=\frac{b\sigma_2^2}{\sigma_1\sigma_2}=\frac{b\sigma_2}{\sigma_1}=\frac{b\sigma_2}{|b|\sigma_2}.
+$$
+
+Di conseguenza:
+
+$\rho=+1 \iff b>0$ (movimenti perfettamente allineati),
+
+$\rho=-1 \iff b<0$ (movimenti perfettamente opposti).
+
+
+
+## Caso 1: correlazione perfettamente positiva: $\rho=+1$
+
+La varianza si riduce a
+$$
+\sigma^2(w) = \big(w\sigma_1 + (1-w)\sigma_2\big)^2,
+$$
+quindi la deviazione standard è
+$$
+\sigma(w) = w\sigma_1 + (1-w)\sigma_2.
+$$
+
+
+Per ottenere un portafoglio a varianz nulla serve
+$$
+w\sigma_1 + (1-w)\sigma_2 = 0 \quad\Rightarrow\quad
+\hat w = \frac{\sigma_2}{\sigma_2-\sigma_1}.
+$$
+
+$\hat w$ **non** appartiene in generale a $[0,1]$.  
+
+Se $\hat w\notin[0,1]$ il portafoglio che azzera il rischio richiede **short selling** (non è un portafoglio diversificato in senso classico): si vende allo scoperto il titolo con varianza maggiore e si compra l'altro.
+
+
+## Caso 2: correlazione perfettamente negativa: $\rho=-1$
+
+La varianza prende la forma
+$$
+\sigma^2(w) = \big(w\sigma_1 - (1-w)\sigma_2\big)^2,
+$$
+da cui (per una scelta di segno appropriata)
+$$
+\sigma(w)=\big|\,w\sigma_1-(1-w)\sigma_2\,\big|.
+$$
+
+### Portafoglio a varianza nulla
+Risolvendone l’annullamento si ottiene un peso interno:
+$$
+\hat w = \frac{\sigma_2}{\sigma_1+\sigma_2}, \qquad 1-\hat w = \frac{\sigma_1}{\sigma_1+\sigma_2},
+$$
+con $\hat w\in[0,1]$.  
+In questo caso il portafoglio a varianza nulla **è diversificato**: detiene quantità positive di entrambi i titoli e le loro oscillazioni si bilanciano esattamente.
+
+
+## Caso generale — $-1<\rho<1$
+
+La varianza è una funzione quadratica di $w$. Il peso che minimizza la varianza è
+
+$$
+w^* \;=\; \frac{\sigma_2^2 - \rho\sigma_1\sigma_2}{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}.
+$$
+
+Se $0<w^*<1$: il portafoglio di minima varianza è una combinazione lunga in entrambi i titoli (diversificato).  
+
+Se $w^*<0$ (o $w^*>1$): la minimizzazione richiede short selling sul titolo con minore (o maggiore) varianza; in tali casi il portafoglio minimale non è un semplice portafoglio diversificato con pesi in $[0,1]$.
+
+### Interpretazione del Principio di Assicurazione
+
+La correlazione influenza la **qualità** della diversificazione: più la correlazione 
+è vicina a $-1$, maggiore il potenziale di riduzione del rischio per combinazioni lunghe.  
+
+Se i rendimenti sono **perfettamente proporzionali** (caso $\rho=\pm1$), uno dei titoli 
+può "assicurare" l'altro solo tramite opportuni pesi (che possono richiedere 
+posizioni corte se la correlazione è positiva).  
+
+In assenza di correlazione ($\rho=0$) la varianza non può essere annullata ma 
+può essere ridotta combinando titoli.
+
+---
+
+### 07: Scelte di Portafoglio
+
+
+In $ t = 0 $ un individuo possiede ricchezza iniziale $ x $ 
+con funzione di utilità: $ u'(x) > 0, \; u''(x) < 0 $ (crescente e concava).  .  
+Investe in $ N $ strumenti rischiosi e $ 1 $ titolo privo di rischio (titolo $ 0 $)
+  con l'obiettivo di massimizzare 
+l'utilità attesa della ricchezza in $ t = 1 $.
+
+
+Il rendimento titolo rischioso $ n $ in $ t=1 $:  
+  $$
+  \tilde{r}_n = \frac{\tilde{d}_n}{q_n}, \quad n = 1,\dots,N
+  $$
+  dove $ q_n $ è il prezzo in $ t=0 $ e $ \tilde{d}_n $ il dividendo in $ t=1 $.
+
+Il titolo privo di rischio invece rende $ r_f $ in $ t=1 $ per ogni euro investito in $ t = 0$.
+
+Sia $w$ il Portafoglio  
+$$
+  w = (w_1,\dots,w_N) \in \mathbb{R}^N
+$$
+  dove $ w_n $ è la somma investita nel titolo $ n $ ($ w_n > 0 $: detenzione del titolo,
+  $ w_n < 0 $: vendita allo scoperto) e $(x - \sum_{n=1}^N w_n)$ la somma investita in $r_f$.
+
+La ricchezza finale in $ t=1 $ sarà:  
+  $$
+  W_f = (x - \sum_{n=1}^N w_n) r_f + \sum_{n=1}^N w_n \tilde{r}_n 
+  = x r_f + \sum_{n=1}^N w_n (\tilde{r}_n - r_f)
+  $$
+
+
+Se $ x - \sum_{n=1}^N w_n > 0 $, parte della ricchezza è investita nel titolo privo di rischio.  
+
+Se $ x - \sum_{n=1}^N w_n < 0 $, l’individuo si indebita al tasso $ r_f - 1 $.
+
+
+## Problema di massimizzazione dell'utilità attesa
+
+$$
+\max_{w \in \mathbb{R}^N} \; E[u(W_f)]
+$$
+
+Condizione del primo ordine (FOC):  
+$$
+E\big[u'(W_f^*)(\tilde{r}_n - r_f)\big] = 0, \quad n=1,\dots,N
+$$
+
+Poiché $ u'' < 0 $, la soluzione ottima è unica.
+
+
+In caso di $N = 1$, un solo titolo rischioso, la ricchezza finale diventa:
+$$
+W_f = x r_f + w (\tilde{r} - r_f)
+$$
+
+
+Condizione ottimale di massimizzazione dell'utilità attesa:  
+$$
+E\big[u'(xr_f + w(\tilde{r} - r_f))(\tilde{r} - r_f)\big] = 0
+$$
+
+
+In sintesi, un individuo investe nel titolo rischioso se e solo se 
+il **premio per il rischio** è positivo:
+
+$$
+w^* > 0 \quad \Leftrightarrow \quad E[\tilde{r}] - r_f > 0
+$$
+
+### Caso Particolare: Utilità esponenziale e portafoglio ottimo
+
+La funzione di utilità esponenziale è definita come:  
+$$
+u(x) = - \frac{1}{a}e^{-a x}, \quad a > 0
+$$
+
+Il portafoglio ottimo si ottiene ponendo:
+
+$$
+w^* = \frac{E[\tilde r] - r_f}{a \, \sigma^2(\tilde r)}
+$$
+
+L'investimento nel titolo rischioso $w^*$ risulta:
+
+- **Indipendente** dalla ricchezza iniziale $x$  
+- **Decrescente** nel coefficiente assoluto di avversione al rischio $a$  
+- **Decrescente** nella varianza $\sigma^2(\tilde r)$  
+- **Crescente** nel premio per il rischio $E[\tilde r] - r_f$  
+- **Crescente** nel rendimento atteso $E[\tilde r]$  
+- **Decrescente** nel rendimento del titolo privo di rischio $r_f$
+
+### 08 - Assicurazione
