@@ -1,1 +1,0 @@
-const response =  fetch('/cv.pdf');
