@@ -35,11 +35,21 @@ export default function Page() {
       <a
         href={item.link}
         target="_blank"
-        className="text-black font-bold hover:underline"
+        className="hover:underline"
+        
       >
-        {" "}{item.title}
-      </a>{" - "}
+        <span className="text-black font-bold ">
+        {" "}{item.title} {" - "}
+
+        </span>
+        
+        
+      
+      
       {item.author}
+      {" "}
+      <span className="text-gray-400">[{item.topic}]</span>
+      </a>
     </div>
   ))}
 </div>
