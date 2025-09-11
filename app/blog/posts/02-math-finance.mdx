@@ -180,6 +180,9 @@ Tassi alti → prezzo basso, tassi bassi → prezzo alto
 
 #### Indici temporali: Duration e Convexity
 
+[Si rimanda la video di Paolo Coletti <b>"Duration e Duration Modificata"</b> per
+approfondimenti e una trattazione matematica più approfondita](https://www.youtube.com/watch?v=fzDsoZkDV5s&list=WL&index=91)
+
 La **duration di primo ordine** rappresenta il **momento medio dei flussi di cassa** rispetto al tempo corrente $t$, ponderato per il **valore attuale dei flussi**.
 
 - Flussi del titolo: $\{x_1, x_2, \dots, x_N\}$ alle date $\{T_1, T_2, \dots, T_N\}$
@@ -198,7 +201,6 @@ $$
 DU_2(t,x) = \sum_{n=1}^{N} (T_n - t)^2 \, m_n
 $$
 
----
 
 #### Interpretazione pratica
 
@@ -243,7 +245,7 @@ DU_m = \frac{DU}{1 + y}
 $$
 
 Essa tiene conto del tasso di rendimento e misura
- la variazione percentuale del prezzo per una variazione infinitesimale del tasso:
+ la variazione percentuale del prezzo per una variazione infinitesimale del tasso.
 
 #### Convexity
 
@@ -280,6 +282,9 @@ $$
 
 Il **termine lineare** cattura la sensibilità principale del prezzo ai tassi, mentre il 
 **termine quadratico** cattura la curvatura della relazione prezzo-tasso
+
+
+
 
 #### Principio di Immunizzazione
 Quando la struttura dei tassi di interesse è piatta, la 
@@ -758,4 +763,203 @@ L'investimento nel titolo rischioso $w^*$ risulta:
 - **Crescente** nel rendimento atteso $E[\tilde r]$  
 - **Decrescente** nel rendimento del titolo privo di rischio $r_f$
 
-### 08 - Assicurazione
+### 08 - Assicurazione e Avversione al Rischio  
+
+Un individuo **strettamente avverso al rischio** possiede in $t=0$ un
+ ammontare di ricchezza $x$.
+- In $t=1$ può verificarsi un **danno monetario** $D > 0$ con probabilità $\pi \in (0,1)$.
+- Con probabilità $1 - \pi$ **non si verifica alcun danno**, quindi l'individuo mantiene $x$.
+
+L'individuo può acquistare $w \ge 0$ unità di **copertura assicurativa**.
+Ogni unità garantisce **1 euro in $t=1$** se il danno si verifica, e $0$ altrimenti.
+Prezzo per unità in $t=0$: $q > 0$.
+
+
+**Senza assicurazione**, utilità attesa:
+
+$$
+U_0 = \pi u(x - D) + (1 - \pi)u(x)
+$$
+
+**Con assicurazione** (acquisto $w$ unità), utilità atesa:
+
+$$
+\max_{w \ge 0} \; \pi u(x - D - wq + w) + (1 - \pi)u(x - wq)
+$$
+
+## Condizione di Ottimalità
+
+Il livello ottimale $w^*$ soddisfa:
+
+$$
+\pi (1 - q) u'(x - D - w^* q + w^*) - q (1 - \pi) u'(x - w^* q) \le 0
+$$
+
+con **uguaglianza** se $w^* > 0$.
+
+## Contratto Attuarialmente Equo
+
+Un contratto è **attuarialmente equo** se il prezzo corrisponde alla probabilità dell'evento:
+
+$$
+q = \pi
+$$
+
+ovvero il valore atteso del payoff è nullo:
+
+$$
+(1 - q)\pi - q(1 - \pi) = 0
+$$
+
+Se $q = \pi$ l’individuo **si assicura completamente**:
+
+$$
+u'(x - D + w^*(1 - q)) = u'(x - w^* q)
+$$
+
+Per la **concavità** di $u(\cdot)$ la soluzione è unica:
+
+$$
+w^* = D
+$$
+
+## Assicurazione Parziale o Eccessiva
+
+Se il contratto **non è equo** ($q \neq \pi$):
+
+- **Prezzo troppo alto** ($q > \pi$) $\Rightarrow$ $w^\* < D$ → **assicurazione parziale**.
+- **Prezzo troppo basso** ($q < \pi$) $\Rightarrow$ $w^\* > D$ → **assicurazione eccessiva**.
+
+
+---
+### 09: Frontiera dei Portafogli (Efficient Frontier EF)
+
+La **frontiera dei portafogli** è l'insieme dei portafogli che, 
+per un dato rendimento atteso, **minimizzano la varianza**.  
+
+Dato un portafoglio con rendimento atteso target $E[\tilde r_p]$, 
+il portafoglio ottimale $ \mathbf{w} $ è quello che minimizza la varianza 
+tra tutti i portafogli che garantiscono quel rendimento.
+
+# Frontiera dei Portafogli — Appunti Finanza Matematica
+
+## 1. Setup
+
+- $N \ge 2$ titoli rischiosi: $\tilde r_n, \; n = 1, \dots, N$  
+- Vettore dei rendimenti attesi: $\mathbf{e} \in \mathbb{R}^N$  
+- Matrice varianza-covarianza: $V \in \mathbb{R}^{N\times N}$
+
+$
+V = 
+\begin{bmatrix}
+\sigma^2(\tilde r_1) & \mathrm{cov}(\tilde r_1, \tilde r_2) & \dots & \mathrm{cov}(\tilde r_1, \tilde r_N) \\
+\mathrm{cov}(\tilde r_2, \tilde r_1) & \sigma^2(\tilde r_2) & \dots & \mathrm{cov}(\tilde r_2, \tilde r_N) \\
+\vdots & \vdots & \ddots & \vdots \\
+\mathrm{cov}(\tilde r_N, \tilde r_1) & \dots & \dots & \sigma^2(\tilde r_N)
+\end{bmatrix}
+$
+
+Portafoglio $ \mathbf{w} \in \mathbb{R}^N $  
+
+Rendimento portafoglio:  
+$$
+E[\tilde r] = \mathbf{w}^\top \mathbf{e} = \sum_{i=1}^N w_i e_i
+$$ 
+
+Varianza portafoglio:  
+$$
+\sigma^2(\mathbf{w}) = \mathbf{w}^\top V \mathbf{w} = \sum_{i=1}^N \sum_{j=1}^N w_i w_j \mathrm{cov}(\tilde r_i, \tilde r_j)
+$$
+
+
+Dato un rendimento atteso $E[\tilde r_p]$, determinare $\mathbf{w}_p$ tale che:
+
+$
+\begin{aligned}
+& \min_{\mathbf{w} \in \mathbb{R}^N} \mathbf{w}^\top V \mathbf{w} \\
+& \text{s.t.} \quad 
+\begin{cases}
+\mathbf{w}^\top \mathbf{e} = E[\tilde r_p] \\
+\mathbf{w}^\top \mathbf{1} = 1
+\end{cases}
+\end{aligned}
+$
+
+Definendo
+
+$
+A = \mathbf{1}^\top V^{-1} \mathbf{e}, \quad
+B = \mathbf{e}^\top V^{-1} \mathbf{e}, \quad
+C = \mathbf{1}^\top V^{-1} \mathbf{1}, \quad
+D = B C - A^2
+$
+
+si ottiene il portafoglio ottimale:
+
+$$
+\mathbf{w}_p = g + h E[\tilde r_p]
+$$
+
+con
+
+$
+g = \frac{C V^{-1} \mathbf{1} - A V^{-1} \mathbf{e}}{D}, \quad
+h = \frac{B V^{-1} \mathbf{e} - A V^{-1} \mathbf{1}}{D}
+$
+
+---
+
+## 5. Varianza del portafoglio ottimale
+
+Dato un altro portafoglio $ \mathbf{w}_q $, la varianza in funzione del rendimento atteso è:
+
+$$
+\sigma^2(\mathbf{w}_p) = \frac{C (E[\tilde r_p])^2 - 2 A E[\tilde r_p] + B}{D}
+$$
+
+
+
+La **frontiera efficiente** è la parabola nel piano $(\sigma, E[\tilde r])$ definita da $\sigma^2(\mathbf{w}_p)$.  
+
+
+## Proprietà della Frontiera Efficiente
+
+
+<b> Combinazione lineare di portafogli </b>
+
+Dati $M$ portafogli $w_i \in FP, i=1,\dots,M$ sulla frontiera, qualsiasi portafoglio della frontiera può essere scritto come:
+$$
+w = \sum_{i=1}^{M} \alpha_i w_i, \quad \sum_{i=1}^{M} \alpha_i = 1
+$$
+
+Il rendimento atteso del portafoglio combinato:
+$$
+E[\tilde r] = \sum_{i=1}^{M} \alpha_i E[\tilde r_i]
+$$
+
+<b> Portafoglio con covarianza nulla </b>
+
+Dato un portafoglio $w_p \in FP$ (eccetto il portafoglio di minima varianza globale), esiste un **unico portafoglio** $w_{zc(p)} \in FP$ tale che:
+$
+\mathrm{cov}( \tilde r_p, \tilde r_{zc(p)} ) = 0
+$
+
+Il rendimento atteso di $w_{zc(p)}$ è:
+$
+E[\tilde r_{zc(p)}] = \frac{C - A E[\tilde r_p]}{D}
+$
+
+Nel piano $(\sigma, E[\tilde r])$, il portafoglio $w_{zc(p)}$ corrisponde all’intersezione della retta tangente in $w_p$ con l’asse delle ordinate.
+
+
+<b >Combinazioni con portafoglio generico </b>
+
+Sia $w_{MVP}$ un portafoglio della frontiera diverso da $w_p$ e $w_{zc(p)}$ il corrispondente portafoglio con covarianza nulla.
+
+Esiste un coefficiente $\beta_{qp}$ tale che:
+$$
+E[\tilde r_q] = (1 - \beta_{qp}) E[\tilde r_p] + \beta_{qp} E[\tilde r_{zc(p)}]
+$$
+
+
+Questo esprime che **qualsiasi portafoglio della frontiera può essere rappresentato come combinazione lineare** di un portafoglio generico e del portafoglio a covarianza nulla rispetto ad esso.
