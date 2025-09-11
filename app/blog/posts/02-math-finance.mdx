@@ -907,7 +907,7 @@ g = \frac{C V^{-1} \mathbf{1} - A V^{-1} \mathbf{e}}{D}, \quad
 h = \frac{B V^{-1} \mathbf{e} - A V^{-1} \mathbf{1}}{D}
 $
 
----
+
 
 ## 5. Varianza del portafoglio ottimale
 
@@ -945,11 +945,12 @@ $
 $
 
 Il rendimento atteso di $w_{zc(p)}$ è:
-$
+$$
 E[\tilde r_{zc(p)}] = \frac{C - A E[\tilde r_p]}{D}
-$
+$$
 
-Nel piano $(\sigma, E[\tilde r])$, il portafoglio $w_{zc(p)}$ corrisponde all’intersezione della retta tangente in $w_p$ con l’asse delle ordinate.
+Nel piano $(\sigma, E[\tilde r])$, il portafoglio $w_{zc(p)}$ 
+corrisponde all’intersezione della retta tangente in $w_p$ con l’asse delle ordinate.
 
 
 <b >Combinazioni con portafoglio generico </b>
@@ -963,3 +964,121 @@ $$
 
 
 Questo esprime che **qualsiasi portafoglio della frontiera può essere rappresentato come combinazione lineare** di un portafoglio generico e del portafoglio a covarianza nulla rispetto ad esso.
+
+---
+
+
+### 09 - Asset Management
+
+### Indicatori di diversificazione
+
+Herfindahl index:
+
+
+$$
+D_{\text{Herf}} = w^\top w = \sum_{i=1}^{N} w_i^2
+$$
+
+con $ D_{\text{Herf}} \in \left[\frac{1}{N}, 1\right] $
+
+Valori elevati di $D_{\text{Herf}}$ indicano minore diversificazione e più concentrazione.
+---
+
+## **Curva di Lorenz**
+
+Dopo aver riordinato i pesi $ w $ in ordine decrescente:
+  $$
+  w_{(1)} \ge w_{(2)} \ge \dots \ge w_{(N)}
+  $$
+Si ottiene la Curva di Lorenz come:
+  $$
+  L(n) = \sum_{h=1}^{n} w_{(h)}, \quad L(0)=0, \quad L(N)=1
+  $$
+
+La curva è **crescente e concava**.  
+**Caso di perfetta diversificazione**: $ L(n) = \frac{n}{N} $ (bisettrice).
+
+Più la curva è distante dalla bisettrice, maggiore concentrazione.
+
+
+
+## **Coefficiente di Gini**
+
+Definiamo $ \hat{L}(x) $ l’interpolazione lineare della curva di Lorenz.  
+Il coefficiente di Gini è:
+
+$$
+G = 1 - 2 \int_0^1 \hat{L}(x) \, dx
+$$
+
+$ G \in [0,1] $
+Per $ G = 0 $ si ha perfetta diversificazione, per $ G = 1 $ massima concentrazione.
+
+
+##  **Entropia di Shannon**
+
+Definiamo l’entropia del portafoglio:
+
+$$
+H = - \sum_{n=1}^{N} w_n \ln w_n
+$$
+
+$ H $ **massima** → portafoglio perfettamente diversificato
+
+$ H $ **minima** ( $ H$ = 0) → portafoglio concentrato su un unico titolo
+
+### Modello Black & Litterman
+
+Il classico approccio di Markowitz (media-varianza) ha tre grandi problemi:
+- Produce portafogli **poco diversificati**, con pesi molto estremi.
+- È **molto sensibile agli errori di stima** dei rendimenti attesi.
+- Non permette facilmente di includere **opinioni personali** dell’investitore.
+
+Il modello **Black & Litterman** è stato sviluppato per affrontare questi 
+limiti e produrre portafogli più **realistici e stabili**.
+
+Black & Litterman partono dall’idea di un **portafoglio di equilibrio**:  
+- È il portafoglio che rappresenta l’investitore medio del mercato.
+- È ben diversificato e riflette i pesi di mercato (ad esempio quelli 
+basati sulle capitalizzazioni).
+- Se tutti gli investitori avessero le stesse opinioni, questo sarebbe 
+il portafoglio ottimale.
+
+A partire dai pesi di questo portafoglio, si ricavano i **rendimenti 
+impliciti di equilibrio** (i rendimenti attesi che renderebbero quel portafoglio ottimale).  
+Questi rendimenti sono la **base di partenza** per l’investitore: 
+rappresentano il “consenso” del mercato.
+
+
+
+Successivamente, Black & Litterman considerano i rendimenti di equilibrio 
+non come valori fissi, ma come una distribuzione probabilistica con 
+media pari ai rendimenti di equilibrio e una certa varianza.  
+
+Un parametro $\tau$ misura **quanta fiducia** si ha in questi rendimenti:
+
+La grande innovazione è la possibilità di inserire le **view dell’investitore**, 
+cioè previsioni personali su alcuni asset.  
+Queste possono essere:
+- **Assolute**: “Mi aspetto che l’asset X renda +5% sopra il risk-free.”
+- **Relative**: “Mi aspetto che l’asset A renda 1% in più dell’asset B.”
+
+Le view possono avere anche un grado di incertezza: 
+più siamo sicuri di una previsione, più questa avrà peso
+ nella correzione dei rendimenti di equilibrio.
+
+
+Il modello **combina** in modo matematicamente coerente:
+1. I rendimenti di equilibrio (opinione del mercato).
+2. Le view dell’investitore (opinioni personali, con il loro grado di fiducia).
+
+Il risultato è un **nuovo vettore di rendimenti attesi** che:
+- Rimane vicino ai rendimenti di equilibrio quando non abbiamo view forti.
+- Si sposta verso le view quando siamo sicuri delle nostre previsioni.
+
+Una volta ottenuti i nuovi rendimenti attesi, si ricalcola il portafoglio ottimale.  
+Questo ha tipicamente queste caratteristiche:
+- È **più diversificato** rispetto alla classica frontiera efficiente.
+- È **più stabile** (meno sensibile a piccoli errori di stima).
+- Rispecchia in modo quantitativo le view dell’investitore.
+
