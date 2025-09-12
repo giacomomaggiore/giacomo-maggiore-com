@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { MDXRemote } from 'next-mdx-remote/rsc'
 import { highlight } from 'sugar-high'
 import React from 'react'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+
 
 function Table({ data }) {
   let headers = data.headers.map((header, index) => (
@@ -99,11 +100,37 @@ let components = {
   Table,
 }
 
-export function CustomMDX(props) {
+
+
+
+interface CustomMDXProps {
+  source: string
+}
+
+export async function CustomMDX({ source }: CustomMDXProps) {
+  // Import dinamici per evitare problemi di compatibilità
+  const [{ default: remarkMath }, { default: rehypeKatex }] = await Promise.all([
+    import('remark-math'),
+    import('rehype-katex')
+  ])
+
   return (
     <MDXRemote
-      {...props}
-      components={{ ...components, ...(props.components || {}) }}
+      source={source}
+      components={components}
+      options={{
+        mdxOptions: {
+          remarkPlugins: [remarkMath],
+          rehypePlugins: [
+            [rehypeKatex as any, {
+              strict: false,
+              throwOnError: false,
+              trust: true,
+              output: 'html'
+            }]
+          ],
+        },
+      }}
     />
   )
 }

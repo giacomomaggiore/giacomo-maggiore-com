@@ -23,7 +23,11 @@ export default function Page() {
       All the the books I've read in the last years, some in Italian, mostly in English.
       </p>
       <p className="mb-4">
+<<<<<<< HEAD
         Feel free to reach out on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank"><b>Instagram</b></a> , <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"><b>Linkedin</b></a> or via <a href="mailto:giaco.maggiore@gmail.com" target="_blank"><b>Email</b></a> if you have any comments or want to share your favourite readings.
+=======
+        Feel free to reach out on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank"><b>Instagram</b></a> , <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"><b>Linkedin</b></a> or via <a href="mailto:giaco.maggiore@gmail.com" target="_blank"><b>Email</b></a> if you have any comments or you want to share your favourite readings.
+>>>>>>> test
       </p>
     
       <div className="flex flex-col gap-2 ml-5 mt-2">
@@ -35,11 +39,21 @@ export default function Page() {
       <a
         href={item.link}
         target="_blank"
-        className="text-black font-bold hover:underline"
+        className="hover:underline"
+        
       >
-        {" "}{item.title}{" - "}
-      </a>
+        <span className="text-black font-bold ">
+        {" "}{item.title} {" - "}
+
+        </span>
+        
+        
+      
+      
       {item.author}
+      {" "}
+      <span className="text-gray-400">[{item.topic}]</span>
+      </a>
     </div>
   ))}
 </div>

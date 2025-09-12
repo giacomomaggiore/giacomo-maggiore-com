@@ -11,7 +11,7 @@ import { baseUrl } from './sitemap'
 import './instrumentation-client' // Importa il file JS che inizializza PostHog
 
 import { GoogleAnalytics } from '@next/third-parties/google'
- 
+import 'katex/dist/katex.min.css';
 
 
 
@@ -63,6 +63,11 @@ export default function RootLayout({
         GeistMono.variable
       )}
     >
+    <script // This script is used to load MathJax for rendering mathematical equations
+  id="mathjax"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
       <GoogleAnalytics gaId="G-6E5X8EMEPL" />
       <body className="antialiased max-w-2xl mx-4 mt-8 lg:mx-auto">
           <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">

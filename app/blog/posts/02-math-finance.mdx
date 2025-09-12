@@ -1,0 +1,1301 @@
+---
+title: 'Matematica Finanziaria: Appunti'
+publishedAt: '2025-09-09'
+summary: 'Explore the enduring debate between uicising spaces and tabs for code indentation, and why this choice matters more than you might think.'
+---
+
+_Durante l'estate del 2025, poco dopo essermi laureato in <b>[Ingengeria dell'Automazione al Polimi](https://giacomomaggiore.com/blog/01-polimi-recap), </b>
+seguì, recuperandomi le registrazioni delle lezioni e i materiali del [Professor Emilio Barucci](https://www.som.polimi.it/professor/barucci-emilio/), il 
+corso 
+<b>["Finanza Matematica"](https://onlineservices.polimi.it/manifesti/manifesti/controller/ManifestoPublic.do?EVN_DETTAGLIO_RIGA_MANIFESTO=evento&aa=2025&k_cf=225&k_corso_la=532&k_indir=MTM&codDescr=052491&lang=IT&semestre=2&idGruppo=5462&idRiga=335901).</b>_
+
+_In seguito riporto gli appunti, rimessi a posto e integrati quando necessario. <br />
+Sono imperfetti e incompleti, mancano di una trattazione matematica approfondita e 
+rispecchiano il mio grado di conoscenza della materia. Mi scuso in anticipo per possibili
+imprecisioni e mancanze._
+
+---
+### <b>Indice: </b>
+1. [Leggi di Capitalizzazione](#leggi-di-capitalizzazione)
+2. [Struttura dei tassi e Bond](#tassi-bond)
+3. [Valutazione degli Investimenti](#valutazione-investimenti)
+4. [Rischio di Tasso, Indici Temporali e Principio di Immunizzazione](#rischio-tasso)
+5. [Scelte in Condizioni di Rischio](#scelte-rischio)
+6. [Analisi Media Varianza e Teoria del Portafoglio di Markowitz](#analisi-media-varianza)
+7. [Scelte di Portafoglio](#scelte-portafoglio)
+8. [Frontiera dei Portafogli](#frontiera-portafogli)
+9. [Asset Management](#asset-management)
+10. [Capital Asset Pricing Model](#capm)
+
+- [Bibliografia](#bibliografia)
+<br />
+--- 
+
+# <b><a id="leggi-di-capitalizzazione"></a>Leggi di Capitalizzazione </b>
+
+Definiscono la quota di interessi in funzione del tempo a partire da un
+parametro che misura il tasso di interesse per unità di tempo (solitamente l'anno).
+
+Le leggi di capitalizzazione che descrivono il montante $ M $ in
+ funzione del capitale iniziae $ C_0 $ e un tasso di interesse $ i $ sono:
+
+<b>Semplice</b> $ M = C_0 \left( 1 + i \cdot t \right) $
+
+<b>Composta</b>: $ M = C_0 (1 + i)^t $
+
+<b>Continua (esponenziale)</b>: $ M = C_0 e^{i t} $
+
+Si noti come la capitalizzazione continua sia un modello limite dell’interesse composto, 
+quando la capitalizzazione diventa continua (gli interessi vengon pagati in ogni istante, 
+non solo a intervalli discreti).
+
+E' inoltre importante distinguere il <b>Tasso di interesse Nominale</b> da quello <b>Reale</b>: il primo
+fornisce un indicatore sull'ammontare di denaro ricevuto come interesse per unità di denaro investita,
+ ma non fornisce un indicatore di remunerazione in termini di beni che posso acquistare in t = 1 in quanto 
+ non tiene conto delle variazioni del potere di acquisto (dell'inflazione).
+
+Si può quindi scrivere:
+
+$$
+i_r = i_n - \pi
+$$
+
+### <b>Tassi Spot e Forward </b>
+Il <b>tasso spot </b>rappresenta il prezzo attuale di mercato di un asset: 
+è quello che si pagherebbe o riceverebbe immediatamente. Il <b>tasso forward</b>, invece, rappresenta il prezzo a cui è possibile
+ o vendere lo stesso asset in una data futura.
+
+Il tasso forward non è casuale: incorpora il differenziale 
+tra i tassi di interesse dei due strumenti o valute coinvolte e il 
+tempo fino alla scadenza, oltre ad eventuali costi aggiuntivi come dividendi
+ o costi di stoccaggio.
+
+---
+
+# <b><a id="tassi-bond"></a>Struttura dei Tassi e Bond</b>
+Dai prezzi degli zero coupon bonds a pronti è possibile ricavare 
+la curva dei tassi spot  utilizzando le leggi di capitalizzazione.
+
+<b>Tasso di interesse spot</b> in capitalizzazione semplice in $[t, T]$:
+$$
+L(t,T) = \frac{1 - p(t,T)}{T - t} \quad \text{oppure} \quad p(t,T) - 1 = -(T-t)L(t,T)
+$$
+
+<b>Tasso di interesse spot</b> in capitalizzazione esponenziale (yield rate) in $[t, T]$:
+$$
+y(t,T) = -\frac{\ln(p(t,T))}{T - t}
+$$
+
+<b>Tasso di interesse forward istantaneo</b> in $T$ definito in $t$
+$$
+f(t,T) = -\frac{\partial \ln(p(t,T))}{\partial T}
+$$
+
+A partire da queste formule, è possibile ricostruire la curva dei tassi.
+
+### <b>Principio di Non Arbitraggio </b>
+
+Non è possibile mettere in campo un'operazione di mercato 
+(acquisto e vendita di titoli scambiati o che si intende 
+scambiare sul mercato) che garantisce un flusso di denaro positivo 
+(non negativo ad ogni data e strettamente positivo almeno ad una data) 
+senza esborsi di denaro. 
+
+Di conseguenza, se fosse possibile costruire un arbitraggio nel mercato allora 
+i prezzi di mercato consentirebbero agli operatori la possibilità di arricchirsi
+ in modo eclatante.  Se succedessero questo i prezzi di mercato dei titoli dovrebbero variare fino a eliminare 
+ le opportunità di arbitraggio.
+
+### <b> Prezzo di Coupon Bond a partire da Zero Coupon Bond </b>
+In base al Principio di Non Arbitraggio, il prezzo di un coupon bond può essere calcolato come la somma di tanti Zero Coupon Bond
+con scadenze diverse, pari alle cedole del coupon bond.
+
+Prezzo di un coupon bond con flussi $x = [x_1, x_2, \dots, x_N]$:
+$$
+p(t,x) = \sum_{n=1}^{N} x_n \, p(t,T_n)
+$$
+
+---
+
+# <b><a id="valutazione-investimenti"></a>Valutazione degli Investimenti</b>
+### <b> Criterio del Valore Attuale </b>
+
+Si assume che la banca applica un <b>tasso di interesse annuale $i$</b> 
+costante, sia per capitalizzazione che per attualizzazione, indipendentemente dal capitale.
+
+Per un'operazione finanziaria con flussi 
+$$\{x_0, x_1, x_2, \dots, x_T\}$$
+alle date 
+$$\{0,1,2,\dots,T\}$$
+
+- Il valore attuale di un flusso $x_t$ disponibile al tempo $t$ è:
+$$
+x_t \cdot (1+i)^{-t}
+$$
+
+- Il valore attuale dell'intera operazione al tempo 0:
+$$
+VA(0) = x_0 + \frac{x_1}{1+i} + \frac{x_2}{(1+i)^2} + \dots + \frac{x_T}{(1+i)^T}
+$$
+
+- Il valore dell'operazione al tempo $t$:
+$$
+VA(t) = VA(0) \cdot (1+i)^t
+$$
+
+È sufficiente valutare i progetti al tempo $t=0$, poiché il valore a tempi successivi cambia solo per un fattore moltiplicativo.
+
+Il progetto preferibile è quello con $VA$ più elevato, tuttavia, si ricordi che il VA dipende dal tasso $i$, infatti:
+$$  
+  VA_A(i) \ge VA_B(i) \not\Rightarrow VA_A(i') \ge VA_B(i')
+$$
+
+### <b> Criterio del TIR </b>
+Per valutare un operazione finanziaria con tale metodo, si paerte calcolando con metodi numerici
+il <b> TIR (Tasso interno di Rendimento)n</b>, è quel tasso $i^*$ (o il fattore di sconto)
+
+$$
+v^* = \frac{1}{1+i^*}
+$$
+che rende <b>equilibrata l'operazione</b>, cioè tale che il valore attuale dei flussi sia nullo:
+
+$$
+\sum_{t=0}^{T} x_t \, (1+i)^{-t} = \sum_{t=0}^{T} x_t \, v^t = 0
+$$
+
+In altre parole, il TIR è il tasso di sconto che<b> annulla il valore attuale netto (NPV) dell'operazione.</b>
+Ovviamente, un TIR elevato è da preferire in quanto garantisce un rendimento più elevato dell'investimento.
+
+Il TIR non ha una formula chiusa nella maggior parte dei casi, quindi si ricorre spesso a metodi numerici.
+
+---
+
+# <b><a id="rischio-tasso"></a>Rischio di Tasso, Indici Temporali e Principio di Immunizzazione</b>
+
+
+Anche se siamo in un contesto privo di rischio 
+(i flussi di denaro futuri sono certi), acquistando un'obbligazione corriamo un rischio. 
+
+Il rischio riguarda il fatto che il prezzo del titolo possa variare in futuro a seguito
+ di una variazione dei tassi di interesse di mercato.
+
+Di conseguenza, nel caso dovessi rivendere il titolo prima della scadenza, 
+si otterrebbe un rendimento più elevato nel caso in cui il titolo aumenti di valore
+ (i tassi di interesse di mercato diminuiscono) e un rendimento più basso nel
+  caso in cui il titolo diminuisca di valore (i tassi di interesse di mercato aumentano).
+Questo è noto come <b>rischio di tasso.</b>
+
+Si consideri il seguente esempio:
+
+- Cedola annuale: $R$  
+- Rimborso del valore nominale: $C$ al tempo $T$  
+- Flussi di cassa: $\{R, R, \dots, R + C\}$ alle date $\{1,2,\dots,T\}$  
+- Tasso cedolare: $R/C$
+
+Dati i tassi a pronti $i(0,t)$, è possibile calcolare il prezzo del titolo:
+$$
+P = \sum_{t=1}^{T} \frac{R}{(1+i(0,t))^t} + \frac{C}{(1+i(0,T))^T}
+$$
+
+Assumendo una struttura dei tassi piatta ($i(0,t) = i$) e definendo  $v = (1+i)^{-1}$  
+$$
+P = R v + R v^2 + \dots + R v^T + C v^T = R \frac{1-v^T}{1-v} + C v^T
+$$
+
+Si giungr quindi alla seguente interpretazione:
+- $R/C = i \implies P = C$ (titolo prezzato alla pari)  
+- $R/C > i \implies P > C$ (titolo prezzato sopra la pari)  
+- $R/C < i \implies P < C$ (titolo prezzato sotto la pari)
+
+
+#### <b>Indici temporali: Duration e Convexity </b>
+
+[Si rimanda la video di Paolo Coletti <b>"Duration e Duration Modificata"</b> per
+approfondimenti e una trattazione matematica più approfondita](https://www.youtube.com/watch?v=fzDsoZkDV5s&list=WL&index=91)
+
+La <b>duration di primo ordine</b> rappresenta il <b>momento medio dei flussi di cassa</b> 
+rispetto al tempo corrente $t$, ponderato per il <b>valore attuale dei flussi</b>.
+
+- Flussi del titolo: $\{x_1, x_2, \dots, x_N\}$ alle date $\{T_1, T_2, \dots, T_N\}$
+- Distribuzione di probabilità dei flussi:
+$$
+m_n = \frac{x_n \, (1+i(t,T_n))^{-(T_n-t)}}{p(t,x)} > 0
+$$
+
+$$
+DU(t,x) = \sum_{n=1}^{N} (T_n - t) \, m_n
+$$
+
+La <b>duration di secondo ordine</b> misura il <b>momento quadratico dei flussi</b>, utile per considerare 
+la <b>curvatura della relazione prezzo-tasso</b> (matematicamente è collegata alla derivata del prezzo):
+
+$$
+DU_2(t,x) = \sum_{n=1}^{N} (T_n - t)^2 \, m_n
+$$
+
+
+
+- $DU(t,x)$ rappresenta media ponderata delle date in cui il titolo consegna denaro  
+- $DU_2(t,x)$  misura della dispersione dei flussi, legata alla convexity  
+- $DU_2(t,x)$ è fondamentale per migliorare le stime delle variazioni di 
+prezzo rispetto ai tassi di interesse non piccole
+
+#### <b>Yield to Maturity </b>
+Lo <b>Yield to Maturity (YTM)</b>, o rendimento a scadenza, è il tasso di rendimento implicito di un’obbligazione se:
+
+- viene comprata oggi al prezzo di mercato $P$
+- si mantiene l’obbligazione fino alla scadenza
+- Tutti i flussi di cassa (cedole e rimborso del capitale) vengono reinvestiti allo stesso tasso
+
+In altre parole, è il tasso di interesse che rende il valore attuale netto dei flussi di cassa dell’obbligazione pari al suo prezzo di mercato.
+
+
+$$
+p(t,x) = \sum_{n=1}^{N} x_n e^{-y (T_n - t)}
+$$
+
+Nel caso di uno <b>zero coupon bond</b>, $y$ corrisponde al <b>tasso spot</b> in capitalizzazione esponenziale.
+
+### <b>Duration di Macaulay </b>
+
+La <b>Duration di Macaulay</b> misura il <b>momento medio dei flussi di cassa</b> ponderato per il loro valore attuale:
+
+$$
+DU(t,x) = \frac{\sum_{n=1}^{N} (T_n - t) \, x_n e^{-y (T_n - t)}}{p(t,x)}
+$$
+
+$$
+DU_2(t,x) = \frac{\sum_{n=1}^{N} (T_n - t)^2 \, x_n e^{-y (T_n - t)}}{p(t,x)}
+$$
+
+A partire dalla Duration e dalla Duration di Macaulay, è possibile quindi definire la Duration
+Modificata come
+
+$$
+DU_m = \frac{DU}{1 + y}
+$$
+
+Essa tiene conto del tasso di rendimento e misura
+ la variazione percentuale del prezzo per una variazione infinitesimale del tasso.
+
+#### <b> Convexity</b>
+
+La <b>convexity</b> di un titolo misura la <b>curvatura della relazione prezzo-tasso</b> ed è definita come la
+ <b>derivata seconda del valore di mercato rispetto al tasso i</b> in capitalizzazione composta, rapportata al prezzo del titolo:
+
+$$
+C(t,x) = \frac{1}{p(t,x)} \frac{d^2 p(t,x)}{di^2}
+$$
+
+Formula per un titolo con flussi $\{x_1, x_2, \dots, x_N\}$ alle date $\{T_1, \dots, T_N\}$:
+$$
+C(t,x) = \frac{1}{p(t,x)} \sum_{n=1}^{N} (T_n - t)(T_n - t + 1) \, x_n \, (1+i)^{-(T_n - t + 2)}
+$$
+
+In sintesi: una convexity positiva indica che il prezzo dell’obbligazione
+ <b>aumenta più del previsto quando i tassi scendono<b> e </b>diminuisce meno 
+ del previsto quando i tassi salgono</b>.
+
+Sfruttando questi risultati, in un contesto di struttura di tassi di 
+interesse piatta è possibile calcolare la variazione del prezzo del titolo 
+in via approssimata al primo e al secondo ordine.
+
+Una piccola variazione del tasso $\Delta i$ induce una variazione del valore di mercato $\Delta p(t,x)$:
+
+$$
+\Delta p(t,x) \approx - \frac{1}{1+i} \, DU(t,x) \, p(t,x) \, \Delta i
+$$
+
+Se si considerano anche la <b>convexity</b>, si ottiene una stima più accurata per variazioni non piccole dei tassi:
+
+$$
+\Delta p(t,x) \approx - DU(t,x) \, p(t,x) \, \Delta i + p(t,x) \, C(t,x) \, (\Delta i)^2
+$$
+
+Il <b>termine lineare</b> cattura la sensibilità principale del prezzo ai tassi, mentre il 
+<b>termine quadratico</b> cattura la curvatura della relazione prezzo-tasso
+
+
+
+#### <b> Principio di Immunizzazione </b>
+Quando la struttura dei tassi di interesse è piatta, la 
+Duration e la Convexity di un titolo diventano strumenti fondamentali
+ per capire come varia il valore di mercato di un portafoglio in risposta a 
+ piccoli cambiamenti dei tassi. In pratica, questi indicatori permettono di 
+ stimare quanto un aumento o una diminuzione dei tassi influenzi sia gli asset
+ che i passivi, fornendo così una misura del rischio di tasso.
+
+Un’applicazione molto importante è il cosiddetto <b>Duration matching</b>, 
+cioè il bilanciamento della Duration tra il portafoglio dell’attivo e quello 
+del passivo. <br/>L’idea è semplice: se le Duration sono allineate, le variazioni 
+infinitesime dei tassi producono effetti opposti ma simili in magnitudine sull’attivo
+ e sul passivo, annullandosi a vicenda.
+
+ --- 
+
+# <b><a id="scelte-rischio"></a> Scelte in Condizioni di Rischio </b>
+
+ ### <b> Valore Atteso </b>
+ Ad ogni evento elementare, l'individuo associa un valore che descrive il proprio 
+ <b>livello di soddisfazione </b>(ad esempio in termini di denaro), così facendo si giunge a 
+ defnire una variabile aleatoria che descrive il suo livello di 
+ soddisfazione e la probabilità associate ad ogni evento che potrà accadere.
+
+
+$$
+\mathbb{E}[X] = \int_{-\infty}^{+\infty} x \, f(x) \, dx
+$$
+
+Il criterio del valore atteso ha sicuramente un suo signicato
+ ma si presta a più di un problema: la media è l'indicatore sintetico 
+ per eccellenza di una variabile ma non tiene conto della dispersione 
+ rispetto alla media e quindi del rischio che 
+effettivamente si sarebbe chiamati a correre.
+
+### <b>Utilità Attesa </b>
+
+La <b>teoria dell’utilità attesa</b> fornisce un modello per descrivere le scelte di un investitore in condizioni di incertezza.  
+L’idea centrale è che gli individui non massimizzano il <b>valore atteso della ricchezza</b>, 
+ma invece il <b>valore atteso di una funzione di utilità</b> della ricchezza.
+
+
+Sia $X$ una variabile aleatoria che rappresenta la ricchezza finale di un investitore e sia $u(X)$ la funzione di utilità associata.
+
+L’<b>utilità attesa</b> è definita, nel caso continuo, come:
+
+$$
+\mathbb{E}[u(X)] = \int_{-\infty}^{+\infty} u(x) \, f(x) \, dx
+$$
+
+dove:
+- $x_i$: possibili esiti della ricchezza,
+- $p_i$: probabilità associate,
+- $f(x)$: densità di probabilità di $X$.
+
+
+## <b>Principio dell'Utilità Attesa </b>
+
+Un investitore <b>preferisce</b> un progetto/portafoglio $A$ rispetto a $B$ se:
+
+$$
+\mathbb{E}[u(X_A)] > \mathbb{E}[u(X_B)]
+$$
+
+La funzione di utilità definisce anche l'avversione al rischio di un individuo.
+
+Un individuo infatti, si dice:
+- <b>avverso al rischio</b> se a partire da qualsiasi livello di ricchezza detenuto con certezza non accetta o è indifferente rispetto ad ogni lotteria attuarialmente equa
+- <b>neutrale al rischio</b> se ogni lotteria attuarialmente equa gli è indifferente
+- <b>amante del rischio</b> se accetta ogni lotteria attuarialmente equa
+
+Analogamente, un individuo si dice:
+- <b>avverso al rischio</b> se $u(X)$ è (strettamente) concava (ossia $U(X)'' < 0$)
+- <b>neutrale al rischio</b> se $u(X)$ è lineare e $U(X)'' = 0$ 
+- <b>amante del rischio</b> se $u(X)$ di utilità è convessa (ossia $U(X)'' > 0$)
+
+A partire da $ u(X)$, è possibile introdurre il<b> coefficiente assoluto di avversione al
+rischio</b> $r_a(x) $, definito come:
+
+$$
+r_a(x) = - \frac{u''(x)}{u'(x)}.
+$$
+
+E, analogamente, il coefficiente relativo di avversione al rischio $r_r(x)$:
+
+$$
+r_r(x) = r_a(x)x
+$$
+
+La funzione di utilità $u(\cdot)$ può essere quindi classificata in 
+base all’andamento di $r_a(x)$
+
+<b>Avversione assoluta al rischio decrescente (DARA)</b>  
+  $$
+  (r_a)'(x) < 0 \quad \forall x \in \mathbb{R}^+ 
+  $$  
+L’avversione al rischio <b>diminuisce</b> all’aumentare della ricchezza (caso realistico per la maggior parte degli individui).
+
+<b>Avversione assoluta al rischio costante (CARA)</b>  
+  $$
+  (r_a)'(x) = 0 \quad \forall x \in \mathbb{R}^+ 
+  $$  
+L’avversione al rischio resta <b>invariata</b> al variare della ricchezza (tipica della funzione di utilità esponenziale):
+  $$
+  u(x) = -e^{-\alpha x}, \quad r_a(x) = \alpha.
+  $$
+
+<b>Avversione assoluta al rischio crescente (IARA)</b>  
+  $$
+  (r_a)'(x) > 0 \quad \forall x \in \mathbb{R}^+ 
+  $$  
+L’avversione al rischio <b>aumenta</b> all’aumentare della ricchezza (considerata poco realistica in economia comportamentale).
+
+
+### <b>Premio per il rischio e Certo Equivalente </b>
+
+La definizione che abbiamo appena dato di avversione al rischio 
+ induce a pensare che un individuo sia disposto a pagare un prezzo positivo
+ per passare da una lotteria rischiosa ad una situazione caratterizzata 
+ dal suo valore atteso ottenuto con certezza. 
+ Tale prezzo è detto <b>premio per il rischio.</b>
+
+ Il <b>premio per il rischio</b> $rho_u(\tilde{x})$ di una lotteria $tilde{x}$ per un 
+ individuo con funzione di utilità $u(\cdot)$ rappresenta il <b>massimo ammontare di denaro</b> 
+ che l’individuo è disposto a pagare per ricevere <b>con certezza</b> il valore atteso della lotteria, 
+ al posto di affrontarne l’incertezza.
+
+Il premio per il rischio $ rho_u(\tilde{x}) $ è definito come il valore tale che:
+
+$$
+u\big( \mathbb{E}[\tilde{x}] - \rho_u(\tilde{x}) \big) = \mathbb{E}[u(\tilde{x})].
+$$
+
+- $\mathbb{E}[\tilde{x}]$: valore atteso della lotteria.  
+- $\mathbb{E}[u(\tilde{x})]$: utilità attesa della lotteria.  
+- $\rho_u(\tilde{x})$: misura la "penalità monetaria" che l’individuo associa al rischio.
+
+Se l’individuo è <b>avverso al rischio</b> (cioè $u(\cdot)$ è concava e crescente), l'individuo
+è disposto a rinunciare a una parte del valore atteso pur di evitare l'incertezza:
+  $$
+  \rho_u(\tilde{x}) \geq 0.
+  $$
+Se è <b>neutrale al rischio</b> ($u(x)$ lineare), allora:
+  $$
+  \rho_u(\tilde{x}) = 0.
+  $$
+
+Se è <b>propenso al rischio</b> ($u(x)$ convessa), l'individuo preferisce la lotteria al suo
+valore atteso:
+  $$
+  \rho_u(\tilde{x}) \leq 0.
+  $$
+
+Dato il premio per il rischio $\rho_u(\tilde{x})$, il <b>certo equivalente</b> di 
+una lotteria $\tilde{x}$ è definito come:
+
+$$
+CE(\tilde{x}) = \mathbb{E}[\tilde{x}] - \rho_u(\tilde{x}).
+$$
+
+
+
+$ CE(\tilde{x})$ rappresenta la quantità certa di denaro che rende l’individuo <b>indifferente</b> tra:
+  - ricevere $CE(\tilde{x})$ con certezza,
+  - oppure partecipare alla lotteria $\tilde{x}$.
+
+Può essere interpretato come il <b>prezzo minimo</b> che un individuo è disposto
+ ad accettare per <b>cedere la lotteria</b>.
+
+Se l’individuo è <b>avverso al rischio</b>:
+  $$
+  CE(\tilde{x}) \leq \mathbb{E}[\tilde{x}].
+  $$
+
+Se è <b>neutrale al rischio</b>:
+  $$
+  CE(\tilde{x}) = \mathbb{E}[\tilde{x}].
+  $$
+
+Se è <b>propenso al rischio</b>:
+  $$
+  CE(\tilde{x}) \geq \mathbb{E}[\tilde{x}].
+  $$
+
+
+---
+
+# <b><a id="analisi-media-varianza"></a> Analisi Media Varianza e Teoria del Portafoglio di Markowitz </b>
+
+Il <b>criterio Media-Varianza</b> è un metodo di confronto tra due 
+variabili aleatorie basato su rendimento atteso e varianza.
+
+Date due variabili aleatorie $\tilde{x}$ e $\tilde{y}$, si dice che:
+
+$$
+\tilde{x} \; \text{MV} \; \tilde{y}
+\;\;\Longleftrightarrow\;\;
+\mathbb{E}[\tilde{x}] \geq \mathbb{E}[\tilde{y}], 
+\quad
+\text{Var}(\tilde{x}) \leq \text{Var}(\tilde{y}).
+$$
+
+
+Quindi, secondo il criterio MV:
+- Un investimento $\tilde{x}$ è preferibile a $\tilde{y}$ se ha <b>rendimento atteso maggiore o 
+uguale</b> e <b>varianza minore o uguale</b>.  
+- Se una delle due condizioni non è rispettata, non è possibile stabilire una dominanza chiara.
+
+Il criterio MV è alla base della <b>Teoria del Portafoglio di Markowitz</b>.  
+Gli investitori avversi al rischio scelgono combinazioni di portafogli che massimizzano il rendimento atteso 
+<b>dato un certo livello di rischio</b>, o minimizzano il rischio <b>dato un certo rendimento atteso</b>.  
+Da qui nasce il concetto di <b>frontiera efficiente</b>.
+
+### <b> Rendimento Atteso e Varianza di un Portafoglio di 2 Titoli Rischiosi </b>
+
+Si considerino due titoli rischiosi con rendimenti aleatori $\tilde{r}_1, \tilde{r}_2$ sull’orizzonte temporale $[0,1]$.  
+Supponiamo di avere una ricchezza iniziale $x = 1$.
+
+
+
+Si definisce un portafoglio con pesi $(w, 1-w)$, dove $w$: quota investita nel titolo 1
+e $1-w$: quota investita nel titolo 2
+
+Vi saranno dunque tre casi possibili:
+- $0 < w < 1$: investimento positivo in entrambi i titoli  
+- $w < 0$: vendita allo scoperto del titolo 1 e investimento maggiore in 2  
+- $w > 1$: vendita allo scoperto del titolo 2 e investimento maggiore in 1  
+
+In ogni caso, il rendimento del portafoglio sarà:
+
+$$
+\tilde{r} = w \tilde{r}_1 + (1-w)\tilde{r}_2
+$$
+
+e il suo valore atteso (lineare nei pesi):
+
+$$
+\mathbb{E}[\tilde{r}] = w \, \mathbb{E}[\tilde{r}_1] + (1-w)\mathbb{E}[\tilde{r}_2]
+$$
+
+
+La varianza del portafoglio (non lineare nei pesi) sarà:
+
+$$
+\sigma^2(\tilde{r}) = w^2 \sigma_1^2 + (1-w)^2 \sigma_2^2 + 2w(1-w)\rho \sigma_1 \sigma_2
+$$
+
+dove $\rho$ è la <b>correlazione</b> tra i due titoli:
+
+$$
+\rho = \frac{\text{Cov}(\tilde{r}_1, \tilde{r}_2)}{\sigma_1 \sigma_2}.
+$$
+I primi due termini: $ w^2\sigma_1^2 $ e $ \ (1-w)^2\sigma_2^2$
+  rappresentano il contributo delle <b>varianze individuali</b> dei titoli.  
+
+Il termine  $ 2w(1-w)\rho\sigma_1\sigma_2 $
+   rappresenta l’effetto della <b>correlazione</b> tra i due rendimenti.  
+
+Se $\rho < 1$, esiste un <b>beneficio di diversificazione</b>, cioè la varianza del portafoglio può risultare <b>inferiore</b> a quella dei singoli titoli.
+
+### <b> Principio di diversificazione </b>
+
+Dati due titoli rischiosi con egual rendimento atteso e varianza diversa, $ \sigma_1^2 > \sigma_2^2 $ e, 
+con correlazione nulla, $ \rho = 0$,
+il portafoglio ottimo (quello a varianza minima) si ottiene investendo nel primo titolo $ w_1 $ tale che:
+
+$$
+w^* = \frac{\sigma_2^2}{\sigma_1^2 + \sigma_2^2}
+$$
+
+Il portafoglio che minimizza il rischio è diversificato (ma non perfettamente) in quanto
+$ 0 < w_1 < 1 $.
+
+### <b>Prinipio di Assicurazione</b>
+
+Consideriamo due rendimenti aleatori $\tilde r_1,\tilde r_2$ con deviazioni 
+standard $\sigma_1,\sigma_2$ e correlazione
+$\rho=\mathrm{corr}(\tilde r_1,\tilde r_2)$. 
+Un portafoglio con peso $w$ sul primo titolo ha rendimento
+
+$$
+\tilde r = w\tilde r_1+(1-w)\tilde r_2
+$$
+
+ e varianza
+
+$$
+\sigma^2(w)=w^2\sigma_1^2+(1-w)^2\sigma_2^2+2w(1-w)\rho\sigma_1\sigma_2.
+$$
+
+
+Se vale
+$$
+\tilde r_1 = a + b\,\tilde r_2,
+$$
+allora
+$$
+\mathrm{Cov}(\tilde r_1,\tilde r_2)=b\,\mathrm{Var}(\tilde r_2),\qquad
+\rho=\frac{\mathrm{Cov}(\tilde r_1,\tilde r_2)}{\sigma_1\sigma_2}=\frac{b\sigma_2^2}{\sigma_1\sigma_2}=\frac{b\sigma_2}{\sigma_1}=\frac{b\sigma_2}{|b|\sigma_2}.
+$$
+
+Di conseguenza:
+
+$\rho=+1 \iff b>0$ (movimenti perfettamente allineati),
+
+$\rho=-1 \iff b<0$ (movimenti perfettamente opposti).
+
+
+
+## <b>Caso Correlazione perfettamente positiva: $\rho=+1$ </b>
+
+La varianza si riduce a
+$$
+\sigma^2(w) = \big(w\sigma_1 + (1-w)\sigma_2\big)^2,
+$$
+quindi la deviazione standard è
+$$
+\sigma(w) = w\sigma_1 + (1-w)\sigma_2.
+$$
+
+
+Per ottenere un portafoglio a varianz nulla serve
+$$
+w\sigma_1 + (1-w)\sigma_2 = 0 \quad\Rightarrow\quad
+\hat w = \frac{\sigma_2}{\sigma_2-\sigma_1}.
+$$
+
+$\hat w$ <b>non</b> appartiene in generale a $[0,1]$.  
+
+Se $\hat w\notin[0,1]$ il portafoglio che azzera il rischio richiede <b>short selling</b> 
+(non è un portafoglio diversificato in senso classico): si vende allo scoperto il titolo con varianza maggiore e si compra l'altro.
+
+
+## <b>Caso Correlazione perfettamente negativa: $\rho=-1$ </b>
+
+La varianza prende la forma
+$$
+\sigma^2(w) = \big(w\sigma_1 - (1-w)\sigma_2\big)^2,
+$$
+da cui (per una scelta di segno appropriata)
+$$
+\sigma(w)=\big|\,w\sigma_1-(1-w)\sigma_2\,\big|.
+$$
+
+### <b> Portafoglio a varianza nulla </b>
+Risolvendone l’annullamento si ottiene un peso interno:
+$$
+\hat w = \frac{\sigma_2}{\sigma_1+\sigma_2}, \qquad 1-\hat w = \frac{\sigma_1}{\sigma_1+\sigma_2},
+$$
+con $\hat w\in[0,1]$.  
+In questo caso il portafoglio a varianza nulla <b>è diversificato</b>: 
+detiene quantità positive di entrambi i titoli e le loro oscillazioni si bilanciano esattamente.
+
+
+## <b> Caso generale — $-1<\rho<1$ </b>
+
+La varianza è una funzione quadratica di $w$. Il peso che minimizza la varianza è
+
+$$
+w^* \;=\; \frac{\sigma_2^2 - \rho\sigma_1\sigma_2}{\sigma_1^2 + \sigma_2^2 - 2\rho\sigma_1\sigma_2}.
+$$
+
+Se $0<w^*<1$: il portafoglio di minima varianza è una combinazione lunga in entrambi i titoli (diversificato).  
+
+Se $w^*<0$ (o $w^*>1$): la minimizzazione richiede short selling sul titolo con minore (o maggiore) varianza; in tali casi il portafoglio minimale non è un semplice portafoglio diversificato con pesi in $[0,1]$.
+
+### <b> Interpretazione del Principio di Assicurazione </b>
+
+La correlazione influenza la <b>qualità</b> della diversificazione: più la correlazione 
+è vicina a $-1$, maggiore il potenziale di riduzione del rischio per combinazioni lunghe.  
+
+Se i rendimenti sono <b>perfettamente proporzionali</b> (caso $\rho=\pm1$), uno dei titoli 
+può "assicurare" l'altro solo tramite opportuni pesi (che possono richiedere 
+posizioni corte se la correlazione è positiva).  
+
+In assenza di correlazione ($\rho=0$) la varianza non può essere annullata ma 
+può essere ridotta combinando titoli.
+
+---
+
+# <b><a id="scelte-portafoglio"></a> Scelte di Portafoglio </b>
+
+
+In $ t = 0 $ un individuo possiede ricchezza iniziale $ x $ 
+con funzione di utilità: $ u'(x) > 0, \; u''(x) < 0 $ (crescente e concava).  .  
+Investe in $ N $ strumenti rischiosi e $ 1 $ titolo privo di rischio (titolo $ 0 $)
+  con l'obiettivo di massimizzare 
+l'utilità attesa della ricchezza in $ t = 1 $.
+
+Il rendimento titolo rischioso $ n $ in $ t=1 $:  
+  $$
+  \tilde{r}_n = \frac{\tilde{d}_n}{q_n}, \quad n = 1,\dots,N
+  $$
+  dove $ q_n $ è il prezzo in $ t=0 $ e $ \tilde{d}_n $ il dividendo in $ t=1 $.
+
+Il titolo privo di rischio invece rende $ r_f $ in $ t=1 $ per ogni euro investito in $ t = 0$.
+
+Sia $w$ il Portafoglio  
+$$
+  w = (w_1,\dots,w_N) \in \mathbb{R}^N
+$$
+  dove $ w_n $ è la somma investita nel titolo $ n $ ($ w_n > 0 $: detenzione del titolo,
+  $ w_n < 0 $: vendita allo scoperto) e $(x - \sum_{n=1}^N w_n)$ la somma investita in $r_f$.
+
+La ricchezza finale in $ t=1 $ sarà:  
+  $$
+  W_f = (x - \sum_{n=1}^N w_n) r_f + \sum_{n=1}^N w_n \tilde{r}_n 
+  = x r_f + \sum_{n=1}^N w_n (\tilde{r}_n - r_f)
+  $$
+
+
+Se $ x - \sum_{n=1}^N w_n > 0 $, parte della ricchezza è investita nel titolo privo di rischio.  
+
+Se $ x - \sum_{n=1}^N w_n < 0 $, l’individuo si indebita al tasso $ r_f - 1 $.
+
+
+## <b> Problema di massimizzazione dell'utilità attesa </b>
+
+$$
+\max_{w \in \mathbb{R}^N} \; E[u(W_f)]
+$$
+
+
+Condizione ottimale di massimizzazione dell'utilità attesa:  
+$$
+E\big[u'(xr_f + w(\tilde{r} - r_f))(\tilde{r} - r_f)\big] = 0
+$$
+
+
+In sintesi, un individuo investe nel titolo rischioso se e solo se 
+il <b>premio per il rischio</b> è positivo:
+
+$$
+w^* > 0 \quad \Leftrightarrow \quad E[\tilde{r}] - r_f > 0
+$$
+
+### <b> Caso Particolare: Utilità esponenziale e portafoglio ottimo </b>
+
+La funzione di utilità esponenziale è definita come:  
+$$
+u(x) = - \frac{1}{a}e^{-a x}, \quad a > 0
+$$
+
+Il portafoglio ottimo si ottiene ponendo:
+
+$$
+w^* = \frac{E[\tilde r] - r_f}{a \, \sigma^2(\tilde r)}
+$$
+
+L'investimento nel titolo rischioso $w^*$ risulta:
+
+- <b>Indipendente</b> dalla ricchezza iniziale $x$  
+- <b>Decrescente</b> nel coefficiente assoluto di avversione al rischio $a$  
+- <b>Decrescente</b> nella varianza $\sigma^2(\tilde r)$  
+- <b>Crescente</b> nel premio per il rischio $E[\tilde r] - r_f$  
+- <b>Crescente</b> nel rendimento atteso $E[\tilde r]$  
+- <b>Decrescente</b> nel rendimento del titolo privo di rischio $r_f$
+
+# <b> Assicurazione e Avversione al Rischio </b> 
+
+Un individuo <b>strettamente avverso al rischio</b> possiede in $t=0$ un
+ ammontare di ricchezza $x$.
+- In $t=1$ può verificarsi un <b>danno monetario</b> $D > 0$ con probabilità $\pi \in (0,1)$.
+- Con probabilità $1 - \pi$ <b>non si verifica alcun danno</b>, quindi l'individuo mantiene $x$.
+
+L'individuo può acquistare $w \ge 0$ unità di <b>copertura assicurativa</b>.
+Ogni unità garantisce <b>1 euro in $t=1$</b> se il danno si verifica, e $0$ altrimenti.
+Prezzo per unità in $t=0$: $q > 0$.
+
+
+<b>Senza assicurazione</b>, utilità attesa:
+
+$$
+U_0 = \pi u(x - D) + (1 - \pi)u(x)
+$$
+
+<b>Con assicurazione</b> (acquisto $w$ unità), utilità atesa:
+
+$$
+\max_{w \ge 0} \; \pi u(x - D - wq + w) + (1 - \pi)u(x - wq)
+$$
+
+
+Il <b>livello ottimale $w^*$ </b> soddisfa:
+
+$$
+\pi (1 - q) u'(x - D - w^* q + w^*) - q (1 - \pi) u'(x - w^* q) \le 0
+$$
+
+con <b>uguaglianza</b> se $w^* > 0$.
+
+
+Un contratto è <b>attuarialmente equo</b> se il prezzo corrisponde alla probabilità dell'evento:
+
+$$
+q = \pi
+$$
+
+ovvero il valore atteso del payoff è nullo:
+
+$$
+(1 - q)\pi - q(1 - \pi) = 0
+$$
+
+Se $q = \pi$ l’individuo <b>si assicura completamente</b>:
+
+$$
+u'(x - D + w^*(1 - q)) = u'(x - w^* q)
+$$
+
+Per la <b>concavità</b> di $u(\cdot)$ la soluzione è unica:
+
+$$
+w^* = D
+$$
+
+
+Se il contratto <b>non è equo</b> ($q \neq \pi$):
+
+- <b>Prezzo troppo alto</b> ($q > \pi$) $\Rightarrow$ $w^\* < D$ → <b>assicurazione parziale</b>.
+- <b>Prezzo troppo basso</b> ($q < \pi$) $\Rightarrow$ $w^\* > D$ → <b>assicurazione eccessiva</b>.
+
+
+---
+# <b><a id="frontiera-portafogli"></a> Frontiera dei Portafogli (Efficient Frontier EF) </b>
+
+La <b>frontiera dei portafogli</b> è l'insieme dei portafogli che, 
+per un dato rendimento atteso, <b>minimizzano la varianza</b>.  
+
+Dato un portafoglio con rendimento atteso target $E[\tilde r_p]$, 
+il portafoglio ottimale $ \mathbf{w} $ è quello che minimizza la varianza 
+tra tutti i portafogli che garantiscono quel rendimento.
+
+
+Dati $N \ge 2$ titoli rischiosi: $\tilde r_n, \; n = 1, \dots, N$, con vettore dei rendimenti attesi: $\mathbf{e} \in \mathbb{R}^N$  
+e matrice varianza-covarianza: $V \in \mathbb{R}^{N\times N}$
+
+$
+V = 
+\begin{bmatrix}
+\sigma^2(\tilde r_1) & \mathrm{cov}(\tilde r_1, \tilde r_2) & \dots & \mathrm{cov}(\tilde r_1, \tilde r_N) \\
+\mathrm{cov}(\tilde r_2, \tilde r_1) & \sigma^2(\tilde r_2) & \dots & \mathrm{cov}(\tilde r_2, \tilde r_N) \\
+\vdots & \vdots & \ddots & \vdots \\
+\mathrm{cov}(\tilde r_N, \tilde r_1) & \dots & \dots & \sigma^2(\tilde r_N)
+\end{bmatrix}
+$
+
+Sia il portafoglio $ \mathbf{w} \in \mathbb{R}^N $  
+
+con rendimento:  
+$$
+E[\tilde r] = \mathbf{w}^\top \mathbf{e} = \sum_{i=1}^N w_i e_i
+$$ 
+
+e varianza:  
+$$
+\sigma^2(\mathbf{w}) = \mathbf{w}^\top V \mathbf{w} = \sum_{i=1}^N \sum_{j=1}^N w_i w_j \mathrm{cov}(\tilde r_i, \tilde r_j)
+$$
+
+
+Dato un rendimento atteso $E[\tilde r_p]$, determinare $\mathbf{w}_p$ tale che:
+
+$
+\begin{aligned}
+& \min_{\mathbf{w} \in \mathbb{R}^N} \mathbf{w}^\top V \mathbf{w} \\
+& \text{s.t.} \quad 
+\begin{cases}
+\mathbf{w}^\top \mathbf{e} = E[\tilde r_p] \\
+\mathbf{w}^\top \mathbf{1} = 1
+\end{cases}
+\end{aligned}
+$
+
+Definendo
+
+$
+A = \mathbf{1}^\top V^{-1} \mathbf{e}, \quad
+B = \mathbf{e}^\top V^{-1} \mathbf{e}, \quad
+C = \mathbf{1}^\top V^{-1} \mathbf{1}, \quad
+D = B C - A^2
+$
+
+si ottiene il portafoglio ottimale:
+
+$$
+\mathbf{w}_p = g + h E[\tilde r_p]
+$$
+
+con
+
+$
+g = \frac{C V^{-1} \mathbf{1} - A V^{-1} \mathbf{e}}{D}, \quad
+h = \frac{B V^{-1} \mathbf{e} - A V^{-1} \mathbf{1}}{D}
+$
+
+
+
+
+Dato un altro portafoglio $ \mathbf{w}_q $, la <b> varianza in funzione del rendimento atteso è:</b>
+
+$$
+\sigma^2(\mathbf{w}_p) = \frac{C (E[\tilde r_p])^2 - 2 A E[\tilde r_p] + B}{D}
+$$
+
+
+
+La <b>frontiera efficiente</b> è la parabola nel piano $(\sigma, E[\tilde r])$ definita da $\sigma^2(\mathbf{w}_p)$.  
+
+Qualsiasi portafoglio sulla Frontiera Efficiente soddisfa le seguenti:
+
+$$
+ \sigma^2(\tilde r) = \frac{1}{C}
+$$
+
+$$
+E(\tilde r) = \frac{A}{C}
+$$
+
+## <b>Proprietà della Frontiera Efficiente </b>
+
+
+<b> Combinazione lineare di portafogli </b>
+
+Dati $M$ portafogli $w_i \in FP, i=1,\dots,M$ sulla frontiera, qualsiasi portafoglio della frontiera può essere scritto come:
+$$
+w = \sum_{i=1}^{M} \alpha_i w_i, \quad \sum_{i=1}^{M} \alpha_i = 1
+$$
+
+Il rendimento atteso del portafoglio combinato:
+$$
+E[\tilde r] = \sum_{i=1}^{M} \alpha_i E[\tilde r_i]
+$$
+
+<b> Portafoglio con covarianza nulla </b>
+
+Dato un portafoglio $w_p \in FP$ (eccetto il portafoglio di minima varianza globale), esiste un <b>unico portafoglio</b> $w_{zc(p)} \in FP$ tale che:
+$
+\mathrm{cov}( \tilde r_p, \tilde r_{zc(p)} ) = 0
+$
+
+Il rendimento atteso di $w_{zc(p)}$ è:
+$$
+E[\tilde r_{zc(p)}] = \frac{C - A E[\tilde r_p]}{D}
+$$
+
+Nel piano $(\sigma, E[\tilde r])$, il portafoglio $w_{zc(p)}$ 
+corrisponde all’intersezione della retta tangente in $w_p$ con l’asse delle ordinate.
+
+
+<b >Combinazioni con portafoglio generico </b>
+
+Sia $w_{MVP}$ un portafoglio della frontiera diverso da $w_p$ e $w_{zc(p)}$ il corrispondente portafoglio con covarianza nulla.
+
+Esiste un coefficiente $\beta_{qp}$ tale che:
+$$
+E[\tilde r_q] = (1 - \beta_{qp}) E[\tilde r_p] + \beta_{qp} E[\tilde r_{zc(p)}]
+$$
+
+
+Questo esprime che <b>qualsiasi portafoglio della frontiera può essere rappresentato come combinazione lineare</b> di un portafoglio generico e del portafoglio a covarianza nulla rispetto ad esso.
+
+---
+
+
+# <b><a id="asset-management"></a> Asset Management </b>
+
+### <b> Indicatori di diversificazione </b>
+
+## <b> Herfindahl index: </b>
+
+
+$$
+D_{\text{Herf}} = w^\top w = \sum_{i=1}^{N} w_i^2
+$$
+
+con $ D_{\text{Herf}} \in \left[\frac{1}{N}, 1\right] $
+
+Valori elevati di $D_{\text{Herf}}$ indicano minore diversificazione e più concentrazione.
+
+
+## <b>Curva di Lorenz</b>
+
+Dopo aver riordinato i pesi $ w $ in ordine decrescente:
+  $$
+  w_{(1)} \ge w_{(2)} \ge \dots \ge w_{(N)}
+  $$
+Si ottiene la Curva di Lorenz come:
+  $$
+  L(n) = \sum_{h=1}^{n} w_{(h)}, \quad L(0)=0, \quad L(N)=1
+  $$
+
+La curva è <b>crescente e concava</b>.  
+<b>Caso di perfetta diversificazione</b>: $ L(n) = \frac{n}{N} $ (bisettrice).
+
+Più la curva è distante dalla bisettrice, maggiore concentrazione.
+
+
+
+## <b>Coefficiente di Gini</b>
+
+Definiamo $ \hat{L}(x) $ l’interpolazione lineare della curva di Lorenz.  
+Il coefficiente di Gini è:
+
+$$
+G = 1 - 2 \int_0^1 \hat{L}(x) \, dx
+$$
+
+$ G \in [0,1] $
+Per $ G = 0 $ si ha perfetta diversificazione, per $ G = 1 $ massima concentrazione.
+
+
+##  <b>Entropia di Shannon</b>
+
+Definiamo l’entropia del portafoglio:
+
+$$
+H = - \sum_{n=1}^{N} w_n \ln w_n
+$$
+
+$ H $ <b>massima</b> → portafoglio perfettamente diversificato
+
+$ H $ <b>minima</b> ( $ H$ = 0) → portafoglio concentrato su un unico titolo
+
+### <b> Modello Black & Litterman </b>
+
+Il classico approccio di Markowitz (media-varianza) ha tre grandi problemi:
+- Produce portafogli <b>poco diversificati</b>, con pesi molto estremi.
+- È <b>molto sensibile agli errori di stima</b> dei rendimenti attesi.
+- Non permette facilmente di includere <b>opinioni personali</b> dell’investitore.
+
+Il modello <b>Black & Litterman</b> è stato sviluppato per affrontare questi 
+limiti e produrre portafogli più <b>realistici e stabili</b>.
+
+Black & Litterman partono dall’idea di un <b>portafoglio di equilibrio</b>:  
+- È il portafoglio che rappresenta l’investitore medio del mercato.
+- È ben diversificato e riflette i pesi di mercato (ad esempio quelli 
+basati sulle capitalizzazioni).
+- Se tutti gli investitori avessero le stesse opinioni, questo sarebbe 
+il portafoglio ottimale.
+
+A partire dai pesi di questo portafoglio, si ricavano i <b>rendimenti 
+impliciti di equilibrio</b> (i rendimenti attesi che renderebbero quel portafoglio ottimale).  
+Questi rendimenti sono la <b>base di partenza</b> per l’investitore: 
+rappresentano il “consenso” del mercato.
+
+
+
+Successivamente, Black & Litterman considerano i rendimenti di equilibrio 
+non come valori fissi, ma come una distribuzione probabilistica con 
+media pari ai rendimenti di equilibrio e una certa varianza.  
+
+Un parametro $\tau$ misura <b>quanta fiducia</b> si ha in questi rendimenti:
+
+La grande innovazione è la possibilità di inserire le <b>view dell’investitore</b>, 
+cioè previsioni personali su alcuni asset.  
+Queste possono essere:
+- <b>Assolute</b>: “Mi aspetto che l’asset X renda +5% sopra il risk-free.”
+- <b>Relative</b>: “Mi aspetto che l’asset A renda 1% in più dell’asset B.”
+
+Le view possono avere anche un grado di incertezza: 
+più siamo sicuri di una previsione, più questa avrà peso
+ nella correzione dei rendimenti di equilibrio.
+
+
+Il modello <b>combina</b> in modo matematicamente coerente:
+1. I rendimenti di equilibrio (opinione del mercato).
+2. Le view dell’investitore (opinioni personali, con il loro grado di fiducia).
+
+Il risultato è un <b>nuovo vettore di rendimenti attesi</b> che:
+- Rimane vicino ai rendimenti di equilibrio quando non abbiamo view forti.
+- Si sposta verso le view quando siamo sicuri delle nostre previsioni.
+
+Una volta ottenuti i nuovi rendimenti attesi, si ricalcola il portafoglio ottimale.  
+Questo ha tipicamente queste caratteristiche:
+- È <b>più diversificato</b> rispetto alla classica frontiera efficiente.
+- È <b>più stabile</b> (meno sensibile a piccoli errori di stima).
+- Rispecchia in modo quantitativo le view dell’investitore.
+
+### <b> Approcio Risk Parity </b>
+
+La strategia <b>Risk Parity</b> è un approccio di asset allocation 
+che non guarda semplicemente a quanto capitale viene allocato in 
+ogni asset, ma piuttosto a <b>quanto rischio ogni asset porta nel portafoglio</b>. 
+
+L'idea è di costruire un portafoglio in cui ciascun asset contribuisce in 
+maniera equilibrata alla volatilità complessiva. In questo modo si evita che 
+una sola asset class (ad esempio l'azionario) domini l'andamento del portafoglio.
+
+
+Partendo dai pesi di portafoglio:
+
+$$ 
+w = \begin{bmatrix} w_1 \\ w_2 \\ \vdots \\ w_n \end{bmatrix}, \quad \sum_{i=1}^n w_i = 1 
+$$
+
+La matrice di covarianza delle rendite è:
+
+$$ 
+\Sigma = \mathrm{Cov}(r) \in \mathbb{R}^{n \times n} 
+$$
+
+La varianza e la volatilità complessiva del portafoglio sono:
+
+$$ 
+\sigma_p^2 = w^\top \Sigma w 
+$$
+
+$$ 
+\sigma_p = \sqrt{w^\top \Sigma w} 
+$$
+
+
+Per capire chi porta più rischio, si calcola  
+il <b>Marginal Contribution to Risk (MRC)</b> di ogni asset:
+
+$$ 
+MRC_i = \frac{\partial \sigma_p}{\partial w_i} = \frac{(\Sigma w)_i}{\sigma_p} 
+$$
+
+Moltiplicando il MRC per il peso si ottiene il 
+<b>Total Risk Contribution (TRC)</b>:
+
+$$ 
+TRC_i = w_i \cdot MRC_i = w_i \frac{(\Sigma w)_i}{\sigma_p} 
+$$
+
+La somma di tutti i contributi di rischio è sempre la volatilità totale:
+
+$$ 
+\sum_{i=1}^n TRC_i = \sigma_p 
+$$
+
+In altre parole, ogni $TRC_i$ dice quanta 
+parte della volatilità complessiva è dovuta a quell’asset.
+
+L’idea di <b>parità di rischio</b> è che ogni asset debba contribuire allo stesso modo:
+
+$$ 
+TRC_1 = TRC_2 = \dots = TRC_n 
+$$
+
+Ovvero, matematicamente:
+
+$$ 
+w_i (\Sigma w)_i = w_j (\Sigma w)_j \quad \forall i,j 
+$$
+
+
+Per risolvere il problema di ottimizzazione, bisogna trovare i pesi che 
+soddisfano questa condizione è un problema di ottimizzazione non lineare. 
+Una formulazione comune è minimizzare la distanza fra i contributi di 
+rischio e un valore target $\theta$ (che in un portafoglio 
+perfettamente bilanciato sarebbe $\sigma_p / n$):
+
+$$ 
+\min_w \sum_{i=1}^n (TRC_i - \theta)^2 
+$$
+
+con i vincoli classici:
+
+$$ 
+\sum_{i=1}^n w_i = 1, \quad w_i \ge 0 
+$$
+
+Un’espressione compatta della stessa idea è:
+
+$$ 
+\min_w \; \frac{1}{2} \left\| w \circ (\Sigma w) - \frac{\sigma_p}{n} \mathbf{1} \right\|_2^2 
+$$
+
+Dove $\circ$ rappresenta il prodotto elemento per elemento.
+
+## <b> Esempio a Due Asset </b>
+
+Con due soli asset (es. azioni e obbligazioni) la volatilità di portafoglio si scrive:
+
+$$ 
+\sigma_p = \sqrt{w_1^2 \sigma_1^2 + w_2^2 \sigma_2^2 + 2 w_1 w_2 \rho \sigma_1 \sigma_2 } 
+$$
+
+La condizione di risk parity si ottiene imponendo che i contributi di rischio siano uguali:
+
+$$ 
+w_1 \frac{\partial \sigma_p}{\partial w_1} = w_2 \frac{\partial \sigma_p}{\partial w_2} 
+$$
+
+Questa equazione si risolve numericamente per trovare i pesi $w_1, w_2$.
+
+In un portafoglio Risk Parity:
+- Gli asset meno volatili (es. obbligazioni) ottengono un peso maggiore rispetto ad un portafoglio tradizionale.
+- Gli asset più volatili (es. azioni) vengono ridimensionati per non dominare il rischio complessivo.
+- Per ottenere lo stesso livello di rischio/return di un portafoglio tradizionale, spesso si applica <b>leva finanziaria</b>.
+
+<br />
+# <b><a id="capm"></a> Capital Asset Pricing Model CAPM </b>
+
+Il **Capital Asset Pricing Model (CAPM)** è un modello ad un fattore che descrive la relazione 
+tra rendimento atteso di un titolo e rischio sistematico.  
+
+## <b>Ipotesi del Modello </b>
+- Mercati perfettamente concorrenziali  
+- Assenza di costi di transazione e tassazione  
+- Titoli perfettamente divisibili  
+- Economia chiusa: tutti gli individui investono la loro ricchezza nei $N$ titoli  
+- Preferenze rappresentabili tramite utilità attesa e avversione al rischio  
+- Rendimenti distribuiti come <b>variabili casuali Normali multivariate</b> (o utilità quadratica)  
+
+Siano $r_f$ il tasso privo di rischio, $r_m$ il rendimento del portafoglio di mercato, $r_n$ uk rendimento del titolo $n$,
+$\beta_{nm}$ la misura di rischio sistematico del titolo $n$  
+
+La relazione fondamentale del CAPM è:
+
+$$
+\mathbb{E}[r_q] - r_f = 
+\beta_{qm}\bigl(\mathbb{E}[r_m] - r_f\bigr)
+$$
+
+dove:
+
+$$
+\beta_{qm} = 
+\frac{\mathrm{Cov}(r_q, r_m)}{\sigma^2(r_m)}
+$$
+
+- Se $\beta_{nm}>0$, il titolo covaria positivamente con il mercato e vi è un <b>premio per il rischio positivo </b>
+- Se $\beta_{nm}<0$, il titolo agisce come assicurazione, vi è un <b>premio per il rischio negativo </b>
+
+La retta che rappresenta questa relazione è detta <b>>Security Market Line (SML)</b>>
+
+## <b>Modello di Mercato </b>
+Il CAPM può essere riscritto come modello di regressione lineare:
+
+$$
+r_n - r_f = \alpha_n + \beta_{nm}(r_m - r_f) + \varepsilon_n
+$$
+
+dove:
+- $\alpha_n$: <b>extra-rendimento del titolo </b> (Jensen's $\alpha$)
+- $\varepsilon_n$: <b>componente idiosincratica </b>, a media zero e incorrelata con $r_m$
+
+La varianza del rendimento di un titolo si scompone in:
+
+$$
+\sigma^2(r_n) = \beta_{nm}^2\sigma^2(r_m) + \sigma^2(\varepsilon_n)
+$$
+
+- La prima componente è detta <b>rischio sistematico</b>
+- La seconda è detta <b>rischio idiosincratico</b>
+
+## <b>Valutazione di un Titolo </b>
+Il prezzo di un titolo $q_n$ con flussi di dividendi attesi $\tilde{d}_n$ è:
+
+$$
+q_n = 
+\frac{\mathbb{E}[\tilde{d}_n]}{r_f + \beta_{nm}(\mathbb{E}[r_m] - r_f)}
+$$
+
+In ottica multiperiodale:
+
+$$
+q_n = 
+\sum_{t=1}^{T} 
+\frac{\mathbb{E}[\tilde{d}_n(t)]}{\bigl(r_f + \beta_{nm}(\mathbb{E}[r_m] - r_f)\bigr)^t}
+$$
+
+Se i dividendi crescono al tasso costante $g$, otteniamo la <b>formula di Gordon</b>:
+
+$$
+q_n = 
+\frac{\mathbb{E}[\tilde{d}_n(1)]}{r_f + \beta_{nm}(\mathbb{E}[r_m] - r_f) - g}
+$$
+
+
+---
+
+## <b><a id="bibliografia"></a> Bibliografia </b>
+
+- [Materiali del Corso "Finanza Matematica 1", Emilio Barucci, Politecnico di Milano](https://onlineservices.polimi.it/manifesti/manifesti/controller/ManifestoPublic.do?EVN_DETTAGLIO_RIGA_MANIFESTO=evento&aa=2025&k_cf=225&k_corso_la=532&k_indir=MTM&codDescr=052491&lang=IT&semestre=2&idGruppo=5462&idRiga=335901)
+- [Lezioni YouTube di Paolo Coletti](https://www.paolocoletti.com/)
+- [ChatGPT-5, OpenAI](https://openai.com/it-IT/index/introducing-gpt-5/)
+
+<br />

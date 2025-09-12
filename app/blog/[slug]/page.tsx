@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 import { baseUrl } from 'app/sitemap'
+import 'katex/dist/katex.min.css';
 
 export async function generateStaticParams() {
   let posts = getBlogPosts()
@@ -12,7 +13,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const { slug } = await params       // 👈 stesso discorso
+  const { slug } = await params       //  stesso discorso
 
   const post  = getBlogPosts().find(p => p.slug === slug)
   if (!post) {
