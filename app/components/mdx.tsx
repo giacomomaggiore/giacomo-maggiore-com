@@ -117,6 +117,7 @@ export async function CustomMDX({ source }: CustomMDXProps) {
   return (
     <MDXRemote
       source={source}
+      components={components}
       options={{
         mdxOptions: {
           remarkPlugins: [remarkMath],
