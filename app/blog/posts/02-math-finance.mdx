@@ -1,11 +1,28 @@
 ---
 title: 'Matematica Finanziaria: Appunti'
-publishedAt: '2025-09-06'
-summary: 'Explore the enduring debate between using spaces and tabs for code indentation, and why this choice matters more than you might think.'
+publishedAt: '2025-09-09'
+summary: 'Explore the enduring debate between uicising spaces and tabs for code indentation, and why this choice matters more than you might think.'
 ---
 
+_Durante l'estate del 2025, poco dopo essermi laureato in <b>[Ingengeria dell'Automazione al Polimi](https://giacomomaggiore.com/blog/01-polimi-recap), </b>
+seguì, recuperandomi le registrazioni delle lezioni e i materiali del [Professor Emilio Barucci](https://www.som.polimi.it/professor/barucci-emilio/), il 
+corso 
+<b>["Finanza Matematica"](https://onlineservices.polimi.it/manifesti/manifesti/controller/ManifestoPublic.do?EVN_DETTAGLIO_RIGA_MANIFESTO=evento&aa=2025&k_cf=225&k_corso_la=532&k_indir=MTM&codDescr=052491&lang=IT&semestre=2&idGruppo=5462&idRiga=335901).</b>_
 
-## 01 - Leggi di Capitalizzazione
+_In seguito riporto gli appunti, rimessi a posto e integrati quando necessario.
+Sono imperfetti e incompleti, mancano di una trattazione matematica approfondita e 
+rispecchiano il mio grado di conoscenza della materia. Mi scuso in anticipo per possibili
+imprecisioni e mancanze._
+
+---
+Indice:
+1. [Leggi di Capitalizzazione](#chapter_1)
+2. [Struttura dei tassi e Bond](#chapter_2)
+3.
+4. [Prova](###04-Rischio-di-Tasso,-Indici-Temporali-e-Principio-di-Immunizzazione)
+
+
+## <b>0Leggi di Capitalizzazione </b>
 
 Definiscono la quota di interessi in funzione del tempo a partire da un
 parametro che misura il tasso di interesse per unità di tempo (solitamente l'anno).
@@ -42,7 +59,7 @@ tempo fino alla scadenza, oltre ad eventuali costi aggiuntivi come dividendi
 
 ---
 
-## 02 - Struttura dei tassi e Bond
+## <a id = "1">Struttura dei tassi e Bond </a>
 
 Dai prezzi degli zero coupon bonds a pronti è possibile ricavare 
 la curva dei tassi a pronti di mercato utilizzando el leggi di capitalizzazione.
@@ -841,13 +858,10 @@ Dato un portafoglio con rendimento atteso target $E[\tilde r_p]$,
 il portafoglio ottimale $ \mathbf{w} $ è quello che minimizza la varianza 
 tra tutti i portafogli che garantiscono quel rendimento.
 
-# Frontiera dei Portafogli — Appunti Finanza Matematica
 
-## 1. Setup
 
-- $N \ge 2$ titoli rischiosi: $\tilde r_n, \; n = 1, \dots, N$  
-- Vettore dei rendimenti attesi: $\mathbf{e} \in \mathbb{R}^N$  
-- Matrice varianza-covarianza: $V \in \mathbb{R}^{N\times N}$
+Dati $N \ge 2$ titoli rischiosi: $\tilde r_n, \; n = 1, \dots, N$, con vettore dei rendimenti attesi: $\mathbf{e} \in \mathbb{R}^N$  
+e matrice varianza-covarianza: $V \in \mathbb{R}^{N\times N}$
 
 $
 V = 
@@ -859,14 +873,14 @@ V =
 \end{bmatrix}
 $
 
-Portafoglio $ \mathbf{w} \in \mathbb{R}^N $  
+Sia il portafoglio $ \mathbf{w} \in \mathbb{R}^N $  
 
-Rendimento portafoglio:  
+con rendimento:  
 $$
 E[\tilde r] = \mathbf{w}^\top \mathbf{e} = \sum_{i=1}^N w_i e_i
 $$ 
 
-Varianza portafoglio:  
+e varianza:  
 $$
 \sigma^2(\mathbf{w}) = \mathbf{w}^\top V \mathbf{w} = \sum_{i=1}^N \sum_{j=1}^N w_i w_j \mathrm{cov}(\tilde r_i, \tilde r_j)
 $$
@@ -1082,3 +1096,117 @@ Questo ha tipicamente queste caratteristiche:
 - È **più stabile** (meno sensibile a piccoli errori di stima).
 - Rispecchia in modo quantitativo le view dell’investitore.
 
+### Approcio Risk Parity
+
+a strategia **Risk Parity** è un approccio di asset allocation 
+che non guarda semplicemente a quanto capitale viene allocato in 
+ogni asset, ma piuttosto a **quanto rischio ogni asset porta nel portafoglio**. 
+
+L'idea è di costruire un portafoglio in cui ciascun asset contribuisce in 
+maniera equilibrata alla volatilità complessiva. In questo modo si evita che 
+una sola asset class (ad esempio l'azionario) domini l'andamento del portafoglio.
+
+
+Partiamo dai pesi di portafoglio:
+
+$$ 
+w = \begin{bmatrix} w_1 \\ w_2 \\ \vdots \\ w_n \end{bmatrix}, \quad \sum_{i=1}^n w_i = 1 
+$$
+
+La matrice di covarianza delle rendite è:
+
+$$ 
+\Sigma = \mathrm{Cov}(r) \in \mathbb{R}^{n \times n} 
+$$
+
+La varianza e la volatilità complessiva del portafoglio sono:
+
+$$ 
+\sigma_p^2 = w^\top \Sigma w 
+$$
+
+$$ 
+\sigma_p = \sqrt{w^\top \Sigma w} 
+$$
+
+
+Per capire chi porta più rischio, calcoliamo 
+il **Marginal Contribution to Risk (MRC)** di ogni asset:
+
+$$ 
+MRC_i = \frac{\partial \sigma_p}{\partial w_i} = \frac{(\Sigma w)_i}{\sigma_p} 
+$$
+
+Moltiplicando il MRC per il peso otteniamo il 
+**Total Risk Contribution (TRC)**:
+
+$$ 
+TRC_i = w_i \cdot MRC_i = w_i \frac{(\Sigma w)_i}{\sigma_p} 
+$$
+
+La somma di tutti i contributi di rischio è sempre la volatilità totale:
+
+$$ 
+\sum_{i=1}^n TRC_i = \sigma_p 
+$$
+
+In altre parole, ogni $TRC_i$ ci dice quanta 
+parte della volatilità complessiva è dovuta a quell’asset.
+
+L’idea di **parità di rischio** è che ogni asset debba contribuire allo stesso modo:
+
+$$ 
+TRC_1 = TRC_2 = \dots = TRC_n 
+$$
+
+Ovvero, matematicamente:
+
+$$ 
+w_i (\Sigma w)_i = w_j (\Sigma w)_j \quad \forall i,j 
+$$
+
+
+Per risolvere il problema di ottimizzazione, bisogna trovare i pesi che 
+soddisfano questa condizione è un problema di ottimizzazione non lineare. 
+Una formulazione comune è minimizzare la distanza fra i contributi di 
+rischio e un valore target $\theta$ (che in un portafoglio 
+perfettamente bilanciato sarebbe $\sigma_p / n$):
+
+$$ 
+\min_w \sum_{i=1}^n (TRC_i - \theta)^2 
+$$
+
+con i vincoli classici:
+
+$$ 
+\sum_{i=1}^n w_i = 1, \quad w_i \ge 0 
+$$
+
+Un’espressione compatta della stessa idea è:
+
+$$ 
+\min_w \; \frac{1}{2} \left\| w \circ (\Sigma w) - \frac{\sigma_p}{n} \mathbf{1} \right\|_2^2 
+$$
+
+Dove $\circ$ rappresenta il prodotto elemento per elemento.
+
+## Esempio a Due Asset
+
+Con due soli asset (es. azioni e obbligazioni) la volatilità di portafoglio si scrive:
+
+$$ 
+\sigma_p = \sqrt{w_1^2 \sigma_1^2 + w_2^2 \sigma_2^2 + 2 w_1 w_2 \rho \sigma_1 \sigma_2 } 
+$$
+
+La condizione di risk parity si ottiene imponendo che i contributi di rischio siano uguali:
+
+$$ 
+w_1 \frac{\partial \sigma_p}{\partial w_1} = w_2 \frac{\partial \sigma_p}{\partial w_2} 
+$$
+
+Questa equazione si risolve numericamente per trovare i pesi $w_1, w_2$.
+
+In un portafoglio Risk Parity:
+- Gli asset meno volatili (es. obbligazioni) ottengono un peso maggiore rispetto ad un portafoglio tradizionale.
+- Gli asset più volatili (es. azioni) vengono ridimensionati per non dominare il rischio complessivo.
+- Per ottenere lo stesso livello di rischio/return di un portafoglio tradizionale, spesso si applica **leva finanziaria**.
