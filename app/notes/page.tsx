@@ -1,0 +1,18 @@
+import { BlogPosts } from 'app/components/notes'
+import 'katex/dist/katex.min.css';
+
+export const metadata = {
+  title: 'Blog',
+  description: 'Read my blog.',
+}
+
+export default function Page() {
+  return (
+    <section>
+      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Notes</h1>
+      <BlogPosts />
+
+      
+    </section>
+  )
+}
