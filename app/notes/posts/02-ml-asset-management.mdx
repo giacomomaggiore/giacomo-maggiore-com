@@ -11,8 +11,6 @@ They are often incomplete and not 100% accurate, as I intentionally skipped math
 ### <b> Index </b>
 
 1. [Introduction](#1)
-
-
 2. [Denoising and Detoning](#2)
 3. [Distance Metrics](#3)
 4. [Optimal Clustering](#4)
@@ -26,9 +24,264 @@ They are often incomplete and not 100% accurate, as I intentionally skipped math
 ---
 
 # <b><a id="1"></a>1. Introduction </b>
+### <b> Why Not to Do Backtesting </b>
+
+Contrary to popular belief, <b>backtesting is not a research tool</b>.  
+Backtests can never prove that a strategy is a <b>true positive</b>.
+
+Never develop a strategy solely through backtests.  
+Strategies must be supported by <b>theory</b>, not only historical simulations.
+
+Your theories must be <b>general</b> enough to explain particular cases, 
+including extreme events (black swans).
+
+## <b>Role of Machine Learning (ML)</b>
+
+- ML helps <b>discover hidden variables</b>.
+- ML itself does <b>not</b> reveal the functional relations between variables. Therefore:
+  - Formulate a <b>theory</b> that binds the elements together.
+  - <b>Test the theory</b> in different contexts (even where ML found no signal).
+
+Once the theory has been tested, it should stand on its own; the <b>theory</b>, not the ML algorithm, should make predictions.
+
+## <b>Uses of ML</b>
+
+- <b>Existence</b> — ML can indicate the presence of previously unknown relations by successfully predicting outcomes.
+- <b>Importance</b> — Feature-importance measures (e.g., Mean-Decrease Accuracy) reveal which variables matter more for model performance.
+- <b>Causation</b> — ML can support causal inference by comparing predictions.
+- <b>Reductionism</b> — Dimensionality reduction can reveal low-dimensional structure and clusters.
+- <b>Retrieval</b> — ML scans large datasets to find rare or interesting events.
+- <b>Outlier Detection</b> — ML identifies anomalies using learned patterns.
+
+### <b>Types of Overfitting</b>
+
+- <b>Train-set overfitting</b> — model fits noise and signal in the training data (learns tiny irrelevant movements).
+- <b>Test-set overfitting</b> — repeatedly testing many models on the same test set and selecting the best-performing one.
+
+A useful diagnostic is the **generalization gap**:
+$$
+\text{Generalization Gap } G = E_{\text{test}} - E_{\text{train}},
+$$
+where $E_{\text{train}}$ and $E_{\text{test}}$ are the expected errors (or loss) on training and test sets respectively. A large positive $G$ indicates overfitting.
+
+
 ---
 
+
+
 # <b><a id="2"></a>2. Denoising and Detoning </b>
+### <b> Covariance Matrix </b>
+
+<b>Covariance matrices</b> are empirically obtained, so they contain a 
+significant amount of <b>noise</b>.  
+If used directly (e.g., for portfolio optimization), 
+this noise can make results unstable.
+
+<b>The Marčenko–Pastur Theorem</b>
+
+The theorem tells us what the eigenvalues
+ of a covariance (or correlation) matrix should look
+  like if the data is completely random.
+- If we compute the covariance matrix of asset returns, 
+some of the eigenvalues <b> may just be noise. </b>
+(random correlations that don’t carry information).
+
+Consider a matrix $X \in \mathbb{R}^{T \times N}$ with:
+  - $T$ observations (rows)
+  - $N$ assets (columns)
+
+Assume returns have mean $0$ and variance $\sigma^2$.
+Compute the sample covariance matrix:
+
+$$
+C = \frac{1}{T}X^\top X
+$$
+
+Each eigenvalue $\lambda$ represents 
+<b> how much variance is explained by a certain “direction” </b>
+(or factor) in the data.
+
+If the data is purely random, the eigenvalues follow 
+a known distribution: <b> the Marčenko–Pastur distribution.</b>
+
+The theorem tells us that the eigenvalues will lie between two limits:
+$$
+    \lambda_{-} = \sigma^2 \big(1 - \sqrt{N/T}\big)^2, \quad
+
+    \lambda_{+} = \sigma^2 \big(1 + \sqrt{N/T}\big)^2
+$$
+
+
+All eigenvalues between $\lambda_-$ and $\lambda_+$ are 
+what we expect from random data, they are <b> just noise </b>. <br />
+Eigenvalues <b>larger than </b> $\lambda_+$ (or smaller than $\lambda_-$) 
+may represent true correlations or factors in the data.
+
+
+The basic <b>Marčenko–Pastur theorem</b> 
+assumes that <b>all eigenvalues are random</b>.  
+
+In real financial data, this assumption is not valid — some eigenvalues capture <b>true, non-random structure</b>, 
+such as <b>market factor</b> (the first principal component, representing systematic market risk), <b>sector effects</b> or 
+other common risk factors.
+
+### <b>The Solution: Laloux Adjustment</b>
+
+Laloux proposed an approach to <b>adjust</b> the Marčenko–Pastur model to account for the presence of <b>non-random eigenvalues</b>.
+
+1. <b>Identify non-random eigenvalues</b>, typically the largest eigenvalues
+ (e.g., the first one representing the <b>market mode</b>).
+
+2. <b>Remove their contribution from the variance</b>  
+   - Since these are not random, they should not inflate the estimated noise level.  
+   - Adjust the variance:
+
+   $$
+   \sigma^2_{\text{adjusted}} = \sigma^2 \Bigg(1 - \frac{\lambda_{+}}{N}\Bigg)
+   $$
+
+3. <b>Recompute Marčenko–Pastur bounds</b>  
+   - Use the adjusted variance to compute new limits:
+
+   $$
+   \lambda_{-} = \sigma^2_{\text{adjusted}} \Big(1 - \sqrt{\frac{N}{T}}\Big)^2,
+   \qquad
+   \lambda_{+} = \sigma^2_{\text{adjusted}} \Big(1 + \sqrt{\frac{N}{T}}\Big)^2
+   $$
+
+4. <b>Fit the theoretical PDF</b>  
+   - Fit the Marčenko–Pastur distribution wit updated data to estimate how much variance is explained by random noise.
+
+
+### <b> Denoising </b>
+
+When you build a <b>correlation matrix </b> from asset returns, 
+a lot of its eigenvalues come from noise.
+
+If you use this noisy matrix directly (e.g. in portfolio optimization), 
+the results are unstable and misleading.
+
+So, the idea is to <b>denoise the matrix</b>: keep the 
+information from the meaningful eigenvalues (the big ones 
+above the Marčenko–Pastur threshold) and replace the noisy ones with something cleaner.
+
+### <b>1. Decomposition of the denoised correlation matrix </b>
+
+Start from the denoised correlation matrix C_1 with its eigen-decomposition:
+
+$$
+C_1 = W \Lambda W^\top,
+$$
+
+where $W=[w_1,\dots,w_N]$ (orthonormal eigenvectors) and $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_N)$.
+
+Partition the eigenpairs into <b>market components</b>
+(hopefully justone, typically the largest eigenvalue(s)) and <b>non-market (detoned) components</b>.
+$$
+W = [W_M \;|\; W_D],\qquad
+$$
+$$
+\Lambda=\begin{bmatrix}\Lambda_M & 0\\[4pt] 0 & \Lambda_D\end{bmatrix},
+$$
+so that
+$$
+C_1 = W_M \Lambda_M W_M^\top \;+\; W_D \Lambda_D W_D^\top.
+$$
+
+### <b>2. Remove the market (detoning)</b>
+
+Subtract the market part to get the detoned correlation matrix C_2:
+
+$$
+C_2 \;=\; C_1 \;-\; W_M \Lambda_M W_M^\top \;=\; W_D \Lambda_D W_D^\top .
+$$
+
+Because we removed at least one eigenvector, $C_2$ is singular (it has at least one zero eigenvalue).
+
+Rescale to enforce unit diagonal if you need a correlation matrix: 
+$$
+C_2 \rightarrow \operatorname{diag}(C_2)^{-1/2}\,C_2\,\operatorname{diag}(C_2)^{-1/2}.
+$$
+
+### <b> 3. Portfolio optimization in the reduced (principal-component) space </b>
+
+You cannot directly invert $C_2$. 
+Instead <b>optimize on the non-zero</b> principal components
+(the detoned subspace) and then map allocations back to the original assets.
+
+Write a portfolio as a linear combination of the surviving eigenvectors:
+
+$$
+\omega \;=\; W_+ f,
+$$
+
+where $W_+$ is the matrix of eigenvectors that survived detoning
+ (i.e. the columns of W_D), and f is the vector of allocations on those principal components.
+
+Take the classic mean–variance objective (risk aversion $\gamma$):
+
+$$
+\max_{\,\omega}\; \Big\{ \mu^\top \omega \;-\; \tfrac{\gamma}{2}\,\omega^\top C_1 \omega \Big\}.
+$$
+
+Substitute $\omega = W_+ f$. Using orthonormality and the block decomposition, the objective in $f$ becomes
+
+$$
+\max_{f}\; \Big\{ \mu^\top W_+ f \;-\; \tfrac{\gamma}{2}\, f^\top \Lambda_+ f \Big\},
+$$
+where $\Lambda_+$ is the diagonal matrix of the non-zero eigenvalues (the same as $\Lambda_D)$.
+
+The first-order optimality condition yields the closed form
+
+$$
+f^\ast \;=\; \frac{1}{\gamma}\,\Lambda_+^{-1}\,W_+^\top \mu.
+$$
+
+Finally map back to original asset weights:
+
+$$
+\boxed{\;\omega^\ast \;=\; W_+ f^\ast \;=\; \frac{1}{\gamma}\,W_+ \Lambda_+^{-1} W_+^\top \,\mu\; \;}
+$$
+
+<b>Note:</b> because W_+ columns are orthonormal, $W_+^\top$ is the left-inverse of $W_+$. 
+This expression avoids inverting the full (singular) $C_2$ and only requires inverting the diagonal $\Lambda_+$.
+
+### <b>What is $f$?</b>
+
+So $f_i$ tells you <b>how much you are investing in eigenportfolio i</b> (the eigenportfolio built from eigenvector $w_i$).
+
+After detoning (removing market eigenvectors), we only keep the “surviving” eigenvectors $W_+$.
+Instead of trying to optimize in the full (possibly singular) asset space, we solve for $f$ in the reduced space:
+
+$$
+f^\ast = \frac{1}{\gamma} \Lambda_+^{-1} W_+^\top \mu
+$$
+Then we map back to original asset weights:
+$$
+\omega^\ast = W_+ f^\ast
+$$
+This way we only allocate risk to components that carry non-noise information.
+
+###<b> Shrinkage </b>
+
+### SHRINKAGE
+
+<b>Shrinkage</b> is a technique to <b>improve the estimation of covariance (or correlation) matrices</b> when data is noisy or limited.
+
+Empirical covariance matrices, estimated from historical returns, are often <b>unstable</b> or <b>ill-conditioned</b> 
+(especially if you have many assets and few observations).
+So, instead of using the raw covariance matrix $C_{\text{empirical}}$, combine it with a <b>target</b> $C_{\text{target}} $
+that is more stable (like the identity matrix or an average correlation matrix).
+
+Formally:
+$$
+C_{\text{shrunk}} = \alpha \, C_{\text{target}} + (1-\alpha) \, C_{\text{empirical}}
+$$
+
+$\alpha \in [0,1]$ = shrinkage intensity.
+    - $\alpha = 0$ : no shrinkage (use raw covariance)
+    - $\alpha = 1$ : full shrinkage (use only the target)
+
 ---
 
 # <b><a id="3"></a>3.Distance Metrics </b>
