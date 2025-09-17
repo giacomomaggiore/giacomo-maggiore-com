@@ -318,7 +318,7 @@ Positively correlated show small distance, negatively correlated
 <br /> This makes sense in <b>long-only portfolios</b>
  (negatively correlated assets act as diversifiers).
 
-<b> Absolute Correlation </b>
+### <b> Absolute Correlation </b>
 
 Sometimes, in long-short portfolios, 
 we want <b>negatively correlated assets</b> to be considered similar.
@@ -426,10 +426,285 @@ Total uncertainty about $(X,Y)$
  can be decomposed into uncertainty of $Y$
   and residual uncertainty of $X$ after knowing $Y$.
 
+### <b>Kullback–Leibler Divergence </b>
+
+For two discrete probability distributions 
+$p$ and $q$ defined on the same set $S_X$:
+
+$$
+D_{KL}(p \parallel q) = \sum_{x \in S_X} p(x) \log \frac{p(x)}{q(x)}
+$$
+
+- $p(x)$ = true probability of x
+- $q(x)$ = reference or approximate probability of $x$
+- Condition: if $q(x) = 0 \Rightarrow p(x) = 0$ to avoid division by zero
+
+- KL divergence measures <b>how much</b> $p$ <b>diverges from</b> $q$.
+- It quantifies the “extra information” required if we encode data using $q$ instead 
+of the true distribution $p$.
+
+<b> Propertries </b>
+- $$ D_{KL}(p \parallel q) \ge 0 $$
+Equality occurs <b>only when</b> $p = q$.
+- $$ D_{KL}(p \parallel q) \neq D_{KL}(q \parallel p) $$
+(Order matters, so KL divergence is <b>not a metric</b>)
+
+- <b>Triangle inequality fails</b>, so  KL divergence does not satisfy all properties of a distance metric.
+
+- If $$ q(x) = 1/|S_X|$$ (uniform distribution),$$ D_{KL}(p \parallel q)$$
+ measures <b>how far</b> p is from uniform.
+
+
+### <b> Cross Entropy </b>
+
+For two discrete probability distributions $p$ (true distribution) and $q$
+ (approximation or model) defined on the same set $S_X$:
+
+$$
+H(p, q) = - \sum_{x \in S_X} p(x) \log q(x)
+$$
+
+- $p(x)$ = true probability of outcome x
+- $q(x)$ = probability assigned by a model or reference distribution
+- It measure of uncertainty of $X$ when using $q$ instead of the true $p$.
+
+<b>Entropy:</b> $$H(p) = -\sum p(x)\log p(x)$$ measures uncertainty using
+ the true distribution.
+
+<b>Cross-entropy</b>: $$H(p,q) = H(p) + D_{KL}(p \parallel q)$$
+    - Cross-entropy is always <b>greater than or equal to true entropy</b>.
+    - The difference $$H(p,q) - H(p) = D_{KL}(p \parallel q)$$ measures how “wrong” $q$ is.
+
+### <b> Mutual Information </b> 
+
+Mutual information measures <b>how much knowing one variable reduces
+ uncertainty about another</b>. 
+
+$$
+I(X;Y) = H(X) - H(X|Y)
+$$
+
+- $H(X)$ = entropy of $X$ (uncertainty about $X$)
+- $H(X|Y)$ = conditional entropy of $X$ given $Y$ 
+Equivalently:
+
+$$
+I(X;Y) = \sum_{x \in S_X} \sum_{y \in S_Y} p(x,y) \log \frac{p(x,y)}{p(x)p(y)}
+$$
+
+<b> Propertries </b>
+
+- <b>Non-negative</b>: $$I(X;Y) \ge 0$$
+  $$MI = 0$$ if $X$ and $Y$ are independent (knowing Y gives no info about X)
+- <b>Symmetric</b>:  $$I(X;Y) = I(Y;X) $$
+- <b>Upper bound</b>: $$I(X;Y) \le \min\{H(X), H(Y)\} $$
+- <b>Not a metric</b>: Does not satisfy triangle inequality
+- <b>Grouping / decomposition</b>:
+  $$ 
+    I(X;Y;Z) = I(X;Y) + I((X,Y);Z)
+  $$  
+
+Mutual information can be expressed as a KL divergence:
+$$
+I(X;Y) = D_{KL}(p(x,y) \parallel p(x)p(y))
+$$
+It measures <b>>how far the joint distribution is from independence</b>.
+
 ---
 
-
 # <b><a id="4"></a>4. Optimal Clustering </b>
+
+Clustering groups objects (items) 
+by similarity using their features. 
+The goal is to produce clusters where <b>intra-cluster similarity is high</b>
+ and <b>inter-cluster similarity is low</b>. 
+ Clustering is a form of <b>unsupervised learning</b>
+  because we do not provide labelled examples.
+
+
+
+### <b> Proximity matrix </b>
+
+A proximity matrix measures how "close" or "similar" 
+objects in a dataset are to each other.
+
+- For a dataset with $n$ elements, the proximity matrix $P$ 
+is an $n \times n$ matrix.
+- Each entry $P[i,j]$ encodes the closeness between object $i$ and object $j$.
+
+Typical definitions:
+- $P[i,j] = \text{similarity}(x_i, x_j)$ 
+- $P[i,j] = \text{distance}(x_i, x_j)$
+
+
+Note: A symmetric proximity matrix with zeros on the diagonal is common when using pairwise distances.
+
+Two main families of clustering:
+
+### <b>Hierarchical clustering </b>
+- Produces a nested sequence of partitions (a dendrogram).
+- Top: a single cluster containing all points. Bottom: each point alone.
+- Two approaches:
+  - <b>Agglomerative</b> (bottom-up): start with singletons and merge.
+  - <b>Divisive</b> (top-down): start with one cluster and split.
+- No need to specify $K$ up-front (but you choose a cut in the dendrogram to get $K$ clusters).
+
+### <b>Partitional clustering </b>
+- Partitions the dataset into $K$ disjoint clusters.
+- Each object belongs to exactly one cluster.
+- Example: <b>k-means</b>, <b>k-medoids</b>, <b>spectral clustering</b>.
+- Often requires the number of clusters $K$ as input.
+
+
+### <b>Practical issues</b>
+
+- <b>Curse of dimensionality</b>: when the number of features 
+is large relative to observations,
+  distances become less informative and clustering can degrade. 
+  Dimensionality reduction (PCA, t-SNE, UMAP) or feature selection helps.
+- <b>Initialization randomness</b>: algorithms like 
+k-means are sensitive to initial centroids. 
+
+
+
+Because partitional methods require $K$, 
+several methods exist to estimate a good $K$:
+
+### <b> Elbow method </b>
+- Compute within-cluster sum of squared errors (WCSS) for different $K$.
+- Plot WCSS vs $K$. The "elbow" point (where marginal gain drops) is a reasonable $K$.
+
+### <b>Silhouette analysis </b>
+- Measures how well each point lies within its cluster compared to the nearest other cluster.
+
+For an observation $i$:
+
+- Let $a_i$ = average distance from $i$ to all other points **in the same cluster** (intra-cluster distance).
+- Let $b_i$ = minimum over other clusters of the average distance from $i$ to points in that other cluster (nearest inter-cluster distance).
+
+The <b>silhouette coefficient</b> for $i$ is
+$$
+S_i = \frac{b_i - a_i}{\max(a_i, b_i)}
+$$
+
+- $S_i \approx 1$: well clustered (close to own cluster, far from others).
+- $S_i \approx 0$: on or near cluster boundary.
+- $S_i < 0$: likely misclassified (closer to another cluster).
+
+The <b>average silhouette score</b>
+ across all points is a scalar summary 
+ used to compare different $K$: higher is better.
+
+### <b> Practical checklist for clustering </b>
+
+1. <b>Preprocess </b>
+   - Standardize / normalize features when distances are used.
+   - Handle missing values.
+   - Reduce dimensionality if needed.
+
+2. <b>Choose distance / similarity </b>
+   - Euclidean for continuous, cosine for directional data, Jaccard for binary sets, etc.
+
+3. <b>Choose algorithm </b>
+   - Hierarchical if you want a dendrogram and no fixed $K$.
+   - K-means/k-medoids for large datasets with spherical-ish clusters.
+
+4. <b>Select $K$</b>
+   - Use elbow, silhouette, gap statistic, or domain knowledge.
+
+5. <b>Validate </b>
+   - Visual inspection (2D/3D embedding).
+   - Cluster compactness and separation metrics (silhouette, Davies–Bouldin).
+   - If possible, external validation against known labels.
+
+Once we run a clustering algorithm 
+(e.g., k-means), we still need to evaluate 
+how good the clustering result is. 
+This section introduces a quality measure and a procedure 
+to improve clustering by selectively reclustering low-quality clusters.
+
+
+
+### <b>Quality Measure $q$ </b>
+
+Define the <b>overall clustering quality</b>:
+
+$$
+q = \frac{E[S_i]}{\sqrt{V[S_i]}}
+$$
+
+Where:
+
+- $E[S_i]$ = mean of silhouette scores (average clustering quality).
+- $V[S_i]$ = variance of silhouette scores (consistency across points).
+
+Higher $q$ means better clustering (high average silhouette + low variability).
+Low $q$ means that some clusters might be poorly formed or unstable.
+
+
+
+### <b>Base Clustering Algorithm </b>
+
+At the **base level**, the procedure works as follows:
+
+1. <b>Input</b>
+   - Start from the <b>observation (distance/similarity) matrix</b>.
+
+2. <b>Outer Loop (over $K$)</b>
+   - For $k = 2,3,\dots,N$:
+     - Run k-means clustering with $k$ clusters.
+     - Compute the quality measure $q$ from silhouette scores.
+     - Store results for that $k$.
+
+3. <b>Inner Loop (over initializations) </b>
+   - Repeat the above with **different random initializations** of centroids.
+   - This reduces sensitivity to random starts.
+
+4. <b>Selection </b>
+   - Choose the clustering result with the <b>highest quality</b> $q$.
+   - This yields:
+     - Optimal number of clusters $K$.
+     - Best initialization (most stable clustering result).
+
+Even after selecting the best $K$ and initialization, <b>some clusters
+ can still be poor quality</b>.
+
+
+### <b> Reclustering Low-Quality Clusters </b>
+
+To refine the clustering, we <b>recluster only the bad clusters</b>.
+
+
+1. <b>Start with Base Clustering Result </b>
+   - We already have $K$ clusters from the base algorithm.
+   - For each cluster $k$, compute its <b>quality score </b>
+   $q_k$ (mean silhouette score of its members).
+
+2. <b>Identify Poor-Quality Clusters </b>
+   - Compute overall average quality:
+     $$
+     q = \frac{1}{K} \sum_{k=1}^{K} q_k
+     $$
+   - Identify clusters with $q_k < q$ → “below-average quality.”
+   - Let $K_1$ = number of such clusters.
+
+3.  <b> Decision Rule Based on $K_1$ </b>
+   - If $K_1 \leq 1$:
+     - No meaningful reclustering, so return base clustering.
+   - If $K_1 \geq 2$:
+     - <b>Recluster only those $K_1$ clusters </b>:
+       - Build a <b>new observation matrix </b> for elements of these clusters.
+       - <b>Rerun the base algorithm </b>
+        (search over $K$ and initializations) on this reduced subset.
+
+4. <b>Check Improvement </b>
+   - Compare **average quality before vs. after reclustering**.
+   - If quality improved:
+     - Merge the unchanged good clusters with the newly reclustered clusters.
+   - Else:
+     - Keep the original base clustering result.
+
+
 ---
 
 # <b><a id="5"></a>5. Financial Labels </b>
