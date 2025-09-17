@@ -64,6 +64,8 @@ $$
 $$
 where $E_{\text{train}}$ and $E_{\text{test}}$ are the expected errors (or loss) on training and test sets respectively. A large positive $G$ indicates overfitting.
 
+![Overfitting Diagram](/images/notes/ml-diagram.png)
+
 
 ---
 
@@ -167,7 +169,7 @@ above the Marčenko–Pastur threshold) and replace the noisy ones with somethin
 
 ### <b>1. Decomposition of the denoised correlation matrix </b>
 
-Start from the denoised correlation matrix C_1 with its eigen-decomposition:
+Start from the denoised correlation matrix $C_1$ with its eigen-decomposition:
 
 $$
 C_1 = W \Lambda W^\top,
@@ -190,7 +192,7 @@ $$
 
 ### <b>2. Remove the market (detoning)</b>
 
-Subtract the market part to get the detoned correlation matrix C_2:
+Subtract the market part to get the detoned correlation matrix $C_2$:
 
 $$
 C_2 \;=\; C_1 \;-\; W_M \Lambda_M W_M^\top \;=\; W_D \Lambda_D W_D^\top .
@@ -240,7 +242,7 @@ $$
 Finally map back to original asset weights:
 
 $$
-\boxed{\;\omega^\ast \;=\; W_+ f^\ast \;=\; \frac{1}{\gamma}\,W_+ \Lambda_+^{-1} W_+^\top \,\mu\; \;}
+{\;\omega^\ast \;=\; W_+ f^\ast \;=\; \frac{1}{\gamma}\,W_+ \Lambda_+^{-1} W_+^\top \,\mu\; \;}
 $$
 
 <b>Note:</b> because W_+ columns are orthonormal, $W_+^\top$ is the left-inverse of $W_+$. 
@@ -262,9 +264,7 @@ $$
 $$
 This way we only allocate risk to components that carry non-noise information.
 
-###<b> Shrinkage </b>
-
-### SHRINKAGE
+### <b> Shrinkage </b>
 
 <b>Shrinkage</b> is a technique to <b>improve the estimation of covariance (or correlation) matrices</b> when data is noisy or limited.
 
@@ -285,7 +285,149 @@ $\alpha \in [0,1]$ = shrinkage intensity.
 ---
 
 # <b><a id="3"></a>3.Distance Metrics </b>
+
+### <b> Correlation </b>
+
+Correlation $\rho[X,Y]$ measures 
+<b> linear codependence </b> but is not a metric 
+(fails nonnegativity and triangle inequality).
+
+We therefore a metric that gives a geometry/topology to compare and cluster data, so define:
+$$
+d_\rho[X,Y] = \sqrt{\tfrac{1}{2}(1 - \rho[X,Y])}
+$$
+
+$ d_\rho[X,Y] $ standardize X,Y into zero-mean, unit-variance vectors x,y.
+
+If we look at the Euclidean distance:
+    $$
+    d[x,y] = \sqrt{\sum_{t=1}^T (x_t - y_t)^2}
+    $$
+it Expands to:
+    $$
+    d[x,y] = \sqrt{2T(1 - \rho[x,y])} = \sqrt{4T \, d_\rho[X,Y]}
+    $$
+    
+So $d_\rho$ is proportional to a Euclidean distance, 
+hence inherits metric properties.
+
+$d_\rho \in [0,1]$ since $\rho \in [-1,1]$.
+
+Positively correlated show small distance, negatively correlated 
+ large distance.
+<br /> This makes sense in <b>long-only portfolios</b>
+ (negatively correlated assets act as diversifiers).
+
+<b> Absolute Correlation </b>
+
+Sometimes, in long-short portfolios, 
+we want <b>negatively correlated assets</b> to be considered similar.
+
+So we can define <b> absolute correlation </b> by:
+
+$$
+d_{|\rho|}[X,Y] = \sqrt{1 - |\rho[X,Y]|}
+$$
+
+That is still a metric but highly negatively correlated 
+assets have small distance, i.e. treated as “close.”
+
+### <b> Problems of Correlation </b>
+- correlation quantifies the <b>linear codependecy</b>of two assets
+- it’s highly<b> influenced by outliers </b>
+- its application<b> beyond the multivariate Normal case </b> is questionable 
+(Within the Gaussian world correlation is a clean, sufficient measure of dependence, outside it correlation can be unstable, incomplete, or misleading).
+
+So better to introduce other metrics.
+
+### <b> Entropy of a Discrete Random Variable </b>
+
+Shannon entropy measures the average amount of
+ information needed to describe the outcome of a random variable or the uncertainty or diversification 
+
+For random variable $X$ with support $S_X$ and pmf $p(x)$:
+
+$$
+H(X) = - \sum_{x \in S_X} p(x) \, \log p(x)
+$$
+
+with the convention that:    $ 0 \log 0 := 0 $ (limit argument).
+
+If event x has probability $p(x)$, its “surprise” is $\frac{1}{p(x)}$, so
+ low probabilitybrings= high surprise.
+
+<b> Entropy </b> can be interpreted as the expected surprise: it'sa
+ the <b>average uncertainty</b> in  $X$.
+
+When all probability mass is on a single outcome, there's no uncertainty and $H(x) = 0$.
+The <b>Maximum entropy</b> is reached when $X$ is uniform over its support and has
+
+$$
+        
+        H(X) = \log |S_X|
+$$
+
+### <b> Joint Entropy </b>
+
+For random variables $X$, $Y$ with joint pmf %p(x,y)$:
+
+$$
+    
+    H(X,Y) = - \sum_{x \in S_X} \sum_{y \in S_Y} p(x,y) \, \log p(x,y)
+  $$  
+It measures the <b>uncertainty of the pair</b> $(X,Y)$ considered together.
+
+<b> Propertries</b>:
+
+- $$ H(X,Y) = H(Y,X) $$
+    
+    
+- $$    H(X,X) = H(X) $$
+    
+- $$   H(X,Y) \geq \max\{H(X), H(Y)\} $$
+        
+-  $$H(X,Y) \leq H(X) + H(Y)$$
+    
+(equality holds if $X$ and $Y$ are independent.)
+
+### <b> Conditional Entropy </b>
+
+The conditional entropy of $X$ given $Y$ is:
+
+$$
+H(X|Y) = \sum_{y \in S_Y} p(y) \sum_{x \in S_X} p(x|y) \, \log \frac{1}{p(x|y)}
+= - \sum_{y \in S_Y} p(y) \sum_{x \in S_X} p(x|y) \log p(x|y)
+
+$$
+
+$H(X|Y)$ measures the remaining uncertainty about X once Y is known.
+
+- Conditional entropy is always ≤ entropy:
+$$
+H(X|Y) \le H(X)
+$$
+- Knowing $Y$ can never <b>increase</b>the uncertainty about X.
+- Equality occurs if $X$ and $Y$ are independent ($Y$ gives no info about $X$).
+
+- Entropy of a variable given itself**:
+$$
+H(X|X) = 0
+$$
+If you already know X, there’s no uncertainty left.
+
+- Chain rule for entropy:
+
+
+$$
+H(X,Y) = H(Y) + H(X|Y) = H(X) + H(Y|X)
+$$
+
+Total uncertainty about $(X,Y)$
+ can be decomposed into uncertainty of $Y$
+  and residual uncertainty of $X$ after knowing $Y$.
+
 ---
+
 
 # <b><a id="4"></a>4. Optimal Clustering </b>
 ---
