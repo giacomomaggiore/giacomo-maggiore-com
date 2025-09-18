@@ -1,0 +1,1464 @@
+---
+title: 'Machine Learning for Asset Managers'
+publishedAt: '2025-09-16'
+summary: ''
+---
+
+These notes are freely taken from the book
+[Machine Learning for Asset Managers (Elements in Quantitative Finance)](https://www.amazon.com/Machine-Learning-Managers-Elements-Quantitative/dp/1108792898).
+They are often incomplete and not 100% accurate, as I intentionally skipped mathematical proofs and focused mostly on the practical concepts.
+
+### <b> Index </b>
+
+1. [Introduction](#1)
+2. [Denoising and Detoning](#2)
+3. [Distance Metrics](#3)
+4. [Optimal Clustering](#4)
+5. [Financial Labels](#5)
+6. [Feature Importance Analysis](#6)
+7. [Portfolio Construction](#7)
+8. [Testing Set Overfitting](#9)
+9. [Bibliography](#10)
+
+<br />
+---
+
+# <b><a id="1"></a>1. Introduction </b>
+### <b> Why Not to Do Backtesting </b>
+
+Contrary to popular belief, <b>backtesting is not a research tool</b>.  
+Backtests can never prove that a strategy is a <b>true positive</b>.
+
+Never develop a strategy solely through backtests.  
+Strategies must be supported by <b>theory</b>, not only historical simulations.
+
+Your theories must be <b>general</b> enough to explain particular cases, 
+including extreme events (black swans).
+
+## <b>Role of Machine Learning (ML)</b>
+
+- ML helps <b>discover hidden variables</b>.
+- ML itself does <b>not</b> reveal the functional relations between variables. Therefore:
+  - Formulate a <b>theory</b> that binds the elements together.
+  - <b>Test the theory</b> in different contexts (even where ML found no signal).
+
+Once the theory has been tested, it should stand on its own; the <b>theory</b>, not the ML algorithm, should make predictions.
+
+## <b>Uses of ML</b>
+
+- <b>Existence</b> — ML can indicate the presence of previously unknown relations by successfully predicting outcomes.
+- <b>Importance</b> — Feature-importance measures (e.g., Mean-Decrease Accuracy) reveal which variables matter more for model performance.
+- <b>Causation</b> — ML can support causal inference by comparing predictions.
+- <b>Reductionism</b> — Dimensionality reduction can reveal low-dimensional structure and clusters.
+- <b>Retrieval</b> — ML scans large datasets to find rare or interesting events.
+- <b>Outlier Detection</b> — ML identifies anomalies using learned patterns.
+
+### <b>Types of Overfitting</b>
+
+- <b>Train-set overfitting</b> — model fits noise and signal in the training data (learns tiny irrelevant movements).
+- <b>Test-set overfitting</b> — repeatedly testing many models on the same test set and selecting the best-performing one.
+
+A useful diagnostic is the **generalization gap**:
+$$
+\text{Generalization Gap } G = E_{\text{test}} - E_{\text{train}},
+$$
+where $E_{\text{train}}$ and $E_{\text{test}}$ are the expected errors (or loss) on training and test sets respectively. A large positive $G$ indicates overfitting.
+
+![Overfitting Diagram](/images/notes/ml-diagram.png)
+
+
+---
+
+
+
+# <b><a id="2"></a>2. Denoising and Detoning </b>
+### <b> Covariance Matrix </b>
+
+<b>Covariance matrices</b> are empirically obtained, so they contain a 
+significant amount of <b>noise</b>.  
+If used directly (e.g., for portfolio optimization), 
+this noise can make results unstable.
+
+<b>The Marčenko–Pastur Theorem</b>
+
+The theorem tells us what the eigenvalues
+ of a covariance (or correlation) matrix should look
+  like if the data is completely random.
+- If we compute the covariance matrix of asset returns, 
+some of the eigenvalues <b> may just be noise. </b>
+(random correlations that don’t carry information).
+
+Consider a matrix $X \in \mathbb{R}^{T \times N}$ with:
+  - $T$ observations (rows)
+  - $N$ assets (columns)
+
+Assume returns have mean $0$ and variance $\sigma^2$.
+Compute the sample covariance matrix:
+
+$$
+C = \frac{1}{T}X^\top X
+$$
+
+Each eigenvalue $\lambda$ represents 
+<b> how much variance is explained by a certain “direction” </b>
+(or factor) in the data.
+
+If the data is purely random, the eigenvalues follow 
+a known distribution: <b> the Marčenko–Pastur distribution.</b>
+
+The theorem tells us that the eigenvalues will lie between two limits:
+$$
+    \lambda_{-} = \sigma^2 \big(1 - \sqrt{N/T}\big)^2, \quad
+
+    \lambda_{+} = \sigma^2 \big(1 + \sqrt{N/T}\big)^2
+$$
+
+
+All eigenvalues between $\lambda_-$ and $\lambda_+$ are 
+what we expect from random data, they are <b> just noise </b>. <br />
+Eigenvalues <b>larger than </b> $\lambda_+$ (or smaller than $\lambda_-$) 
+may represent true correlations or factors in the data.
+
+
+The basic <b>Marčenko–Pastur theorem</b> 
+assumes that <b>all eigenvalues are random</b>.  
+
+In real financial data, this assumption is not valid — some eigenvalues capture <b>true, non-random structure</b>, 
+such as <b>market factor</b> (the first principal component, representing systematic market risk), <b>sector effects</b> or 
+other common risk factors.
+
+### <b>The Solution: Laloux Adjustment</b>
+
+Laloux proposed an approach to <b>adjust</b> the Marčenko–Pastur model to account for the presence of <b>non-random eigenvalues</b>.
+
+1. <b>Identify non-random eigenvalues</b>, typically the largest eigenvalues
+ (e.g., the first one representing the <b>market mode</b>).
+
+2. <b>Remove their contribution from the variance</b>  
+   - Since these are not random, they should not inflate the estimated noise level.  
+   - Adjust the variance:
+
+   $$
+   \sigma^2_{\text{adjusted}} = \sigma^2 \Bigg(1 - \frac{\lambda_{+}}{N}\Bigg)
+   $$
+
+3. <b>Recompute Marčenko–Pastur bounds</b>  
+   - Use the adjusted variance to compute new limits:
+
+   $$
+   \lambda_{-} = \sigma^2_{\text{adjusted}} \Big(1 - \sqrt{\frac{N}{T}}\Big)^2,
+   \qquad
+   \lambda_{+} = \sigma^2_{\text{adjusted}} \Big(1 + \sqrt{\frac{N}{T}}\Big)^2
+   $$
+
+4. <b>Fit the theoretical PDF</b>  
+   - Fit the Marčenko–Pastur distribution wit updated data to estimate how much variance is explained by random noise.
+
+
+### <b> Denoising </b>
+
+When you build a <b>correlation matrix </b> from asset returns, 
+a lot of its eigenvalues come from noise.
+
+If you use this noisy matrix directly (e.g. in portfolio optimization), 
+the results are unstable and misleading.
+
+So, the idea is to <b>denoise the matrix</b>: keep the 
+information from the meaningful eigenvalues (the big ones 
+above the Marčenko–Pastur threshold) and replace the noisy ones with something cleaner.
+
+### <b>1. Decomposition of the denoised correlation matrix </b>
+
+Start from the denoised correlation matrix $C_1$ with its eigen-decomposition:
+
+$$
+C_1 = W \Lambda W^\top,
+$$
+
+where $W=[w_1,\dots,w_N]$ (orthonormal eigenvectors) and $\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_N)$.
+
+Partition the eigenpairs into <b>market components</b>
+(hopefully justone, typically the largest eigenvalue(s)) and <b>non-market (detoned) components</b>.
+$$
+W = [W_M \;|\; W_D],\qquad
+$$
+$$
+\Lambda=\begin{bmatrix}\Lambda_M & 0\$$4pt] 0 & \Lambda_D\end{bmatrix},
+$$
+so that
+$$
+C_1 = W_M \Lambda_M W_M^\top \;+\; W_D \Lambda_D W_D^\top.
+$$
+
+### <b>2. Remove the market (detoning)</b>
+
+Subtract the market part to get the detoned correlation matrix $C_2$:
+
+$$
+C_2 \;=\; C_1 \;-\; W_M \Lambda_M W_M^\top \;=\; W_D \Lambda_D W_D^\top .
+$$
+
+Because we removed at least one eigenvector, $C_2$ is singular (it has at least one zero eigenvalue).
+
+Rescale to enforce unit diagonal if you need a correlation matrix: 
+$$
+C_2 \rightarrow \operatorname{diag}(C_2)^{-1/2}\,C_2\,\operatorname{diag}(C_2)^{-1/2}.
+$$
+
+### <b> 3. Portfolio optimization in the reduced (principal-component) space </b>
+
+You cannot directly invert $C_2$. 
+Instead <b>optimize on the non-zero</b> principal components
+(the detoned subspace) and then map allocations back to the original assets.
+
+Write a portfolio as a linear combination of the surviving eigenvectors:
+
+$$
+\omega \;=\; W_+ f,
+$$
+
+where $W_+$ is the matrix of eigenvectors that survived detoning
+ (i.e. the columns of W_D), and f is the vector of allocations on those principal components.
+
+Take the classic mean–variance objective (risk aversion $\gamma$):
+
+$$
+\max_{\,\omega}\; \Big\{ \mu^\top \omega \;-\; \tfrac{\gamma}{2}\,\omega^\top C_1 \omega \Big\}.
+$$
+
+Substitute $\omega = W_+ f$. Using orthonormality and the block decomposition, the objective in $f$ becomes
+
+$$
+\max_{f}\; \Big\{ \mu^\top W_+ f \;-\; \tfrac{\gamma}{2}\, f^\top \Lambda_+ f \Big\},
+$$
+where $\Lambda_+$ is the diagonal matrix of the non-zero eigenvalues (the same as $\Lambda_D)$.
+
+The first-order optimality condition yields the closed form
+
+$$
+f^\ast \;=\; \frac{1}{\gamma}\,\Lambda_+^{-1}\,W_+^\top \mu.
+$$
+
+Finally map back to original asset weights:
+
+$$
+{\;\omega^\ast \;=\; W_+ f^\ast \;=\; \frac{1}{\gamma}\,W_+ \Lambda_+^{-1} W_+^\top \,\mu\; \;}
+$$
+
+<b>Note:</b> because W_+ columns are orthonormal, $W_+^\top$ is the left-inverse of $W_+$. 
+This expression avoids inverting the full (singular) $C_2$ and only requires inverting the diagonal $\Lambda_+$.
+
+### <b>What is $f$?</b>
+
+So $f_i$ tells you <b>how much you are investing in eigenportfolio i</b> (the eigenportfolio built from eigenvector $w_i$).
+
+After detoning (removing market eigenvectors), we only keep the “surviving” eigenvectors $W_+$.
+Instead of trying to optimize in the full (possibly singular) asset space, we solve for $f$ in the reduced space:
+
+$$
+f^\ast = \frac{1}{\gamma} \Lambda_+^{-1} W_+^\top \mu
+$$
+Then we map back to original asset weights:
+$$
+\omega^\ast = W_+ f^\ast
+$$
+This way we only allocate risk to components that carry non-noise information.
+
+### <b> Shrinkage </b>
+
+<b>Shrinkage</b> is a technique to <b>improve the estimation of covariance (or correlation) matrices</b> when data is noisy or limited.
+
+Empirical covariance matrices, estimated from historical returns, are often <b>unstable</b> or <b>ill-conditioned</b> 
+(especially if you have many assets and few observations).
+So, instead of using the raw covariance matrix $C_{\text{empirical}}$, combine it with a <b>target</b> $C_{\text{target}} $
+that is more stable (like the identity matrix or an average correlation matrix).
+
+Formally:
+$$
+C_{\text{shrunk}} = \alpha \, C_{\text{target}} + (1-\alpha) \, C_{\text{empirical}}
+$$
+
+$\alpha \in [0,1]$ = shrinkage intensity.
+    - $\alpha = 0$ : no shrinkage (use raw covariance)
+    - $\alpha = 1$ : full shrinkage (use only the target)
+
+---
+
+# <b><a id="3"></a>3.Distance Metrics </b>
+
+### <b> Correlation </b>
+
+Correlation $\rho[X,Y]$ measures 
+<b> linear codependence </b> but is not a metric 
+(fails nonnegativity and triangle inequality).
+
+We therefore a metric that gives a geometry/topology to compare and cluster data, so define:
+$$
+d_\rho[X,Y] = \sqrt{\tfrac{1}{2}(1 - \rho[X,Y])}
+$$
+
+$ d_\rho[X,Y] $ standardize X,Y into zero-mean, unit-variance vectors x,y.
+
+If we look at the Euclidean distance:
+    $$
+    d[x,y] = \sqrt{\sum_{t=1}^T (x_t - y_t)^2}
+    $$
+it Expands to:
+    $$
+    d[x,y] = \sqrt{2T(1 - \rho[x,y])} = \sqrt{4T \, d_\rho[X,Y]}
+    $$
+    
+So $d_\rho$ is proportional to a Euclidean distance, 
+hence inherits metric properties.
+
+$d_\rho \in [0,1]$ since $\rho \in [-1,1]$.
+
+Positively correlated show small distance, negatively correlated 
+ large distance.
+<br /> This makes sense in <b>long-only portfolios</b>
+ (negatively correlated assets act as diversifiers).
+
+### <b> Absolute Correlation </b>
+
+Sometimes, in long-short portfolios, 
+we want <b>negatively correlated assets</b> to be considered similar.
+
+So we can define <b> absolute correlation </b> by:
+
+$$
+d_{|\rho|}[X,Y] = \sqrt{1 - |\rho[X,Y]|}
+$$
+
+That is still a metric but highly negatively correlated 
+assets have small distance, i.e. treated as “close.”
+
+### <b> Problems of Correlation </b>
+- correlation quantifies the <b>linear codependecy</b>of two assets
+- it’s highly<b> influenced by outliers </b>
+- its application<b> beyond the multivariate Normal case </b> is questionable 
+(Within the Gaussian world correlation is a clean, sufficient measure of dependence, outside it correlation can be unstable, incomplete, or misleading).
+
+So better to introduce other metrics.
+
+### <b> Entropy of a Discrete Random Variable </b>
+
+Shannon entropy measures the average amount of
+ information needed to describe the outcome of a random variable or the uncertainty or diversification 
+
+For random variable $X$ with support $S_X$ and pmf $p(x)$:
+
+$$
+H(X) = - \sum_{x \in S_X} p(x) \, \log p(x)
+$$
+
+with the convention that:    $ 0 \log 0 := 0 $ (limit argument).
+
+If event x has probability $p(x)$, its “surprise” is $\frac{1}{p(x)}$, so
+ low probabilitybrings= high surprise.
+
+<b> Entropy </b> can be interpreted as the expected surprise: it'sa
+ the <b>average uncertainty</b> in  $X$.
+
+When all probability mass is on a single outcome, there's no uncertainty and $H(x) = 0$.
+The <b>Maximum entropy</b> is reached when $X$ is uniform over its support and has
+
+$$
+        
+        H(X) = \log |S_X|
+$$
+
+### <b> Joint Entropy </b>
+
+For random variables $X$, $Y$ with joint pmf %p(x,y)$:
+
+$$
+    
+    H(X,Y) = - \sum_{x \in S_X} \sum_{y \in S_Y} p(x,y) \, \log p(x,y)
+  $$  
+It measures the <b>uncertainty of the pair</b> $(X,Y)$ considered together.
+
+<b> Propertries</b>:
+
+- $$ H(X,Y) = H(Y,X) $$
+    
+    
+- $$    H(X,X) = H(X) $$
+    
+- $$   H(X,Y) \geq \max\{H(X), H(Y)\} $$
+        
+-  $$H(X,Y) \leq H(X) + H(Y)$$
+    
+(equality holds if $X$ and $Y$ are independent.)
+
+### <b> Conditional Entropy </b>
+
+The conditional entropy of $X$ given $Y$ is:
+
+$$
+H(X|Y) = \sum_{y \in S_Y} p(y) \sum_{x \in S_X} p(x|y) \, \log \frac{1}{p(x|y)}
+= - \sum_{y \in S_Y} p(y) \sum_{x \in S_X} p(x|y) \log p(x|y)
+
+$$
+
+$H(X|Y)$ measures the remaining uncertainty about X once Y is known.
+
+- Conditional entropy is always ≤ entropy:
+$$
+H(X|Y) \le H(X)
+$$
+- Knowing $Y$ can never <b>increase</b>the uncertainty about X.
+- Equality occurs if $X$ and $Y$ are independent ($Y$ gives no info about $X$).
+
+- Entropy of a variable given itself**:
+$$
+H(X|X) = 0
+$$
+If you already know X, there’s no uncertainty left.
+
+- Chain rule for entropy:
+
+
+$$
+H(X,Y) = H(Y) + H(X|Y) = H(X) + H(Y|X)
+$$
+
+Total uncertainty about $(X,Y)$
+ can be decomposed into uncertainty of $Y$
+  and residual uncertainty of $X$ after knowing $Y$.
+
+### <b>Kullback–Leibler Divergence </b>
+
+For two discrete probability distributions 
+$p$ and $q$ defined on the same set $S_X$:
+
+$$
+D_{KL}(p \parallel q) = \sum_{x \in S_X} p(x) \log \frac{p(x)}{q(x)}
+$$
+
+- $p(x)$ = true probability of x
+- $q(x)$ = reference or approximate probability of $x$
+- Condition: if $q(x) = 0 \Rightarrow p(x) = 0$ to avoid division by zero
+
+- KL divergence measures <b>how much</b> $p$ <b>diverges from</b> $q$.
+- It quantifies the “extra information” required if we encode data using $q$ instead 
+of the true distribution $p$.
+
+<b> Propertries </b>
+- $$ D_{KL}(p \parallel q) \ge 0 $$
+Equality occurs <b>only when</b> $p = q$.
+- $$ D_{KL}(p \parallel q) \neq D_{KL}(q \parallel p) $$
+(Order matters, so KL divergence is <b>not a metric</b>)
+
+- <b>Triangle inequality fails</b>, so  KL divergence does not satisfy all properties of a distance metric.
+
+- If $$ q(x) = 1/|S_X|$$ (uniform distribution),$$ D_{KL}(p \parallel q)$$
+ measures <b>how far</b> p is from uniform.
+
+
+### <b> Cross Entropy </b>
+
+For two discrete probability distributions $p$ (true distribution) and $q$
+ (approximation or model) defined on the same set $S_X$:
+
+$$
+H(p, q) = - \sum_{x \in S_X} p(x) \log q(x)
+$$
+
+- $p(x)$ = true probability of outcome x
+- $q(x)$ = probability assigned by a model or reference distribution
+- It measure of uncertainty of $X$ when using $q$ instead of the true $p$.
+
+<b>Entropy:</b> $$H(p) = -\sum p(x)\log p(x)$$ measures uncertainty using
+ the true distribution.
+
+<b>Cross-entropy</b>: $$H(p,q) = H(p) + D_{KL}(p \parallel q)$$
+    - Cross-entropy is always <b>greater than or equal to true entropy</b>.
+    - The difference $$H(p,q) - H(p) = D_{KL}(p \parallel q)$$ measures how “wrong” $q$ is.
+
+### <b> Mutual Information </b> 
+
+Mutual information measures <b>how much knowing one variable reduces
+ uncertainty about another</b>. 
+
+$$
+I(X;Y) = H(X) - H(X|Y)
+$$
+
+- $H(X)$ = entropy of $X$ (uncertainty about $X$)
+- $H(X|Y)$ = conditional entropy of $X$ given $Y$ 
+Equivalently:
+
+$$
+I(X;Y) = \sum_{x \in S_X} \sum_{y \in S_Y} p(x,y) \log \frac{p(x,y)}{p(x)p(y)}
+$$
+
+<b> Propertries </b>
+
+- <b>Non-negative</b>: $$I(X;Y) \ge 0$$
+  $$MI = 0$$ if $X$ and $Y$ are independent (knowing Y gives no info about X)
+- <b>Symmetric</b>:  $$I(X;Y) = I(Y;X) $$
+- <b>Upper bound</b>: $$I(X;Y) \le \min\{H(X), H(Y)\} $$
+- <b>Not a metric</b>: Does not satisfy triangle inequality
+- <b>Grouping / decomposition</b>:
+  $$ 
+    I(X;Y;Z) = I(X;Y) + I((X,Y);Z)
+  $$  
+
+Mutual information can be expressed as a KL divergence:
+$$
+I(X;Y) = D_{KL}(p(x,y) \parallel p(x)p(y))
+$$
+It measures <b>>how far the joint distribution is from independence</b>.
+
+---
+
+# <b><a id="4"></a>4. Optimal Clustering </b>
+
+Clustering groups objects (items) 
+by similarity using their features. 
+The goal is to produce clusters where <b>intra-cluster similarity is high</b>
+ and <b>inter-cluster similarity is low</b>. 
+ Clustering is a form of <b>unsupervised learning</b>
+  because we do not provide labelled examples.
+
+
+
+### <b> Proximity matrix </b>
+
+A proximity matrix measures how "close" or "similar" 
+objects in a dataset are to each other.
+
+- For a dataset with $n$ elements, the proximity matrix $P$ 
+is an $n \times n$ matrix.
+- Each entry $P[i,j]$ encodes the closeness between object $i$ and object $j$.
+
+Typical definitions:
+- $P[i,j] = \text{similarity}(x_i, x_j)$ 
+- $P[i,j] = \text{distance}(x_i, x_j)$
+
+
+Note: A symmetric proximity matrix with zeros on the diagonal is common when using pairwise distances.
+
+Two main families of clustering:
+
+### <b>Hierarchical clustering </b>
+- Produces a nested sequence of partitions (a dendrogram).
+- Top: a single cluster containing all points. Bottom: each point alone.
+- Two approaches:
+  - <b>Agglomerative</b> (bottom-up): start with singletons and merge.
+  - <b>Divisive</b> (top-down): start with one cluster and split.
+- No need to specify $K$ up-front (but you choose a cut in the dendrogram to get $K$ clusters).
+
+### <b>Partitional clustering </b>
+- Partitions the dataset into $K$ disjoint clusters.
+- Each object belongs to exactly one cluster.
+- Example: <b>k-means</b>, <b>k-medoids</b>, <b>spectral clustering</b>.
+- Often requires the number of clusters $K$ as input.
+
+
+### <b>Practical issues</b>
+
+- <b>Curse of dimensionality</b>: when the number of features 
+is large relative to observations,
+  distances become less informative and clustering can degrade. 
+  Dimensionality reduction (PCA, t-SNE, UMAP) or feature selection helps.
+- <b>Initialization randomness</b>: algorithms like 
+k-means are sensitive to initial centroids. 
+
+
+
+Because partitional methods require $K$, 
+several methods exist to estimate a good $K$:
+
+### <b> Elbow method </b>
+- Compute within-cluster sum of squared errors (WCSS) for different $K$.
+- Plot WCSS vs $K$. The "elbow" point (where marginal gain drops) is a reasonable $K$.
+
+### <b>Silhouette analysis </b>
+- Measures how well each point lies within its cluster compared to the nearest other cluster.
+
+For an observation $i$:
+
+- Let $a_i$ = average distance from $i$ to all other points **in the same cluster** (intra-cluster distance).
+- Let $b_i$ = minimum over other clusters of the average distance from $i$ to points in that other cluster (nearest inter-cluster distance).
+
+The <b>silhouette coefficient</b> for $i$ is
+$$
+S_i = \frac{b_i - a_i}{\max(a_i, b_i)}
+$$
+
+- $S_i \approx 1$: well clustered (close to own cluster, far from others).
+- $S_i \approx 0$: on or near cluster boundary.
+- $S_i < 0$: likely misclassified (closer to another cluster).
+
+The <b>average silhouette score</b>
+ across all points is a scalar summary 
+ used to compare different $K$: higher is better.
+
+### <b> Practical checklist for clustering </b>
+
+1. <b>Preprocess </b>
+   - Standardize / normalize features when distances are used.
+   - Handle missing values.
+   - Reduce dimensionality if needed.
+
+2. <b>Choose distance / similarity </b>
+   - Euclidean for continuous, cosine for directional data, Jaccard for binary sets, etc.
+
+3. <b>Choose algorithm </b>
+   - Hierarchical if you want a dendrogram and no fixed $K$.
+   - K-means/k-medoids for large datasets with spherical-ish clusters.
+
+4. <b>Select $K$</b>
+   - Use elbow, silhouette, gap statistic, or domain knowledge.
+
+5. <b>Validate </b>
+   - Visual inspection (2D/3D embedding).
+   - Cluster compactness and separation metrics (silhouette, Davies–Bouldin).
+   - If possible, external validation against known labels.
+
+Once we run a clustering algorithm 
+(e.g., k-means), we still need to evaluate 
+how good the clustering result is. 
+This section introduces a quality measure and a procedure 
+to improve clustering by selectively reclustering low-quality clusters.
+
+
+
+### <b>Quality Measure $q$ </b>
+
+Define the <b>overall clustering quality</b>:
+
+$$
+q = \frac{E[S_i]}{\sqrt{V[S_i]}}
+$$
+
+Where:
+
+- $E[S_i]$ = mean of silhouette scores (average clustering quality).
+- $V[S_i]$ = variance of silhouette scores (consistency across points).
+
+Higher $q$ means better clustering (high average silhouette + low variability).
+Low $q$ means that some clusters might be poorly formed or unstable.
+
+
+
+### <b>Base Clustering Algorithm </b>
+
+At the **base level**, the procedure works as follows:
+
+1. <b>Input</b>
+   - Start from the <b>observation (distance/similarity) matrix</b>.
+
+2. <b>Outer Loop (over $K$)</b>
+   - For $k = 2,3,\dots,N$:
+     - Run k-means clustering with $k$ clusters.
+     - Compute the quality measure $q$ from silhouette scores.
+     - Store results for that $k$.
+
+3. <b>Inner Loop (over initializations) </b>
+   - Repeat the above with **different random initializations** of centroids.
+   - This reduces sensitivity to random starts.
+
+4. <b>Selection </b>
+   - Choose the clustering result with the <b>highest quality</b> $q$.
+   - This yields:
+     - Optimal number of clusters $K$.
+     - Best initialization (most stable clustering result).
+
+Even after selecting the best $K$ and initialization, <b>some clusters
+ can still be poor quality</b>.
+
+
+### <b> Reclustering Low-Quality Clusters </b>
+
+To refine the clustering, we <b>recluster only the bad clusters</b>.
+
+
+1. <b>Start with Base Clustering Result </b>
+   - We already have $K$ clusters from the base algorithm.
+   - For each cluster $k$, compute its <b>quality score </b>
+   $q_k$ (mean silhouette score of its members).
+
+2. <b>Identify Poor-Quality Clusters </b>
+   - Compute overall average quality:
+     $$
+     q = \frac{1}{K} \sum_{k=1}^{K} q_k
+     $$
+   - Identify clusters with $q_k < q$ → “below-average quality.”
+   - Let $K_1$ = number of such clusters.
+
+3.  <b> Decision Rule Based on $K_1$ </b>
+   - If $K_1 \leq 1$:
+     - No meaningful reclustering, so return base clustering.
+   - If $K_1 \geq 2$:
+     - <b>Recluster only those $K_1$ clusters </b>:
+       - Build a <b>new observation matrix </b> for elements of these clusters.
+       - <b>Rerun the base algorithm </b>
+        (search over $K$ and initializations) on this reduced subset.
+
+4. <b>Check Improvement </b>
+   - Compare **average quality before vs. after reclustering**.
+   - If quality improved:
+     - Merge the unchanged good clusters with the newly reclustered clusters.
+   - Else:
+     - Keep the original base clustering result.
+
+---
+
+# <b><a id="5"></a>5. Financial Labels </b>
+
+Supervised learning aims to predict an output $y$ given features $X$.
+
+### <b> Types of Supervised Learning </b>
+
+- <b>Regression problems</b>
+  - Predict a continuous target (real numbers).
+  - Examples drawn from infinite population (countable like integers or uncountable like reals).
+
+- <b>Classification problems</b>
+  - Predict a discrete label from a finite set (e.g., ${0, 1}$, ${bearish, bullish}$).
+
+### <b> Fixed-Horizon Labeling </b>
+
+We have a <b>feature matrix</b>:
+
+- $X = \{X_i\}_{i=1}^{I}$ 
+- For each observation $X_i$:
+  - Let $t_{i,0}$ = index of bar where features are sampled.
+  - Define a <b>fixed horizon</b> $h$.
+  - Compute return over horizon $h$:
+
+$$
+r_{t_{i,0}; t_{i,1}} = \frac{p_{t_{i,1}}}{p_{t_{i,0}}} - 1, \quad \text{where } t_{i,1} = t_{i,0} + h
+$$
+
+
+Assign label $y_i \in \{-1, 0, 1\}$ based on return:
+
+$$
+y_i =
+\begin{cases}
+-1 & \text{if } r_{t_{i,0}; t_{i,1}} < -\tau \\
+0  & \text{if } |r_{t_{i,0}; t_{i,1}}| \leq \tau \\
++1 & \text{if } r_{t_{i,0}; t_{i,1}} > \tau
+\end{cases}
+$$
+
+Where:
+
+- $\tau$ = constant <b>return threshold</b>.
+- Time bars = bars sampled at regular time intervals.
+- Result: <b>fixed time horizons</b> for all samples.
+
+### <b> Concerns with Fixed-Horizon Labeling </b>
+
+- Returns show intraday volatility patterns (open/close more volatile).
+- Constant $\tau$ transfers seasonality into labels, label distribution becomes **non-stationary**.
+
+<b>Solution:</b> use tick/volume/dollar bars instead of time bars or standardize returns using volatility estimate:
+
+$$
+z_{t_{i,0};t_{i,1}} = \frac{r_{t_{i,0}; t_{i,1}}}{\sigma_{t_{i,0}; t_{i,1}}}
+$$
+
+where $\sigma_{t_{i,0}; t_{i,1}}$ = predicted volatility.
+Then apply labeling rule to $z$-scores.
+
+
+
+### <b> Triple-Barrier Method </b>
+
+Labels should represent **actual trading outcomes** — profit, loss, or timeout.
+
+This method sets <b>three barriers</b>:
+
+1. Upper Horizontal Barrier: Profit-taking (success).
+2. Lower Horizontal Barrier:  Stop-loss (failure).
+3. Vertical Barrier: Maximum holding period (timeout).
+
+
+### <b>Step-by-Step Procedure </b>
+
+1. Start at $t_{i,0}$ (where features $X_i$ observed).
+2. Monitor price path forward until one barrier is hit.
+3. Assign label $y_i$:
+   - If <b>upper barrier</b> reached first: $y_i = +1$.
+   - If <b>lower barrier</b> reached first: $y_i = -1$.
+   - If <b>vertical barrier </b> reached first:
+     - Option 1:  $y_i = 0$ (neutral).
+     - Option 2:  $y_i = \text{sgn}(r_{t_{i,0};t_{i,1}})$ (final return sign).
+
+### <b> Trend Scanning Method </b>
+
+Instead of setting a fixed horizon 
+$h$, profit-taking, or stop-loss levels, 
+<b>trend scanning</b> lets trends <b>run naturally</b> until they end.  
+
+ Label each observation as part of:
+
+- <b>Uptrend:</b> $y_t = +1$
+- <b>Downtrend:</b> $y_t = -1$
+- <b>No trend:</b> $y_t = 0$
+
+### <b>Define a Trend </b>
+
+Fit a <b>local linear regression</b>
+ over a window of $L$ observations:
+
+$$
+x_{t+l} = \beta_0 + \beta_1 l + \varepsilon_{t+l}, \quad l = 0,1,\dots,L-1
+$$
+
+- $\beta_1$ = slope, direction & strength of trend.
+- $\varepsilon_{t+l}$ = residuals (noise).
+
+
+### <b> Test Statistical Significance </b>
+
+Compute <b>t-statistic</b> of the slope:
+
+$$
+\hat{t}_{\beta_1} = \frac{\hat{\beta}_1}{\hat{\sigma}_{\hat{\beta}_1}}
+$$
+
+- Large $|\hat{t}_{\beta_1}|$: strong trend evidence.
+- Near 0: no clear trend.
+
+
+### <b> Assign Labels </b>
+
+For each $t$:
+
+$$
+y_t =
+\begin{cases}
++1 & \text{if } \hat{t}_{\beta_1} > \tau \quad \text{(Uptrend)} \\
+-1 & \text{if } \hat{t}_{\beta_1} < -\tau \quad \text{(Downtrend)} \\
+0 & \text{if } |\hat{t}_{\beta_1}| \le \tau \quad \text{(No trend)}
+\end{cases}
+$$
+
+Where $\tau$ = critical t-value threshold.
+
+### <b> Optimization over $L$ </b>
+
+Because $L$ is unknown, try a <b>set of candidate window lengths</b>
+ and pick $L$ that **maximizes** $|\hat{\beta}_1|$ (strongest trend evidence).
+
+### <b> Meta-Labeling </b>
+
+Meta-labeling is a **two-model approach**:
+
+1. <b>Primary model</b>: predicts position direction (long/short).
+2. <b>Secondary (meta) model</b>: predicts whether that position will be profitable (filtering false positives).
+
+The goal is to reduce exposure to losing 
+trades and size positions proportionally to predicted success probability.
+
+
+
+### <b> Expected Value & Risk </b>
+
+Let $p$ = probability of profit and $\pi$ = payoff magnitude.
+
+The expected value is:
+
+
+$$
+\mu = p \pi + (1 - p)(-\pi) = \pi (2p - 1)
+$$
+
+- $p > 0.5 \Rightarrow \mu > 0$: positive expected profit.
+- $p = 0.5 \Rightarrow \mu = 0$: no edge.
+
+
+### <b> Expected Variance </b>
+
+$$
+\sigma^2 = 4 \pi^2 p(1-p)
+$$
+
+- Highest when $p = 0.5$ (most uncertain).
+- Shrinks as $p \to 0$ or $1$ (certainty increases).
+
+
+### <b> Sharpe Ratio </b> 
+
+Standardize risk/return with Sharpe-like measure:
+
+$$
+z = \frac{\mu}{\sigma} =
+\frac{\pi(2p-1)}{2\pi \sqrt{p(1-p)}} =
+\frac{2p-1}{2\sqrt{p(1-p)}}
+$$
+
+- $z > 0$: attractive opportunity.
+- $z < 0$: avoid trade.
+
+
+### <b> Mapping to Position Size </b>
+
+Convert $z$ to position size $m \in [-1, 1]$:
+
+$$
+m = 2 \, Z(z) - 1
+$$
+
+Where $Z(\cdot)$ = CDF of standard normal.
+
+- $z = 0 \Rightarrow m = 0$ (no trade)
+- Large $z > 0 \Rightarrow m \to 1$ (max long)
+- Large $z < 0 \Rightarrow m \to -1$ (max short)
+
+
+### <b> Meta-Labeling for Position Size with Multiple Classifiers </b>
+
+Suppose we have $n$ meta-labeling classifiers:
+
+$$
+y_i \in \{0,1\}, \quad i=1,\dots,n
+$$
+
+Sum of predictions:
+
+$$
+\sum_{i=1}^n y_i \sim \text{Binomial}(n, p)
+$$
+
+- Mean: $E[\sum y_i] = np$
+- Variance: $Var[\sum y_i] = np(1-p)$
+
+As $n \to \infty$, by <b>de Moivre–Laplace </b>:
+
+$$
+\frac{\sum y_i - np}{\sqrt{np(1-p)}} \xrightarrow{d} N(0,1)
+$$
+
+Thus, average prediction:
+
+$$
+\hat{p} = \frac{1}{n}\sum y_i \sim N\Big(p, \frac{p(1-p)}{n}\Big)
+$$
+
+
+
+### <b> Hypothesis Test</b>
+
+Null hypothesis: $H_0: p = 0.5$ (no predictive edge)
+
+t-statistic:
+
+$$
+t = \frac{\hat{p} - 0.5}{\sqrt{\frac{\hat{p}(1-\hat{p})}{n}}}
+$$
+
+Follows Student-t distribution with $n-1$ d.o.f.
+
+
+
+### <b> Mapping t to Bet Size </b>
+
+Convert $t$ to bet size $m \in [-1, 1]$:
+
+$$
+m = 2 \, T_{n-1}(t) - 1
+$$
+
+Where $T_{n-1}(\cdot)$ = CDF of Student-t distribution.
+
+- $t=0 \Rightarrow m=0$ (no bet)
+- Large $t > 0 \Rightarrow m \to 1$ (max long)
+- Large $t < 0 \Rightarrow m \to -1$ (max short)
+
+In practical:
+
+- $\hat{p} \to 1$: strong long conviction → large $m > 0$.
+- $\hat{p} \to 0$: strong short conviction → large $m < 0$.
+- $\hat{p} \approx 0.5$: no edge → $m \approx 0$ (no position).
+
+
+---
+
+# <b><a id="6"></a>6. Feature Importance Analysis</b>
+
+### <b> P-Values (Statistical Significance) </b>
+
+ Probability of observing the estimated coefficient 
+ if the true <b> coefficient = 0 </b>.
+
+It tests whether a<b> feature has any effect</b>, not its predictive power.
+
+The p-value is a probability — but not the probability that your hypothesis is true.
+It answers a very specific question:
+
+_“If the null hypothesis were true, how likely is 
+it to observe a result as extreme (or more extreme) than what I 
+actually observed?”_
+
+<b> Limitations </b>
+- False positives/negatives if model assumptions fail.
+- Not robust with <b>multicollinearity</b> (correlated features).
+- Measures statistical relevance, not:
+  - Effect size
+  - Predictive power
+  - Causality
+
+A low p-value doesn't mean feature is “important”,
+it only means the effect is statistically detectable.
+
+
+
+### <b> Mean Decrease Impurity (MDI) — Tree-Based Models </b>
+
+[A clear video explanation can be found here, credits to StatQuest](https://www.youtube.com/watch?v=_L39rN6gz7Y)
+
+
+1. At each node pick feature $X_f$ and threshold $\tau$ to split:
+   - Left: $X_f < \tau$
+   - Right: $X_f \ge \tau$
+2. Measure impurity with e.g.:
+   - Entropy: $H(t) = -\sum_c p_c \log_2 p_c$
+   - Gini: $G(t) = 1 - \sum_c p_c^2$
+3. Information gain (impurity reduction) for a split:
+   $$
+   \Delta g(t,f) = i(t) - \frac{N(t_0)}{N(t)} i(t_0) - \frac{N(t_1)}{N(t)} i(t_1)
+   $$
+4. Feature importance (MDI) for feature $f$: sum of weighted $\Delta g(t,f)$ over all nodes where $f$ was used.
+
+
+### <b>Mean Decrease Accuracy (MDA) </b>
+
+This algorithm measures out-of-sample importance.
+
+1. Fit model and compute cross-validated performance (baseline).
+2. For each feature:
+   - Shuffle that feature's values (breaks relationship with target).
+   - Recalculate cross-validated performance.
+3. $MDA$ = performance(before shuffle) − performance(after shuffle).
+
+<b>Interpretation </b>
+- Large positive MDA means that feature important.
+- MDA near zero means that feature irrelevant.
+- Negative MDA means feature damaging performance (model improved after shuffling).
+
+
+### <b> Model Performance Metrics </b>
+
+
+
+### <b>Negative Average Likelihood (NegAL) </b>
+  $$
+  \text{NegAL} = \frac{1}{N}\sum_{n=1}^N \sum_{k=1}^K y_{n,k} \, p_{n,k}
+  $$
+  where $y_{n,k}=1$ if observation $n$ has true label $k$, else 0; $p_{n,k}$ is predicted prob.
+
+<b>Range:</b>$0 \le \text{NegAL} \le 1$.  
+<b>Higher =is better</b> (closer to 1 the model assigns higher probability to true labels).
+
+### <b>Probability-Weighted Accuracy (PWA) </b>
+
+  $$
+  \text{PWA} = \frac{1}{N} \sum_{n=1}^N y_n \, p_n
+  $$
+  where $y_n = 1$ if prediction correct else 0; $p_n = \max_k p_{n,k}$.
+
+It weighs correct predictions by model confidence.
+
+
+### <b> Feature Clustering for Importance </b>
+
+With highly codependent features the individual importance unreliable,
+so it's commonoto cluster features to analyze them better.
+
+1. <b>Represent features in a metric space </b>
+   - Options:
+     - Correlation-based distances (linear dependencies).
+     - Information-theoretic metrics (e.g., Variation of Information) to capture nonlinear redundancies.
+2. <b>Cluster formation </b>
+   - Apply an ONC (Optimal Number of Clusters) algorithm:
+     - Finds number of clusters and assignments.
+     - Partitional assignment: each feature belongs to exactly one cluster.
+     - Within-cluster features share much information; across clusters share little.
+3. <b>Optional residualization </b>
+   - For cluster $k$, regress each feature $X_{n,i}\in D_k$ on features from earlier clusters $\cup_{l<k} D_l$:
+     $$
+     X_{n,i} = \alpha_i + \sum_{j\in \cup_{l<k} D_l} \beta_{i,j} X_{n,j} + \varepsilon_{n,i}
+     $$
+   - Replace $X_i$ with residuals $\hat\varepsilon_i$.
+   - If regressors are too many, reduce dimensionality inside clusters.
+
+<b>Clustered Importance</b>
+- Apply **MDI** or **MDA** at the **cluster** level (not single-feature).
+- Interpret which groups of features drive model performance.
+
+---
+
+# <b><a id="7"></a>7. Portfolio Construction</b>
+
+Given $N$ assets the expected excess returns $\mu$ (vector $N\times 1$) and 
+the covariance matrix $V$ ($N\times N$), the goal is to find portfolio
+weights  $\omega$ that minimize <b>portfolio variance </b>.
+
+
+### <b> Classical Mean–Variance Optimization (Variance Minimization) </b>
+
+
+$$
+\min_{\omega}\ \tfrac{1}{2}\,\omega^\top V \omega
+\quad\text{s.t.}\quad
+\omega^\top a = 1
+$$
+
+The vector $a$ encodes the portfolio constraint (e.g., fully invested: $a = \mathbf{1}_N$).
+
+Lagrangian:
+
+$$
+\mathcal{L}\big(\tfrac12\omega, \lambda\big) = \tfrac12 \omega^\top V \omega - \lambda(\omega^\top a - 1)
+$$
+
+
+<b>Optimal weights: </b>
+
+$$
+{\ \omega^{*} = \frac{V^{-1} a}{a^\top V^{-1} a}\ }
+$$
+
+
+### <b>Useful Special Cases </b>
+
+- <b>Equal weights under isotropic variance</b>: $a = \mathbf{1}_N,\ V = \sigma^2 I_N$, $\omega^* = \tfrac{1}{N}\mathbf{1}_N$                                                       
+- <b>Inverse-variance </b>: $a = \mathbf{1}_N,\ V$ diagonal,  $\omega^*_n \propto \dfrac{1}{V_{n,n}}$                              
+- <b>Minimum-variance</b>: $a = \mathbf{1}_N$, $\omega^* = \dfrac{V^{-1}\mathbf{1}_N}{\mathbf{1}_N^\top V^{-1}\mathbf{1}_N}$ 
+- <b>Maximum Sharpe </b>: $a = \mu$, $\omega^* = \dfrac{V^{-1}\mu}{\mathbf{1}_N^\top V^{-1}\mu}$        
+
+
+### <b>Numerical Stability & Conditioning Problem </b>
+
+Let $C$ be the standardized correlation matrix of $V$. 
+The solution needs to calculate on $V^{-1}$.
+
+If assets are <b>highly correlated </b> ($|\rho|\approx 1$), then $C$ is **ill-conditioned**:
+  - Condition number large means that $V^{-1}$ numerically unstable (small 
+  errors in $V$ estimate produce large swings in $V^{-1}$).
+We need Markowitz when correlations exist, but those same correlations make the solution unstable.
+
+<b>Practical fixes </b>:
+- Shrinkage estimators (Ledoit–Wolf)
+- Factor models (lower-dimensional structure)
+- Regularization: add $\delta I$ to $V$ before inversion ($V+\delta I$)
+- Robust/resampled optimization, constraints on weights (box, turnover), or use of priors (Black–Litterman)
+
+
+### <b> Nested Clustered Optimization (NCO) </b>
+
+THe goal is tos tabilize Markowitz by solving smaller, 
+better-conditioned subproblems.
+
+
+1. <b>Cluster the correlation matrix</b> to find groups of highly correlated assets.
+2. <b>Intracluster optimization</b>:
+   - For each cluster, compute intracluster weights using the denoised covariance (call it `cov1`).
+   - Smaller cluster size means better-conditioned covariance estimates.
+   - With very correlated cluster, the min-variance tends toward equal weights, so instability is limited.
+3. <b>Intercluster optimization </b>:
+   - Build reduced covariance (`cov2`) between clusters.
+   - `cov2` is by construction close to diagonal; invertibility and conditioning are much improved.
+4. <b>Combine</b>:
+   - Final asset weights = (intra-cluster weights) × (inter-cluster weights).
+
+<b> Why NCO helps </b>
+- Dimensionality reduction: each inversion is on smaller matrices.
+- Denoising at step 1 reduces noisy eigenvalues.
+- Aggregation produces a near-diagonal inter-cluster covariance, improving stability.
+
+---
+
+# <b><a id="8"></a>8. Testing Set Overfitting </b>
+
+### <b>Selection Bias under Multiple Testing (SBuMT) </b>
+
+SBuMT occurs when a researcher tests many strategies on the same historical dataset 
+and then reports only the best-performing one.
+
+This process leads to <b>false discoveries </b>, strategies that look profitable 
+in-sample but fail in live trading.
+
+### <b>True vs. False Investment Strategies & Precision/Recall </b>
+
+
+The total number of strategies is
+
+$$
+s = s_T + s_F
+$$
+
+where:
+- $s_T$ = number of <b>true </b> strategies (positive expected return)
+- $s_F$ = number of <b>false </b> strategies (zero or negative expected return)
+
+The <b>Odds ratio</b> of true to false strategies is:
+
+$$
+\theta = \frac{s_T}{s_F}
+$$
+
+In finance, signal-to-noise ratio is usually very low, meaning most strategies are false.
+
+So the number of true strategies is:
+
+$$
+s_T = \frac{\theta s}{1+\theta}
+$$
+
+and the number of false ones:
+$$
+s_F = \frac{s}{1+\theta}
+$$
+
+---
+
+### <b>Statistical Errors </b>
+
+- <b>False Positive Rate (Type I error):</b> $\alpha$
+    - <b>False Positives (FP):</b> $FP = \alpha s_F$
+    - <b>True Negatives (TN):</b> $TN = (1-\alpha)s_F$
+
+- <b>False Negative Rate (Type II error):</b> $\beta$
+    - <b>False Negatives (FN):</b> $FN = \beta s_T$
+    - <b>True Positives (TP):</b> $TP = (1-\beta)s_T$
+
+
+The <b>Precision (Positive Predictive Value)</b> is defined as:
+
+$$
+\text{precision} =
+\frac{TP}{TP+FP}
+= \frac{(1-\beta)s_T}{(1-\beta)s_T + \alpha s_F}
+= \frac{(1-\beta)\theta}{(1-\beta)\theta+\alpha}
+$$
+
+and the <b>Recall (Sensitivity)</b> as:
+
+$$
+\text{recall} =
+\frac{TP}{TP+FN}
+= 1-\beta
+$$
+
+
+
+Precision strongly depends on odds ratio θ.
+
+A discovered strategy is **more likely to be false than true** if:
+
+$$
+(1-\beta)\theta < \alpha
+$$
+
+---
+
+### <b>Type $I$ Error Across Multiple Trials </b> 
+_(False alarm: see a signal where none exists, identify a false positive)_
+
+In a <b>single trial </b>:
+    - $P$(Type I error) = $\alpha$
+    - $P$(No Type I error) = $1-\alpha$
+
+with <b>K independent trials</b>:
+    - $P$(No Type I error in any trial): $(1-\alpha)^K$
+    - $P$(At least one Type I error) = <b>Family-Wise Error Rate (FWER): </b>
+
+$$
+\alpha_K = 1 - (1-\alpha)^K
+$$
+
+FWER <b>increases with K </b>, the more strategies you test, 
+the higher the chance of finding a false positive.
+
+
+
+### <b>Type $II$ Error Across Multiple Trials </b> 
+_(Missed discovery: fail to detect a true strategy)_
+
+In a <b>single trial:</b>:
+-  $P$(Type II error) = $\beta$
+
+with <b>K trials</b>P(Missing all positives):
+
+-  $P$(Type II error) $ =\beta_K = \beta^K $
+
+
+
+As $K \uparrow$:
+- $\alpha_K \uparrow$ (false positive risk grows)
+- $\beta_K \downarrow$ (less likely to miss all true positives)
+
+
+### <b>Precision & Recall Adjusted for Multiple Testing </b>
+
+The <b>Adjusted Precision</b> can be defined as:
+
+$$
+\text{precision}_K =
+\frac{(1-\beta^K)\theta}{(1-\beta^K)\theta + \alpha_K}
+= \frac{(1-\beta^K)\theta}{(1-\beta^K)\theta + 1 - (1-\alpha)^K}
+$$
+
+and the <b>Adjusted Recall</b> as:
+
+$$
+\text{recall}_K = 1 - \beta^K
+$$
+
+As $K$ increases:
+> - <b>Recall improves</b> (lower chance of missing all true strategies).
+> - <b>Precision usually drops</b> (higher risk of including false positives).
+
+
+### <b> The Sharpe Ratio Framework </b>
+
+
+Given the strategy excess returns:
+
+$$
+r_t \sim \mathcal{N}(\mu, \sigma^2), \quad t=1,\dots,T
+$$
+
+and the <b>Population (true) Sharpe Ratio:</b>
+
+$$
+SR = \frac{\mu}{\sigma}
+$$
+
+The <b>Sample (estimated) Sharpe Ratio</b> is defined as:
+
+$$
+\widehat{SR} = \frac{\bar{r}}{s_r}
+$$
+
+where $\bar{r}$ is sample mean return, $s_r$ sample standard deviation.
+
+The distribution of Sample SR can be defined as following.
+
+#### <b>Case 1: IID Normal Returns </b>
+
+
+$$
+\sqrt{T}\,(\widehat{SR} - SR)
+\xrightarrow{d}
+\mathcal{N}\!\left(0, \, 1 + \frac{SR^2}{2}\right)
+$$
+
+#### <b>Case 2: Non-Normal Returns </b>
+
+Empirical evidence: hedge fund returns often exhibit:
+- Negative skewness
+- Positive excess kurtosis
+
+
+$$
+\sqrt{T}\,(\widehat{SR} - SR)
+\xrightarrow{d}
+\mathcal{N}\!\Bigl(0, \,
+1 + \frac{SR^2}{2}\Bigl(1-\gamma_3 SR + \frac{\gamma_4-3}{4}SR^2\Bigr)
+\Bigr)
+$$
+
+where:
+- $\gamma_3$ = skewness
+- $\gamma_4$ = kurtosis
+
+Special case: for Normal returns ($\gamma_3=0,\ \gamma_4=3$), we recover the initial formula.
+
+
+
+### <b>SBuMT and Maximum Sharpe Ratios </b>
+
+
+Given  $K$ independent strategies with Sharpe ratios:
+
+$$
+SR_k \sim \mathcal{N}(0, V[SR_k]), \quad k = 1,\dots,K
+$$
+
+the <b>Expected Maximum of K Sharpe Ratios </b>
+
+$$
+\mathbb{E}\!\big[\max SR_k\big]
+\approx
+(1-\gamma)\, Z^{-1}\!\!\left(1 - \frac{1}{K}\right)
++ \gamma\, Z^{-1}\!\!\left(1 - \frac{1}{Ke}\right)
+$$
+
+where:
+- $Z^{-1}(\cdot)$ = quantile function of standard Normal
+- $\gamma \approx 0.5772$ = Euler–Mascheroni constant
+- $e \approx 2.718$
+
+The more strategies you try ($K \uparrow$), the higher the <b>expected maximum Sharpe ratio by chance</b>.
+
+So a discovered strategy is likely a **false positive** unless:
+
+$$
+\max_k SR_k \gg \mathbb{E}[\max_k SR_k]
+$$
+
+
+---
+
+### <b>Deflated Sharpe Ratio (DSR) </b>
+
+Adjusts Sharpe ratio for:
+- Multiple testing ($K$)
+- Sample size ($T$)
+- Skewness ($\gamma_3$) and kurtosis ($\gamma_4$)
+
+
+$$
+DSR = \frac{\widehat{SR} - \mathbb{E}[\max_k SR_k]}{\sqrt{\text{Adjusted Variance}}}
+$$
+
+A <b>high DSR brings stronger evidence of true profitability</b>.
+A low DSR means thatis likely a false discovery
+
+
+### <b>Clustering Strategies & Cluster-Level Returns </b>
+
+
+N strategies are grouped into $K \ll N$ **clusters** based on correlations, so
+it's possible to reduces dimensionality for multiple testing bias.
+
+
+The <b>aggregate return series</b> for each cluster is:
+
+$$
+S_{k,t} = \sum_{i \in C_k} w_{k,i} r_{i,t}
+$$
+
+
+Weights chosen to minimize cluster variance:
+
+$$
+w_k =
+\frac{\Sigma_k^{-1} \mathbf{1}_k}{\mathbf{1}_k^{\top}\Sigma_k^{-1} \mathbf{1}_k}
+$$
+
+where:
+- $\Sigma_k$ = covariance matrix of returns within cluster $k$
+- $\mathbf{1}_k$ = vector of ones of appropriate size
+
+Clustering <b>reduces effective number of trials $(K ≪ N)$</b>:
+- Lowers false discovery probability
+- Produces a more realistic null distribution
+- Improves **precision** of DSR-based significance testing
+
+---
+
+# <b><a id="9"></a>Bibliography </b>
+
+- [Machine Learning for Asset Managers](https://www.cambridge.org/core/books/machine-learning-for-asset-managers/6D9211305EA2E425D33A9F38D0AE3545)
+- [StatQuest YouTube Videos](https://www.youtube.com/c/joshstarmer)
+- [ChatGPT-5, OpenAI](https://openai.com/it-IT/index/introducing-gpt-5/)
+
