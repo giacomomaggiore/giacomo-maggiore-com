@@ -29,7 +29,7 @@ They are often incomplete and not 100% accurate, as I intentionally skipped math
 Contrary to popular belief, <b>backtesting is not a research tool</b>.  
 Backtests can never prove that a strategy is a <b>true positive</b>.
 
-Never develop a strategy solely through backtests.  
+Never develop a strategy just because of backtests.  
 Strategies must be supported by <b>theory</b>, not only historical simulations.
 
 Your theories must be <b>general</b> enough to explain particular cases, 
@@ -38,27 +38,27 @@ including extreme events (black swans).
 ## <b>Role of Machine Learning (ML)</b>
 
 - ML helps <b>discover hidden variables</b>.
-- ML itself does <b>not</b> reveal the functional relations between variables. Therefore:
+- ML itself does <b>not</b> reveal the relations between variables. Therefore:
   - Formulate a <b>theory</b> that binds the elements together.
   - <b>Test the theory</b> in different contexts (even where ML found no signal).
 
-Once the theory has been tested, it should stand on its own; the <b>theory</b>, not the ML algorithm, should make predictions.
+Once the theory has been tested, it should stand on its own. <br /> The <b>theory</b>, not the ML algorithm, should make predictions.
 
 ## <b>Uses of ML</b>
 
-- <b>Existence</b> — ML can indicate the presence of previously unknown relations by successfully predicting outcomes.
-- <b>Importance</b> — Feature-importance measures (e.g., Mean-Decrease Accuracy) reveal which variables matter more for model performance.
-- <b>Causation</b> — ML can support causal inference by comparing predictions.
-- <b>Reductionism</b> — Dimensionality reduction can reveal low-dimensional structure and clusters.
-- <b>Retrieval</b> — ML scans large datasets to find rare or interesting events.
-- <b>Outlier Detection</b> — ML identifies anomalies using learned patterns.
+- <b>Existence</b>: ML can indicate the presence of previously unknown relations by predicting outcomes.
+- <b>Importance</b>: Feature-importance measures reveal which variables matter more for model performance.
+- <b>Causation</b>: ML can support causal inference by comparing predictions.
+- <b>Reductionism</b>: Dimensionality reduction can reveal low-dimensional structure and clusters.
+- <b>Retrieval</b>: ML scans large datasets to find rare events.
+- <b>Outlier Detection</b>: ML identifies anomalies using learned patterns.
 
 ### <b>Types of Overfitting</b>
 
-- <b>Train-set overfitting</b> — model fits noise and signal in the training data (learns tiny irrelevant movements).
-- <b>Test-set overfitting</b> — repeatedly testing many models on the same test set and selecting the best-performing one.
+- <b>Train-set overfitting</b>: model fits noise and signal in the training data (learns tiny irrelevant movements).
+- <b>Test-set overfitting</b>: repeatedly testing many models on the same test set and selecting the best-performing one.
 
-A useful diagnostic is the **generalization gap**:
+A useful diagnostic is the <b>generalization gap</b>:
 $$
 \text{Generalization Gap } G = E_{\text{test}} - E_{\text{train}},
 $$
@@ -66,9 +66,7 @@ where $E_{\text{train}}$ and $E_{\text{test}}$ are the expected errors (or loss)
 
 ![Overfitting Diagram](/images/notes/ml-diagram.png)
 
-
 ---
-
 
 
 # <b><a id="2"></a>2. Denoising and Detoning </b>
@@ -123,7 +121,7 @@ may represent true correlations or factors in the data.
 The basic <b>Marčenko–Pastur theorem</b> 
 assumes that <b>all eigenvalues are random</b>.  
 
-In real financial data, this assumption is not valid — some eigenvalues capture <b>true, non-random structure</b>, 
+In real financial data, this assumption is not valid, some eigenvalues capture <b>true, non-random structure</b>, 
 such as <b>market factor</b> (the first principal component, representing systematic market risk), <b>sector effects</b> or 
 other common risk factors.
 
@@ -135,7 +133,7 @@ Laloux proposed an approach to <b>adjust</b> the Marčenko–Pastur model to acc
  (e.g., the first one representing the <b>market mode</b>).
 
 2. <b>Remove their contribution from the variance</b>  
-   - Since these are not random, they should not inflate the estimated noise level.  
+   - Since these are not random, they should not increase the estimated noise level.  
    - Adjust the variance:
 
    $$
@@ -182,9 +180,7 @@ Partition the eigenpairs into <b>market components</b>
 $$
 W = [W_M \;|\; W_D],\qquad
 $$
-$$
-\Lambda=\begin{bmatrix}\Lambda_M & 0\$$4pt] 0 & \Lambda_D\end{bmatrix},
-$$
+
 so that
 $$
 C_1 = W_M \Lambda_M W_M^\top \;+\; W_D \Lambda_D W_D^\top.
@@ -218,7 +214,7 @@ $$
 $$
 
 where $W_+$ is the matrix of eigenvectors that survived detoning
- (i.e. the columns of W_D), and f is the vector of allocations on those principal components.
+ (i.e. the columns of W_D), and $f$ is the vector of allocations on those principal components.
 
 Take the classic mean–variance objective (risk aversion $\gamma$):
 
@@ -253,7 +249,7 @@ This expression avoids inverting the full (singular) $C_2$ and only requires inv
 So $f_i$ tells you <b>how much you are investing in eigenportfolio i</b> (the eigenportfolio built from eigenvector $w_i$).
 
 After detoning (removing market eigenvectors), we only keep the “surviving” eigenvectors $W_+$.
-Instead of trying to optimize in the full (possibly singular) asset space, we solve for $f$ in the reduced space:
+Instead of trying to optimize in the full asset space, we solve for $f$ in the reduced space:
 
 $$
 f^\ast = \frac{1}{\gamma} \Lambda_+^{-1} W_+^\top \mu
@@ -292,7 +288,7 @@ Correlation $\rho[X,Y]$ measures
 <b> linear codependence </b> but is not a metric 
 (fails nonnegativity and triangle inequality).
 
-We therefore a metric that gives a geometry/topology to compare and cluster data, so define:
+We therefore need a metric that gives a geometry/topology to compare and cluster data, so define:
 $$
 d_\rho[X,Y] = \sqrt{\tfrac{1}{2}(1 - \rho[X,Y])}
 $$
@@ -303,7 +299,7 @@ If we look at the Euclidean distance:
     $$
     d[x,y] = \sqrt{\sum_{t=1}^T (x_t - y_t)^2}
     $$
-it Expands to:
+it expands to:
     $$
     d[x,y] = \sqrt{2T(1 - \rho[x,y])} = \sqrt{4T \, d_\rho[X,Y]}
     $$
@@ -330,13 +326,13 @@ d_{|\rho|}[X,Y] = \sqrt{1 - |\rho[X,Y]|}
 $$
 
 That is still a metric but highly negatively correlated 
-assets have small distance, i.e. treated as “close.”
+assets have small distance.
 
 ### <b> Problems of Correlation </b>
-- correlation quantifies the <b>linear codependecy</b>of two assets
-- it’s highly<b> influenced by outliers </b>
-- its application<b> beyond the multivariate Normal case </b> is questionable 
-(Within the Gaussian world correlation is a clean, sufficient measure of dependence, outside it correlation can be unstable, incomplete, or misleading).
+- Correlation quantifies the <b>linear codependecy</b>of two assets
+- It’s highly<b> influenced by outliers </b>
+- Its application<b> beyond the multivariate Normal case </b> is questionable 
+(In the Gaussian world correlation is a clean, sufficient measure of dependence, outside it correlation can be unstable, incomplete, or misleading).
 
 So better to introduce other metrics.
 
@@ -353,10 +349,10 @@ $$
 
 with the convention that:    $ 0 \log 0 := 0 $ (limit argument).
 
-If event x has probability $p(x)$, its “surprise” is $\frac{1}{p(x)}$, so
- low probabilitybrings= high surprise.
+If event $x$ has probability $p(x)$, its “surprise” is $\frac{1}{p(x)}$, so
+ low probability brings high surprise.
 
-<b> Entropy </b> can be interpreted as the expected surprise: it'sa
+<b> Entropy </b> can be interpreted as the expected surprise: it's
  the <b>average uncertainty</b> in  $X$.
 
 When all probability mass is on a single outcome, there's no uncertainty and $H(x) = 0$.
@@ -369,7 +365,7 @@ $$
 
 ### <b> Joint Entropy </b>
 
-For random variables $X$, $Y$ with joint pmf %p(x,y)$:
+For random variables $X$, $Y$ with joint pmf $p(x,y)$:
 
 $$
     
@@ -406,10 +402,10 @@ $H(X|Y)$ measures the remaining uncertainty about X once Y is known.
 $$
 H(X|Y) \le H(X)
 $$
-- Knowing $Y$ can never <b>increase</b>the uncertainty about X.
+- Knowing $Y$ can never <b>increase</b> the uncertainty about X.
 - Equality occurs if $X$ and $Y$ are independent ($Y$ gives no info about $X$).
 
-- Entropy of a variable given itself**:
+- Entropy of a variable given itself:
 $$
 H(X|X) = 0
 $$
@@ -466,7 +462,7 @@ $$
 
 - $p(x)$ = true probability of outcome x
 - $q(x)$ = probability assigned by a model or reference distribution
-- It measure of uncertainty of $X$ when using $q$ instead of the true $p$.
+- It measure the uncertainty of $X$ when using $q$ instead of the true $p$.
 
 <b>Entropy:</b> $$H(p) = -\sum p(x)\log p(x)$$ measures uncertainty using
  the true distribution.
@@ -495,7 +491,7 @@ $$
 <b> Propertries </b>
 
 - <b>Non-negative</b>: $$I(X;Y) \ge 0$$
-  $$MI = 0$$ if $X$ and $Y$ are independent (knowing Y gives no info about X)
+  $$MI = 0$$ if $X$ and $Y$ are independent (knowing $Y$ gives no info about $X$)
 - <b>Symmetric</b>:  $$I(X;Y) = I(Y;X) $$
 - <b>Upper bound</b>: $$I(X;Y) \le \min\{H(X), H(Y)\} $$
 - <b>Not a metric</b>: Does not satisfy triangle inequality
@@ -530,14 +526,14 @@ objects in a dataset are to each other.
 
 - For a dataset with $n$ elements, the proximity matrix $P$ 
 is an $n \times n$ matrix.
-- Each entry $P[i,j]$ encodes the closeness between object $i$ and object $j$.
+- Each entry $P[i,j]$ represents the closeness between object $i$ and object $j$.
 
 Typical definitions:
 - $P[i,j] = \text{similarity}(x_i, x_j)$ 
 - $P[i,j] = \text{distance}(x_i, x_j)$
 
 
-Note: A symmetric proximity matrix with zeros on the diagonal is common when using pairwise distances.
+A symmetric proximity matrix with zeros on the diagonal is common when using pairwise distances.
 
 Two main families of clustering:
 
@@ -545,7 +541,7 @@ Two main families of clustering:
 - Produces a nested sequence of partitions (a dendrogram).
 - Top: a single cluster containing all points. Bottom: each point alone.
 - Two approaches:
-  - <b>Agglomerative</b> (bottom-up): start with singletons and merge.
+  - <b>Agglomerative</b> (bottom-up): start with a lot of partitions and merge.
   - <b>Divisive</b> (top-down): start with one cluster and split.
 - No need to specify $K$ up-front (but you choose a cut in the dendrogram to get $K$ clusters).
 
@@ -579,7 +575,7 @@ several methods exist to estimate a good $K$:
 
 For an observation $i$:
 
-- Let $a_i$ = average distance from $i$ to all other points **in the same cluster** (intra-cluster distance).
+- Let $a_i$ = average distance from $i$ to all other points <b>in the same cluster</b> (intra-cluster distance).
 - Let $b_i$ = minimum over other clusters of the average distance from $i$ to points in that other cluster (nearest inter-cluster distance).
 
 The <b>silhouette coefficient</b> for $i$ is
@@ -620,9 +616,6 @@ The <b>average silhouette score</b>
 Once we run a clustering algorithm 
 (e.g., k-means), we still need to evaluate 
 how good the clustering result is. 
-This section introduces a quality measure and a procedure 
-to improve clustering by selectively reclustering low-quality clusters.
-
 
 
 ### <b>Quality Measure $q$ </b>
@@ -638,14 +631,13 @@ Where:
 - $E[S_i]$ = mean of silhouette scores (average clustering quality).
 - $V[S_i]$ = variance of silhouette scores (consistency across points).
 
-Higher $q$ means better clustering (high average silhouette + low variability).
-Low $q$ means that some clusters might be poorly formed or unstable.
+Higher $q$ means better clustering (high average silhouette, low variability).
 
 
 
 ### <b>Base Clustering Algorithm </b>
 
-At the **base level**, the procedure works as follows:
+At the base level, the procedure works as follows:
 
 1. <b>Input</b>
    - Start from the <b>observation (distance/similarity) matrix</b>.
@@ -657,7 +649,7 @@ At the **base level**, the procedure works as follows:
      - Store results for that $k$.
 
 3. <b>Inner Loop (over initializations) </b>
-   - Repeat the above with **different random initializations** of centroids.
+   - Repeat the above with <b>different random initializations</b> of centroids.
    - This reduces sensitivity to random starts.
 
 4. <b>Selection </b>
@@ -698,7 +690,7 @@ To refine the clustering, we <b>recluster only the bad clusters</b>.
         (search over $K$ and initializations) on this reduced subset.
 
 4. <b>Check Improvement </b>
-   - Compare **average quality before vs. after reclustering**.
+   - Compare average quality before vs. after reclustering.
    - If quality improved:
      - Merge the unchanged good clusters with the newly reclustered clusters.
    - Else:
@@ -754,7 +746,7 @@ Where:
 ### <b> Concerns with Fixed-Horizon Labeling </b>
 
 - Returns show intraday volatility patterns (open/close more volatile).
-- Constant $\tau$ transfers seasonality into labels, label distribution becomes **non-stationary**.
+- Constant $\tau$ transfers seasonality into labels, label distribution becomes <b>non-stationary</b>.
 
 <b>Solution:</b> use tick/volume/dollar bars instead of time bars or standardize returns using volatility estimate:
 
@@ -769,7 +761,7 @@ Then apply labeling rule to $z$-scores.
 
 ### <b> Triple-Barrier Method </b>
 
-Labels should represent **actual trading outcomes** — profit, loss, or timeout.
+Labels should represent <b>actual trading outcomes</b>: profit, loss, or timeout.
 
 This method sets <b>three barriers</b>:
 
@@ -841,14 +833,10 @@ $$
 
 Where $\tau$ = critical t-value threshold.
 
-### <b> Optimization over $L$ </b>
-
-Because $L$ is unknown, try a <b>set of candidate window lengths</b>
- and pick $L$ that **maximizes** $|\hat{\beta}_1|$ (strongest trend evidence).
 
 ### <b> Meta-Labeling </b>
 
-Meta-labeling is a **two-model approach**:
+Meta-labeling is a <b>two-model approach</b>:
 
 1. <b>Primary model</b>: predicts position direction (long/short).
 2. <b>Secondary (meta) model</b>: predicts whether that position will be profitable (filtering false positives).
@@ -989,7 +977,7 @@ In practical:
 
 It tests whether a<b> feature has any effect</b>, not its predictive power.
 
-The p-value is a probability — but not the probability that your hypothesis is true.
+The p-value is a probability, but not the probability that your hypothesis is true.
 It answers a very specific question:
 
 _“If the null hypothesis were true, how likely is 
@@ -1089,7 +1077,7 @@ so it's commonoto cluster features to analyze them better.
    - If regressors are too many, reduce dimensionality inside clusters.
 
 <b>Clustered Importance</b>
-- Apply **MDI** or **MDA** at the **cluster** level (not single-feature).
+- Apply <b>MDI</b> or <b>MDA</b> at the <b>cluster</b> level (not single-feature).
 - Interpret which groups of features drive model performance.
 
 ---
@@ -1139,7 +1127,7 @@ $$
 Let $C$ be the standardized correlation matrix of $V$. 
 The solution needs to calculate on $V^{-1}$.
 
-If assets are <b>highly correlated </b> ($|\rho|\approx 1$), then $C$ is **ill-conditioned**:
+If assets are <b>highly correlated </b> ($|\rho|\approx 1$), then $C$ is <b>ill-conditioned</b>:
   - Condition number large means that $V^{-1}$ numerically unstable (small 
   errors in $V$ estimate produce large swings in $V^{-1}$).
 We need Markowitz when correlations exist, but those same correlations make the solution unstable.
@@ -1153,7 +1141,7 @@ We need Markowitz when correlations exist, but those same correlations make the 
 
 ### <b> Nested Clustered Optimization (NCO) </b>
 
-THe goal is tos tabilize Markowitz by solving smaller, 
+The goal is tos tabilize Markowitz by solving smaller, 
 better-conditioned subproblems.
 
 
@@ -1251,7 +1239,7 @@ $$
 
 Precision strongly depends on odds ratio θ.
 
-A discovered strategy is **more likely to be false than true** if:
+A discovered strategy is <b>more likely to be false than true</b> if:
 
 $$
 (1-\beta)\theta < \alpha
@@ -1399,7 +1387,7 @@ where:
 
 The more strategies you try ($K \uparrow$), the higher the <b>expected maximum Sharpe ratio by chance</b>.
 
-So a discovered strategy is likely a **false positive** unless:
+So a discovered strategy is likely a <b>false positive</b> unless:
 
 $$
 \max_k SR_k \gg \mathbb{E}[\max_k SR_k]
@@ -1427,7 +1415,7 @@ A low DSR means thatis likely a false discovery
 ### <b>Clustering Strategies & Cluster-Level Returns </b>
 
 
-N strategies are grouped into $K \ll N$ **clusters** based on correlations, so
+N strategies are grouped into $K \ll N$ clusters based on correlations, so
 it's possible to reduces dimensionality for multiple testing bias.
 
 
@@ -1452,7 +1440,7 @@ where:
 Clustering <b>reduces effective number of trials $(K ≪ N)$</b>:
 - Lowers false discovery probability
 - Produces a more realistic null distribution
-- Improves **precision** of DSR-based significance testing
+- Improves precision of DSR-based significance testing
 
 ---
 
