@@ -7,7 +7,7 @@
 - Giacomo's notes
 - Giacomo's resources  
 
-_Pardon me: I studied Automation and Robotics, now I'm pursuing a Master in Economics... reason why you shouldn't expect great coding and web design skills from me!
+_Pardon me: I studied Automation and Robotics, now I'm pursuing a Master in Economics... reason why you shouldn't expect great coding and web design skills from me!_
 ## Connect
 
 - [Instagram](https://instagram.com/giacomomaggiore)  
