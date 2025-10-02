@@ -1,7 +1,13 @@
 # Giacomo Maggiore – Personal Website
 
-Hi, I'm **Giacomo Maggiore** — engineer, marathoner, and co-founder of [SceneSnap](https://scenesnap.co).  
-This site is built with **Next.js** and includes my bio, blog, bookshelf, and contact info.
+[All in one place](https://giacomomaggiore.com)
+- Giacomo's bio
+- Giacomo's blog
+- Giacomo's bookshelf
+- Giacomo's notes
+- Giacomo's resources  
+
+_Pardon me: I'm an Automation and Robotics Engineering and now I'm studying Economnics, I'm not good at coding and web desing_
 
 ## Connect
 
