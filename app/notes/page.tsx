@@ -2,7 +2,7 @@ import { BlogPosts } from 'app/components/notes'
 import 'katex/dist/katex.min.css';
 
 export const metadata = {
-  title: 'Blog',
+  title: 'Notes',
   description: 'Read my blog.',
 }
 

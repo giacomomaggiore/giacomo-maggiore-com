@@ -19,13 +19,16 @@ export default function Page() {
     a B2B and B2C EdTech startup 
     that develops learning tools by bridging artificial intelligente and data analytics.
     <br></br><br></br>
-      During my studies, I felt in love with <b>financial markets</b> and <b>personal finance</b>,
-      applying mathematical models, economic theories and programming skills to this field
-      with a<i> practic</i> approach.
+      During my studies, I deep dived into love with <b>financial markets</b> and <b>personal finance</b>, 
+      reason why <a href='https://giacomomaggiore.com/blog/01-polimi-recap' target='_blank'>I left Polimi </a>
+      and my startup to start a new adventure at <u><a href="https://mtec.ethz.ch/studies.html" target='_blank'>
+    ETH Zurich</a></u>, where I’m currently pursuing a Master in <b><a href="https://mtec.ethz.ch/studies.html" target="_blank">Economnics, Management & Technology</a></b>,
+        focusing on the most quantitative and analytically oriented courses.
     <br></br><br></br>
-    Then, I decided to shift my future studies in this direction, reason why I left Polimi and my startup 
-    to start a new adventure in <b>Zürich</b>, where I’m currently pursuing a Master in <b><a href="https://mtec.ethz.ch/studies.html" target="_blank">Economnics, Management & Technology</a></b>,
-    focusing on finance, quantitative methods and asset management.
+    I’m deeply interested in <b>financial risk management</b>, <b>quantitative </b>and<b> personal finance</b>. 
+    Alongside my studies, I work as a research assistant at <a href="https://kof.ethz.ch/it/" target="_blank"><u>KOF, the Swiss Economic Institute</u></a> at ETH Zurich, 
+    where I further strengthen my analytical and research skills.
+
     <br></br><br></br>
     When I'm not working or studying, you can find me running and cycling.
     <br></br>
