@@ -87,6 +87,23 @@ function createHeading(level) {
   return Heading
 }
 
+function Quote({ children }) {
+  return (
+    <blockquote
+      style={{
+        borderLeft: '4px solid #ccc',
+        margin: '1em 0',
+        padding: '0.5em 1em',
+        color: '#555',
+        background: '#fafafa',
+        fontStyle: 'italic',
+      }}
+    >
+      {children}
+    </blockquote>
+  )
+}
+
 let components = {
   h1: createHeading(1),
   h2: createHeading(2),
@@ -98,6 +115,7 @@ let components = {
   a: CustomLink,
   code: Code,
   Table,
+  Quote
 }
 
 
