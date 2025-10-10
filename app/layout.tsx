@@ -12,6 +12,7 @@ import './instrumentation-client' // Importa il file JS che inizializza PostHog
 
 import { GoogleAnalytics } from '@next/third-parties/google'
 import 'katex/dist/katex.min.css';
+import NewsletterForm from './components/newsletter'
 
 
 
