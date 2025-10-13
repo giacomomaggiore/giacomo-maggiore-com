@@ -5,27 +5,76 @@ import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 
 
-function Table({ data }) {
-  let headers = data.headers.map((header, index) => (
-    <th key={index}>{header}</th>
-  ))
-  let rows = data.rows.map((row, index) => (
-    <tr key={index}>
-      {row.map((cell, cellIndex) => (
-        <td key={cellIndex}>{cell}</td>
-      ))}
-    </tr>
-  ))
 
+function Table({ data }) {
   return (
-    <table>
-      <thead>
-        <tr>{headers}</tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
+    <div
+      style={{
+        width: '100%',
+        overflow: 'hidden',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <table
+        style={{
+          borderCollapse: 'collapse',
+          width: '100%',
+          tableLayout: 'fixed', // forza le celle a ridimensionarsi per stare nel contenitore
+          wordWrap: 'break-word', // evita parole troppo lunghe
+          fontSize: '0.95rem',
+          margin: '1rem 0',
+        }}
+      >
+        <thead style={{ backgroundColor: '#f7f7f7' }}>
+          <tr>
+            {data.headers.map((header, index) => (
+              <th
+                key={index}
+                style={{
+                  border: '1px solid black',
+                  padding: '8px 10px',
+                  textAlign: 'left',
+                  fontWeight: 600,
+                  whiteSpace: 'normal',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((cell, cellIndex) => (
+                <td
+                  key={cellIndex}
+                  style={{
+                    border: '1px solid black',
+                    padding: '8px 10px',
+                    verticalAlign: 'top',
+                    whiteSpace: 'normal',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
+
+
+
+
 
 function CustomLink(props) {
   let href = props.href
