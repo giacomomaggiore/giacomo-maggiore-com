@@ -11,11 +11,7 @@ import { baseUrl } from './sitemap'
 import './instrumentation-client' // Importa il file JS che inizializza PostHog
 
 import { GoogleAnalytics } from '@next/third-parties/google'
-import 'katex/dist/katex.min.css';
-
-
-
-            
+import 'katex/dist/katex.min.css';            
 
 
 export const metadata: Metadata = {
@@ -25,10 +21,10 @@ export const metadata: Metadata = {
     template: '%s | Giacomo Maggiore',
   },
   icons: {icon : '/icon.png'},
-  description: 'Giacomo Maggiore Portfolio and personal website',
+  description: 'Giacomo Maggiore Blog and Personal Website',
   openGraph: {
     title: 'Giacomo Maggiore',
-    description: 'Giacomo Maggiore Portfolio and personal website.',
+    description: "Giacomo Maggiore's Insights",
     url: baseUrl,
     siteName: 'Giacomo Maggiore',
     locale: 'en_US',
@@ -63,6 +59,11 @@ export default function RootLayout({
         GeistMono.variable
       )}
     >
+    <link 
+    rel="alternate"
+    type="application/rss+xml" 
+    href="/blog/rss" 
+    title="Giacomo Maggiore" />
     <script // This script is used to load MathJax for rendering mathematical equations
   id="mathjax"
   async
