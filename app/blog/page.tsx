@@ -1,10 +1,15 @@
 import { BlogPosts } from 'app/components/posts'
 import 'katex/dist/katex.min.css';
+import fetch from "node-fetch";
+
 
 export const metadata = {
   title: 'Blog',
   description: 'Read my blog.',
 }
+
+
+
 
 export default function Page() {
   return (
