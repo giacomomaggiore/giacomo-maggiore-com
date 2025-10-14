@@ -1,8 +1,11 @@
+
 import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
 import { formatDate, getBlogPosts } from 'app/blog/utils'
 import { baseUrl } from 'app/sitemap'
 import 'katex/dist/katex.min.css';
+import ViewsClientOnly from 'app/components/ViewsClientOnly'
+
 
 export async function generateStaticParams() {
   let posts = getBlogPosts()
@@ -11,6 +14,11 @@ export async function generateStaticParams() {
     slug: post.slug,
   }))
 }
+
+
+
+
+
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const { slug } = await params       //  stesso discorso
@@ -55,6 +63,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function Blog({ params }: { params: { slug: string } }) {
+  const url = `https://giacomomaggiore.com/blog/${params.slug}`
+
+  
   const { slug } = await params
 
   const posts = getBlogPosts()                // o `await getBlogPosts()`
@@ -91,11 +102,17 @@ export default async function Blog({ params }: { params: { slug: string } }) {
       <h1 className="title font-semibold text-2xl tracking-tighter">
         {post.metadata.title}
       </h1>
+
+      
+      
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
           {formatDate(post.metadata.publishedAt)}
+          <br />
+          Page views: <ViewsClientOnly url={url} />
         </p>
       </div>
+      
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
