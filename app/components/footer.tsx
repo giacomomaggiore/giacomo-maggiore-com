@@ -1,4 +1,4 @@
-import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaStrava } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaStrava, FaRss } from "react-icons/fa";
 
 
 
@@ -21,6 +21,9 @@ export default function Footer() {
       </a>
       <a href="https://www.strava.com/athletes/24804406" target="_blank" rel="noopener noreferrer">
         <FaStrava />
+      </a>
+      <a href = "https://giacomomaggiore.com/blog/rss" target="_blank" rel="noopener noreferrer">
+        <FaRss />
       </a>
       
       
