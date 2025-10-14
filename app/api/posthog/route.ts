@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server'
 
 export async function POST() {
+    console.log("Received POST request at /api/posthog")
+    console.log("\n")
+    
+
+
   const url = "https://us.posthog.com/api/projects/197048/query/"
   const headers = {
     "Content-Type": "application/json",
