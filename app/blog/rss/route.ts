@@ -3,6 +3,8 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const postsDir = path.join(process.cwd(), 'app/blog/posts')
   const files = fs.readdirSync(postsDir).filter(f => f.endsWith('.mdx'))
