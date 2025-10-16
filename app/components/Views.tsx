@@ -12,12 +12,10 @@ export default function Views({ url }: { url: string }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        // Gestione errore API
         if (data.error) {
           setViews(0);
           return;
         }
-        // Cerca il risultato
         const result = data.results?.find(([u]) => u === url);
         setViews(result ? result[1] : 0);
       });
