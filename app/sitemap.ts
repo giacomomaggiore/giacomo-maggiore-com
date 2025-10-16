@@ -1,5 +1,9 @@
 import { getBlogPosts } from './blog/utils'
-import { baseUrl } from './sitemap'
+
+export const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://giacomomaggiore.com"
+    : "http://localhost:3000"
 
 export default async function sitemap() {
   const langs = ['it', 'en']
