@@ -1,8 +1,10 @@
-import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaStrava } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaStrava, FaRss } from "react-icons/fa";
 
 
 
-export default function Footer() {
+  export default function Footer() {
+  // Costruisci l'URL RSS usando la lingua passata
+
   return (
     <footer className="mb-10">
       <div className="flex gap-3 text-xl mt-4">
@@ -21,6 +23,9 @@ export default function Footer() {
       </a>
       <a href="https://www.strava.com/athletes/24804406" target="_blank" rel="noopener noreferrer">
         <FaStrava />
+      </a>
+      <a href= "https://giacomomaggiore.com/blog/en/rss" target="_blank" rel="noopener noreferrer">
+        <FaRss />
       </a>
       
       

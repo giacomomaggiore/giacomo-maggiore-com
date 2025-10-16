@@ -57,7 +57,7 @@ export default function RootLayout({
       <link 
         rel="alternate"
         type="application/rss+xml" 
-        href="/blog/rss" 
+        href="/blog/en/rss" 
         title="Giacomo Maggiore" 
       />
       <script
