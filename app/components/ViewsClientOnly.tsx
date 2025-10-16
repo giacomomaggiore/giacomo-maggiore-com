@@ -9,7 +9,7 @@ export default function ViewsClientOnly({ url }: { url: string }) {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; // Non renderizzare nulla lato server
+  if (!mounted) return <span>...</span>;
 
   return <Views url={url} />;
 }

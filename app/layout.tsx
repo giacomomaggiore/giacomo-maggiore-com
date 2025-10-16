@@ -1,5 +1,3 @@
-
-
 import './global.css'
 import type { Metadata } from 'next'
 import { GeistSans } from 'geist/font/sans'
@@ -7,12 +5,9 @@ import { GeistMono } from 'geist/font/mono'
 import { Navbar } from './components/nav'
 import Footer from './components/footer'
 import { baseUrl } from './sitemap'
-
-import './instrumentation-client' // Importa il file JS che inizializza PostHog
-
+import './instrumentation-client'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import 'katex/dist/katex.min.css';            
-
+import 'katex/dist/katex.min.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -59,25 +54,25 @@ export default function RootLayout({
         GeistMono.variable
       )}
     >
-    <link 
-    rel="alternate"
-    type="application/rss+xml" 
-    href="/blog/rss" 
-    title="Giacomo Maggiore" />
-    <script // This script is used to load MathJax for rendering mathematical equations
-  id="mathjax"
-  async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>
+      <link 
+        rel="alternate"
+        type="application/rss+xml" 
+        href="/blog/rss" 
+        title="Giacomo Maggiore" 
+      />
+      <script
+        id="mathjax"
+        async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+      />
       <GoogleAnalytics gaId="G-6E5X8EMEPL" />
       <body className="antialiased max-w-2xl mx-4 mt-8 lg:mx-auto">
-          <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
-            <Navbar />
-            {children}
-            <Footer />
-          </main>
+        <main className="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+          <Navbar />
+          {children}
+          <Footer />
+        </main>
       </body>
-      
     </html>
   )
 }
