@@ -18,8 +18,8 @@ export function getBlogPosts(lang: 'it' | 'en') {
   })
 }
 
-export function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('it-IT', {
+export function formatDate(date: string, lang: string) {
+  return new Date(date).toLocaleDateString(lang, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
