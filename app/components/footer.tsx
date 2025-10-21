@@ -24,7 +24,7 @@ import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaStrava, FaRss } from 
       <a href="https://www.strava.com/athletes/24804406" target="_blank" rel="noopener noreferrer">
         <FaStrava />
       </a>
-      <a href= "https://giacomomaggiore.com/blog/en/rss" target="_blank" rel="noopener noreferrer">
+      <a href= "https://giacomomaggiore.com/feed.xml" target="_blank" rel="noopener noreferrer">
         <FaRss />
       </a>
       
