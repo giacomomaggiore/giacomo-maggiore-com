@@ -6,6 +6,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 
 
 
+
 function Table({ data }) {
   return (
     <div
@@ -201,3 +202,4 @@ export async function CustomMDX({ source }: CustomMDXProps) {
     />
   )
 }
+

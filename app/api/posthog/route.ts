@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server'
 
-export async function POST() {
-    console.log("Received POST request at /api/posthog")
-    console.log("\n")
-    
-
+export async function POST(req: Request) {
+  const { urlToCheck } = await req.json() // ricevi l'URL dal client
 
   const url = "https://us.posthog.com/api/projects/197048/query/"
   const headers = {
@@ -15,7 +12,7 @@ export async function POST() {
   const payload = {
     query: {
       kind: "HogQLQuery",
-      query: "SELECT properties.$current_url AS url, count() AS views FROM events WHERE properties.$current_url LIKE '%/blog%' GROUP BY url ORDER BY views DESC"
+      query: `SELECT properties.$current_url AS url, count() AS views FROM events WHERE properties.$current_url = '${urlToCheck}' GROUP BY url ORDER BY views DESC`
     },
     name: "get blog views"
   }
@@ -27,6 +24,6 @@ export async function POST() {
   })
 
   const data = await response.json()
-  console.log("Response from PostHog API:", data)
+  console.log("PostHog response data:", data) // Logga la risposta per il debug
   return NextResponse.json(data)
 }
