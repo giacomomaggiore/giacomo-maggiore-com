@@ -54,12 +54,14 @@ export default function RootLayout({
         GeistMono.variable
       )}
     >
-      <link 
-        rel="alternate"
-        type="application/rss+xml" 
-        href="/blog/en/rss" 
-        title="Giacomo Maggiore" 
-      />
+      <head>
+        <link 
+          rel="alternate" 
+          type="application/rss+xml" 
+          title="Giacomo Maggiore's Blog" 
+          href="/feed.xml" 
+        />
+      </head>
       <script
         id="mathjax"
         async
