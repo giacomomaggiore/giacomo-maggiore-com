@@ -4,6 +4,7 @@ import fetch from "node-fetch";
 import Link from 'next/link'
 import { getAllSlugs, getPost, formatDate, type Lang } from './utils'
 import { cookies } from 'next/headers'
+import { View } from 'lucide-react';
 
 
 export const metadata = {
@@ -28,14 +29,15 @@ export default async function Page() {
     .sort((a, b) => +new Date(b!.metadata.publishedAt) - +new Date(a!.metadata.publishedAt))
 
   return (
-    <section className="max-w-3xl mx-auto">
-      <h1>Giacomo's Blog</h1>
+   <section>
+      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Library</h1>
+    
+      
       <ul>
         {posts.map(p => (
           <li key={p!.slug}>
             <Link href={`/blog/${p!.slug}`}>
               <h2>{p!.metadata.title}</h2>
-              <p>{p!.metadata.summary}</p>
               <p className="text-sm text-gray-500">{formatDate(p!.metadata.publishedAt)}</p>
             </Link>
           </li>
