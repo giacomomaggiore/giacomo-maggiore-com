@@ -1,53 +1,97 @@
 import fs from 'fs'
 import path from 'path'
-import matter from 'gray-matter'
 
 export type Lang = 'it' | 'en'
 
-export function getAllSlugs(): string[] {
-  const dir = path.join(process.cwd(), 'app/blog/posts')
-  const files = fs.readdirSync(dir)
-  const slugs = new Set<string>()
-
-  for (const file of files) {
-    const match = file.match(/^(.*)\.(it|en)\.mdx$/)
-    if (match) slugs.add(match[1])
-  }
-  return Array.from(slugs)
+type Metadata = {
+  title: string
+  publishedAt: string
+  summary: string
+  image?: string
 }
 
-export function getPost(slug: string, lang: Lang): { metadata: any; content: string } | null {
-  const dir = path.join(process.cwd(), 'app/blog/posts')
-  const preferred = path.join(dir, `${slug}.${lang}.mdx`)
-  const fallback = path.join(dir, `${slug}.it.mdx`)
-  const filePath = fs.existsSync(preferred) ? preferred : fallback
-  if (!fs.existsSync(filePath)) return null
+function parseFrontmatter(fileContent: string) {
+  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/
+  let match = frontmatterRegex.exec(fileContent)
+  let frontMatterBlock = match![1]
+  let content = fileContent.replace(frontmatterRegex, '').trim()
+  let frontMatterLines = frontMatterBlock.trim().split('\n')
+  let metadata: Partial<Metadata> = {}
 
-  const file = fs.readFileSync(filePath, 'utf8')
-  const { data, content } = matter(file)
-  return { metadata: data, content }
+  frontMatterLines.forEach((line) => {
+    let [key, ...valueArr] = line.split(': ')
+    let value = valueArr.join(': ').trim()
+    value = value.replace(/^['"](.*)['"]$/, '$1')
+    metadata[key.trim() as keyof Metadata] = value
+  })
+
+  return { metadata: metadata as Metadata, content }
 }
 
-export function formatDate(date: string) {
-  return new Date(date).toLocaleDateString('it-IT', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+function getMDXFiles(dir: string) {
+  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
+}
+
+function readMDXFile(filePath: string) {
+  let rawContent = fs.readFileSync(filePath, 'utf-8')
+  return parseFrontmatter(rawContent)
+}
+
+function getMDXData(dir: string) {
+  let mdxFiles = getMDXFiles(dir)
+  return mdxFiles.map((file) => {
+    let { metadata, content } = readMDXFile(path.join(dir, file))
+    let slug = path.basename(file, path.extname(file))
+
+    return {
+      metadata,
+      slug,
+      content,
+    }
   })
 }
 
 export function getBlogPosts() {
-  const slugs = getAllSlugs()
-  // Prendi solo la versione italiana per la sitemap
-  return slugs
-    .map(slug => {
-      const post = getPost(slug, 'it')
-      return post
-        ? {
-            slug,
-            ...post.metadata,
-          }
-        : null
-    })
-    .filter(Boolean)
+  return getMDXData(path.join(process.cwd(), 'app', 'blog', 'posts'))
+}
+
+export function getAllSlugs(): string[] {
+  const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'posts')
+  const filenames = fs.readdirSync(postsDirectory)
+  
+  // Rimuovi duplicati e estensioni lingua
+  const slugs = new Set<string>()
+  filenames.forEach(filename => {
+    const slug = filename.replace(/\.(en|it)\.mdx$/, '')
+    slugs.add(slug)
+  })
+  
+  return Array.from(slugs)
+}
+
+export function getPost(slug: string, lang: Lang) {
+  const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'posts')
+  const fullSlug = `${slug}.${lang}`
+  const filePath = path.join(postsDirectory, `${fullSlug}.mdx`)
+  
+  if (!fs.existsSync(filePath)) {
+    // Fallback alla lingua alternativa
+    const altLang = lang === 'it' ? 'en' : 'it'
+    const altFilePath = path.join(postsDirectory, `${slug}.${altLang}.mdx`)
+    if (!fs.existsSync(altFilePath)) {
+      return null
+    }
+    return readMDXFile(altFilePath)
+  }
+  
+  return readMDXFile(filePath)
+}
+
+export function formatDate(date: string): string {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  return new Date(date).toLocaleDateString('en-US', options)
 }
