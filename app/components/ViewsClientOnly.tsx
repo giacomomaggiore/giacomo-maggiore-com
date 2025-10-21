@@ -1,7 +1,15 @@
+"use client";
+import { useEffect, useState } from "react";
+import Views from "./Views";
+
 export default function ViewsClientOnly({ url }: { url: string }) {
-return (
-<div className="text-sm text-gray-500">
-{/* Add your views counter logic here */}
-</div>
-)
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <span>...</span>;
+
+  return <Views url={url} />;
 }
