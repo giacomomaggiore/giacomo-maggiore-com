@@ -1,7 +1,12 @@
-import { getBlogPosts } from '../blog/utils';
+import { getBlogPosts } from '@/app/blog/utils';
 
 export async function GET() {
-  const allPosts = getBlogPosts();
+  const allPosts = getBlogPosts()
+    .filter(post => !post.slug.endsWith('.it')) // Include solo versioni inglesi
+    .map(post => ({
+      ...post,
+      slug: post.slug.replace(/\.(en|it)$/, '')
+    }));
   
   const itemsXml = allPosts
     .sort((a, b) => {
@@ -14,9 +19,9 @@ export async function GET() {
       const url = `https://giacomomaggiore.com/blog/${post.slug}`;
       return `
         <item>
-          <title>${post.metadata.title}</title>
+          <title><![CDATA[${post.metadata.title}]]></title>
           <link>${url}</link>
-          <description>${post.metadata.summary || ''}</description>
+          <description><![CDATA[${post.metadata.summary || ''}]]></description>
           <pubDate>${new Date(post.metadata.publishedAt).toUTCString()}</pubDate>
           <guid>${url}</guid>
         </item>

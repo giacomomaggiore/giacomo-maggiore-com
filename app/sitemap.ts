@@ -6,15 +6,20 @@ export const baseUrl =
     : "http://localhost:3000"
 
 export default async function sitemap() {
-  const langs = ['it', 'en']
-  let blogs: { url: string; lastModified: string }[] = []
-
-  blogs.push(
-    ...getBlogPosts().map((post) => ({
-      url: `${baseUrl}/blog/it/${post.slug}`,
+  let blogs = getBlogPosts().map((post) => {
+    const lang = post.slug.endsWith('.en') ? 'en' : 'it'
+    const cleanSlug = post.slug.replace(/\.(en|it)$/, '')
+    
+    return {
+      url: `${baseUrl}/blog/${cleanSlug}`,
       lastModified: post.metadata.publishedAt,
-    }))
-  )
+    }
+  })
 
-  return blogs
+  let routes = ['', '/blog', '/resources'].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date().toISOString().split('T')[0],
+  }))
+
+  return [...routes, ...blogs]
 }
