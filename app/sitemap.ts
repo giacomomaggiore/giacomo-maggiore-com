@@ -6,17 +6,26 @@ export const baseUrl =
     : "http://localhost:3000"
 
 export default async function sitemap() {
-  let blogs = getBlogPosts().map((post) => {
-    const lang = post.slug.endsWith('.en') ? 'en' : 'it'
+  // Ottieni solo slug unici (senza duplicati per lingua)
+  const uniqueSlugs = new Set<string>()
+  const postsWithDates = new Map<string, string>()
+  
+  getBlogPosts().forEach(post => {
     const cleanSlug = post.slug.replace(/\.(en|it)$/, '')
-    
-    return {
-      url: `${baseUrl}/blog/${cleanSlug}`,
-      lastModified: post.metadata.publishedAt,
+    uniqueSlugs.add(cleanSlug)
+    // Mantieni la data più recente per ogni slug
+    if (!postsWithDates.has(cleanSlug) || 
+        post.metadata.publishedAt > postsWithDates.get(cleanSlug)!) {
+      postsWithDates.set(cleanSlug, post.metadata.publishedAt)
     }
   })
 
-  let routes = ['', '/blog', '/resources'].map((route) => ({
+  const blogs = Array.from(uniqueSlugs).map(slug => ({
+    url: `${baseUrl}/blog/${slug}`,
+    lastModified: postsWithDates.get(slug)!,
+  }))
+
+  const routes = ['', '/blog', '/resources'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }))
