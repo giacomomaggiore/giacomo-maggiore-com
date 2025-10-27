@@ -1,0 +1,130 @@
+---
+title: 'Bayesian VAR in Macroeconomic Forecasting'
+publishedAt: '2025-10-25'
+summary: ''
+---
+
+A **Bayesian Vector AutoRegression (BVAR)** is the **Bayesian extension** of the classical **Vector AutoRegression (VAR)** model.  
+It is widely used in **macroeconomics** to study and forecast the joint evolution of multiple interrelated time series (**GDP, inflation, and exchange rates**) under the assumption that each variable depends both on **its own past values** and on the **past values of the others**.
+
+---
+
+## The Basic Structure of a VAR(p)
+
+Suppose we have $ K $ variables and consider $ p $ lags.  
+The general VAR(p) model is written as:
+
+$$
+y_t = A_1 y_{t-1} + A_2 y_{t-2} + \dots + A_p y_{t-p} + \varepsilon_t
+$$
+
+where:
+
+- $ y_t $ is a $ K \times 1 $ vector of endogenous variables (e.g., [GDP, Inflation, Exchange Rate]),
+- $ A_i $ are $ K \times K $ coefficient matrices,
+- $ \varepsilon_t $ is a vector of white-noise error terms with covariance matrix $ \Sigma $.
+
+The goal is to estimate:
+$$
+\hat{A}_1, \dots, \hat{A}_p, \hat{\Sigma}
+$$
+typically through **Ordinary Least Squares (OLS)** or **Maximum Likelihood Estimation (MLE)**.
+
+- Parameters are **fixed**, not random.  
+- Output: **point estimates** like $ \hat{A}_{ij} = 0.35 $.  
+- Uncertainty is **derived** analytically (e.g., via asymptotic standard errors or confidence intervals).  
+- The model provides a single best estimate of each coefficient.
+
+In short, the classical VAR assumes that **true parameter values exist**, and the task is to **estimate them as accurately as possible** from the sample.
+
+
+
+As the number of variables $ K $ and lags $ p $ increases, the number of parameters to estimate grows **quadratically**.  
+For example, a VAR with 10 variables and 4 lags already has **400 coefficients** to estimate, and that’s not even counting intercepts or covariances.
+
+This leads to several practical issues:
+
+- **Overfitting:** the model adapts too much to the sample data.  
+- **Parameter instability:** small sample size leads to unreliable estimates.  
+- **Poor forecasting performance:** too much noise, not enough structure.
+
+In short, traditional VAR models become **unmanageable** and **statistically weak** when the dataset is small but the system is large.
+
+---
+
+## The Bayesian Solution: Introducing Priors
+
+A **BVAR** mitigates this dimensionality problem by introducing **prior information** (the *priors*) about the model parameters.  
+
+Instead of estimating the coefficients solely based on the data (as in frequentist approaches), a BVAR combines:
+
+1. **The likelihood** (what the data tell us)
+2. **The prior distribution** (what we believe about the parameters *before* observing the data)
+
+This combination yields a **posterior distribution** that balances data-driven evidence and prior beliefs.
+
+In a **BVAR**, parameters are treated as **random variables** that have their own **probability distributions**.  
+This reflects the idea that we are uncertain about the true values, and this uncertainty should be modeled explicitly.
+
+
+## The Role of Priors (Prior Distributions) and the Estimation Mechanism
+
+The estimation procedure of a **Bayesian Vector AutoRegression (BVAR)** relies on the principles of **Bayesian inference**, where parameter uncertainty is explicitly modeled rather than ignored.
+
+Let $ Y = (y_1, y_2, \dots, y_T) $ be the observed data and let the model parameters be $ \Theta = (A_1, \dots, A_p, \Sigma) $.  
+The goal is to determine the **posterior distribution** $ p(\Theta \mid Y) $, which represents the updated beliefs about the parameters after observing the data.
+
+Formally, according to **Bayes’ theorem**:
+
+$$
+p(\Theta \mid Y) = \frac{p(Y \mid \Theta) \, p(\Theta)}{p(Y)}
+$$
+
+where:
+
+- $ p(Y \mid \Theta) $: **Likelihood function**, capturing the probability of the observed data given the parameters.  
+- $ p(\Theta) $: **Prior distribution**, encoding information or beliefs about the parameters before observing the data.  
+- $ p(Y)$: **Marginal likelihood** or evidence, serving as a normalizing constant.
+
+
+Combining prior and likelihood yields the **posterior**:
+
+$$
+p(A, \Sigma \mid Y) \propto p(Y \mid A, \Sigma) \, p(A, \Sigma)
+$$
+
+This posterior reflects the updated uncertainty about $ A $ and $ \Sigma $ given the observed data.
+
+- Parameters are **random variables**.  
+- Output: **posterior distributions** for each coefficient $ p(A_{ij} \mid Y) $.  
+- Uncertainty is **intrinsic** to the model and explicitly quantified.  
+- Forecasts integrate over parameter uncertainty:
+  $$
+  p(y_{T+h} \mid Y) = \int p(y_{T+h} \mid A, \Sigma, Y) \, p(A, \Sigma \mid Y) \, dA \, d\Sigma
+  $$
+- Estimation can produce full distributions, means, medians, or credible intervals.
+
+In a BVAR, we **do not seek the “true” fixed parameters** but rather a **probabilistic belief** about their possible values, conditional on both prior information and data.
+
+
+In many standard priors (e.g., Normal-Inverse Wishart), the posterior distributions remain in the same **conjugate family**, which allows **closed-form analytical solutions** for posterior means and variances.
+
+When conjugacy does not hold, **simulation-based methods** such as **Markov Chain Monte Carlo (MCMC)** or **Gibbs sampling** are employed to approximate the posterior.
+
+---
+
+
+## Common Priors in Practice
+
+<Table
+  data={{
+    headers: ["Prior Type", "Description", "Typical Use"],
+    rows: [
+      ["Minnesota Prior", "Assumes each variable follows a random walk; shrinks cross-variable coefficients toward zero. Controls shrinkage via hyperparameters for lag decay and cross-variable importance.", "Most common; good for macro forecasting."],
+      ["Normal-Wishart Prior", "Combines a Normal prior for coefficients with an Inverse-Wishart prior for the error covariance matrix. Allows for closed-form posterior distributions.", "Computationally convenient."],
+      ["Dummy-Observation Priors", "Equivalent to adding artificial 'dummy' data points that encode beliefs about persistence or stability.", "Useful for flexible prior specification."],
+      ["Steady-State Priors", "Constrain dynamics around a known steady state (e.g., long-run equilibrium).", "Structural or equilibrium-based models."]
+    ]
+  }}
+/>
+
