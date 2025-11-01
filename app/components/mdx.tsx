@@ -7,7 +7,67 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 
 
 
+// katex will be imported dynamically inside CustomMDX to avoid ESM/CJS interop issues
+let katexImpl: any = null
+
 function Table({ data }) {
+  // helper to render cell content with inline/display math
+  function renderCellContent(cell: any, cellKey: string | number) {
+    if (cell === null || cell === undefined) return null
+    if (typeof cell !== 'string') return cell // leave React nodes as-is
+
+    const text = cell as string
+    const regex = /(\$\$[\s\S]+?\$\$|\$[\s\S]+?\$)/g
+    let lastIndex = 0
+    let match
+    const nodes: React.ReactNode[] = []
+    let idx = 0
+
+    while ((match = regex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        nodes.push(text.slice(lastIndex, match.index))
+      }
+
+      const mathRaw = match[0]
+      const isDisplay = mathRaw.startsWith('$$')
+      const content = isDisplay ? mathRaw.slice(2, -2) : mathRaw.slice(1, -1)
+
+      try {
+        // try multiple access patterns to be robust vs CJS/ESM packaging
+        const k = katexImpl
+        const renderFn =
+          (k && (k.renderToString || k.default?.renderToString)) ?? null
+
+        if (!renderFn) {
+          // if katex not available, show raw math as fallback
+          throw new Error('katex render function not available')
+        }
+
+        const html = renderFn.call(k, content, {
+          throwOnError: false,
+          displayMode: isDisplay,
+        })
+        nodes.push(
+          <span
+            key={`math-${cellKey}-${idx++}`}
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        )
+      } catch (e) {
+        // fallback: render raw math if katex fails
+        nodes.push(mathRaw)
+      }
+
+      lastIndex = regex.lastIndex
+    }
+
+    if (lastIndex < text.length) {
+      nodes.push(text.slice(lastIndex))
+    }
+
+    return nodes
+  }
+
   return (
     <div
       style={{
@@ -62,7 +122,7 @@ function Table({ data }) {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {cell}
+                  {renderCellContent(cell, `${index}-${cellIndex}`)}
                 </td>
               ))}
             </tr>
@@ -105,14 +165,30 @@ function Code({ children, ...props }) {
 }
 
 function slugify(str) {
-  return str
-    .toString()
-    .toLowerCase()
-    .trim() // Remove whitespace from both ends of a string
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/&/g, '-and-') // Replace & with 'and'
-    .replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
-    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+	// helper: extract text from various node types (string, number, array, React element)
+	function extractText(node: any): string {
+		if (node === null || node === undefined) return ''
+		if (typeof node === 'string' || typeof node === 'number') return String(node)
+		if (Array.isArray(node)) return node.map(extractText).join(' ')
+		if (React.isValidElement(node)) return extractText((node as any).props?.children)
+		// fallback for objects or unknown types
+		try {
+			return String(node)
+		} catch {
+			return ''
+		}
+	}
+
+	const text = extractText(str)
+
+	return text
+		.toString()
+		.toLowerCase()
+		.trim() // Remove whitespace from both ends of a string
+		.replace(/\s+/g, '-') // Replace spaces with -
+		.replace(/&/g, '-and-') // Replace & with 'and'
+		.replace(/[^\w\-]+/g, '') // Remove all non-word characters except for -
+		.replace(/\-\-+/g, '-') // Replace multiple - with single -
 }
 
 function createHeading(level) {
@@ -181,6 +257,14 @@ export async function CustomMDX({ source }: CustomMDXProps) {
     import('remark-math'),
     import('rehype-katex')
   ])
+  // importa dinamicamente katex e salvalo in variabile di modulo
+  try {
+    const mod = await import('katex')
+    katexImpl = mod
+  } catch (err) {
+    // mantiene katexImpl = null se import fallisce; Table userà fallback
+    katexImpl = null
+  }
 
   return (
     <MDXRemote
