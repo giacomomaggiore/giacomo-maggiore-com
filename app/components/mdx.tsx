@@ -138,21 +138,31 @@ function Table({ data }) {
 
 
 function CustomLink(props) {
-  let href = props.href
+  const { href = '', children, target: propTarget, rel: propRel, ...rest } = props
+  const target = propTarget ?? '_blank'
+  const rel = propRel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)
 
   if (href.startsWith('/')) {
     return (
-      <Link href={href} {...props}>
-        {props.children}
+      <Link href={href} target={target} {...rest} rel={rel}>
+        {children}
       </Link>
     )
   }
 
   if (href.startsWith('#')) {
-    return <a {...props} />
+    return (
+      <a href={href} target={target} rel={rel} {...rest}>
+        {children}
+      </a>
+    )
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />
+  return (
+    <a href={href} target={target} rel={rel} {...rest}>
+      {children}
+    </a>
+  )
 }
 
 function RoundedImage(props) {
@@ -201,6 +211,7 @@ function createHeading(level) {
         React.createElement('a', {
           href: `#${slug}`,
           key: `link-${slug}`,
+          target: "_blank",
           className: 'anchor',
         }),
       ],

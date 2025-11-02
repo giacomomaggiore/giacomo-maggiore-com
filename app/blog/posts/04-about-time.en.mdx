@@ -1,0 +1,218 @@
+---
+title: 'On Spending Time'
+publishedAt: '2025-11-1'
+summary: 'Between Signal, Noise, and the Practice of Saying NO'
+---
+
+##  <b>I have no regrets, no remorse, only sometimes...  </b>
+
+One of my major goals since enrolling at university has always been to maximize the return on my time. 
+
+Having found myself in highly stimulating and intellectually rich environments, at the <a target="_blank" href="https://www.polimi.it/"> Politecnico di Milano </a> for three years and, for a few months now, at the <a href="https://ethz.ch/en.html" target="_blank" >ETH Zurich </a>, I have always felt a certain <b>FOMO</b> towards everything around me, knowing that the university experience (which I still consider one of humanity's greatest inventions) is <s>unfortunately</s> <b>time-limited.</b>
+
+However, since moving to Switzerland, leaving friends and family a few hours away, my goal of “maximizing time return” has gone beyond the mere academic sphere.
+
+It may sound trivial, but my goal has become <b>minimizing the future probability of having regrets about the present</b>.
+
+Translated more concretely, this means understanding how to balance study, extra-academic opportunities, personal and professional growth, and perhaps most importantly, my friendships and relationships in Italy.
+
+I find myself in a <b>paradoxical situation</b>: on one hand, I consider myself extremely lucky to have moved to Zurich, where I am learning a lot and my daily life is full of stimuli, but, on the other hand, I cannot deny having left a lot behind in Milan—so much so that, tragically and comically, I rarely feel like returning to Italy, but as soon as I think of and see my closest people again, I re-immerse myself in my <b>comfort zone</b>.
+
+Not knowing whether this is a transitional period, in which my life is split between two cities and two daily routines, I continue to question the way I try to maximize the expected utility of my time.
+
+![Val Codera](/images/blog/codera.jpg)
+<small>
+<i>
+A good personal definition of comfort zone: a weekend in Val Codera in a tent!
+</i>
+</small>
+
+### <b> Take 3 buckets </b>
+
+To try to clarify things, I have attempted to divide time into three main categories:
+
+- <b>Shared time</b>: dedicated to friends, relationships, family, and selfless pleasure.  
+- <b>Vertical time</b>: dedicated to academic and highly specific study, aimed at developing <b>hard skills</b> and vertical expertise in a field.  
+- <b>Horizontal time</b>: spent on events, opportunities, and extra-academic encounters that indirectly help build a <b>mindset</b> (_extra lessons, hackathons, non-academic readings, studying cross-disciplinary topics are some examples_). In general, these are all activities that broaden both hard and soft skills more horizontally.
+
+It should be noted, however, that these categories <b>are not binary properties</b>, but points on a <b>continuous spectrum</b>: many moments can fall into multiple categories simultaneously, and the distinction between horizontal and vertical time can be subtle and hidden.  
+However, _for simplicity of discussion_, they will be treated as binary properties.
+
+---
+
+### <b>How do we fill them? </b>
+
+Given these three ways of spending time and living <s>unfortunately</s> in a world with _24 hours a day_, I daily question how to divide my days, as if, starting from a full water bottle, I had to pour the water into three separate buckets.
+
+In other words, my problem concerns maximizing overall utility $ u$, given by:
+
+$$
+u = u_{\text{shared}}(t_{\text{c}}) + u_{\text{vertical}}(t_{\text{v}},e_{\text{v}}) + u_{\text{horizontal}}(t_{\text{o}},e_{\text{o}})
+$$
+
+where each $u_i(t_i, e_i)$ represents the utility of a specific bucket; $t_{i}$ is the time, $e_{i}$ the effort dedicated to each, with the constraint $ t_{\text{c}} + t_{\text{v}} + t_{\text{o}} \leq 1 $ and $ e_{\text{v}} + e_{\text{o}} \leq 1$.
+
+---
+
+### <b>The nice part and maintenance cost</b>
+
+For shared time, we can rewrite:
+
+$$
+u_{\text{shared}}(t_{\text{c}}) = V(t_{\text{c}}) - P(t_{\text{c}})
+$$
+
+where
+- $V(t_{\text{c}}) = \gamma \cdot \log(1 + \delta \cdot t_{\text{c}})$ represents <b>the "nice part of the function"</b>, modeling the pleasure of time with diminishing returns (the first days spent with friends and family fill with value, as time passes pleasure increases with lower marginal utility) and saturation speed $\delta$ (which, at least in my case, is very high...<s> I get bored quickly! </s>).
+
+- $P(t_{\text{c}}) = \lambda \cdot \max(0, T_{\text{min}} - t_{\text{c}})$ models the <b>maintenance cost of relationships</b>, which, at least in my case, is strictly linked to the distance between Milan and Zurich.
+
+$ T_{\text{min}} $ represents a maintenance threshold to dedicate to relationships to prevent their decay; consequently, if $ t_{\text{c}} > T_{\text{min}} $ (i.e., if enough time is dedicated to relationships), $ P(t) $ becomes zero and there is no decrease in utility.
+
+Conversely, if $ t_{\text{c}} < T_{\text{min}} $, the utility $ u_{\text{shared}} $ decreases for not having allocated enough time.
+
+### <b>Vertical and Horizontal time</b>
+
+For <b>vertical time</b>, we define a utility function:
+
+$$
+u_{vertical}(e_v, t_v) = \alpha \ln(1 + \beta_e e_v + \beta_t t_v) - \frac{k_e}{2} e_v^2 - \frac{k_t}{2} t_v^2
+$$
+
+where $ \alpha$, $ \beta_e, \beta_t$, $ k_e$, $k_t$ are positive constants depending on personal traits, life stage, and surrounding conditions.
+
+Finally, for soft skills and generalist competencies, we have:
+
+$$
+u_{\text{horizontal}}(e_o, t_o) = V(e_o, t_o) + \varepsilon(t_o) - C_{\text{ex}}(e_o, t_o)
+$$
+
+where
+
+- $ V(e_o, t_o) $ represents the deterministic average value of this type of activity
+- $ \varepsilon(t_o) $ quantifies the stochastic component representing the random positive impact of events
+- $ C_{\text{ex}}(e_o, t_o)$ models the cost of extra activities, which is increasing and convex.
+
+Note how in $ u_{\text{vertical}} $ and $ u_{\text{horizontal}} $ the variables $ e_{\text{v}} $ and $ e_{\text{o}} $ appear, while in $ u_{\text{shared}}$ there is no variable quantifying the effort dedicated.
+
+_(For many people, including myself, maintaining relationships could still require extra mental effort, but for simplicity, it has been omitted.)_
+
+Having defined the maximization problem of $u$ and given that the difference between $ u_{\text{shared}} $ and the others is fairly clear, I think that optimally allocating time between $ u_{\text{horizontal}} $ and $ u_{\text{vertical}} $ is the hardest part, given the very unclear and often hidden boundary.
+
+![Injury and CHF](/images/blog/vert-ort.jpg)
+<small>
+<i>
+Pure verticalization: a financial math lecture VS Pure horizontalization: lunch at Google Zurich with the legendary <a href="https://www.linkedin.com/in/ludovico-bessi?originalSubdomain=ch" target="_blank">Ludovico Bessi </a>
+</i>
+</small>
+
+### <b>Between signal and noise</b>
+
+Having always lived in contexts rich with opportunities, I have been fortunate to easily increase $ u_{\text{horizontal}} $: events, people, projects, cultural stimuli have never been lacking.
+
+Today, however, I find myself in the opposite situation: I try to <b>filter</b> and, at times, <b>avoid</b> many of these occasions.
+
+I am convinced that surrounding oneself with the right people and environment is essential, but I think that, once a certain threshold is reached, it becomes crucial to <b>distinguish signal from noise</b>.
+
+Especially in dynamic environments, it is easy to fill your agenda with events that _seem_ important but give no real value and, on the contrary, only represent noise (a poor use of time).
+
+The natural question, then, is how to filter and abstain from such activities.
+
+To answer, it makes sense to look at the stochastic part $ \varepsilon $ and try to optimize $ u_{\text{horizontal}} $ to expose oneself to potential positive and unpredictable returns, while minimizing costs $ C_{\text{ex}} $.
+
+We should consequently expose ourselves to contexts where, in addition to gaining immediate benefits, something impactful could develop in the long term that we would unlikely have obtained otherwise.
+
+However, living in a world of limited resources (where $ t_{\text{c}} + t_{\text{v}} + t_{\text{o}} \leq 1 $), the optimization of $ u_{\text{horizontal}} $ falls within a broader context of <b>trade-offs</b> between _hard_ and _soft skills_.
+
+---
+
+### <b>So good they can't ignore you</b>
+
+I believe that, despite the advent of LLMs that seem capable of doing everything, <b>verticalizing your knowledge</b> remains an optimal choice: dedicating time to developing <b>hard skills</b> still yields the highest long-term return.
+
+<a href="https://www-amazon-com.translate.goog/Good-They-Cant-Ignore-You/dp/1455509124?_x_tr_sl=en&_x_tr_tl=it&_x_tr_hl=it&_x_tr_pto=sc2" target="_blank">Cal Newport would say: _“So good they can’t ignore you”_</a>, supporting this thesis.
+
+According to the American author, it is preferable to follow one’s talents rather than passions: passion derives from expertise, not the other way around, and only once we become extremely competent in a subject will we be able to appreciate it 100%.
+
+Consequently, only after finding your vertical specialization does it make sense to broaden your knowledge horizontally, acquiring transversal skills useful for interacting with people, different contexts, and gaining an understanding of how the world works beyond your niche.
+
+On this subject, <a href="https://www.paulgraham.com/" target="_blank">Paul Graham</a>, in one of his most famous essays <a href="https://paulgraham.com/selfindulgence.html" targert="_blank">_“How to lose time and money”_</a>, argues that the best way to waste time is not through pure fun or goofing off, but through so-called <b>fake work</b>: activities that give the illusion of being productive or of increasing skills, but in reality generate little real value.
+
+Events, meetings, podcasts, videos, or even some university courses easily fall into this category: they can make us feel like we are doing deep work, but often represent a form of <b>useless entertainment</b> disguised as work.
+
+![Injury and CHF](/images/blog/coding.jpg)
+<small>
+<i>
+Although I am not a computer scientist, I consider coding one of the best examples of deep work.
+</i>
+</small>
+
+_Below are some examples, drawn from my experience and obviously full of biases._
+
+<Table
+  data={{
+    headers: ["Activity", "Main function", "Notes"],
+    rows: [
+      [
+        "Solve a difficult problem",
+        "$u_{\\text{vertical}}$",
+        "Pure verticalization: strictly analytical activity with high ROI on hard skills."
+      ],
+      [
+        "Work on a technical side project with a friend",
+        "Combination of $u_{\\text{vertical}}$, $u_{\\text{horizontal}}$, and $u_{\\text{shared}}$",
+        "Verticalization of knowledge outside the academic and theoretical domain."
+      ],
+      [
+        "Have a coffee with a professor/PhD/professional",
+        "$u_{\\text{horizontal}}$",
+        "Minimal effort, very high stochastic potential."
+      ],
+      [
+        "Lunch with colleagues or classmates",
+        "$u_{\\text{shared}}$ and $u_{\\text{horizontal}}$",
+        "Low cost, medium-low value, can contribute to overall well-being."
+      ],
+      [
+        "Attend a generic “how to succeed” talk",
+        "$u_{\\text{horizontal}}$ (noise)",
+        "Minimal expected value and low potential. Almost total waste of time."
+      ],
+      [
+        "Reread notes already understood",
+        "$u_{\\text{vertical}}$ (fake work)",
+        "Zero marginal benefits."
+      ],
+      [
+        "Weekend with friends and zero studying",
+        "$u_{\\text{shared}}$",
+        "Total maximization of shared time. Must have!"
+      ],
+      [
+        "Exercise, alone or with company",
+        "$u_{\\text{shared}}$",
+        "Essential for physical and mental balance."
+      ]
+    ]
+  }}
+/>
+
+The conclusion I would like to reach is that <b>“maximizing the utility of time”</b> does not always mean <b>“doing more of everything”</b>, but learning to say <b>NO</b> and learning to give value, from all perspectives, to every moment of our time.
+
+To achieve this, although optimizing $u$ is a strictly personal problem connected to the stage of life one is in, I believe that <b>awareness</b> of one’s goals, limits, surrounding conditions, and <b>intentionality</b> can be excellent starting points for everyone.
+
+Trivial conclusions aside, these same values should also teach and allow us, _without any claim of productivity or verticality_, to carve out and enjoy moments of <b>carefreeness, conviviality, and slow living</b>, which is why, following the example of <a href="https://www.instagram.com/fra.ncescopiccolo/" target="_blanK" >Francesco Piccolo </a>, I encourage you to keep a diary of <a href="https://www.einaudi.it/catalogo-libri/narrativa-italiana/narrativa-italiana-contemporanea/momenti-di-trascurabile-felicita-francesco-piccolo-9788806205515/" target="_blank"> <b>Moments of Negligible Happiness</b> </a>, to remind ourselves that, all in all, <b>life is awesome</b>.
+
+Cheers!
+
+---
+
+_Some moments of negligible happiness from the past few months:_
+
+- Fixing the code for this article while listening to <a href="https://www.youtube.com/watch?v=MNQhlpFEHc8" target="_blank" >"Questo nostro grande amore"</a> on a lonely Zurich Saturday night.
+- Returning to run with lifelong friends after months of injury.
+- Taking the IC2 intercity at 7:05 PM from Zurich HB to Milano Centrale on a Thursday evening.
+- Organizing bike vacations across Europe again with the whole family.
+- Returning to scout camp for a week during summer camp.
+- Walking through the classrooms at Polimi where I experienced the <s>most stressful</s> best years of my life.
+- Daydreaming and planning the next road trip to some forgotten destination.
