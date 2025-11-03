@@ -4,391 +4,12 @@ publishedAt: '2025-10-25'
 summary: ''
 ---
 
-<<<<<<< HEAD
 A <b>Bayesian Vector AutoRegression (BVAR)</b> is the Bayesian extension of the classical <b>Vector AutoRegression (VAR)</b> model.  
 It is widely used in macroeconomics to study and forecast the joint evolution of multiple interrelated time series _(GDP, inflation, and exchange rates)_ under the assumption that each variable depends both on <b>its own past values</b> and on the <b>past values of all others</b>.
 
 
 
 ## <b>Basic Structure of a VAR(p) </b>
-=======
-## Autoregressive (AR) Models — Notes for Time Series and Macroeconomic Forecasting
-
-## 1. Introduction
-
-An **Autoregressive model (AR)** is one of the simplest and most fundamental models in time series analysis.  
-It expresses the current value of a variable as a linear combination of its own past values and a random shock.
-
-The AR model is particularly useful in **macroeconomics**, where many variables (like GDP growth or inflation) display persistence — meaning the past influences the present.
-
----
-
-## 2. General Definition
-
-An AR model of order $ p $, denoted AR($p$), is written as:
-
-$$
-y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \dots + \phi_p y_{t-p} + \varepsilon_t,
-$$
-
-where:
-- $ y_t $ = value of the variable at time $ t $,
-- $ c $ = intercept or drift term,
-- $ \phi_i $ = autoregressive coefficients,
-- $ \varepsilon_t $ = white noise error term, $ \varepsilon_t \sim (0, \sigma^2) $.
-
-The model implies that current observations depend linearly on a finite number of past observations.
-
----
-
-## 3. The AR(1) Case
-
-The simplest case, AR(1), is:
-
-$$
-y_t = c + \phi y_{t-1} + \varepsilon_t.
-$$
-
-- If $ |\phi| < 1 $: the process is **stationary** and mean-reverting.  
-- If $ \phi = 1 $: the process has a **unit root** (random walk).  
-- If $ |\phi| > 1 $: the process is **explosive**.
-
-The mean and variance of a stationary AR(1) are:
-
-$$
-E[y_t] = \frac{c}{1 - \phi}, \quad
-Var(y_t) = \frac{\sigma^2}{1 - \phi^2}.
-$$
-
----
-
-## 4. Stationarity Conditions
-
-For the AR($p$) process to be **covariance-stationary**, all roots of the **characteristic polynomial** must lie outside the unit circle:
-
-$$
-1 - \phi_1 z - \phi_2 z^2 - \dots - \phi_p z^p = 0, \quad |z| > 1.
-$$
-
-Stationarity implies that the series has:
-- Constant mean and variance,
-- Autocovariances depending only on the lag, not on time.
-
-If not stationary, we often **difference** the series to induce stationarity (as in ARIMA models).
-
----
-
-## 5. Estimation
-
-The parameters $ \phi_i $ and $ c $ can be estimated by **Ordinary Least Squares (OLS)** since the model is linear in parameters:
-
-$$
-\hat{\boldsymbol{\phi}} = (Y'Y)^{-1} Y'y,
-$$
-
-where $ Y $ contains lagged values $ [y_{t-1}, y_{t-2}, \dots, y_{t-p}] $.  
-Alternatively, one can use **Maximum Likelihood Estimation (MLE)** under Gaussian errors.
-
-For small samples, Yule–Walker equations can also be used, based on sample autocorrelations.
-
----
-
-## 6. Forecasting with AR Models
-
-### One-step-ahead forecast
-
-For AR(1):
-$$
-\hat{y}_{t+1|t} = c + \phi y_t.
-$$
-
-### Multi-step-ahead forecast
-
-For horizon $ h $:
-$$
-\hat{y}_{t+h|t} = \mu (1 - \phi^h) + \phi^h y_t, \quad \text{where } \mu = \frac{c}{1 - \phi}.
-$$
-
-The forecast **converges to the long-run mean** $ \mu $ as $ h \to \infty $.  
-Forecast uncertainty grows with $ h $ as errors accumulate.
-
----
-
-## 7. Autocorrelation Function (ACF)
-
-For a stationary AR(1):
-
-$$
-\rho(k) = \phi^k,
-$$
-
-meaning autocorrelation decays **geometrically** with the lag $ k $.  
-This property makes AR models suitable for data that exhibit exponential decay in correlation.
-
----
-
-## 8. Economic Interpretation
-
-In macroeconomics, AR models are often used as **benchmark forecasting tools** for individual variables:
-
-- GDP growth, inflation, or unemployment rates are often modeled as AR(1) or AR(2) processes.
-- The **persistence** parameter $ \phi $ captures how strongly the past influences the present.
-- Shocks $ \varepsilon_t $ represent **unexpected innovations** or disturbances (e.g., policy, technology, or demand shocks).
-
-Even though AR models ignore cross-variable interactions, they remain valuable for **baseline forecasts** and for **testing richer models** like VARs or BVARs.
-
----
-
-## 9. Relation to Moving Average (MA) and ARMA Models
-
-- **MA(q)**: depends on past shocks instead of past values.
-  $$
-  y_t = c + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \dots + \theta_q \varepsilon_{t-q}.
-  $$
-- **ARMA(p, q)**: combines AR and MA parts.
-  $$
-  y_t = c + \phi_1 y_{t-1} + \dots + \phi_p y_{t-p} + \varepsilon_t + \theta_1 \varepsilon_{t-1} + \dots + \theta_q \varepsilon_{t-q}.
-  $$
-AR models are thus a special case of ARMA with $ q = 0 $.
-
----
-
-## 10. Advantages
-
-- Simple and interpretable.
-- Requires minimal data and assumptions.
-- Good short-run forecasting performance for persistent series.
-- Easy to estimate and compute analytically.
-
----
-
-## 11. Limitations
-
-- Ignores relationships between multiple variables (univariate only).
-- Cannot capture structural changes or regime shifts.
-- Overly simplistic for complex macroeconomic dynamics.
-- Non-stationary series require differencing or transformation.
-
----
-
-## 12. Example: AR(2) for GDP Growth
-
-Suppose quarterly GDP growth $ g_t $ follows:
-
-$$
-g_t = 0.5 + 0.7 g_{t-1} - 0.2 g_{t-2} + \varepsilon_t.
-$$
-
-Interpretation:
-- The positive $ \phi_1 = 0.7 $ shows persistence.
-- The negative $ \phi_2 = -0.2 $ introduces a mean-reverting correction.
-- The process fluctuates around the long-run mean $ \mu = \frac{0.5}{1 - 0.7 + 0.2} = 1.0 $.
-
----
-
-## 13. Extensions
-
-- **ARIMA**: integrates differencing for non-stationary series.
-- **SARIMA**: includes seasonal components.
-- **ARX / ARIMAX**: includes exogenous regressors.
-- **VAR**: multivariate extension allowing interactions across variables.
-- **BVAR**: Bayesian extension with prior shrinkage.
-
----
-
-### Vector Autoregressive (VAR) Models — Notes for Macroeconomic Forecasting
-
-## 1. Introduction
-
-A **Vector Autoregressive model (VAR)** is a multivariate generalization of the univariate autoregressive model (AR).  
-It captures **dynamic interdependencies** among multiple time series variables, such as GDP growth, inflation, and interest rates — all influencing each other over time.
-
-Formally, for an $ n $-dimensional vector of variables:
-
-$$
-y_t = 
-\begin{bmatrix}
-y_{1t} \\
-y_{2t} \\
-\vdots \\
-y_{nt}
-\end{bmatrix},
-$$
-
-a VAR of order $ p $ (denoted VAR($p$)) is defined as:
-
-$$
-y_t = c + A_1 y_{t-1} + A_2 y_{t-2} + \dots + A_p y_{t-p} + u_t,
-$$
-
-where:
-- $ y_t \in \mathbb{R}^n $ is the vector of endogenous variables,
-- $ c \in \mathbb{R}^n $ is a vector of intercepts,
-- $ A_i \in \mathbb{R}^{n \times n} $ are coefficient matrices,
-- $ u_t \sim (0, \Sigma_u) $ is a white-noise innovation vector with covariance matrix $ \Sigma_u $.
-
----
-
-## 2. Intuition and Economic Interpretation
-
-The VAR assumes that **each variable depends on its own lags and the lags of all other variables**.  
-In macroeconomics, this is useful because most variables co-move and react to common shocks.
-
-Example: a 3-variable VAR might include
-$$
-y_t = [ \text{GDP growth}_t, \text{Inflation}_t, \text{Interest rate}_t ]'
-$$
-where:
-- GDP reacts to its own past, inflation, and interest rates.
-- Inflation reacts to GDP and policy rates.
-- Interest rates react to inflation and GDP dynamics.
-
-This **endogenous system** avoids imposing strong a priori causal restrictions — allowing the data to “speak” dynamically.
-
----
-
-## 3. Stationarity and Stability
-
-A VAR($p$) is **covariance-stationary** if all roots of the **characteristic equation** lie outside the unit circle.
-
-$$
-\det(I_n - A_1 z - A_2 z^2 - \dots - A_p z^p) \neq 0, \quad \text{for } |z| \le 1.
-$$
-
-If the process is stationary:
-- The unconditional mean is
-  $$
-  \mu_y = (I_n - A_1 - A_2 - \dots - A_p)^{-1} c.
-  $$
-- The system has finite variances and autocovariances.
-
-If not stationary (unit roots present), one often uses **differenced VARs** or **Vector Error Correction Models (VECMs)** for cointegrated data.
-
----
-
-## 4. Estimation
-
-Each equation in the VAR can be estimated **by OLS** independently because all right-hand-side variables are the same in each equation.
-
-Let:
-$$
-Y = [y_p, y_{p+1}, \dots, y_T]', \quad
-X = [1, y_{t-1}', y_{t-2}', \dots, y_{t-p}'].
-$$
-Then the model can be written compactly as:
-$$
-Y = X B + U,
-$$
-where:
-- $ B = [c, A_1, A_2, \dots, A_p]' $ is the matrix of coefficients,
-- $ U $ is the matrix of residuals.
-
-The OLS estimator is:
-$$
-\hat{B} = (X'X)^{-1} X'Y.
-$$
-
----
-
-## 5. Forecasting with VAR
-
-Once estimated, a VAR model can generate **multi-step forecasts** recursively.
-
-For $ h $-step ahead forecasts:
-$$
-\hat{y}_{t+h|t} = c + A_1 \hat{y}_{t+h-1|t} + \dots + A_p \hat{y}_{t+h-p|t}.
-$$
-
-### Forecast Error Variance Decomposition (FEVD)
-Shows the proportion of the forecast error variance of a variable that is due to shocks in each variable in the system — revealing **sources of volatility**.
-
-### Impulse Response Functions (IRFs)
-Measure the **dynamic reaction** of each variable to a one-time shock in another variable, while holding all other shocks constant.
-
-Both FEVD and IRF are central tools in **macroeconomic analysis** — used to interpret the transmission of monetary or fiscal shocks.
-
----
-
-## 6. Identification of Structural Shocks (SVAR)
-
-In macroeconomics, we often want to interpret shocks economically (e.g. a *monetary policy shock*).  
-The reduced-form residuals $ u_t $ are **correlated**, so they cannot be directly interpreted as structural shocks.
-
-We assume a **structural representation**:
-$$
-A_0 y_t = A_1^* y_{t-1} + \dots + A_p^* y_{t-p} + \varepsilon_t,
-$$
-where $ \varepsilon_t $ are **structural shocks** (orthogonal, $ E[\varepsilon_t \varepsilon_t'] = I $).
-
-The relationship between reduced-form and structural form is:
-$$
-u_t = A_0^{-1} \varepsilon_t, \quad \Sigma_u = A_0^{-1} (A_0^{-1})'.
-$$
-
-Identifying $ A_0 $ requires **restrictions** (based on theory):
-- **Cholesky decomposition** (recursive identification),
-- **Sign restrictions** (modern approach),
-- **Long-run restrictions** (Blanchard–Quah).
-
----
-
-## 7. Advantages for Macroeconomic Forecasting
-
-- **Flexibility**: captures rich dynamics among macro variables without strong theoretical constraints.
-- **Empirical accuracy**: often outperforms large-scale structural models for short- to medium-term forecasts.
-- **Transparency**: model specification and estimation are straightforward.
-- **Scenario analysis**: via impulse responses and FEVDs, policymakers can explore "what if" scenarios.
-
----
-
-## 8. Limitations
-
-- **Overparameterization**: the number of parameters grows rapidly with $ n^2 p $.
-- **Data-hungry**: requires long and stable macro time series.
-- **No structural interpretation by default**: reduced-form VARs lack economic meaning without identification.
-- **Non-stationarity**: macro variables often exhibit unit roots and cointegration — requiring adaptations (VECM).
-
----
-
-## 9. Typical Macroeconomic VAR Example
-
-Let:
-$$
-y_t =
-\begin{bmatrix}
-\text{GDP growth}_t \\
-\text{Inflation}_t \\
-\text{Interest rate}_t
-\end{bmatrix}.
-$$
-
-A VAR(2) model:
-$$
-y_t = c + A_1 y_{t-1} + A_2 y_{t-2} + u_t.
-$$
-
-Forecasts of GDP growth depend on its own lags, past inflation, and past interest rates — and vice versa for the other equations.  
-Shocks to the interest rate can then be propagated to inflation and GDP through impulse responses.
-
----
-
-## 10. Extensions
-
-- **Structural VAR (SVAR)** — economic identification of shocks.
-- **Bayesian VAR (BVAR)** — introduces priors to shrink estimates, solving overfitting problems.
-- **Time-varying parameter VAR (TVP-VAR)** — allows coefficients to evolve over time.
-- **Factor-Augmented VAR (FAVAR)** — includes latent factors summarizing large information sets.
- 
----
-# BVAR
-
-A **Bayesian Vector AutoRegression (BVAR)** is the **Bayesian extension** of the classical **Vector AutoRegression (VAR)** model.  
-It is widely used in **macroeconomics** to study and forecast the joint evolution of multiple interrelated time series (**GDP, inflation, and exchange rates**) under the assumption that each variable depends both on **its own past values** and on the **past values of the others**.
-
----
-
-## The Basic Structure of a VAR(p)
->>>>>>> new-article
 
 Suppose we have $ K $ variables and consider $ p $ lags.  
 The general VAR(p) model is written as:
@@ -399,19 +20,15 @@ $$
 
 where:
 
+
 - $ y_t $ is a $ K \times 1 $ vector of endogenous variables (e.g., [GDP, Inflation, Exchange Rate]),
 - $ A_i $ are $ K \times K $ coefficient matrices,
-<<<<<<< HEAD
 - $ \varepsilon_t $ is a vector of the error terms with covariance matrix $ \Sigma $.
-=======
-- $ \varepsilon_t $ is a vector of white-noise error terms with covariance matrix $ \Sigma $.
->>>>>>> new-article
 
 The goal is to estimate:
 $$
 \hat{A}_1, \dots, \hat{A}_p, \hat{\Sigma}
 $$
-<<<<<<< HEAD
 
 typically made through <a href="https://www.geeksforgeeks.org/machine-learning/ordinary-least-squares-ols/" target="_blank"><b>Ordinary Least Squares (OLS)</b></a> or <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation" target="_blank"><b>Maximum Likelihood Estimation (MLE)</b> </a>.
 
@@ -456,55 +73,6 @@ Let $ Y = (y_1, y_2, \dots, y_T) $ be the observed data and let the model parame
 The goal is to determine the posterior distribution $ p(\Theta \mid Y) $, which represents the updated beliefs about the parameters after observing the data.
 
 According to <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem" target="_blamk"> Bayes’ theorem </a>:
-=======
-typically through **Ordinary Least Squares (OLS)** or **Maximum Likelihood Estimation (MLE)**.
-
-- Parameters are **fixed**, not random.  
-- Output: **point estimates** like $ \hat{A}_{ij} = 0.35 $.  
-- Uncertainty is **derived** analytically (e.g., via asymptotic standard errors or confidence intervals).  
-- The model provides a single best estimate of each coefficient.
-
-In short, the classical VAR assumes that **true parameter values exist**, and the task is to **estimate them as accurately as possible** from the sample.
-
-
-
-As the number of variables $ K $ and lags $ p $ increases, the number of parameters to estimate grows **quadratically**.  
-For example, a VAR with 10 variables and 4 lags already has **400 coefficients** to estimate, and that’s not even counting intercepts or covariances.
-
-This leads to several practical issues:
-
-- **Overfitting:** the model adapts too much to the sample data.  
-- **Parameter instability:** small sample size leads to unreliable estimates.  
-- **Poor forecasting performance:** too much noise, not enough structure.
-
-In short, traditional VAR models become **unmanageable** and **statistically weak** when the dataset is small but the system is large.
-
----
-
-## The Bayesian Solution: Introducing Priors
-
-A **BVAR** mitigates this dimensionality problem by introducing **prior information** (the *priors*) about the model parameters.  
-
-Instead of estimating the coefficients solely based on the data (as in frequentist approaches), a BVAR combines:
-
-1. **The likelihood** (what the data tell us)
-2. **The prior distribution** (what we believe about the parameters *before* observing the data)
-
-This combination yields a **posterior distribution** that balances data-driven evidence and prior beliefs.
-
-In a **BVAR**, parameters are treated as **random variables** that have their own **probability distributions**.  
-This reflects the idea that we are uncertain about the true values, and this uncertainty should be modeled explicitly.
-
-
-## The Role of Priors (Prior Distributions) and the Estimation Mechanism
-
-The estimation procedure of a **Bayesian Vector AutoRegression (BVAR)** relies on the principles of **Bayesian inference**, where parameter uncertainty is explicitly modeled rather than ignored.
-
-Let $ Y = (y_1, y_2, \dots, y_T) $ be the observed data and let the model parameters be $ \Theta = (A_1, \dots, A_p, \Sigma) $.  
-The goal is to determine the **posterior distribution** $ p(\Theta \mid Y) $, which represents the updated beliefs about the parameters after observing the data.
-
-Formally, according to **Bayes’ theorem**:
->>>>>>> new-article
 
 $$
 p(\Theta \mid Y) = \frac{p(Y \mid \Theta) \, p(\Theta)}{p(Y)}
@@ -512,46 +80,28 @@ $$
 
 where:
 
-<<<<<<< HEAD
 - $ p(Y \mid \Theta) $: <b>Likelihood function </b>, capturing the probability of the observed data given the parameters.  
 - $ p(\Theta) $: <b>Prior distribution</b>, giving information the parameters before observing the data.  
 - $ p(Y)$: <b>Marginal likelihood</b> or evidence, serving as a normalizing constant.
 
 
 Combining prior and likelihood yields the <b>posterior</b>:
-=======
-- $ p(Y \mid \Theta) $: **Likelihood function**, capturing the probability of the observed data given the parameters.  
-- $ p(\Theta) $: **Prior distribution**, encoding information or beliefs about the parameters before observing the data.  
-- $ p(Y)$: **Marginal likelihood** or evidence, serving as a normalizing constant.
-
-
-Combining prior and likelihood yields the **posterior**:
->>>>>>> new-article
 
 $$
 p(A, \Sigma \mid Y) \propto p(Y \mid A, \Sigma) \, p(A, \Sigma)
 $$
 
-<<<<<<< HEAD
 So, in the BVAR, we obtain the followings
 
 - Parameters are <b>random variables</b>.  
 - Output is composed by a <b>posterior distributions </b> for each coefficient $ p(A_{ij} \mid Y) $.  
 - Uncertainty is <b>intrinsic</b> to the model and explicitly quantified.  
-=======
-This posterior reflects the updated uncertainty about $ A $ and $ \Sigma $ given the observed data.
-
-- Parameters are **random variables**.  
-- Output: **posterior distributions** for each coefficient $ p(A_{ij} \mid Y) $.  
-- Uncertainty is **intrinsic** to the model and explicitly quantified.  
->>>>>>> new-article
 - Forecasts integrate over parameter uncertainty:
   $$
   p(y_{T+h} \mid Y) = \int p(y_{T+h} \mid A, \Sigma, Y) \, p(A, \Sigma \mid Y) \, dA \, d\Sigma
   $$
 - Estimation can produce full distributions, means, medians, or credible intervals.
 
-<<<<<<< HEAD
 In a BVAR, we are not looking for the true values of fixed parameters, but rather a probabilistic belief about them.
 
 In many standard priors (e.g., Normal-Inverse Wishart), the posterior distributions remain in the same conjugate family, which allows closed-form analytical solutions for posterior means and variances.
@@ -561,19 +111,6 @@ When conjugacy does not hold, simulation-based methods (Markov Chain Monte Carlo
 
 
 ## <b> Common Priors in Practice </b>
-=======
-In a BVAR, we **do not seek the “true” fixed parameters** but rather a **probabilistic belief** about their possible values, conditional on both prior information and data.
-
-
-In many standard priors (e.g., Normal-Inverse Wishart), the posterior distributions remain in the same **conjugate family**, which allows **closed-form analytical solutions** for posterior means and variances.
-
-When conjugacy does not hold, **simulation-based methods** such as **Markov Chain Monte Carlo (MCMC)** or **Gibbs sampling** are employed to approximate the posterior.
-
----
-
-
-## Common Priors in Practice
->>>>>>> new-article
 
 <Table
   data={{
@@ -587,7 +124,4 @@ When conjugacy does not hold, **simulation-based methods** such as **Markov Chai
   }}
 />
 
-<<<<<<< HEAD
 More to come...
-=======
->>>>>>> new-article
