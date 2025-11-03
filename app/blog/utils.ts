@@ -69,36 +69,24 @@ export function getAllSlugs(): string[] {
   return Array.from(slugs)
 }
 
-export function getPost(slug: string, lang: string) {
+export function getPost(slug: string, lang?: string) {
   const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'posts')
 
-  // Normalizza la lingua estraendo la prima parte del valore (prima della virgola e del trattino).
-  // Esempi:
-  // - "it-IT,fr;q=0.9" => "it"
-  // - "fr" => "fr"
-  // Se la lingua primaria è "it" => it, altrimenti => en
-  const primary = typeof lang === 'string'
-    ? lang.split(',')[0].trim().split('-')[0].toLowerCase()
-    : ''
-  const normalizedLang: Lang = primary === 'it' ? 'it' : 'en'
+  // Normalizza la lingua: solo se inizia per "it" → it, in tutti gli altri casi → en
+  const normalizedLang: Lang = (typeof lang === 'string' && lang.toLowerCase().startsWith('it')) ? 'it' : 'en'
 
-  // Prova la lingua normalizzata; se richiesta 'it' e non esiste, fallback esplicito alla versione en.
-  const tryPath = (language: Lang) => path.join(postsDirectory, `${slug}.${language}.mdx`)
-
-  const filePath = tryPath(normalizedLang)
-
+  console.log(`Looking for file: ${slug}.${normalizedLang}.mdx`)
+  const filePath = path.join(postsDirectory, `${slug}.${normalizedLang}.mdx`)
   if (fs.existsSync(filePath)) {
     return readMDXFile(filePath)
   }
 
-  if (normalizedLang === 'it') {
-    const altFilePath = tryPath('en')
-    if (fs.existsSync(altFilePath)) {
-      return readMDXFile(altFilePath)
-    }
+  // Fallback: prova sempre la versione inglese
+  const altFilePath = path.join(postsDirectory, `${slug}.en.mdx`)
+  if (fs.existsSync(altFilePath)) {
+    return readMDXFile(altFilePath)
   }
 
-  // Se la lingua richiesta è en (o qualsiasi altra) e non esiste, non tornare all'italiano.
   return null
 }
 

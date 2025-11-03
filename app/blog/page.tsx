@@ -2,6 +2,7 @@ import 'katex/dist/katex.min.css';
 import Link from 'next/link'
 import { formatDate, getBlogPosts, type Lang } from './utils'
 import { cookies } from 'next/headers'
+import { getAllSlugs, getPost } from './utils'
 
 export const metadata = {
   title: 'Blog',
