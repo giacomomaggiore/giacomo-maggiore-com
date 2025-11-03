@@ -76,7 +76,7 @@ export function getPost(slug: string, lang: Lang) {
   
   if (!fs.existsSync(filePath)) {
     // Fallback alla lingua alternativa
-    const altLang = lang === 'it' ? 'en' : 'it'
+    const altLang = lang === 'en' ? 'it' : 'en'
     const altFilePath = path.join(postsDirectory, `${slug}.${altLang}.mdx`)
     if (!fs.existsSync(altFilePath)) {
       return null
