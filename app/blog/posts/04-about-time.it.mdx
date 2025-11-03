@@ -1,5 +1,6 @@
 ---
 title: 'Sullo spendere tempo'
+<<<<<<< HEAD
 publishedAt: '2025-10-28'
 summary: 'Perchè non si può mai parlare di soldi?'
 ---
@@ -37,3 +38,227 @@ Utilità attesa:
 $$
 \mathbb{E}[U(e,t)] = U_1(e,t) + V(\bar e,\bar t) - C_{\text{ex}}(\bar e,\bar t) + \mathbb{E}[\varepsilon]= U_1 + V - C_{\text{ex}} + \mu_\varepsilon.
 $$
+=======
+publishedAt: '2025-11-1'
+summary: 'Tra segnale, rumore e la disciplia di dire "anche no'
+---
+
+##  <b>Non ho nessun rimpianto, nessun rimorso soltanto certe volte...  </b>
+
+Uno dei miei grandi obiettivi da quando mi sono iscritto all’università è sempre stato massimizzare il ritorno del mio tempo. 
+
+Essendomi trovato in ambienti molto stimolanti e ricchi intellettualmente, il <a target="_blank" href="https://www.polimi.it/"> Politecnico di Milano </a> per tre anni e, da qualche mese, l’<a href="https://ethz.ch/en.html" target="_blank" >ETH di Zurigo </a>, ho sempre provato una certa <b>FOMO</b> verso tutto ciò che mi circondava, sapendo che l’esperienza universitaria (che reputo ancora una delle migliori invenzioni dell’umanità) è <s>sfortunatamente</s> <b>limitata nel tempo.</b>
+
+Da quando però mi sono trasferito in Svizzera, lasciando amici e familiari a qualche ora di distanza, il mio obiettivo di “massimizzare il ritorno del tempo” è andato oltre la mera sfera universitaria.
+
+Potrà sembrare banale, ma il mio obiettivo è diventato <b>minimizzare la probabilità futura di avere rimpianti sul presente</b>.
+
+Tradotto più concretamente, significa capire come bilanciare lo studio, le opportunità extra-accademiche, la crescita personale e professionale e, forse più importanti, le mie amicizie e relazioni in Italia.
+
+Mi trovo infatti in una <b>situazione paradossale</b>: da un lato mi reputo estremamente fortunato a essermi trasferito a Zurigo, dove sto imparando molto e dove la mia quotidianità è piena di stimoli, ma, dall’altro, non nego di aver lasciato molto a Milano tanto che; tragicomicamente, raramente ho voglia di tornare in Italia, ma, appena ripenso e rivedo le persone più care, mi ri-immergo nella mia <b>comfort zone</b>.
+
+Non sapendo se si tratti o meno di un periodo di transizione, in cui la mia vita è divisa tra due città e due quotidianità, continuo a rimettere in discussione il modo in cui cerco di massimizzare l’utilità attesa del mio tempo.
+
+![Val Codera](/images/blog/codera.jpg)
+<small>
+<i>
+Una buona personale definizione di comfort zone: weekend in Val Codera in tenda!
+</i>
+</small>
+
+### <b> Prendete 3 secchielli </b>
+
+Per cercare di fare chiarezza, ho provato a suddividere il tempo in tre grandi categorie:
+
+- <b>Tempo condiviso</b>: dedicato a amici, relazioni, famiglia e al piaceere disinteressato.  
+- <b>Tempo verticale </b>:  dedicato allo studio accademico e altamente specifico, mirato a sviluppare <b>hard skills</b> e competenze verticali in un settore.  
+- <b>Tempo orizzontale</b>: speso in eventi, opportunità e incontri extra-accademici che, indirettamente, contribuiscono a costruire una <b>forma mentis</b> (_lezioni extra, hackathon, letture non accademiche, studio di argomenti trasversali sono alcuni esempi_). In generale, sono tutte attività che ampliano sia hard che soft skills in modo più orizzontale.
+
+Si noti tuttavia come queste categorie <b>non sono proprietà binarie </b>, ma punti su uno <b>spettro continuo </b>: molti momenti possono rientrare in più categorie contemporaneamente e la distinzione tra tempo orizzontale e verticale può essere lieve e nascosta. 
+Tuttavia, _per economia della trattazione_, verranno considerate come proprietà binarie.
+
+---
+
+### <b> Come li riempiamo? </b>
+
+Date questi tre modi di spendere il tempo e vivendo <s>purtroppo</s> in un mondo con _24h al giorno_, mi interrogo quotidinamente su come suddividere le mie giornate, come se, a partire da una borraccia piena, dovessi versare l'acqua in tre secchielli separati.
+
+Detto in altri termini, il mio problema riguarda è la massimizzazione dell’utilità complessiva $ u$, data da:
+
+$$
+u = u_{\text{condiviso}}(t_{\text{c}}) + u_{\text{verticale}}(t_{\text{v}},e_{\text{v}}) + u_{\text{orizzontale}}(t_{\text{o}},e_{\text{o}})
+$$
+
+in cui ciascuna $u_i(t_i, e_i)$ rappresenta l'utilità di uno specifico secchiello; $t_{i}$ il tempo, $e_{i}$ l'effort (impegno) dedicato a ciascuno, con il vincolo $ t_{\text{c}} + t_{\text{v}} + t_{\text{o}} \leq 1 $ e $ e_{\text{v}} + e_{\text{o}} \leq 1$
+
+---
+
+### <b> La parte bella e il costo di mantenimento </b>
+
+Per quanto riguarda il tempo condiviso, possiamo riscrivere:
+
+$$
+u_{\text{condiviso}}(t_{\text{c}}) = V(t_{\text{c}}) - P(t_{\text{c}})
+$$
+
+in cui
+- $V(t_{\text{c}}) = \gamma \cdot \log(1 + \delta \cdot t_{\text{c}})$ rappresenta <b> la parte “bella della funzione”</b>, modella il piacere del tempo con rendimenti decrescenti (i primi giorni trascorsi con amici e parenti riempiono di valore, man mano che passa il tempo il piacere aumenta con utilità marginale minore) e velocità di "saturazione" $\delta$ (che, almeno nel mio caso, è molto alta...<s> mi annoio in fretta! </s>).
+
+- $P(t_{\text{c}}) = \lambda \cdot \max(0, T_{\text{min}} - t_{\text{c}})$ modella invece il <b>costo di mantenimento delle relazioni </b> che, almeno nel mio caso, è strettamente legata alla distanza tra Milano e Zurigo.
+
+
+$ T_{\text{min}} $ rappresenta una soglia di mantenimento da dedicare alle relazioni per non farle decadere, di conseguenza, se $ t_{\text{c}} > T_{\text{min}} $ (cioè se si dedica abbastanza tempo alle relazioni), $ P(t) $ si annulla e non vi è alcuna diminuzione di utilità.
+
+Se, al contrario, $ t_{\text{c}} < T_{\text{min}} $, l'utilità $ u_{\text{condiviso}} $ decresce per non avergli riservato abbastanza tempo.
+
+
+### <b>Tempo verticale e Orizzontale </b>
+
+Per il <b>tempo verticale</b>, definiamo invece una funzione di utilità:
+$$
+u_{verticale}(e_v, t_v) = \alpha \ln(1 + \beta_e e_v + \beta_t t_v) - \frac{k_e}{2} e_v^2 - \frac{k_t}{2} t_v^2
+$$
+
+in cui $ \alpha$, $ \beta_e, \beta_t$, $ k_e$, $k_t$ sono costanti positive e dipendono dai nostri tratti personali, il periodo della nostra vita e le condizioni al contorno.
+
+Infine, per le soft skills e le competenze generaliste vale:
+
+$$
+u_{\text{orizzontale}}(e_o, t_o) = V(e_o, t_o) + \varepsilon(t_o) - C_{\text{ex}}(e_o, t_o)
+$$
+
+in cui
+
+- $ V(e_o, t_o) $ rappresenta il  valore medio deterministico di questa tipologia di attività
+- $ \varepsilon(t_o) $ quantifisca la componente stocastica rappresentante l’impatto randomico e positivo degli eventi
+- $ C_{\text{ex}}(e_o, t_o)$ modella il costo delle attività extra, crescente e convesso.
+
+
+Si noti come in $ u_{\text{verticale}} $ e $ u_{\text{orizzontale}} $ compaiano rispettivamente $ e_{\text{v}} $ e $ e_{\text{o}} $ mentre, in $ u_{\text{condiviso}}$, non compare alcuna variabile che quantifica l’effort dedicato.
+
+_(Per molte persone tuttavia, me compreso, mantenere le relazioni potrebbe comunque richiedere un impegno e una fatica mentale in più ma, per semplificazione, è stato omesso)._
+
+Definito il problema di massimizzazione di $u$ e dal momento che la differenza tra $ u_{\text{condiviso}} $ e i restanti sia abbastanza netta e definita, penso che allocare in modo ottimale il tempo tra $ u_{\text{orizzontale}} $ e $ u_{\text{verticale}} $ sia la cosa più difficile, dato il confine molto poco definito e spesso nascosto.
+
+
+
+![Infortunio e CHF](/images/blog/vert-ort.jpg)
+<small>
+<i>
+Verticalizzazione pura: una lezione di matematica finanziaria VS Orizzontalizzazione pura: pranzo da Google Zurigo con il mitico <a href="https://www.linkedin.com/in/ludovico-bessi?originalSubdomain=ch" target="_blank">Ludovico Bessi </a>
+</i>
+</small>
+
+
+### <b>Tra segnale e rumore </b>
+
+Avendo vissuto sempre in contesti ricchi di opportunità, ho avuto la fortuna di poter facilmente aumentare $ u_{\text{orizzontale}} $: eventi, persone, progetti, stimoli culturali non mi sono mai mancati.
+
+Oggi, però, mi trovo nella situazione opposta: cerco di <b>filtrare</b> e, talvolta, <b>evitare</b> molte di queste occasioni.
+
+Sono convinto che circondarsi delle persone e dell'ambiente giusti sia essenziale, ma penso che, raggiunta una certa soglia, diventi essenziale <b>saper distinguere il segnale dal rumore</b>.
+
+Soprattutto in ambienti dinamici, è facile riempirsi l’agenda di eventi che _sembrano_ importanti ma che non ci danno alcun valore reale e, al contrario rappresentano solo rumore (un cattivo utilizzo del tempo).
+
+La domanda quindi che sorge spontanea è come filtrare e astenersi da tali attività.
+
+Per rispondere, ha senso guardare la parte stocastica $ \varepsilon $ e cercare di ottimizzare $ u_{\text{orizzontale}} $ per esporsi ai potenziali rendimenti positivi e poco prevedibli, minimizzando al contempo i costi $ C_{\text{ex}} $.
+
+Dovremmo di conseguenza esposrci a contesti in cui, oltre a ottenere un beneficio sul momento, potrebbe svilupparsi qualcsa di impattante a lungo termine e che difficilmente non avremmo ottenuto diversamente.
+
+Vivendo tuttavia in un mondo di risorse limitate (in cui $ t_{\text{c}} + t_{\text{v}} + t_{\text{o}} \leq 1 $), l’ottimizzazione di $ u_{\text{orizzontale}} $ si inserisce in un contesto più ampio di <b>trade-off</b> tra _hard_ e _soft skills_.
+
+---
+
+### <b>So good they can't ignore you</b>
+
+Credo che, nonostante l’avvento degli LLM che sembrano in grado di fare tutto, <b>verticalizzare le proprie conoscenze</b> resti una scelta ottimale: dedicare tempo a sviluppare <b>hard skills</b> ha ancora il rendimento più alto nel lungo periodo.
+
+<a href="https://www-amazon-com.translate.goog/Good-They-Cant-Ignore-You/dp/1455509124?_x_tr_sl=en&_x_tr_tl=it&_x_tr_hl=it&_x_tr_pto=sc2" target="_blank"> Cal Newport direbbe a proposito: _“So good they can’t ignore you”_</a>, a supporto di questa tesi.
+
+Secondo lo scrittore americano infatti, resta preferibile seguire i propri talenti che le proprie passioni: la passione deriva dall’expertise, non viceversa e, solo una volta diventati estremamente competenti in una materia, saremo in grado di apprezzarla al 100%.
+
+Di conseguenza, solo dopo aver trovato il proprio ambito di verticalizzazione ha senso ampliare la propria conoscenza in orizzontale, acquisendo competenze trasversali utili per interfacciarsi con persone, contesti diversi e avere una comprensione sul funzionamento del mondo oltre la propria nicchia.
+
+A proposito di ciò, <a href="https://www.paulgraham.com/" target="_blank">Paul Graham </a>, in uno dei suoi saggi più famosi <a href="https://paulgraham.com/selfindulgence.html" targert="_blank">_“How to lose time and money”_</a>, sostiene che il miglior modo per perdere tempo non sia con il puro divertimento o il cazzeggio, bensì con il cosiddetto <b>fake work</b>: attività che danno l’illusione di essere produttive o di accrescere le proprie competenze, ma che, in realtà, generano poco valore reale.
+
+Eventi, incontri, podcast, video o perfino alcuni corsi universitari rientrano facilmente in questa categoria: possono illuderci di star facendo deep work, ma spesso rappresentano una forma di <b>inutile intrattenimento</b> travestito da lavoro.
+
+![Infortunio e CHF](/images/blog/coding.jpg)
+<small>
+<i>
+Nonostante non sia un informatico, reputo la scrittura di codice uno dei migliori esempi di deep work.
+</i>
+</small>
+
+_Di seguito alcuni esempi, estrapolati dalla mia esperienza e ovviamente pieni di Bias._
+
+<Table
+  data={{
+    headers: ["Attività", "Funzione prevalente", "Note"],
+    rows: [
+      [
+        "Risolvere un problema difficile",
+        "$u_{\\text{verticale}}$",
+        "Verticalizzazione pura: attività strettamente analitica con alto ROI sulle hard skills."
+      ],
+      [
+        "Lavorare a un side project tecnico con un amico",
+        "Combinazione di $u_{\\text{verticale}}$, $u_{\\text{orizzontale}}$ e $u_{\\text{condiviso}}$",
+        "Verticalizzazione delle conoscenze fuori dall’ambito accademico e teorico."
+      ],
+      [
+        "Prendere un caffè a un professore/PhD/professionista",
+        "$u_{\\text{orizzontale}}$",
+        "Bassissimo effort, potenziale stocastico molto alto."
+      ],
+      [
+        "Pranzare con colleghi o compagni di corso",
+        "$u_{\\text{condiviso}}$ e $u_{\\text{orizzontale}}$",
+        "Costo basso, valore medio-basso, può contribuire al benessere complessivo."
+      ],
+      [
+        "Partecipare a un talk generico “come avere successo”",
+        "$u_{\\text{orizzontale}}$ (rumore)",
+        "Bassissimo valore atteso e scarso potenziale. Perdita di tempo quasi totale."
+      ],
+      [
+        "Rileggere appunti già compresi",
+        "$u_{\\text{verticale}}$ (fake work)",
+        "Benefici marginali nulli."
+      ],
+      [
+        "Weekend con amici e zero studio",
+        "$u_{\\text{condiviso}}$",
+        "Massimizzazione totale del tempo condiviso. Must have!"
+      ],
+      [
+        "Praticare sport, in solitudine o compagnia",
+        "$u_{\\text{condiviso}}$",
+        "Essenziale per equilibrio fisico e mentale."
+      ]
+    ]
+  }}
+/>
+
+
+La conclusione a cui vorrei arrivare è che <b>“massimizzare l’utilità del tempo” </b> non significa sempre <b>“fare tutto di più”</b>, ma imparare a dire di <b>NO</b> e imparare a dare valore, sotto tutti i punti di vista, a ogni istante del nostro tempo.
+
+Per fare ciò, nonostante l’ottimizzazione di $u$ sia un problema strettamente personale e connesso alla fase della vita in cui ci si trova, penso che la <b>consapevolezza</b> verso i propri obiettivi, limiti, condizioni al contorno e l'<b>intenzionalità</b> possano essere degli ottimi punti di partenza per tutti.
+
+Banalità conclusive a parte, questi stessi valori dovrebbero anche insegnarci e permetterci, _senza alcuna pretesa di produttività o verticalità_, di ritagliarci e goderci istanti di <b>spensieratezza, convivialità e vita lenta</b>, motivo per cui, sulla falsa riga di <a href="https://www.instagram.com/fra.ncescopiccolo/" target="_blanK" >Francesco Piccolo </a>, vi incoraggio a stilare un diario di <a href="https://www.einaudi.it/catalogo-libri/narrativa-italiana/narrativa-italiana-contemporanea/momenti-di-trascurabile-felicita-francesco-piccolo-9788806205515/" target="_blank"> <b>Momenti di trascurabile felicità</b> </a>, per ricordarci che, tutto sommato, <b>la vita è una gran figata</b>.
+
+Cheers!
+
+---
+
+_Alcuni momenti di trascurabile felicità degli ultimi mesi:_
+
+- Sistemare il codice di questo articolo ascoltando <a href="https://www.youtube.com/watch?v=MNQhlpFEHc8" target="_blank" >"Questo nostro grande amore" </a> durante un solitario sabato sera zurighese.
+- Ritornare a correre con gli amici di sempre dopo mesi di infortunio.
+- Prendere l'intercity IC2 delle 19:05 Zurich HB - Milano Centrale il giovedì sera.
+- Organizzare ancora vacanze in bici in giro per l'Europa con tutta la family.
+- Tornare scout per una settimana all'anno durante il campo estivo.
+- Girare per le aule del Polimi in cui ho vissuto gli anni <s>più stressanti</s> migliori della mia vita.
+- Fantasticare e pianificare il prossimo viaggio on the road in qualche destinazione dimenticata da Dio.
+>>>>>>> new-article
