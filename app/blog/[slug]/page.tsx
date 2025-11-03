@@ -3,8 +3,7 @@ import { CustomMDX } from '../../components/mdx'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import ViewsClientOnly from '../../components/ViewsClientOnly'
-
-
+import { headers } from 'next/headers'
 
 export async function generateStaticParams() {
   return getAllSlugs().map(slug => ({ slug }))
