@@ -1,9 +1,296 @@
 ---
-title: 'Bayesian VAR in Macroeconomic Forecasting'
+title: 'AR, VAR and BVAR in Macroeconomic Forecasting'
 publishedAt: '2025-10-25'
 summary: ''
 ---
 
+These notes are freely taken from my course   <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=192607&semkez=2025W&ansicht=LEHRVERANSTALTUNGEN&lang=en" target="_blank">_Methods for Macroeconomic Forecasting_</a>,  by <a href="https://kof.ethz.ch/das-institut/personen/person-detail.MTY5NDEw.TGlzdC81NzgsODQ4OTAwOTg=.html" target="_blank">Samad Sarferaz</a>  at the <a href="https://kof.ethz.ch/it/" target="_blank">KOF Swiss Economic Institute</a>.
+
+For a more practical perspective, I refer to the final part of this article,  
+where I provide a short overview of my course project and the  <a href="https://github.com/KOF-fbp/methods-for-macro-forecasting-2025" target="_blank">GitHub Course Repository</a>.
+
+--- 
+
+## <b>Introduction to AR, VAR, and BVAR Models </b>
+
+
+Time series models are essential tools in <b>macroeconomics </b>, where variables evolve over time and influence one another.  
+To forecast them, most widely used are the <b>Autoregressive (AR) </b>, <b>Vector Autoregressive (VAR)</b>, and <b>Bayesian Vector Autoregressive (BVAR)</b> models.  
+
+- <b>AR</b> is the simplest one and captures persistence in a single variable: the intituition is that its past values affect the current one.  
+
+- <b>VAR</b> extends this idea to multiple variables, capturing the influence of each on the others.
+
+- <b>BVAR </b>applies <a href="https://kiwidamien.github.io/shrinkage-and-empirical-bayes-to-improve-inference.html" blank="_blank"> Bayesian shrinkage  </a> to VARs, improving forecasts when data are limited or when there are many variables (reducing overfitting).
+
+Below, you will find a more detailed overview of these methods.  
+
+---
+
+### <b>Autoregressive Model (AR) </b>
+
+An AR model of order $ p $, denoted AR($p$), is written as:
+
+$$
+y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \dots + \phi_p y_{t-p} + \varepsilon_t,
+$$
+
+where:
+- $ y_t $ = value of the variable at time $ t $,
+- $ c $ = intercept or drift term,
+- $ \phi_i $ = autoregressive coefficients,
+- $ \varepsilon_t $ = white noise error term, $ \varepsilon_t \sim (0, \sigma^2) $.
+
+The model implies that current observations depend linearly on a finite number of past observations.
+
+
+The simplest case, AR(1), is:
+
+$$
+y_t = c + \phi y_{t-1} + \varepsilon_t.
+$$
+
+- If $ |\phi| < 1 $: the process is <b>stationary </b> and mean-reverting.  
+- If $ \phi = 1 $: the process has a <b>unit root </b> (random walk).  
+- If $ |\phi| > 1 $: the process is <b>explosive</b>.
+
+The mean and variance of a stationary AR(1) are:
+
+$$
+E[y_t] = \frac{c}{1 - \phi}, \quad
+Var(y_t) = \frac{\sigma^2}{1 - \phi^2}.
+$$
+
+
+For the AR($p$) process to be <b>covariance-stationary</b>, all roots of the <b>characteristic polynomial</b> must lie outside the unit circle:
+
+$$
+1 - \phi_1 z - \phi_2 z^2 - \dots - \phi_p z^p = 0, \quad |z| > 1.
+$$
+
+Stationarity implies that the series has:
+- Constant mean and variance,
+- Autocovariances depending only on the lag, not on time.
+
+If not stationary, we often <b>difference</b> the series to induce stationarity.
+
+ 
+## <b>Estimation and Forecasting</b>
+
+The parameters $ \phi_i $ and $ c $ can be estimated by <a href="https://www.geeksforgeeks.org/machine-learning/ordinary-least-squares-ols/" target="_blank"> <b>Ordinary Least Squares (OLS)</b></a> since the model is linear in parameters:
+
+$$
+\hat{\boldsymbol{\phi}} = (Y'Y)^{-1} Y'y,
+$$
+
+where $ Y $ contains lagged values $ [y_{t-1}, y_{t-2}, \dots, y_{t-p}] $.  
+Alternatively, one can use <b>Maximum Likelihood Estimation (MLE)</b> under Gaussian errors.
+
+
+
+The one-step ahead forecast can be computed as:
+$$
+\hat{y}_{t+1|t} = c + \phi y_t.
+$$
+
+and the multi-step ahead for an horizon $h$ as:
+
+$$
+\hat{y}_{t+h|t} = \mu (1 - \phi^h) + \phi^h y_t, \quad \text{where } \mu = \frac{c}{1 - \phi}.
+$$
+
+Note that the forecast <b>converges to the long-run mean</b> $ \mu $ as $ h \to \infty $, but forecast uncertainty grows with $ h $ as errors accumulate.
+
+
+We now introducte the <b>Autocorellation Function ACF </b> that, for a stationary AR(1) is defined as:
+For a stationary AR(1), :
+
+$$
+\rho(k) = \phi^k,
+$$
+
+Clearly, autocorrelation decays <b>geometrically </b> with the lag $ k $.  
+This property makes AR models suitable for data that exhibit exponential decay in correlation.
+
+
+
+## <b>Economic Interpretation </b>
+
+In macroeconomics, AR models are often used as <b>benchmark forecasting tools </b> for individual variables:
+
+- GDP growth, inflation, or unemployment rates are often modeled as AR(1) or AR(2) processes.
+- The <b>persistence</b> parameter $ \phi $ captures how strongly the past influences the present.
+- Shocks $ \varepsilon_t $ represent <b>unexpected innovations</b> or disturbances (e.g., policy, technology, or demand shocks).
+
+Even though AR models ignore cross-variable interactions, they remain valuable for <b>baseline forecasts</b> and for <b>testing more complex models</b> like VARs or BVARs.
+But... AR comes with some limitations:
+
+- Ignores relationships between multiple variables (univariate only).
+- Cannot capture structural changes or regime shifts.
+- Non-stationary series require differencing or transformation.
+
+---
+
+
+## <b> Vector Autoregressive (VAR) </b>
+
+A **Vector Autoregressive model (VAR)** is a multivariate generalization of the univariate autoregressive model (AR).  
+It captures <b>dynamic interdependencies* </b> among multiple time series variables, all influencing each other over time.
+
+Formally, for an $ n $-dimensional vector of variables:
+
+$$
+y_t = 
+\begin{bmatrix}
+y_{1t} \\
+y_{2t} \\
+\vdots \\
+y_{nt}
+\end{bmatrix},
+$$
+
+a VAR of order $ p $ (denoted VAR($p$)) is defined as:
+
+$$
+y_t = c + A_1 y_{t-1} + A_2 y_{t-2} + \dots + A_p y_{t-p} + u_t,
+$$
+
+where:
+- $ y_t \in \mathbb{R}^n $ is the vector of endogenous variables,
+- $ c \in \mathbb{R}^n $ is a vector of intercepts,
+- $ A_i \in \mathbb{R}^{n \times n} $ are coefficient matrices,
+- $ u_t \sim (0, \Sigma_u) $ is a white-noise innovation vector with covariance matrix $ \Sigma_u $, representing the unpredictable part of the process.
+
+
+A VAR($p$) is <b>covariance-stationary</b> if all roots of the <b>characteristic equation</b> lie outside the unit circle.
+
+$$
+\det(I_n - A_1 z - A_2 z^2 - \dots - A_p z^p) \neq 0, \quad \text{for } |z| \le 1.
+$$
+
+If the process is stationary:
+- The unconditional mean is
+  $$
+  \mu_y = (I_n - A_1 - A_2 - \dots - A_p)^{-1} c.
+  $$
+- The system has finite variances and autocovariances.
+
+If not stationary (unit roots present), one often uses <b>differenced VARs</b> or <b>Vector Error Correction Models (VECMs)</b> for cointegrated data.
+
+
+## <b>Estimation and Forecasting </b>
+
+Each equation in the VAR can be estimated <a href="https://www.geeksforgeeks.org/machine-learning/ordinary-least-squares-ols/" target="_blank"> <b>OLS</b></a> independently because all right-hand-side variables are the same in each equation.
+
+Let:
+$$
+Y = [y_p, y_{p+1}, \dots, y_T]', \quad
+X = [1, y_{t-1}', y_{t-2}', \dots, y_{t-p}'].
+$$
+Then the model can be written compactly as:
+$$
+Y = X B + U,
+$$
+where:
+- $ B = [c, A_1, A_2, \dots, A_p]' $ is the matrix of coefficients,
+- $ U $ is the matrix of residuals.
+
+The OLS estimator is:
+$$
+\hat{B} = (X'X)^{-1} X'Y.
+$$
+
+
+Once estimated, a VAR model can generate <b>multi-step forecasts</b> recursively.
+
+For $ h $-step ahead forecasts:
+$$
+\hat{y}_{t+h|t} = c + A_1 \hat{y}_{t+h-1|t} + \dots + A_p \hat{y}_{t+h-p|t}.
+$$
+
+### Forecast Error Variance Decomposition (FEVD)
+Shows the proportion of the forecast error variance of a variable that is due to shocks in each variable in the system — revealing **sources of volatility**.
+
+### Impulse Response Functions (IRFs)
+Measure the **dynamic reaction** of each variable to a one-time shock in another variable, while holding all other shocks constant.
+
+Both FEVD and IRF are central tools in **macroeconomic analysis** — used to interpret the transmission of monetary or fiscal shocks.
+
+---
+
+## 6. Identification of Structural Shocks (SVAR)
+
+In macroeconomics, we often want to interpret shocks economically (e.g. a *monetary policy shock*).  
+The reduced-form residuals $ u_t $ are **correlated**, so they cannot be directly interpreted as structural shocks.
+
+We assume a **structural representation**:
+$$
+A_0 y_t = A_1^* y_{t-1} + \dots + A_p^* y_{t-p} + \varepsilon_t,
+$$
+where $ \varepsilon_t $ are **structural shocks** (orthogonal, $ E[\varepsilon_t \varepsilon_t'] = I $).
+
+The relationship between reduced-form and structural form is:
+$$
+u_t = A_0^{-1} \varepsilon_t, \quad \Sigma_u = A_0^{-1} (A_0^{-1})'.
+$$
+
+Identifying $ A_0 $ requires **restrictions** (based on theory):
+- **Cholesky decomposition** (recursive identification),
+- **Sign restrictions** (modern approach),
+- **Long-run restrictions** (Blanchard–Quah).
+
+---
+
+## 7. Advantages for Macroeconomic Forecasting
+
+- **Flexibility**: captures rich dynamics among macro variables without strong theoretical constraints.
+- **Empirical accuracy**: often outperforms large-scale structural models for short- to medium-term forecasts.
+- **Transparency**: model specification and estimation are straightforward.
+- **Scenario analysis**: via impulse responses and FEVDs, policymakers can explore "what if" scenarios.
+
+---
+
+## 8. Limitations
+
+- **Overparameterization**: the number of parameters grows rapidly with $ n^2 p $.
+- **Data-hungry**: requires long and stable macro time series.
+- **No structural interpretation by default**: reduced-form VARs lack economic meaning without identification.
+- **Non-stationarity**: macro variables often exhibit unit roots and cointegration — requiring adaptations (VECM).
+
+---
+
+## 9. Typical Macroeconomic VAR Example
+
+Let:
+$$
+y_t =
+\begin{bmatrix}
+\text{GDP growth}_t \\
+\text{Inflation}_t \\
+\text{Interest rate}_t
+\end{bmatrix}.
+$$
+
+A VAR(2) model:
+$$
+y_t = c + A_1 y_{t-1} + A_2 y_{t-2} + u_t.
+$$
+
+Forecasts of GDP growth depend on its own lags, past inflation, and past interest rates — and vice versa for the other equations.  
+Shocks to the interest rate can then be propagated to inflation and GDP through impulse responses.
+
+---
+
+## 10. Extensions
+
+- **Structural VAR (SVAR)** — economic identification of shocks.
+- **Bayesian VAR (BVAR)** — introduces priors to shrink estimates, solving overfitting problems.
+- **Time-varying parameter VAR (TVP-VAR)** — allows coefficients to evolve over time.
+- **Factor-Augmented VAR (FAVAR)** — includes latent factors summarizing large information sets.
+
+---
+
+-
 A <b>Bayesian Vector AutoRegression (BVAR)</b> is the Bayesian extension of the classical <b>Vector AutoRegression (VAR)</b> model.  
 It is widely used in macroeconomics to study and forecast the joint evolution of multiple interrelated time series _(GDP, inflation, and exchange rates)_ under the assumption that each variable depends both on <b>its own past values</b> and on the <b>past values of all others</b>.
 
