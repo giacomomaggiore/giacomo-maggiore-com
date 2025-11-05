@@ -152,7 +152,7 @@ function CustomLink(props) {
 
   if (href.startsWith('#')) {
     return (
-      <a href={href} target={target} rel={rel} {...rest}>
+      <a href={href} rel={rel} {...rest}>
         {children}
       </a>
     )
