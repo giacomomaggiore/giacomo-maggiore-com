@@ -11,10 +11,10 @@ where I provide a short overview of my course project and the  <a href="https://
 
 Index:
 - [Autoregressive Model (AR)](#1)
-- [Vector Autoregressive Model (VAR)] (#2)
-- [Bayesian Vector Autoregressive Model (BVAR)] (#3)
-- [Macroeconomic Forecasting Project (R)] (#4)
-- [Bibliography]
+- [Vector Autoregressive Model (VAR)](#2)
+- [Bayesian Vector Autoregressive Model (BVAR)](#3)
+- [Macroeconomic Forecasting Project (R)](#4)
+- [Bibliography](#5)
 
 --- 
 
@@ -305,42 +305,11 @@ IRFs represents therefore shows both short-term immediate effects of shocks and 
 
 
 ## <a id="3"><b>Bayesian Vector Autoregressive Model (VAR)</b> </a>
-A BVAR is the Bayesian extension of the classical <b>Vector AutoRegression (VAR)</b> model.  
-It is widely used in macroeconomics to study and forecast the joint evolution of multiple interrelated time series _(GDP, inflation, and exchange rates)_ under the assumption that each variable depends both on <b>its own past values</b> and on the <b>past values of all others</b>.
+A BVAR is the Bayesian extension of the classical <b>Vector AutoRegression (VAR)</b> model.
 
+The classical VAR  assumes indeed that <b>true parameter values exist</b>, and the task is to estimate them as accurately as possible from the sample.
 
-
-## <b>Basic Structure of a VAR(p) </b>
-
-Suppose we have $ K $ variables and consider $ p $ lags.  
-The general VAR(p) model is written as:
-
-$$
-y_t = A_1 y_{t-1} + A_2 y_{t-2} + \dots + A_p y_{t-p} + \varepsilon_t
-$$
-
-where:
-
-
-- $ y_t $ is a $ K \times 1 $ vector of endogenous variables (e.g., [GDP, Inflation, Exchange Rate]),
-- $ A_i $ are $ K \times K $ coefficient matrices,
-- $ \varepsilon_t $ is a vector of the error terms with covariance matrix $ \Sigma $.
-
-The goal is to estimate:
-$$
-\hat{A}_1, \dots, \hat{A}_p, \hat{\Sigma}
-$$
-
-typically made through <a href="https://www.geeksforgeeks.org/machine-learning/ordinary-least-squares-ols/" target="_blank"><b>Ordinary Least Squares (OLS)</b></a> or <a href="https://en.wikipedia.org/wiki/Maximum_likelihood_estimation" target="_blank"><b>Maximum Likelihood Estimation (MLE)</b> </a>.
-
-- Parameters are **fixed**, not random.  
-- Output: **point estimates** like $ \hat{A}_{ij} = 0.35 $.  
-- The model provides a single best estimate of each coefficient.
-
-The classical VAR thereofore assumes that <b>true parameter values exist</b>, and the task is to estimate them as accurately as possible from the sample.
-
-
-The main problem of classical VAR is that, as the number of variables $ K $ and lags $ p $ increases, the number of parameters to estimate grows <b>quadratically</b>.  
+The main problem is that, as the number of variables $ K $ and lags $ p $ increases, the number of parameters to estimate grows <b>quadratically</b>.  
 For example, a VAR with 10 variables and 4 lags already has 400 coefficients to estimate, and that’s not even counting intercepts or covariances.
 
 This leads to several practical issues:
@@ -350,9 +319,6 @@ This leads to several practical issues:
 
 leading traditional VAR models become <b>unmanageable</b> and <b>statistically weak</b> when the dataset is small but the system is large.
 
----
-
-## <b>The Bayesian Solution: Introducing Priors </b>
 
 A <b>BVAR </b> mitigates this dimensionality problem by introducing prior information _(the priors)_ about the model parameters.  
 
@@ -405,7 +371,7 @@ So, in the BVAR, we obtain the followings
 
 In a BVAR, we are not looking for the true values of fixed parameters, but rather a probabilistic belief about them.
 
-In many standard priors (e.g., Normal-Inverse Wishart), the posterior distributions remain in the same conjugate family, which allows closed-form analytical solutions for posterior means and variances.
+In many standard priors (e.g., Normal-Inverse Wishart), the posterior distributions remain in the same conjugate family _(prior and posterior belong to the same probability family)_, which allows closed-form analytical solutions for posterior means and variances.
 
 When conjugacy does not hold, simulation-based methods (Markov Chain Monte Carlo (MCMC) or Gibbs sampling) are employed to approximate the posterior.
 
@@ -424,6 +390,8 @@ When conjugacy does not hold, simulation-based methods (Markov Chain Monte Carlo
     ]
   }}
 />
+
+_Note that, in Macroeconomic forecasting, often the Minnesota Prior is the most accurate._
 
 ## <a id="4"><b>Macroeconomic Forecasting Project (R)</b> </a>
 ## <a id="5"><b>Bibliography</b> </a>
