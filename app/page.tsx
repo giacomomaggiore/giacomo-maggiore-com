@@ -1,3 +1,5 @@
+import TotViewsClientOnly  from './components/ToTViewsClientOnly'
+
 export default function Page() {
   return (
     <section>
@@ -18,10 +20,12 @@ export default function Page() {
     <br></br><br></br>
 
     Outside work and study, you can find me  running, cycling and exploring unconventional, low-budget travel destinations.
-    
       </p>
-      <div className="my-8">
-      </div>
+
+
+      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        <TotViewsClientOnly />
+      </p>
     </section>
   )
 }
