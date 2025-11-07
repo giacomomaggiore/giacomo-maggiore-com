@@ -14,7 +14,7 @@ export const metadata = {
 
 export default async function Page() {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value || 'it') as Lang
+  const lang = (cookieStore.get('lang')?.value || 'en') as Lang
 
   const allPosts = getBlogPosts()
   
