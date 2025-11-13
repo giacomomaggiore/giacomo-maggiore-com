@@ -14,7 +14,13 @@ export default function CumulativeViews() {
     const controller = new AbortController()
     async function fetchTotalViews() {
       try {
-        const res = await fetch('/api/posthog/avg', { signal: controller.signal })
+        const res = await fetch(`/api/posthog?t=${Date.now()}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'avg' }),
+          signal: controller.signal,
+          cache: 'no-store',
+        })
         if (!res.ok) {
           const text = await res.text()
           throw new Error(text || `Request failed with status ${res.status}`)
@@ -36,7 +42,11 @@ export default function CumulativeViews() {
     }
 
     fetchTotalViews()
-    return () => controller.abort()
+    const id = setInterval(fetchTotalViews, 60_000) // re-fetch ogni 60s
+    return () => {
+      controller.abort()
+      clearInterval(id)
+    }
   }, [])
 
   // non renderizzare nulla sul client fino a quando non siamo montati (evita hydration mismatch)
