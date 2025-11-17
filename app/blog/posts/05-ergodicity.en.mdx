@@ -1,0 +1,385 @@
+---
+title: 'Surviving in a non-ergodic world.'
+publishedAt: '2025-11-16'
+summary: 'A (semi-serious) guide on why you should never cross a river that is 70 cm deep on average.'
+---
+
+### <b>Tendinitis and giant slalom </b>
+
+A few days ago, an annoying pain appeared in my Achilles tendon, probably the result of a slight mechanical overload from running and cycling training.
+
+No big deal, I told myself, I'll just rest in the gym to stretch for a few days. But as I was walking home in a terrible mood, figuring out when I could run again, I remembered the riddle with which <a target ="_blank" href="https://luca-dellanna.com/">Luca Dellanna</a> begins his book <a href="https://luca-dellanna.com/books/ergodicity"><b>"Ergodicity"</b></a>.
+
+<Quote>
+My cousin is a very good skier and participates in the giant slalom world championship.
+
+During each run, he has a 20% chance of falling and breaking his leg but, once he reaches the finish line, he has a 20% chance of winning against his opponents. 
+
+How many races does he expect to win?
+</Quote>
+
+The most immediate answer: <b>2 </b> (20% win rate over 10 races).
+
+The correct answer: about <b>0.71 </b>.
+
+The reason is easily understood from the table below (credits to the author Luca Dell’Anna), while the mathematical proof is at the end of the article.
+
+<Table
+  data={{
+    headers: [<b>Race</b>, <b>Prob. of participating</b>, <b>Prob. of finishing</b>, <b>Expected wins </b>],
+    rows: [
+      ["1", "100%", "80%", "16%"],
+      ["2", "80%", "64%", "13%"],
+      ["3", "64%", "51%", "10%"],
+      ["4", "51%", "41%", "8%"],
+      ["5", "41%", "33%", "7%"],
+      ["6", "33%", "26%", "5%"],
+      ["7", "26%", "21%", "4%"],
+      ["8", "21%", "17%", "3%"],
+      ["9", "17%", "13%", "3%"],
+      ["10", "13%", "11%", "2%"],
+      [<b>Total</b>, "", "", <b> 0.71</b>]
+    ]
+  }}
+/>
+This little story serves to introduce the central concept of this article: in theory, <b>performance determines success</b>: the best skier overall wins. In practice, <b>survival is a necessary condition for performance</b>: the best skier _among all those able to compete_ wins.
+
+![Risk Plot](/images/blog/sci.jpg)
+<small>
+<i>
+Fortunately, I survived broken legs and tendinitis as a child.
+</i>
+</small>
+
+
+### <b> I promise these are the only integrals for today </b>
+
+Returning to my injury, the underlying principle is very similar. 
+Assuming, for the sake of argument, that an injury is irreversible _(once the damage is done, I can no longer heal and recover)_, my ability to run can be represented as an <b>absorbing Markov chain</b> with two states:
+
+- <b>State 1 (Transient):</b> I am healthy and able to run.
+- <b>State 0 (Absorbing):</b> I am injured.
+
+Every day I train, I have a probability $p$ of remaining in state 1 and a probability $(1-p)$ of getting injured and moving to state 0. Once state 0 is reached, I stay there forever.
+
+What has just been described perfectly represents, _exactly like the cousin's story_,  a <b>non-ergodic process</b>. 
+
+Now let's step away from my tendinitis for a moment and try to better define the concept of ergodicity. To do so, however, we must first define two concepts.
+
+- The <b>time average</b> is what you get by observing *a single* process over a long time _(e.g., one person playing the same game repeatedly)._
+- The <b>space (or ensemble) average</b> is what you get by observing *many copies* of the process at a single instant _(e.g., 100 people playing the same game at the same time)._
+
+<b> In an ergodic process, these two averages coincide. In a non-ergodic one, they do not. </b>
+
+In formulas, a process is ergodic if: 
+
+$$
+\lim_{T \to \infty} \frac{1}{T} \int_0^T f(x(t)) \, dt = \int_{\Omega} f(x) \, d\mu(x)
+$$
+
+_Alternative definitions are proposed in the appendix._
+
+---
+
+### <b> Inside the casino </b>
+
+To clarify the point, let's use the <s>widely overused</s> casino example.
+
+<b>Classic Roulette</b>, where you bet on red or black with an equal probability of winning (ignoring zero for simplicity), is <b> an ergodic game. </b>
+
+A person who plays 100 consecutive times _(time average)_, expects to win about 50 times. Likewise, from 100 people spinning the roulette wheel at the same time _(space average)_, we expect about 50 people to be happy with their winnings. The results match.
+
+<b>Russian Roulette</b>, on the other hand, where you point a revolver with one bullet in six chambers at your head, is not an ergodic game.
+
+If one person plays 100 consecutive times, despite initially having a 5/6 probability of survival, they are killed on the first wrong click _(zero survival rate)._
+
+If 100 people play once, we instead expect about 83 people (5/6 of 100) to survive _(a survival rate of, precisely, 83%)_.
+
+Since <b> 0% $\neq$ 83%</b>, we conclude that Russian roulette is a non-ergodic process.
+
+![Risk Plot](/images/blog/casino.jpg)
+<small>
+<i>
+The only photo I have inside a casino (Montecarlo) | The closest thing to gambling I know: playing 'scopone' (an Italian card game) with friends.
+</i>
+</small>
+
+### <b>Infinity is just for philosophers and mathematicians </b>
+
+Moving away from these two extreme examples, we immediately notice that ergodicity is not a constant value, but rather changes based on the time horizon $T$ over which we evaluate it and, generally, as $T$ increases, the ergodicity of a phenomenon also decreases.
+
+Consequently, since we make decisions over finite and more-or-less near time horizons _(we leave the limit as $T \to \infty$ to mathematicians and philosophers)_, we can place every action on an <b>ergodicity spectrum</b>, based on how reversible or irreversible the risks are over the considered horizon.
+
+If we considered a sufficiently long $T$, in fact, any process would become non-ergodic: just think of the fact that, _adopting an apocalyptic view of life_, every action we take includes a minimal possibility of dying and, consequently, of not being able to repeat an experiment infinitely. 
+
+(One of the few <s>almost</s> ergodic activities that comes to mind is rolling dice in an isolated room without external interventions: excluding sudden death, one could go on rolling the dice for a very long time).
+
+---
+
+### <b> There is no religion anymore: all churches are insured against fire</b>
+
+The study of ergodicity introduces the concept of irreversibility and, consequently, it feels natural to broaden today's discussion to a closely related concept: <b>uncertainty management. </b>
+
+To do this, let's distinguish risks based on two properties: reversibility and insurability.
+
+- A risk is<b> reversible</b> if, in a finite and reasonable time, the loss can be remedied. A risk is <b>irreversible </b>if the consequences are drastic enough to make the loss relevant in the long term or to make recovery impractical.
+- A risk is <b>manageable </b>if it is possible to buy insurance that reimburses us in case of loss,<b> unmanageable</b> otherwise.
+
+To clarify, a table with examples is provided below.
+
+<Table
+  data={{
+    headers: ["", <b>Unmanageable (Not Insurable)</b>, <b>Manageable (Insurable)</b>],
+    rows: [
+      [
+        <b>Reversible</b>,
+
+        <>
+          <b>Q1</b>: The damage is recoverable, but the cost is on us. <br />
+          <i>Example: Failing an exam (you can retake it, but there is no insurance).</i>
+        </>,
+                <>
+          <b>Q2</b>: The damage is repaired, and the cost is covered. <br />
+       <i>Example: A fracture on vacation (the bone heals, the insurance pays).</i>
+        </>,
+      ],
+      [
+        <b>Irreversible</b>,
+,
+        <>
+          <b>Q3</b>: The loss is permanent, and no compensation can cover it. <br />
+          <i>Example: Loss of a relationship, damage to reputation.</i>
+        </>,
+                <>
+          <b>Q4</b>: The loss is permanent, but compensation is received. <br />
+       <i>Example: Death of a family member (life insurance).</i>
+        </>
+      ]
+    ]
+  }}
+/>
+
+Here too, since these are not always binary properties, it would be more correct to construct a Cartesian plane where the two axes represent these two properties as **continuous variables**:
+
+- <b>$X$-axis - Manageability </b>:  minus infinity represents the <b>totally unmanageable</b> risk _(a life regret, a nuclear war)_, and the opposite extreme the <b>totally</b> insurable risk _(like minor damage 100% covered by a policy)._
+- <b>$Y$-axis - Reversibility </b>: minus infinity represents the <b>totally irreversible</b> risk _(death, in extremis)_, the upper extreme a <b>totally reversible</b> risk _(missing the metro on the way home)._ 
+
+Consequently, instead of being placed in one of the four quadrants listed above, every phenomenon in our life becomes a point $(x, y)$ on the risk plane. 
+
+Furthermore, according to what was said earlier, <b>non-ergodic processes are the domain of irreversible risks </b> (Quadrants 3 and 4) or, equally, all points with $y < 0$.
+
+![Risk Plot](/images/blog/risk_plot.png)
+<small>
+<i>
+Stylistic exercise: try to place every source of uncertainty in your life on this graph.
+</i>
+</small>
+
+
+### <b> Stretch and keep cash liquid</b>
+
+After briefly classifying uncertainty, the question spontaneously arises as to how to <b>manage, embrace</b>, and <b>avoid</b> the different types of risk.
+
+To answer this, let's return to the tendon.
+
+Optimal athletic preparation should not maximize the benefits of <b>every single workout</b>, but rather <b>minimize the irreversible and unmanageable risk</b> _(Quadrant 3)_ of tendinitis _(feel free to substitute tendinitis with any other sports injury)_ or, in other words, <b>maximize the probability</b> of still being able to train in the long run.
+
+This behavior, also called the <b>redundancy principle</b>, leads us to act in an apparently <b>sub-optimal</b> way in the short term, accepting inferior results, in order to maximize future survival. 
+
+In sports, this means dedicating time to stretching _(apparently "useless" and terribly boring)_, taking an extra rest day, and not pushing every session to the limit.
+
+In personal finance, this means maintaining a liquid emergency fund _(with zero return)_, accepting a lower average portfolio return, but protecting oneself from the risk of ruin (insolvency).
+
+The goal of the redundancy principle is therefore, after classifying every phenomenon as a point $(x,y)$ on the plane, to <b>neutralize the risks we are not willing to take</b>, regardless of how <b>infinitesimal the probability</b> associated with it is.
+
+To delve deeper into the next topic, however, we have to bring in surgeons and extreme sports.
+
+![Risk Plot](/images/blog/cans.jpg)
+<small>
+<i>
+Having food in the pantry as a simple application of the Redundancy Principle
+</i>
+</small>
+
+
+### <b> Bungee Jumping, Surgeons, and Skin in The Game</b>
+
+Bungee jumping has historically caused $1$ death for every $500,000$ jumps. A very low rate. The problem is that for that poor desperate person whose rope breaks, statistics don't matter: <b>100% of the bad luck falls on them irreversibly.</b>
+
+The same goes for surgery. We believe in modern medicine because, _on average_, it saves lives. But when the surgeon messes up an operation, the patient doesn't console themselves by thinking about how many healed smiles leave the hospital every day.
+
+These two examples, deliberately extreme, serve to clarify an important lesson: in the presence of non-ergodic phenomena (or, in other words, in the face of irreversible risks), <b>the very concept of classical probability and arithmetic mean lose their meaning</b> for the individual.
+
+When an individual faces an <b>irreversible and unmanageable</b> loss due to an event $X$, their individual utility (happiness) is irremediably compromised. This is true regardless of the fact that, _on average_, event $X$ increases the utility (happiness) of the population. 
+Since it is a loss with no chance of recovery and no insurance, <b>the average benefit enjoyed by others becomes irrelevant to them.</b>
+
+Generalizing, one could also conclude that <b>the survival of a system rarely coincides with the survival of its individuals</b> and that, often, the system has no incentive for the survival of its members. On the contrary, <b>the replaceability of individuals makes the system ergodic, antifragile, or capable of evolving</b> _(depending on the author you read: Dell’Anna, Taleb, or Darwin)._
+
+The situation changes radically if the loss is <b>manageable</b>. In that case, risk-sharing or transfer mechanisms _(p2p, insurance policies)_ can protect the individual, allowing them to still benefit from a potential increase in their utility.
+
+The surgeon's example, moreover, highlights the problem of <b>"skin in the game"</b> _(as Taleb defines it)_. In many situations, the entity making the decision _(example: a politician)_ <b>does not coincide with the entity upon which the irreversible negative consequences fall</b> _(example: the citizens of a country)_. For the hospital system, a death caused by avoidable errors is one number among millions of patients _(ergodic situation)_. For the unfortunate patient, on the contrary, it is a 100% ruin event _(non-ergodic phenomenon)_. 
+
+The solution to this misalignment problem suggests acting in contexts where those who make decisions _(friends, politicians, companies, etc. etc.)_ <b>coincide with those who pay the consequences of bad choices</b> but, due to obvious real-world dynamics, such behavior is almost never possible.
+
+![Risk Plot](/images/blog/voting.jpg)
+<small>
+<i>
+Politicians (and voters) often don't have skin in the game, but pizza makers do: offering a bad pizza to a customer negatively affects their profits.
+</i>
+</small>
+
+
+### <b> Always look up when walking down the street</b>
+
+This entire discussion on risk, if taken to the extreme, would also lead one to never leave the house for fear of a ceramic pot falling on their head.
+The truth is that our brain constantly performs a cost-benefit analysis, evaluating, more or less rationally, the probabilities, benefits, and utility of every situation we expose ourselves to. 
+
+As a general and purely theoretical rule, our risk aversion should be:
+
+- <b>Infinite</b> for risks in Quadrant 3 _(irreversible and uninsurable)_.
+- <b>High</b> for Quadrant 4 _(irreversible but insurable)_, with a concave utility function
+- <b>Low</b> for Quadrant 1 and 2 _(reversible risks)_, with linear utility functions _(if we are purely interested in the expected value)_ or convex _(if there is an asymmetry in our favor, see <a target="_blank" href="https://www.investopedia.com/articles/investing/013114/barbell-investment-strategy.asp">Taleb's barbell strategy for more on this</a>)_.
+
+![Risk Plot](/images/blog/taleb_barbell.jpg)
+<small>
+<i>
+Me trying to imitate Taleb's barbell strategy.
+</i>
+</small>
+
+
+### <b> Find the right friends</b>
+
+The last risks I would like to address are the most subjective, difficult to insure, and often irreversible: <b>those related to human capital and relationships.</b>
+
+Regarding the former, the greatest risk is not a realized loss, but a <b>potential loss</b>, namely the failure to exploit growth opportunities.
+
+The most trivial example comes from my university experience.
+
+In a grading system from 0 to 30 _(with 18 being a pass, I know: the italian grading system is strange...)_, it is much more useful to get two 23s on two exams than a 30 and a 17, even though the arithmetic average is lower in the first scenario.
+
+- Case $A$: $23 + 23$  $\to$ Average $23$ _(the university path continues)_
+- Case $B$: $30 + 17$ $\to$ Average $23.5$ _(the failure introduces a high cost of failure: extra time, effort, and stress)_
+
+The discussion becomes more complex with <b>relationships</b>, as emotions and interpersonal dynamics come into play. I will just say that, of all risks, ending an important relationship is perhaps <b>the most impactful, irreversible, and least insurable event</b> of our lives.
+
+In this case, however, not feeling up to the task of an in-depth discussion as before, I will limit myself to proposing, _rather hastily_, two possible solutions:
+
+- apply the same logic as before: <b>prefer "ruin minimization"</b> (avoiding irreparable breakups, lies, betrayals...) to "average maximization" (being right most of the time, getting along at all costs...).
+- <b>have friends who are not easily offended</b>
+
+Mine, _fortunately_, not only fall into this category, but _(more importantly)_ they put up with me <s>even</s> when I'm in a bad mood because of my tendon pain. <b>Thanks! </b>
+
+![Amici Zurigo](/images/blog/amici_zurigo.jpg)
+<small>
+<i>
+And if, besides putting up with me, they come to Zurich to visit me, they are definitely the right ones!
+</i>
+</small>
+### <b> Bibliography</b>
+
+- <a href="" target ="_blank">Ergodicity, Luca Dellanna: the book</a>
+- <a href="https://ergodicityeconomics.com/" target ="_blank">Ergodicity Economics</a>
+- <a href="https://www.amazon.com/Skin-Game-Hidden-Asymmetries-Daily/dp/042528462X" target ="_blank">Skin in the game by Taleb</a>
+- <a href="https://www.youtube.com/watch?v=Tlws_rDzlr8&t=198s" target ="_blank">Short video explanation: ergodicity</a>
+
+- <a href="https://www.youtube.com/watch?v=GchHaeVludo" target ="_blank">Very short video explanation: ergodicity</a>
+
+- <a href="https://www.youtube.com/watch?v=X67k_SQnXwQ" target ="_blank">The LoR Podcast: What is risk? (ITA) </a>
+- <a href="https://www.youtube.com/watch?v=i-ivyvzoyGo" target ="_blank">The LoR Podcast: Ergodicity and Risk (ITA)</a>
+
+- <a href="https://www.youtube.com/watch?v=I9uYompDbzc" target ="_blank">Too big to fail Podcast: Interview with Luca Dellanna (ITA)</a>
+
+
+- <a href="https://www.youtube.com/watch?v=5VG88jW8ga8&t=2171s" target ="_blank">Luca Dellanna & Mr.Rip (very old but gold) (ITA)</a>
+---
+
+### <b> Appendix</b>
+#### <b>A.1 - Why does my cousin expect to win only 0.71 races? </b>
+
+Let's define the variables for a single race $i$:
+
+- $Y_i$: My cousin finishes race $i$ without falling
+- $X_i$: My cousin wins race $i$
+- $S_i$: My cousin has survived (not broken his leg) until the start of race $i$
+
+From the text, we get:
+
+$$
+P(Y_i = 1) = 1 - 0.2 = 0.8
+$$
+
+$$
+P(X_i=1 \mid Y_i=1) = 0.2
+$$
+
+since the probability of winning is conditional on having reached the finish line (event $Y_i=1$).
+
+
+Therefore, the absolute probability of winning race $i$, assuming he started (event $S_i$), is:
+$$
+P(\text{Win Race } i \mid S_i) = P(X_i=1 \mid Y_i=1) \cdot P(Y_i=1)
+$$
+
+$$
+P(\text{Win Race } i \mid S_i) = 0.2 \cdot 0.8 = \mathbf{0.16}
+$$
+
+Every time he is at the starting gate, my cousin therefore has a 16% chance of winning and an 80% chance of being able to participate in the next race.
+
+Furthermore, the probability of getting to participate in race $i$ (event $S_i$) depends on not having fallen in any of the $i-1$ previous races. Consequently:
+
+$$
+P(S_i) = (0.8)^{i-1}
+$$
+
+We can therefore write that the absolute probability of winning race $i$ _(seen from the start of the championship)_ is the probability of surviving until that race ($P(S_i)$) multiplied by the probability of winning it once there (0.16).
+
+$$
+P(X_i = 1) = P(\text{Win Race } i \mid S_i) \cdot P(S_i)
+$$
+
+$$
+P(X_i = 1) = 0.16 \cdot (0.8)^{i-1}
+$$
+
+The total number of expected wins, $\mathbb{E}[V]$, is the sum of the probabilities of winning each single race, from $i=1$ to $i=10$.
+
+$$
+\mathbb{E}[V] = \sum_{i=1}^{10} P(X_i = 1) = \sum_{i=1}^{10} 0.16 \cdot (0.8)^{i-1}
+$$
+
+which is nothing more than a geometric series with first term $a = 0.16$ and ratio $r = 0.8$.
+
+$$
+\mathbb{E}[V] = a \cdot \left( \frac{1 - r^n}{1 - r} \right) = 0.16 \cdot \left( \frac{1 - 0.8^{10}}{1 - 0.8} \right)
+$$
+
+$$
+\mathbb{E}[V] = 0.16 \cdot \left( \frac{1 - 0.8^{10}}{0.2} \right)
+$$
+
+$$
+\mathbb{E}[V] = 0.8 \cdot (1 - 0.8^{10})
+$$
+
+$$
+\mathbb{E}[V] \approx 0.8 \cdot (1 - 0.1074) \approx 0.8 \cdot 0.8926
+$$
+
+$$\mathbb{E}[V] \approx \mathbf{0.714}
+$$
+
+#### <b>A.2 - Alternative Definitions of Ergodicity? </b>
+
+<Quote>
+An observable event is called ergodic if its expectation value is constant in time and its time average converges to this value with probability one. <small> _[Ole Peters, Alexander Adamou]_ </small>
+</Quote>
+
+<Quote>
+Ergodicity holds if, more or less, every time you compute a statistical measure (in space or in time), you find the same result. 
+
+It means that the randomness is "well-distributed".
+
+Another way to see it is that, when there is ergodicity, doing $N$ random experiments in parallel gives the same result as doing $N$ experiments in series.
+</Quote>
