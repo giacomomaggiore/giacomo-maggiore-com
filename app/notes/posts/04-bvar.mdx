@@ -236,19 +236,19 @@ $$
 where $ \Phi_i $ are matrices of **impulse responses**.
 
 
-The **h-step ahead forecast** made at time $ t $ is:
+The <b>h-step ahead forecast</b> made at time $ t $ is:
 
 $$
 \hat{y}_{t+h|t} = E_t[y_{t+h}] = \mu + \sum_{i=1}^{h} \Phi_i \varepsilon_{t+h-i}
 $$
 
-The **forecast error** is:
+The <b>forecast error</b> is:
 
 $$
 y_{t+h} - \hat{y}_{t+h|t} = \sum_{i=0}^{h-1} \Phi_i \varepsilon_{t+h-i}
 $$
 
-and its **variance**:
+and its <b>variance</b>:
 
 $$
 Var(y_{t+h} - \hat{y}_{t+h|t}) = \sum_{i=0}^{h-1} \Phi_i \Sigma_\varepsilon \Phi_i'
@@ -275,7 +275,7 @@ Thus, $ \theta_{jk}(h) $ represents the <b>percentage of the forecast error vari
 
 ## <b> Impulse Response Functions (IRFs) </b>
 
-IRFs quantifies the effect of a <b> one-time shock</b> in one variable on the current and future values of all variables, it answer _“What happens to variable _i _ if we shock variable _ j _by one unit today?”
+IRFs quantifies the effect of a <b> one-time shock</b> in one variable on the current and future values of all variables, it answer _“What happens to variable_ $i$  _if we shock variable_ $j$ _by one unit today?_”
 
 Since the innovations $ \varepsilon_t $ are often <b>correlated</b>, we cannot interpret them as isolated shocks.  
 To obtain independent shocks, we perform <b>orthogonalization</b>:
@@ -312,10 +312,17 @@ The classical VAR  assumes indeed that <b>true parameter values exist</b>, and t
 The main problem is that, as the number of variables $ K $ and lags $ p $ increases, the number of parameters to estimate grows <b>quadratically</b>.  
 For example, a VAR with 10 variables and 4 lags already has 400 coefficients to estimate, and that’s not even counting intercepts or covariances.
 
+![Number of coefficients in VAR](/images/notes/n_coeff_var.png)
+<small>
+<i>
+Problems of VAR
+</i>
+</small>
+
 This leads to several practical issues:
 
-- <b>Overfitting:</b> the model adapts too much to the sample data.  
-- <b>Parameter instability:</b> small sample size leads to unreliable estimates.  
+- <b>Overfitting:</b> the model adapts too much to the sample data
+- <b>Parameter instability:</b> small sample size leads to unreliable estimates. 
 
 leading traditional VAR models become <b>unmanageable</b> and <b>statistically weak</b> when the dataset is small but the system is large.
 
@@ -375,7 +382,12 @@ In many standard priors (e.g., Normal-Inverse Wishart), the posterior distributi
 
 When conjugacy does not hold, simulation-based methods (Markov Chain Monte Carlo (MCMC) or Gibbs sampling) are employed to approximate the posterior.
 
-
+![Number of coefficients in VAR](/images/notes/bvar_papers.jpg)
+<small>
+<i>
+Details in the Bibliography at the botton of the page.
+</i>
+</small>
 
 ## <b> Common Priors in Practice </b>
 
@@ -394,4 +406,148 @@ When conjugacy does not hold, simulation-based methods (Markov Chain Monte Carlo
 _Note that, in Macroeconomic forecasting, often the Minnesota Prior is the most accurate._
 
 ## <a id="4"><b>Macroeconomic Forecasting Project (R)</b> </a>
-## <a id="5"><b>Bibliography</b> </a>
+
+### <b> 1. Introduction </b>
+This project investigates the forecasting performance of  (BVAR) models applied to three core macroeconomic variables of the Swiss economy:
+
+- <b>Exchange Rate</b>
+- <b>GDP </b>
+- <b>Inflation Rate  </b>
+
+The goal is to evaluate how different BVAR configurations compare to classical AR(1) and OLS-estimated VAR models, assessing forecast accuracy and the effect of priors.
+
+_Please note that the code in the article is INCOMPLETE: for the full documentation, please refer to the_<b><a href="https://github.com/blmelcher/methods-for-macro-forecasting-2025/tree/main" target = "_blank"> GitHub Repository </a> </b>.
+
+_Please note that this project was developed in collaboration with Ben Melcher; I had the pleasure of working with him as a classmate at ETH Zurich._
+
+
+### 2. <b>Data Cleaning and Pre-processing </b>
+After importing the data, non-rate variables were log-transformed using differences:
+
+$$
+\tilde{y}_{i,t} = \log(y_{i,t}) - \log(y_{i,t-1})
+$$
+
+
+Inflation was computed as CPI growth from quarter to quarter (we could have computed the same metric using the annual variation with a quarter rolling window).  
+Stationarity was verified through Augmented Dickey–Fuller (ADF) test  
+
+
+
+```r
+#----------------------transformations ------------
+
+df$inflation <- ((df$cpi - dplyr::lag(df$cpi, 1)) / dplyr::lag(df$cpi, 1) ) * 100
+
+rate_variables <- c("inflation", "urilo", "srate", "srate_ge")
+forecast_variables <- c("gdp", "inflation", "wkfreuro")
+
+#  ----------apply log + growth transformations ---
+for (var in names(df)) {
+  if (!(var %in% rate_variables) && var != "date") {
+    #log difference  
+    df[[var]] <-  (log(df[[var]]) - log(dplyr::lag(df[[var]], 1))) *100
+  }}
+```
+
+To avoid distortions, the training dataset was restricted to <b>pre-COVID (up to 2019)</b>.
+
+```r
+df <- df %>% filter(date <= as.Date("2019-01-01")) 
+```
+---
+
+### <b>3. Model Configuration</b>
+
+We tested different configuration to see the best performing one, considering the RMSE as performance metric.
+In particular, we considered the following sets of variables, two different lags (1, 4) and 3 different priors (Diffuse, Minnesota, Sum-of-coefficients).
+```r
+
+selected_variables_0 <- c("gdp", "inflation", "wkfreuro")
+
+selected_variables_1 <- c("gdp", "inflation", "wkfreuro", "consg",  "ltot", 
+                          "wage","poilusd", "pcioecd")
+
+selected_variables_2 <- c("gdp", "inflation", "wkfreuro", "consg", "ifix", 
+                        "exc1", "imc1", "ltot", "uroff", "wage", "srate", 
+                          "poilusd", "pcioecd")
+```
+
+
+### <b>4. Evalutation and Model Comparison </b>
+
+We ran all model configurations and, using a rolling-window scheme on the historical data, computed the MRSE on the observed values in the training set (implementation details are in rmse.R).
+
+From these experiments we built a dataframe that reports, for each forecast target and each configuration, the MRSE averaged across the rolling windows.
+
+Model selection was then performed by ranking configurations by mean MRSE (with visual inspection and robustness checks across windows). The best-performing specification was the Minnesota prior with _selected_variables_0_ and _lag = 1_.
+
+![Different window sizes in BVAR](/images/notes/bvar_forecast_actual.png)
+<small>
+<i>
+Different window sizes.
+</i>
+</small>
+
+In this section, we also tested for different rolling window sizes and we observed:
+- Smaller windows → higher variance and wider prediction bands  
+- Larger windows → smoother predictions but less sensitivity  
+
+
+### <b>5. Comparison with AR and VAR </b>
+
+We also compared the forecasting performance of BVAR, OLS-VAR and a simple AR(1) using rolling-window MRSE on the training data. The aggregated MRSE by target variable is shown below.
+
+<Table
+  data={{
+    headers: ["variable", "rmse_bvar", "rmse_var", "rmse_ar1"],
+    rows: [
+      ["gdp", "0.668", "0.677", "0.659"],
+      ["inflation", "0.284", "0.290", "0.288"],
+      ["wkfreuro", "2.667", "2.702", "2.635"]
+    ]
+  }}
+/>
+
+Why AR(1) is often _surprisingly_ accurate: 
+- Simplicity: AR(1) captures short-term autocorrelation without adding estimation noise.  
+- Weak short-run cross-effects: short-horizon interactions between macro variables are often weak or unstable.  
+- Overfitting risk: multivariate models can add variance that offsets potential gains from modeling cross-variable dynamics.
+
+![Different window sizes in BVAR](/images/notes/ar_var_comparison.png)
+
+### <b>6. Forecasting with the best configuration </b>
+
+We then picked the best performing model and made our actual prediction, using training data up to 2019 (to exclude covid) to make a prediction for all the quarters of 2026 (h = 1,2,3,4)
+
+```r
+df_fc <- df_fc %>% filter(date <= as.Date("2025-10-01")) 
+
+horizon <- 4
+window_data <- df[(nrow(df)-40):nrow(df), ]
+y_train <- window_data
+
+trained_model <- bvar(
+  y_train %>% dplyr::select(all_of(selected_variables)),
+  lags = lag_number,
+  n_draw = 10000,
+  n_burn = 2500,
+  n_thin = 1,
+  priors = priors,
+  verbose = FALSE
+)
+
+n_obs <- nrow(df_fc) + horizon  
+
+pred_q50  <- matrix(NA_real_, nrow = n_obs, ncol = length(selected_variables),
+                    dimnames = list(NULL, selected_variables))
+pred_q16  <- pred_q50
+pred_q84  <- pred_q50
+pred_q025 <- pred_q50
+pred_q975 <- pred_q50
+
+# --- model prediction with BVAR ---------------------------------------------------------
+prediction <- predict(trained_model, horizon = horizon, newdata = df_fc[,selected_variables], conf_bands = c(0.16, 0.025))
+
+
+```
