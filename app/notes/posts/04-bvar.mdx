@@ -476,11 +476,21 @@ selected_variables_2 <- c("gdp", "inflation", "wkfreuro", "consg", "ifix",
 
 ### <b>4. Evalutation and Model Comparison </b>
 
-We ran all model configurations and, using a rolling-window scheme on the historical data, computed the MRSE on the observed values in the training set (implementation details are in rmse.R).
+We ran all model configurations and, using a rolling-window scheme on the historical data, computed the MRSE and LOG Score on the observed values in the training set (implementation details are in rmse.R).
 
 From these experiments we built a dataframe that reports, for each forecast target and each configuration, the MRSE averaged across the rolling windows.
 
 Model selection was then performed by ranking configurations by mean MRSE (with visual inspection and robustness checks across windows). The best-performing specification was the Minnesota prior with _selected_variables_0_ and _lag = 1_.
+
+The Log score, even if it has not beed used to choose the best model, was instead computed as follows:
+
+```r
+# Calculate and store the log score
+    density_obj <- density(var_draws)
+    density_func <- approxfun(density_obj$x, density_obj$y)
+    p <- density_func(y_actual_scalar)
+    log_score_bvar[t_idx, var_name] <- log(p) 
+```
 
 ![Different window sizes in BVAR](/images/notes/bvar_forecast_actual.png)
 <small>
@@ -496,7 +506,8 @@ In this section, we also tested for different rolling window sizes and we observ
 
 ### <b>5. Comparison with AR and VAR </b>
 
-We also compared the forecasting performance of BVAR, OLS-VAR and a simple AR(1) using rolling-window MRSE on the training data. The aggregated MRSE by target variable is shown below.
+We also compared the forecasting performance of BVAR, OLS-VAR and a simple AR(1) using rolling-window MRSE and the Log Score on the training data. The aggregated MRSE by target variable is shown below.
+
 
 <Table
   data={{
@@ -509,12 +520,14 @@ We also compared the forecasting performance of BVAR, OLS-VAR and a simple AR(1)
   }}
 />
 
+
+
 Why AR(1) is often _surprisingly_ accurate: 
 - Simplicity: AR(1) captures short-term autocorrelation without adding estimation noise.  
 - Weak short-run cross-effects: short-horizon interactions between macro variables are often weak or unstable.  
 - Overfitting risk: multivariate models can add variance that offsets potential gains from modeling cross-variable dynamics.
 
-![Different window sizes in BVAR](/images/notes/ar_var_comparison.png)
+![AR and BVAR comparison](/images/notes/ar_var_comparison.png)
 
 ### <b>6. Forecasting with the best configuration </b>
 
@@ -549,5 +562,39 @@ pred_q975 <- pred_q50
 # --- model prediction with BVAR ---------------------------------------------------------
 prediction <- predict(trained_model, horizon = horizon, newdata = df_fc[,selected_variables], conf_bands = c(0.16, 0.025))
 
-
 ```
+
+Then we plotted median forecasts and predictive intervals (quantiles) for each variable to show point predictions together with forecast uncertainty. 
+
+A comparison with the KOF (Swiss Economic Institute) forecasts is possible (their public forecasts are available at <a href="https://konjunkturprognose.kof.ethz.ch/" target="_blank">konjunkturprognose.kof.ethz.ch</a>), but we didn not include it here because their methodology is not fully disclosed.
+
+
+![BVAR Forecast](/images/notes/bvar_current_forecast_combined.png)
+<small>
+<i>
+Different window sizes.
+</i>
+</small>
+
+
+### <b>Conclusion and discussion</b>
+
+Our experiments show that BVARs are a practical solution to the <b>overparameterization problem </b> that plagues large OLS-VAR systems: informative priors (e.g., Minnesota) stabilise estimation and typically yield more reliable density forecasts in small samples. At short horizons, however, a simple AR(1) often remains<b> a very competitive model.</b>
+
+To sum up:
+- <b>BVAR (with informative priors)</b> is preferable when the system size is large relative to the sample, a probabilistic (density) forecasts or credible intervals are needed or  priors encode useful economic information.  
+- <b>AR(1) is a robust, low-variance baseline </b>for short-term point forecasts and should be included in any forecasting comparison.  
+- <b>OLS-VAR can underperform </b>due to overfitting when there are many coefficients relative to observations.
+
+However, the model uses <b>training data up to 2019</b> and excludes explicit scenario analysis for external shocks or structural breaks (e.g., COVID, policy regime changes). Including post‑COVID observations and structural-break tests would help assess robustness.  
+
+---
+
+
+### <b> Bibliography </b>
+- Lecture Notes from <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=192607&semkez=2025W&ansicht=LEHRVERANSTALTUNGEN&lang=en" target="_blank">Methods for Macroeconomic Forecasting </a>
+- <a href="https://github.com/KOF-fbp/methods-for-macro-forecasting-2025" target="_blank">GitHub Course Repository</a>
+- BVAR: Bayesian Vector Autoregressions with Hierarchical Prior Selection in R, _Nikolas Kuschnig, Lukas Vashold_
+- Prior Selection for Vectore Autoregression, _Domenico Giannone, Michele Lenza, and Giorgio E. Primiceri_
+- Grok AI (code review)
+- ChatGPT 5 (code review)
