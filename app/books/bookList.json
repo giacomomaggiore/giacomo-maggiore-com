@@ -1,11 +1,19 @@
 [
+   {
+    "title": "L'elefante invisibile",
+    "author": "Luciano Canova",
+    "topic": "Economics",
+    "date": "2025-11",
+    "link": "https://www.amazon.it/Lelefante-invisibile-affrontare-linatteso-travolti/dp/8842831123",
+    "rating": "3.5"
+  },
       {
-    "title": "The Art of Spending Money",
-    "author": "Morgan Houssel",
-    "topic": "Peronal Finance",
-    "date": "2025-10",
-    "link": "https://www.amazon.com/Art-Spending-Money-Simple-Choices/dp/0593716620",
-    "rating": "3.0"
+    "title": "Ergodicity",
+    "author": "Luca Dellanna",
+    "topic": "Econonics",
+    "date": "2025-11",
+    "link": "https://luca-dellanna.com/books/ergodicity",
+    "rating": "5.0"
   },
     {
     "title": "Capitlismo Carnivoro",
