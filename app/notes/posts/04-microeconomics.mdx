@@ -215,9 +215,11 @@ $$
 
 Of course, an increase in the income (corresponding in a budget line shift to the right) means that the consumer can buy more goods of both $X, Y$, assuming that prices remain the same.
 
+
+
 ### <b> Indifference Curvers </b>
 
-Given two goods $X,Y$, an indifference curve represents all the consumption bundles ($X,Y$) that bring the same level of satisfaction (utility).
+Given two goods $X,Y$, an indifference curve represents all the consumption bundles $(X,Y)$ that bring the same level of satisfaction (utility).
 
 
 
@@ -226,18 +228,250 @@ Given two goods $X,Y$, an indifference curve represents all the consumption bund
 </div>
 
 - Higher indifference curves (top-right) are preferred to lower ones.
-- Indifference curves slope downward from left to right
+- Indifference curves slope downward from left to right and are bowed inward.
+- Indifference curves do not cross.
+
+Also, we can recall the income e substitution effects:
+- the <b>income effect</b> after a change in price moves the consumer to _higher or lower indifference curve_.
+- the <b>substitution effect</b> after a change in price moves the consumer _along an indifference curve_.
+
+Perfect substitutes and complements show <b> particular indifference curves</b>.
+<div align = "center">
+![Indifference Curve](/images/notes/microeconomics/substitutes_complements.png)
+</div>
+
+The <b> marginal rate of substitution </b> (MRS) is rate at which consumer is willing to trade one good for another.
+- It is equal in magnitude to the slope of the indifference curve
+- High MRS represents an higher importance of the new good.
+
+To represent the satisfaction gained from the consumption of a bundle $(X,Y)$, we use a <b> utility function </b> $u(X,Y)$.
+- $u(X,Y)$ assigns a number to each bundles of goods so that more preferred ones lead to higher numbers.
+- Numbers don't have a intrinsic meaning, therefore we cannot compare two different utilites function.
+
+<b>Marginal utility </b> is the additional level of satisfaction obtained from extra unit of good.
+
+$$
+MU_X = \frac {\partial U}{\partial X}
+$$
+
+Usually, microeconomics assume that all utilities function have diminishing <b>marginal utility</b>.
+
+Given two goods $(X,Y)$, the optimal consumption is obtained at:
+
+$$
+MRS_{Y,MU_X} = \frac {MU_X}{MU_Y}
+$$
+
+### <b> Price-Consumption, Demand & Engel Curve </b>
+
+The above graph shows that a decrease in price leads to a change in the consumer optimum (indifference curve). From this plot, we can derive the <b> price-consumption curve</b> and then the demand curve.
+
+<div align = "center">
+![Price Consumption Curve](/images/notes/microeconomics/price_consumption.png)
+</div>
+
+The <b> Engel curve </b> shows instead the relationship between demand and levels of income.
+<div align = "center">
+![Engel Curve](/images/notes/microeconomics/engel.png)
+</div>
+
+### <b> Behavioral Economics </b>
+
+Behavioral economics negectls some assumptions from the _Neoclassical econmics_, mostly by assuming that consumer choices are <b> not always rational </b>and <b> utility maximizing.</b>
+The most important behavioral anomalies affecting economic decisions are:
+- <b> Bounded rationality </b>
+    - Loss aversion (endownment effect: _valuing an item more when you own it_, status quo bias: _preference for familiarity and resiste to change_.)
+    - Framing (_the way a choice is presented affects the decision_.)
+    - Mental Accounting (_threat money differently depending on its source or goal_.)
+    - Intention Gap 
+- <b> Bounded willpower (limited self control) </b>
+- <b> Bounded selfishness </b>
+
+## <a id="4"><b>5. The Cost of Production</b></a>
+
+<b> The production function </b> is a simplied mathematical representation of the production process.
+
+$$
+Q = f(L, C)
+$$
+where, in this case $L,C$ repreent labor and capital.
+$Q$ indicates the _highest output_ that a firm can produce for every specific combination of inputs.
+
+Normally, we distinguish between two periods:
+- the short run, with variable $L$ and fixed $\bar{C}$
+- the long run, with both $L, C$ variable.
+
+The <b> total product </b> measures the total amount of output produced in physical units of measurement (tons, kWh...)
+
+The <b> marginal product of a production factor </b> (MP) is the extra ouput produced as one input increased by one unit:
+
+$$
+MP_i = \frac {\partial Q}{\partial F_i}
+$$
+
+where $F_i$ is a production factor. 
+<div align = "center">
+![Total and Marginal Product](/images/notes/microeconomics/marginal_product.png)
+</div>
+
+The diminishing (decreasing) marginal product property affirms that the marginal product of an input declines as the quantity of input decreases ($MP_i$ is decreasing function in $F_i$). _Of course, it's not a law of nature, just an empirical principle_.
+
+### <b> Cobb Douglas Production function </b>
+
+A very widely used production function in economics is the <b> Cobb Doublas Production Function</b>, defined as:
+
+$$
+Q = z C^{\alpha}L^{\beta}
+$$
+
+where $z, \alpha, \beta$ are costants.
+We also get:
+
+$$
+MP_L = z \beta C^{\alpha}L^{\beta -1}
+$$
+$$
+MP_C = z \alpha C^{\alpha - 1}L^{\beta}
+$$
+
+### <b> Productivity Indicators </b>
+
+A <b> partial productivity indicator </b> measures the firm's output in relation to a single production factor.
+For istance, <b> labor productivity </b> can be defined as $Q/L$.
+
+The <b> total factor productivity </b> (TFP) can be defined as the ratio of total ouput to an index of total input:
+
+$$
+TFP = \frac{\text{Total  Output}}{\text{Total Input Index}}
+$$
+
+TFP is generally used as a relative measured between different firms (countries) or the same firm (country) in different periods.
+The total input index is often defined as a linear combination of different production factors or other indeces.
+
+The <b> Tornqvist Index </b> provides, using the TFP, an indication of the overall growth rate:
+
+$$
+\text {Tornqvist Index} = \ln(\frac{TFP_t}{TFP_s}) = ln (\frac{\text{Output Index}_st}{\text{Input Index}_st})= ln(\text{Output Index}_st) - ln (\text{Input Index}_st) =
+$$
+
+$$
+= \frac{1}{2} \sum^N_{i = 1}(v_{is}+v_{it})(\ln y_{it}-\ln y_{is}) - \frac{1}{2} \sum^N_{i = 1}(\omega_{is}+\omega_{it})(\ln x_{it}-\ln x_{is})
+$$
+where  $v_i$ is the revenue share, $y_i$ the output, $w_i$ the cost share and $x_i$ the cost share.
+
+<small> _More about this index can be found <a target = "_blank" href = "https://it.wikipedia.org/wiki/Indice_di_Törnqvist"> here </a>._ </small>
+
+### <b> Costs, Revenues, Economic and Accounting Profit </b>
+
+Generally, the economic goal of a firm is to maximize economic profit:
+
+$$
+\text{Profit} = \text{Total Revenue} - \text{Total Cost}
+$$
 
 
-## <a id="4"><b>4. Theory of Consumer Demand: Behavioral Perspective</b></a>
+The cost of production also includes <b> opportunity cost </b>, that is the benefit or value of the most valuable good forgone or something the firm has to forgone in order to operate.
 
-## <a id="5"><b>5. The Cost of Production</b></a>
+Cost of production can includes both:
+- <b> explicit costs</b>: input costs that require directly paymnent of money
+- <b> implicit costs </b>: they do't require outflow of money and they are not recorded in the accounting system. _Opportunity cost, external and enviromental costs lie in this category_
 
-## <a id="6"><b>6. Theory of Cost, Consumer & Producer Surplus</b></a>
+The distinction between explicit and implicit costs highlights another important difference between economic and accounting profit.
 
-## <a id="7"><b>7. Market Failures & Behavioral Anomalies</b></a>
+$$
+\text{Economic Profit} = \text{Total Revenue } - [\text{Explicit Cost}+\text{Implicit Cost}]
+$$
+$$
+\text{Accounting Profit} = \text{Total Revenue } - \text{Explicit Cost}
+$$
 
-## <a id="8"><b>8. Public Sector & the Tax System</b></a>
+Other distinctions between the economic and accounting view are represented by deprecitation, sunk cost and costs related to negative externalities.
+
+Cost of production can be further divided into:
+- <b> Fixed Costs</b>: not determined by the quantity of output.
+- <b> Variable Costs </b>: dependent on the quantity of output.
+$$
+TC = TFC + TVC
+$$
+_Note that, for many firms, the distinction between fixed and variable depends on the time horizon being considered: in the long run, fixed costs become also variable._
+
+
+<div align = "center">
+![Total Costs](/images/notes/microeconomics/total_cost.png)
+</div>
+
+We can then define:
+
+$$
+\text{Average Fixed Cost}: \text{AFC} = \frac {\text{Fixed Cost}}{\text{Quantity}} = \frac{FC}{Q}
+$$
+
+$$
+\text{Average Variable Cost}: \text{AVC} = \frac {\text{Variable Cost}}{\text{Quantity}} = \frac{VC}{Q}
+$$
+
+$$
+\text{Average Total Cost}: \text{ATC} = \frac {\text{Total Cost}}{\text{Quantity}} = \frac{TC}{Q}
+$$
+
+$$
+\text{Marginal  Cost}: \text{MC} = \frac {\partial \text{TC}}{\partial Q}
+$$
+
+<div align = "center">
+![Marginal Cost](/images/notes/microeconomics/marginal_cost.png)
+</div>
+
+The shape of the total cost curve is stricly dependent on the market type.
+
+<div align = "center">
+![Marginal Cost](/images/notes/microeconomics/total_cost_curves.png)
+</div>
+
+### <b> Economies of Scale </b>
+
+- Economies of scale refer to the property for which the long-run average total cost falls, as the quantity increases due to:
+    - Large initial investments in production capacity.
+    - Transaction cost does not increase with output.
+    - If the firm operates at scale, workers can specialize where they are more productive.
+- Diseconomies of scale refer to the property for which the long-run average total cost rises.
+- Costant returns to scale (CRS) refers to the property for which the long-run average total cost remains costant.
+
+<div align = "center">
+![Economies of Scale](/images/notes/microeconomics/economies_scale.png)
+</div>
+
+We use $ES$ to measure the previous attributes:
+
+$$
+\text{ES} = \frac {1}{\text{Cost Elasticity}} = \frac {1}{ \frac {\partial TC Q}{\partial Q TC}}
+$$
+
+- $ES > 1$: economies of scale
+- $ES < 1$: diseconomies of scale
+- $ES \approx 1$: CRS
+
+### <b> Economies of Scope </b>
+If the joint production of a single firm is greater than the output it could be achieved to different firms, each producing a single product, we speak of economies of scope.
+
+In other words, if the cost of producing different output by one firm is lower than the aggrecated cost or producing the same output in separated firms, we speak of economies of scope.
+
+Economies of scope works because joint production allows to alloca resources in a more productive way, there's a better load factor on machine (_higher saturation_) and labor and there's risk diversification in R&D.
+
+Economies of scope are often represented with a downward <b> learning curve </b>:
+
+<div align = "center">
+![Learning Curve](/images/notes/microeconomics/learning_curve.png)
+</div>
+
+I HAVE TO DO SLIDE 188
+
+
+## <a id="5"><b>6. Theory of Cost, Consumer & Producer Surplus</b></a>
+
+## <a id="6"><b>7. Market Failures & Behavioral Anomalies</b></a>
+
+## <a id="7"><b>8. Public Sector & the Tax System</b></a>
 
 ## <a id="9"><b>9. Firms in Competitive Markets</b></a>
 
