@@ -4,4 +4,195 @@ publishedAt: '2025-12-28'
 summary: ''
 ---
 
-prova!
+The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?semkez=2025W&ansicht=KATALOGDATEN&lerneinheitId=193923&lang=en" target="_blank"> <b> Strategic Supply Chain Management</b></a>, held by <a target="_blank" href="https://mtec.ethz.ch/people/person-detail.filippini.html"><b> 	S. Wagner</b> </a> at <a target="_blank" href="https://ethz.ch/en.html"> <u>ETH Zurich</u></a>.
+
+<b>Warning: </b>at $t = today$, the following page is <b> 100% AI-free</b>, so excuse me for human mistakes & typos. Enjoy!
+
+---
+
+Index:
+- [Introduction, Supply Chain Basics and Challenges](#1)
+- [Aligning Supply Chain with products and competitive strategy](#2)
+- [Demand Forecasting](#3)
+- [Supply Chain Network Design](#4)
+- [Basic Supply Chain Network Design and Optimization](#5)
+- [Advanced Supply CHain Network Design and Optimization](#6)
+- [Inventory Management](#7)
+- [Coordination in the Supply Chain](#8)
+- [Appendix](#9)
+
+---
+
+
+### <a id ="1"> <b>1. Introduction, Supply Chain Basics and Challenges </b> </a>
+
+Main supply-chain challenges in 2025 from all over the globe:
+- <b>Geopolitical instability and trade fragmentation</b> _(conflicts_ Ukraine, Middle East, Taiwan tensions, Palestine; protectionism and tariffs)_
+- <b>Demand volatility and inventory management </b> _(shifts in consumer behavior, oscillation between understocking and overstocking)_
+- <b>Inflation</b>
+- <b>Trasports and logistic problems</b> _(port congestion, limited container availability, driver shortage, rising fuel cost etc ...)_a
+- <b>Digitalization and cyber security </b>
+- <b>Restructuring</b> _(of all industries)_
+
+Within a firm, there are several entities that play a role in the supply chain:
+- <b>R&D</b> _(can improve internal supply chain, design product to optimize supply chain, design products to improge logistic [IKEA example], decide how often develop new products)_.
+- <b>Finance</b> _(manage working capital, invoices and account payable/receivable, analyze tariffs and taxes that depend on supply chain, manage FX rate and finance hedging)_.
+- <b>Operatoins</b> _(manage all the manufacturing and assemplying processes, key components of the supply chain management)_.
+
+Between all the operators in the supply chain network, there's, in all directions, flow of:
+- information
+- materials
+- money
+- intellectual property
+
+<div align = "center">
+![Entities ](/images/notes/supply-chain/sc_entities.png)
+</div>
+
+
+
+### <b>SCOR </b>
+
+SCM is often based on the SCOR model (Supply Chain Operations Reference Model) that idenfity 5 key process clusters.
+<Table
+  data={{
+    headers: ["SCOR Process", "Definition"],
+    rows: [
+      [ <b>Plan</b>, "Processes that balance aggregate demand and supply to develop a course of action which best meets sourcing, production and delivery requirements."],
+      [ <b>Source</b>, "Processes that procure goods and services to meet planned or actual demand."],
+      [ <b>Make</b>, "Processes that transform product to a finished state to meet planned or actual demand."],
+      [ <b>Deliver</b>, "Processes that provide finished goods and services to meet planned or actual demand, typically including order management, transportation management, and distribution management."],
+      [ <b>Return</b>, "Processes associated with returning or receiving returned products for any reason. These processes extend into post-delivery customer support."],
+    ]
+  }}
+/>
+
+
+During supply chain management and evalutation, there are different factors to take in account:
+- <b>Sourcing</b>
+    - Sourcing buffer (inventory, timing, selection of supplies)
+    - Workload leveling over time
+- <b> Manufacturing </b>
+    - Decoupling point
+    - Asset utilization and saturation rate
+    - Production cycle
+    - Demand buffering (inventory, timing and excess capacity)
+- <b> Delivery </b>
+
+
+<div align = "center">
+![Entities ](/images/notes/supply-chain/sc_factors.png)
+</div>
+
+There are two important views to look at supply chain management:
+- <b>The Cycle view </b>: each cycles occurs at the interface between to successive stages, it clearly defines processes and people involced, specifiying roles and responsibilities of each time. _According to this view, the customer cycle is the trigger for the whole chain._
+$$
+\text{Customer order} \to \text{Replenishment cycle } \to \text{Manufacturing cycle } \to {Purchasing cycle}
+$$
+- <b>The Pull/Push view</b>: processes belong to one of the following categories depending on the timing of their execution:
+    - <b>Pull </b>: execution is started in response to a customer order _(REACTIVE)_
+    - <b>Push </b>: execution is started in ancitipation _(SPECULATIVE)_
+In this way, it's easier to idenfity the push-pull boundary, the decoupling point and the order penetration point.
+
+<div align = "center">
+![Entities ](/images/notes/supply-chain/order_penetration.png)
+</div>
+<div align = "center">
+![Entities ](/images/notes/supply-chain/decoupling_point.png)
+</div>
+<div align = "center">
+![Entities ](/images/notes/supply-chain/volume_variety.png)
+</div>
+
+<b> Modularization vs Postponmement</b>
+
+<a href ="https://www.researchgate.net/publication/222558265_Evaluation_of_supply_chain_structures_through_modularization_and_postponement" target="_blanl"> Ernst & Kamrad framework </a> describes supply chain structures based on two levers:
+- <b>Modularization</b> refers to the degree to which a product is composed by indipendent and stardadized parts ("modules"). _It concerns the relationship with suppliers, designers and materials._
+- <b>Postponment </b> refers to the delaying and timing of the final differentiation of the product. _It concerns the timing of the assembly, the labelling, the logicist and the distribution._
+
+<div align = "center">
+![Entities ](/images/notes/supply-chain/modularization_postponement.png)
+</div>
+
+<Table
+  data={{
+    headers: ["Structure", "Modularity", "Postponement", "Description", "Example"],
+    rows: [
+      [
+        <b>Rigid</b>,
+        "Low",
+        "Low",
+        "Focus on mass production and economies of scale. Standardized products, large finished-goods inventory.",
+        "Commodities or traditional steel manufacturing."
+      ],
+      [
+        <b>Modularized</b>,
+        "High",
+        "Low",
+        "Focus on outsourcing. The final assembly is relatively early.",
+        "Consumer electronics"
+      ],
+      [
+        <b>Postponed</b>,
+        "Low",
+        "High",
+        "Focus on logistics efficiency. Products may not be modular, but the firm delays final configuration.",
+        "Localized food packaging."
+      ],
+      [
+        <b>Flexible</b>,
+        "High",
+        "High",
+        "Example of mass customization. It combines modular product design with late-stage assembly.",
+        "Dell’s build-to-order PC model, customized high-end bicycles."
+      ]
+    ]
+  }}
+/>
+
+Note that postponement can be done at different levels:
+- <b>time postponement</b>: delaying the final assembly closest to the customer's order
+- <b>form postponement</b>: delaying the product differentiation
+- <b>place postponement </b>: delaying and separating the plant where the final assembly is done
+
+Intermediaries outside the firm (wholesalelrs and distributors) can be used to facilitate the postponement.
+
+
+<b>Example: Benetton's Sweater Postponement</b>
+- Instead of dyeing cotton and yarn, Benetton makes the sweaters and postpones coloring the inventory.
+- The company ships to the stores a limited quantity of sweaters to collect information about customers's tastes.
+- The remaining un-colored sweaters is the dyed according to the collected data.
+
+This results in:
+- better reaction to customers's demands and trends
+- delayed forecasts for specific colors
+- ability to still use aggregated demand forecast to start manufacturing early
+
+
+I DID UP TO SLIDE 57: I HAVE TO DO PHASES OF SUPPLY CHAIN MANAGEMENT
+---
+
+
+### <a id ="2"> <b>2. Aligning Supply Chain with products and competitive strategy </b> </a>
+---
+
+### <a id ="3"> <b>3. Demand Forecasting </b> </a>
+---
+
+### <a id ="4"> <b>4. Supply Chain Network Design </b> </a>
+---
+
+### <a id ="5"> <b>5. Basic Supply Chain Network Design and Optimization </b> </a>
+---
+
+### <a id ="6"> <b>6. Advanced Supply CHain Network Design and Optimization </b> </a>
+---
+
+### <a id ="7"> <b>7. Inventory Management </b> </a>
+---
+
+### <a id ="8"> <b>8. Coordination in the Supply Chain </b> </a>
+---
+
+### <a id ="9"> <b>9. Appendix </b> </a>
+---
