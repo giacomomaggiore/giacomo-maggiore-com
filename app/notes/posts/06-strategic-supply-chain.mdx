@@ -4,9 +4,9 @@ publishedAt: '2025-12-28'
 summary: ''
 ---
 
-The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?semkez=2025W&ansicht=KATALOGDATEN&lerneinheitId=193923&lang=en" target="_blank"> <b> Strategic Supply Chain Management</b></a>, held by <a target="_blank" href="https://mtec.ethz.ch/people/person-detail.filippini.html"><b> 	S. Wagner</b> </a> at <a target="_blank" href="https://ethz.ch/en.html"> <u>ETH Zurich</u></a>.
+The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?semkez=2025W&ansicht=KATALOGDATEN&lerneinheitId=193923&lang=en" target="_blank"> <b> Strategic Supply Chain Management</b></a>, held by <a target="_blank" href="https://scm.ethz.ch/"><b> 	S. Wagner</b> </a> at <a target="_blank" href="https://ethz.ch/en.html"> <u>ETH Zurich</u></a>.
 
-<b>Warning: </b>at $t = today$, the following page is <b> 100% AI-free</b>, so excuse me for human mistakes & typos. Enjoy!
+<b>Warning: </b>at $t = today$, the following page is <b> 100% content-wise  AI-free</b>, so excuse me for human mistakes & typos. Enjoy!
 
 ---
 
@@ -26,20 +26,13 @@ Index:
 
 ### <a id ="1"> <b>1. Introduction, Supply Chain Basics and Challenges </b> </a>
 
-Main supply-chain challenges in 2025 from all over the globe:
-- <b>Geopolitical instability and trade fragmentation</b> _(conflicts_ Ukraine, Middle East, Taiwan tensions, Palestine; protectionism and tariffs)_
-- <b>Demand volatility and inventory management </b> _(shifts in consumer behavior, oscillation between understocking and overstocking)_
-- <b>Inflation</b>
-- <b>Trasports and logistic problems</b> _(port congestion, limited container availability, driver shortage, rising fuel cost etc ...)_a
-- <b>Digitalization and cyber security </b>
-- <b>Restructuring</b> _(of all industries)_
 
 Within a firm, there are several entities that play a role in the supply chain:
 - <b>R&D</b> _(can improve internal supply chain, design product to optimize supply chain, design products to improge logistic [IKEA example], decide how often develop new products)_.
 - <b>Finance</b> _(manage working capital, invoices and account payable/receivable, analyze tariffs and taxes that depend on supply chain, manage FX rate and finance hedging)_.
-- <b>Operatoins</b> _(manage all the manufacturing and assemplying processes, key components of the supply chain management)_.
+- <b>Operations</b> _(manage all the manufacturing and assemplying processes, key components of the supply chain management)_.
 
-Between all the operators in the supply chain network, there's, in all directions, flow of:
+Between all the operators in the supply chain network, there's, _in all directions_, flow of:
 - information
 - materials
 - money
@@ -50,19 +43,18 @@ Between all the operators in the supply chain network, there's, in all direction
 </div>
 
 
-
 ### <b>SCOR </b>
 
-SCM is often based on the SCOR model (Supply Chain Operations Reference Model) that idenfity 5 key process clusters.
+SCM is often based on the SCOR model <b>(Supply Chain Operations Reference Model)</b> that idenfity 5 key process clusters.
 <Table
   data={{
     headers: ["SCOR Process", "Definition"],
     rows: [
-      [ <b>Plan</b>, "Processes that balance aggregate demand and supply to develop a course of action which best meets sourcing, production and delivery requirements."],
-      [ <b>Source</b>, "Processes that procure goods and services to meet planned or actual demand."],
-      [ <b>Make</b>, "Processes that transform product to a finished state to meet planned or actual demand."],
-      [ <b>Deliver</b>, "Processes that provide finished goods and services to meet planned or actual demand, typically including order management, transportation management, and distribution management."],
-      [ <b>Return</b>, "Processes associated with returning or receiving returned products for any reason. These processes extend into post-delivery customer support."],
+      [ <b>Plan</b>, "Processes that balance aggregate demand and supply to develop a plan that best fits sourcing, production and delivery requirements."],
+      [ <b>Source</b>, "Processes that procure goods and services to satisfy demand."],
+      [ <b>Make</b>, "Processes that transform product to a finished state."],
+      [ <b>Deliver</b>, "Processes that provide finished goods to the customer (including order, transportation and distribution management)."],
+      [ <b>Return</b>, "Processes associated with returning products for any reason. These processes extend into post-delivery customer support."],
     ]
   }}
 />
@@ -85,13 +77,13 @@ During supply chain management and evalutation, there are different factors to t
 </div>
 
 There are two important views to look at supply chain management:
-- <b>The Cycle view </b>: each cycles occurs at the interface between to successive stages, it clearly defines processes and people involced, specifiying roles and responsibilities of each time. _According to this view, the customer cycle is the trigger for the whole chain._
+- <b>The Cycle view</b>: each cycles occurs at the interface between to successive stages, it clearly defines processes and people involved, specifiying roles and responsibilities of each time. _According to this view, the customer order is the trigger for the whole chain._
 $$
 \text{Customer order} \to \text{Replenishment cycle } \to \text{Manufacturing cycle } \to {Purchasing cycle}
 $$
 - <b>The Pull/Push view</b>: processes belong to one of the following categories depending on the timing of their execution:
-    - <b>Pull </b>: execution is started in response to a customer order _(REACTIVE)_
-    - <b>Push </b>: execution is started in ancitipation _(SPECULATIVE)_
+    - <b>Pull</b>: execution is started in response to a customer order _(REACTIVE)_
+    - <b>Push</b>: execution is started in anticipation _(SPECULATIVE)_
 In this way, it's easier to idenfity the push-pull boundary, the decoupling point and the order penetration point.
 
 <div align = "center">
@@ -104,12 +96,11 @@ In this way, it's easier to idenfity the push-pull boundary, the decoupling poin
 ![Entities ](/images/notes/supply-chain/volume_variety.png)
 </div>
 
-<b> Modularization vs Postponmement</b>
+### <b> Modularization & Postponmement</b>
 
 <a href ="https://www.researchgate.net/publication/222558265_Evaluation_of_supply_chain_structures_through_modularization_and_postponement" target="_blanl"> Ernst & Kamrad framework </a> describes supply chain structures based on two levers:
 - <b>Modularization</b> refers to the degree to which a product is composed by indipendent and stardadized parts ("modules"). _It concerns the relationship with suppliers, designers and materials._
-- <b>Postponment </b> refers to the delaying and timing of the final differentiation of the product. _It concerns the timing of the assembly, the labelling, the logicist and the distribution._
-
+- <b>Postponment </b> refers to the delaying and timing of the final differentiation of the product. _It concerns the timing of the assembly, the labelling, the logicist and the distribution.
 <div align = "center">
 ![Entities ](/images/notes/supply-chain/modularization_postponement.png)
 </div>
@@ -169,8 +160,109 @@ This results in:
 - ability to still use aggregated demand forecast to start manufacturing early
 
 
-I DID UP TO SLIDE 57: I HAVE TO DO PHASES OF SUPPLY CHAIN MANAGEMENT
+### <b>4 Phases of Supply Chain Management </b>
+
+SCM can be divided in:
+1. Design supply chain
+2. Plan supply chain
+3. Operate (execute) supply chain
+4. Control supply chain
+
+<br/>
+<b>1. Design supply chain </b>
+- Decisions about the structure and the processes each stage will perform
+- Design decisions are _long term_ and _expensive_ to reverse
+- Design must support _strategic objectives_ and take into account _market uncertainty_
+
+<small>- Decisions: _locations and capabilities of plants, products to be made and stored in different locations, traportation modes, information systems._</small>
+
+<br />
+
+<br />
+<b>2. Plan supply chain </b>
+- Contrained by the configuration from the design Phases
+- Master planning with monthly and weekly time horizon
+
+<small>- Decisions: _customer demand and forecast, markets to be served by each plant, subcontracting, inventory levels and policies, trasportations routes and schedules_ </small>
+<br />
+<small> - Several additional contraints to be considered: _demand uncertainty, exchange rates, capacity contraints_ ... </small>
+<br />
+<br />
+
+<b>3. Operate (execute) supply chain </b>
+- Contrained by the previous phases
+- Time horizon: weekly and daily
+- The goal is to implement operating policies as effectively as possible
+- Decisions regarding individual customer orders 
+
+<small>- Decisions: _allocation of orders to inventory, production or shipment, setting out order due dates, setting delivery schedules, plan replenishment orders_ ...</small>
+<br />
+<br />
+
+<b>4. Supply chain control </b>
+- Control and performance measurement are essential to keep the plan in line with the objectives
+  - Anything measured improves
+  - What you measure is what you get 
+  - You can't improve if you don't measure!
+
+<div align = "center">
+![Supply Chain Control ](/images/notes/supply-chain/sc_control.png)
+</div>
+
+### <b>Measuring SC performance </b>
+
+Some frequently used KPIs:
+
+$$
+\text{Order Accuracy Rate} = \left(  \frac{ \text{Number of Correct Orders} }{\text{Total Orders Delivered}} \right) \times 100
+$$
+<small>share of orders delivered without any mistakes product, quantity and quality. </small>
+$$
+\text{On-time Delivery} = \left(  \frac{\text{Orders Delivered on Time }}{\text{Total Orders Delivered}}  \right) \times 100
+$$
+<small>share of orders delivered on or before the committed delivery date </small>
+
+$$
+\text{Inventory Turnover} = \left(  \frac{\text{Cost of Goods Sold (COGS) }}{\text{Average Inventory Value}} \right) \times 100
+$$
+<small>how many times inventory is sold and replaced over a pediod </small>
+
+$$
+\text{Order Cycle Time} =\left(  \frac{\text{Total Order Processing Time }}{\text{Numbers of Orders Processed}} \right) \times 100
+$$
+
+<small>time it takes from receiving an order to fulfilling it </small>
+
+Suppy chain metrics often need to be translated in financial metric in the balance sheet:
+- Order Cycle time $\approx$ Cash _(Assets, Balance Sheet)_
+- Invoice Accurary $\approx$ Receivable _(Assets, Balance Sheet)_
+- Inventory $\approx$ Inventories _(Assets, Balance Sheet)_
+- Distribution facilities, equipment and plants $\approx$ Property _(Assets, Balance Sheet)_
+- Purchase order quantities $\approx$ Current Liabilities _(Liabilities, Balance Sheet)_
+- Financing options for inventory and plants $\approx$ Debt and equity _(Liabilities, Balance Sheet)_
+
+<div align = "center">
+![Financial Impact SC ](/images/notes/supply-chain/roi.png)
+</div>
+
+### <b>Developments and trends influencing supply chain today and in the future </b>
+
+<Table
+  data={{
+    headers: ["Areas of Change", "Potential issues"],
+    rows: [
+      [<b>Demographic change</b>,"buying behavior, e-commerce, urbanization, city logistic"],
+      [<b>Economic change and protectionism</b>,"regional competitive advantages, inflation, trade flows and tariffs"],
+      [<b>Volatility</b>,"demand, fx rates, political systems"],
+      [<b>Sustainability</b>,"climate change, footprint, resource scarcity"],
+      [<b>Innovation in SC</b>,"design in manufacturing, assembly, logistic, IP, startup in SC, risk & revenue sharing"],
+      [<b>Digitalization & AI</b>,"sc 4.0, robots, drones, 3-d printing, blockchain, big data, AI..."]
+    ]
+  }}
+/>
+
 ---
+
 
 
 ### <a id ="2"> <b>2. Aligning Supply Chain with products and competitive strategy </b> </a>
