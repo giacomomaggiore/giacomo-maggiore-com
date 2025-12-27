@@ -266,10 +266,349 @@ Suppy chain metrics often need to be translated in financial metric in the balan
 
 
 ### <a id ="2"> <b>2. Aligning Supply Chain with products and competitive strategy </b> </a>
+
+<b> A "typical" value chain </b>
+<div align = "center">
+![Value Chain](/images/notes/supply-chain/value_chain.png)
+</div>
+There's <b>consistency</b> and <b>support </b> between competitive strategy, supply chain strategy and other functional strategies.
+
+- <b>competitive strategy </b> defines the set of customer needs to satisfy
+- <b>product development strategy </b> defines the portfolio of products to develop
+- <b>marketing & sales strategy </b> specifies how to segmenent the market and position the products
+- <b>supply chain strategy </b> determines material purchasin, manufacturing, assemplying, delivering etc...
+
+<b>Strategic fit </b> occurs when there's consistency and common goals between them but, how is this achieved?
+
+###<b>1. Understanding customer needs </b>
+Identification of the need of the customer segment, based on individual attributes _(quantity needed, response time tolerated, variety needed, service level required, price, rate of innovation etc...)_
+
+- <b> Demand uncertainty </b> is the uncertainty of customer demand for a product (as a whole)
+- <b> Implied demand uncertainty </b> is the resulting uncertainty given the customer attributes and the portion of the demand the supply chain has to handle _(combined metric taking into consideration also the supply chain and the firm: not about how much is sold, but more about how it is sold)_
+
+Some factors that increase _implied demand uncertainty_:
+- range of quantity increases $\to$ great variance in demand
+- lead time decreases $\to$ less time to fulfill orders
+- required service level increases $\to$ the firm has to handle unusual and more problems
+- rate of innovation increases $\to$ new products have naturally more demand uncertainty
+- number of sale channels or distributors increases $\to$ total customer demand is more disaggregated
+
+<div align = "center">
+![uncertainty Supply Chain](/images/notes/supply-chain/uncertainty.png)
+</div>
+
+Uncertainty is often correlated with other SC metrics:
+
+<Table
+  data={{
+    headers: ["Attribute", "Functional Products (Low SDU)", "Innovative Products (High SDU)"],
+    rows: [
+      [<b>Product Margin </b>, "Low (5-20%)","High (20-60%)"],
+      [<b>Product Life Cycle</b>, "Long (more than 2 yrs)","Short (3 month - 1 yr)"],
+      [<b>Avg. Foreacast Error</b>, "10%","40-100%"],
+      [<b>Avg. Stock Out Rate</b>, "1-2%","10-40$"],
+      [<b>Avg. Forced Season-end Markdown</b>, "0","10-25%"]
+      
+    ]
+  }}
+/>
+<small> Avg Forced Season-end Markdown is planned price reduction to liquidate and empty the inventory at the end of the season </small>
+
+### <b>2. Understanding the supply chain </b>
+After understanding the customers, next question is: _how does the firm best meet demand?_
+
+The dimension/metric describing best the sc is <b>supply chain responsiveness </b>, that is the ability to:
+- respond to wide ranges of quantities
+- meet short lead times
+- handle different products
+- design and deliver innovative products 
+- provide a very high service level
+
+Note that:
+
+$$
+\text{Increasing Responsiveness} \to \text{Higher Costs} \to \text{Reduce SC efficiency}
+$$
+
+<div align = "center">
+![uncertainty Supply Chain](/images/notes/supply-chain/responsiveness.png)
+</div>
+
+### <b>3. Achieving strategic fit </b>
+
+To ensure that the supply chain performs well and it is consistent with targer customer needs, all functions _(operations, finance, purchasing, distribution etc...)_ <b>must support </b> the competitive strategy.
+
+<div align = "center">
+![Strategic Fit Supply Chain](/images/notes/supply-chain/strategic_fit.png)
+</div>
+<div align = "center">
+![Strategic Fit Supply Chain](/images/notes/supply-chain/strategic_fit_2.png)
+</div>
+
+Below some <b>design priciples </b> that show the comparison betwee <b> efficient </b> and <b>responsive </b> supply chains:
+<Table
+  data={{
+    headers: ["Aspect", "EFFICIENT", "RESPONSIVE"],
+    rows: [
+      [<b>Manufacturing </b>, "High utilization","Capacity flexibility"],
+      [<b> Inventory</b>, "Minimize inventory","Buffer inventory"],
+      [<b>Lead time </b>, "Reduce NOT at expense of greater costs","Reduce at ALL costs"],
+      [<b> Supplier selection</b>, "Sufficient quality & cost","Speed, flexibility, quality"],
+      [<b>Trasporation </b>, "Low cost modes","Responsive and fast modes"],
+      [<b> Product design</b>, "Integral design to minimize product cost","Modular design to allow postponement"],
+      ]
+  }}
+/>
+
+Some other issues affecting strategic fit:
+- competitive strategy and market scenario may change over time
+- more competitors and increasing internet sales may result in increased variety in demand $\to$ supply chain <b>must </b> change to adapt
+- supply chain must evolve during product life cycle
+- <b>diminishing control </b> over the supply chain (fragmentation, globalization and more supply chains)
+- <b>increasing implied demand uncertainty</b> (more demanding customers, shorter product life cycle, increasing variety)
+
+<b>The Strategic Scope </b>
+
+Different entities in the supply chain (suppliers, customer, manufacturers etc...) have different objective: expanding the <b> strategic scope</b> and <b>vision </b> is then necessary.
+
+$$
+\text{Intracompany intraoperational scope (a) } \to \text{Intracompany intrafunctional scope (b)} \to
+
+$$
+$$
+\to \text{Intracompany internfunctional scope (c)} \to \text{Intercompany interfunctional scope (d)}
+$$
+
+- $(a)$: one operation in a functional area of the company
+- $(b)$: all operations in a functional area
+- $(c)$: all functional strategies in a company
+- $(d)$: all functional strategies in all the companies/agents involved
+
+
+<div align = "center">
+![Strategic Scope Supply Chain](/images/notes/supply-chain/strategic_scope.png)
+</div>
+
+
+### <b>Drivers of SC Performance </b>
+
+<div align = "center">
+![Strategic Scope Supply Chain](/images/notes/supply-chain/sc_performance.png)
+</div>
+
+<b>1. Facilities: role in the supply chain </b>
+- The _"where"_ of the supply chain
+- Purposes:
+  - <b>manufacturing and assemblying facilities </b>
+  - <b>warehouses </b>
+- They determine the supply chain _long term_
+- Key factors to consider: _location (centralization vs decentralizatoin), capacity, manufacturing method (product vs process focused), warehousing methology (cross docking, automated guided vehicle, picking etc...)_.
+
+<b>Cross-docking </b> is common in different industries, _including retail stores, ecommerce companies, manufacturers and logistics service providers (LSPs)_.
+
+Products move right _from the inbound to the outbound dock_ without every staying in the warehouse, achieving faster delivery, less warehouse space, optimized inventory level, lower trasporation and labor cost.
+
+
+<div align = "center">
+![Strategic Scope Supply Chain](/images/notes/supply-chain/cross_dock.png)
+</div>
+
+- if responsiveness is a priority $\to$ large number of smaller facilities, decentralizatoin
+- if efficiency is a priority $\to$ small number of larger facilities (economies of scale), centralization
+
+<b>2. Inventory: role in the supply chain </b>
+- Inventory exists because of a mismatch between supply and demand
+- Different types of inventory _(raw materials, WIP, finished goods)_
+- The level of inventory has impact on:
+  - <b>Material flow time</b>: time between materials entering the sc and exiting the sc
+  - <b>Throughput:</b> rate at which sales occur in a timeframe _(e.g. 8 units/day)_
+
+There are different components in inventory decisions:
+- <b>Cycle inventory</b>: average amount of inventory used to satisfy demand _(depends on lot size)_
+- <b>Safety inventory</b>: held in case demand exceeds expectations _(tradeoff needed between its cost and the cost of losing sales)_
+- <b>Seasonal inventory</b>: built up to cover predictable variability and seasonality in demand _(tradeoff needed between its cost and the cost of flexible production)_
+
+- if responsiveness is a priority $\to$ large buffer inventory, locate inventory close to customers
+- if efficiency is a priority $\to$ reduce and centralize inventory
+
+<b>3. Trasporation: role in the supply chain </b>
+- The _"how"_ of the supply chain
+- Purposes:
+  - Moving the products between stages
+  - Allowing _"disintegratin"_ of the supply chain
+- It determines the supply chain at _medium term_
+
+Key factors to consider:
+- trasporation mode
+- route and network selection
+- in-house or outsource
+
+<br/>
+- if responsiveness is a priority $\to$ faster trasporation (express, air cargo), given that the customer are willing to pay for it
+- if efficiency is a priority $\to$ slower trasporation modes (sea, road), for customers whose priority is price
+
+<br/>
+<b>4. Information: role in the supply chain </b>
+- Data analysis regarding inventory, trasporation, facilities and connection between different stages $\to$ coordination between stages
+- Crucial to daily operations at each stage
+
+Key factors:
+- MRP (Manufacturing Resource Planning) $\to$ forecast, aggregate planning _(PUSH system)_According
+- Sales and Operations Planning (S&OP)
+- Enabling technologies _(blockchain, ML, Gen AI, Radio Frequency Identification, IoT, Cloud...)
+
+Information and data analysis allow supply chain to become <b>more efficient</b> and <b>responsive </b> _at the same time_.
+
+<b>5. Sourcing (Purchasing): role in the supply chain</b>
+- Set of business processes required to purchase:
+  - goods
+  - services
+  - logistic services
+- sourcing decisions are determinant for:
+  - degree of vertical integration (in-house vs outsource)
+  - sourcing strategy (single vs multiple)
+  - number of suppliers
+  - contract with suppliers
+
+$$
+\text{Supply Market Research}\to \text{Make-or-buy Decisions }\to \text{Supplier Management}
+$$
+
+- if responsiveness is a priority $\to$ supply network focuses on high quality, speed and flexibility _(intensive supplier integration in logistic)_
+- if efficiency is a priority $\to$  supply network focueseson "sufficient" quality and cost _(suppliers pool, economies of scale, negotiating power)_
+
+<br/>
+
+<b>6. Pricing: role in the supply chain </b>
+- Pricing strategies can be used to:
+  - <b>match </b> demand and supply
+  - <b> differentiate customer segments </b>
+
+Key Factors to consider:
+- pricing and economies of scale
+- everyday low-pricing vs high-low pricing
+- fixed price vs menu price
+- differential prices _(e.g. depending on customer segments, response times)_
+
 ---
 
 ### <a id ="3"> <b>3. Demand Forecasting </b> </a>
+
+Different forecasting horizons:
+- <b>Strategic</b> (3+ years): _new products planning, facility location, research and development_ 
+- <b>Tactical </b>(3 months - 3 years): _sales and production planning, budgeting_
+- <b>Operational </b>(Up to 1 year, generally up to 3 months): _purchasing, job scheduling, workforce and production levels, job assignments_
+
+<Quote>
+Demand forecasting is calculating or predicting future demand of a product or service, usually as a  result of study and analysis of available historical data.
+</Quote>
+
+Consequences of bad forecasting:
+- <b>Major financial impact</b> $\to$ excess recourses, unsold products or lost profits and customers
+- <b>Misallocation of resources </b>
+
+### <b>Overview of Forecasting Methods</b>
+
+
+
+
+<div align = "center">
+![Forecasting](/images/notes/supply-chain/forecast.png)
+</div>
+
+<b>The Delphi Method</b>
+This method is a structured communication technique, _originally developed as a systematic, interactive forecasting relying on a panel of experts._
+
+<div align = "center">
+![Delphi Method](/images/notes/supply-chain/delphi_method.png)
+</div>
+
+
+<b>Causal model </b>
+This method predicts one parameter as a function of others
+$$
+\text{Demand} = f(\text{interest rates, GDP, etc...}) = f(X_1, X_2, X_3 \dots X_n)
+$$
+Often, we assume a _linear model_:
+$$
+\text{Demand} = b_0 + b_1 X_1 + b_2 X_2 + b_3 X_3 \dots b_n X_n
+$$
+
+<b>Time-Seies Method </b>
+
+$$
+\text{Oberved Quantity (O)} = \text{Systematic Component (S)} + \text{Random Componend (R)}
+$$
+
+- $S$ is the expected value of demand (influenced by level, trend and seasonality)
+- $R$ is the part of the forecast that deviates from systematic component
+
+The <b>forecast error </b> is the difference between the forecast value and the actual value
+
+$$
+e_t = F_t - D_t
+$$
+
+A <b>time series </b> is a collection of past (historical) data from which we want to isolate patterns and use them to <b>predict</b> future data.
+
+Some time-series models:
+
+<b>Moving Averages</b>
+Level in period $t$ is the average demand over the last $N$ values:
+
+$$
+L_t = (D_t + D_{t-1} + \dots +D_{t-N+1}) / N
+$$
+$$
+F_{t+1 } = L_t
+$$
+
+
+- easily understood and computed
+- provides a stable forecast
+- lags a trend
+- ignore complex relationship in data
+
+<b>Simple Exponential Smoothing </b>
+It is used whn demand has no observable trend or seasonality.
+
+- Start with a initial estimation of level $L$, assumed to be the average of historical data:
+
+$$
+L_t = (D_t + D_{t-1} + \dots +D_{t-N+1}) / N
+$$
+$$
+F_{t+1 } = L_t
+$$
+After observing demand $D_{t+1}$, revise the estimates of level by making a <b>weighted </b> adjustment:
+
+$$
+L_{t+1 } = \alpha D_{t+1} + (1 - \alpha)L_t
+$$
+with $0 \le \alpha \le 1$
+$$
+F_{t+2 } = L_{t+1}
+$$
+
+-  _large number of periods_ taken into consideration $\to$  _small_  $\alpha$
+- Low $\alpha (.0.5- .2)$ when data are fairly stable
+- High $\alpha (0.2 - 0.4)$ when data are unstable
+
+<Table
+  data={{
+    headers: ["Method", "Features"],
+    rows: [
+      [<b>Moving Average </b>, "No observable trend and seasonality"],
+      [<b> Simple Exponential Smoothing</b>, "No observable trend and seasonality"],
+      [<b>Trend-Corrected Exponential Smoothing </b>, "Trend but NOT seasonality"],
+      [<b> Trend-Seasonality Corrected Exponential Smoothing</b>, "Trend AND Seasonality"],
+          ]
+  }}
+/>
+
+
 ---
+
 
 ### <a id ="4"> <b>4. Supply Chain Network Design </b> </a>
 ---
