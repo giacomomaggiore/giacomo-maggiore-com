@@ -774,10 +774,249 @@ Performance Characteristics
 ![Supply Chain Network Design Summary 2](/images/notes/supply-chain/sc_design_summary_2.png)
 </div>
 
-i did up to slide 54 of module 4
+### <b>Summary: the value of distributors in the supply chain </b>
+Distributors can contribute to:
+- one-stop shopping aggregating products from several manufacturer
+- reduction of outbound transportation cost
+- reduction of inventory cost
+- more stable order stream and lower cost by planning production
+- better response time
+
+ <b>Impact of online shopping on customer service</b>
+- no delay for information
+- easier to offer larger variety of products
+- more flexible pricing
+- faster time to market
+- higher customization and convenience in the customer experience
+
+### <b>Factors influencing supply chain network design </b>
+
+<Table
+  data={{
+    headers: [" ", "Factors"],
+    rows: [
+      [<b>Strategic </b>, <ol>
+      <li>Customer Response Time</li>
+      <li>Technological</li>
+      <li>Facility Roles</li>
+      </ol>
+      ],
+
+            [<b>Enviromental </b>, <ol start="4">
+      <li>Infrastructure</li>
+      <li>Macroeconomic</li>
+      <li>Politic</li>
+      </ol>
+      ],
+                  [<b>Risk </b>, <ol start="7">
+      <li>Geopolitical and geo-economical factors</li>
+      <li>Dependence risks</li>
+      <li>Sustainability risks</li>
+      </ol>
+      ],
+                        [<b>Risk </b>, <ol start="10">
+      <li>Logistic and facility cost</li>
+
+      </ol>
+      ]
+          ]
+  }}
+/>
+
+2. When considering _technological factors_, there are:
+  - cost-related characteristics _(economies of scale, decreasing fixed cost)_
+  - flexibility-related characteristics _(flexible manufacturing system, flexible/agile production)_
+
+3. Regarding facility roles, they can be classified in the following way (in <b>industrial upgrading</b> order - at the botton the most "upgraded" ones):
+  1. offshore facility: _low cost facility for export production_
+  2. shource facility: _low-cost facility for global production_
+  3. server facility: _regional production facility_
+  4. contributor facility: _regional production facility with development skills_
+  5. outpost facility: _regional production facility bult to gain local skills_
+  6. lead facility: _facility that leads R&D_
+
+
+<div align = "center">
+![Supply Chain Network Design Summary 2](/images/notes/supply-chain/sc_roadmap.png)
+</div>
+
 ---
 
 ### <a id ="5"> <b>5. Basic Supply Chain Network Design and Optimization </b> </a>
+
+Many optimizatio problems can be represented by a graphical network:
+- <b>Node</b> (vertex): junction pooint of a network _(can represent a location, warehouse, terminal etc...)_
+- <b>Arc</b> (edge, link): channel throgh which flow may occur _(can represent a road, rail track, trade lane etc...)_a
+- <b>Flow</b> (weight): objects passing throgh nodes and arches _(can represente freight, cargo, vehicles etc..., measured in quantity)
+  - the maximum quantity of flow through an arch: <b> capacity </b>
+
+We can define different types of nodes in a network:
+- <b>Source</b>: all flow comes from this node _(origin, no predecessor)_
+- <b>Sink</b>: all flow ends in this node _(end, no successors)_
+- <b>Supply</b>: outflow - inflow > 0
+- <b>Demand</b>: outflow - inflow < 0
+- <b>Transshipment</b>: outflow - inflow = 0 _(conservation of flow)_
+
+<b>Point-to-point VS Hubs-and-Spoke networks</b>
+<div align = "center">
+![Point to Point](/images/notes/supply-chain/point-to-point.png)
+</div>
+
+<Table
+  data={{
+    headers: ["Point-to-Point", "Hub-and-Spoke"],
+    rows: [
+      ["Traffic in more routes","Traffic in less routes"],
+      ["Potentially some low frequency routes","High frequency and high traffic routes, enhancing efficiency"],
+      [" ", <i>Air carriers have applied the Hub-and-Spoke system</i>]
+
+          ]
+  }}
+/>
+
+### <b>Basic models for supply chain network design/Optimization </b>
+
+<b>Minimum Cost Flow Optimization Problems</b>
+
+Assumptions and properties:
+- at least one node is a supply node, at least one node is a demand node
+- flow only possible in one direction (the arrow)
+- each source has a fixed supply, each demand has a fixed demand
+- the cost of the flow is _proportional_ to the amount of that flow 
+
+The goal is to <b>minimize </b> the <b>objective function</b> (the total cost of all flow).
+The solution is feasible if and only if the <b>sum of the supplies </b> equals the <b>sum of the demands </b>.
+
+$$
+\min T = \sum_i \sum_j c_{ij} x_{ij}
+$$
+
+with the following constraints:
+- $\sum_j x_{ij} = s_i $ (supply)
+- $\sum_j x_{ij} = d_j $ (demand)
+- $\sum_i s_i = \sum_j d_j $ (supply equals demand)
+- $x_{ij} > 0$
+
+$c_{ij}$ denotes the cost of shipping from $i$ to $j$ and $x_{ij}$ is the decision variable _(the quantity shipped from $i$ to $j$),
+
+For transporation costs, the optimization rewrites as following.
+We assume $i = 1 \dots n$ supplier warehouse, $j = 1 \dots m$ customer regions, the the objective function is:
+
+$$
+\min T = \sum_i^n \sum_j^m c_{ij} x_{ij}
+$$
+
+- $\sum_j x_{ij} = s_i$ for each origin $i$ (all supply must be distributed)
+- $\sum_j x_{ij} = d_j $ for each destination $j$ (all demand must be distributed) 
+- $x_{ij} > 0$
+
+Some special case modifications to the transportation problem:
+- <b>Maximum shipping capacity </b>from $i$ to $j$: $x_{ij} < L_{ij}$
+- <b>Minimum shipping guarantee </b>from $i$ to $j$: $x_{ij} > L_{ij}$
+- if <b>supply > demand</b>: add a dummy destination with zero cost and its demand equals to the remaining supply
+- if a rouce it not accessible: remove the corresponding decision variable
+
+<b>Assignment problems</b>
+Given a set of agents, a set of tasks and a cost table, the goal is to <b>match agents to tasks </b> so that all tasks are performed at the minimum possible ost.
+_Note that_ an assignment problem is a special case of a minimum-cost flow problem in which <b>all suppliers and all demands are equal to 1</b>.
+
+Some initial assumptions needed:
+- the numbers of agents and tasks are the same ($n$)
+- each agent is assigned to exactly one task and each task is performed by exactly one agent
+- all agents are assigned and all tasks are performed
+
+$$
+\min T = \sum_i^n \sum_j^n c_{ij} x_{ij}
+$$
+
+- $\sum_j x_{ij} = 1 $ for each task $i$ (each task is done by 1 agent)
+- $\sum_j x_{ij} = 1 $ for each agent $j$ (each agent is assigned at 1 task) 
+- $x_{ij} > 0$
+- $x_{ij}$ integer
+
+Special case mofifications to the assignment problem:
+- <b>Number of agents exceeds the number of tasks:</b> $\sum_j x_{ij} \le 1$
+- <b>An agent can work one multiple tasks ($a$ tasks):</b> $\sum_j x_{ij} \le a$
+- <b>Number of tasks exceeds the number of agents</b>: add enough dummy agents
+- <b>An assignment is unacceptable</b>: remove the corresponding decision variable
+
+<b>Transshipment Problems </b>
+It is a special case of a transporation problem where the freight moves through intermediate nodes before reaching the final destination.
+$$
+\min T = \sum_i \sum_j c_{ij} x_{ij}
+$$
+- $\sum_j x_{ij} = s_i $for all supply nodes
+- $\sum_j x_{ij} - \sum_j x_{}ij = 0 $ for all transshipment nodes
+- $\sum_j x_{ij} = d_j $ for all demand nodes
+- $x_{ij} > 0$
+
+in a more general version, constraints can be written as:
+
+$$
+\sum_{j=1}^n x_{ij} - \sum_{j=1}^n x_{ji} = b_i 
+$$
+
+$$
+b_i = \begin{cases}
+= s_i \text{ for i is a supply node}\\
+= 0 \text{ for i is a transshipment node}\\
+= -d_i \text { for i is a demand node}
+ \end{cases}
+$$
+
+
+$$
+0 \le x_{ij} < u_{ij}
+$$
+
+_The first sum represents the outflow, the second the inflow and the third on the right the net flow._
+_$u_{ij}$ represents the arc capacity_
+
+<b>Maximum Flow Problems</b>
+The goal is to maximise the amount flowing through the network rather than minimizing the cot of the flow.
+In maximum flow problems, the source and the sink do not have fixed supplies and demands.
+
+Some initial assumptions:
+- all flow starts at one node (source $s$) and terminates at one other node (sink $t$)
+- all other nodes are transshipment nodes
+- flow is only allowed in one direction
+
+
+$$
+\max \omega
+$$
+
+such that
+$$
+\sum_j x_{ij} - \sum_j x_{ji} = \begin{cases}\omega 
+\text{ for i = s }\\
+- \omega \text{ for i = t}\\
+0 \text{ for the remaining ones}
+
+ \end{cases} 
+$$
+
+$$
+l_{ij} \le x_{ij} \le u_{ij}
+$$
+
+<b>Shortest path problems </b>
+The goal is to find the shortest path (with the minimum total length) from the origin ($i$) to the destination $s$.
+
+$$
+\min T = \sum_i \sum_j c_{ij} x_{ij}
+$$
+such that
+$$
+\sum_{j = 1}^n x_{ij} - \sum_{jk = 1}^n x_{ji} = \begin{cases}
+1  \text{ for i = s}\\
+-1 \text{ for i = t}\\
+0 \text{ in the remaining cases}
+
+
+\end{cases}
+$$
+
 ---
 
 ### <a id ="6"> <b>6. Advanced Supply CHain Network Design and Optimization </b> </a>
