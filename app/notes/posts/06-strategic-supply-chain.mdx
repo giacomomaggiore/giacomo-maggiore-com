@@ -1105,9 +1105,347 @@ Starting with only the nodes for a network, the problem now is to design the net
 ---
 
 ### <a id ="7"> <b>7. Inventory Management </b> </a>
+<Quote>
+Inventory is the set of items that an organization holds for later use by the organization 
+</Quote>
+
+The main functions of inventory:
+- permit operations and meet anticipated demand
+- smoothen production requirements
+- take advantage of quantity discounts
+- reduction of control cost _(inventory cost vs permanent monitoring cost)_
+- decouple operations _(buffers)_
+- protect against stocks out _(delayed delivers)_
+
+Primary goal of inventory management is to <b>urchase product in lot sizes </b> that  <b>minimize the sum </b> of material, ordering and holding cost.
+
+### <b>Just-in-Time Inventory Management (JIT)</b>
+The core idea is tu supply materials exactly when needed, minimizing inventory and waste.
+- reduce inventory
+- eliminate waste
+- streamline product flow
+- strengthen supplier coordination
+
+with associated <b>benefits</b>:
+- lower holding costs
+- faster response to demand changes
+- improved quality and efficiency
+- smaller storage needed
+and <b>risks</b>:
+- disruption vulnerability
+- efforts in supplier management
+- limited buffer stock
+
+### <b>The Economic Order Quantity (EOQ) Model </b>
+
+<b>Cycle inventory</b>: the average inventory that builds up in the supply chain because a stage produces or purchases in lots.
+
+$$
+\text{Cycle Inventory} = Q / 2
+ $$
+ 
+ given $Q$ the quantity/dimension of each lot and assuming that demand is stable, replenishment is costant and indipendent of demand.
+
+$$
+\text{Avg. Flow Time } = \text{Avg. Inventory} / \text{Avg. Flow Rate}
+$$
+
+$$
+\text{Avg. Flow Time from Cycle Inventory} = \text{Cycle inventory} / \text{Demand} = \frac{Q}{2D}
+$$
+
+Lower cycle inventory is better because:
+- average flow time is lower
+- working capital requirements are lower
+- lower inventory holding costs
+
+we then define:
+- $C$ as the average price paid per unic purchased 
+- $S$ as a fixed ordering/setup cost occurring eath time an order is placed.
+- $H$ as the holding cost in the inventory _(including cost of capital, physical warehouse, products becoming obsolete etc...)_
+(sometimes $H = hC$ as a fractoin of the unit cost of product)
+
+we then assume the followings:
+- production is istantaneous
+- delivery is immediate and deterministic (no uncertainty)
+- demand is costant over time
+- each order implies a costant setup cost
+- products can be ordered and analyzed individually 
+
+Given $D$, $C$, $S$, $h$, we want to find $Q$ (lot size) and sn$ (order frequency / time between orders) that minimize the total annual cost.
+
+- $CD$ annual material cost
+- $\frac{D}{Q}$ number of orders per year
+- $\frac{D}{Q}S$ annual ordering cost
+- $\frac{Q}{2}H = \frac{Q}{2}hC $ annual holding cost
+
+then the total annual cost is
+$$
+TC = CD + \frac{D}{Q}S + \frac{Q}{2}hC
+$$
+
+to minimize TC, we take the first derivative with respect to $Q$ and we set it equal to $0$:
+
+$$
+0 = 0 + \frac{-SD}{Q^2} + \frac{hC}{2}
+$$
+$$
+ \frac{SD}{Q^2} = + \frac{hC}{2}
+$$
+
+$$
+ \frac{2DS}{hC} = Q^2
+$$
+
+Rearraging we find the optimal lot size, also defined as the <b>economic order quantity</b>:
+
+$$
+Q^* = \sqrt{  \frac{2DS}{hC} }
+$$
+
+the order frequency $n$ is then computed as:
+
+$$
+n^* = \frac{D}{Q^*} = \sqrt{ \frac{DhC}{2S}}
+$$
+
+and the cycle time in years when demand is in years (how much time between orders) as:
+
+$$
+T^* = \frac{Q^*}{D}
+$$
+
+To sum up, the EOQ model:
+- easy to compute
+- does not require data hard to obain
+- policies are ronust
+- assumptions can be relaxed
+- it gives a good overall idea and can be the starting point for more complicated models
+
+### <b>Economic Production Quantity (EPQ) </b>
+
+It is an extension of the EOQ that takes into account that the _inventory arrives in increments_ at $P$ (production rate).
+
+Therefore the inventory builds up at rate $P - D$ when production is on and depleted at rate $D$ when production is off.
+
+<div align = "center">
+![EPQ](/images/notes/supply-chain/epq.png)
+</div>
+
+In this case, the total cost is adjusted and given by:
+
+$$
+TC_{EPQ} = \left ( \frac{D}{Q}S \right) + \left(  \frac{I_{max}}{2}H  \right)
+$$
+
+where $I_{max}$ is the maximum inventory and it is given by 
+$$
+I_{max} = Q \left( 1 - \frac{D}{P} \right)
+$$
+
+Following the same derivation of the EOQ, we obtain the following optimal lot size:
+
+$$
+Q^P = \sqrt{ \frac{2DS}{(1 - D/P)hC}}
+$$
+
+### <b>The Newsvendor Model </b>
+The classical newsvendor problem occurs when:
+- short selling period
+- only one procurement/order opportunity _(every specific day for the newsvendor)_a
+- stochastic/random demand
+- products loose value after the period
+leading to lost sales, leftovers and no value for any remaining unsold product.
+
+We then define the associated costs:
+- $C_0$: holding (overage) cost per unit remaining at the end of the period 
+$C_0 = \text{Purchase Cost } - \text{Salvage Value}$
+- $C_u$: shortage (underage cost) per unit at the end of the season
+$C_u = \text{Sales Price} - \text{Purchase Cost}$
+
+The decision variable is $Q$: the order quantity to maximize profit
+
+$$
+\mathbb{E} [\text{Cost } f(Q)] = C_0 \mathbb{E} [\text{Overage}(Q)] + C_u \mathbb{E} [\text{Underage}(Q)]
+$$
+
+To obtain the optimal $Q$, the following methods are possible:
+- <b>Brute force enumeration: </b> Calculate $f(Q)$ for all possible $Q$
+- <b>Compute </b> $\frac{\partial f(Q)}{\partial Q}$
+- <b>Incremental Analysis </b>
+
+Incremental analysis focuses on the cost/benefit of ordering one additional unit $(Q \to Q + 1)$
+- if the extra unit is sold, you make additiona $C_u$ in profits.
+
+This event happens with $\mathbb{P}(D > Q)$, therefore the expected benefit is:
+$$
+\mathbb{P}(D > Q) C_u
+$$
+
+- if the extra unit is not used, you wasted $C_0$.
+
+This event happens with $\mathbb{P}(D \le Q)$, therefore the expected loss is:
+$$
+\mathbb{P}(D \le Q)C_u
+$$
+
+At the optimal $Q$, benefits and loss should balance each other:
+
+$$
+\mathbb{P}(D > Q) C_u = \mathbb{P}(D \le Q) C_u
+$$
+
+Collecting the terms, we obtain the optimal condition (also known as the <b>Critical Ratio)</b>:
+
+$$
+\mathbb{P}(D \le Q) = CR =  \frac{C_u}{C_u + C_0} 
+$$
+
+<div align = "center">
+![Critical Ratio](/images/notes/supply-chain/cr.png)
+</div>
+
+For normally distributed demands, $Q^*$ is computed using the corresponding z-value:
+
+$$
+Q^* = \mu + z \sigma
+$$
+
+To sum up, below a quick comparison between the EOQ and the Newsvendor Model:
+
+<Table
+  data={{
+    headers: [<b>EOQ</b>,<b>Newsvendor Model</b>],
+    rows: [
+      ["Uniform and deterministic demand", "Variable and stochastic demand"],
+     ["Stable demand with infinite time horizon", "Single period approach"],
+     ["Reusable inventory", "Any leftovers are useless. Insatisfied demand is a loss"],
+     [<b>Minimize cost</b>, <b>Maximize profit</b>] 
+          ]
+  }}
+/>
 ---
 
 ### <a id ="8"> <b>8. Coordination in the Supply Chain </b> </a>
+
+Supply chain coordination means working together with the aim of improving performance, aligning plans and objectives.
+
+To do that, each stage should take into account the effects of its actions on other stages.
+
+Lack of coordination reduces total supply chain profits with different consequences in the "world": a famous example is the <b>bullwhip effect </b>(BWE).
+
+The bullwhip effect happens when _small changes in consumer demand_ get amplified into  larger swings in orders and inventory as you move upstream close to the manufacturer.
+
+<div align = "center">
+![BWE](/images/notes/supply-chain/bwe.png)
+</div>
+
+- shortage/gamig and panic buying are classic cause of bullwhip effect
+- stores impose limits on the maximum quantity people can purchase to address this
+
+Different reasons behind the bullwhip effect:
+- companies place <b>periodi orders</b>
+- the demand forecast is based on <b>orders received </b> (often by retailers or intermediaries), not on the <b>end user real demand</b>
+- the supply is allocated as a % of the amount ordered
+- <b>promotional pricing </b> causes distortions in demand
+
+This has negative effects on the whole supply chain:
+- increased manufacturing cost
+- increased inventory cost
+- increased replenishment lead time
+- increased transporation cost
+- increased labor cost for shipping and delivering
+- decreased availability of products
+- worse relationship across the supply chain
+
+resulting in a whole supply chain that moves away from the <b>efficient fronties </b> due to _higher costs and lower responsiveness_.
+
+### <b>Measugin information distortion </b>
+<Table
+  data={{
+    headers: [<b>Order Variance Amplification</b>, <b>Schedule Instability Amplification</b>],
+    rows: [
+     [<b>Levelness</b>, <b>Stability</b>],
+     ["In a perfectlyu level schedule, the acqual material required in every week are the same", "In a perfectly stable schedule, all the forecast are the same and coincide with production"],
+     ["Variation in production between periods is low", "Production according to plan"]
+         ]
+  }}
+/>
+
+To compute levelness (or bullwhip effect), we firstly compute:
+- the order variance ratio (OVR) at $I$ (manufacturer/ wholesaler level)
+
+$$
+OVR_I = \frac{\sigma_k ^2 (I_{outgoing})}{\sigma_k^2(I_{incoming})}
+$$
+
+where $\sigma_k ^2 (I_{outgoing})$ is the variance of outcoming orders at $I$ over $k$ intervals.
+
+- the order variance ratio at $H$ (retailer/consumer level):
+$$
+OVR_H = \frac{\sigma_k ^2 (H_{outgoing})}{\sigma_k^2(H_{incoming})}
+$$
+
+BEW is said to prevail if:
+
+$$
+OVR_I > OVR_H 
+$$
+
+(the upstream $OVR$ exceeds downstream $OVR$)
+
+To compute <b>stability</b> we firstly need to:
+- define the schedule change at the level (echelon) in consideration at one poin in time:
+
+$$
+\text{schedule change}_{Ei} = \frac{\text{Maximum} - \text{Minimum}}{\text{Mean}}
+$$
+
+for each forecast for a particular time period.
+
+- then the overall stabilit/instability <b>across $k$ periods</b> is defined as:
+
+$$
+\text{Instability}_{Ei} = \frac {\sum_1^k \text{schedule change}_{Ei}}{k}
+$$
+
+Instabilities are sait to increase _upstream_ when
+
+$$
+\text{Instability}_{Ei+1} >\text{Instability}_{Ei+1}
+$$
+
+### <b>Obstacles to coordination and remedial actions</b>
+
+1. Incentive obstacles $\to$ _aligning goals and incentives_
+2. Information and processing obstacles $\to$ _improving information accuracy_
+3. Operational obstacles $\to$ _improving operational performance_
+4. Pricing obstacles $\to$ _designing pricing strategies to stabilize orders_
+5. Behavioral obstacles $\to$ _building strategic partnerships with trust
+
+Supply chain partnerships can be divided in 3 clusters:
+- Type $I$: coordinationan on a limited basis, short term focus, involves one functional area of the firm.
+- Type $II$: integration and integration of activities,  long term focus, multiple divisions and functions involved.
+- Type $III$: significant level of integration, each firm views sees the other as a _exentension_ of their own firm, typically no "end-date" approach.
+
+<Table
+  data={{
+    headers: [" ", <b>Type I</b>,<b>Type II</b>,<b>Type III</b>],
+    rows: [
+     [<b>Planning style</b>, "Ad hoc basis", "Regularly ", "Systematic (both regularly and ad hoc)"],
+     [<b>Planning level</b>, "Projects and tasks", "Process", "Relationship"],
+     [<b>Planning content</b>, "Sharing of existing plans", "Performed jointly, eliminating conflicts", "Performed jointly at multiple levels"],
+     [<b>Operation Measurement</b>, "Performance measured developed indipendently, results may be shared", "Measures jointly developed, focus is on individual firm performance", "Measures are jointly developed and shared"],
+     [<b>Ability to make changes</b>, "Firm may suggest changes to the other","Firm may make changes to the other AFTER approval", "Firm may make changes to the other WITHOUT approval"],
+
+
+
+         ]
+  }}
+/>
+
+
+
 ---
 
 ### <a id ="9"> <b>9. Appendix </b> </a>
