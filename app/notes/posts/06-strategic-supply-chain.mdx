@@ -1020,6 +1020,88 @@ $$
 ---
 
 ### <a id ="6"> <b>6. Advanced Supply CHain Network Design and Optimization </b> </a>
+<b>Capacitated Plant Location Models </b>
+In this model, we assume $n$ plants with capacity $K_i$ serving $m$ regions with demand $D_j$, each of them with fixed ($f_i$), variable ($c_{ij}$) costs
+$y_i$ is the decision variable indicating wheter plan $i$ should be open, $x_{ij}$ denotes the quantity transported from $i$ to $j$.
+
+$$
+\min \sum_j^n f_i y_i + \sum_i^n \sum_j^m c_{ij} x_{ij}
+$$
+such that
+
+$$
+K_i y_i - \sum_j^m x_{ij} \ge 0
+$$
+
+$$
+D_j - \sum_j^n x_{ij} = 0
+$$
+
+$$
+y_i = 0/1
+$$
+
+$$
+x_{ij} \ge 0
+$$
+
+<b>Capacitated Plant Location Models with Single Sourcing </b>
+The main different from the previous model is that now each region can be served _only by one plant_ (but a plant can serve multiple regions).
+The optimization problem rewrites as follows:
+$$
+\min \sum_j^n f_i y_i + \sum_i^n \sum_j^m D_j c_{ij} x_{ij}
+$$
+such that
+
+$$
+K_i y_i - \sum_j^m x_{ij} \ge 0
+$$
+
+$$
+D_j - \sum_j^n x_{ij} = 0
+$$
+
+$$
+y_i = 0/1
+$$
+
+$$
+x_{ij} \ge 0
+$$
+
+$$
+x_{ij} = 0/1
+$$
+
+<b>Gravity Location Model </b>
+First of all, in order to calculate distances, we need to transform geographical coordinates latitude, longitude and height, to cartesian cordinates $x,y,z$.
+Then:
+- the gravity location model assumes the customer are located as grid points on a planned
+- every grid point point is a potential plant location/solution
+- we look for the spot $(x,y)$ that represents the gravity of all customers.
+
+Given the coordinates of each customer: $x_n$, $y_n$:
+- we compute the distance from the center: $d_n = \sqrt{(x-x_n)^2 + (y- y_n)^2}$
+- we set the quantity $Q_n$ to be shipped at each customer $D_n$
+- we compute to each customer $F_n$ and the minimze the total cost:
+
+$$
+\min \sum_n^k d_n D_n F_n
+$$
+
+_Note that, since the objective function is not linear, there is no analytical solution for the problem, but only a iterative algorithm_.
+
+<b>Minimum Spannin Tree Problems </b>
+The goal is to minimize the  total lenght of links inserted in a network.
+
+Starting with only the nodes for a network, the problem now is to design the network by deciding which links to add.
+
+<b>Prim's algorithm</b>:
+- Start with any node _(often the one with the cheapest edge)_a
+- Grwo the tree by repeatetly adding the cheapest edge connecting another node outside the tree
+- repeat until all nodes are included
+- break ties arbitrarly
+
 ---
 
 ### <a id ="7"> <b>7. Inventory Management </b> </a>
