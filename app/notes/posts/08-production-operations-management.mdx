@@ -1,0 +1,520 @@
+---
+title: '[WIP] Production and Operations Management'
+publishedAt: '2026-01-02'
+summary: ''
+---
+The following notes come from the course <a href="https://pom.ethz.ch/" target="_blank"> <b> Production and Operations Management</b></a>, held by <a target="_blank" href="https://mtec.ethz.ch/people/person-detail.tnetland.html"><b> 	Prof. Dr. Torbjørn Netland
+</b> </a> at <a target="_blank" href="https://ethz.ch/en.html"> <u>ETH Zurich</u></a>.
+
+_Video lectures can be found on_ <a href="https://www.youtube.com/@pomethz" target="_blank">POM's YouTube channel </a>.
+
+<b>Warning: </b>up to $t = today$, the following page is <b> 100% content-wise  AI-free</b>, so excuse me for human mistakes & typos. Enjoy!
+
+
+
+### <a id ="1"> <b>1. The Value Chain Concept </b> </a>
+
+_Production and Operations Management_ (POM) deals with processes that transform inputs into outputs and deliver products or services to the customers.
+
+Note that POM is not relevant just in the manufacturing industry, <b>all companies</b> and organizations need to think about how they organize their processes.
+
+<b>The value chain concept</b> by <a href="https://it.wikipedia.org/wiki/Michael_Porter" target="_blank"> Michael Porter</a> (1985, from _Competitive Advantage: Creating and Sustaining Superior Performance_) describes the various functions in a company along the value chain.
+
+It differentiates them between:
+
+- <b>Primary activities</b> are inboud logisitcs, operations, outgoing logistics, marketing, sales and services.
+- <b>Support activities</b> include procurement, technology development, HR management and firm infrastructure (accounting, legal, administrative and general management)
+
+<a href="https://www.investopedia.com/terms/v/valuechain.asp" target="_blank">Trader's Joe Example [INVESTOPEDIA]</a>.<br/>
+<a href="https://en.wikipedia.org/wiki/Value_chain" target="_blank">The Value Chain [WIKIPEDIA]</a>
+
+<div align = "center">
+![The Value Chain](/images/notes/pom/value_chain.png)
+</div>
+
+---
+### <a id ="2"> <b>IPO and the 4Ms </b> </a>
+
+The <b>Input-Process-Output Model </b> (IPO) describes a process that turns a input into an output.
+<br/>
+It can be extended to the <b>Supplier-Input-Process-Output-Customer Model </b> (SIPOC) where inputs come from supplier and products go to customers.
+
+The IPO Model is also a common pattern in system design and software engineering, used to separate the program/software from the enviroment and distinguish between requirements _(inputs)_, computations _(processes)_, provisions _(outputs)_.
+
+The <b>4Ms</b> descrube the resources needed to perform the process:
+- Machine
+- Material
+- Method
+- huMan
+
+This frameworkd can be extended to the <b>10 Ms</b>, attempting to list all the resources needed to conduct a manufacturing activity.
+<br/>Besides the previous Ms, this concept includes the following:
+- Management
+- Milieu _(the place where the process takes place)_
+- Mother Nature _(brings the inputs)_
+- Market
+- Motion _(to move resources in the process)_
+- Money
+
+
+<b>Example: Nike's Running Shoes</b>
+- <b>Machine</b>: Nike utilized high precision technology to maintain consistency across pairs (_Flyknit Digital Looms_: knitting machines that shape shoes upper in one piece, _Air Manufacturing Innovation_: proprietary machines for the iconic AIR units, _Robots_ in assembly lines to assemble components)
+- <b>Materials</b>: foams (ZoomX, ReactX foams), recycled polyesrer, carbon fibers
+- <b>Method</b>: cold cement construction to bold the sole and the upper, rapid protopying using 3d printers.
+- <b>huMan</b>: Nike's 1.1 million worksers, including the <a href="https://www.nike.com/nike-sport-research-lab-form" target="_blank">Nike Sport Research Lab</a> and elite athletes.
+- <b>Management</b>
+- <b>Milieu</b>: large scales production plants in Vietnam and headquarters in Oregon
+- <b>Mother Nature</b>: natural rubber for the fibers and the shoes
+- <b>Market</b>: distinct shoes for different markets and different runners
+- <b>Motion</b>: internal logistic with over 1000 cobots in loisitic centers and a supply chain shifting from air to sea to reduce carbon emissions
+- <b>Money</b>
+
+<div align = "center">
+![Nike 10Ms](/images/notes/pom/nike.png)
+</div>
+
+---
+### <a id ="3"> <b>3. Service Operations </b> </a>
+
+Services can be broken down into processes and analzyed in a similar method to product management.
+There are four key characteristics making services _different_ than products:
+- <b>Intangibility</b>: they cannot be touched or hold, but experienced (service companies produce _outcomes_, not _outputs_)
+- <b>Inserability</b>: the customer is present in the conversion process
+- <b>Heterogeneity</b>: usually it is very difficult to make each service expertise identical
+- <b>Perishability</b>: they are time-restricted adn cannot be stored.
+
+_In practice_, there is not a sharp demarcation between products and services. Most offering are a mix of both _(prodiuct-service continuum)_.
+
+_In general_, we can identify <b>six archetypes</b> of services:
+- <b>Business-to-Business</b> (B2B) - _Amazon Web Services, strategic counselling, cleaning services..._
+- <b>Business-to-Customer</b> (B2C) - _cideogame subscriptions, Netlix, ChatGPT personal subscription..._
+- <b>Internal Services</b> - _internal HR management, accounting, finance..._
+- <b>Public Services </b> (G2C) - _health, education system..._
+- <b>No-Profit Services </b>
+- <b>Consumer-to-Consumer</b> - _Facebook marketplace, Fiverr..._
+
+Another key distinction lies in:
+- <b>Front-office servies</b>: work requires customer presence (essential for the customer experience), so it has to be planned and maintained _(hospitality, customer support...)
+- <b>Back-office services </b>:  work does not require the customer presence, processes are often more standardized and streamline _(IT support, supply chain management...)_
+
+---
+### <a id ="4"> <b>4. Basic Concepts of Operations Strategy </b> </a>
+
+There are two dimesions for evaluating operations strategy:
+- <b>Effectiveness</b>: the degree to which something is successful in producing the desidred result.
+- <b>Efficiency</b>: the state or quality of being efficiency, that is achieving the maximum productivity with minimum waste or expenses.
+
+Often, effectiveness is measured _outside_, efficienty _inside_ the company.
+Note that these two attribtues are totally independent: a company can be very effective while still being efficient 
+
+_Example: Twitter around 2010-2020 was one of the most used social media platform, while still being notorious for his "sclerotic culture" (slow product development, high headcount, low profitability, fragile backend etc ...)_
+
+Then we can distinguish:
+- <b>Competitive priorities</b>: _how a company wants to complete to win customer orders_
+- <b>Competitive capabilities</b>: _how a company is able to complete_
+
+Excellent companies have a good fit between.
+
+_Example: Amazon aligns delivery speed and selection with massive infrastructure capability, combining _competitive priority_ (be customer-centric offering wide-variety of products and fast delivery) and _competitive capabilities_ (wide logistic network, reliable AWS infrastructure)._
+
+And finally:
+- <b>Order qualifier</b>: a required capability that the customer considers when facing a choice
+- <b>Order winner</b>: the quality/capability that wins the orders.
+
+
+---
+
+### <a id ="5"> <b>5. Introduction to Operations Strategy </b> </a>
+
+The usual misconception is that operations have nothing to deal with strategy and they are just the acting part of an organization: in reality <b>operations </b> can be very strategic.
+
+_Example: IKEA_.
+_IKEA offers 25 000 different products in 400 stores in 50 countries, becoming the world largest manufacturer. The success is large due to its supply chain and operations strategy.
+- _they first set the prices with the customer in mind_
+- _then they design a product easy to produce, ship and assemble_
+_IKEA is also very strategic with BUY-or-MAKE decisions: 35% of IKEA's sales are wooded furnitures and 1/3 of them are producted in-house (in the IKEA Industry, the largest furnitures manufacturer).
+_Also, the idea of the customer assemblying the parts together, reduces costs and simplify logistics_.
+
+_(HelloFresh made a similar choice in the last years deliverying raw materials to customers and collecting big data from them, allowing accuracte forecasting)_
+
+However, not all companies reach operational excellence like IKEA, HelloFresh, Zara or whatever, many companies compete despite their operational capabilities.
+
+
+The <b>Hayes and Wheelwright's Model </b> (1979) a four-stage framework separates 4 stages of how operations contribute to corporate strategy.
+
+<div align = "center">
+![Nike 10Ms](/images/notes/pom/4stages.png)
+</div>
+
+According to <a href="https://en.wikipedia.org/wiki/Wickham_Skinner" target="_blank">Wicham Skinner</a>, every company consciously and carefully an operational strategy.
+
+One way to do that is separating: 
+- <b>Structural decision areas</b> _(facilities, capaicity, process technology, supply netform, information technology)_Air
+- <b>Infrastructure decision areas</b> _(planning and control, quality, work organization, HR, product development and performance measurement)_
+
+and following three steps:
+1. Define competitive priorities depending on market opportunities
+2. Design decisions areas
+3. Build competitive capabilities
+
+---
+### <a id ="6"> <b>6. Production Strategy: CODP and ETO, MTO, ATO, MTS </b> </a>
+
+The <b>Customer Order Decoupling Point </b> (CODP) separates order-driven activities from forecast-driven activities.
+
+Depending on the position of the CODP, we can distinguish four production strategies:
+- <b>Engineer-to-Order</b> (ETO): products and services are created from the board meeting customer requirements _(specific software design, custom industrial machines, specialized shipbuildings, luxury houses or villas...)
+- <b>Make-to-Order</b> (MTO): individual customers can customize the item during production _(custom cars, bespoke furnitures and clothing... )
+- <b>Assembly-to-Order</b> (ATO): the company builds components in advance of demand, then puts them together to make the final product when the customer order is received _(custom bikes, custom PCs and laptops, modular furnitues or kitchens...)_
+- <b>Make-to-Stock</b> (MTS): the company makes single itmes put to inventory _(fast fashion, smartphones, packed food...)
+
+<div align = "center">
+![4 operational strategies ](/images/notes/pom/codp.png)
+</div>
+
+The firms has to find a trade-off between <b>speculation</b> (the CODP is close to the customer if processes are constrained, the firms speculated about the number of items) and <b>postponemt </b> (the CODP is placed towards raw materials because of product-markets contraints or inventory cost consideration).
+
+The <b>T-point</b> _(where a product goes from one variant to many)_ is often a good candidate for placing the CODP.
+
+---
+### <a id ="7"> <b>7. Capacity Management </b> </a>
+
+Capacity determines the rate at which operations trasform inputs into outputs.
+It can be distinguished in:
+- <b>Design capaity</b>: expected output of an operation without any stop.
+- <b>Effective capacity</b>: expected output of an operation less planned stops _(maintenance, shift changes, special events...)_
+- <b>Actual capacity</b>: expected output of an operatio less both planned stops and unplanned stops.
+
+Efficiency is instead defined as:
+
+$$
+\text{Efficiency} = \frac{\text{Actual Capacity}}{\text{Effective Capacity}} \times 100
+$$
+
+and Utilization as:
+
+$$
+\text{Efficiency} = \frac{\text{Actual Capacity}}{\text{Design Capacity}} \times 100
+$$
+
+Capacities are usually adjusted in the following ways:
+- introducing new machines, lines or factories
+- adding shifts, increasing working hours
+- sourcing capacity from suppliers or competitors
+- increasing workforce
+- increasing the throughput speed in processes
+- reducing quality error and wastes
+
+
+
+---
+### <a id ="8"> <b>8. The EOQ Model </b> </a>
+
+<b>Cycle inventory</b>: the average inventory that builds up in the supply chain because a stage produces or purchases in lots.
+
+$$
+\text{Cycle Inventory} = Q / 2
+ $$
+ 
+ given $Q$ the quantity/dimension of each lot and assuming that demand is stable, replenishment is costant and indipendent of demand.
+
+$$
+\text{Avg. Flow Time } = \text{Avg. Inventory} / \text{Avg. Flow Rate}
+$$
+
+$$
+\text{Avg. Flow Time from Cycle Inventory} = \text{Cycle inventory} / \text{Demand} = \frac{Q}{2D}
+$$
+
+Lower cycle inventory is better because:
+- average flow time is lower
+- working capital requirements are lower
+- lower inventory holding costs
+
+we then define:
+- $C$ as the average price paid per unic purchased 
+- $S$ as a fixed ordering/setup cost occurring eath time an order is placed.
+- $H$ as the holding cost in the inventory _(including cost of capital, physical warehouse, products becoming obsolete etc...)_
+(sometimes $H = hC$ as a fractoin of the unit cost of product)
+
+we then assume the followings:
+- production is istantaneous
+- delivery is immediate and deterministic (no uncertainty)
+- demand is costant over time
+- each order implies a costant setup cost
+- products can be ordered and analyzed individually 
+
+Given $D$, $C$, $S$, $h$, we want to find $Q$ (lot size) and sn$ (order frequency / time between orders) that minimize the total annual cost.
+
+- $CD$ annual material cost
+- $\frac{D}{Q}$ number of orders per year
+- $\frac{D}{Q}S$ annual ordering cost
+- $\frac{Q}{2}H = \frac{Q}{2}hC $ annual holding cost
+
+then the total annual cost is
+$$
+TC = CD + \frac{D}{Q}S + \frac{Q}{2}hC
+$$
+
+to minimize TC, we take the first derivative with respect to $Q$ and we set it equal to $0$:
+
+$$
+0 = 0 + \frac{-SD}{Q^2} + \frac{hC}{2}
+$$
+$$
+ \frac{SD}{Q^2} = + \frac{hC}{2}
+$$
+
+$$
+ \frac{2DS}{hC} = Q^2
+$$
+
+Rearraging we find the optimal lot size, also defined as the <b>economic order quantity</b>:
+
+$$
+Q^* = \sqrt{  \frac{2DS}{hC} }
+$$
+
+the order frequency $n$ is then computed as:
+
+$$
+n^* = \frac{D}{Q^*} = \sqrt{ \frac{DhC}{2S}}
+$$
+
+and the cycle time in years when demand is in years (how much time between orders) as:
+
+$$
+T^* = \frac{Q^*}{D}
+$$
+
+To sum up, the EOQ model:
+- easy to compute
+- does not require data hard to obain
+- policies are ronust
+- assumptions can be relaxed
+- it gives a good overall idea and can be the starting point for more complicated models
+
+In general, in <b> inventory management </b>, there are two basic inventory reorder systems:
+- <b>Reorder Level System</b> (EOQ models, Two-bin systems: _the first bin is used until finished, triggering order,  the second bin acts as backup_)
+- <b>Cyclical Review System</b> (orders are set upt intervals)
+
+---
+### <a id ="9"> <b>9. Forecasting </b> </a>
+
+A demand pattern is usually made up by:
+- trend components
+- seasonal peaks components
+- cyclical components
+- random variations
+
+To forecast demand, the most commono <b>quantitative forecasting methods </b> are:
+- Naive approach
+- Moving averages (or weighted moving averages)
+- Exponential smoothing
+- Trend projection
+- Causality model/linear regression
+- Hybrid forecasting with fuzzy, probabilistic and neural network methods.
+
+<b>Qualitative methods</b> complement them (Delphi Method, market surveys, dcenario planning, input from sales and customer services etc...)
+
+<b>Six general principles</b> for forecasting:
+- Forecasts are always wrong 
+- Forecast are more accurate for families of products than for single products
+- Forecasts are more accurate for shorter horizons 
+- Good forecasts include error estimation
+- Forecasts are not substitue for actual demand 
+- Do not understimate the effect of human behavior on forecasting (BIAS)
+
+
+---
+### <a id ="10"> <b>10. Bottlenecks and Takt time  </b> </a>
+
+A <b>bottleneck </b> is a capacity constraint. It is usual to define the main bottleneck as the process that constraints the throughput the most.
+The identification of the constraint is _only transitional_: when a bottleneck is removed, another appears in its place.
+
+The takt time has two formulations:
+- <b>Original definition: </b> average time between the production of two consecutive units.
+- <b>Lean definition:</b> the average time between the production of two consectuvie units _needed to meet market demand_.
+
+<b>Cycle time </b> is the time between the production of two consectuvie units in a process.
+
+<b>Order lead time</b> is the time it takes from the order is placed to the product is delivered.
+
+<b>Throughput time </b> is the time it takes from the start of the processing an order until it is finished.
+
+<b>Line balacing </b> referers to level all cycle times of all the process. The _ideal line balancing_ is set <b>slightly less</b> than the market takt time.
+
+<div align = "center">
+![4 operational strategies ](/images/notes/pom/takt_time.png)
+</div>
+
+---
+### <a id ="11"> <b>11. Layout </b> </a>
+
+Layout refers to a floor plan. It exists in different granularities:
+- a <b>macro layout</b> shows how buildings and departments are related each other
+- a <b>micro layout</b> shows how production equiment, machines, storage and trasports are organized
+
+A <b>functional layout</b> organized _similar processes in the same area_, with the following benefits:
+- increased ability to handle variations in processing needs
+- creation of centers of expertize
+- less vulnerability to changes in product mix or machine breaks
+
+and the following drawback:
+- hinder and complext flow of materials and WIP products (leading to less productivity due to large buffers)
+- low resource utilization rate
+
+A <b>product layout</b> is a linear setup of processes steps suitable for _standardized products with stable, high-volume demand_ and the following benefits:
+- simplified training and control
+- logical flows and low handling costs 
+- reduced buffers
+
+and the following drawbacks:
+- little flexibility in volume changes and speed
+- reorganization required for a new and different product 
+- repetitive work 
+- high vulnerability to machine breakdowns
+
+A <b>fixed position layout</b> is used when products are heavy, fragile, vulnerable and difficult to move.
+
+<div align = "center">
+![Layout ](/images/notes/pom/layout.png)
+</div>
+
+---
+### <a id ="13"> <b>13. Value Stream Mapping </b> </a>
+
+A value stream map (VSM) is a tool that creates a map of the main processes from suppliers to customers.
+- it hekps to analyze the current state of materials and informations
+- uses inventory levels and tak time to calculate time-equivalents of inventories between processes 
+- helps deign a desired future state 
+
+
+<div align = "center">
+![Value Stream Map ](/images/notes/pom/vsm.png)
+</div>
+
+Even if the VSM is a simple tool with standard icons that can assist teams and helps find improvement opportunities,  it's a <b>statich methods </b> (takes just a snapshopt of the processes), <b>require costant effort</b> to be updated and it's very limited in <b>high-variety</b> production settings.
+
+
+
+---
+### <a id ="14"> <b>14. Digitalization of Manufacturing </b> </a>
+
+The <b>IT stack in manufacturing </b> can be described as four layers of software and hardware:
+
+1. <b>Programmable Logic Controller </b> (PLC): a special-purpose computer designed for industrial enviroments to control tasks on machines.
+2. <b>Supervisory Control and Data Acquisition</b> (SCADA): a software that enables remote control of PLCs and a control system for mschines, providing also a control panel for the operator to run machine remotely.
+3. <b>Manufacturing Execution System</b> (MES): production control software that monitors running operations and can be used to track deviations and tracks. It connects data from the shop floors (1, 2) to the _business transactional data_ (4).
+4. <b>Enterprise Resource Planning</b> (ERP): production planning and scheduling is controled by <b>Material Resource Planning</b> (MRP) modules of ERP systems.
+
+Different layers require different software, usually with different IT standards. A <b>middleware</b> is often necessary to connect levels.
+
+<div align = "center">
+![ERP ](/images/notes/pom/erp.png)
+</div>
+
+<b>MRP</b> is the planning engine in ERP systems, working out the timing and quantities to order to meet a given production schedule.
+
+We can then distinguish 2 types of demand:
+- <b>dependent</b>, for items that are _suubassemblies_ or _component parts_ to be used in production or other goods
+- <b>independent</b>, for end-products for customers
+
+<div align = "center">
+![ERP ](/images/notes/pom/erp.png)
+</div>
+
+### <a id ="14"> <b>15.   Industry 4.0 and Internet of Things</b> </a>
+
+According to proponents of _Industry 4.0_, there have been four different industrial revolutions:
+- <b>First Industrial Revolution</b>: mechanization of manufacturing processes _(1750)_
+- <b>Second Industrial Revolution</b>: electrification-enabled mechatronics _(1900)_
+- <b>Third Industrial Revolution</b>: computers-enabled automation _(1960)_
+- <b>Fourth Industrial Revolution</b>: digital connectivity and cyber-physical production systes _(today)_
+
+According to the <a href="https://it.wikipedia.org/wiki/Klaus_Schwab" target="_blank">World Economic Forum's founder Prof. Klaus Schwab</a>, there are three drivers of the new industrial revolution:
+- velocity (technology advances exponentially)
+- breadth and depth of technologies (technology spans from biotech to computers - several sectors involved, effects on society, economics and individuals are uprecedented)
+- system change (in a connected world, one change is cuasing changes elsewhere due to interdependencies)
+
+<b>Internet of things </b> is defined as the connection of physical objects to the internet, thanks to the use of sensors to measure and the sharing of data between each other.
+
+IoT made good progress in the last years for the following reasons:
+- low-cost and low-energy sensors
+- new and wide-spread connectivity technologies
+- low-cost cloud computing
+- wide diffusion of data analysitics
+But it's still limited _(less progress than expected)_ for the following:
+- lack of business case
+- challenging to update existing equipments
+- disagreements and conflicts on standards
+- concerns about security and privacy
+
+---
+
+### <a id ="14"> <b>16. FLOW and Productivity  </b> </a>
+
+An ideal state of efficienty is described by "FLOW":
+- Flexible systems
+- Levelled processes
+- Overload avoidance
+- Waste reduction
+
+<a href="https://www.scribd.com/document/278995063/The-Theory-of-Swift-Even-Flow" target="_blank">The Theory of Swift, Even Flow by Schmenner and Swink (1998)</a> suggests that a swifter (high throughput time) and more even (low variability in quality, quantity and timing) flow of materials increases its productivity and, to achieve that, the four Ms (materials, machines, huMans, method) must be <b>aligned</b>.
+This theory comes with five underlying laws:
+- productiity falls as variability _-in demand, quality or processing time-_ increases
+- a process is only fast as its slowest step _(law of bottlenecks)_
+- productivity increases when a company uses scientific method to remove unnecessary motions and standardized work _(often associated with Taylorism and Lean)_Air
+- better quality reduces variability and prevents the "wework"
+- focusing on a limited set of products or taks improves productivity
+
+---
+### <a id ="14"> <b>17.  Just-in-Time and Kanban</b> </a>
+
+<b>Just-in-Time</b> (JIT) is one of the two pillars of the <a href="https://en.wikipedia.org/wiki/Toyota_Production_System" target="_blank">Toyota Production System </a> (<a href="https://www.lean.org/lexicon-terms/jidoka/" target="_blank">the other pillar is Jidoka </a>)
+
+Key principles of JIT:
+- <b>One-piece flow</b>: moving a product through every steps without grouping it into batches
+- <b>Takt time</b>: the rate at which goods need to be produced 
+- <b>Pull System</b>: products are pulled into production as they are needed or requested _(no overproduction or forecasting)_ 
+
+<b>Kanban</b> is a scheduling suste that aligns supplies with actual consumption:
+- once a certain number of rseoucrs is consumed, the supplier receives a signal to produce/deliver a new shipment. 
+- in this way, the rate of demand controls the rate of production/supply
+- the control signal ccan be visualized with _physical Kanban cards_ containing all relevant information for the supplier.
+
+<div align = "center">
+![ERP ](/images/notes/pom/kanban.png)
+</div>
+
+<a href="https://it.wikipedia.org/wiki/Kanban" target="_blank"> More details about Kanban [WIKIPEDIA] </a>
+<br/>
+<a href="https://www.youtube.com/watch?v=F5vtCRFRAK0&t=46s" target="_blank">How Toyota changed the way we do things [BLOOMBERG ORIGINALS]</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=16-6-Q_nwf4" target="_blank">Toyota Production System [POM | ETH ZURICH]</a>
+
+
+_i have to start page 22: the queuing theory_
+
+---
+
+
+
+### <a id ="14"> <b>18.  </b> </a>
+
+---
+### <a id ="14"> <b>19.  </b> </a>
+
+---
+### <a id ="14"> <b>20.  </b> </a>
+
+---
+### <a id ="14"> <b>21.  </b> </a>
+
+---
+### <a id ="14"> <b>22.  </b> </a>
+
+---
+### <a id ="14"> <b>23.  </b> </a>
+
+---
