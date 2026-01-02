@@ -493,28 +493,245 @@ Key principles of JIT:
 <br/>
 <a href="https://www.youtube.com/watch?v=16-6-Q_nwf4" target="_blank">Toyota Production System [POM | ETH ZURICH]</a>
 
+---
 
-_i have to start page 22: the queuing theory_
+### <a id ="14"> <b>18. Queuing Theory  </b> </a>
+
+Queuing systems can be characterized by different aspects:
+- number of servers/workstations
+- queuing dicipling _(FIFO, LIFO)_
+- arrival sources _(infinite vs limited)
+- queu space _(infinite vs limited)
+
+To study queuing systems, the <b>Kendall</b>'s notation is common:
+- $A$: distribution of arrival times
+- $B$: distribution of process times
+- $m$: number of servers/workstations
+- $b$: maximum number of jobs in the system
+
+and, to describe arrival times, we use the following:
+
+- $\lambda$: arrival time
+- $\mu$: service rate
+- $b$: buffer size
+- $W_q$: waiting time with 
+$$
+W_q = \frac{\lambda}{\mu (mu - \lambda)}
+$$
+
+- $L_q$ queuing lenght (Littel's Law) with
+
+$$
+L_q = \lambda W_q = \frac{\lambda^2 }{\mu (mu - \lambda)}
+$$
+
+- $\rho = \lambda / \mu $
+
+- $\text{WIP} = \frac{ \rho}{1- \rho} $
+
+- $p_n$: probability of state $n$:
+
+$$
+p_n = \left( \frac {\lambda}{\mu}\right)^n \left ( 1 - \frac{\lambda}{\mu}  \right)
+$$
+
+- $C_e$:coefficient of variation of processing time
+
+- $C_a$: coefficient of variation of arrival time
+
+- $m$: number of parallel stations 
+
+- $t_e$: mean processing time 
+
+- $t_a = 1 / \lambda $: average time between arrivals
+
+---
+### <a id ="14"> <b>19. Servitizaton of Manufacturing  </b> </a>
+
+Servitizaton is the growing trend of manufacturing firms to sell <b>services and solutions</b>, rather tham kust products.
+<br/>This industrial transition can be described in three phases:
+- companies focus on the _phisical core product_ 
+- companies provide the _core product_ with _added service_ 
+- companies sell _integraded bundles_ of products and services (product-service-systems - PMS), delivering the required functionality in a way that reduce the impact on the enviroment.
+
+Several benefits behind servitization and offering product-service systems:
+- increased customer value 
+- closer interaction with the customer 
+- access to operational data 
+- more stable cash flow 
+- barrier to competition 
+- increased lock-in eggect and differentiation from other market offerings 
+- enviromental sustainability
+ 
+And several implications:
+- increased lifecycle responsibility
+- challenging pricing
+- the customer is integraded with operational processes
+- more partnernships to provide better services 
+
+
+---
+### <a id ="14"> <b>20.  Key Performance Indicators (KPI)</b> </a>
+
+Example of KPis for operations include, among many:
+- Inventory turnover
+- Productivity
+- Product defects
+- Customer complaints
+- Overal Equipment Efficiency
+- On-Time-In-Full
+
+_Note that_ a KPI must be SMART:
+- specific
+- measurable
+- attainable
+- relevant
+- time-bound
+
+also, we can differentiate between:
+- <b>Leading indicators</b> are performance drivers, they measure actions and activities.
+- <b>Lagging indicators</b> are outcome drivers, they measure results.
+
+Performance measurement is then an integral part of managing companies.
+
+A common approach (<b>The Balanced Scorecard </b>) was developed by <a href="https://hbr.org/1992/01/the-balanced-scorecard-measures-that-drive-performance-2" target="_blank">Robert Kaplan and David Norton </b> after they noticed firms just focused on financial metrics. <br/>
+This framework encourage a more balanced performance measurements:
+- Financial perspective
+- Customer perspective
+- Internal business perspective
+- Innovation and learning perspective
+
+The <b>Hosin Kanri process</b> is an annual policy deployment process that starts with top-level strategies and breaks them down into tangible goals for different bysiness departmens.
+In this way, every organizational level creates its goals to meet performance challenges set by the above levels _(catchball process)_.
+
+<a href="https://en.wikipedia.org/wiki/Hoshin_Kanri" target="_blank">Detailed can be found here</a>.
+
+---
+### <a id ="14"> <b>21. Shop Floor Management </b> </a>
+
+<b>Lean Shop floor management</b> describes an integrated managerial system that facilitates daily communication, control and team building on the shop floor, with the following characteristics:
+- short daily meetings, with the following aspects:
+    - held daily in approx. 15 minutes 
+    - place for communication and collaboration between supervisors and subordinates
+    - typically in front of a shop floor board 
+    - discussion of status quo aspects _(safety, quality, delivery etc...)_
+- management's presence on the floor
+- hiercachically layered meetings, allowing to raise critical issues quickly
+- daily transaprecny into operations
+- use of visualization
+
+---
+### <a id ="14"> <b>22. Jidoka and Poka Yoke</b> </a>
+
+<b>Jidoka</b> _(common element in the Toyota Production System)_, is to "stop and notifcation of abnormalities" and "separation of man's and machines' work".<br/>
+It can be translated from Japanese to "autonomation", which means _automation with a human touch_.
+
+The four steps of Jidoka are:
+- discovery of abnormalities
+- stopping the process
+- fixing the problem 
+- investingating and solving the root cause
+
+<b>Poka Yoke</b> prevents defects either by preventing, correcting or drawing atteiont to human errors as they occur, with one of the following methods:
+- contact method
+- fixed value method
+- motion stop method
+
+by doing that, it's possible to:
+- eliminate mistakes or makes it impossible in the earliest stage of a process
+- ensure that people and process work right the first time
+- provide a significant improvement in the quality and reliability of products/processes
+
+<a href="https://www.youtube.com/watch?v=knQHs2kUbZo" target = "_blank"> Poka Yoke introduction video</a>.
 
 ---
 
+### <a id ="14"> <b>23. Lean Production </b> </a>
+
+<b>Lean</b> is the western interpretation of the Toyota Production System from 1980-90s.
+The book <a href="gAdQCqgEBNLgBA8gBAPgBAZgCBaAC7gLCAgoQABiwAxjWBBhHwgINEAAYgAQYsAMYQxiKBcICDhAAGLADGOQCGNYE2AEBwgITEC4YgAQYsAMYQxjIAxiKBdgBAcICBRAAGIAEwgIXEC4YgAQYywEYlwUY3AQY3gQY4ATYAQGYAwCIBgGQBhK6BgYIARABGAmSBwM0LjGgB58usgcDMy4xuAfoAsIHBTAuMS40yAcTgAgA" target="_blank">Lean Thinking</a> explains the five principles of Lean:
+1. <b>Define customer value</b>
+2. <b>Identify the value stream</b>
+    - product-process design
+    - layout decisions 
+    - master data management
+    - tools (value stream map, process-mining with data analytics)
+3. <b>Create flow</b>:
+    - Jidoka
+    - Just-in-time
+    - Tools _(Andon, Kanban, Heijunja, Poka Yoke, 5s, Visual control)_added
+    - identify and eliminate enemies of flow _(muri: overburder, mura: uneveness and muda: waste)_
+
+4. <b>Implement pull production</b>
+5. <b>Seek perfection</b>
+
+Lean also offers a range of methods and tools to institutionalize improvements routines:
+- Hoshin Kanry, an annual strategy planning and deployment process 
+- daily layered accountability
+- Kaikaku process and daily Kaizen (_= continuous improvement)_ activities
+- improvement boards and meetings
+- <a href="https://en.wikipedia.org/wiki/A3_problem_solving" target="_blank">A3 management </a>
 
 
-### <a id ="14"> <b>18.  </b> </a>
+
+The Toyota Production system was indeed based on two pillars:
+- <b>Just-in-time</b> ensures consistent delivery of the right parts, resulting in low inventory levels 
+- <b>Jidoka</b> ensures delivery of the right part at the right time with the right amount 
+
+TPS is not _soley_ a inventory reduction strategy, but an <b>holistic approach</b> that includes product design and supply chain mamangement, _for example_:
+- integration of suppliers in the Toyota's supply chain 
+- collaboration with local suppliers through investing in capabilities and supplier network programmes
+
+The secret behind TSP lies in <b>its culture</b> and leadership philosophy, partially described by:
+- <b>Challenge</b>: never be satisfied with the status quo
+- <b>Kaizen</b>: always look for a better way 
+- <b>Genchi Genbutsu:</b>: "go and see" the place where works occur 
+- <b>Respect</b>: demostrate respect for what machines and humans can and cannot do
+- <b>Teamwork</b>
+---
+
+### <a id ="24"> <b>24. A3 reporting </b> </a>
+
+
+<b>A3 </b> is a reporting templatye developed by Toyota, popular because:
+- it is simpole and easily applicable 
+- engourages users to be short 
+- engourages users to visualize sata 
+- it offers a logical structure following the _Plan-do-check-act_ (PDCA) cycle 
+- it emphasizes scientific thinking 
+
+It is often used:
+- when a problem is more complect
+- when personal development is important
+- when it is important to capture knowledge for future use
+
+<div align = "center">
+![a3 ](/images/notes/pom/a3.png)
+</div>
+
+### <a id ="25"> <b>25. 5s </b> </a>
+
+
+<b>5s </b> is a workplace organization concept derived from five Japanese words:
+
+- <b>Seiri (Sort)</b>:  sort things at your workplace and understand what is actually needed 
+- <b>Seiton (Set)</b>: order things to reduce time spent on non-value adding activities 
+- <b>Seiso (Shine)</b>: clean the workspace
+- <b>Seiketsu (Standardize)</b>: maintain the first three pillars by creating a consistend approach to completing tasks
+- <b>Shitshuke (Sustain)</b>: maintain the previous 4s and make the habit of maintaining correct procedures.
+
+Indirectly,  5s results in the following:
+- better safety 
+- reduced delivery times and processing costs 
+- improved product quality 
+- increased workers satisfaction 
+
 
 ---
-### <a id ="14"> <b>19.  </b> </a>
+
+### <a id ="26"> <b>26. Problem Solving Methods </b> </a>
 
 ---
-### <a id ="14"> <b>20.  </b> </a>
 
----
-### <a id ="14"> <b>21.  </b> </a>
+### <a id ="27"> <b>27. Triz </b> </a>
 
----
-### <a id ="14"> <b>22.  </b> </a>
-
----
-### <a id ="14"> <b>23.  </b> </a>
-
----
