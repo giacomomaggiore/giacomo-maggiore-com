@@ -453,6 +453,9 @@ The takt time has two formulations:
 
 <b>Throughput time </b> is the time it takes from the start of the processing an order until it is finished.
 
+_(a common way to decrease throughput time is to reduce batch sizes toward one-piece flow)._
+
+
 <b>Line balacing </b> referers to level all cycle times of all the process. The _ideal line balancing_ is set <b>slightly less</b> than the market takt time.
 
 <div align = "center">
@@ -485,6 +488,22 @@ and the following drawbacks:
 - reorganization required for a new and different product 
 - repetitive work 
 - high vulnerability to machine breakdowns
+
+Product layout can be further divided in <b>U-shaped</b> and <b>I-shaped</b>:
+
+<Table
+  data={{
+    headers: ["Feature", <b>I-Shaped (Linear)</b>, <b>U-Shaped (Cellular)</b>],
+    rows: [
+      ["Flow Direction", "One-way, linear", "Circular/Looping"],
+      ["Space Use", "For long, big spaces", "Ffor square or small spaces"],
+      ["Worker Flexibility", "Low (workers stay at one station doing one task)", "High (workers perform different tasks)"],
+      ["Supervision", "Difficult", "Easy (centralized visibility)"],
+      ["Material Entry/Exit", "Far and Opposite ends of the line", "Close or equa"],
+      ["Best For", "Automated, heavy, or long processes", "Manual, high-variety, or Lean production"],
+    ]
+  }}
+/>
 
 A <b>fixed position layout</b> is used when products are heavy, fragile, vulnerable and difficult to move.
 
@@ -854,6 +873,8 @@ The four steps of Jidoka are:
 - stopping the process
 - fixing the problem 
 - investingating and solving the root cause
+
+<b>Andon</b> can be a tool to implement Jidoka: it is a real-time visual system that alerts workers to problems, allowing to stop the production as soon as possible.
 
 <b>Poka-yoke</b> (error-proof) refers to designing a process so that it is  impossible for an error to occur.
 - <b>contact method</b>: based on physical attributes or product shape _(tools/wires that, due to phisical constraints, can be plugged together in just one way)_
