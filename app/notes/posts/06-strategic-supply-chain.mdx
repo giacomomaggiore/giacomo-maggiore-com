@@ -1,5 +1,5 @@
 ---
-title: '[WIP] Supply Chain Management'
+title: 'Supply Chain Management'
 publishedAt: '2025-12-28'
 summary: ''
 ---
@@ -27,8 +27,8 @@ The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorles
 
 
 Within a firm, there are several entities that play a role in the supply chain:
-- <b>R&D</b> _(can improve internal supply chain, design product to optimize supply chain, design products to improge logistic [IKEA example], decide how often develop new products)_.
-- <b>Finance</b> _(manage working capital, invoices and account payable/receivable, analyze tariffs and taxes that depend on supply chain, manage FX rate and finance hedging)_.
+- <b>R&D</b> _(can improve internal supply chain, design products to optimize supply chain, design products to improve logistic [IKEA example], decide how often develop new products)_.
+- <b>Finance</b> _(manage working capital, invoices and account payable/receivable, analyze tariffs and taxes that depend on supply chain, manage FX rate and hedging)_.
 - <b>Operations</b> _(manage all the manufacturing and assemplying processes, key components of the supply chain management)_.
 
 Between all the operators in the supply chain network, there's, _in all directions_, flow of:
@@ -41,6 +41,7 @@ Between all the operators in the supply chain network, there's, _in all directio
 ![Entities ](/images/notes/supply-chain/sc_entities.png)
 </div>
 
+--- 
 
 ### <b>SCOR </b>
 
@@ -51,7 +52,7 @@ SCM is often based on the SCOR model <b>(Supply Chain Operations Reference Model
     rows: [
       [ <b>Plan</b>, "Processes that balance aggregate demand and supply to develop a plan that best fits sourcing, production and delivery requirements."],
       [ <b>Source</b>, "Processes that procure goods and services to satisfy demand."],
-      [ <b>Make</b>, "Processes that transform product to a finished state."],
+      [ <b>Make</b>, "Processes that transform products to a finished state."],
       [ <b>Deliver</b>, "Processes that provide finished goods to the customer (including order, transportation and distribution management)."],
       [ <b>Return</b>, "Processes associated with returning products for any reason. These processes extend into post-delivery customer support."],
     ]
@@ -61,13 +62,13 @@ SCM is often based on the SCOR model <b>(Supply Chain Operations Reference Model
 
 During supply chain management and evalutation, there are different factors to take in account:
 - <b>Sourcing</b>
-    - Sourcing buffer (inventory, timing, selection of supplies)
+    - Sourcing buffer _(inventory, timing, selection of supplies)_
     - Workload leveling over time
 - <b> Manufacturing </b>
     - Decoupling point
     - Asset utilization and saturation rate
     - Production cycle
-    - Demand buffering (inventory, timing and excess capacity)
+    - Demand buffering _(inventory, timing and excess capacity)_
 - <b> Delivery </b>
 
 
@@ -78,12 +79,11 @@ During supply chain management and evalutation, there are different factors to t
 There are two important views to look at supply chain management:
 - <b>The Cycle view</b>: each cycles occurs at the interface between to successive stages, it clearly defines processes and people involved, specifiying roles and responsibilities of each time. _According to this view, the customer order is the trigger for the whole chain._
 $$
-\text{Customer order} \to \text{Replenishment cycle } \to \text{Manufacturing cycle } \to {Purchasing cycle}
+\text{Customer order} \to \text{Replenishment cycle } \to \text{Manufacturing cycle } \to \text{Purchasing cycle}
 $$
 - <b>The Pull/Push view</b>: processes belong to one of the following categories depending on the timing of their execution:
     - <b>Pull</b>: execution is started in response to a customer order _(REACTIVE)_
     - <b>Push</b>: execution is started in anticipation _(SPECULATIVE)_
-In this way, it's easier to idenfity the push-pull boundary, the decoupling point and the order penetration point.
 
 <div align = "center">
 ![Entities ](/images/notes/supply-chain/order_penetration.png)
@@ -95,11 +95,13 @@ In this way, it's easier to idenfity the push-pull boundary, the decoupling poin
 ![Entities ](/images/notes/supply-chain/volume_variety.png)
 </div>
 
+---
+
 ### <b> Modularization & Postponmement</b>
 
-<a href ="https://www.researchgate.net/publication/222558265_Evaluation_of_supply_chain_structures_through_modularization_and_postponement" target="_blanl"> Ernst & Kamrad framework </a> describes supply chain structures based on two levers:
-- <b>Modularization</b> refers to the degree to which a product is composed by indipendent and stardadized parts ("modules"). _It concerns the relationship with suppliers, designers and materials._
-- <b>Postponment </b> refers to the delaying and timing of the final differentiation of the product. _It concerns the timing of the assembly, the labelling, the logicist and the distribution.
+<a href ="https://www.researchgate.net/publication/222558265_Evaluation_of_supply_chain_structures_through_modularization_and_postponement" target="_blanl"> Ernst & Kamrad framework </a> describes supply chain structures based on two levels:
+- <b>Modularization</b> refers to the degree to which a product is composed by independent and stardadized parts ("modules"). _It concerns the relationship with suppliers, designers and materials._
+- <b>Postponment </b> refers to the delaying and timing of the final differentiation of the product. _It concerns the timing of the assembly, the labelling, the logicist and the distribution._
 <div align = "center">
 ![Entities ](/images/notes/supply-chain/modularization_postponement.png)
 </div>
@@ -141,7 +143,7 @@ In this way, it's easier to idenfity the push-pull boundary, the decoupling poin
 />
 
 Note that postponement can be done at different levels:
-- <b>time postponement</b>: delaying the final assembly closest to the customer's order
+- <b>time postponement</b>: delaying the final assembly closer to the customer's order
 - <b>form postponement</b>: delaying the product differentiation
 - <b>place postponement </b>: delaying and separating the plant where the final assembly is done
 
@@ -158,6 +160,7 @@ This results in:
 - delayed forecasts for specific colors
 - ability to still use aggregated demand forecast to start manufacturing early
 
+--- 
 
 ### <b>4 Phases of Supply Chain Management </b>
 
@@ -179,7 +182,7 @@ SCM can be divided in:
 
 <br />
 <b>2. Plan supply chain </b>
-- Contrained by the configuration from the design Phases
+- Contrained by the configuration from the design phase
 - Master planning with monthly and weekly time horizon
 
 <small>- Decisions: _customer demand and forecast, markets to be served by each plant, subcontracting, inventory levels and policies, trasportations routes and schedules_ </small>
@@ -208,6 +211,8 @@ SCM can be divided in:
 ![Supply Chain Control ](/images/notes/supply-chain/sc_control.png)
 </div>
 
+---
+
 ### <b>Measuring SC performance </b>
 
 Some frequently used KPIs:
@@ -215,7 +220,7 @@ Some frequently used KPIs:
 $$
 \text{Order Accuracy Rate} = \left(  \frac{ \text{Number of Correct Orders} }{\text{Total Orders Delivered}} \right) \times 100
 $$
-<small>share of orders delivered without any mistakes product, quantity and quality. </small>
+<small>share of orders delivered without any mistakes in product, quantity and quality. </small>
 $$
 \text{On-time Delivery} = \left(  \frac{\text{Orders Delivered on Time }}{\text{Total Orders Delivered}}  \right) \times 100
 $$
@@ -243,6 +248,8 @@ Suppy chain metrics often need to be translated in financial metric in the balan
 <div align = "center">
 ![Financial Impact SC ](/images/notes/supply-chain/roi.png)
 </div>
+
+---
 
 ### <b>Developments and trends influencing supply chain today and in the future </b>
 
