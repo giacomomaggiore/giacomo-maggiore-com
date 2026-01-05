@@ -863,7 +863,7 @@ Distributors can contribute to:
 3. Regarding facility roles, they can be classified in the following way (in <b>industrial upgrading</b> order - at the botton the most "upgraded" ones):
 
   1. offshore facility: _low cost facility for export production_
-  2. shource facility: _low-cost facility for global production_
+  2. source facility: _low-cost facility for global production_
   3. server facility: _regional production facility_
   4. contributor facility: _regional production facility with development skills_
   5. outpost facility: _regional production facility bult to gain local skills_
@@ -880,7 +880,7 @@ Distributors can contribute to:
 
 Many optimizatio problems can be represented by a graphical network:
 - <b>Node</b> (vertex): junction pooint of a network _(can represent a location, warehouse, terminal etc...)_
-- <b>Arc</b> (edge, link): channel throgh which flow may occur _(can represent a road, rail track, trade lane etc...)_a
+- <b>Arc</b> (edge, link): channel throgh which flow may occur _(can represent a road, rail track, trade lane etc...)_
 - <b>Flow</b> (weight): objects passing throgh nodes and arches _(can represente freight, cargo, vehicles etc..., measured in quantity)
   - the maximum quantity of flow through an arch: <b> capacity </b>
 
@@ -889,8 +889,9 @@ We can define different types of nodes in a network:
 - <b>Sink</b>: all flow ends in this node _(end, no successors)_
 - <b>Supply</b>: outflow - inflow > 0
 - <b>Demand</b>: outflow - inflow < 0
-- <b>Transshipment</b>: outflow - inflow = 0 _(conservation of flow)_
+- <b>Transhipment</b>: outflow - inflow = 0 _(conservation of flow)_
 
+<br/>
 <b>Point-to-point VS Hubs-and-Spoke networks</b>
 <div align = "center">
 ![Point to Point](/images/notes/supply-chain/point-to-point.png)
@@ -907,6 +908,8 @@ We can define different types of nodes in a network:
           ]
   }}
 />
+
+---
 
 ### <b>Basic models for supply chain network design/Optimization </b>
 
@@ -951,7 +954,9 @@ Some special case modifications to the transportation problem:
 - if a rouce it not accessible: remove the corresponding decision variable
 
 <b>Assignment problems</b>
+
 Given a set of agents, a set of tasks and a cost table, the goal is to <b>match agents to tasks </b> so that all tasks are performed at the minimum possible ost.
+
 _Note that_ an assignment problem is a special case of a minimum-cost flow problem in which <b>all suppliers and all demands are equal to 1</b>.
 
 Some initial assumptions needed:
@@ -974,7 +979,8 @@ Special case mofifications to the assignment problem:
 - <b>Number of tasks exceeds the number of agents</b>: add enough dummy agents
 - <b>An assignment is unacceptable</b>: remove the corresponding decision variable
 
-<b>Transshipment Problems </b>
+<b>Transhipment Problems </b>
+
 It is a special case of a transporation problem where the freight moves through intermediate nodes before reaching the final destination.
 $$
 \min T = \sum_i \sum_j c_{ij} x_{ij}
@@ -1035,6 +1041,7 @@ l_{ij} \le x_{ij} \le u_{ij}
 $$
 
 <b>Shortest path problems </b>
+
 The goal is to find the shortest path (with the minimum total length) from the origin ($i$) to the destination $s$.
 
 $$
@@ -1055,6 +1062,7 @@ $$
 
 ### <a id ="6"> <b>6. Advanced Supply CHain Network Design and Optimization </b> </a>
 <b>Capacitated Plant Location Models </b>
+
 In this model, we assume $n$ plants with capacity $K_i$ serving $m$ regions with demand $D_j$, each of them with fixed ($f_i$), variable ($c_{ij}$) costs
 $y_i$ is the decision variable indicating wheter plan $i$ should be open, $x_{ij}$ denotes the quantity transported from $i$ to $j$.
 
@@ -1080,6 +1088,7 @@ x_{ij} \ge 0
 $$
 
 <b>Capacitated Plant Location Models with Single Sourcing </b>
+
 The main different from the previous model is that now each region can be served _only by one plant_ (but a plant can serve multiple regions).
 The optimization problem rewrites as follows:
 $$
@@ -1108,6 +1117,7 @@ x_{ij} = 0/1
 $$
 
 <b>Gravity Location Model </b>
+
 First of all, in order to calculate distances, we need to transform geographical coordinates latitude, longitude and height, to cartesian cordinates $x,y,z$.
 Then:
 - the gravity location model assumes the customer are located as grid points on a planned
@@ -1126,12 +1136,13 @@ $$
 _Note that, since the objective function is not linear, there is no analytical solution for the problem, but only a iterative algorithm_.
 
 <b>Minimum Spannin Tree Problems </b>
+
 The goal is to minimize the  total lenght of links inserted in a network.
 
 Starting with only the nodes for a network, the problem now is to design the network by deciding which links to add.
 
 <b>Prim's algorithm</b>:
-- Start with any node _(often the one with the cheapest edge)_a
+- Start with any node _(often the one with the cheapest edge)_
 - Grwo the tree by repeatetly adding the cheapest edge connecting another node outside the tree
 - repeat until all nodes are included
 - break ties arbitrarly
@@ -1153,6 +1164,8 @@ The main functions of inventory:
 
 Primary goal of inventory management is to <b>urchase product in lot sizes </b> that  <b>minimize the sum </b> of material, ordering and holding cost.
 
+---
+
 ### <b>Just-in-Time Inventory Management (JIT)</b>
 The core idea is tu supply materials exactly when needed, minimizing inventory and waste.
 - reduce inventory
@@ -1169,6 +1182,8 @@ and <b>risks</b>:
 - disruption vulnerability
 - efforts in supplier management
 - limited buffer stock
+
+---
 
 ### <b>The Economic Order Quantity (EOQ) Model </b>
 
@@ -1255,6 +1270,8 @@ To sum up, the EOQ model:
 - policies are ronust
 - assumptions can be relaxed
 - it gives a good overall idea and can be the starting point for more complicated models
+
+---
 
 ### <b>Economic Production Quantity (EPQ) </b>
 
@@ -1378,7 +1395,7 @@ The bullwhip effect happens when _small changes in consumer demand_ get amplifie
 - stores impose limits on the maximum quantity people can purchase to address this
 
 Different reasons behind the bullwhip effect:
-- companies place <b>periodi orders</b>
+- companies place <b>periodic orders</b>
 - the demand forecast is based on <b>orders received </b> (often by retailers or intermediaries), not on the <b>end user real demand</b>
 - the supply is allocated as a % of the amount ordered
 - <b>promotional pricing </b> causes distortions in demand
@@ -1394,13 +1411,13 @@ This has negative effects on the whole supply chain:
 
 resulting in a whole supply chain that moves away from the <b>efficient fronties </b> due to _higher costs and lower responsiveness_.
 
-### <b>Measugin information distortion </b>
+### <b>Measuring information distortion </b>
 <Table
   data={{
     headers: [<b>Order Variance Amplification</b>, <b>Schedule Instability Amplification</b>],
     rows: [
      [<b>Levelness</b>, <b>Stability</b>],
-     ["In a perfectlyu level schedule, the acqual material required in every week are the same", "In a perfectly stable schedule, all the forecast are the same and coincide with production"],
+     ["In a perfectly levelled schedule, the acqual material required in every week are the same", "In a perfectly stable schedule, all the forecast are the same and coincide with production"],
      ["Variation in production between periods is low", "Production according to plan"]
          ]
   }}
@@ -1449,13 +1466,15 @@ $$
 \text{Instability}_{Ei+1} >\text{Instability}_{Ei+1}
 $$
 
+---
+
 ### <b>Obstacles to coordination and remedial actions</b>
 
 1. Incentive obstacles $\to$ _aligning goals and incentives_
 2. Information and processing obstacles $\to$ _improving information accuracy_
 3. Operational obstacles $\to$ _improving operational performance_
 4. Pricing obstacles $\to$ _designing pricing strategies to stabilize orders_
-5. Behavioral obstacles $\to$ _building strategic partnerships with trust
+5. Behavioral obstacles $\to$ _building strategic partnerships with trust_
 
 Supply chain partnerships can be divided in 3 clusters:
 - Type $I$: coordinationan on a limited basis, short term focus, involves one functional area of the firm.
