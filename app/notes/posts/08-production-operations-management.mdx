@@ -179,7 +179,8 @@ _Example: Amazon (_online service)_a
 - _order qualifiers:_ wide variety of products, secure and fast checkout (available in other online markeplaces)
 - _order winner:_ Amazon Prime, fast and very cheap (or free) deliveries.
 
-Note that, the distinction between qualifier and winner can shift over time: what is a order winner _(free wifi in the hotels some years ago)_, can then easily become a order qualifier as competitors cath up _(wifi is now guaranteed in every room)._
+Note that, the distinction between order qualifier and winner can shift over time: what is a order winner _(free wifi in the hotels some years ago)_, can then easily become a order qualifier as competitors cath up _(wifi is now guaranteed in every room)._
+
 ---
 
 ### <a id ="5"> <b>5. Introduction to Operations Strategy </b> </a>
@@ -343,7 +344,7 @@ Lower cycle inventory is better because:
 - lower inventory holding costs
 
 we then define:
-- $C$ as the average price paid per unic purchased 
+- $C$ as the average price paid per unit purchased 
 - $S$ as a fixed ordering/setup cost occurring eath time an order is placed.
 - $H$ as the holding cost in the inventory _(including cost of capital, physical warehouse, products becoming obsolete etc...)_
 (sometimes $H = hC$ as a fractoin of the unit cost of product)
@@ -740,8 +741,8 @@ Depending on the degree of automation of the data flow, we can also distinguish 
 Queuing systems can be characterized by different aspects:
 - number of servers/workstations
 - queuing dicipling _(FIFO, LIFO)_
-- arrival sources _(infinite vs limited)
-- queu space _(infinite vs limited)
+- arrival sources _(infinite vs limited)_
+- queu space _(infinite vs limited)_
 
 To study queuing systems, the <b>Kendall</b>'s notation is common:
 - $A$: distribution of arrival times
@@ -756,16 +757,16 @@ and, to describe arrival times, we use the following:
 - $b$: buffer size
 - $W_q$: waiting time with 
 $$
-W_q = \frac{\lambda}{\mu (mu - \lambda)}
+W_q = \frac{\lambda}{\mu (\mu - \lambda)}
 $$
 
 - $L_q$ queuing lenght (Littel's Law) with
 
 $$
-L_q = \lambda W_q = \frac{\lambda^2 }{\mu (mu - \lambda)}
+L_q = \lambda W_q = \frac{\lambda^2 }{\mu (\mu - \lambda)}
 $$
 
-- $\rho = \lambda / \mu $
+- utilization: $\rho = \lambda / \mu $
 
 - $\text{WIP} = \frac{ \rho}{1- \rho} $
 
