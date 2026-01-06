@@ -659,6 +659,11 @@ $$
   }}
 />
 
+In particular, some common methods are:
+
+- <a href="https://otexts.com/fpp2/holt-winters.html" target="_blank">Winter's Method</a> for demand WITH trend and seasonality.
+- <a href="https://nixtlaverse.nixtla.io/statsforecast/docs/models/holt.html#:~:text=The%20Holts%20model%20is%20used,called%20α%20and%20β%2C%20respectively." target="_blank">Holt's Model </a> for demand with trend but NOT seasonality.
+
 
 ---
 
@@ -681,12 +686,14 @@ Retail channels of distribution and sales:
 In last years, supply chain <b>disintermediation</b> became more popular:
 - the consumer directly deals with the manufacturer
 - removal of the indermediaries from the supply chain
+- reduction of channel transactions
 - _"following the financial industry":_ investors became able to invest directly into financial products, without the need of an advisor or broker
 
 This model was possible thanks to:
 - digitalization and new business models (direct online sales)
 - diminished value intermediaries bring to the supply chain
 
+<br/>
 <b>Example: Target (USA)</b>
 
 <a href="https://www.target.com/" target="_blank">Target, the famous US retailer</a> uses its phisical stores as local fulfillment centers for online orders.
@@ -772,6 +779,7 @@ _Note that_ this is a common apèproach for "long tail products" with _high vari
 
 <a href="https://medium.com/@dixitjigar/apples-supply-chain-innovation-resilience-and-sustainability-in-the-digital-age-c8f0eb951042" target="_blank">More details about Apple's supply chain </a>.
 
+
 <br/>
 
 <b>2.Manufacturer storage with direct shipping and intransit merge</b>
@@ -804,6 +812,13 @@ Performance Characteristics:
 - better customer experience than the manufacturer storage
 - lower product availability and variety than the manufacturer storage for the same cost
 
+<b>Example: Amazon's Fulfillment Centers </b>
+
+With high-demand items that need to be close to the factory, Amazon buys products in bulks from several manufacturer and stores, then store them in _massive hubs_.
+When then an order is placed from the website, a local carrier _(Swiss Post, DHL, UPS) picks it from the FCs.
+<br/>Keeping large quantities in few larger warehouses, Amazon can also the _safety stocks_ required to handle local demand spikes.
+
+<a href="https://www.aboutamazon.com/workplace/facilities" target="_blank">More about the Amazon's fulfillment Centers </a>.
 <br/>
 
 <b>4. Distributor storage with last mile delivery</b>
@@ -844,6 +859,10 @@ Performance Characteristics
 - lower transportation cost
 - very quick response time
 - customer experience related to wheter shopping is appreciated or not and by the product type
+
+<b>Example: IKEA </b>
+
+IKEA uses its retail stores as "customer pickup points", without the need of having extra facilities or buildings and designing a dedicate _fast track line_ for online orders, without the need of the customer of facing the mess inside the physical store.
 
 <div align = "center">
 ![Supply Chain Network Design Summary](/images/notes/supply-chain/sc_design_summary.png)
@@ -918,6 +937,11 @@ Distributors can contribute to:
   5. outpost facility: _regional production facility bult to gain local skills_
   6. lead facility: _facility that leads R&D_
 
+<b>Example: Novartis R&D </b>
+
+<a href="https://www.campus.novartis.com/en" target="_blank"> Novartis HQ in Basel</a> acts as a _lead facility_: they don't just manufacture, they do most of the R&D work. Once then the process is perfectly designed, they export all the knoweldge in the other facilities.
+
+In a more general and practical way, _upgrading a facility_ can also mean moving from offshore to contributor, by adding a local R&D unit.
 
 <div align = "center">
 ![Supply Chain Network Design Summary 2](/images/notes/supply-chain/sc_roadmap.png)
@@ -938,7 +962,7 @@ We can define different types of nodes in a network:
 - <b>Sink</b>: all flow ends in this node _(end, no successors)_
 - <b>Supply</b>: outflow - inflow > 0
 - <b>Demand</b>: outflow - inflow < 0
-- <b>Transhipment</b>: outflow - inflow = 0 _(conservation of flow)_
+- <b>Transshipment</b>: outflow - inflow = 0 _(conservation of flow)_
 
 <br/>
 <b>Point-to-point VS Hubs-and-Spoke networks</b>
@@ -957,6 +981,7 @@ We can define different types of nodes in a network:
           ]
   }}
 />
+
 
 ---
 
@@ -1028,7 +1053,7 @@ Special case mofifications to the assignment problem:
 - <b>Number of tasks exceeds the number of agents</b>: add enough dummy agents
 - <b>An assignment is unacceptable</b>: remove the corresponding decision variable
 
-<b>Transhipment Problems </b>
+<b>Transshipment Problems </b>
 
 It is a special case of a transporation problem where the freight moves through intermediate nodes before reaching the final destination.
 $$
@@ -1062,6 +1087,7 @@ _The first sum represents the outflow, the second the inflow and the third on th
 _$u_{ij}$ represents the arc capacity_
 
 <b>Maximum Flow Problems</b>
+
 The goal is to maximise the amount flowing through the network rather than minimizing the cot of the flow.
 In maximum flow problems, the source and the sink do not have fixed supplies and demands.
 
@@ -1192,7 +1218,7 @@ Starting with only the nodes for a network, the problem now is to design the net
 
 <b>Prim's algorithm</b>:
 - Start with any node _(often the one with the cheapest edge)_
-- Grwo the tree by repeatetly adding the cheapest edge connecting another node outside the tree
+- Grow the tree by repeatetly adding the cheapest edge connecting another node outside the tree
 - repeat until all nodes are included
 - break ties arbitrarly
 
