@@ -1000,6 +1000,8 @@ We can define different types of nodes in a network:
 
 <b>Minimum Cost Flow Optimization Problems</b>
 
+<a href="https://1drv.ms/x/c/28579ba686997016/IQA9LmYi0ro6S6nyLuDT631zAfM6ycEPHhnRys6-joDEg98" target="_blank">Excel file with a case study optimizaion problem using the built-in Solver </a>.
+
 Assumptions and properties:
 - at least one node is a supply node, at least one node is a demand node
 - flow only possible in one direction (the arrow)
@@ -1019,7 +1021,7 @@ with the following constraints:
 - $\sum_i s_i = \sum_j d_j $ (supply equals demand)
 - $x_{ij} > 0$
 
-$c_{ij}$ denotes the cost of shipping from $i$ to $j$ and $x_{ij}$ is the decision variable _(the quantity shipped from $i$ to $j$),
+$c_{ij}$ denotes the cost of shipping from $i$ to $j$ and $x_{ij}$ is the decision variable _(the quantity shipped from $i$ to $j$)_,
 
 For transporation costs, the optimization rewrites as following.
 We assume $i = 1 \dots n$ supplier warehouse, $j = 1 \dots m$ customer regions, the the objective function is:
@@ -1037,7 +1039,7 @@ Some special case modifications to the transportation problem:
 - <b>Minimum shipping guarantee </b>from $i$ to $j$: $x_{ij} > L_{ij}$
 - if <b>supply > demand</b>: add a dummy destination with zero cost and its demand equals to the remaining supply
 - if a rouce it not accessible: remove the corresponding decision variable
-
+<br/>
 <b>Assignment problems</b>
 
 Given a set of agents, a set of tasks and a cost table, the goal is to <b>match agents to tasks </b> so that all tasks are performed at the minimum possible ost.
