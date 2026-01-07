@@ -1065,15 +1065,15 @@ Special case mofifications to the assignment problem:
 - <b>An agent can work one multiple tasks ($a$ tasks):</b> $\sum_j x_{ij} \le a$
 - <b>Number of tasks exceeds the number of agents</b>: add enough dummy agents
 - <b>An assignment is unacceptable</b>: remove the corresponding decision variable
-
+<br/>
 <b>Transshipment Problems </b>
 
 It is a special case of a transporation problem where the freight moves through intermediate nodes before reaching the final destination.
 $$
 \min T = \sum_i \sum_j c_{ij} x_{ij}
 $$
-- $\sum_j x_{ij} = s_i $for all supply nodes
-- $\sum_j x_{ij} - \sum_j x_{}ij = 0 $ for all transshipment nodes
+- $\sum_j x_{ij} = s_i $ for all supply nodes
+- $\sum_j x_{ij} - \sum_j x_{ji} = 0 $ for all transshipment nodes
 - $\sum_j x_{ij} = d_j $ for all demand nodes
 - $x_{ij} > 0$
 
@@ -1509,8 +1509,10 @@ This is classic _information driver_ failure: the lack of real time data and the
 In this cases, <b>Vendor Managed Inventory </b> or <b>collaborative planning and forecasting</b> to share real time data with suppliers can reduce bullwhip effects.
 
 <a href="https://www.google.com/search?client=opera&q=peloton+during+covid&sourceid=opera&ie=UTF-8&oe=UTF-8" target="_blank">Peloton's rise and fall during COVID [CNBC]</a>-
-<br/>
+
 <a href="https://en.wikipedia.org/wiki/Vendor-managed_inventory" target ="_blank">Vendor Managed Inventory [WIKIPEDIA]</a>
+
+---
 
 ### <b>Measuring information distortion </b>
 <Table
@@ -1518,7 +1520,7 @@ In this cases, <b>Vendor Managed Inventory </b> or <b>collaborative planning and
     headers: [<b>Order Variance Amplification</b>, <b>Schedule Instability Amplification</b>],
     rows: [
      [<b>Levelness</b>, <b>Stability</b>],
-     ["In a perfectly levelled schedule, the acqual material required in every week are the same", "In a perfectly stable schedule, all the forecast are the same and coincide with production"],
+     ["In a perfectly levelled schedule, the actual material required in every week are the same", "In a perfectly stable schedule, all the forecast are the same and coincide with production"],
      ["Variation in production between periods is low", "Production according to plan"]
          ]
   }}
