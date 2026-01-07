@@ -1294,6 +1294,7 @@ The profit functions are:
 $$
 \pi_A = PQ_A = (120 - (Q_A + Q_B))Q_A = 120Q_A - Q_A^2 - Q_A Q_B
 $$
+
 $$
 \pi_B = PQ_B = (120 - (Q_A + Q_B))Q_B = 120Q_B - Q_B^2 - Q_A Q_B
 $$
@@ -1651,3 +1652,526 @@ $$
 
 ---
 
+### <b>E4. Price Ceiling </b>
+
+The supply curve for Ketchup bottles is given by $Q_S = 5000P - 10000$, the dean by $Q_D = 40000 - 2000P$. The government put a price ceiling (luckly!) of $5$.<br/>
+How much excess demand and supply will there be at the ceiling price?
+
+<b>Solution</b>
+
+Calculate $Q_D$ and $Q_S$ at the ceiling price:
+
+$$
+Q_S = 5000(5) - 10000 = 15000
+$$
+
+$$
+Q_D = 40000 -5(2000) = 30000
+$$
+
+Excess demand occurs when $Q_D > Q_S$ and it's given by: $Q_D - Q_S = 30000 - 15000 = 15000$. On the other hand, excess supply is zero.
+
+---
+
+### <b>E5. Public Good</b>
+
+Assume that a small town uses a referendum to determine how its residents may value a automatic ketchup distributor (public good). The voting results are aggregated by the town’s two districts, yielding the following demand functions:
+
+- District 1: $Q = 160 - 20P_1$
+- District 2: $Q = 60 - 5P_2$
+
+where $Q$ is the quantity of ketchup and $P_i$ the price.
+
+If the market supply of ketchup is $P = 6 + 0.15Q$, calculate the equilibrium quantity and price for the town.
+
+<b>Solution</b>
+
+Since it's a public good, we sum individual's willigness to pay (prices) for each unit of the good, since all individuals consume ketchup simultaneously.<br/>
+Firstly, rearrange for $P$:
+
+$$
+P_1 = 8 - 0.05Q\\
+P_2 = 12 - 0.2Q
+$$
+
+The total demand price is then given by:
+
+$$
+P_D = P_1 + P_2 = 8 - 0.05Q + 12 - 0.2Q = 20 - 0.25Q
+$$
+
+We can now find the equilibrium with the market supply:
+
+$$
+20 - 0.25Q = 6 + 0.15Q \to 14 = 0.4Q \to Q^* = 35
+$$
+
+that also leads to $P^* = 6 + (0.15)35 = 11.25$
+
+### <b>E6. Negative Externalities </b>
+
+
+<div align = "center">
+![Exercise 6](/images/notes/microeconomics/e6.png)
+</div>
+
+The graph below indicates the situation of a negative externality.
+
+Assume that the government reaches the social optimum by limiting the output to $Q^*$. Compute consumer and produce surplus, cost of externality and net social benetits before and after the social optimal limit.
+
+<b>Solution</b>
+
+The net social benefit, for each scenario, is given by:
+$$
+\text{Net Sociale Benefit} = \text{Consumer Surplus} + \text{Producer Surplus} - \\ - \text{Cost of Externality}
+$$
+
+The increase in benefits is calculated as:
+
+$$
+\text{Increase in Benefits} = \text{Social Optimum} - \text{Equilibrium}$$
+$$
+
+The cost of the externality is given by the area between the $MSC$ (Marginal Social Cost) and the supply curve.
+
+<Table
+  data={{
+    headers: [" ", <b>Equilibrium</b>, <b>Social Optimum</b>, <b>Increase in Benefits</b>],
+    rows: [
+      [ <b>Consumer Surplus</b>, "A + B + G + K", "A", "- B - G - K"],
+      [ <b>Producer Surplus</b>, "E + F + R + H + N", "R + H + G", "B + G - N"],
+      [ <b>Cost of externality</b>, "R + H + N + G + K + M ", "R + H + G", "-M - N - K"],
+     [ <b>Net Social Benefit</b>, "A + B + E + F - M", "A + B + E + F", "M"]
+    ]
+  }}
+/>
+
+---
+
+
+### <b>E7. Tax</b>
+
+Suppose that the market is described by the following equations:
+
+$$
+Q_D = 300 - P \\
+Q_S = 2P
+$$
+
+Suppose also that a tax of $T$ is placed on buyers. Solve for the equilibrium.
+What happens to the price received by sellers, the price paid by buyers and the quantity sold?
+
+
+<b>Solution</b>
+
+When a tax is place on buyers, buyers pay an higher price given by: $P_D = P + T$.
+
+At equilibrium we have:
+
+$$
+Q_D = Q_S  \to 300 - (P + T) = 2P \to P = 100 - T/3
+$$
+
+It follows that 
+$$
+P_D = P + T = 100 - T/3 + T = 100 + \frac{2}{3}T
+$$
+
+If we substitute back $P_D$ to find the equilibrium quantity $Q_D$:
+
+$$
+Q_D = 2P = 200 - \frac{2}{3}T
+$$
+
+---
+
+### <b> E8. Equilibria in Competitive Markets </b>
+
+The industry of ketcnup (considered an highly competitive market)  is composed of identical firms with total cost:
+
+$$
+C(q) = 2 q_i^2 + 6q_i + 18
+$$
+
+for $q_i > 0$ and $C(0) = 0$, where $q_i$ is the firm's production of ketchup.
+
+Suppose there are 100 ketchu producers. What is the short-run supply curve $Q_{SR}$ for the kecthup industry (expressing it as a function of the price)?
+
+<b>Solution</b>
+
+From the total cost function of a firm, we can find:
+
+- the variable cost: $VC = 2q_i^2 + 6q_i$
+- the marginal cost: $MC = \partial C(q) / \partial q_i = 4q_i + 6
+- the average variable cost: $AVC = VC / q_i = 2q_i + 6$
+
+In a perfectly competitive market: $P = MC$, provided that the price is above the minimum average variable cost.
+
+We can indeed see that, if $q_i = 0$, $AVC = 6$, so a firm sells ketchup at $P = MC$ as long as $P > \min \{ AVC \} = 6$. (This is also called the <b>Shutdown Price</b>).
+
+If we then set $P = MC$, we obtain:
+
+$$
+P = 4q_i + 6 \to 4q_i = P - 6 \to q_i = \frac{P - 6}{4}
+$$
+
+The ketchup industry is composed by 100 identical firms. 
+The industry supply curve $Q_{SR}$ is the horizontal sum of all individual supply curves:
+
+$$
+Q_{SR} = 100 q_i = 100 \frac{P - 6}{4}
+$$
+
+So we can conclude that:
+
+$$
+Q_{SR}(P) = \begin{cases} 25P - 150 & \text{if } P \ge 6 \\ 0 & \text{if } P < 6 \end{cases}
+$$
+
+
+<b>Part 2</b><br/>
+What is the long-run supply curve  $S_{LR}$ with free entry? (Assume constant-cost industry).
+
+<b>Solution</b>
+
+The long run supply chain curve is the one supplying ketchup at the efficient primce $P$, where economic profits are driven down to zero.
+
+This happens when $ATC$ (average total cost) is the minimum one.
+
+To find it, we equal $ATC$ and $MC$:
+
+
+$$
+ATC = 4q_i + 6 = \frac{C(q)}{qi} \\
+
+4q_i + 6 = 2q_i + 6 + \frac{18}{q_i} \\
+
+2q_i^2 = 18 \to q_i^2 = 9 \to q_i = 3
+
+$$
+
+We now substitute $q_i = 3$ in the price equation to find both the price and the average total cost.
+
+$$
+P = ATC =  4(3) + 6 = 18
+$$
+
+<b>Part 3></b>
+
+Suppose that the demand is $Q_D = 660 - 20P$. What is the long-run demand quantity?
+Determine also how many ketchup producers there will be in the market.
+
+<b>Solution</b>
+
+If we substitue the equilibrium price $P = 18$, we find:
+
+$$
+Q_{LR} = 660 - 20(18) = 300
+$$
+
+Since each firm produces the efficient quantity $q_i = 3$, we will have $N = q_{LR} / q_i = 300/3 = 100$ producers of ketchup in the market.
+
+---
+
+### <b>E9. Monopoly </b>
+
+_Jack LLC_ is a monopoly with a total cost function of $TC = 3Q^2$ and a demand curve of $P = 1200 - Q$.
+Calculate the profix maximizing $Q^*, P^*$ and then consider  a lump-sum tax of 50000? <br/>
+What does _Jack LCC_? Does it stay in business?
+What if the lump-sun tax is 100000?
+
+
+<b>Solution</b>
+
+Profits are given by:
+
+$$
+\pi = PQ - TC = (1200 - Q)Q - 3Q^2
+$$
+
+we then take the first derivative:
+
+$$
+\frac{\partial \pi}{\partial Q} = 1200 - 2Q - 6Q = 0 \to 1200 = 8Q \to Q^* = 150
+$$
+
+and, from $Q^* = 150$, we also find: $P^* = 1200 - Q^* = 1050$ and $\pi = (1200 - 150)150 - 3(150)^2 = 90000$.
+
+
+Considering a lump sum of $50000$, we can expect _Jack LCC_ to go on with the business.
+If the tax is instead raised to $100000$, we can expect the firm to stop its business.
+
+<b>Part 2</b>
+
+What price ceiling $P_c$ would maximize the total surplus?
+
+To maximize surplus, the regulator should put the ceiling price at a point that force _Jack LCC_ to operate like in a competitive market, so whem $P = MC$.
+
+To do that, we find marginal cost $MC$ as:
+
+$$
+MC = \partial TC / \partial Q = 6Q
+$$
+
+We then set $MC = P$, that leads to:
+$$
+6Q = 1200 - Q \to Q^* = 1200/7 \approx 171
+$$
+
+We then substitute $Q^*$ in the price equation:
+
+$$
+P = 1200 - 171 \approx 1028
+$$
+
+<b>Part 3</b>
+
+What happens if _Jack LCC_ has to pay 40 in tax per unit sold?
+
+<b>Solution</b>
+
+The tax changes the $TC$ function: $TC = 3Q^2 + 40Q$, affecting also the marginal cost, $MC = 6Q + 40$.
+
+To find the new profit maximizing function, we calculate the marginal revenue $MR$ and set it equal to the marginal cost.
+
+Revenues are given by $PQ = 1200Q - Q^2$, so $MR = 1200 - 2Q$.
+
+We then obtain:
+
+$$
+1200 - 2Q = 6Q + 40 \to 1240 = 8Q \to Q^* = 145
+$$
+
+That leads to the new price of $P^* = 1200 - 145 = 1055$.
+
+The 40 tax burden is divided between the consumer and the _Jack LCC_.
+
+The initial price for the consumer was 1050, so the 40 tax for the monopoly increased the consumer price by $5$ (that is the tax burden for the consumer).<br/>
+On the other hand, $(40 - 5)$ is the tax burden for _Jack LCC_.
+
+---
+
+### <b>E10. Competitive Market: Cournot Model</b>
+
+Suppose a town with two firms, $A, B$ producing potable water.
+Suppose, in a competitive market,  a demand curve given by: $P = 120 - Q$ and $MC = 0$.
+
+Total revenues are given by:
+
+$$
+TR = PQ = 120Q - Q^2
+$$
+
+Differentiating to obtain $MR$:
+
+$$
+MR = \frac{\partial TR}{\partial Q} = 120 - 2Q
+$$
+We then set $MR = MC = 0$ to find the equilibrium quantity $Q^*$:
+
+$$
+0 = 120 - 2Q^* \to 120 = 2Q^* \to Q^* = 60
+$$
+
+In a monopoly market therefore, we would obtain $Q^*=60$ and, substituting $Q^*$ in the demand and revenue function:
+$$
+P^* = 60
+$$
+
+$$
+TR = 120Q^* - (Q^*)^2 
+$$
+
+
+In a <b>Cournout Duopoly </b>, if we define $Q_A, Q_B$ quantities produced by firms and we set their marginal cost to zero again, we can compute again the market demand can be rewritten as follows:
+
+$$
+P = 120 - Q = 120 - (Q_A + Q_B)
+$$
+
+The profit functions are:
+$$
+\pi_A = PQ_A = (120 - (Q_A + Q_B))Q_A = 120Q_A - Q_A^2 - Q_A Q_B
+$$
+$$
+\pi_B = PQ_B = (120 - (Q_A + Q_B))Q_B = 120Q_B - Q_B^2 - Q_A Q_B
+$$
+
+Each firm maximizes profits by setting the derivative to zero. 
+$$
+\frac{\partial \pi_A}{\partial Q_A} = 120 - 2Q_A - Q_B = 0 \to Q_A = \frac {120 - Q_B}{2}
+$$
+$$
+\frac{\partial \pi_B}{\partial Q_B} = 120 - 2Q_B - Q_A = 0 \to Q_B = \frac {120 - Q_A}{2}
+$$
+
+Since the firms are identical, we set $Q_A = Q_B = Q^*$, that brings to:
+
+$$
+Q^* = \frac{120 - Q^*}{2} \to Q^* = Q_A = Q_B = 40.
+$$
+
+- The total output $Q$ is then $Q = Q_A + Q_B = 80$
+- The market price is $P = 120 - Q = 40$
+- Profits per firm are $\pi = PQ = 1600$
+
+_(Confirming what we said before about quantity produced and price set in a oligopoly)_
+
+---
+
+### <b>E11. Competitive Markets: Stackelberg Model</b>
+
+
+In the <b>Stackelberg model</b>; we keep the same starting assumptions, $P = 120 - Q$, with $Q = Q_A + Q_B$, and $MC = 0$.
+We then define firm $A$ as the <b>first mover</b>, while firm $B$ <b>follows</b>.
+
+To solve the equilibrium, we start from the end: firm $B$ observs quantity produced by $A$ and maximises his profits _(same as Cournot)_:
+$$
+\pi_B = PQ_B = (120 - (Q_A + Q_B))Q_B = 120Q_B - Q_B^2 - Q_A Q_B
+$$
+Differentiating and setting to zero:
+$$
+\frac{\partial \pi_B}{\partial Q_B} = 120 - 2Q_B - Q_A = 0 \to Q_B = \frac {120 - Q_A}{2} 
+$$
+Leading to firm $B$'s <b> reaction function </b> $Q_B = \frac {120 - Q_A}{2} $.
+
+<b>Unlike in the Cournot model</b>, firm $A$ know how the follower $B$ will react, so $A$ moves in advance substituting $B$'s reaction function in his profit function:
+
+
+$$
+\pi_A = PQ_A = (120 - (Q_A + Q_B))Q_A = 120Q_A - Q_A^2 - Q_A \frac {120 - Q_A}{2}
+
+$$
+
+$$
+\pi_A = 60Q_A - 0.5Q_A^2
+$$
+
+Now firm $A$ can maximize his profit setting the derivative to zero:
+
+$$
+\frac{\partial pi_A}{\partial Q_A} = 60 - 2(0.5)Q_A = 0 \to Q_A^* = 60
+$$
+
+We can now find quantity produced by firm $B$ by substitugin $Q_A^*$ in $B$'s reaction function:
+
+$$
+Q_B^* = \frac {120 - Q_A^*}{2} = 30
+$$
+
+That leads to a market price of:
+
+$$
+P^* = 120 - (60 + 30) = 30
+$$
+
+- The total output $Q$ is then $Q = Q_A^* + Q_B^* = 90$
+- The market price is $P = 120 - Q = 30$
+- Profits per firm $A$ are $\pi = PQ_A^* = 1800$
+- Profits per firm $B$ are $\pi = PQ_A^* = 900$
+
+We can easily notice that, being the first-mover, firm $A$ has significan higher profits than $B$ and that, since $P > MC = 0$, there are still some inefficienties in the market.
+
+---
+
+### <b>E12. Competitive Markets: Bertrand Competition</b>
+
+In a <b>Betrand competition model</b>, firms compete on price.
+We them start from the initial starting assumptions: $P = 120 - Q$ (that can be rewritten as $Q = 120 - P$) and $MC = 0$ for both firms.
+
+The logic behind Betrand competition is that:
+- if $P_A < P_B$: firm $A$ captures all the demand: $Q_A = 120 - P_A$ and $Q_B = 0$ (the opposite also applies)
+- if $P_A = P_B$: firms equally split the market: $Q_A = Q_B = \frac{120 - P}{2}$
+
+Therefore, the profit function $A$ is:
+$$
+
+\pi_A(P_A, P_B) = 
+\begin{cases} 
+P_A(120 - P_A) & \text{if } P_A < P_B \\
+P_A \left( \frac{120 - P_A}{2} \right) & \text{if } P_A = P_B \\
+0 & \text{if } P_A > P_B 
+\end{cases}
+$$
+
+In this scenario, each firm has an incentive to cut prices to capture the market until $P_A = P_B = MC$ ($= 0$ in this case).
+We can then conclude:
+
+- The market price is $P = MC = 0$
+- The total quantity produced is $Q = 120 - P = 120$, with $Q_A = Q_B = Q/2 = 60$
+- Total profits are $\pi_A = \pi_B = 0$
+
+This leads to a situation with total market efficiency.
+
+---
+
+### <b>E13. Monopolistic Competition</b>
+
+Consider a monopolistically competitive market with $N$ firms. Each firm’s business opportunities are described by the following equations:
+
+$$
+Q = 100/N - P  \\
+TC =50 + Q^2
+$$
+
+Suppose there are 4 firms in the industry in the short-run. Calculate the profit maximizing price $P^*_{SR}, Q^*_{SR}, \pi*_{SR}$.
+
+<b>Solution</b>
+
+When $N = 4$, the demand curve is: $Q = 25 - P \to P = 25 - Q$.<br/> We can then calculate the marginal revenue $MR$ and set it equal to the marginal cost $MC$.
+
+$$
+MR = \frac{\partial (PQ)}{\partial Q} =  \frac{\partial (25Q - Q^2)}{\partial Q} = 25 - 2Q
+ $$
+
+$$
+MC = 2Q = 25 - 2Q = MR \to \\
+\to 4Q = 25 \to Q^* = 25/4 = 6.25
+$$
+
+This also gives: $P^* = 25 - Q^* = 18.75$.
+
+<b>Part 2</b>
+
+Monopolistically competitive markets are characterized by free entry and exit.<br/>
+. As more firms come into the market, each firm’s share of overall market demand will fall - that is, the typical firm’s demand curve will shift leftward. <br/>
+Entry and the resultant leftward shift in firms’ demand curves will cease when firms make zero economic profit.<br/>
+ Given this process, what is the profit-maximizing output and price and how many firms will exist in the industry of this exercise in the long-run?
+
+To find the profit-maximizing output and prie, as well the final $N$, we set two conditions:
+
+- $MR = MC$ (as before)
+- $P = ATC$ (price equals average total cost)
+
+we know that:
+
+$$
+Q = 100/N - P \to P = 100/N - Q
+$$
+
+we can compute $MR$ as
+
+$$
+MR = \frac{\partial (PQ)}{\partial Q} = 100/N - 2Q
+$$
+
+and set $MR$ equal to $MC$:
+$$
+100/N - 2Q = 2Q \to 4Q = 100/N \to Q = 25/N
+$$
+
+we then set $P = ATC$:
+
+$$
+100/N - Q = 50/Q + Q
+$$
+
+if we substitute in the last equation $Q = 25/N$, we obtain:
+
+$$
+100/N - 25/N = 50N/25 + 25/N \\
+
+50/N = 50N/25 \to 1/N = N/25 \to N^2 = 25 \to N = 5
+$$
+
+---
