@@ -24,7 +24,8 @@ The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorles
 - [Monopolistic Competition](#11)
 - [Oligopoly](#12)
 - [International Trade](#13)
-- [Appendix](#Appendix)
+- [Exercises](#ex)
+
 
 ---
 
@@ -662,7 +663,7 @@ Think, for example, at the cost-benefit analysis of the construction of a tunnel
 </div>
 
 
-The <b>producer surplus </b> is the amount a seller is paid for a good minimum the seller's cost or, in other words, _it is the excess of revenues over long run cost of production._</br>It decreases as price decreases.
+The <b>producer surplus </b> is the amount a seller is paid for a good minimum the seller's cost or, in other words, _it is the excess of revenues over long run cost of production._<br/>It decreases as price decreases.
 
 _Producer surplus is calculated as the area above the supply curve and below the price._
 
@@ -1061,6 +1062,56 @@ Before $P > MC$, a monopoly sets a gap between the consumer's willigness to pay 
 ![Inefficienties in monopoly](/images/notes/microeconomics/inefficiency_monopoly.png)
 </div>
 
+
+
+<b> Example: the Algebra behind a monopoly's profits</b>
+
+The firm _Maggiore GmBh_ acts a monopoly in the running shoes industry and faces the following demand curve:
+
+$$
+P = 120 - 0.2Q
+$$
+
+where $Q$ is weekly production, $P$ price, in $cents$ per unit.<br/>
+The firm cost function, without the tax, is given by:
+
+$$
+C= 60Q + 25000
+$$
+
+Assume that _Maggiore GmBh_ maximises profits.  <br/>If the government decides to levy a tax of 13 cents per unit on this product, what will be the tax revenue raised (in cents)?
+
+To solve the problem, we first compute the cost function including tax as:
+$$
+C_{\text{taxes}} = (60 + t)Q + 25000
+$$
+
+with $t = 13$ is the tax per unit.
+
+We then compute profits as:
+
+$$
+\pi = PQ - C_{\text{taxes}} = 120Q - 0.2 Q^2 - (60 + t)Q - 25000 \\ = 
+= (60 - t)Q - 0.2 Q^2 - 25000
+$$
+
+To find the proxit maximizing $Q$, we take the first derivative:
+
+$$
+\frac {\partial \pi}{\partial Q} = 60 - t - 0.4Q = 0 \to Q^* = (60 - t)/0.4
+$$
+
+The total tax revenue is then:
+$$
+\text{Tax Revenue} = t Q^* = t (60 - t)/0.4
+$$
+
+$$
+
+$$
+
+---
+
 ### <b>Price Discrimination </b>
 
 Price discrimionation is the practice of selling the same good at different prices to differenct customer (only possible if there are not _arbitrage opportunities_).
@@ -1085,6 +1136,7 @@ It consists in a limitation of a monopoly profit by imposing on of the following
 <div align = "center">
 ![Price discrimionation in monopoly](/images/notes/microeconomics/tariff_monopoly.png)
 </div>
+
 ---
 ## <a id="11"><b>11. Monopolistic Competition</b></a>
 
@@ -1124,7 +1176,9 @@ There's an important difference between monopolistic and perfect competition:
 ![Mark up and Excess Capacity](/images/notes/microeconomics/mark_up_excess_capacity.png)
 </div>
 
-### <b>Advertiging </b>
+---
+
+### <b>Advertising </b>
 When firms produce differentiated products above marginal cost, they have an <b>incentive</b> to advertize their products to attract more customers.
 _(Firms with highly differentiated consumer good usually spend $10-20\%$ of revenue on advertizing)_.
 
@@ -1358,6 +1412,8 @@ If oligopolists organize themself to maximize profits with respect to the implic
 For a cartel, an <b> inelastic demand </b> means that the cartel can set an higher price (and then higher profits). 
 However, collusion and cartels are <b>prohibited </b> by law _(the breadkdown of cartels result in higher consumers's welfare)_.
 
+---
+
 ### <b>Game Theory</b>
 
 Game theory is the study of how people behave in strategic situations when they have <b> incomplete information </b>.
@@ -1434,6 +1490,103 @@ However, free trade strategies shoyld be correctly designed and implemented to b
 
 ---
 
-## <a id="Appendix"><b>Appendix</b></a>
+## <a id="ex"><b>Appendix</b></a>
 
-- <a target="_blank" href = "https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=193791&semkez=2025W&ansicht=LEHRVERANSTALTUNGEN&lang=en"> Principles of Microeconomics 2025, ETH Zurich </a>
+### <b>E1. Market Equilibrium </b>
+
+Suppose the demand curve is $Q_D = 300 - 2P + 4I$, where $I$ is the income measured in $1000$ CHF.<br/>
+The supply curve is $Q_S = 3P - 50$. 
+
+Suppose $I = 25$, what is the market clearing price and the quantity traded?
+
+<b>Solution</b>
+
+At equilibrium, $Q_D = Q_S$, so we have:
+
+$$
+300 - 2P + 4I = 3P - 50 // 5P = 350 + 4I // \to P^* = \frac{350 + 4I}{5}
+$$
+
+If we plug $P^*$ in $Q_S$, we find:
+
+$$
+Q^* = Q_S = 3\frac{350 + 4I}{5} - 50
+$$
+
+And, substituting $I = 25$, we obtain the following results=
+
+$$
+P^* = \frac{350 + 100}{5} = 90//
+Q^* = 180 - 50 = 130
+
+$$
+
+---
+
+### <b>E2. Comparative Statics I </b>
+
+In Milan, a typical student apartment rents for $ € 300$ a month and $15 000$ apartments are rented.
+The Politecnico of Milano _(the best university in the city, but this is another story)_, is considering expanding enrollment by lowering current academic standards.
+
+A local economics _(actually from Bocconi, the second university of Milan)_, estimates that, currently, price elasticity of demand for apartments is $-1/4$, and the long-run price elasticity of supply is $1/2$.
+
+WQhat are the equations of demand $Q_D$ and supply $Q_S$, assuming both linear?
+
+<b>Solution</b>
+
+Given the price elasticity of demand: 
+$$
+\frac{\partial Q_D}{\partial P} \frac{P^*}{Q^*} = -1/4
+$$
+
+if we substitute $P^* = 300$ and $Q^* = 15000$:
+
+$$
+\frac{\partial Q_D}{\partial P} \frac{300}{15000} = -1/4 //
+\frac{\partial Q_D}{\partial P} = - 1/4 \frac{15 000}{300} = -1/4 (50) = - 12.5
+$$
+
+Therefore we have that:
+
+$$
+Q_D = -12.5 P + \alpha
+$$
+
+To compute $\alpha$:
+
+$$
+15 000 = -1250 (300) + \alpha \to \alpha = 150000 + 12.5(300) = 18750
+$$
+
+The same applies for supply, leading to:
+
+$$
+Q_S =7500 + 25P
+$$
+
+<b>Part 2:</b> suppose there is a 20% increase in the demand for apartments. <br/>
+What will be the new long-run equilibrium, price and price elasticity of demand?
+
+<b>Solution</b>
+
+The new demand is: $Q_D^n = 1.2 Q_D = 1.2 (18750 - 12.5 P) = 22500 - 15P$.<br/>
+We calculate the new equilibriu as before:
+
+$$
+22500 - 15P = 7500 + 25P \to 40P^N = 15000 \to P^N = 375
+$$
+
+Solving for quantity leads to:
+
+$$
+Q^N = 22500 - 15P^N = 16875
+$$
+
+
+We now calculate the new price elasticity of demand as:
+
+$$
+\epsilon_D' = \frac{\partial Q_D'}{\partial P} \cdot \frac{P^N}{Q^N} \approx -0.333
+$$
+
+---
