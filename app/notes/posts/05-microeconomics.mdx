@@ -109,14 +109,13 @@ Therefore, we can define relations between demanded goods:
 ![Market Equilibrium](/images/notes/microeconomics/demand_supply_info.png)
 </div>
 
+---
 
-
-### <b> Example: The Algebra of Price Equilibrium </b>
+<b> Example: The Algebra of Price Equilibrium </b>
 
 Demand: $Q_d = 50 - 3P $
 
 Supply: $Q_s = 10 + 2P $
-
 
 
 At the equilibrium: $Q_s = Q_d$. Solving for price leads to:
@@ -126,6 +125,8 @@ $$ 50 - 3P_{EQ} = 10 + 2P_{EQ} \to   40 = 5P_{EQ} \to  P_{EQ} = 8 $$
 Substituting back in $Q_d$:
 
 $$ Q_{EQ} = Q_s = Q_d = 50 - 3(8) = 50 - 24 = 26 $$
+
+---
 
 ### <b> Controls on Prices </b>
 Controls on prices are often put when policymakers believe the market price is unfair. They can result in:
@@ -154,6 +155,8 @@ where $P_n$ is the price of the goods, $P_i$ prices of other goods, $Y$ the inco
 
 The same applies for the Supply Curve $S = s(P_n, P_1, P_2, \dots  P_i, Y, T)$.
 
+_Note that, for simplicity, we can say: price causes a movement on the supply/demand curve, everything else cause a shift._
+
 <div align = "center">
 ![Curve Shift](/images/notes/microeconomics/shifts.png)
 </div>
@@ -164,7 +167,6 @@ The same applies for the Supply Curve $S = s(P_n, P_1, P_2, \dots  P_i, Y, T)$.
 Elasticity is a measure of how much buyers and sellers respond to changes in market conditions.
 
 <b>Price elasticity of demand</b>, for example, measures the change in prices due to a given change in quantity, in formulas:
-
 
 - <b>Point Elasticity</b>: _measures elasticity at a specific point in the curve._
 
@@ -202,17 +204,45 @@ $$
 - Substitutes: $ E_{Q_b P_m} > 0$
 - Indipendents: $ E_{Q_b P_m} \approx 0$
 
+<b> Example: The Algebra of Price and Cross-Price Elasticity </b>
 
+Given the demand and supply quantity $Q_s, Q_d$, the price $P$ and the product substitute price $P_s = 2$, find the absolute value of price elasticity of demand at the market equilibrium.
+
+$$
+Q_s = 8P - 8
+$$
+
+$$
+Q_d = 10 - 2P + P_s
+$$
+
+We firstly compute equilibrium:
+
+$$
+8P - 8 = 10 - 2P + P_s \to 10P = 18 + P_s => P^* = \frac{18 + P_s}{10}
+$$
+
+$$
+Q^* = Q_s(P^*) = 8P^* - 8 = \frac{64 + 8P_s}{10}
+$$
+
+We now compute elasticity as:
+
+$$
+|e_d| = |\frac{\partial Q_d}{\partial P} \frac{P^*}{Q^*} |=| -2 \frac{(18 + P_s)/10}{(64 + 8 P_s )/10}| = 2 \frac{18 + P_s}{64 + P_s} 
+$$
 ---
 ## <a id="3"><b>3. Elasticity & Theory of Consumer Demand: Neoclassical Perspective</b></a>
 
 The consumption of a certain good/service provides satisfaction to the consumer. <b> Utility </b> measures the level of satisfaction associated.
 
-- <b> Early neo-classical economists </b> believed that utility can be measured numerically _just like weight, temperature or distance._Adam
+- <b> Early neo-classical economists </b> believed that utility can be measured numerically _just like weight, temperature or distance.
 
 - <b> Modern consumer theory </b> states that utility cannot be measured numerically because is a subjective phenomenon.
 
 Utility can also be measured in people's <b>willigness to pay </b> (WTP). The demands curve relflects the overall WTP for a good.
+
+---
 
 ### <b> Budget Constraints </b>
 
@@ -254,6 +284,33 @@ Perfect substitutes and complements show <b> particular indifference curves</b>.
 ![Indifference Curve](/images/notes/microeconomics/substitutes_complements.png)
 </div>
 
+
+<b>Example: income and substitution effects with two goods $A,B$</b>
+
+Initially, prices and quantities consumed by Giacomo are the following:
+
+$$
+P_A^1 = 10, Q_A^1 = 3, P_B^1 = 10, Q_B^1 = 7
+$$
+
+In a second period, price $B$ drops, resulting in:
+
+$$
+P_A^2 = 10, Q_A^2 = 2.5, P_B^2 = 5, Q_B^2 = 15
+$$
+
+We then know that, if Giacom could change its income to maintain the same utility of the first period, quantities consumed would be:
+
+$$
+Q_A^* = 1.5, Q_B^* = 9
+$$
+
+The substitution effect measures the change in consumption caused just by the changes in price, keeping utility costant: $Q_B^* - Q_B^1 = 9 - 7 = 2$. _(Note that with the substitution effect Giacomo is moving along the same indifference curve $\to$ same utility)_.
+
+The income effect measures the change in consumption caused by the increase of purchasing power (for the price drop): $Q_B^2 - Q_B^* = 15 - 9 = 6$. _(Note that with the income effect the price change pushes Giacomo on a different level of utility)_.
+
+---
+
 The <b> marginal rate of substitution </b> (MRS) is rate at which consumer is willing to trade one good for another.
 - It is equal in magnitude to the slope of the indifference curve
 - High MRS represents an higher importance of the new good.
@@ -276,6 +333,8 @@ $$
 MRS_{Y,X} = \frac {MU_X}{MU_Y}
 $$
 
+---
+
 ### <b> Price-Consumption, Demand & Engel Curve </b>
 
 The above graph shows that a decrease in price leads to a change in the consumer optimum (indifference curve). From this plot, we can derive the <b> price-consumption curve</b> and then the demand curve.
@@ -288,6 +347,8 @@ The <b> Engel curve </b> shows instead the relationship between demand and level
 <div align = "center">
 ![Engel Curve](/images/notes/microeconomics/engel.png)
 </div>
+
+---
 
 ### <b> Behavioral Economics </b>
 
@@ -302,6 +363,7 @@ The most important behavioral anomalies affecting economic decisions are:
 - <b> Bounded selfishness </b>
 
 ---
+
 ## <a id="4"><b>4. The Cost of Production</b></a>
 
 <b> The production function </b> is a simplied mathematical representation of the production process.
@@ -331,6 +393,8 @@ where $F_i$ is a production factor.
 
 The diminishing (decreasing) marginal product property affirms that the marginal product of an input declines as the quantity of input decreases ($MP_i$ is decreasing function in $F_i$). _Of course, it's not a law of nature, just an empirical principle_.
 
+---
+
 ### <b> Cobb Douglas Production function </b>
 
 A very widely used production function in economics is the <b> Cobb Doublas Production Function</b>, defined as:
@@ -348,6 +412,40 @@ $$
 $$
 MP_C = z \alpha C^{\alpha - 1}L^{\beta}
 $$
+
+<b>Example: cost minimization problem with the Cobb Doublas Production function </b>
+
+The firm _Jack Inc_  produces commodity $Q = 10$ using inputs labor $L$ $(P_L = 2)$ and capital $K$ $(P_K = 2)$, with the following production function:
+
+$$
+Q(K,L) = K^{0.7}L^{0.3}
+$$
+
+To solve the minization problem and obtain the optimal $K^*$, we first need to solve the production function for $L$:
+
+$$
+L^{0.3} = Q K^{-0.7} \to L = Q^{10/3}K^{-7/3}
+$$
+
+we then substitute $L, K$ in the cost function:
+
+$$
+C = P_L L + P_K K = P_L Q^{10/3}K^{-7/3} + P_K K
+$$
+
+we determine the cost-minimizing $K^$ by taking the first derivative:
+
+$$
+\frac{\partial C}{\partial K} = P_K + P_L Q^{10/3} \frac{-7}{3}K^{-10/3} = 0
+$$
+
+that brings to:
+
+$$
+K^* = (7/3)^{3/10} Q \left ( \frac{P_K}{P_L}\right)^{-3/10}
+$$
+
+---
 
 ### <b> Productivity Indicators </b>
 
@@ -375,6 +473,8 @@ $$
 where  $v_i$ is the revenue share, $y_i$ the output, $w_i$ the cost share and $x_i$ the cost share.
 
 <small> _More about this index can be found <a target = "_blank" href = "https://it.wikipedia.org/wiki/Indice_di_Törnqvist"> here </a>._ </small>
+
+---
 
 ### <b> Costs, Revenues, Economic and Accounting Profit </b>
 
@@ -443,6 +543,8 @@ The shape of the total cost curve is stricly dependent on the market type.
 ![Marginal Cost](/images/notes/microeconomics/total_cost_curves.png)
 </div>
 
+---
+
 ### <b> Economies of Scale </b>
 
 - Economies of scale refer to the property for which the long-run average total cost falls, as the quantity increases due to:
@@ -465,6 +567,8 @@ $$
 - $ES > 1$: economies of scale
 - $ES < 1$: diseconomies of scale
 - $ES \approx 1$: CRS
+
+---
 
 ### <b> Economies of Scope </b>
 If the joint production of a single firm is greater than the output it could be achieved to different firms, each producing a single product, we speak of economies of scope.
@@ -499,6 +603,8 @@ $$
 \text{MRTS} = \frac{\text{MP}_L}{\text{MP}_C} = \frac{\frac{\partial Q}{L}} {\frac{\partial Q}{K}}
 $$
 
+---
+
 ### <b> Isocost Line </b>
 
 The isocost line shows the different combinations of factor inputs that can be purchased with a given budget.
@@ -515,6 +621,8 @@ $$
 ![Isocost Line](/images/notes/microeconomics/isocost.png)
 </div>
 
+---
+
 ### <b> Derivation of the Supply Curve </b>
 
 We then see that if we move to the top-right we increase output but, looking at the tangency between the isocost line and the isoquant line, also the total cost increase.
@@ -522,6 +630,8 @@ Therefore, by combining the plots and plotting quantity and total cost, we can d
 <div align = "center">
 ![Derivation Supply Curve](/images/notes/microeconomics/derivation_supply.png)
 </div>
+
+---
 
 ### <b> Inefficienties and the Principal Agent Problem</b>
 
@@ -536,8 +646,11 @@ Often indeed, there's an asymetry of information between the _management_ and th
 
 Consumer and producer surpluses are used to measure the change in welfare due to a change in the market conditions.
 
-The <b> consumer surplus</b> is the buyer's willigness to pay minus the amount the buyer actually pays; _it measures the extra amount of value in $ the consumer receives._Adam
+The <b> consumer surplus</b> is the buyer's willigness to pay minus the amount the buyer actually pays; _it measures the extra amount of value in $ the consumer receives._<br/>
 It increases as the price decreases.
+
+_Consumer surplus is calculated as the area below the demand curve and above the price._
+
 <div align = "center">
 ![Consumer Surplus ](/images/notes/microeconomics/consumer_surplus.png)
 </div>
@@ -549,8 +662,9 @@ Think, for example, at the cost-benefit analysis of the construction of a tunnel
 </div>
 
 
-The <b>producer surplus </b> is the amount a seller is paid for a good minimum the seller's cost or, in other words, _it is the excess of revenues over long run cost of production._
-It decreases as price decreases.
+The <b>producer surplus </b> is the amount a seller is paid for a good minimum the seller's cost or, in other words, _it is the excess of revenues over long run cost of production._</br>It decreases as price decreases.
+
+_Producer surplus is calculated as the area above the supply curve and below the price._
 
 <div align = "center">
 ![Producer Surplus ](/images/notes/microeconomics/producer_surplus.png)
@@ -567,6 +681,18 @@ $$
 <div align = "center">
 ![Total Surplus ](/images/notes/microeconomics/total_surplus.png)
 </div>
+
+<b>Deadweight loss </b> is instead the loss to the society because the market is not producing at its most efficient level.
+
+It is found as follow:
+- compute the initial equilibrium $Q^*$
+- find the new equilibrium given by an efficient $Q^{inefficient} < Q^*$
+- the <b>deadweight loss</b> is calculated as the area of the triangle obtained by:
+    - the demand curve _(top side)
+    - the supply curve _(bottom side)
+    - the vertica line $Q = Q^{inefficient}$.
+
+This area is _almost always_ a triangle/arrow pointing to the initial/optimal equilibrium.
 
 ---
 
@@ -627,6 +753,8 @@ Some possible solutions are:
 - privatization of the resource by assigning property rights
 - self-organizazion
 - Elinor Ostrom (common resources are well managed when those who benefit from them are in close proximity with the resource)
+
+---
 
 ### <b> Externalities </b>
 
@@ -748,8 +876,10 @@ $$
 ![Elasticity and taxes](/images/notes/microeconomics/elasticity_taxes.png)
 </div>
 
+---
+
 ### <b>Taxes and Equity </b>
-The basic question when desigin a tax system is: how should taxes be distributed among the population?_
+The basic question when desigin a tax system is: _how should taxes be distributed among the population?_
 
 The are 2 basic principles: 
 - <b>Benefits Principle</b>: people should pay taxes based on the benefits they receive from the State.
@@ -818,7 +948,7 @@ This conditions implies that a firm's marginal cost curve describes also it's <b
 ![Equilibrium in the short run](/images/notes/microeconomics/short_run_supply.png)
 </div>
 
-As long as revenues minus variable costs ($TR - AVC$) coversthe fixed cost partly, the firm should produce until $MR = P = MC$.
+As long as revenues minus variable costs ($TR - AVC$) cover the fixed cost partly, the firm should produce until $MR = P = MC$.
 
 If instead the prices such that $TR < AVC$, the firms minimizes its loss shutthing down the production.
 
