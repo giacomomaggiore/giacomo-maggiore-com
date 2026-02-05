@@ -1,0 +1,76 @@
+---
+title: 'Economic Dynamics and Complexity'
+publishedAt: '2026-02-05'
+summary: ''
+---
+
+The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=193529&semkez=2025W&ansicht=LEHRVERANSTALTUNGEN&lang=en" target="_blank"> <b> Economic Dynamics and Complexity</b></a>, held by <a target="_blank" href="https://www.verginer.eu/"><b> 	Luca Verginer
+</b> </a> at <a target="_blank" href="https://ethz.ch/en.html"> <u>ETH Zurich</u></a>.
+
+--- 
+
+### 1.1 Cobweb Dynamics: a simple model for supply and demand
+
+Consider Supply $(S)$, Demand $(D)$ coupled via the price $(P)$ with linear dependence.
+- Demand $D$ responds to price immediately
+- Supply $S$ responds with lag (production takes time).
+
+$$
+Q_t^D = D_t = \frac{a - P_t}{b}
+\\
+Q_t^S = S_t = \frac{P_{t-1}-c}{s}
+$$
+
+The system can converge, oscillate or diverge depending on how supply and demand are sensitive to price.
+
+### 1.2 Basics of Epidemic Models
+
+A simple <b>Susceptible-Infected (SI)</b> model states:
+
+$$
+\dot S = - \beta \frac{SI}{N},\quad  \dot I = \beta \frac{SI}{N}
+$$
+
+where $\beta$ detnoes the infectious contacs per time unit, $I$ the infected, $S$ the susceptible (healty) individuals.
+Note that, <b>at the final state</b>: everyone is infected.
+
+
+
+Assuming that the population is closed and that recovery is not possible, the share $x(t)$ of the population infected increases following a <b>logistic growth</b>:
+
+$$
+x(t) = \frac{1}{1 + e^{-\beta(t - \mu)}}
+$$
+
+In the early phase: $\dot x \approx \beta x$ (almost a exponential growth), in the long run $x \implies 1$.
+
+On the other hand, <b>Susceptible-Infected-Removed (SIR)</b> model introduces the possibility of recovery or date, represented by $\gamma$.
+
+$$
+\dot S = - \beta \frac{SI}{N}, \quad \dot I = \beta \frac{SI}{N} - \gamma I, \quad  \dot R = \gamma I
+$$
+
+The infected people are then a _transient state_ and at the equilibrium _(the final stage)_ the disease cannot spread anymore.
+
+<div align = "center">
+![Materiality Matrix](/images/notes/econ-din-compl/sir.png)
+</div>
+
+In _discrete time_, the previous expressions become:
+
+$$
+x_{t+1} = x_t + rx_t (1 - x_t)
+\\
+
+z_{t+1} = q z_t (1 - z_t), \quad q = 1 + r
+$$
+
+### 1.3 <b>Supply Chains as Rooted Trees </b>
+
+We can represent a chain as a graph $G = (V,E)$, with $V$ representing the set of verttices (notes) and $E \subseteq V \times V$ the set of edges, that can be directed or not: $(u,v) = \text{or} \neq (v,u)$.
+
+Edges can be weighted ($w_{uv}) and represent capacity, volume, lead time or reliability of a single link of the supply chain.
+
+A <b>directed tree</b> models an isolated supply chain with source suppliers and root assembler.
+
+In reality, firms have multiple interconnected suppliers and customers, leading to a <b>supply network</b>
