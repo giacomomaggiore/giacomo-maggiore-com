@@ -9,7 +9,8 @@ The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorles
 
 --- 
 
-### 1.1 Cobweb Dynamics: a simple model for supply and demand
+### <a id ="1.1"> <b>1.1 Cobweb Dynamics: a simple model for supply and demand</b> </a>
+
 
 Consider Supply $(S)$, Demand $(D)$ coupled via the price $(P)$ with linear dependence.
 - Demand $D$ responds to price immediately
@@ -23,7 +24,8 @@ $$
 
 The system can converge, oscillate or diverge depending on how supply and demand are sensitive to price.
 
-### 1.2 Basics of Epidemic Models
+---
+### <a id ="1.2"> <b>1.2 Basics of Epidemic Models</b> </a>
 
 A simple <b>Susceptible-Infected (SI)</b> model states:
 
@@ -53,7 +55,7 @@ $$
 The infected people are then a _transient state_ and at the equilibrium _(the final stage)_ the disease cannot spread anymore.
 
 <div align = "center">
-![Materiality Matrix](/images/notes/econ-din-compl/sir.png)
+![SIR](/images/notes/econ-din-compl/sir.png)
 </div>
 
 In _discrete time_, the previous expressions become:
@@ -71,7 +73,407 @@ We can represent a chain as a graph $G = (V,E)$, with $V$ representing the set o
 
 Edges can be weighted ($w_{uv}$) and represent capacity, volume, lead time or reliability of a single link of the supply chain.
 
+We done by $k_v^{in}$,$k_v^{in}$ the degrees (number of connections) of a node $v$ has in input (suppliers) and output (customers).
 A <b>directed tree</b> models an isolated supply chain with source suppliers and root assembler.
 
 In reality, firms have multiple interconnected suppliers and customers, leading to a <b>supply network</b>
 
+<b>Dynamics of networks: how links form:</b>
+
+- Networks evolve: entry, exit, mergers, rewiring.
+- The simple mathematical rule behind is: $\mathbb{P}(u \to v) \propto k_v + \alpha$ _(the probability that a node $u$ connects to a new node $v$ is proportional to its number of degrees)_
+- The outcome is a hevily-tailed degree with a few hubs and many small degrees.
+
+<b>Dynamics of networks: how goods flow | Continuous Flow (deterministic)</b>
+
+Let's denote by $x_v(t)$ the inventory at node $v$.
+
+The flow balance is given by:
+
+$$
+\dot x = \sum_u f_{uv}(t) - \sum_w f_{vw}(t) + s_v(t) - d_v(t)
+$$
+
+Where $f_{uv}$ is the inflow from suppliers, $f_{vw}$ the outflow to customers or other nodes, $s_v$ the production and $d_v$ the demand. 
+
+In matrix form: $\dot X(t) = - LX(t)+ S(t) - D(t)$.
+
+<b>Dynamics of networks: how goods flow | Markov Routing  (stochastic)</b>
+
+We consider a transition matrix $P$ with entries $P_{uv} = \mathbb{P}(u \to v)$ and we denote by $p(t)$ the probability of good at each node.
+
+We then have the following dynamics:
+$$
+p(t + 1) = p(t)P
+$$
+
+
+---
+
+### <a id =".1"> <b>2.1 Growth Models: exponential and logistic</b> </a>
+
+We initially study a simple growth dynamic: the compounding interest. <br/>
+We consider a initial deposit $x_0$ and a nominal annual rate $r$, with interest credited every $\Delta t$.
+
+$$
+\begin{align*} 
+x_0 &= x_0 \\ 
+x_{\Delta t} &=  x_0 (1 +  r \Delta t)\\
+x_{2 \Delta t} &=  x_{\Delta t} (1 +  r \Delta t)\\
+... \\
+
+
+x_{n \Delta t} &= x_0 (1 + r \Delta t)^n
+\end{align*}
+$$
+
+with $t = n \Delta t$, we then obtain: $x(t) = x_0 (1 + r \Delta t)^{t / \Delta t}$.
+
+As $t \to 0$, we can switch to continuous time:
+
+$$
+\frac {dx}{dt} = \dot x(t) = rx(t)
+$$
+
+The analytical solution of this simple ODE is obtained via separation of variables:
+
+$$
+\frac {dx}{dt} = rx \implies \frac{1}{x}dx = r dt \\
+
+\int_{x_0}^{x} \frac{1}{x} dx = \int_{x_0}^{x} r dt \implies -\log(|x_0|) + \log(|x|) = rt
+$$
+
+and then, solving for x:
+
+$$
+x_(t) = e^{rt + \log(|x_0|)} = x_0 e^{rt}
+$$
+
+If we instead want to solve the initial value problem with a <b> numerical approximation</b> (Euler's method) we choose a step size $\Delta t$ and set up a time grid.
+
+At each step, we obtain the gradient $f(x_n,t_n)$ at the current point and take a step $\Delta t$ in that direction. This leads to the Euler update rule:
+
+$$
+x_{n+1} = x_n + \Delta t f(x_n,t_n)
+$$
+
+In python, for example:
+
+```python 
+def euler(f, x0, t0, T, dt):
+   t, x = [t0], [x0]
+   while t[-1] < T:
+       slope = f(x[-1], t[-1])
+       x.append(x[-1] + dt * slope)
+       t.append(t[-1] + dt)
+return t, x
+
+```
+---
+
+We now analyze a saturated growth model.
+Let $x$ be the population size, $r$ the intrinsic growth rate, $K$ the carrying capacity.
+
+We start from the <b>per-capita growth rate </b> (proportional growth)
+$$
+\frac{1}{x}\frac{dx}{dt} = r
+$$
+
+we then add a <b>limited resources </b> constraint: per-capita rate decreases with $x$.
+
+$$
+\frac{1}{x}\frac{dx}{dt} = r ( 1 - k/K) \implies \dot x = rx(1 - x/K)
+$$
+
+_The term $-x/K$ limits the exponential growth up to $K$._
+
+The close form solution brings to:
+
+$$
+x(t) = \frac{K}{1 + \frac{K - x_0}{x_0}e^{-rt}}
+$$
+
+In the logistic growth, if we consider $f(x) = \frac{dx}{dt} = rx(1 - x/K) = rx - r/Kx^2$, we obtain two equilibria:
+- $x^{eq}_1 = 0$: <b>unstable</b>. $(\frac{df}{dx}|x^{eq}_1 > 0)$
+- $x^{eq}_2 = K$: <b>stable</b> $(\frac{df}{dx}|x^{eq}_1 < 0)$
+
+The <b>MSY</b> (maximum sustainable yield) is obtained where $\frac{df}{dx} = 0$: $x^* = K/2$.
+
+---
+
+
+
+We now consider the <b>Allee Effect</b>, modelling the fact that, a low density, individuals struggle to grow.
+The model then becomes:
+
+
+$$
+\frac{dx}{dt} = - xr (1 - x/K)(1 - x/A)
+$$
+
+where the term $(1 - x/A)$ models the _critical density_.
+The growth rate is then:
+
+$$
+\dot x = - rx + (\frac{r}{A} + \frac{r}{K})x^2 - \frac{r}{AK}x^3
+$$
+
+In the Allee dynamics, there are three equilibrium:
+- $0$ and $K$ are stable
+- $A$ is an unstable equilibrium
+Indeed, if $x(0) < A \implies$ the population declines to $0$, otherwise it grows to $K$.
+
+
+
+<div align = "center">
+![Logistic](/images/notes/econ-din-compl/logistic.png)
+</div>
+
+---
+
+### <a id ="2.2"> <b>2.2 Fishing/Harvesting Model</b> </a>
+
+We now consider a <b>harvesting function </b>$h(x,e)$:
+- $x$ represents the stock (fish population)
+- $e$ represents the effort (boats, manpower)
+- $h(x,e)$ represents the outflow of resources (catch per unit time)
+
+Then we have:
+
+$$
+\dot x = f(x) - h(x,e), \quad f(x) = rx(1 - x/K)
+$$
+
+At the equilibrium:
+
+$$
+\dot x = 0, \quad f(x) = h(x,e)
+$$
+
+If we set $h(x,e) = h$, the equilbrium is given by $f(x) = h$.
+
+Multiple cases possible:
+- $h > f(x^*)$: above the MSY $\implies $ extinction.
+- $h = f(x^*) \implies $ maximum yieldl, but not maximum risk.
+- $0 < h < f(x^*) \implies $ two intersections:
+    - the lower one is unstable, the upper one is stable.
+
+If we instead consider the <b>harvesting function proportional</b> to effort: 
+
+$$
+h(x,e) = aex, \quad \dot x = rx(1 - r/K) - aex
+$$
+
+ the two equilibria are:
+- $x = 0 $
+- $x^* = K(1 - \frac{ae}{r})$ (positive and then stable only if $ae < r$)
+
+### <a id ="2.3"> <b>2.3 Growth Models: supply and demand determine price</b> </a>
+
+In this case, the harvesting function $h$ is not fixed, but market driven.
+- demand is decreasing in price $p$
+- supply is increasing in price $p$ and stock $x$.
+
+$$
+q^d = c_0 - c_1p, \quad q^s = b_1è + b_2x
+$$
+
+The market clearing is obtained as: $q^d = q^s = h^{eq}(x)$ and the equilibrium price $p^{eq}(x)$:
+
+$$
+p^{eq}(x) = \frac{c_0 - b_2x}{c_1 + b_1}
+$$
+
+The harvesting function becomes then a function of stock:
+
+$$
+h^{eq}(x) = q^s \big(  p^{eq},x  \big) = b_1 p^{eq}(x) + b_2 x 
+
+h^{eq}(x) = \frac{c_0 b_1 + c_1 b_2 x}{c_1 + b_1}
+$$
+
+We can the model the stock dynaimics as:
+
+$$
+\dot x = f(x)- h^{eq}(x), \quad f(x) = rx(1 - x/K)
+$$
+
+---
+
+We now consider the profit function $\pi$ of a firm, given by:
+
+$$
+\pi(e) = TR - TC
+$$
+
+with $TC = we$, w wage effort; and revenue $TR = ph$, with $h = aex$.
+
+From the previous section we know that:
+
+If we plug the previous equilibrium $x^*$ in the profit function and we set $\frac{d\pi}{\d e} = 0$, we obtain:
+
+$$
+e^* = \frac{r}{2a} - \frac{wr}{2pa^2K}
+$$
+
+<div align = "center">
+![Logistic](/images/notes/econ-din-compl/profit_effort.png)
+</div>
+
+- market entry as long as $\pi > 0, \implies e$ increases
+- $e = e_2$ \impies TR(e_2)> TC(e_2)$: excess profit, entry
+- $e_2 < e < e^*$: profit further increases
+- $e^* < e < e_1$: proif decreasing but still $\pi > 0$.
+- $e = e_1$: no profit, not entry.
+
+---
+
+### <a id ="3.1"> <b>3.1 Common Source Diffusion</b> </a>
+
+We start by analyzing a simple model with:
+- $x(t) in [0,1]$ represting the fraction adopted
+- <b> only external push</b>
+- No initial adopters: $x(0) = 0$.
+- $p$ adoption hazard
+- $(1 - x)$ share of non-adopters
+
+$$
+\dot = p \times (1 - x)
+$$
+
+The analytical solution is:
+
+$$
+x(t) = 1 - e^{-pt}
+$$
+
+We clearly that this model is linear in $x$ (the logistic is instead quadratic) and it is <b>always concave </b>, with adoption slowing down as $x \to 1$.
+
+If we instead want to find the time $t(x)$ to reach a target, we simply set:
+
+$$
+\begin{align*}
+1 - e^{-pt} &= x \\
+e^{-pt} &= 1 - x\\
+- pt &= \ln(1-x)\\
+t(x) &= -ln(1-x)/p
+
+\end{align*}
+$$
+<div align = "center">
+![Simple Diffusion](/images/notes/econ-din-compl/simple_diffusion.png)
+</div>
+
+
+---
+
+### <a id ="3.2"> <b>3.2 Bass Diffusion</b> </a>
+
+In this model, each nonadopter is inflyenced by twho channels: adoption (as in the commono source one) and imitation and world of mouth, expressed by the term $qx$, increasing in $x$:
+
+$$
+g(x) = p + qx
+$$
+
+$$
+\begin{alig*}
+\dot x(t) &= g(x) \times (1 - x)\\
+\dot x(t) &= (p + qx) \times (1 -x)
+\end{align*}
+$$
+
+Two special cases in this model:
+- $q = 0:$ commono source model
+- $p = 0:$ pure imitation, needs $x(0)>0$ to start.
+
+<div align = "center">
+![Bass](/images/notes/econ-din-compl/bass.png)
+</div>
+
+However, note that the Bass Model requires <b>strong assumptions</b>:
+- adoption only driven by direct persuasion ($p$ and $q$)
+- homogeneous population, no spatial or network effects
+- no threshold dynamics and no critical mass modeled
+- no economic ingredients (prices, preferences etc etc)
+
+and strong limitations too:
+- at the final state: $x \to 1$ with no reversal
+- the model cannot capture competition, substitution or churn.
+
+### <a id ="3.3"> <b>3.3 SIRS Models</b> </a>
+
+Bass is an example of <b>spreading</b> model, epidemic models (SIRS) are the canonical toolkit for this scenarios.
+
+We start by analyzing a <b>SI model </b>:
+
+$$
+\begin{align*}
+\dot s &= - \beta s i, \quad s + i = 1
+\dot i &= \beta s i, \quad s = 1 - i
+
+\end{align*}
+$$
+
+if we add a recovery rate $\gamma$ and infection ruation $1/\gamma$, we obtain a <b>SIR</b> model:
+
+$$
+\begin{align*}
+\dot s &= - \beta s i
+\dot i &= \beta s i - \gamma i
+\dot r &= \gamma i
+
+\end{align*}
+$$
+
+where $r$ is the recovery rate. We can define the <b>Basic Reproduction Number </b> $R_0$ as the number of infected from one person in a _fully_ subscettible population as:
+
+$$
+R_0 = \frac{\beta}{\gamma}
+$$
+
+In this case, we have an early growth if and only if $R_0 > 1$.
+
+The effective reproduction number is then $R(t) = R_0 s(t)$. The spread slows down and eventually stops when:
+
+$$
+R_t = 1 \implies s = \frac{1}{R_0} \impies \approx r^* = 1 - \frac{1}{R_0}
+$$
+
+The intuition behind is that, once $r^*$ individuals are immune (recovered or vaccinated), each case generates less than one new case on average and infections dies out.
+
+<div align = "center">
+![Bass](/images/notes/econ-din-compl/sir.png)
+</div>
+
+Finally, a <b>SIRS</b> model introduces a waning immuunity that vanishes at rate $w$.
+
+$$
+\begin{align*}
+\dot r &= \gamma i - w r\\
+\dot s &= - \beta s i + wr\\
+\dot i &= \beta si - \gamma i
+\end{align*}
+$$
+
+The end state is <b>non trivial </b> and it is given by the vector $(s^*, i^*, r^*)$.
+
+---
+
+### <a id ="3.4"> <b>3.4 Complex Contagions on a graph: a formal setup</b> </a>
+
+We consider a network $G = (V,E)$, with noted $v \in V$ and edges $(u,v) \in E$.
+
+- each node $x_v \in \{0, 1\}$ ($0$ non-adopter, $1$ adopter)$ 
+-  adoption threshold $\theta$
+- neighborhood $N(v) = \{u : (u,v) \in E \}$
+
+The threshold rules says:
+
+$$
+x_v(t+1) = \begin{cases} 
+1, & \displaystyle\sum_{u \in \mathcal{N}(v)} x_u(t) \geq \theta, \\
+x_v(t), & \textbf{otherwise},
+\end{cases}
+$$
+
+_Intuition: node $v$ adopts if $\theta$ or more neighbors are adopters._
