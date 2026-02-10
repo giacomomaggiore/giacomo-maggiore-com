@@ -1411,3 +1411,272 @@ def recursive_spectral(G, depth=0, max_depth=3):
    return (recursive_spectral(G.subgraph(Spos), depth+1, max_depth)
          + recursive_spectral(G.subgraph(Sneg), depth+1, max_depth))
 ```
+
+---
+
+### <a id="9.2"> <b>9.2 Network Eigenvector Centralities</b> </a>
+
+We saw in the last chapters that <b>degree counts links</b>, but not all links are equal. Indeed, a connection to an _important node_ should matter more than one to an unimportant node.
+_Inutition: each node's importante should depend oon the importance of its neighbors_.
+
+$$
+x_i \propto \sum_j A_{ij} x_j
+$$
+
+To compute then the centrality $x_i$ of a node, we can start with a guress and repeatedly update it using the network structure.
+- we start with initial centrality $x^0$ (all equal to one)
+- we sum all the neighbots centralities with $\kappa$ const. of proportionality.
+
+$$
+x_i = \kappa ^{-1} \sum x_j
+$$
+
+or, _equivalently:
+
+$$
+x_i = \kappa ^{-1} \sum_j A_{ij} x_j = \kappa^{-1} A x
+$$
+
+This reduced to the <b>eigenvector equation </b>:
+
+$$
+Ax = \kappa x
+$$
+
+with the <b>leading eigenvector </b> $x$ giving the <b>eigenvector centrality</b>.
+
+- we repeat this procedure until the vector of centralities $x_i$ converges.
+
+_Intuition: high centrality comes from many neighbors (quantity) and/or a few but very central neighbors (quality). Also, note that eigenvector centrality works best for connected, undirected networks_.
+
+Also, note that <b>root nodes</b> have no incoming edgedm, so it gets $x_i = 0$, by consequence, any node that is pointed to _only by_ the root also gets $x_i = 0$.
+_(the zero propagates backward through the graph: nodes reachable only from roots inherit zero centrality)_.
+
+---
+
+### <a id="9.3"> <b>9.3 Katz and PageRank Centralities</b> </a>
+
+To fix the previous problem of the propagation of the zero, <b> Katz Centrality</b> fives each node a small $\beta > 0$, so importance can start _everywhere_:
+
+$$
+x_i = \alpha \sum_j A_{ij} x_j + \beta \iff x = \beta (I - \alpha A)^{-1} \mathbb{1}
+$$
+
+_Intuition: $\beta$ adds ecogenous centrality._
+Note: choose $\alpha < 1 / \kappa_1$ to ensure convergence.
+
+The problem in this model is that an <b>high centrality</b> node can pass large score to many neighbors.
+To fix this, the <b>PageRank algorithm</b> dilutes a node's contribution by its out-degree:
+
+$$
+x_i = \alpha \sum_j A_{ij} \frac{x_j}{k_j^{out}} + \beta
+$$
+
+_PageRank it was firstly introducted by Google to rank web pages, widely used because it downweights mega-directories that link to millions. Google famously used $\alpha \approx 0.85$.
+
+In matrix form, the PageRank model rewrites as:
+
+$$
+x = (I - \alpha A D^{-1})^{-1} + \mathbb{1}B, \quad D = \text{diag} ( \max (k_j^{out}, 1))
+$$
+
+note that:
+- $\beta$ does not affect the results (just scaling)
+- $\alpha$ must be smaller than the largest eigenvalue of $AD^{-1}$.
+
+### <a id="10.1"> <b>10.1 Strategic Network Formation</b> </a>
+
+Given a formed network, we now model how agents can influence and modify the network.
+Agents can be representes as noded on a network $G = (N, E)$ with a utility $u_i(G)$ based on their position:
+$$
+u_i(G) = \text{benefits from G}-\text{costs}
+$$
+
+The social welfare is then:
+
+$$
+W(G) = \sum_i u_i(G)
+$$
+
+A network $G^*$ is <b>socially efficient </b> if $G^* = \argmax_G W(G)$. (_intuition: no other feasible network yields higher total welfare)_.
+
+<b>Pairwise stability</b> occurs when:
+- no agent wants to cut an existing link
+- no agent pairs wants to add a new link
+
+### <a id="10.2"> <b>10.2 The Connections Model (1996)</b> </a>
+
+In this model, agents are nodes in an undirected network, links give access to information and benefits come from both direct and indirect neighbours, with the following utility:
+
+$$
+u_i(G) = \sum_{j \neq i} \delta^{d_{ig}(G)} - cd_i
+$$
+
+where $d_{ij}$ is the shortest-path disstance between $i,j$, $\delta^{d_{ig}(G)} = 0$ is $j$ is not reachable, $\delta \in (0,1) represents then the benefit decay per step and each link costs $c$.
+
+We now analyze the welfare of a <b>complete graph $K_n$</b>, where every node is linked to all others.
+For node $i$, we have the following utility:
+
+$$
+\begin{align*}
+u_i(K_n) &= \sum_{j \neq i} \delta^{d_{ig}} - cd_i \\
+&= \sum_{j \neq i} \delta^{-1} - c (n-1)\\
+&= (n-1)\delta - c(n-1)\\
+&= (n-1)(\delta - c)
+
+\end{align*}
+$$
+
+resulting in the following total welfare:
+$$
+W(K_n) = n (n-1)(\delta - c)
+$$
+
+A similar approach can be applied to the <b>Star Graph</b> $S_n$:
+
+$$
+u_0(Sn) = (n-1)(\delta - c) \quad \text{(center)}
+
+\\
+
+W(S_n) = (n-1)[2 \delta + (n-2)\delta^2 - 2c]
+$$
+
+We can now compare when $S_n$ is better than the empty network:
+
+$$
+W(S_n) > 0 \iff 2 \delta + (n-2)\delta^2 - 2c > 0 \iff c < \delta + \frac{n - 2}{2} \delta^2
+$$
+
+and when $K_n$ is better than $S_n$:
+
+$$
+\begin{align*}
+W(K_n) &> W(S_n) \\
+n(\delta - c) &> 2 \delta + (n-2)\delta^2 - 2\\
+0 &> (n-2)(c + \delta^2 - \delta)\\
+c &< \delta - \delta^2, \quad n > 2
+
+
+\end{align*}
+$$
+
+<div align = "center">
+![welfare](/images/notes/econ-din-compl/welfare.png)
+</div>
+
+In these models, we often incurr in <b>externalities</b>: actions that change other's utility but whose effects the decision kamer does not internalize.
+
+<b>Positive externalities </b> include new links make others better (shorter paths) but, since agents do not take these benefits into account, the result is <b>under connected </b> network _(too few links in equilibrium)_.
+
+<b>Negative externalitiea</b> include that links can harm others _(diluiting resources), resulting in a <b>over connected </b> network.
+
+To compensate externalities, we can introduce <b>side payments </b> in the moel to share $W(G)$.
+
+The idea is that, if a link increases $W(G)$, endpoints can transfer payoffs, so losers can be compe sated by winners:
+
+$$
+(\pi_1(G), \pi_2(G)...)\quad  \text{with}\quad \sum_i \pi_i(G) = W(G)
+$$
+
+---
+
+### <a id="10.3"> <b>10.3 The Co-Author Model</b> </a>
+
+Nodes represent researchers, links are co-autorships.
+- A collaboration $ij$ creates value for both but...
+    - each researcher has limited time
+    - a collaborator with many co-authors is less focused
+- adding a link reduced efficiency for _all other projects_.
+- <b>Negative externality</b>: when a researcher takes another project with someone else, it reduces the value of existing collaborations.
+
+Let $d_i$ the number of co-authors (degree) of researcher $i$:
+
+$$
+u_i(G) =
+\begin{cases}
+\sum_j (\frac{1}{d_i}+ \frac{1}{d_j} \frac{1}{d_i d_j}), \quad d_i > 0
+0   \quad d_i = 0
+\end{cases}
+$$
+
+We can clearly see that, if $i$ increases $d_i$: every one of $i$'s projects becomes less valuable.
+
+In this specific model, welfare is maximized when each collaboratoin has 2 _fully focused researchers_:
+$$
+d_i = 1 \quad \forall i
+$$
+
+The <b>efficient network</b> (maximum welfare) is a set of disjoint pairs (for even $n$).
+
+### <a id="11.1"> <b>11.1 Dynamics of Strategic Network Formation</b> </a>
+
+Knowing which networks are efficient or stable doesn't tewll us which networks actually emerge.
+Networks grow through sequence of local decisions, creating a <b>dynamic system</b> where path-dependence can arise.
+
+In the last section, we have seen that several networks are stable, but we assumed the cost per link <b>constant</b>.
+In reality, maintaining more links becomes more expensive: to account for this we introduce <b>quadratic costs </b> $ck_i^2$.
+
+$$
+u_i(G) = \delta_{j \neq i} \delta^{d_{ij}} - c k^2_i
+$$
+
+the marginal cost of adding one link is then:
+$$
+\Delta C_i = c [(k_i + 1)^2 - k_i^2] = c (2k_i +1)  \ge c
+$$
+
+_Intuition: first links are cheap, link costs grow with degree._
+
+Under linear costs, we have seen <b>star-like</b> or core-periphery structures. With <b>quadratic costs</b> highest degrees are much smaller and networks look more <b>"egalitarian"</b> (no super hubs).
+This happen because, with high marginal costs, they stop adding links earlier.
+
+<a href="https://www.verginer.eu/teaching/spatial_network.html" target="_blank">To simulate the network formation game, please use this very cool tool by Luca Verginer! </a>
+
+We consider now a potential network with $n$ nodes, with $M = \binom{n}{2}$ possible links and $2^M$ possible networks.
+
+In this scenario, <b>pairwise-stable </b> networks are a tiny subset. 
+<br/>Our process is a slow, myopic search in a gigantic space: therefore, we chanfe one link at time with the following rule:
+- pick a random pair
+- add the link if both gain
+- delete the link if one gains
+
+In simulation, this long process shows up as:
+- <b>long transients</b> with very slow convergence, if at all
+- <b>oscillations</b> with the number of links and welfare fluctuate.
+
+With $n$ large, also the number of constraints to reach pairwise-stability grow <b>superlinearly</b> in $n (n^2)$.
+
+_Key takeaway: in large economic networks, the <b>ongoing dynamic</b> is more important the the (unreachable) equilibrium_.
+
+---
+
+### <a id="11.2"> <b>11.2 Spatial Connections Model</b> </a>
+
+So far, networks lived in an abstract place, but in reality and in many economic networks, agents have a <b>location</b>.
+Empirically, we see:
+- <b>strong local connectivity</b> (public transports)
+- a few <b>long range link</b> (airports)
+
+We now try to extend the connection models to take into account to model:
+- easier access to nearby agents
+- more expensive long-range links
+
+We then consider than eachn ode $i$ has a position $x_i \in \R$ and $\phi(i,j)$ is the distance between $i,j$, then:
+
+$$
+u_i(G) = \sum_{i \neq j} \delta^{d_{ig} + \phi(i,j)} -ck_i
+$$
+
+_Intuition: geography acts as an extra hops in the network, increasing the effective distance exponent._
+- Closer neighbours have smaller exponent and larger benefits
+- distand nodes have small benefits unless we create shortcuts.
+
+In the simple case, with two isolated nodes $i,j$, link forms if:
+$$
+\delta^{1 + \phi(i,j)} -c \ge 0 \iff \delta^{1 + \phi(i,j)} \ge c \\
+
+\iff \phi(i,j) \le \frac{\log(c)}{\log(\delta)} -1 = r^*
+$$
+
+$r^*$ is also defined as the <b>critical distance </b>.
