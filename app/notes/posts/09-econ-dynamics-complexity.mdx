@@ -9,7 +9,7 @@ The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorles
 
 --- 
 
-### <a id ="1.1"> <b>1.1 Cobweb Dynamics: a simple model for supply and demand</b> </a>
+### <a id="1.1"> <b>1.1 Cobweb Dynamics: a simple model for supply and demand</b> </a>
 
 
 Consider Supply $(S)$, Demand $(D)$ coupled via the price $(P)$ with linear dependence.
@@ -27,18 +27,18 @@ The system can converge, oscillate or diverge depending on how supply and demand
 ---
 ### <a id ="1.2"> <b>1.2 Basics of Epidemic Models</b> </a>
 
-A simple <b>Susceptible-Infected (SI)</b> model states:
+A simple <b>Susceptible-inftyected (SI)</b> model states:
 
 $$
 \dot S = - \beta \frac{SI}{N},\quad  \dot I = \beta \frac{SI}{N}
 $$
 
-where $\beta$ detnoes the infectious contacs per time unit, $I$ the infected, $S$ the susceptible (healty) individuals.
-Note that, <b>at the final state</b>: everyone is infected.
+where $\beta$ detnoes the inftyectious contacs per time unit, $I$ the inftyected, $S$ the susceptible (healty) individuals.
+Note that, <b>at the final state</b>: everyone is inftyected.
 
 
 
-Assuming that the population is closed and that recovery is not possible, the share $x(t)$ of the population infected increases following a <b>logistic growth</b>:
+Assuming that the population is closed and that recovery is not possible, the share $x(t)$ of the population inftyected increases following a <b>logistic growth</b>:
 
 $$
 x(t) = \frac{1}{1 + e^{-\beta(t - \mu)}}
@@ -46,13 +46,13 @@ $$
 
 In the early phase: $\dot x \approx \beta x$ (almost a exponential growth), in the long run $x \implies 1$.
 
-On the other hand, <b>Susceptible-Infected-Removed (SIR)</b> model introduces the possibility of recovery or date, represented by $\gamma$.
+On the other hand, <b>Susceptible-inftyected-Removed (SIR)</b> model introduces the possibility of recovery or date, represented by $\gamma$.
 
 $$
 \dot S = - \beta \frac{SI}{N}, \quad \dot I = \beta \frac{SI}{N} - \gamma I, \quad  \dot R = \gamma I
 $$
 
-The infected people are then a _transient state_ and at the equilibrium _(the final stage)_ the disease cannot spread anymore.
+The inftyected people are then a _transient state_ and at the equilibrium _(the final stage)_ the disease cannot spread anymore.
 
 <div align = "center">
 ![SIR](/images/notes/econ-din-compl/sir.png)
@@ -67,7 +67,8 @@ x_{t+1} = x_t + rx_t (1 - x_t)
 z_{t+1} = q z_t (1 - z_t), \quad q = 1 + r
 $$
 
-### 1.3 <b>Supply Chains as Rooted Trees </b>
+### <a id ="1.3"> <b>1.3 Supply CHains as Rooted Trees</b> </a>
+
 
 We can represent a chain as a graph $G = (V,E)$, with $V$ representing the set of verttices (notes) and $E \subseteq V \times V$ the set of edges, that can be directed or not: $(u,v) = \text{or} \neq (v,u)$.
 
@@ -94,7 +95,7 @@ $$
 \dot x = \sum_u f_{uv}(t) - \sum_w f_{vw}(t) + s_v(t) - d_v(t)
 $$
 
-Where $f_{uv}$ is the inflow from suppliers, $f_{vw}$ the outflow to customers or other nodes, $s_v$ the production and $d_v$ the demand. 
+Where $f_{uv}$ is the inftylow from suppliers, $f_{vw}$ the outflow to customers or other nodes, $s_v$ the production and $d_v$ the demand. 
 
 In matrix form: $\dot X(t) = - LX(t)+ S(t) - D(t)$.
 
@@ -306,7 +307,7 @@ $$
 \pi(e) = TR - TC
 $$
 
-with $TC = we$, w wage effort; and revenue $TR = ph$, with $h = aex$.
+with $TC = we$, $w$ wage effort; and revenue $TR = ph$, with $h = aex$.
 
 From the previous section we know that:
 
@@ -321,7 +322,7 @@ $$
 </div>
 
 - market entry as long as $\pi > 0, \implies e$ increases
-- $e = e_2$ \impies TR(e_2)> TC(e_2)$: excess profit, entry
+- $e = e_2 \implies TR(e_2)> TC(e_2)$: excess profit, entry
 - $e_2 < e < e^*$: profit further increases
 - $e^* < e < e_1$: proif decreasing but still $\pi > 0$.
 - $e = e_1$: no profit, not entry.
@@ -331,14 +332,14 @@ $$
 ### <a id ="3.1"> <b>3.1 Common Source Diffusion</b> </a>
 
 We start by analyzing a simple model with:
-- $x(t) in [0,1]$ represting the fraction adopted
+- $x(t) \in [0,1]$ representing the fraction adopted
 - <b> only external push</b>
 - No initial adopters: $x(0) = 0$.
 - $p$ adoption hazard
 - $(1 - x)$ share of non-adopters
 
 $$
-\dot = p \times (1 - x)
+\dot x = p \times (1 - x)
 $$
 
 The analytical solution is:
@@ -369,14 +370,14 @@ $$
 
 ### <a id ="3.2"> <b>3.2 Bass Diffusion</b> </a>
 
-In this model, each nonadopter is inflyenced by twho channels: adoption (as in the commono source one) and imitation and world of mouth, expressed by the term $qx$, increasing in $x$:
+In this model, each nonadopter is inftylyenced by twho channels: adoption (as in the commono source one) and <b>imitation or world of mouth</b>, expressed by the term $qx$, increasing in $x$:
 
 $$
 g(x) = p + qx
 $$
 
 $$
-\begin{alig*}
+\begin{align*}
 \dot x(t) &= g(x) \times (1 - x)\\
 \dot x(t) &= (p + qx) \times (1 -x)
 \end{align*}
@@ -414,7 +415,7 @@ $$
 \end{align*}
 $$
 
-if we add a recovery rate $\gamma$ and infection ruation $1/\gamma$, we obtain a <b>SIR</b> model:
+if we add a recovery rate $\gamma$ and inftyection ruation $1/\gamma$, we obtain a <b>SIR</b> model:
 
 $$
 \begin{align*}
@@ -425,7 +426,7 @@ $$
 \end{align*}
 $$
 
-where $r$ is the recovery rate. We can define the <b>Basic Reproduction Number </b> $R_0$ as the number of infected from one person in a _fully_ subscettible population as:
+where $r$ is the recovery rate. We can define the <b>Basic Reproduction Number </b> $R_0$ as the number of inftyected from one person in a _fully_ subscettible population as:
 
 $$
 R_0 = \frac{\beta}{\gamma}
@@ -439,7 +440,7 @@ $$
 R_t = 1 \implies s = \frac{1}{R_0} \impies \approx r^* = 1 - \frac{1}{R_0}
 $$
 
-The intuition behind is that, once $r^*$ individuals are immune (recovered or vaccinated), each case generates less than one new case on average and infections dies out.
+The intuition behind is that, once $r^*$ individuals are immune (recovered or vaccinated), each case generates less than one new case on average and inftyections dies out.
 
 <div align = "center">
 ![Bass](/images/notes/econ-din-compl/sir.png)
@@ -477,3 +478,627 @@ x_v(t), & \textbf{otherwise},
 $$
 
 _Intuition: node $v$ adopts if $\theta$ or more neighbors are adopters._
+
+### <a id ="4.1"> <b>4.1 Coupled Dynamics: Lotka-Volterra Predator-Prey Model</b> </a>
+
+Coupled dynamics are needed when two (or more) variables <b>evolve together</b>, leading to <b>cycles, attractors</b> and <b>repellors</b>. Common examples are predator and prey in _biology_, susceptible and inftyected in _epidemiology_, employment and wages in _economics_. In formulas, we can write:
+
+$$
+\dot x = f(x,y) \quad \dot y = g(x,y)
+$$
+
+The analysis of this systems comes from the <b>classification</b> of <b>fixed points</b> and <b>stability</b>, both analytically and numerically.
+
+We start by analyzing the <b>Lotka-Volterra Predator-Prey Model </b>, representing the interaction between two species:
+- $x(t)$: preys (hares)
+- $y(t)$: predators (lynx)
+
+In isolation we know that:
+- prey reproduces exponentially, $\dot x = \alpha x$
+- predators die out: $\dot y = - \gamma y$.
+
+But, with interaction:
+- encounters remove prey at rate $\beta xy$
+- encounters yield predators growth at rate $\delta xy$.
+
+resulting in the following coupled system:
+
+$$
+\begin{align*}
+\dot x &= \alpha x - \beta xy \\
+\dot y &= \delta xy - \gamma y
+
+\end{align*}
+$$
+
+<div align = "center">
+![Lotka](/images/notes/econ-din-compl/lotka.png)
+</div>
+
+We now show the procedure determine <b>fixed points</b>.
+We start by setting the following to find the equilibrium (fixed points $x_k^*, y_k^*)$:
+$$
+\dot x = f(x,y),   \quad \dot y = g(x,y)\\
+f(x,y) = 0, \quad g(x,y) = 0 \implies (x_k^*, y_k^*)
+$$
+
+In the case of the LV model we have:
+
+$$ 
+\begin{align*}
+\dot x &= \alpha x - \beta xy = x (\alpha - \beta y)\\
+\dot y &= \delta xy - \gamma y = y (\delta x - \gamma)\\
+
+\end{align*}
+
+\\
+\begin{cases}
+    x (\alpha - \beta y) = 0 \\
+    y (\delta x - \gamma) = 0
+\end{cases}
+$$
+
+resultin in:
+$$
+(x^*, y^*) = (0,0) \text{or} \quad (x^*, y^*) = (\gamma / \delta, \alpha / \beta)
+$$
+
+In general, the number of roots will depend on $f$ and $g$:
+- <b>Zero</b>: no equilibria
+- <b>One</b>: unique equilbrium
+- <b>Finite number $> 1 </b>: several isolated equilibria
+- <b>inftyinitely many</b>: whole x-axis equilibria
+
+_Note that, in higher dimensions, understanding stability and trajectories become more complicated that in the simple 1D case._
+
+<div align = "center">
+![Lotka](/images/notes/econ-din-compl/lotka2.png)
+</div>
+
+To visualize the trajectory of the system, a common approach is to <b>numerically solve the ODEs</b> with initial condition $(x_0,y_0)$ chosen and then run a series of simulations.
+From the plot, we should then be able to clearly see if the trajectories are <b>converging</b>, <b>diverging</b> or <b>staying</b> in rotation around the fixed points.
+
+<div align = "center">
+![Lotka](/images/notes/econ-din-compl/lotka3.png)
+</div>
+
+Then, at a fixed point, a <b>nonlinar system </b> can be approximated by a linear one.
+Define <b>perturbations $u, v$</b> as:
+
+$$
+u := x - x^*, \quad v := y - y^*
+$$
+
+and, thanks to Taylor expansions, we end up in the dynamics for small perturbations:
+
+$$
+
+\left.
+\begin{aligned}
+    \dot{u} &= u \frac{\partial f}{\partial x}\bigg|_{(x^\star, y^\star)} + v \frac{\partial f}{\partial y}\bigg|_{(x^\star, y^\star)} + \mathcal{O}(u^2, v^2, uv) \\
+    \dot{v} &= \underbrace{u \frac{\partial g}{\partial x}\bigg|_{(x^\star, y^\star)} + v \frac{\partial g}{\partial y}\bigg|_{(x^\star, y^\star)}}_{\text{ linear}} + \underbrace{\mathcal{O}(u^2, v^2, uv)}_{\text{higher order terms}}
+\end{aligned}
+\right\}
+\quad \Longrightarrow \quad
+\begin{bmatrix}
+    \dot{u} \\
+    \dot{v}
+\end{bmatrix}
+\approx
+\underbrace{
+\begin{bmatrix}
+    \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} \\[1em]
+    \frac{\partial g}{\partial x} & \frac{\partial g}{\partial y}
+\end{bmatrix}_{(x^\star, y^\star)}
+}_{\text{Jacobian}}
+\begin{bmatrix}
+    u \\
+    v
+\end{bmatrix}
+
+$$
+
+The <b>eigenvalues of Jacobian </b> tell us whether <b>perturbations grow, decay or oscillate</b>.
+In the 1D case, we had that:
+
+$$
+\delta \dot x = \delta \partial x(t) \implies \delta x(t) = \delta x(0)e^{\lambda t}
+$$
+- if $\lambda <0$: perturbations decay (<b>stable</b>)
+- if $\lambda>0$: perturbations grow (<b>unstable</b>)
+
+The same applies to the 2D case. We consider $z(t) = p e^{\lambda t}$, where $p$ is a costant vector.
+<br/>Then we plug $\dot z = J z$, resulting in:
+
+$$
+\lambda p e ^{\lambda t} = J p e^{\lambda t} \implies Jp = \lambda p
+$$
+
+We can clearly see that the <b>eigenvalues of J</b> describe how small perturbations evolve.
+
+Recall that to compute the eigenvalues of $J$ we can simply write and solve the <b>characteristic polynomial</b>:
+
+$$
+\det(J - \lambda I) = \lambda^2 - \tau \lambda + \Delta 
+\\
+\tau := \operatorname{Tr}(J) = f_x + g_y
+
+\Delta := \det(J) = f_x g_y - f_y g_x
+
+$$
+leading to the following solution:
+$$
+\\
+\lambda_{1,2} = \frac{\tau \pm \sqrt(\tau^2 - 4 \Delta)}{2}
+
+$$
+
+<b>The classification of the fixed points</b> can be done analytically depending on the characteristic polynomial:
+
+- _(a)_: <b>Saddle</b>: $\Delta < 0$. $\lambda_i$ are real and have opposite single
+- _(b,c)_: <b>Stable and Unstable Nodes</b>: $\Delta > 0$ and $\tau^2 \ge 4 \Delta$ (stable with $\tau <0$).
+    Also known as attractors and repellors, $\lambda_i$ are real and have the same sign.
+- _(d,e)_: <b>Stable and Unstable Spiral</b>: $\tau \neq 0$ and $\tau^2 < 4 \Delta$ (stable with $\tau <0$). Also known as attractive focus and repulsive focus, $\lambda_i$ are complex.
+- _(f)_: <b>Center</b>: $\tau = 0 $ and $\Delta > 0$. $\lambda_i$ are complex with zero real part.
+
+<div align = "center">
+![Lotka](/images/notes/econ-din-compl/lotka4.png)
+</div>
+---
+
+<b>Example: Stable/Unstable Spirals or Center in the Lotka-Volterra Model</b>.
+
+We consider the following model:
+
+$$
+
+f(x, y) = \dot{x} = \alpha x - \beta xy, \quad g(x, y) = \dot{y} = \delta xy - \gamma y
+
+$$
+
+Explicitily computing the Jacobian:
+
+$$
+
+J(x, y) = \begin{bmatrix}
+\frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} \\
+\frac{\partial g}{\partial x} & \frac{\partial g}{\partial y}
+\end{bmatrix} = \begin{bmatrix}
+\alpha - \beta y & -\beta x \\
+\delta y & \delta x - \gamma
+\end{bmatrix}
+
+$$
+
+we then find fixed points:
+
+$$
+
+(x^\star, y^\star) \in \left\{ (0, 0), \left( \frac{\gamma}{\delta}, \frac{\alpha}{\beta} \right) \right\}
+
+
+$$
+and we evaluate them at:
+$$
+
+J(0,0) = \begin{bmatrix} \alpha & 0 \\ 0 & -\gamma \end{bmatrix}, \quad \tau = \alpha - \gamma, \quad \Delta = -\alpha\gamma < 0
+$$
+
+$$
+\Rightarrow \quad \lambda_{1,2} = \{ \alpha, -\gamma \} \quad \Rightarrow \quad \textbf{saddle}
+
+
+$$
+
+$$
+J\left( \frac{\gamma}{\delta}, \frac{\alpha}{\beta} \right) = \begin{bmatrix} 0 & -\frac{\beta\gamma}{\delta} \\ \frac{\delta\alpha}{\beta} & 0 \end{bmatrix}, \quad \tau = 0, \quad \Delta = \alpha\gamma > 0
+$$
+$$
+\Rightarrow \quad \lambda_{1,2} = \pm i\sqrt{\alpha\gamma} \quad \Rightarrow \quad \text{\textbf{center}}
+
+$$
+
+---
+
+### <a id ="4.2"> <b>4.2 Coupled Dynamics: Goodwin's Model (1967), Cycles in Employment and Wages</b> </a>
+
+This model comes from a simple observation: <b>economies often show recurrent cycles</b>. Booms cause high employment, so workers gain bargaining power, then wages rise, wage share of outpus increases as well. As a consequence, protits fall, investment slows and growth stalls.
+<br/>. Employment then falls, weakening workers' position, wages stagnate or declinde, profits recover and growth resumes.
+
+<b>Goodwin's idea</b> is to model class struggle dynamics with similar equations used for predator-prey cycles.
+
+We then consider two state variables:
+- $q_t$: employment ratio (jobs over the population) - _analogy with the prey population_
+- $w_t$: wage share (workers' share of output) - _analogy with the predator population_
+
+The <b>qualitative</b> cycle logics says that:
+- $q \uparrow \implies$ bargaining power $\uparrow \implies w \uparrow$
+- $w \uparrow \implies$ profits $\downarrow \implies$ investment $\downarrow \implies q \downarrow$
+- $q \downarrow \implies$ wage pressure $\downarrow \implies w \downarrow \implies$ profits $\uparrow \implies q \uparrow$
+
+Formally, if we consider the following variables:
+- $q_t = l_t / n_t$ employment ratio
+- $w_t = w_t l_t / Y_t = w_t / a_t$ wage share
+- $Y_t$ total output (GDP), with capital-output ratoi $\sigma$ such that: $\dot Y_t = \frac{1-w_t}{\sigma}Y_t$
+- $k_t$ capital stock (invested at: $\dot k_t = (1 - w_t)Y_t$)
+- $l_t$ employed labor
+- $n_t$ total labor force, growing at rate $\beta$.
+- $a_t = Y_t / l_t$ labor productivity, growing a rate $\alpha$.
+- $w_t$ real wage, following the Philipps Curve with: $\frac{\dot w_t}{w_t} = - \gamma + \kappa q_t$
+
+and parameters $\alpha, \beta, \gamma, \kappa, \sigma$.
+
+if we derive the employment ratio and the wage share, we obtain:
+
+$$
+\frac{\dot q_t}{q_t} = \frac{\dot l_t}{l_t}- \frac{\dot n_t}{n_t} = \frac{\dot Y_t}{Y_t} - \frac{\dot a_t}{a_t} - \beta = \frac{1 - w_t}{\sigma} - \beta
+$$
+
+$$
+\frac{\dot w_t}{w_t} = \frac{\dot w_t}{w_t} - \frac{\dot a_t}{a_t} = (- \gamma + \kappa q_t) - \alpha
+$$
+
+Putting toghether, we have the <b>Goodwmin's System</b>:
+
+$$
+\begin{align*}
+\dot q_t &= \big( \frac{1}{\sigma} - \alpha - \beta \big)q_t - \frac{1}{\sigma}w_t q_t\\
+\dot w_t &= \kappa q_t w_t - (\gamma + \alpha) w_t 
+
+\end{align*}
+$$
+
+Simplifying, we get:
+$$
+\dot q_t = A q_t - B w_t q_t, \quad \dot w_t = B q_t w_t - C w_t\\
+
+\dot q = q (A - Bw), \quad \dot w = (Dq - C)
+$$
+
+The intuition, very similar to the previous predator-prey model, is that _workers and capitalists_ are two interacting groups. Workers indeed seek higher wages, capitalists seek higher profits.
+These opposing objectives create a self-regulaasting cycle, neither side "wins" permanently but they co-move in economic cycles.
+
+From an economic point of view:
+- <b>Growth-recessions cycles are endogenous</b> without external shocks
+- <b>Booms</b> (high $q$) are the beginning of slowdowns (rising $w$) and viceversa
+- The neutral center is not robust, small modifications destroy cycles.
+
+<div align = "center">
+![Goodwin](/images/notes/econ-din-compl/goodwin.png)
+</div>
+
+---
+
+### <a id ="5.1"> <b>5.1 Discrete Dynamics: Cobweb Plot</b> </a>
+
+There are several reason behind why we should <b>discretetime dynamics</b>:
+- decision timing: firms and individuals set prices/output quarterly or at fixed intervals
+- institutional calendars: central banks and governments meet on fixed dates
+- contracts and billing: loans, rent and utilities are paid monthly or similarly
+- observed data: GDP, monthly unemployments, annual reports etc etc...
+
+To start with discrete time dynamics, we define the <b>difference equation</b>, representing how the next state depends on the previous:
+
+$$
+x_{t + 1} = f(x_t) \quad \text{\textit{update rule}}
+$$
+
+The evolution if then given by the repeated application of $f$:
+
+$$
+\begin{align*}
+
+x_1 &= f(x_0)\\
+x_2 &= f((f_0))\\
+...\\
+x_t &= f^{(t)}(x_0)
+\end{align*}
+$$
+
+To visualize this, we usually use <b>Cobweb Plot</b>, showing the evolution of the discrete rule.
+- Start with a initial value $x_0$.
+- Move vertically till the blue line representing $f(x)$ and find $f(x_0)$.
+- Move horizontally to the diagonal $x = y$ and find $x_1$.
+- Repeat with $x_1$ and iterate.
+
+<div align = "center">
+![Cobweb](/images/notes/econ-din-compl/cobweb.png)
+</div>
+
+Each update defined a sequence:
+$$
+x_{t +1} = f(x) \implies X = \{ x_0, x_1, x_2 ...\}
+$$
+
+when $f(x)$ crosses $ y = x$ we have <b>fixed points</b> $x^* = f(x^*)$.
+
+_Note that the sequence may cycle set of points (periodi orbits) or may be aperiodic (chaotic) deterministic, but not repeating._
+
+To determine the <b>fixed points</b>, we have to find $z_t^*$ such that $z_{t+1} = f(z_t)$.
+
+We then consider, as usual, the deviation from the fixed point:
+
+$$
+z_{t+1} - z^* = f(z_t) - f(z^*)
+$$
+
+and we linearize around $z^*$:
+
+$$
+f(z_t) \approx f(z^*) + f'(z^*)(z_t - z^*) \implies
+\implies z_{t+1} - z^* \approx f'(z^*) (z_t - z^*)
+$$
+
+if we then iterate $t$ times we obtain:
+
+$$
+z_t - z^* \approx [f'(z^*)]^t (z_0 - z^*)
+$$
+
+To determine if it is stable or not, we simply look at:
+- $|f'(z^*)| < 1 \implies:$ attracting
+- $|f'(z^*)| < 1 \implies:$ repelling
+- $0 < f'(z^*)< 1 \implies:$ monotone
+- $-1 < f'(z^*)< 0 \implies:$ alternating
+
+<div align = "center">
+![Cobweb](/images/notes/econ-din-compl/cobweb2.png)
+</div>
+
+
+### <a id ="5.2"> <b>5.2 Discrete Dynamics: Saturated (Logistic) Growth</b> </a>
+
+We previously analyzed the continuous-time logistic growth as:
+
+$$
+\dot x = rx(1 -r) = rx - rx^2
+$$
+
+if we apply the Euler discretization as:
+
+$$
+\frac{dx}{dt} = \frac{x_{t + \Delta t} - x_t}{\Delta t}
+$$
+
+we can then write:
+
+$$
+x_{t+1}- x_t = rx_t (1 - x_t) \implies
+\begin{align*}
+
+x_{t+1} &= x_t + rx_t(1 -x_t)\\
+&= (1 + r)x_t - rx_t^2\\
+&= (1 + r)x_t (1 - \frac{r}{r+1}x_t)
+
+\end{align*}
+$$
+
+if we define $z_t = x_t \frac{r}{1+r}$:
+
+$$
+\begin{align*}
+z_{t+1} &= (1 + r)z_t (1 - z_t)\\
+&= R z_t (1 - z_t)
+
+\end{align*}
+$$
+
+We now determine <b>fixed points</b>:
+
+$$
+f'(z) = R(1 - 2Z), \quad z^* = \frac{R -1}{R}
+\\
+
+f'(z^*) = 2 - R
+
+$$
+
+we now appòy the stability condition:
+- if $1 < R < 3$ then $|2 - R| < 1$ and the <b>fixed points attract </b>
+- at $R = 3: f'(z^*) = - 1$: <b>flip bifurcation</b> (fixed points becomes repelling: stable 2-cycles).
+
+_Intuition: As long as the growth rate $R$ is between 1 and 3, the population settles down to $z^*$. At exactly $R=3$, the slope becomes $-1$. This is the "tipping point": The system can no longer settle at a single number._
+
+In the second period, if $R > 3$, the population starts jumping back and forth between two values, $z_1$ and $z_2$, every period.
+The period-2 points solve $f(f(z)) = z$, resulting in:
+
+$$
+z_{1,2} = \frac{R + 1 \pm \sqrt(R -3 )(R +1)}{2R} \quad \text{for} R > 3
+$$
+As in the first cycle, f the k-cycle, we obtain stability is reached when: $|(f^{(k)})'(z^*)| < 1$, that, for the 2-cycle rewrites as:
+
+$$
+3 < R < 1 + \sqrt(6) \approx 3.44949
+$$
+
+At $R = 1 + \sqrt(6)$ the2-cycle does another flip _(stable 4-cycle, the population repeats a pattern of 4 different values)_
+
+For many periods, we now consider $R_n$ the value of $R$ where a $2^n$-cycle first appears:
+
+$$
+\begin{align*}
+R_1 &= 3.000\\
+R_2 &= 3.449\\
+R_3 &= 3.544\\
+...\\
+
+
+R_{\infty} &= 3.569
+\end{align*}
+$$
+
+The sequence converges geometrically to $R_{\infty} = 3.569$
+
+We then define the <b>Feigenbaum constant</b> as:
+
+$$
+\delta = \lim_{n \to \infty} \frac{R_{n+1}-R_n}{R_{n+2} - R_{n+1}} \approx 4.6692
+$$
+
+resulting in the <b>Scaling Law</b> for $R_n$:
+
+$$
+R_n \approx R_{infty} - c \delta ^{-n}, \quad c_{logistic} \approx 2.632
+$$
+
+<div align = "center">
+![Cobweb](/images/notes/econ-din-compl/bifurcation.png)
+</div>
+
+- For $R_{infty} < R < 4$ we can see a <b>mixture of order and chaos</b>: periodic windows reappe within chaotic bands.
+- At $R = 4$ we see <b>fully developed chaos</b>.
+
+This is called <b>deterministic chaos</b>: once $x_0$ and $r$ are fixed, each step is predetermoined, but long term behavior becomes <b>unpredictable</b>, because tiny differences in $x_0$ grow rapidly.
+
+A deterministc system is then called <b>chaotic</b> when it shows:
+- <b>aperiodic long-run behavior</b> (no fixed points or repeating patterns)
+- <b>determinism</b>
+- <b>sensitivity to initial conditions</b>
+
+Note that, as we've seen, <b>deterministic </b> $\neq$ <b>predictable</b>. In nonlinear systems, tiny errors or deviations can explode over time, therefore long term forecasts lose meaning.
+
+### <a id="6.1"> <b>6.1 Endogenous Cycles</b> </a>
+
+In the economy, markets are _rarely_ isolated (producers can switch between goods, farmers can sell domestically or abroad, energy and manufacturing costs increase etc, etc...)
+We start now from the simple Cobweb Model but allow producers to <b>switch markets</b>.
+
+Each market $i \in \{ A, B\}$ has a ficed supplier share $W_i$, with $W_A = 1 - W_B$.
+
+$$
+D_{i,t} = \frac{a_i - P_{i,t}}{b_i}, \quad S_{i, t} = \frac{P_{i,t-1}- c_i}{d_i}
+$$
+
+if we set the market clearing conditin $D_i = W_i S_i$:
+
+$$
+\frac{a_i - P_{i,t}}{b_i} = \frac{P_{i,t}- c_i}{d_i}
+$$
+
+then we can find the <b>Price-Update Rule</b>:
+
+$$
+P_{i,t} = a_i + \frac{b_i W_i c_i}{d_i} - {b_i W_i}{d_i} P_{i, t-1} = \alpha_i - \beta_i P_{i, t-1}
+$$
+
+At the equilibrium:
+
+$$
+P_i^* = \frac{a_i d_i + b_i c_i W_i}{d_i + b_i W_i}
+\\
+|\beta_i! = | W_i \frac{b_i}{w_i}| < 1
+
+$$
+
+_Note that larger $W_i \implies $ faster response to equilibrium and then less stability._
+
+We now consider <b>costs and profits</b> in each market.
+Each supplier earn $\pi_i$, depending on price and total quantity:
+
+$$
+\pi_i = P_{i,t}S_{i,t} - C_i(S_{i,t})
+$$
+
+assuming that cost increases with ouput: 
+
+$$
+C_i(S_{i,t}) = g_i S_i + e_i S_{i,t}^2, \quad e_i > 0
+$$
+
+we result in the following profit funtion:
+
+$$
+\pi_t = P_{i,t}S_{i,t}- (g_i S_i + e_i S_{i,t}^2)
+$$
+
+Now we can see the coupled system as a <b>sequence of events</b>:
+
+- The suppliers produce $W_{i,t} (\fra{P_{i, t-1} - g_i}{d_i})$, with $W_{i,t}$ is the probability of choosing a market depending on the profits:
+$$
+W_{i,t} = \frac{1}{1 + \exp(- f \times (\pi_{A, t-1} - \pi_{B, t-1}))}
+$$
+
+where  $f \ge 0$ is the _intensity of choice_ (rationality).
+- Prices adjust to clear each market:
+$$
+P_{i,t} = a_i + \frac{b_i W_i c_i}{d_i} - {b_i W_i}{d_i} P_{i, t-1} 
+$$
+- Profits are realized
+- Suppliers update market choice for the next period
+
+<div align = "center">
+![Market Coupled](/images/notes/econ-din-compl/market_coupled.png)
+</div>
+
+_Be aware that, in the following plots, the x-axis is different!_
+
+<div align = "center">
+![Price Plots](/images/notes/econ-din-compl/price_f.png)
+</div>
+
+To understand if it is chaos or just complex, we can perform a <b>FFT test</b>.<br/>
+A time series can be indeed seen as a <b>mix of pure waves</b>. We then apply the _Fourier Transform_ to understand how much of each frequency is present.
+
+Plotting then $|X(\text{frequency})|$ gives a spectrum: 
+- peaks in the spectrum represents cycles (_not chaotic)_
+- no clear peaks in the spectrum implies that there's not a dominant rhythm.
+
+In general, we can conclude about endogenous cycles that:
+- <b>Volatility is structural</b> and it is amplified by a large supplier share in the market, faster switching intensity $f$ and excessive supply response (low $d$).
+- Cycles create <b>deadweight loss</b>: mis-times investment and wasted inventory/resources.
+- Coupling transmits fluctuations across markets.
+
+### <a id="6.2"> <b>6.2 Endogenous Cycles: the Business Cycle </b> </a>
+
+We now model a 2-player model with:
+- Household that can either consume or save: $Y = C + S$
+- Capicalists that can either consume or invest: $Y = C + I$
+- Savings fund investments: $S \to I$ via banks
+- At equilibrium: $S = I$.
+
+Starting from the setup we have:
+- Households consume $C$ and save $S$.
+- Firms plan investment $I^{p}$ based on the expecteded consumption $C^{e}$
+- in reality, $C^{e} \neq C^{acqual}$.
+- The gap shows up as:
+
+$$
+\Delta \text{Inv.} = C^{e} - C^{acqual} = - (I - S)
+$$
+
+- The firm reacts:
+    - If $\Delta \text{Inv.} > 0 \implies$: overproduction, cut output
+    - If $\Delta \text{Inv.} > 0 \implies$: underproduction, expand output
+- Leading to the dynamic rule:
+
+$$
+\dot Y = \alpha (I(y) - S(Y)), \quad \alpha > 0
+$$
+
+we can then incur in two scenarios:
+- if $S$ has a steeper slope than $I$ (at the right of the equilibrium $\dot Y < 0$ and at the left $\dot Y > 0$): <b>stable equilibrium</b>.
+- if $I$ has a steeper slope than $S$ (at the right of the equilibrium $\dot Y > 0$ and at the left $\dot Y < 0$): <b>unstable equilibrium</b>.
+
+<div align = "center">
+![Business Cycles](/images/notes/econ-din-compl/business_cycle.png)
+</div>
+
+So far, we treader investment and savings as a function of the output, in reality, they also depend on the capital stock $K$, that accumulates through investment and declines thorugh depreciation, reflecting <b>past investment decisions</b>. We can then write (<b>Kaldor Model </b>):
+$$
+\dot Y = \alpha (I(Y,K)- S(Y,K )),      \quad \dot K = I(Y,K) - \delta K
+$$
+
+In this model, we have 3 equilibria: two are stable (A,C) and one unstable (B)
+
+<div align = "center">
+![Business Cycles](/images/notes/econ-din-compl/kaldor.png)
+</div>
+
+When equilibrium C vanishses, the economy collapes to a lower activity state (A), where investment is very low and capital erodes slowly.
+Then, only when capital falls far enough, new opportunities emerge and the system can move back to C.
+
+
+
+
+<div align = "center">
+![Business Cycles](/images/notes/econ-din-compl/hysteresis.png)
+</div>
