@@ -25,7 +25,8 @@ $$
 The system can converge, oscillate or diverge depending on how supply and demand are sensitive to price.
 
 ---
-### <a id ="1.2"> <b>1.2 Basics of Epidemic Models</b> </a>
+
+### <a id="1.2"> <b>1.2 Basics of Epidemic Models</b> </a>
 
 A simple <b>Susceptible-inftyected (SI)</b> model states:
 
@@ -67,7 +68,9 @@ x_{t+1} = x_t + rx_t (1 - x_t)
 z_{t+1} = q z_t (1 - z_t), \quad q = 1 + r
 $$
 
-### <a id ="1.3"> <b>1.3 Supply CHains as Rooted Trees</b> </a>
+---
+
+### <a id="1.3"> <b>1.3 Supply CHains as Rooted Trees</b> </a>
 
 
 We can represent a chain as a graph $G = (V,E)$, with $V$ representing the set of verttices (notes) and $E \subseteq V \times V$ the set of edges, that can be directed or not: $(u,v) = \text{or} \neq (v,u)$.
@@ -111,7 +114,7 @@ $$
 
 ---
 
-### <a id =".1"> <b>2.1 Growth Models: exponential and logistic</b> </a>
+### <a id=".1"> <b>2.1 Growth Models: exponential and logistic</b> </a>
 
 We initially study a simple growth dynamic: the compounding interest. <br/>
 We consider a initial deposit $x_0$ and a nominal annual rate $r$, with interest credited every $\Delta t$.
@@ -232,7 +235,7 @@ Indeed, if $x(0) < A \implies$ the population declines to $0$, otherwise it grow
 
 ---
 
-### <a id ="2.2"> <b>2.2 Fishing/Harvesting Model</b> </a>
+### <a id="2.2"> <b>2.2 Fishing/Harvesting Model</b> </a>
 
 We now consider a <b>harvesting function </b>$h(x,e)$:
 - $x$ represents the stock (fish population)
@@ -269,7 +272,9 @@ $$
 - $x = 0 $
 - $x^* = K(1 - \frac{ae}{r})$ (positive and then stable only if $ae < r$)
 
-### <a id ="2.3"> <b>2.3 Growth Models: supply and demand determine price</b> </a>
+---
+
+### <a id="2.3"> <b>2.3 Growth Models: supply and demand determine price</b> </a>
 
 In this case, the harvesting function $h$ is not fixed, but market driven.
 - demand is decreasing in price $p$
@@ -329,7 +334,7 @@ $$
 
 ---
 
-### <a id ="3.1"> <b>3.1 Common Source Diffusion</b> </a>
+### <a id="3.1"> <b>3.1 Common Source Diffusion</b> </a>
 
 We start by analyzing a simple model with:
 - $x(t) \in [0,1]$ representing the fraction adopted
@@ -368,7 +373,7 @@ $$
 
 ---
 
-### <a id ="3.2"> <b>3.2 Bass Diffusion</b> </a>
+### <a id="3.2"> <b>3.2 Bass Diffusion</b> </a>
 
 In this model, each nonadopter is inftylyenced by twho channels: adoption (as in the commono source one) and <b>imitation or world of mouth</b>, expressed by the term $qx$, increasing in $x$:
 
@@ -401,7 +406,9 @@ and strong limitations too:
 - at the final state: $x \to 1$ with no reversal
 - the model cannot capture competition, substitution or churn.
 
-### <a id ="3.3"> <b>3.3 SIRS Models</b> </a>
+---
+
+### <a id="3.3"> <b>3.3 SIRS Models</b> </a>
 
 Bass is an example of <b>spreading</b> model, epidemic models (SIRS) are the canonical toolkit for this scenarios.
 
@@ -460,7 +467,7 @@ The end state is <b>non trivial </b> and it is given by the vector $(s^*, i^*, r
 
 ---
 
-### <a id ="3.4"> <b>3.4 Complex Contagions on a graph: a formal setup</b> </a>
+### <a id="3.4"> <b>3.4 Complex Contagions on a graph: a formal setup</b> </a>
 
 We consider a network $G = (V,E)$, with noted $v \in V$ and edges $(u,v) \in E$.
 
@@ -479,7 +486,9 @@ $$
 
 _Intuition: node $v$ adopts if $\theta$ or more neighbors are adopters._
 
-### <a id ="4.1"> <b>4.1 Coupled Dynamics: Lotka-Volterra Predator-Prey Model</b> </a>
+---
+
+### <a id="4.1"> <b>4.1 Coupled Dynamics: Lotka-Volterra Predator-Prey Model</b> </a>
 
 Coupled dynamics are needed when two (or more) variables <b>evolve together</b>, leading to <b>cycles, attractors</b> and <b>repellors</b>. Common examples are predator and prey in _biology_, susceptible and inftyected in _epidemiology_, employment and wages in _economics_. In formulas, we can write:
 
@@ -700,7 +709,7 @@ $$
 
 ---
 
-### <a id ="4.2"> <b>4.2 Coupled Dynamics: Goodwin's Model (1967), Cycles in Employment and Wages</b> </a>
+### <a id="4.2"> <b>4.2 Coupled Dynamics: Goodwin's Model (1967), Cycles in Employment and Wages</b> </a>
 
 This model comes from a simple observation: <b>economies often show recurrent cycles</b>. Booms cause high employment, so workers gain bargaining power, then wages rise, wage share of outpus increases as well. As a consequence, protits fall, investment slows and growth stalls.
 <br/>. Employment then falls, weakening workers' position, wages stagnate or declinde, profits recover and growth resumes.
@@ -769,7 +778,7 @@ From an economic point of view:
 
 ---
 
-### <a id ="5.1"> <b>5.1 Discrete Dynamics: Cobweb Plot</b> </a>
+### <a id="5.1"> <b>5.1 Discrete Dynamics: Cobweb Plot</b> </a>
 
 There are several reason behind why we should <b>discretetime dynamics</b>:
 - decision timing: firms and individuals set prices/output quarterly or at fixed intervals
@@ -845,8 +854,9 @@ To determine if it is stable or not, we simply look at:
 ![Cobweb](/images/notes/econ-din-compl/cobweb2.png)
 </div>
 
+---
 
-### <a id ="5.2"> <b>5.2 Discrete Dynamics: Saturated (Logistic) Growth</b> </a>
+### <a id="5.2"> <b>5.2 Discrete Dynamics: Saturated (Logistic) Growth</b> </a>
 
 We previously analyzed the continuous-time logistic growth as:
 
@@ -957,6 +967,8 @@ A deterministc system is then called <b>chaotic</b> when it shows:
 
 Note that, as we've seen, <b>deterministic </b> $\neq$ <b>predictable</b>. In nonlinear systems, tiny errors or deviations can explode over time, therefore long term forecasts lose meaning.
 
+---
+
 ### <a id="6.1"> <b>6.1 Endogenous Cycles</b> </a>
 
 In the economy, markets are _rarely_ isolated (producers can switch between goods, farmers can sell domestically or abroad, energy and manufacturing costs increase etc, etc...)
@@ -1047,7 +1059,9 @@ In general, we can conclude about endogenous cycles that:
 - Cycles create <b>deadweight loss</b>: mis-times investment and wasted inventory/resources.
 - Coupling transmits fluctuations across markets.
 
-### <a id="6.2"> <b>6.2 Endogenous Cycles: the Business Cycle </b> </a>
+---
+
+### <a id="6.2"> <b>6.2 Endogenous Cycles: Kaldor Model (Business Cycle) </b> </a>
 
 We now model a 2-player model with:
 - Household that can either consume or save: $Y = C + S$
@@ -1082,23 +1096,318 @@ we can then incur in two scenarios:
 ![Business Cycles](/images/notes/econ-din-compl/business_cycle.png)
 </div>
 
-So far, we treader investment and savings as a function of the output, in reality, they also depend on the capital stock $K$, that accumulates through investment and declines thorugh depreciation, reflecting <b>past investment decisions</b>. We can then write (<b>Kaldor Model </b>):
+So far, we treaded investment and savings as a function of the output, in reality, they also depend on the capital stock $K$, that accumulates through investment and declines thorugh depreciation, reflecting <b>past investment decisions</b>. We can then write (<b>Kaldor Model </b>):
 $$
-\dot Y = \alpha (I(Y,K)- S(Y,K )),      \quad \dot K = I(Y,K) - \delta K
+\dot Y = \alpha (I(Y,K)- S(Y,K )),      
 $$
 
-In this model, we have 3 equilibria: two are stable (A,C) and one unstable (B)
+In this model, if we assume that $K$ is set externally, we have 3 equilibria: two are stable (A,C) and one unstable (B)
 
 <div align = "center">
 ![Business Cycles](/images/notes/econ-din-compl/kaldor.png)
 </div>
 
-When equilibrium C vanishses, the economy collapes to a lower activity state (A), where investment is very low and capital erodes slowly.
-Then, only when capital falls far enough, new opportunities emerge and the system can move back to C.
+$K$ then introduces a <b>hysteresis cycle</b>: the equilibrium state is path dependent.
 
+- an economy starts on the high $Y$ branch (high income).
+- as $K$ increases, the economy moves to the right along the top red line. 
+- eventually, it reaches the "knee" or the edge of the cliff.
+    - if $K$ increases past this point, the economy crashes down to the low $Y$ branch.
+- once it falls to the bottom level, it remain stuck in the low-income state 
+- to get back to the high-income state, the economy jas to decrease $K$  to move way to the left on the graph and to find the other "knee" where the system jumps up.
 
+<div align = "center">
+![Business Cycles](/images/notes/econ-din-compl/hysteresis2.png)
+</div>
 
+_Note that, since no equilibrium satisfies $\dot Y = \dot K = 0$, the economy follows a closed cycle._
 
 <div align = "center">
 ![Business Cycles](/images/notes/econ-din-compl/hysteresis.png)
 </div>
+
+
+If we then allow $K$ to have its own dyncamics, we have the <b>full Kaldor Model</b>.
+$$
+\dot K = I(Y,K) - \delta K
+$$
+
+The economy then movesd around the <b>unstable equilibrium</b>: the interaction of fast $Y$ and slow $K$ creates endogenous cycles. _Note that $\alpha$ represents the speed of the economy, while $\delta$ the speed of capital and they both shape the curvature of the cycles._
+
+---
+
+### <a id="7.1"> <b>7.1 Introduction to Networks </b> </a>
+
+A network (graph) is tuple $G = (V,E)$:
+- $V$: the set of nodes (vertices)
+- $E \subseteq V \times V$: set of links (edges)
+- $V \times V$: all possible ordered pairs
+
+We use the <b>direction convention</b>:
+$$
+(i, j) \in E \implies \text{link points fromm i to j}
+$$
+
+A network can be stored as a <b>adjacency matrix A</b>:
+
+$$
+A_{ij} = 
+\begin{cases}
+1 \quad \text{if link }(i,j) \in E \\
+0 \quad \text{otherwise}
+
+\end{cases}
+$$
+
+- Rows represent the <b>sources (outgoing link)</b>
+- Column represent the <b>targets (incoming links)</b>
+
+A network is <b>directed </b>if $A_{ij} = A_{ji}\quad \forall i,j$
+
+In a <b>weighted network </b> links have a numerical strength. A function $w : E \to \R$ assigns a weight to each link and the adjacency matrix becomes real-valued.
+
+A link of the form $(i,i)$ is called <b>self-loopz</b> and it appears in the diagonal entry $A_{ii}$ _(economically, it represents the self-dependence or internal feedback)_.
+
+A <b>node's degree </b> is the number of links connected to it _(economically: they represent connectivity of a node)_. Also, in a directed network, we can distinguish:
+- <b>indegree</b> $d_{in}(i)$: number of incoming links $(j,i)$
+- <b>outdegree</b> $d_{out}(i)$: number of incoming links $(i,j)$
+
+In a weighted network, a <b>node's strength</b> sums the weights of its connections:
+
+$$
+w_{in}(in) = \sum_j w(j,i), \quad w_{out}(in) = \sum_j w(i,j)
+$$
+
+In a unweighted network, a node's strength is a simple in-and-out degree count.
+
+A <b>path between nodes</b> $v$ and $w$ is a sequence $(p_0, p_1, p_2... p_l)$ such that:
+- $p_0 = v, p_l = w$
+- each pair $(p_i, p_{i+1}) \in E$
+
+The path length is, _of course_, the number of links.
+
+The <b>distance </b> between two nodes is the length of the shortest path connecting them. If no path exists: $\text{dist}(v,w) = \infty$.
+
+The <b>network diameter</b> is the longest shortest path in the network.
+
+$$
+\text{diag}(G) = \max_{(v,w) \in V \times V} \text{dist}(v,w)
+$$
+
+The <b>average shortest path length </b> measures typical separation.
+
+$$
+<l> = \frac{1}{|V|^2} \sum_{(v,w) \in V \times V} \text{dist}(v,w)
+$$
+
+A network is <b>connected</b> if $\text{dist}(v,w)$ for all $$v,w \in V$.
+
+<b>Connected components</b> are connected subgraphs $G' = (V', E') \subseteq G$.
+
+The <b>largest component </b> is the <b>giant connected component (GCC) </b> if $|V'| / |V| \approx 1$.
+
+<b>Degree centrality</b> of anode is the number of its direct links _(economically it measures the connectivity as exposure/access to partners, lenders, clients or other nodes)_1
+
+<b>Betweeness centrality</b> counts how often node $i$ lioes on the shortest paths between others:
+
+$$
+C_B(i)= \sum_{s \neq i, t \neq i}n_i (s,t)
+$$
+
+where %n_i(s,t)$ is the shortest path $s \to t$ through $i$. In the _normalized form_, we also write:
+
+$$
+C_B(i)= \sum_{s \neq i, t \neq i}n_i (s,t) / N_{st}
+$$
+
+where $N_{st}$ is the total number of shortest shortest paths $s \to t$ through $i$.
+
+---
+
+### <a id="8.1"> <b>8.1 Diffusion on Networks</b> </a>
+
+We define diffusion as flow across links (in the two nodes case). Suppose we have two noes $i,j$ connected by one link: the flow is then proportional to the difference between two states.
+We can then write an ODEs for the nodes:
+
+$$
+\frac{dx_i}{dt} = C(x_j - x_i), \quad \frac{dx_j}{dt} = C(x_i - x_j)
+$$
+
+with the <b>conservation constraint</b>: $\frac{d}{dt}(x_i + x_j) = 0$ and parameter $C$ with unit $\text{time}^-1$.
+
+The previous ODEs bring the <b>convergence to stationarity</b>:
+
+$$
+x_i(t) - x_j(t) = (x_i(0)- x_j(0))e^{-2Ct}
+$$
+
+If we generalize this to a graph and define an ODE for every node:
+
+$$
+\dot x_i = C \sum_{j} A_{ij}(x_j - x_i)
+$$
+
+with the conservation contraint: $\frac{d}{dt}\sum_i x_i = 0$ (average preserved).
+
+---
+
+From the aggregate network, we can study the node-level dynamics. Consider a node $i$:
+
+$$
+x_i = \underbrace{g(x_i)}_\text{local adoption} + \underbrace{C \sum_{j} A_{ij}(x_j - x_i)}_\text{diffusion between links}
+$$
+
+_(For example, we could choose $g(\dot)$ modelling a Bass diffusion and then the rest to model the network)_
+
+---
+
+To study better the behavior of the network, we proceed by computing the <b>Laplacian Matrix</b>.<br/>
+Consider degrees $k_i = \sum_j A_{ij}$ and $K = \text{diag}(k_1,k_2... k_n)$.
+
+The Laplacian Matrix is  ${\mathcal{L}} = K - A$ and we can then rewrite the ODEs compactly:
+
+$$
+\dot x = - C {\mathcal{L}} x
+$$
+
+We now proceed with the <b> spectral decomposition of the Laplacian Matrix</b>.
+_Recall: the spectral decomposition of a generic diagonalisable matrix $S$ is $S= U^{-1} D_{\lambda} U$, where $U$ is the eigenvector matrix and $D_{\lambda}$ the eigenvalues diagonal matrix._
+
+Define $\{w_i\}$ as the eigenvectors, forming an orthonormal basis. Then we write: ${\mathcal{L}} w_i = \omega_i w_i $ with $0 - \omega_1 < \omega_2 ...$.
+
+Define then the projections $\alpha_i(0) := w_i^T x(0)$ (_intuition: $\alpha_i$ are the time-dependent coefficients showing how "strong" each pattern/eigenvector is at time $t$)_ and then:
+
+$$
+x(0) = \sum_i \alpha_i(0)w_i, \quad \alpha_1(0) = 0
+$$
+
+Now plug $x(t) = \sum_i \alpha_i (t)w_i$  into $\dot x = - C {\mathcal{L}} x$. Since $w_i$ is an eigenvector, multiplying it by the matrix $\mathcal{L}$ is simple: $\mathcal{L} w_i = \omega_i w_i$, resulting in:
+
+$$
+\sum_i \dot{\alpha}_i(t) w_i = \sum_i (-C \omega_i \alpha_i(t)) w_i
+$$
+
+Because eigenvectors are linearly independent, we can splits the big matrix problem into $N$  separate problems:
+
+$$
+\dot{\alpha}_i(t) = -C \omega_i \alpha_i(t)
+$$
+
+This is the <b>decoupling </b> of the ODE: each $\alpha_i$ evolves _indepedently_ and we can solve each one, resulting in:
+
+$$
+\alpha_i(t) = \alpha_i(0) e^{-C \omega_i t}
+$$
+
+and, finally, in:
+
+$$
+x(t) = \sum_i \alpha_i(0) e^{-C \omega_i t} w_i
+$$
+
+- the term with the smallest eigenvalue may have $e^0 = 1$ and therefore this one does not decay, representing the <b>final equilibrium state</b> _( average value across the network)_
+- the terms with large eigenvalues decay very fast. 
+- the terms with small eigenvalues decay slowly.
+
+
+Now we want a <b>single number</b> to measure how far we are from stationarity.
+- we start by computing the average: $\bar x = \mathbb{1}^T x / n$
+- we compute the per-node deviation: $d_i(t) = x_i(t) - \bar x$.
+- we compute the <b>network deviation</b> and track it over time: 
+$$
+D(t) = \frac{1}{2} || z(t)||^2 = \frac{1}{2} \sum_i (x_i(t)- \bar x)^2
+$$
+
+In fact, after some algebraic manipulation, we can see that $D(t)$ decays with rate $2C\omega_2$. 
+
+So, if we consider a <b>connected network</b>, the second-smallest eigenvalue $\omega_2$ is called the <b>algebraic connectivity</b> (also known as <b>Fiedler Vector</b>) and determines how fast or slow diffusion is. The smaller $\omega_2$, the harder is to cross the network _(capturing how well-connected a network is)_.
+
+If we now consider a network with <b>two disconnected components</b>:
+- each block in the matrix ${\mathcal{L}}$ is another Laplacina Matrix
+- each has a trivial eigenvalue $0$ with eigenvectors $(1,1,1)$ and $(1,1,1,1)$ (depending on the component size)
+
+Therefore, ${\mathcal{L}}$ has <b>two zero eigenvalues</b>, so $\omega_2 = 0$ and the network is disconnected.
+
+
+
+If we consider then the <b>deviations</b> $z = x - \bar x$, we can simply derive that deviations follow the same linear system:
+$$
+\dot z = - C \mathbb{1} z
+$$
+
+and, therefore, face the same dynamics:
+$$
+z = \sum^n_{i = 1} \alpha_i (0) e^{-C\omega_i t}w_i
+$$
+
+of course, as before, approach to stationarity is determined by eigenvalues of $\mathbb{1}$. _Note that, however, $z(t) \to 0$ (it's mean free!)_.
+
+---
+
+### <a id="9.1"> <b>9.1 Community Detection: Dirichlet Energy, Rayleigh Quotient and Network Bisection</b> </a>
+
+Considering what we said in the previous chapter, we can go on studying networks.
+We start by defining the <b>energy od a single edge </b> $(i,j)$ for a node state $x$ as:
+
+$$
+\epsilon_{ij}[x] = A_{ij} |x_i - x_j|^2
+$$
+
+- the energy _penalizes disagreement_ across a link: it's zero if neighbors agree.
+- it is large on weak links where values "jump" between nodes.
+
+If we then sum over all edges, we obtain the <b>Dirichlet Graph Energy</b>:
+
+$$
+\epsilon[x] = \frac{1}{2} \sum_{i,j} A_{ij} |x_i - x_j|^2 = \frac{1}{2} x^T  {\mathcal{L}} x
+$$
+
+Then, for any non-zero node, we can define the <b>Rayleigh Quotient</b> ${\mathcal{R}}[v]$, representing how well the node $v$ fits the network or how uneven values are across linked regions _(smooth profiles show small ${\mathcal{R}}$)
+
+$$
+{\mathcal{R}}[v] = \frac{v^T {\mathcal{L}} v}{v^T v} = \frac{\sum_{i,j} A_{ij} |x_i - x_j|^2}{\sum_i v_i^2}
+$$
+
+_At the numerator we have the total edge energy, large if neighbors differ a lot, at the denominator a scale normalization._
+
+Also, we know that:
+
+$$
+\omega_2 = \min_{v \neq 0} {\mathcal{R}}[v], \quad w_2 = \argmin {\mathcal{R}}[v]
+
+$$
+
+_intuition: $w_2$ is the vector that minimizes the Rayleigh quotient_.
+
+Now, to identify communities within a network, consider the following two sets:
+
+$$
+S^+ = \{ i: w_2(i) > 0\}, \quad S^- = \{ i: w_2(i) < 0\}
+$$
+
+_intuition: $w_2$ minimizes tension across edges, leaning to a smooth split across the weakest connection._
+
+We can then apply this procedure recursively to find finer communities. Common stopping criteria are: max depth and min size.
+_Note that bisection using the fiedler vector cannot detect more than two communities at once_.
+
+
+<div align = "center">
+![SIR](/images/notes/econ-din-compl/fiedler.png)
+</div>
+
+<b>Example: Spectral bisection algorithm in Python</b>:
+
+```python 
+def spectral_bisection(G):
+   L = laplacian(G) # L = K - A
+   w2 = second_eigenvector(L) # Fiedler vector
+   Spos = {i for i in G.nodes if w2[i] > 0}
+   Sneg = set(G.nodes) - Spos
+   return Spos, Sneg
+def recursive_spectral(G, depth=0, max_depth=3):
+   if depth == max_depth or len(G) < 3:
+       return [set(G.nodes)]
+   Spos, Sneg = spectral_bisection(G)
+   return (recursive_spectral(G.subgraph(Spos), depth+1, max_depth)
+         + recursive_spectral(G.subgraph(Sneg), depth+1, max_depth))
+```
