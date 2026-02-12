@@ -478,10 +478,12 @@ In this case, we have an early growth if and only if $R_0 > 1$.
 The effective reproduction number is then $R(t) = R_0 s(t)$. The spread slows down and eventually stops when:
 
 $$
-R_t = 1 \implies s = \frac{1}{R_0} \impies \approx r^* = 1 - \frac{1}{R_0}
+R_t = 1 \implies s = \frac{1}{R_0} \implies \approx r^* = 1 - \frac{1}{R_0}
 $$
 
-The intuition behind is that, once $r^*$ individuals are immune (recovered or vaccinated), each case generates less than one new case on average and infections dies out.
+(since $s + i + r = 1$ and $i \to 0$).
+
+_Intuition: once $r^*$ individuals are immune (recovered or vaccinated), each case generates less than one new case on average and infections dies out._
 
 <div align = "center">
 ![Bass](/images/notes/econ-din-compl/sir.png)
@@ -505,7 +507,7 @@ The end state is <b>non trivial </b> and it is given by the vector $(s^*, i^*, r
 
 We consider a network $G = (V,E)$, with noted $v \in V$ and edges $(u,v) \in E$.
 
-- each node $x_v \in \{0, 1\}$ ($0$ non-adopter, $1$ adopter)$ 
+- each node $x_v \in \{0, 1\}$ ($0$ non-adopter, $1$ adopter)$
 -  adoption threshold $\theta$
 - neighborhood $N(v) = \{u : (u,v) \in E \}$
 
@@ -532,17 +534,19 @@ $$
 
 The analysis of this systems comes from the <b>classification</b> of <b>fixed points</b> and <b>stability</b>, both analytically and numerically.
 
-We start by analyzing the <b>Lotka-Volterra Predator-Prey Model </b>, representing the interaction between two species:
-- $x(t)$: preys (hares)
-- $y(t)$: predators (lynx)
+We start by analyzing the <b>Lotka-Volterra Predator-Prey Model</b>, representing the interaction between two species:
+- $x(t)$: <b>preys (hares)</b>
+- $y(t)$: <b>predators (lynx)</b>
+
+<a href="https://www.youtube.com/watch?v=DDEvlLa9z_U" target="_blank"> Predator-Prey Population Models || Lotka-Volterra Equations [Video]</a>
 
 In isolation we know that:
 - prey reproduces exponentially, $\dot x = \alpha x$
 - predators die out: $\dot y = - \gamma y$.
 
-But, with interaction:
-- encounters remove prey at rate $\beta xy$
-- encounters yield predators growth at rate $\delta xy$.
+But, if together in the same ecosystem:
+- interaction <b>remove prey</b> at rate $\beta xy$
+- interaction yields<b> predators growth </b>at rate $\delta xy$.
 
 resulting in the following coupled system:
 
@@ -581,15 +585,15 @@ $$
 \end{cases}
 $$
 
-resultin in:
+resultig in:
 $$
-(x^*, y^*) = (0,0) \text{or} \quad (x^*, y^*) = (\gamma / \delta, \alpha / \beta)
+(x^*, y^*) = (0,0)\quad \text{or} \quad (x^*, y^*) = (\gamma / \delta, \alpha / \beta)
 $$
 
 In general, the number of roots will depend on $f$ and $g$:
 - <b>Zero</b>: no equilibria
 - <b>One</b>: unique equilbrium
-- <b>Finite number $> 1 </b>: several isolated equilibria
+- <b>Finite number $> 1 $</b>: several isolated equilibria
 - <b>inftyinitely many</b>: whole x-axis equilibria
 
 _Note that, in higher dimensions, understanding stability and trajectories become more complicated that in the simple 1D case._
@@ -605,7 +609,7 @@ From the plot, we should then be able to clearly see if the trajectories are <b>
 ![Lotka](/images/notes/econ-din-compl/lotka3.png)
 </div>
 
-Then, at a fixed point, a <b>nonlinar system </b> can be approximated by a linear one.
+Then, at a fixed point, a <b>non-linear system </b> can be approximated by a linear one.
 Define <b>perturbations $u, v$</b> as:
 
 $$
@@ -657,7 +661,7 @@ $$
 \lambda p e ^{\lambda t} = J p e^{\lambda t} \implies Jp = \lambda p
 $$
 
-We can clearly see that the <b>eigenvalues of J</b> describe how small perturbations evolve.
+We can clearly see that the <b>eigenvalues of $J$</b> describe how small perturbations evolve.
 
 Recall that to compute the eigenvalues of $J$ we can simply write and solve the <b>characteristic polynomial</b>:
 
@@ -745,14 +749,16 @@ $$
 
 ### <a id="4.2"> <b>4.2 Coupled Dynamics: Goodwin's Model (1967), Cycles in Employment and Wages</b> </a>
 
-This model comes from a simple observation: <b>economies often show recurrent cycles</b>. Booms cause high employment, so workers gain bargaining power, then wages rise, wage share of outpus increases as well. As a consequence, protits fall, investment slows and growth stalls.
-<br/>. Employment then falls, weakening workers' position, wages stagnate or declinde, profits recover and growth resumes.
+<a href="https://en.wikipedia.org/wiki/Goodwin_model_(economics)" target="_blank">The Goodwin's Model [Wikipedia]</a>
+
+This model comes from a simple observation: <b>economies often show recurrent cycles</b>.<br/> Booms cause high employment, so workers gain bargaining power, then wages rise, wage share of outpus increases as well. As a consequence, profits fall, investment slows and growth stalls.
+<br/>Employment then falls, weakening workers' position, wages stagnate or declinde, profits recover and growth resumes.
 
 <b>Goodwin's idea</b> is to model class struggle dynamics with similar equations used for predator-prey cycles.
 
 We then consider two state variables:
-- $q_t$: employment ratio (jobs over the population) - _analogy with the prey population_
-- $w_t$: wage share (workers' share of output) - _analogy with the predator population_
+- $q_t$: <b>employment ratio</b> (jobs over the population) - _analogy with the prey population_
+- $w_t$: <b>wage share</b> (workers' share of output) - _analogy with the predator population_
 
 The <b>qualitative</b> cycle logics says that:
 - $q \uparrow \implies$ bargaining power $\uparrow \implies w \uparrow$
@@ -771,7 +777,7 @@ Formally, if we consider the following variables:
 
 and parameters $\alpha, \beta, \gamma, \kappa, \sigma$.
 
-if we derive the employment ratio and the wage share, we obtain:
+We then differentiate the employment ratio and the wage share:
 
 $$
 \frac{\dot q_t}{q_t} = \frac{\dot l_t}{l_t}- \frac{\dot n_t}{n_t} = \frac{\dot Y_t}{Y_t} - \frac{\dot a_t}{a_t} - \beta = \frac{1 - w_t}{\sigma} - \beta
@@ -799,7 +805,7 @@ $$
 $$
 
 The intuition, very similar to the previous predator-prey model, is that _workers and capitalists_ are two interacting groups. Workers indeed seek higher wages, capitalists seek higher profits.
-These opposing objectives create a self-regulaasting cycle, neither side "wins" permanently but they co-move in economic cycles.
+These opposing objectives create a <b>self-regulating cycle</b>, neither side "wins" permanently but they co-move in economic cycles.
 
 From an economic point of view:
 - <b>Growth-recessions cycles are endogenous</b> without external shocks
@@ -814,7 +820,7 @@ From an economic point of view:
 
 ### <a id="5.1"> <b>5.1 Discrete Dynamics: Cobweb Plot</b> </a>
 
-There are several reason behind why we should <b>discretetime dynamics</b>:
+There are several reason behind why we should <b>discrete time dynamics</b>:
 - decision timing: firms and individuals set prices/output quarterly or at fixed intervals
 - institutional calendars: central banks and governments meet on fixed dates
 - contracts and billing: loans, rent and utilities are paid monthly or similarly
@@ -823,7 +829,7 @@ There are several reason behind why we should <b>discretetime dynamics</b>:
 To start with discrete time dynamics, we define the <b>difference equation</b>, representing how the next state depends on the previous:
 
 $$
-x_{t + 1} = f(x_t) \quad \text{\textit{update rule}}
+x_{t + 1} = f(x_t) \quad \text{{update rule}}
 $$
 
 The evolution if then given by the repeated application of $f$:
@@ -868,7 +874,7 @@ $$
 and we linearize around $z^*$:
 
 $$
-f(z_t) \approx f(z^*) + f'(z^*)(z_t - z^*) \implies
+f(z_t) \approx f(z^*) + f'(z^*)(z_t - z^*) 
 \implies z_{t+1} - z^* \approx f'(z^*) (z_t - z^*)
 $$
 
@@ -880,7 +886,7 @@ $$
 
 To determine if it is stable or not, we simply look at:
 - $|f'(z^*)| < 1 \implies:$ attracting
-- $|f'(z^*)| < 1 \implies:$ repelling
+- $|f'(z^*)| > 1 \implies:$ repelling
 - $0 < f'(z^*)< 1 \implies:$ monotone
 - $-1 < f'(z^*)< 0 \implies:$ alternating
 
@@ -937,7 +943,7 @@ f'(z^*) = 2 - R
 
 $$
 
-we now appòy the stability condition:
+we now apply the stability condition on the first derivative $f'(z^*)$:
 - if $1 < R < 3$ then $|2 - R| < 1$ and the <b>fixed points attract </b>
 - at $R = 3: f'(z^*) = - 1$: <b>flip bifurcation</b> (fixed points becomes repelling: stable 2-cycles).
 
@@ -947,15 +953,15 @@ In the second period, if $R > 3$, the population starts jumping back and forth b
 The period-2 points solve $f(f(z)) = z$, resulting in:
 
 $$
-z_{1,2} = \frac{R + 1 \pm \sqrt(R -3 )(R +1)}{2R} \quad \text{for} R > 3
+z_{1,2} = \frac{R + 1 \pm \sqrt(R -3 )(R +1)}{2R} \quad \text{for } R > 3
 $$
-As in the first cycle, f the k-cycle, we obtain stability is reached when: $|(f^{(k)})'(z^*)| < 1$, that, for the 2-cycle rewrites as:
+As in the first cycle, in  the $k$-cycle, we obtain stability is reached when: $|(f^{(k)})'(z^*)| < 1$, that, for the $2$-cycle rewrites as:
 
 $$
 3 < R < 1 + \sqrt(6) \approx 3.44949
 $$
 
-At $R = 1 + \sqrt(6)$ the2-cycle does another flip _(stable 4-cycle, the population repeats a pattern of 4 different values)_
+At $R = 1 + \sqrt(6)$ the $2$-cycle does another flip _(stable 4-cycle, the population repeats a pattern of 4 different values)_
 
 For many periods, we now consider $R_n$ the value of $R$ where a $2^n$-cycle first appears:
 
@@ -971,7 +977,7 @@ R_{\infty} &= 3.569
 \end{align*}
 $$
 
-The sequence converges geometrically to $R_{\infty} = 3.569$
+The sequence <a href="https://en.wikipedia.org/wiki/Geometric_series" target="_blank"> converges geometrically</a> to $R_{\infty} = 3.569$
 
 We then define the <b>Feigenbaum constant</b> as:
 
@@ -985,21 +991,23 @@ $$
 R_n \approx R_{infty} - c \delta ^{-n}, \quad c_{logistic} \approx 2.632
 $$
 
+<a href="https://it.wikipedia.org/wiki/Costanti_di_Feigenbaum" target="_blank">More on the Feigenbaum Constants [Wikipedia]</a>
+
 <div align = "center">
 ![Cobweb](/images/notes/econ-din-compl/bifurcation.png)
 </div>
 
-- For $R_{infty} < R < 4$ we can see a <b>mixture of order and chaos</b>: periodic windows reappe within chaotic bands.
+- For $R_{\infity} < R < 4$ we can see a <b>mixture of order and chaos</b>: periodic windows reappe within chaotic bands.
 - At $R = 4$ we see <b>fully developed chaos</b>.
 
-This is called <b>deterministic chaos</b>: once $x_0$ and $r$ are fixed, each step is predetermoined, but long term behavior becomes <b>unpredictable</b>, because tiny differences in $x_0$ grow rapidly.
+This is called <b>deterministic chaos</b>: once $x_0$ and $r$ are fixed, each step is predetermined, but long term behavior becomes <b>unpredictable</b>, because tiny differences in $x_0$ grow rapidly.
 
 A deterministc system is then called <b>chaotic</b> when it shows:
 - <b>aperiodic long-run behavior</b> (no fixed points or repeating patterns)
 - <b>determinism</b>
 - <b>sensitivity to initial conditions</b>
 
-Note that, as we've seen, <b>deterministic </b> $\neq$ <b>predictable</b>. In nonlinear systems, tiny errors or deviations can explode over time, therefore long term forecasts lose meaning.
+Note that, as we've seen, <b>deterministic </b> $\neq$ <b>predictable</b>. In _non-linear systems_, tiny errors or deviations can explode over time, therefore long term forecasts lose meaning.
 
 ---
 
