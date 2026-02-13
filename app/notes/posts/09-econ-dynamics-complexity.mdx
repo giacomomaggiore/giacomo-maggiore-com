@@ -238,7 +238,7 @@ In the logistic growth, if we consider $f(x) = \frac{dx}{dt} = rx(1 - x/K) = rx 
 
 The <b>MSY (maximum sustainable yield)</b> is obtained where $\frac{df}{dx} = 0 \implies$ $x^* = K/2$.
 
-<a href="https://www.youtube.com/watch?v=aP4YXOo-Uko" target="_blank">The Logistic Growth Differential Equation [VIDEO] </a>
+<a href="https://www.youtube.com/watch?v=aP4YXOo-Uko" target="_blank">The Logistic Growth Differential Equation [Video] </a>
 
 ---
 
@@ -1022,7 +1022,7 @@ $$
 D_{i,t} = \frac{a_i - P_{i,t}}{b_i}, \quad S_{i, t} = \frac{P_{i,t-1}- c_i}{d_i}
 $$
 
-if we set the market clearing conditin $D_i = W_i S_i$:
+if we set the market clearing condition $D_i = W_i S_i$:
 
 $$
 \frac{a_i - P_{i,t}}{b_i} = \frac{P_{i,t}- c_i}{d_i}
@@ -1101,6 +1101,11 @@ In general, we can conclude about endogenous cycles that:
 - Cycles create <b>deadweight loss</b>: mis-times investment and wasted inventory/resources.
 - Coupling transmits fluctuations across markets.
 
+<a href="https://en.wikipedia.org/wiki/Fourier_transform" target="_blank">The Fourier Transform [Wikipedia]</a>
+
+<a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank">But what is the Fourier Transform? A visual introduction [Video]</a>
+
+
 ---
 
 ### <a id="6.2"> <b>6.2 Endogenous Cycles: Kaldor Model (Business Cycle) </b> </a>
@@ -1122,8 +1127,8 @@ $$
 $$
 
 - The firm reacts:
-    - If $\Delta \text{Inv.} > 0 \implies$: overproduction, cut output
-    - If $\Delta \text{Inv.} > 0 \implies$: underproduction, expand output
+    - If $\Delta \text{Inv.} > 0 \implies$ overproduction, cut output
+    - If $\Delta \text{Inv.} > 0 \implies$ underproduction, expand output
 - Leading to the dynamic rule:
 
 $$
@@ -1187,10 +1192,10 @@ A network (graph) is tuple $G = (V,E)$:
 
 We use the <b>direction convention</b>:
 $$
-(i, j) \in E \implies \text{link points fromm i to j}
+(i, j) \in E \implies \text{link points from i to j}
 $$
 
-A network can be stored as a <b>adjacency matrix A</b>:
+A network can be stored as a <b>adjacency matrix $A$</b>:
 
 $$
 A_{ij} = 
@@ -1208,7 +1213,7 @@ A network is <b>directed </b>if $A_{ij} = A_{ji}\quad \forall i,j$
 
 In a <b>weighted network </b> links have a numerical strength. A function $w : E \to \R$ assigns a weight to each link and the adjacency matrix becomes real-valued.
 
-A link of the form $(i,i)$ is called <b>self-loopz</b> and it appears in the diagonal entry $A_{ii}$ _(economically, it represents the self-dependence or internal feedback)_.
+A link of the form $(i,i)$ is called <b>self-loop</b> and it appears in the diagonal entry $A_{ii}$ _(economically, it represents the self-dependence or internal feedback)_.
 
 A <b>node's degree </b> is the number of links connected to it _(economically: they represent connectivity of a node)_. Also, in a directed network, we can distinguish:
 - <b>indegree</b> $d_{in}(i)$: number of incoming links $(j,i)$
@@ -1226,7 +1231,7 @@ A <b>path between nodes</b> $v$ and $w$ is a sequence $(p_0, p_1, p_2... p_l)$ s
 - $p_0 = v, p_l = w$
 - each pair $(p_i, p_{i+1}) \in E$
 
-The path length is, _of course_, the number of links.
+The <b>path length</b> is, _of course_, the number of links.
 
 The <b>distance </b> between two nodes is the length of the shortest path connecting them. If no path exists: $\text{dist}(v,w) = \infty$.
 
@@ -1242,33 +1247,33 @@ $$
 <l> = \frac{1}{|V|^2} \sum_{(v,w) \in V \times V} \text{dist}(v,w)
 $$
 
-A network is <b>connected</b> if $\text{dist}(v,w)$ for all $$v,w \in V$.
+A network is <b>connected</b> if $\text{dist}(v,w) < \infty$ for all $v,w \in V$.
 
 <b>Connected components</b> are connected subgraphs $G' = (V', E') \subseteq G$.
 
 The <b>largest component </b> is the <b>giant connected component (GCC) </b> if $|V'| / |V| \approx 1$.
 
-<b>Degree centrality</b> of anode is the number of its direct links _(economically it measures the connectivity as exposure/access to partners, lenders, clients or other nodes)_1
+<b>Degree centrality</b> of a node is the number of its direct links _(economically it measures the connectivity as exposure/access to partners, lenders, clients or other nodes)_
 
-<b>Betweeness centrality</b> counts how often node $i$ lioes on the shortest paths between others:
+<b>Betweeness centrality</b> counts how often node $i$ lies on the shortest paths between others:
 
 $$
 C_B(i)= \sum_{s \neq i, t \neq i}n_i (s,t)
 $$
 
-where %n_i(s,t)$ is the shortest path $s \to t$ through $i$. In the _normalized form_, we also write:
+where $n_i(s,t)$ is the shortest path $s \to t$ through $i$. In the _normalized form_, we also write:
 
 $$
 C_B(i)= \sum_{s \neq i, t \neq i}n_i (s,t) / N_{st}
 $$
 
-where $N_{st}$ is the total number of shortest shortest paths $s \to t$ through $i$.
+where $N_{st}$ is the total number of shortest shortest paths $s \to t$.
 
 ---
 
 ### <a id="8.1"> <b>8.1 Diffusion on Networks</b> </a>
 
-We define diffusion as flow across links (in the two nodes case). Suppose we have two noes $i,j$ connected by one link: the flow is then proportional to the difference between two states.
+We define diffusion as flow across links (in the two nodes case). Suppose we have two noes $i,j$ connected by one link: the flow is then <b>proportional to the difference</b> between two states.
 We can then write an ODEs for the nodes:
 
 $$
@@ -1313,9 +1318,12 @@ $$
 $$
 
 We now proceed with the <b> spectral decomposition of the Laplacian Matrix</b>.
+
 _Recall: the spectral decomposition of a generic diagonalisable matrix $S$ is $S= U^{-1} D_{\lambda} U$, where $U$ is the eigenvector matrix and $D_{\lambda}$ the eigenvalues diagonal matrix._
 
-Define $\{w_i\}$ as the eigenvectors, forming an orthonormal basis. Then we write: ${\mathcal{L}} w_i = \omega_i w_i $ with $0 - \omega_1 < \omega_2 ...$.
+<a href="https://www.youtube.com/watch?v=mhy-ZKSARxI" target="_blank">Visualize Spectral Decomposition [Video]</a>
+
+Define $\{w_i\}$ as the eigenvectors, forming an orthonormal basis. Then we write: ${\mathcal{L}} w_i = \omega_i w_i $ with $0 < \omega_1 < \omega_2 ... < ...$.
 
 Define then the projections $\alpha_i(0) := w_i^T x(0)$ (_intuition: $\alpha_i$ are the time-dependent coefficients showing how "strong" each pattern/eigenvector is at time $t$)_ and then:
 
@@ -1360,9 +1368,9 @@ $$
 D(t) = \frac{1}{2} || z(t)||^2 = \frac{1}{2} \sum_i (x_i(t)- \bar x)^2
 $$
 
-In fact, after some algebraic manipulation, we can see that $D(t)$ decays with rate $2C\omega_2$. 
+In fact, after some algebraic manipulation, we can see that $D(t)$ <b>decays with rate</b> $2C\omega_2$. 
 
-So, if we consider a <b>connected network</b>, the second-smallest eigenvalue $\omega_2$ is called the <b>algebraic connectivity</b> (also known as <b>Fiedler Vector</b>) and determines how fast or slow diffusion is. The smaller $\omega_2$, the harder is to cross the network _(capturing how well-connected a network is)_.
+So, if we consider a <b>connected network</b>, the <b>second-smallest eigenvalue </b> $\omega_2$ is called the <b>algebraic connectivity</b> (also known as <b>Fiedler Vector</b>) and determines how fast or slow diffusion is. The smaller $\omega_2$, the harder is to cross the network _(capturing how well-connected a network is)_.
 
 If we now consider a network with <b>two disconnected components</b>:
 - each block in the matrix ${\mathcal{L}}$ is another Laplacina Matrix
@@ -1384,18 +1392,23 @@ $$
 
 of course, as before, approach to stationarity is determined by eigenvalues of $\mathbb{1}$. _Note that, however, $z(t) \to 0$ (it's mean free!)_.
 
+
+<a href="https://www.youtube.com/watch?v=uTUVhsxdGS8" target="_blank">Spectral Graph Theory For Dummies [Video] </a>
+
+<a href="https://www.youtube.com/watch?v=NnuxsyYGoi4" target="_blank">Introduction of algebraic connectivity and Fiedler vector [Video] </a>
+
 ---
 
 ### <a id="9.1"> <b>9.1 Community Detection: Dirichlet Energy, Rayleigh Quotient and Network Bisection</b> </a>
 
 Considering what we said in the previous chapter, we can go on studying networks.
-We start by defining the <b>energy od a single edge </b> $(i,j)$ for a node state $x$ as:
+We start by defining the <b>energy of a single edge </b> $(i,j)$ for a node state $x$ as:
 
 $$
 \epsilon_{ij}[x] = A_{ij} |x_i - x_j|^2
 $$
 
-- the energy _penalizes disagreement_ across a link: it's zero if neighbors agree.
+- the energy _penalizes disagreement_ across a link: _it's zero if neighbors agree._
 - it is large on weak links where values "jump" between nodes.
 
 If we then sum over all edges, we obtain the <b>Dirichlet Graph Energy</b>:
@@ -1404,7 +1417,7 @@ $$
 \epsilon[x] = \frac{1}{2} \sum_{i,j} A_{ij} |x_i - x_j|^2 = \frac{1}{2} x^T  {\mathcal{L}} x
 $$
 
-Then, for any non-zero node, we can define the <b>Rayleigh Quotient</b> ${\mathcal{R}}[v]$, representing how well the node $v$ fits the network or how uneven values are across linked regions _(smooth profiles show small ${\mathcal{R}}$)
+Then, for any non-zero node, we can define the <b>Rayleigh Quotient</b> ${\mathcal{R}}[v]$, representing how well the node $v$ fits the network or how uneven values are across linked regions _(smooth profiles show small ${\mathcal{R}}$)_
 
 $$
 {\mathcal{R}}[v] = \frac{v^T {\mathcal{L}} v}{v^T v} = \frac{\sum_{i,j} A_{ij} |x_i - x_j|^2}{\sum_i v_i^2}
@@ -1429,7 +1442,7 @@ $$
 
 _intuition: $w_2$ minimizes tension across edges, leaning to a smooth split across the weakest connection._
 
-We can then apply this procedure recursively to find finer communities. Common stopping criteria are: max depth and min size.
+We can then apply this<b> procedure recursively</b> to find finer communities. Common stopping criteria are: max depth and min size.
 _Note that bisection using the fiedler vector cannot detect more than two communities at once_.
 
 
@@ -1465,7 +1478,7 @@ $$
 x_i \propto \sum_j A_{ij} x_j
 $$
 
-To compute then the centrality $x_i$ of a node, we can start with a guress and repeatedly update it using the network structure.
+To compute then the centrality $x_i$ of a node, we can start with a guess and <b>repeatedly update </b>it using the network structure.
 - we start with initial centrality $x^0$ (all equal to one)
 - we sum all the neighbots centralities with $\kappa$ const. of proportionality.
 
@@ -1473,7 +1486,7 @@ $$
 x_i = \kappa ^{-1} \sum x_j
 $$
 
-or, _equivalently:
+or, _equivalently_:
 
 $$
 x_i = \kappa ^{-1} \sum_j A_{ij} x_j = \kappa^{-1} A x
@@ -1491,7 +1504,7 @@ with the <b>leading eigenvector </b> $x$ giving the <b>eigenvector centrality</b
 
 _Intuition: high centrality comes from many neighbors (quantity) and/or a few but very central neighbors (quality). Also, note that eigenvector centrality works best for connected, undirected networks_.
 
-Also, note that <b>root nodes</b> have no incoming edgedm, so it gets $x_i = 0$, by consequence, any node that is pointed to _only by_ the root also gets $x_i = 0$.
+Also, note that <b>root nodes</b> have no <b>incoming edge</b>, so it gets $x_i = 0$, by consequence, any node that is pointed to _only by_ the root also gets $x_i = 0$.
 _(the zero propagates backward through the graph: nodes reachable only from roots inherit zero centrality)_.
 
 ---
@@ -1514,7 +1527,7 @@ $$
 x_i = \alpha \sum_j A_{ij} \frac{x_j}{k_j^{out}} + \beta
 $$
 
-_PageRank it was firstly introducted by Google to rank web pages, widely used because it downweights mega-directories that link to millions. Google famously used $\alpha \approx 0.85$.
+_PageRank it was firstly introducted by Google to rank web pages, widely used because it downweights mega-directories that link to millions. Google famously used $\alpha \approx 0.85$._
 
 In matrix form, the PageRank model rewrites as:
 
@@ -1525,6 +1538,13 @@ $$
 note that:
 - $\beta$ does not affect the results (just scaling)
 - $\alpha$ must be smaller than the largest eigenvalue of $AD^{-1}$.
+
+
+<a href="https://www.youtube.com/watch?v=JGQe4kiPnrU" target="_blank">PageRank: A Trillion Dollar Algorithm [Video]</a>
+
+<a href="https://www.youtube.com/watch?v=jeq0EGglGUM" target="_blank">Kats Centrality [Video]</a>
+
+---
 
 ### <a id="10.1"> <b>10.1 Strategic Network Formation</b> </a>
 
@@ -1546,6 +1566,8 @@ A network $G^*$ is <b>socially efficient </b> if $G^* = \argmax_G W(G)$. (_intui
 - no agent wants to cut an existing link
 - no agent pairs wants to add a new link
 
+---
+
 ### <a id="10.2"> <b>10.2 The Connections Model (1996)</b> </a>
 
 In this model, agents are nodes in an undirected network, links give access to information and benefits come from both direct and indirect neighbours, with the following utility:
@@ -1554,7 +1576,7 @@ $$
 u_i(G) = \sum_{j \neq i} \delta^{d_{ig}(G)} - cd_i
 $$
 
-where $d_{ij}$ is the shortest-path disstance between $i,j$, $\delta^{d_{ig}(G)} = 0$ is $j$ is not reachable, $\delta \in (0,1) represents then the benefit decay per step and each link costs $c$.
+where $d_{ij}$ is the shortest-path disstance between $i,j$, $\delta^{d_{ig}(G)} = 0$ is $j$ is not reachable, $\delta \in (0,1)$ represents then the benefit decay per step and each link costs $c$.
 
 We now analyze the welfare of a <b>complete graph $K_n$</b>, where every node is linked to all others.
 For node $i$, we have the following utility:
@@ -1638,7 +1660,7 @@ $$
 u_i(G) =
 \begin{cases}
 \sum_j (\frac{1}{d_i}+ \frac{1}{d_j} \frac{1}{d_i d_j}), \quad d_i > 0
-0   \quad d_i = 0
+   \quad d_i = 0
 \end{cases}
 $$
 
@@ -1650,6 +1672,8 @@ d_i = 1 \quad \forall i
 $$
 
 The <b>efficient network</b> (maximum welfare) is a set of disjoint pairs (for even $n$).
+
+---
 
 ### <a id="11.1"> <b>11.1 Dynamics of Strategic Network Formation</b> </a>
 
