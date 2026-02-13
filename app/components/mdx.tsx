@@ -12,6 +12,11 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 let katexImpl: any = null
 
 function Table({ data }) {
+  // Safety check for undefined data
+  if (!data || !data.headers || !data.rows) {
+    return null
+  }
+
   // helper to render cell content with inline/display math
   function renderCellContent(cell: any, cellKey: string | number) {
     if (cell === null || cell === undefined) return null
