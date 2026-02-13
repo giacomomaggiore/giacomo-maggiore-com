@@ -1,9 +1,10 @@
+'use server'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { highlight } from 'sugar-high'
 import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-
 
 
 
@@ -241,7 +242,7 @@ function Quote({ children }) {
   )
 }
 
-let components = {
+const components = {
   h1: createHeading(1),
   h2: createHeading(2),
   h3: createHeading(3),
