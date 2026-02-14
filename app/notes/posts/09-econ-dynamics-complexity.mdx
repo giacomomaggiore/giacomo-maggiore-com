@@ -7,13 +7,15 @@ summary: ''
 The following notes come from the course <a href="https://www.vvz.ethz.ch/Vorlesungsverzeichnis/lerneinheit.view?lerneinheitId=193529&semkez=2025W&ansicht=LEHRVERANSTALTUNGEN&lang=en" target="_blank"> <b> Economic Dynamics and Complexity</b></a>, held by <a target="_blank" href="https://www.verginer.eu/"><b> 	Luca Verginer
 </b> </a> at <a target="_blank" href="https://ethz.ch/en.html"> <u>ETH Zurich</u></a>.
 
+For a more practical approach, <a href="https://github.com/giacomomaggiore/economomic-dynamics-and-complexity" target="_blank">please refer to the Python Notebooks of the course </a>.
+
 ---
 
 ### <b> Index </b>
 
 - [1.1 Cobweb Dynamics: a simple model for supply and demand](#1.1)
 - [1.2 Basics of Epidemic Models](#1.2)
-- [1.3 Supply CHains as Rooted Trees](#1.3)
+- [1.3 Supply Chains as Rooted Trees](#1.3)
 - [2.1 Growth Models: exponential and logistic](#2.1)
 - [2.2 Fishing/Harvesting Model](#2.2)
 - [2.3 Growth Models: supply and demand determine price](#2.3)
@@ -101,7 +103,7 @@ $$
 
 ---
 
-### <a id="1.3"> <b>1.3 Supply CHains as Rooted Trees</b> </a>
+### <a id="1.3"> <b>1.3 Supply Chains as Rooted Trees</b> </a>
 
 
 We can represent a chain as a graph $G = (V,E)$, with $V$ representing the set of verttices (notes) and $E \subseteq V \times V$ the set of edges, that can be directed or not: $(u,v) = \text{or} \neq (v,u)$.
@@ -331,7 +333,7 @@ $$
 The harvesting function becomes then a function of stock:
 
 $$
-h^{eq}(x) = q^s \big(  p^{eq},x  \big) = b_1 p^{eq}(x) + b_2  h^{eq}(x) = \frac{c_0 b_1 + c_1 b_2 x}{c_1 + b_1}
+h^{eq}(x) = q^s \big(  p^{eq},x  \big) = b_1 p^{eq}(x) + b_2  x = \frac{c_0 b_1 + c_1 b_2 x}{c_1 + b_1}
 $$
 
 Then, since the stock is "_consumed_" by supply, that is equal to the harvesting function, We can the model the stock dynaimics as:
@@ -460,7 +462,7 @@ if we add a recovery rate $\gamma$ and infection duration $1/\gamma$, we obtain 
 
 $$
 \begin{align*}
-\dot s &= - \beta s     \\
+\dot s &= - \beta s  i   \\
 \dot i &= \beta s i - \gamma i\\
 \dot r &= \gamma i
 
@@ -507,7 +509,7 @@ The end state is <b>non trivial </b> and it is given by the vector $(s^*, i^*, r
 
 We consider a network $G = (V,E)$, with noted $v \in V$ and edges $(u,v) \in E$.
 
-- each node $x_v \in \{0, 1\}$ ($0$ non-adopter, $1$ adopter)$
+- each node $x_v \in \{0, 1\}$ ($0$ non-adopter, $1$ adopter)
 -  adoption threshold $\theta$
 - neighborhood $N(v) = \{u : (u,v) \in E \}$
 
@@ -537,7 +539,7 @@ The analysis of this systems comes from the <b>classification</b> of <b>fixed po
 We start by analyzing the <b>Lotka-Volterra Predator-Prey Model</b>, representing the interaction between two species:
 - $x(t)$: <b>preys (hares)</b>
 - $y(t)$: <b>predators (lynx)</b>
-
+<br/>
 <a href="https://www.youtube.com/watch?v=DDEvlLa9z_U" target="_blank"> Predator-Prey Population Models || Lotka-Volterra Equations [Video]</a>
 
 In isolation we know that:
@@ -669,7 +671,7 @@ $$
 \det(J - \lambda I) = \lambda^2 - \tau \lambda + \Delta 
 \\
 \tau := \operatorname{Tr}(J) = f_x + g_y
-
+\quad
 \Delta := \det(J) = f_x g_y - f_y g_x
 
 $$
@@ -988,7 +990,7 @@ $$
 resulting in the <b>Scaling Law</b> for $R_n$:
 
 $$
-R_n \approx R_{infty} - c \delta ^{-n}, \quad c_{logistic} \approx 2.632
+R_n \approx R_{\infty} - c \delta ^{-n}, \quad c_{logistic} \approx 2.632
 $$
 
 <a href="https://it.wikipedia.org/wiki/Costanti_di_Feigenbaum" target="_blank">More on the Feigenbaum Constants [Wikipedia]</a>
@@ -997,7 +999,7 @@ $$
 ![Cobweb](/images/notes/econ-din-compl/bifurcation.png)
 </div>
 
-- For $R_{\infity} < R < 4$ we can see a <b>mixture of order and chaos</b>: periodic windows reappe within chaotic bands.
+- For $R_{\infty} < R < 4$ we can see a <b>mixture of order and chaos</b>: periodic windows reappe within chaotic bands.
 - At $R = 4$ we see <b>fully developed chaos</b>.
 
 This is called <b>deterministic chaos</b>: once $x_0$ and $r$ are fixed, each step is predetermined, but long term behavior becomes <b>unpredictable</b>, because tiny differences in $x_0$ grow rapidly.
@@ -1123,7 +1125,7 @@ Starting from the setup we have:
 - The gap shows up as:
 
 $$
-\Delta \text{Inv.} = C^{e} - C^{acqual} = - (I - S)
+\Delta \text{Inv.} = C^{e} - C^{acTual} = - (I - S)
 $$
 
 - The firm reacts:
@@ -1132,7 +1134,7 @@ $$
 - Leading to the dynamic rule:
 
 $$
-\dot Y = \alpha (I(y) - S(Y)), \quad \alpha > 0
+\dot Y = \alpha (I(Y) - S(Y)), \quad \alpha > 0
 $$
 
 we can then incur in two scenarios:
@@ -1264,7 +1266,7 @@ $$
 where $n_i(s,t)$ is the shortest path $s \to t$ through $i$. In the _normalized form_, we also write:
 
 $$
-C_B(i)= \sum_{s \neq i, t \neq i}n_i (s,t) / N_{st}
+\bar C_B(i)= \sum_{s \neq i, t \neq i}n_i (s,t) / N_{st}
 $$
 
 where $N_{st}$ is the total number of shortest shortest paths $s \to t$.
@@ -1395,6 +1397,7 @@ of course, as before, approach to stationarity is determined by eigenvalues of $
 
 <a href="https://www.youtube.com/watch?v=uTUVhsxdGS8" target="_blank">Spectral Graph Theory For Dummies [Video] </a>
 
+<\br/>
 <a href="https://www.youtube.com/watch?v=NnuxsyYGoi4" target="_blank">Introduction of algebraic connectivity and Fiedler vector [Video] </a>
 
 ---
@@ -1417,7 +1420,7 @@ $$
 \epsilon[x] = \frac{1}{2} \sum_{i,j} A_{ij} |x_i - x_j|^2 = \frac{1}{2} x^T  {\mathcal{L}} x
 $$
 
-Then, for any non-zero node, we can define the <b>Rayleigh Quotient</b> ${\mathcal{R}}[v]$, representing how well the node $v$ fits the network or how uneven values are across linked regions _(smooth profiles show small ${\mathcal{R}}$)_
+Then, for any non-zero $v$ <b>vector of nodes</b>, we can define the <b>Rayleigh Quotient</b> ${\mathcal{R}}[v]$, representing how well the state (or vector of nodes) $v$ fits the network, i.e. how uneven values are across linked regions _(smooth profiles show small ${\mathcal{R}}$)_
 
 $$
 {\mathcal{R}}[v] = \frac{v^T {\mathcal{L}} v}{v^T v} = \frac{\sum_{i,j} A_{ij} |x_i - x_j|^2}{\sum_i v_i^2}
@@ -1517,7 +1520,7 @@ $$
 x_i = \alpha \sum_j A_{ij} x_j + \beta \iff x = \beta (I - \alpha A)^{-1} \mathbb{1}
 $$
 
-_Intuition: $\beta$ adds ecogenous centrality._
+_Intuition: $\beta$ adds endogenous centrality._
 Note: choose $\alpha < 1 / \kappa_1$ to ensure convergence.
 
 The problem in this model is that an <b>high centrality</b> node can pass large score to many neighbors.
@@ -1659,7 +1662,7 @@ Let $d_i$ the number of co-authors (degree) of researcher $i$:
 $$
 u_i(G) =
 \begin{cases}
-\sum_j (\frac{1}{d_i}+ \frac{1}{d_j} \frac{1}{d_i d_j}), \quad d_i > 0
+\sum_j (\frac{1}{d_i}+ \frac{1}{d_j}+ \frac{1}{d_i d_j}), \quad d_i > 0
    \quad d_i = 0
 \end{cases}
 $$
@@ -1684,7 +1687,7 @@ In the last section, we have seen that several networks are stable, but we assum
 In reality, maintaining more links becomes more expensive: to account for this we introduce <b>quadratic costs </b> $ck_i^2$.
 
 $$
-u_i(G) = \delta_{j \neq i} \delta^{d_{ij}} - c k^2_i
+u_i(G) = \sum \delta_{j \neq i}^{d_{ij}} - c k^2_i
 $$
 
 the marginal cost of adding one link is then:
@@ -1717,7 +1720,7 @@ _Key takeaway: in large economic networks, the <b>ongoing dynamic</b> is more im
 
 ---
 
-### <a id="11.2"> <b>11.2 Spatial Connections Model</b> </a>
+### <a id="11.2"> <b>11.2 Spatial Connections Model.(Jackson and Wolinsky, 1996)</b> </a>
 
 So far, networks lived in an abstract place, but in reality and in many economic networks, agents have a <b>location</b>.
 Empirically, we see:
