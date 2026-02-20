@@ -1,5 +1,3 @@
-'use server'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import { highlight } from 'sugar-high'
@@ -78,16 +76,14 @@ function Table({ data }) {
     <div
       style={{
         width: '100%',
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
+        overflowX: 'auto',
       }}
     >
       <table
         style={{
           borderCollapse: 'collapse',
           width: '100%',
-          tableLayout: 'fixed', // forza le celle a ridimensionarsi per stare nel contenitore
+          tableLayout: 'auto',
           wordWrap: 'break-word', // evita parole troppo lunghe
           fontSize: '0.95rem',
           margin: '1rem 0',
@@ -268,10 +264,47 @@ interface CustomMDXProps {
   source: string
 }
 
+function toMarkdownTable(data: { headers: any[]; rows: any[][] }) {
+  const headers = (data.headers || []).map((h) => String(h ?? '').replace(/\|/g, '\\|'))
+  const rows = (data.rows || []).map((row) =>
+    (row || []).map((cell) => String(cell ?? '').replace(/\|/g, '\\|'))
+  )
+
+  if (!headers.length) return ''
+
+  const head = `| ${headers.join(' | ')} |`
+  const sep = `| ${headers.map(() => '---').join(' | ')} |`
+  const body = rows.map((row) => `| ${row.join(' | ')} |`).join('\n')
+
+  return [head, sep, body].filter(Boolean).join('\n')
+}
+
+function replaceTableBlocks(source: string) {
+  const tableRegex = /<Table\s+data=\{\{([\s\S]*?)\}\}\s*(?:\/>|><\/Table>)/g
+
+  return source.replace(tableRegex, (_, objectBody) => {
+    try {
+      const sanitizedBody = String(objectBody)
+        .replace(/<\s*(?:i|b|u|em|strong)\s*>([\s\S]*?)<\s*\/\s*(?:i|b|u|em|strong)\s*>/g, (_m, inner) => JSON.stringify(String(inner).trim()))
+
+      const data = Function(`"use strict"; return ({${sanitizedBody}});`)()
+
+      if (!data || !Array.isArray(data.headers) || !Array.isArray(data.rows)) {
+        return ''
+      }
+
+      return `\n${toMarkdownTable(data)}\n`
+    } catch {
+      return ''
+    }
+  })
+}
+
 export async function CustomMDX({ source }: CustomMDXProps) {
   // Import dinamici per evitare problemi di compatibilità
-  const [{ default: remarkMath }, { default: rehypeKatex }] = await Promise.all([
+  const [{ default: remarkMath }, { default: remarkGfm }, { default: rehypeKatex }] = await Promise.all([
     import('remark-math'),
+    import('remark-gfm'),
     import('rehype-katex')
   ])
   // importa dinamicamente katex e salvalo in variabile di modulo
@@ -285,11 +318,12 @@ export async function CustomMDX({ source }: CustomMDXProps) {
 
   return (
     <MDXRemote
-      source={source}
+      source={replaceTableBlocks(source)}
       components={components}
       options={{
         mdxOptions: {
-          remarkPlugins: [remarkMath],
+          format: 'mdx',
+          remarkPlugins: [remarkMath, remarkGfm],
           rehypePlugins: [
             [rehypeKatex as any, {
               strict: false,

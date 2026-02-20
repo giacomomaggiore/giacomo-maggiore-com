@@ -139,10 +139,19 @@ input[type='email'] {
 }
 
 table {
-  display: block;
-  max-width: fit-content;
-  overflow-x: auto;
-  white-space: nowrap;
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+}
+
+.prose table {
+  @apply border-collapse border border-neutral-300 dark:border-neutral-700;
+}
+
+.prose th,
+.prose td {
+  @apply border border-neutral-300 dark:border-neutral-700 px-3 py-2;
 }
 
 .title {
