@@ -1,6 +1,379 @@
 ---
-title: 'Econonic Growth, Policy'
+title: 'Econonic Growth, Cycles and Policy'
 publishedAt: '2026-02-24'
 summary: ''
 ---
 
+### <b>Index</b>
+
+- [Introduction](#1)
+- [Macroeconomic Schools](#1.2)
+- [IS-LM Model in Closed Economy](#2)
+- [Aggregate Demand and Aggregate Supply Curves](#2.2)
+- [Control of Interest Rates and Taylor Rule](#2.3)
+- [Schools of Thought](#3)
+- [Consumption and investment](#4)
+- [The Solow Growth Model](#5)
+- [Money holding: Inflation and Monetary Policy](#6)
+- [Crises in Market Economnies](#7)
+- [IS-LM Model and Open Economy](#8)
+- [Theories of exchange rate determination](#9)
+- [Technical Appendix](#10)
+---
+
+## <a id="1"><b>1.1 Introduction</b> </a>
+
+Macroeconomics tries to answer some key questions:
+- What determines key macroeconomic variables? _(GDP, unemployment, inflation, credit, consumption, interest rate...)
+- How can economic policy influence these variables? _(government spending, tax policies, monetary policy, "wage policy"...)
+- How can macroeconomic policy and market regulation operate together?
+- Do macroeconomic processes show inherent dynamics? _(cycles, trend and instabilities)_
+- Should economic policy focus mainly on long-run growth or on stabilization of the business cycle?
+
+To start answering them, we firstly start with some <b>stylized facts</b> of Macroeconomics:
+<br/>_Note that, if a variable is <b>procyclical</b>, it moves in the same direction as the overall economy._
+
+<Table
+data={{
+headers: ["Economic Variable", "Cyclical Behavior", "Timing & Characteristics"],
+rows: [
+["Output Growth", "Procyclical", "Highly correlated across all sectors"],
+["Consumption & Investment", "Procyclical", "Investment is significantly more volatile than consumption"],
+["Employment", "Procyclical", "Unemployment is anti-cyclical (moves in the opposite direction)"],
+["Real Wages & Labor Productivity", "Procyclical", "-"],
+["Money Supply & Stock Prices", "Procyclical", "React early in the cycle (Leading indicators)"],
+["Inflation & Price Level", "Procyclical", "React delayed in the cycle (Lagging indicators)"],
+["Nominal Interest Rates", "Procyclical", "React delayed in the cycle"],
+["Bank Credit", "Procyclical", "-"],
+["Government Spending", "Procyclical", "Usually follows the direction of the cycle"]
+]
+}}
+/>
+
+Some additional <b>common rules of macroeconomic policy</b>, based on consensus, argue that:
+- in case of <b>liquidity problems</b>, the central bank should provide liquidity _by raising money supply_.
+- Government spending and investments of infrastructure should <b>not be lowered</b> during recession periods.
+- In downturns automatic stabilizer _(first responders" to an economic crisis)_ should work.
+- In the long run monetary policy has to focus on price stability _(inflation around 2% a year)_.
+- Real wage increases should <b>not exceed productivity</b> growth whem at the sime time the number of employees remain constant.
+
+## <a id="1.2"><b>1.2 Macroeconomic Schools</b> </a>
+
+The following graph shows the evolution of the macroeconomic thought from 1950 till today.
+
+<div align = "center">
+![Macroeconomic Schools](/images/notes/economic-growth/schools.png)
+</div>
+<br/>
+
+<b>The Kenynesian Branch</b>
+- <b>Keynesians</b>: focus on the _short-run_. They argue that markets don't always clear and that government intervention is necessary to manage the business cycle.
+- <b>New Kenynesians</b>: they introduce <b>microfoundations</b> _(explaining how people behanve and spend) and <b>nominal rigidities</b> _(prices and wages don't adjust instantly, which justifies government intervention)._
+<br/>
+
+<b>The Classical Branch</b>
+- <b>Classic</b>: they argue that markets are self-correcting and the <b>invisible hand</b> ensures optimal employment in the long run.
+- <b>New Classic</b>: Emerged in 1970, they introduced <b>rational expectations</b>, suggesting that because people anticipate government policy, those policies often become ineffective.
+<br/>
+
+<b>The Monetarist & RBC Branch</b>
+- <b>Monetarists</b>: <a href="https://it.wikipedia.org/wiki/Milton_Friedman" target="_blank">led by Milton Friedman,</a> they argued that changes in the money supply are the main driver of economic fluctuations.
+- <b>RBC Economics (Real Business Cycle):</b> they are a subset of New Classical thought. They argue that "cycles" aren't failures of the market, but rather efficient responses to technological shocks or changes in productivity.
+
+<a href="https://www.youtube.com/watch?v=tZvjh1dxz08" target="_blank"> Economic Schools of Thought: Crash Course Economics [Video]</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=xXNrloLHOzI" target="_blank">Classical v. Keynesian Theories [Video]</a>
+
+---
+
+
+## <a id="2"><b>2.1. IS-LM Model in Closed Economy</b> </a>
+
+In the long run:
+- prices are flexible
+- output is ddetermined by factors of production and technology
+- unemployment equals its natural rate
+
+In the short run (_IS-LM setting)_:
+- prices are <b>fixed</b> (or change slowly)
+- oputput is determined by <b>aggregate demand</b>
+
+---
+<br/>
+<b>The LM-curve (positive relationship between real interest rate and output)</b>
+
+In equilibrium, money supply equals money demand:
+
+$$
+M^s = M^d = p L (i, Y)
+$$
+
+where $L(i,Y)$ is a function representing  the liquitidy preferences, $i$ is the interest rate and $p$ the price level.
+
+If we consider $L(i, Y) = kY - hi$ where:
+- $\alpha$: Sensitivity of money demand to changes in income ($\frac{\partial L}{\partial Y} > 0$).
+- $\beta$: Sensitivity of money demand to changes in the interest rate ($\frac{\partial L}{\partial i} < 0$).
+
+If we write $M^s = p (\alpha Y - \beta i)$ and solve for $i$:
+
+$$
+i = \frac{\alpha}{\beta}Y - \frac{1}{\beta}\left(\frac{M^s}{P}\right)
+$$
+
+This yields an <b>upward-sloping LM curve</b>, which represents the positive relation between the interest rate and the output.
+
+
+In this model:
+- the Central Bank (CB) controls money supply 
+- if output increases, the demand for money increases at any $i$. 
+- for a fixed supply of money, $i$ must increase to lower the demand for money and maintain equilibrium.
+
+
+<div align = "center">
+![Macroeconomic Schools](/images/notes/economic-growth/lm.png)
+</div>
+<br/>
+
+It is also important to distinguish between:
+- <b>Movements along the curve:</b> caused by a change in output ($Y$).
+- <b>Shifts of the curve:</b> caused by changes in Monetary Policy (the Money Supply).
+
+Indeed, increasing money suppòly leads to:
+- increase in  demand for money to maintain equilibrium $\to i$ must decrease
+- for any level of output $Y$, the corresponding $i$ is lower.
+
+The result is that an increase in the money supply leads the LM curve to shift down:
+
+- $\Delta M^s \to \Delta i = - \frac{\Delta M^s}{p \beta} \quad$ or, equivalently: $\quad \frac{\partial i}{\partial M^s} = - \frac{1}{\beta p}$
+- $\Delta i \to \Delta M^ s = - p \beta \Delta i\quad$ or, equivalently: $\quad \frac{\partial M^s}{\partial i} = -\beta p$.
+
+<div align = "center">
+![Macroeconomic Schools](/images/notes/economic-growth/lm2.png)
+</div>
+
+---
+
+<b>The IS-curve (negative relation between real interest rate and output)</b>
+
+Assumptions:
+- there is only one good that can be used for consumption or investment
+- all demanded goods will be supplied _(no rationing of demand)_.
+
+We then model planned expenditures $E$:
+
+$$
+E = C(Y) + I(i) + G
+$$
+
+where $C$ is the consumption, $I$ physical investments (<b>not financials!</b>) and $G$ the public spending.
+
+When $E = Y$ planned and effective expenditures are equal and we obtain the <b>IS-curve</b>.
+
+If we consider: $E = Y = cY + I_0 - \gamma i + G$, we obtain the following:
+
+$$
+Y = \frac{1}{1 - c} [I_0 - \gamma i + G]
+$$
+
+$$
+i = \frac{(c-1)Y + I_0 + G}{\gamma}
+$$
+
+Even though the IS-curve is often referred to as the goods market equilibrium condition, this is misleading.
+<br/>In microeconomics, a market equilibrium balances demand and supply via price adjustments _(market clearing condition)_.
+<br/>The IS-curve does not reflect endogenous price levels.
+
+---
+<br/>
+<b>The Multiplicator-Process in IS-LM Model</b>
+
+
+Intiuitively, if we consider increase in public spending $G$:
+- increase in public spending moves the IS-curve to the right, $Y$ increases.
+- the LM-curve remains unchanged
+- in the short run, interest rate and outputincrease.
+
+<div align = "center">
+![Macroeconomic Schools](/images/notes/economic-growth/increase_g.png)
+</div>
+
+
+In formulas, if we consider $\Delta G$ and we solve both IS and LM equations simultaneously, from the LM-curve we get:
+
+$$
+i = \frac{\alpha}{\beta}Y - \frac{1}{\beta}\frac{M}{P}
+$$
+
+if we substitute this into the IS-expression:
+
+$$
+Y = cY + I_0 - \gamma \left[ \frac{\alpha}{\beta}Y - \frac{1}{\beta}\left(\frac{M}{P}\right) \right] + G
+$$
+
+$$
+Y = cY + I_0 - \frac{\gamma \alpha}{\beta}Y + \frac{\gamma}{\beta}\left(\frac{M}{P}\right) + G
+$$
+
+$$
+Y - cY + \frac{\gamma \alpha}{\beta}Y = I_0 + \frac{\gamma}{\beta}\left(\frac{M}{P}\right) + G
+$$
+
+$$
+Y \left[ (1 - c) + \frac{\alpha\gamma}{\beta} \right] = I_0 + \frac{\gamma}{\beta}\left(\frac{M}{P}\right) + G
+$$
+
+If we consider $\Delta G$ or, equivalently, we take its partial derivative:
+
+$$
+\Delta Y \left[ (1 - c) + \frac{\alpha\gamma}{\beta} \right] = \Delta G
+$$
+
+Dividing both sides gives us the<b> Fiscal Policy Multiplier:</b>
+
+$$
+\frac{\Delta Y}{\Delta G} = \frac{1}{(1 - c) + \frac{\alpha\gamma}{\beta}}
+$$
+
+- $(1 - c)$: represents the how much goes into savings _(smaller this is, the bigger the multiplier)_.
+- $\alpha\gamma / \beta$: is the <b>monetary drag.</b>
+    - If $\alpha$ is high, income growth creates massive money demand.
+    - If $\gamma$ is high, investment is very sensitive to interest rates.
+    - If $\beta$ is low, it takes a larger increase in $i$ to balance the money market.
+
+---
+
+<b>Easing of monetary policy</b>
+
+- Central Bank increases money supply by setting lower interest rate at given $Y$.
+- The LM-curve shifts downward
+- The IS-curve remains unchanged
+- $Y$ increases (with $G$ unchanged because exogenous, $I$ increases and $C$ increases) and $i$ declines
+
+<div align = "center">
+![Macroeconomic Schools](/images/notes/economic-growth/easing.png)
+</div>
+
+---
+<b>Declining consumer confidence</b>
+
+- It may be caused by financial crisis, wars, terror attacks or whatever
+- Households consume less and save more of given income
+- the IS-curve odes leftward
+- LM-curve remains unchanged assuming, _for simplicity_, that the demand for money does not change
+- $Y$ and $i$ decline.
+
+Possible counter-measures to stabilize $Y$:
+- Expansive fiscal policy can shift the IS-curve to initial position 
+- Easing of monetary policy implies downard shift of LM-curve 
+
+<div align = "center">
+![Macroeconomic Schools](/images/notes/economic-growth/consume_confidence.png)
+</div>
+
+---
+
+## <a id="2.2"><b>2.2. Aggregate Demand and Aggregate Supply Curves</b> </a>
+
+So far we've been using the IS-LM model to analyze the short-run dynamics. However, a change in price level would shift the LM-curve and therefore affects the output.
+<br/>The (aggregate demand) AD-curve describes the relationship between price and output.
+
+<div align = "center">
+![AD-curve](/images/notes/economic-growth/ad_curve.png)
+</div>
+
+On the other hand, we can model the <b>short-run </b> aggregate supply curve with an upward slope _(given by sticky wages and sticky costs)_.
+
+<div align = "center">
+![AD-curve](/images/notes/economic-growth/short_run_supply.png)
+</div>
+
+We now give an example of <b>complete adjustment </b> and we see what happend with a reduction of the government spending.
+
+Firstly, a reduction in $G$ shifts both IS and AD-curves left.
+
+<div align = "center">
+![AD-curve](/images/notes/economic-growth/complete_adjustment.png)
+</div>
+
+In the short-equilibrium, $Y$ is lower than the initial-natural value $\bar Y$.
+
+Thefore, aggregate supply moves down and we see a gradual adjustment of pcises, leading to a downward-shift of the LM-curve that, finally, brings the system back to $\bar Y$.
+
+<div align = "center">
+![AD-curve](/images/notes/economic-growth/complete_adjustment_2.png)
+</div>
+
+_In reality, downward price and wage adjustments are difficult (see for example, the Greek crisis in 2010-2016)_:
+- _very long wage contract make them hard to re-negotiate_
+- _resistance of particular groups of employees_.
+
+In the case of Greece:
+- _costs were also partly determined by international markets due to the import_
+- _governments has to rely too much on increasing valued added-takex that leads to an increase in prices_.
+
+---
+
+## <a id="2.3"><b>2.3. Control of Interest Rates and Taylor Rule</b> </a>
+
+Models with LM-curve assume that the CB uses the money supply as an instrument, therefore $i$ will determined endogenously by the equilibrium.
+<br/>In reality, CB uses short-term interest rates as their policy instruments _(rather than the money supply)_.
+
+The main advantage of targeting interest rating versus money supply is that, in the second case, the difference between fluctuating demand and stable siupply would lead to strongly functuating interest rates.
+<br/>Nowadays CB counterbalance fluctuations in money demand by adapting the money supply to maintain the short-term interest rate at the targeted level.
+
+CB influences short-terminterest rates $i_0, i_1, i_2...$.
+
+A risk-neutral investors must be indifferent between:
+- make a long-term investment with interest rate $i_L$
+- make short-term investments in each period $t$ at interest rate $i_t$ (with $i^e_t$ denoting the expected interest rate)
+
+$$
+\begin{align*}
+1 + i_L &= [(i + i_0)(1 + i_1^e)(1 + i_2^e)...(i + i_n^e)]\\
+i_L & \approx i_0^e + i_1^e + i_2^e ... i_n^e
+\end{align*}
+$$
+
+But, in practice:
+
+$$
+i_L \approx i_0 + i_1^e + \tau_{0,1}^P + i_2^e + \tau_{1,2}^P + .... i_n^e + \tau_{n-1,n}^P
+$$
+
+where $ \tau_{n-1,n}^P $ denotes the <b>positive term premium</b>.
+
+In this way, by influencing the short-term nominal interest rates, the CB can also influence the long-term ones.
+
+---
+
+## <a id="3"><b>3. Schools of Thought</b> </a>
+
+---
+
+## <a id="4"><b>4. Consumption and Investment</b> </a>
+
+---
+
+## <a id="5"><b>5. The Solow Growth Model</b> </a>
+
+
+---
+
+## <a id="6"><b>6. Money holding: Inflation and Monetary Policy</b> </a>
+
+---
+
+## <a id="7"><b>7. Crises in Market Economies</b> </a>
+
+---
+
+## <a id="8"><b>8. IS-LM Model and Open Economy</b> </a>
+
+
+---
+
+## <a id="9"><b>9. Theories of exchange rate determination</b> </a>
+
+---
+
+## <a id="10"><b>10. Technical Appendix</b> </a>
