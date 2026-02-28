@@ -4,7 +4,28 @@ publishedAt: '2026-02-24'
 summary: ''
 ---
 
-### <b>Introduction </b>
+- [Introduction to Sustainability Economics](#1)
+- [Economic Growth, Sustainability, Market Failures](#2)
+    - [Macroeconomic Refresher](#2.1)
+    - [Microeconomic Refresher](#2.1)
+    - [Integraded Assessment Models (IAMs) and the DICE Model](#2.3)
+- [Quantifying the Economic Value of the Environment, Part 1](#3)
+- [Quantifying the Economic Value of the Environment, Part 2](#4)
+- [Market Value of Firms’ Sustainability Investments](#5)
+- [Costs of Sustainability Investments: Basics](#6)
+- [Firm’s Capital Costs and Environmental Risks](#7)
+- [Sustainability Costs: Managerial and Technological Innovation](#8)
+- [Principles of Benefit-Cost Analysis (BCA)](#9)
+- [Extensions of BCA: Distribution, Substitutability, and Uncertainty](#10)
+- [Environmental Policy: Instrument Choice and Efficiency](#11)
+- [Policy: Distribution and International Cooperation](#12)
+- [Collapse, Resilience, and Common Pool Resources](#13)
+- [Measuring Sustainable Development](#14)
+
+---
+
+
+## <a id="1"><b>1. Introduction</b> </a>
 
 <b>Economics </b> is the study of how people use scarse resources and respond to incentives.
 
@@ -26,15 +47,314 @@ In relation to this, we define <b>Capital</b> $K$ as stock that can be used to d
 - $K_p$: physical capital _(infrastructure, machines, buildings)_
 - $K_n$: natural capital _(ecosystem, atmosphere)_
 
-<b>Comprehensive wealt</b> incluse the total value of all capital stocks. Therefore, <b>"weak" sustainability</b> use and invest in natural and human-made capital stock such that comprehensive wealth doesn't decline:
+<b>Comprehensive Wealth</b> incluse the total value of all capital stocks. 
+
+<b>- "Weak" sustainability</b> use and invest in natural and human-made capital stock such that comprehensive wealth doesn't decline:
 
 $$
 \frac{\partial K (K_h, K_n, K_p)}{\partial t} \ge 0
 $$
 
-Furthermore, <b>"strong" sustainability</b> use and invest in natural and human-made capital stock such that no stock $i \in \{ h, p, n\}$ falls below a critical level:
+- <b>"Strong" sustainability</b> use and invest in natural and human-made capital stock such that no stock $i \in \{ h, p, n\}$ falls below a critical level:
 $$
 K_i \ge \bar K_i
 $$
 
 _Example: a strong approach to climate change limits temperature change below critical levels (example: limit warming at 2° no matter of the cost)._ <br/>_A weak approach balances costs and benefits of emissions reductions (impose carbon tax to ensure that fossil fuels are only burned when their benefit exceed social cost)._
+
+---
+
+
+<a id = "2.1"></a>
+## <a id="2"><b>2.1 Economic Growth, Sustainability, Market Failures - Macroeconomic Refresher</b> </a>
+
+<b>GDP</b> (Gross Domestic Product) is the _market value of the final goods and services produced within the borders of a country during a particular time period_.
+<br/>It can be measured in 3 ways:
+- <b>the production approach </b>
+- <b>the expenditure approach </b>
+- <b>the income approach</b>
+
+<a href="https://ourworldindata.org/grapher/gdp-per-capita-worldbank?tab=line" target="_blank">GDP Stats by Country [Our World in Data]</a>
+
+The idea behind the <b>production approach</b> is to sum up the market value of the final goods and services _produced_ in a year.
+
+<b>Example: Giacomo's Racing Bikes</b><br/>
+Giacomo's Land is a small country with one employer (Giacomo's GmbH) that produces 100 racing bikes a year. The market price of an racing bike is $10'000 \text{ CHF}$ _(yes, they are very expensive!)_.
+<br/>All Giacomo's Land citizens work in the bike factory, that also owns all the machines, so it onlz needs to hire workers.
+
+To determine the <b>market value of production</b>, we simply do:
+
+$$
+\text{Production} = 100 \text{ racing bikes} \times 10'000 \text{ CHF/bike} = 1'000'000 \text{ CHF}
+$$
+
+Note that we focus to the final value at tend of the production chain (_value added)_, so we sum the ssales revenues minus the firm's purchases of intermediate products to avoid double-counting.
+
+The <b>expenditure approach</b> looks at the total value of expenditures on goods and services produced in the domestic economy by considering:
+- $C$: consumption _(good and servies bought by domestic households)_
+- $I$: new physical capital investments from domestic households and domestic firms
+- $G$: government expenditures 
+- $X$: exports of goods and servies produced domestically and sold abroach 
+- $M$: imports of goods and services produced abroad and sold domestically
+
+and calculating GDP ($Y$) as:
+
+$$
+Y = C + I + G + X - M
+$$
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/gdp.png)
+</div>
+
+<b>Nominal GDP </b> is the total value of production using _current_ market prices to determine the value of each unit.
+- An increase in GDP will record both increases in _actual_ production and increases in the _prices_ of goods and services.
+
+<b>Real GDP</b> is the total value of production using _constant_ market prices_.
+
+Real GDP allows then to compute <b>real changes</b> in output across time since we adjust for the price levels.
+
+In a similar way, <b>PPP (Purchasing Power Parity)</b> adusted income measures adjust for differences in cost of living across locations:
+
+$$
+\text{PPP Adjustments} = \frac{\text{Price of consumption basket in location A}{\text{Price of consumption basket in location  B}}}
+$$
+
+A very useful tool to visualize PPP adjustments is <a href="https://www.numbeo.com/cost-of-living/" target="_blank">Numbeo - Cost of Living </a>.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/zurich-naples.png)
+</div>
+
+For example, <a href="https://www.numbeo.com/cost-of-living/compare_cities.jsp?country1=Italy&country2=Switzerland&city1=Naples&city2=Zurich&tracking=getDispatchComparison" target="_blank"> this comparison between Zurich and Naples</a> shows absolute different in prices.
+If we want to compute PPP Adjustments, we simply do:
+
+$$
+\text{PPP Adjustments - Inexpesive Meal} = \frac{15.00 €}{28.59 €} = 0.52
+$$
+
+For example, in case we wanto to compare <b>salaries</b>, and we assume the following:
+- <b>average pizza-man salary in Naples</b>: $25'000 $€
+- <b>average pizza-man salary in Zurich</b>: $60'000 $€
+we just have to re-compute the Zurich'one with the PPT adjustments:
+
+$$
+\text{PPP-adjusted Salary}_{Zurich} = 60'000 € \times 0.52 = 3120 €
+$$
+
+meaning that <b>purhcasing power of Zurich's pizza-men</b> is actually higher.
+
+---
+
+We recall that the <b>aggregate production function </b> for GDP is:
+
+$$
+Y_t = A_t \times F(K_t, L_t \cdot h_t) = A_t \times F(K_t, H_t)
+$$
+
+- $K_t$: investment and construction
+- $L_t$: labor force participation
+- $h_t$: education
+- $A_t$: improvements in technology, institutions, management etc...
+
+However, in the _long run_, the only source of sustained GDP per capita growth is the <b>growth in productivity</b> $A_t$. (Note that, _given the right incentives_, market can direct productivity improvements in almost any direction).
+
+Starting from the aggregate production function, the <b>Integraded Assessment Modelds (IAMs)</b> integrade enviromental and resource dynamics into macro-economic analysis.
+
+Firstly, we can account for the role of (fossil) energy $E£ in the GDP production:
+
+$$
+Y_t = A_t \times F(K_t, H_t, E)
+$$
+
+_Intuition: using more (and cheap) energy today increases GDP today_.
+
+Then, we add climate model to account for effectsof fossil use energy on warking $T_t$:
+
+$$
+T_t = H(E_{1750, E_{1751}... E_t})
+$$
+
+and then we add $A_t$ to the GDP's formula:
+
+$$
+Y_t = A_t(E_t) \times F(K_t, H_t, E_t)
+$$
+
+_Note that, in reality, energy consumption $E$ affects all the determinants of GDP, not only the productivity (for example, investments depends on depreciation rate, also affected by climate change)._
+Most important, climate changes also has strong effects that don't affect GDP directly (_non-market_ impacts such as elderly mortality, biodiversity etc etc...)
+
+## <a id="2.2"><b>2.2 Economic Growth, Sustainability, Market Failures - Microeconomic Refresher</b> </a>
+
+For a better review, please also refer to <a href="https://giacomomaggiore.com/notes/05-microeconomics">my microeconomic notes </a>.
+
+<b>First Fundamental Theorem of Welfare Economics</b> states that, in absence of market failures, free competitive markets lead to the economically efficient outcome.
+
+- _Intuition on the consumer side:_ consumers spend money on a given good until their marginal benefit from another slice is just equal to the marginal cost (the price they pay) of buying an additional unit.
+- _Intuition on the producer side:_ firms produce as much of a good until their marginal cost is just equal to the marginal revenue they sell at.
+
+<b>Markets allocate scarse resources</b> efficiently because prices serve as a signal of the value and cost of using the resorces to produce a given good.
+
+A <b>market failure</b> is a problem that causes the free market to deliver an outcome that is inefficient.
+
+- <b>Private marginal cost</b> is the direct cost of producers of producing an additional unit.
+- <b>Social marginal cost</b> is the private marginal cost _plus any external costs or benefits_ of producing an additional unit.
+
+_Intuition_: social marginal costs measure the full costs to society.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/social-cost.png)
+</div>
+
+## <a id="2.3"><b>2.3 Economic Growth, Sustainability, Market Failures - Integrade Assessment Models (IAMs) and the DICE Model</b> </a>
+
+IAMs are integrade models of the economy and the enviroment.<br/>
+In macroeconomic, there are the following assumptions and behaviors:
+- firms maximize profits 
+- households maximise well-being
+- agents anticipate the future 
+- market equilibrium represents a _solution_.
+
+Interdisciplary and policy IAMs often take these assumptions are given, but they miss the <b>feedback loop</b>: they calculate how growth affects the climate, but they struggle to calculate how much that climate change affects back into the economy.
+
+---
+
+<div align = "center">
+![Nordhaus](/images/notes/sust-econ/nordhaus.png)
+</div>
+
+The <b>Nordhaus DICE Model</b> (1992) is based on the <b>Ramsey-Cass-Koopmans</b> growth model, whose aggregate production function is:
+
+$$
+Y_t^{gross} = A_t \cdot (K_t^{\alpha} L_t^{1 - \alpha})
+$$
+
+where $Y_t^{gross}$ is the global gross output, $A_t$ the total factor productivity, $K_t$ the capital stock and $L_t$ the labor. _(Note that many IAms also include energy services as production input)_.
+
+The DICE models also introduce calculates the <b>baseline industrial carbon emissions </b> as:
+
+$$
+E_t^{Baseline} = \sigma_t \cdot Y_t
+$$
+
+where $\sigma_t$ is the <b>baseline emissions intensity </b> of the economy. _(Note that, in the past $\sigma_t$ showed a linear-decading trend)_.
+
+In addition to this baseline decarbonization trend, society can undertake additional efforts to reduce carbon emissions so, if we define $\mu_t \in [0,1]$ as the fraction of emissions reduced, we can model:
+
+$$
+E^{Actual}_t = (1 - \mu_t) E_t^{Baseline}
+$$
+
+and then we represent the costs $\Lambda_t$ of emissions reductions as a share of GDP:
+
+$$
+\Lambda_t (\mu_t) = \theta_{1t}(\mu_t)^{\theta_2}
+$$
+
+The <b>Nordhaus DICE Model</b> also accounts for CO2 emissions and, from the <b>atmospheric carbon concentrations</b> $M_{AT,t}$, it models the <b>increased radiative forcing </b> $F_t$ (_measuring  how much extra heat (in Watts per square meter) is being trapped at any given time $t$._)
+
+$$
+
+F_t = \eta \left[ \log_2 \left( \frac{M_{AT,t}}{M_{AT,1750}} \right) \right] + F^{Abate}_t + F^{Ex}_t
+
+$$
+- $\frac{M_{AT,t}}{M_{AT,1750}}$: This ratio compares the current amount of carbon in the atmosphere ($M_{AT,t}$) to the levels before the Industrial Revolution ($1750$).
+
+- The Logarithm represents the diminishing returns of $CO_2$. _Every time you double the concentration, you get a fixed increase in temperature._
+- $\eta$ (Eta) is the climate sensitivity parameter
+- $F^{Abate}_t$ & $F^{Ex}_t$: These represent forcings from sources other than $CO_2$ (like Methane or Aerosols). 
+
+_Intuition:_ increasing $F_t \to$ increased temperatures.
+
+The model indeed estimated the global atmospheric surface temperature change over pre-industrial levels, $T_t$ as a function of the history of CO2 emissions and other forcings:
+
+$$
+\begin{align*}
+
+T_t &= f_t(E_0, E_1, \dot E_t) \\
+&= f_t((1- \mu_0)\sigma_0 Y_0, (1 - \mu_1)\sigma_1 Y_1, \dot (1 -\mu_t)\sigma_t Y_t)
+
+\end{align*}
+$$
+
+Then, the model summarizes the climate change impacts on economy with a <b>damage function</b> $D(T_t), which captures the faction of GDP-equivalent loss from warming $T_t$, so we can write:
+
+$$
+Y_t^{Net} = (1 - \Lambda_t(\mu_t)) \cdot \Big [ (1 - D(T_t)) \cdot Y_t^{Gross}   \Big]
+$$
+
+- reducing emissions (higher $\mu_t$) costs money today but reduces climate damage in the future ($T_t$ decreases)
+- macro-level inter-temporal trade-off are analogous to standard consumption/saving decisions.
+
+To understand the inter-temporal tradeoffs, we consider each household's <b>lifetime utility $U$ </b> as:
+
+$$
+U = u(c_0) + \sum_{t = 1}^{t = n} \Big[ (\frac{1}{1 + \rho})^t \cdot u(c_t) \Big]
+$$
+
+where $u(c_t)$ is concave function of utility of each household at period $t$ and $\rho$ the discount factor.
+
+Recall that the final goal of the DICE model was to estimate the <b>social cost of carbon (SSC)</b>, defined he total damage that one extra ton of carbon emitted today causes to the world for the rest of time.
+
+$$
+\begin{align*}
+SCC_t &= \frac{\partial W}{\partial E_t} \\
+
+
+&= \sum_{j=0}^{T_{max}} \underbrace{\left( \frac{1}{1 + \rho} \right)^j}_{\text{Discount Factor}} \cdot \underbrace{\frac{u'(c_{t+j})}{u'(c_t)}}_{\text{Wealth Effect}} \cdot \underbrace{\frac{\partial Y_{t+j}}{\partial T_{t+j}}}_{\text{Economic Damage}} \cdot \underbrace{\frac{\partial T_{t+j}}{\partial E_t}}_{\text{Climate Response}}
+
+\end{align*}
+$$
+
+_Intuition:_ $SCC_t$ sums all the discounted future changes in utility _(wealth effect)_, weighted by the effect on future GDP changes _(economic damage)_ and the effect of future temperature changes _(climate damage)_.
+
+
+---
+
+
+## <a id="3"><b>3. Quantifying the Economic Value of the Environment, Part 1</b> </a>
+
+---
+
+## <a id="4"><b>4. Quantifying the Economic Value of the Environment, Part 2</b> </a>
+
+---
+
+## <a id="5"><b>5. Quantifying the Market Value of Firms’ Sustainability Investments – Part 1</b> </a>
+
+---
+
+## <a id="6"><b>6. Costs of Sustainability Investments: Basics</b> </a>
+
+---
+
+## <a id="7"><b>7. Firm’s Capital Costs, Sustainability, and Environmental Risks</b> </a>
+
+---
+
+## <a id="8"><b>8. Sustainability Costs: Managerial and Technological Innovation</b> </a>
+
+---
+
+## <a id="9"><b>9. Principles of Benefit-Cost Analysis in the Climate Context</b> </a>
+
+---
+
+## <a id="10"><b>10. Extensions of Benefit-Cost Analysis: Distributional Weights, Limited Substitutability, and Uncertainty</b> </a>
+
+---
+
+## <a id="11"><b>11. Environmental Policy: Instrument Choice, Efficiency and Effectiveness</b> </a>
+
+---
+
+## <a id="12"><b>12. Environmental Policy: Distribution, Re-distribution and International Cooperation</b> </a>
+
+---
+
+## <a id="13"><b>13. Collapse, Resilience and the Sustainable Management of Common Pool Resources</b> </a>
+
+---
+
+## <a id="14"><b>14. Measuring Sustainable Development</b> </a>
+
