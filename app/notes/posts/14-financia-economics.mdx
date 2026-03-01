@@ -1,0 +1,454 @@
+---
+title: 'Financial Economics'
+publishedAt: '2026-03-01'
+summary: ''
+---
+
+- [Introduction](#0.1)
+    - [The Fama-Shiller controversy](#0.1)
+    - [Introduction to finance and investment planning](#0.2)
+- [Options and financial strategies](#1)
+- [Option valuation](#2)
+- [Pricing by arbitrage](#3)
+- [An introduction to the economic analysis of asset markets](#4)
+- [Choice under uncertainty](#5)
+- [Demand for risk](#6)
+- [Risk sharing and insurance](#7)
+- [Mean variance analysis](#8)
+- [CAPM](#9)
+- [Risk sharing and asset prices in a market equilibrium](#10)
+
+Suggested readings:
+
+- <a href="https://www.orellfuessli.ch/shop/home/artikeldetails/A1045605474" target="_blank">_Investments_, Z. Bodie, A. Kane and A. Marcus, Fifth Edition, Parts IV and VI, for lectures 1 and 2 (later editions areavailable).</a>
+- <a href="https://www.amazon.com/Finance-Economics-Uncertainty-Gabrielle-Demange/dp/1405121394#:~:text=Economics%20and%20Finance%20of%20Uncertainty,that%20utilize%20financial%20tools%20to" target ="_blank">_Finance and the Economics of Uncertainty_ by G. Demange and G. Laroque, for the rest of the course.</a>
+<br/>
+---
+
+## <a id="0.1"><b>0.1 Introduction - The Fama-Schiller controversy</b></a>
+
+In 2013, Eugene Fama, Bob Shiller and Lars Hansen jointly received the <a href="https://www.nobelprize.org/prizes/economic-sciences/2013/summary/" target="_blank">Novel Prize in economics</a> for their economic analysis of asset prices but, ironically, Fama and Shiller represent a interesting and controversial case for the subject.
+
+<a href="https://it.wikipedia.org/wiki/Eugene_Fama" target="_blank">Eugene Fama</a> is most often considered as the father of the <b>Efficient Market Hypotesis</b> (EFH) which supports the <b>Capital Asset Pricing Model </b>(CAPM), which states that stock's returns over time should be commensurate with its riskiness in relation to the overall market.
+
+In formulas: :
+
+$$
+E(R_i) = R_f + \beta_i (E(R_m) - R_f)
+$$
+
+Where $R_f$ is the risk-free rate, $\beta_i$ (Beta) the sensitivity of the asset to market,$E(R_m) - R_f$ the risk-premium _(the extra return investors demand for picking risky assets over the risk-free)._
+
+Moreover, Fama argued that any test of EMH is actually testing two things at once:
+
+- That the market is efficient.
+- That the model is a correct way to measure risk.
+
+<a href="https://it.wikipedia.org/wiki/Robert_Shiller" target="_blank">Bob Shiller</a>, on the other hand, published in 1981 the paper <a href="https://www.aeaweb.org/aer/top20/71.3.421-436.pdf" target="_blank">Do stock prices move too much to be justified by subsequent changed in dividends?</a> that, answering _Yes!_ to the question, claims that the EMH was one of the _remarkable errors_ in the history of economics.
+
+Regarding Fama's theories, Shiller opinion was something like...
+- _I think that maybe he has a cognitive dissonance_
+- _It's like being a Catholic priest and then discovering that God doesn't exist [...], you can't deal with that, you've got to somehow rationalise it._
+
+In particular, Shiller’s empirical result is that stock prices move way more than the dividends.<br/>
+If a stock price is truly the _"discounted value of all future dividends",_ it should be stable because dividends don't change that much, but Shille showed the opposite using the <b>Cyclically Adjusted Price-to-Earnings</b>(CAPE) ratio.
+
+In the following yeats, empirical data <b>gave credit to Shiller's critic.</b>
+
+But what does the CAPM actually say?
+- how the market should price financial assets in function of the risk 
+- it shows that a complete market _(perfect information and full pricing)_ will lead to a market equilibrium with optimal risk allocation
+
+However, the CAPM relies on very heavy and simplifying assumptions, some are technical and could be relaxed, others are foundamental and not often realistic:
+- <b>the complete market assumption</b>:
+    - it would require infinitely many assets
+    - it would require complex products _(derivatives)_
+    - complexity implies expertise and potential moral hazard 
+- <b>other assumptions are unrealistic</b>:
+    - investors can lend and borrown unlimited money under risk free rates 
+    - all assets are divisible and liquid 
+    - all agents have identical beliefs
+
+_So, was Fama simply wrong?_
+- Not really, he didn't give up and he refined the model, abandoning CAPM and replacing it with a <b>multi-factor risk model</b>
+- Even Shiller still endorses a _loose_ verion of it.
+- For Shiller, asset prices can _overshoot_ in the short term (due to emotion and irrationality), but they show _reversion to the mean_ in the long period.
+- Additionally, according to Shiller markets are still the best tools we have for aggregating information.
+
+To sum up, the Fama-Shiller case is typical from a social science and economics: two theories can contradict each other and <b>still retain intellectual value</b>.
+<br/>_"All Models are wrong, but some are usesul"_ applies perfectly here: Fama gave an excellent structure to think the financial markets and, even if its work is imperfect, it's yet a solid starting point.
+
+---
+
+## <a id="0.2"><b>0.2 Introduction to finance and investment planning</b></a>
+
+A <b>financial system</b> is a set of institutions and markets that have the primary purpose of allowing the _desynchronization_ of income and consumptio.
+
+A financial system allows to match different financial needs of different agents in _two dimensions_:
+- <b>Time</b> (borrow and save):
+    - wish of continuousu consumption vs discrete income stram 
+    - smooth consumption of time/the life-cycle
+- <b>Risk</b> (diversify, insure, hedge):
+    - smooth consumption across state of nature and possible market scenarios.
+
+<b>Asset</b>: something valuable with well-defined property rights _(a contract, a good)_.
+
+<b>Real Asset</b>: something that has an _intrinsic_ value due to its substance and properties.
+
+<b>Financial Asset</b>: something that has _NO intrinsitic material value_ but which can be traded.
+
+_(Note that the distinction between financial and non-financial asset is not binary and well defined: for example, _is gold a financial or physical/real asset?_)
+
+Financial assets can be caterogized as follows:
+- <b>Riskless assets</b>: assets whose future values can be known with certainty _(a government bond that yields 100 CHF in 5 years, assuming no default)_
+- <b>Risky assets</b>: assets whose future value may depend on some events _(insurance, stocks, options)_blank
+- <b>Derivatives</b> are risky assets whose future values depend on the price of other assets.
+
+A <b>bond</b> is often considered a riskless asset _(depending on the issuer)_.
+
+A <b>zero-coupon (ZC) bond with maturity $t$</b> yields no payment before period $t$ and pays $1$ in period $t$.<br/>They can vary _only_ in terms of <b>maturity</b>.
+
+Denote by $p_{0,t}$ the price of a ZC bond with maturity $t$ at time $0$ _(usually the first subscript is current time, the second the maturity)_. In absence of arbitrage, we have:
+
+$$
+p_{0,0} = 1
+\\
+
+p_{0,t} = \frac{p_{0,t-1}}{(1 + r_t)}
+
+$$
+
+
+where $r_t$ is the <b>discrete per period forward interest rate</b> between $t-1$ and $t$. By iterationm we have:
+
+$$
+p_{0,t} = \frac{1}{\prod^t_{i = 1}(1 + r_i)}
+$$
+
+In relation to this, we can distinguish:
+- <b>Discounting</b>: the process of determining the _prevent valiue_ of a future payment $x_t$ at time $t > 0$:
+
+$$
+PV(x_t) =  \frac{x_t}{\prod^t_{i = 1}(1 + r_i)}
+$$
+- <b>Compounding</b>: the process of determining the current value at time $t$ _(in the future)_ of a monetary amount $x_0$ invested at $t = 0$
+$$
+
+CV_t(x_0) = \prod_{i = 1}^t (1 +r_i) \cdot x_0
+$$
+
+The <b>discrete sport interest rate</b> $\bar r_t$, for a zerou coupon bond with maturity $t$ such that:
+
+$$
+p_{0,t} = \frac{p_{0,0}}{(1 + \bar r_t)^t}
+$$
+
+Or, in other words, the spot rate is the _geometric average_ of the per period forward rate of interest:
+
+$$
+\frac{1}{(1 + \bar r_t)^t} = \frac{1}{\prod^t_{i = 1}(1 + r_i)} \implies 1 + \bar r_t = \Big[\frac{1}{\prod^t_{i = 1}(1 + r_i)}  \Big]^{1/t}
+$$
+
+
+We now consider a bond with price $p_0$ in $t = 0$ that yields a series of positive <b>coupon payments</b> $a_t$ until the maturity date, so for $t = 1, \dot T$, plus the final payment of <b>par vaue</b> in $t = T$.
+
+Its <b>yield to maturity</b>(YTM) is the unique rate $y$ for which the present value of these payments is equal to $p_0$:
+
+$$
+p_0 = \sum_{t = 1}^T \frac{a_t}{(1 + y)^t} + \frac{Par}{(1 + y)^T}
+$$
+
+
+
+
+
+---
+
+The same analysis can be formulated in continuous time, in this case the <b>instantaneous forward interest rate </b> is:
+
+$$
+p(t + dt) \approx \frac{p(t)}{1 + r(t)dt}
+$$
+
+or, equivalently:
+
+$$
+\frac{p(t + dt) - p(t)}{p(t)} \approx - r(t)dt
+$$
+
+By integration, we get:
+
+$$
+p(t) = p(0)e^{-\int^t_0 r(\tau)d \tau} = e^{-\int_0^t r(\tau) d\tau}
+$$
+
+This interest rate $r(\tau)$ is called _"instantanenous"_ since it represents the evolution of the bond's price process for a infinitesimally small period of time $dt$.
+
+Moreover, in continuous time we can define:
+
+$$
+PV(x) = \int_0^{\infty} e^ {-\int_0^t r(\tau) d \tau} x(t)dt
+$$
+
+The <b>continuously compounended forward interest rate </b> between $t_1, t_2$, denoted by $\bar r_{t_1}(t_2)$ is defined as:
+
+$$
+p(t_2) = p(t_1) e^{-(t_2 - t_1)\bar r_{t_1}(t_2)}
+$$
+
+$$
+\bar r_{t_1}(t_2) = \frac{1}{t_2 - t_1} \log \Big [ \frac{p(t_1)}{p(t_2) }\Big] = \frac{1}{t_2 - t_1} \int^{t_2}_{t_1}r(\tau) d\tau
+
+$$
+
+
+The <b>continuously compounded spot interest rate </b> for a bond with maturity $$ is:
+
+$$
+\bar r_0 (t) = \frac{1}{t} \int^t_0 r(\tau) d\tau
+$$
+
+which is the _arithmetic average_ of the instantaneous forward interest rates between $0,t$.
+
+The function $t \to \bar r_0(t)$ provides the <b>yield curve</b>.
+
+---
+
+We now consider <b>risky assets</b>. To evalute an <b>uncertain stream </b> of future payments, we still used an additive process:
+
+$$
+\mathbb{E}[PV(x)] = \sum_{t = 1}^{+ \infty} \frac{\mathbb{E}[x_t]}{ \prod^t_{i = 1}(1 +r_i)} = \sum_{t = 1}^{+ \infty} \frac{\mathbb{E}[x_t]}{ \prod^t_{i = 1}(1 +r_t^f + \pi_t)}
+$$
+
+where the second formulation is needed if we want risk to be taken into account, and we write $r_i = r^r_t + \pi_t$, where $r^f_t$ is the risk-free rate and $\pi_t$ the risk premium.
+
+---
+
+
+## <a id="1"><b>1. Options and financial strategies</b></a>
+
+<b>Derivatives</b> are assets whose values mechanically depend on the values of other financial assets (the <b>underlying</b>). <br/>For example:
+- <b>Forward contracts</b>:  _OBLIGATION_ to purchase _(long position)_ or sell _(short position)_ the underlying at a specified future price at a specified delivery date.
+- <b>Options contracts</b>: _RIGHT_ to purchase or sell a specified amount of the underlying at a specified _exercise price_ at or before a specified _expiration date_.
+
+Options offer an advantage: the transaction does not have to occur if it not profitable for the owner of the option. This advantage comes at a price:
+- Forwards are entered at _NO cost_
+- Options are purchased or sold at positive price that the represents the _cost of the right_ to buy/sell.
+- Selling (or _writing_) an option implies an obligation (if the option is exericed, the seller must sell or buy the stock and incurs a loss) \to the seller receives a compensation.
+
+Derivatives can help shaping the risk exposure:
+- <b>Hedging</b> means insuring against market price volatility
+- <b>Speculation</b> means expoiting market price volatility
+
+---
+
+<b>Forward Contract Payoff</b>
+
+- $X$ agree delivery price
+- $S_t$ spot market prie of the underlying at maturity $T$
+
+<div align = "center">
+![GDP by country](/images/notes/financial-econ/forwards.png)
+</div>
+
+Profits at maturity $T$ are:
+- Payoff long position $ = S_t - X$
+- Payoff short position $ = X - S_t$
+
+For this reason, forwards are great for <b>speculation</b>. At a goiven time $t$, an unerlying has a price $S_t$, with <b>no clear evolution</b> for the future. If a speculator expectes:
+- $S_T > S_t \implies$ long forward with $X < S_T$
+- $S_T < S_t \implies$ short forward with $X > S_T$
+
+On the other hand, forwards are used in hedging to <b>avoid risks</b>.<br/>.
+Suppore, _for example_, that Giacomo's GmbH needs to sell an activity (_example: some running shoes_) at maturity $T$, with value $S_t$ at given time $t$.
+<br/>Giacomo faces then a risk management problem: how can he insure against price fluctuations of the running shoes?
+
+Solution: use the forward contract to construct a <b>hedged portfolio</b> that fixes the profits _from the furue sale_ at a desired level $\pi^*$:
+
+$$
+\pi^* = S_t + (X - S_T) = X
+$$
+
+To fix the profits at $\pi^* = X$, Giacomo can open a <b>short position</b> on the forward contract with delivery price $X$.
+
+_(The opposite - long forward contract - applies if you need to buy and you want to avoid risk)_.
+
+---
+
+<b>Options Payoff</b>
+
+An options is a right to purchase/sell a certain amount of the underlying at/before future expiration $T$ at exercise price _(strike)_ $X$.<br/>Options differ by:
+- Position
+    - <b>Long</b>: option holder _(right to exercise)_ 
+    - <b>Short</b>: option writer _(obligation to facilitate the option's exercise)_ 
+- Type of right:
+    - <b>Put</b>: long position has the right to sell an asset for $X$ 
+    - <b>Call</b>: long position has the right to purchase an asset for $X$
+- Possibility of early exercise: 
+    - <b>American option</b>: exercise at or before expiration 
+    - <b>European option</b>: exercise only at expiration.
+
+Consider now:
+- $X$ exericse price of an option 
+- $S_T$ market price of the underlying at expiration $T$
+- <b>Premium</b>: purchase price of an option _(market value)_:
+    - $C_0$: premium for a <b>call</b> at $t = 0$
+    - $P_0$: premium for a <b>put</b> at $t = 0$.
+
+<b>Payoff/value at expiration</b>:
+
+<Table
+  data={{
+    headers: ["Condition", <b>Call: Long Position</b>, <b>Call: Short Position</b>, <b>Put: Long Position</b>, <b>Put: Short Position</b>],
+    rows: [
+      ["$X < S_T$", "$S_T - X$", "$-S_T + X$", "0", "0"],
+      ["$X \\ge S_T$", "0", "0", "$X - S_T$", "$-X + S_T$"],
+    ]
+  }}
+/>
+
+Profits are then given by:
+- <b>Long position</b>: $\quad \text{payoff} - CV_T(premium)$ 
+- <b>Short position</b>:$\quad \text{payoff} + CV_T(premium)$ 
+<br/>
+---
+<br/>
+<b>Long Call</b>
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/options.png)
+</div>
+
+---
+<br/>
+<b>Short Call</b>
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/options2.png)
+</div>
+---
+<br/>
+<b>Long Put</b>
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/options3.png)
+</div>
+---
+<br/>
+<b>Short Put</b>
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/options4.png)
+</div>
+
+---
+
+<br/>
+<b>Option Strategies</b>
+
+If the agent as an expectaction about the price development of the underlying:
+- <b>Bullish strategies</b>: generate a profit when the underlying's price increases
+- <b>Bearich strategies</b>: generate a profit when the underlying's price decreases
+- <b>Non-directional strategies</b>: generate a profit depending on the underlying's actual volatility.
+
+But... _what are the reasons for trading in options rather than trading in the underlying directly?_ 
+- <b>Leverage effect</b>: option values respond more tham proportionately to changes in the underlying's value.
+- <b>Tailoring risk exposure of investment</b>: optinos can be less risky due to limitation of the downside risk.
+- <b>Portfolio insurance</b>: it can be insured by long on a put for that stock.
+<br/>
+---
+<br/>
+<b>Option strategies: Protective Put</b>
+
+Consider an agent that:
+- invest in a stock with price $S_0$
+- wants to insure against potential declines in the stock price
+
+
+$$\quad \implies $$long put on the stock (exercise price $X$ in $T$ with premium $P_0$)
+
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/protective_put.png)
+</div>
+
+---
+<br/>
+
+<b>Option strategies: spreads (I)</b>
+
+Consider an agent that wants to take advange of _higher_ future price of the underlying.
+<br/>He could buy the stock, buy a call or short a put, or as an alternative, construct a portfolio that allows to _reduce the risk_ at the cost of _givin up part of the profits:
+
+This is called <b>Bull spread strategy</b>:
+- 1 long call with strike $X_1$ and premium $C_{0,1}$
+- 1 short call with strike $X_2 > X_1$ and premium $C_{0,2}$
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/spreads.png)
+</div>
+
+---
+<br/>
+
+<b>Option strategies: Spreads (II)</b>
+
+The opposite also applies, i.e. consider an agent that wants to take advantage of _lower_ future price of the underlying.
+
+<b>Bear spread strategy</b>
+- 1 long short call with strike $X_1$ and premium $C_{0,1}$
+- 1 long call with strike $X_2 > X_1$ and premium $C_{0,2}$
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/spreads2.png)
+</div>
+
+
+---
+<br/>
+
+<b>Option strategies: Straddle</b>
+
+Consider an agent that expect _large move_ in the stock's price but he's uncertain about the direction.
+
+<b>Straddle Strategy</b>:
+- 1 long call with strike $X$ and premium $C_0$
+- 1 long put woth with strike $$ and premium $C_0$
+
+Moreover, if he thinks:
+- the movement will be more likely <b>bullish</b>: $\implies$ buy to 2 calls (<b>strap</b>)
+- the movement will be more likely <b>bearish</b>: $\implies$ buy to 2 puts (<b>strap</b>)
+
+
+<div align = "center">
+![Options payoff](/images/notes/financial-econ/straddle.png)
+</div>
+
+---
+
+## <a id="2"><b>2. Option valuation</b></a>
+---
+
+## <a id="3"><b>3. Pricing by arbitrage</b></a>
+---
+
+## <a id="4"><b>4. An introduction to the economic analysis of asset markets</b></a>
+---
+
+## <a id="5"><b>5. Choice under uncertainty</b></a>
+---
+
+## <a id="6"><b>6. Demand for risk</b></a>
+---
+
+## <a id="7"><b>7. Risk sharing and insurance</b></a>
+---
+
+## <a id="8"><b>8. Mean variance analysis</b></a>
+---
+
+## <a id="9"><b>9. CAPM</b></a>
+---
+
+## <a id="10"><b>10. Risk sharing and asset prices in a market equilibrium</b></a>
+---
