@@ -1,0 +1,292 @@
+---
+title: 'Principles of Econometrics'
+publishedAt: '2026-03-02'
+summary: ''
+---
+
+### Index
+
+- [Introduction to Statistics and Econometrics](#1)
+- [Simple Regression Analysis](#2)
+- [Multiple Regression Analysis: Basics](#3)
+- [Multiple Regression Analysis: Inference](#4)
+- [Multiple Regression Analysis: Further Issues](#5)
+- [Heteroskedasticity and Other Problems](#6)
+- [Time Series Data](#7)
+- [Panel Data](#8)
+- [Instrumental Variables](#9)
+
+## <a id="1"><b>1 Introduction to Statistics and Econometrics</b> </a>
+
+<b>Econometrics</b> is the use of statistical methods to analyze economi data, starting _typically_ from <b>non-experimental data</b>.
+
+Common goals of econometric analysis are:
+- estimating relationships between variables 
+- testing economic theories and hypoteses
+- evaluating and implementing government and business policy
+
+<b>Structure of Econometric Data</b>
+- Cross sectional data 
+    - observations that represent individuals, firms, cantons, countries _(normally, but non necessarily, at one point in time)_.
+    - observations are drawn randomly from a population (if not, we have a sample-selection problem)
+- Time Series Data
+    - observations represents periods in time
+    - observations are consecutive and hence not random 
+- Pool Cross-Sections
+    - at least two cross sections are combined in one data sectional
+    - cross sections are drawn independently of each other 
+    - can often be treaded similar to a normal cross section 
+- Panel (or longitudinal data)
+    - cross-sectional units followed over time 
+    - panel data have a cross-sectional and time series dimension 
+    - useful to account for time-invariant unbobservables and for model lagged responses 
+
+<b>Causality</b>
+
+The definition of _causal effect_ of $x$ on $Y$ is: _"how does variable $y$ if variable $x$ is changed, but <u>all other factors are held costants?</u>
+<br/>(This concept is called <b>Ceteris Paribus</b>).
+
+Simply establishing a relationship _(correlation)_ netweem variables can be misleading _(important distincition between correlation and causation!)_
+
+There are multiple types of experiments that allow answering causal questions:
+- <b>Randomized controlled trials (RCT)</b>
+- <b>Natural experiments</b>
+
+---
+
+<b>Probability Review: Distributions</b>
+
+- <b>Chi-Square Distribution</b>
+
+Let $Z_i$ be $n$ independented random variables with $Z_i \sim N(0,1)$, then
+
+$$
+X = \sum^n_{i = 1} Z_i^2
+$$
+
+has a chi-square distribution with $n$ degrees of freedom and we write $X \sim \chi^2_n.
+
+- <b>t-Distribution</b>
+
+Let $Z \sim N(0,1)$ and $X \sim \chi^2_n$, then 
+$$
+
+T = Z / \sqrt(X/n)
+$$
+
+has a t-distribution with $n$ degrees of freedom and we write $T \sim t_n$.
+
+- <b>F-Distribution</b>
+
+Let $X \sim \chi_k^2$ and $Y \sim \chi_l^2$ and assume $X,Y$ independent, then:
+
+$$
+F = \frac{X}{k}\frac{Y}{l}
+$$
+
+has a F-distribution with $(k,l)$ degrees of freedom and we write $F \sim F_{k,l}$.
+
+<b>Central Limit Theorem</b>
+
+The standardized average $Z$ of any population with mean $\mu$ and variance $\sigma^2$ is _asymptotically_ $N(0,1)$ distributed, or, in other words:
+
+$$
+Z = (\bar y - \mu)(\sigma / \sqrt(n)) \sim N(0,2)
+$$
+
+<b>Law of Large Numbers</b>
+
+Let $y_1 \dot y_n$ be independent, identically distributed random variables with mean $\mu$, then:
+
+$$
+\lim_{n \to \infty}(\frac{1}{n} \sum^n_i y_i) = \mu
+$$
+
+
+---
+
+
+## <a id="2"><b>2 Simple Regression Analysis</b> </a>
+
+_How can we use the data to describe economic reltions or behaviors?_
+
+$$
+y = \beta_0 + \beta_1 x + \mu
+$$
+
+- $y$: dependent variable _(outcome variable)_
+- $x$: independent variable _(regressor, covariate, control variable, "the cause")_
+- $\mu$: error term _(disturbance)_
+    - it represents strictly _unpredictable_ random behaviors, _unspecified_ or _unobserved_ factors or an _approximation error_ if the relation is not perfectly linear.
+- $\beta_0$: intercept parameter 
+- $\beta_1$: slope parameter 
+
+We start now with <b>Population Modelling</b> and consider the following assumptions:
+
+- <b>SLR.1: Linear parameters</b>
+    - in the population model the following relation holds: $y = \beta_0 + \beta_1 x + \mu$
+
+- <b>SLR.2: Random sampling</b> 
+    - we have a ranbdom sample of dize $n$ of random variables $(x,y)$
+
+- <b>SLR.3: Sample variation in the explanatory variable</b>
+    - the sample outcome on $x$ are not all the same value
+
+- <b>SLR.4: Zero Conditional Mean </b>
+$$
+\mathbb{E}[\mu | x] = \mathbb{E}[\mu] = 0
+$$
+or, _in other words_, for every slices of population determined by $x$, the average of $\mu$ i eaul to the population average $\mu$ (which is zero).
+<br/>This also implies:
+
+$$
+\mathbb{E}[y | x] = \beta_0 + \beta_1 x
+$$
+
+also called the <b>Populatio Regression Function</b>.
+
+<div align = "center">
+![Population Model](/images/notes/econometrics/population-model.png)
+</div>
+
+We now derive the <b>Ordinary Least Squares</b> (OLS).
+
+_Intuition:_ we estimate the population parameters from a <b>data sample</b> of two random variables.
+
+- Let $\{(x_i, y_i)  \} : \quad i = 1 \dot n$ denonte a random sample of size $n$
+- scatter plot in a $(x,y)$ system
+- the regression equation $y_i = \beta_0 + \beta_1 x_i + \mu_i$ allocates to each $x_i$ a value $y_i$ including a disturbance term $\mu_i$.
+
+But _how can we derive the estimates for $\beta_0, \beta_1$
+
+We firstly rely on the <b>SLR.4</b> assumption to derive two equations:
+$$
+\begin{align*}
+\mathbb{E}[\mu] &= 0 \quad  \implies \mathbb{E}[y - \beta_0 - \beta_1 x] = 0 \\
+
+\mathbb{E}[u | x] &=0 \quad \implies \mathrm{Cov}[x,u] = \mathbb{E}[x \mu] - \mathbb{E}[x]\mathbb{E}[\mu] =\\
+&= \mathbb{E}[x \mu] = \mathbb{E}[ x ( y - \beta_0 - \beta_1 x)] = 0
+
+\end{align*}
+$$
+
+These are called <b>populatio moment restrictions</b>
+
+Using then the <b>sample moments</b> from the population, we can get an estimates of the population moments.
+
+Recall:
+- $\sum_i (y_i - \beta_0 - \beta_1 x_i)/n = 0\quad \quad  (1)$
+- $\sum_i x_i((y_i - \beta_0) - \beta_1 x_i)/n = 0 \quad (2)$
+
+we retwrite $(1$) as: $\quad b_0 = \bar y - b_1 \bar x $, then we then plug into $(2)$ and solve for $b_1$:
+
+$$
+
+b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
+
+$$
+
+Finally, we can easily put back $b_1$ into the first equation and derive $b_0$.
+
+_Intuition_: the slope estimate is the <b>sample covariance </b> $x$ and $y$, divided by the sample variance $x$.
+- if $x,y$ are positively correlated, the slope will be positive.
+- if $x,y$ are negatively correlated, the slope will be negative.
+
+_Moreover, intuitively_, the OLS is fitting a line through the sample points such that the <b>sum of squared residuals is as small as possible</b>.
+
+<b>Algebraic Properties of OLS</b>:
+- the sum of of the OLS residuals is zero.
+- the sample average of the OLS residuals is zero.
+- the sample covariance between the regressors and the OLS residuals is zero.
+- the OLS regression line alwyas goes through the mean of the sample.
+
+Moreover, we notice that _each observation $y_i$_ is made up of an explained $\hat y_i$ and unexplained part $\hat u_i$ ($y_i = \hat y_i + \hat u_i$).
+
+Using this terminology, we can define:
+- $\text{Sum of Squares Total (SST)} = \sum_i (y_i - \bar y)^2$
+- $\text{Sum of Squares Explained (SST)} = \sum_i (\hat y_i - \bar y)^2$
+- $\text{Sum of Squares Residuals (SST)} = \sum_i (\cap \mu_i)^2$
+
+To understand how well does the sample fit the regression line, we define:
+
+$$
+R^2 = \frac{\text{SSE}}{\text{SST}} = 1 - \frac{\text{SSR}}{\text{SST}}
+$$
+
+---
+
+Be aware that, the term <b>linear </b> in a OLS model does not mean a linear relationship between the variables, but a model in which the parameters enter the model in a linear way. <br/>The following are all linear models (in the parameters):
+- $y = \beta_0 + \beta_1 \ln(x) + \mu$
+- $\ln(y) = \beta_0 + \beta_1 x + \mu$
+- $y = \beta_0 + \beta_1(\frac{1}{x}) + \mu$
+<br/>
+---
+<br/>
+<b>Implication of the Simple Linear Regression</b>
+
+1. OLS is unbiased _(the proof depend on the 4 assumptions, if any fails, the OLS is not necessarily unbiased)_
+2. The sampling distibution of our estimates is centered around the true parameter 
+
+But, following the second implication, how likely is it that the true slope is slightly larger, smaller or zero?
+
+This question can be translated into another assumption:
+- <b>SLR.5 Homoskedasticity</b>: assume $\text{Var}[\mu | x] = \sigma^2$
+
+Using then the _Homoskedasticity assumption_, we can derive the variance of $b_1$.
+
+$$
+\text{Var}[\mu | x] = \mathbb{E}[\mu^2 | x] - \mathbb{E}[\mu | x]^2 = \mathbb{\mu^2 | x} =\\
+
+\mathbb{E}[\mu^2] = \text{Var}[\mu] = \sigma^2
+$$
+
+Hence, $\sigma^2$ is also the <b>unconditional variance</b>, called the <b>error variance</b>.
+
+We can then use this formula to find the variance of $b_1$:
+
+$$
+\text{Var}(b_1) = \frac{\sigma^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2} =  \frac{\sigma^2}{SST_x}
+$$
+
+- the larger the error variance $\sigma^2£, the larger the variance of the slope estimate.
+- the large the variability in the $x$ ($SST_x$), the smaller the variance of the slope estimate.
+
+Finally, starting from the residuals $\hat u_i$, we can form an <b> unbiased estimate of the error variance</b> (often called the <b>mean square error</b> (MSE)), denoted by $s^2$:
+
+$$
+s^2 = (n-2)^{-1} \sum_i \hat u_i^2 = \frac{SSR}{n-2}
+$$
+
+_Intuition_: $\sigma^2$ is the truth; $s^2$ is our best guess based on the sample we have.
+
+Moreover, we divide by $(n-2)$ because, estimating $b_0, b_1$, we lost 2 degrees of freedom.
+
+---
+
+## <a id="3"><b>3 Multiple Regression Analysis: Basics</b> </a>
+
+---
+
+## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
+
+---
+
+## <a id="5"><b>5 Multiple Regression Analysis: Further Issues</b> </a>
+
+---
+
+## <a id="6"><b>6 Heteroskedasticity and Other Problems</b> </a>
+
+---
+
+## <a id="7"><b>7 Time Series Data</b> </a>
+
+---
+
+## <a id="8"><b>8 Panel Data</b> </a>
+
+---
+
+## <a id="9"><b>9 Instrumental Variables</b> </a>
+
+---
