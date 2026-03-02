@@ -114,6 +114,9 @@ In the short run (_IS-LM setting)_:
 - prices are <b>fixed</b> (or change slowly)
 - oputput is determined by <b>aggregate demand</b>
 <br/>
+
+<a href="https://en.wikipedia.org/wiki/IS%E2%80%93LM_model" target="_blank">The IS-LM Model [Wikipedia]</a>
+
 ---
 <br/>
 <b>The LM-curve (positive relationship between real interest rate and output)</b>
@@ -126,7 +129,14 @@ $$
 
 where $L(i,Y)$ is a function representing  the liquitidy preferences, $i$ is the interest rate and $p$ the price level.
 
-If we consider $L(i, Y) = kY - hi$ where:
+If we consider:
+
+$$
+
+L(i, Y) = kY - hi
+$$
+
+ where:
 - $\alpha$: Sensitivity of money demand to changes in income ($\frac{\partial L}{\partial Y} > 0$).
 - $\beta$: Sensitivity of money demand to changes in the interest rate ($\frac{\partial L}{\partial i} < 0$).
 
@@ -397,13 +407,13 @@ $$
 - $\alpha$ share of physical capital
 
 
-_Intuition: the stochastic component $A_$ induce business cycles_.
+_Intuition: the stochastic component $A_t$ induce business cycles_.
 
-$A_t$ is then a measure fo the <b>efficiency of labor</b> over time and relative to capital. It's a cath-all variable that includes levels of health, skill, education and technological knoweldge.
+$A_t$ is then a measure fo the <b>efficiency of labor</b> over time and relative to capital. It's a catch-all variable that includes levels of health, skill, education and technological knoweldge.
 
 <b>$1^{st}$ Welfare Theorem</b>
 
-Under technical assumptions - (i) local non-satiation of preferences, (ii) compete markets with no frictions and no externalities, (iii) price taking behaviors, any allocation that forms a competitive equilibrium is Pareto-efficient.
+Under technical assumptions - (i) local non-satiation of preferences, (ii) compete markets with no frictions and no externalities, (iii) price taking behaviors - any allocation that forms a competitive equilibrium is Pareto-efficient.
 
 However, the RBC model received several critiques:
 - there's no broad evidence that strong technology shocs always affect the economy 
@@ -579,7 +589,7 @@ $$
 p = \frac{\theta - 1}{1 + \eta(\theta - 1)} y + p
 $$
 
-Hence, we obtain the equilibrium as: $y = 0$ _(remember that $y = \ln Y \to Y = 1$)_and $m = p$. <br/>
+Hence, we obtain the equilibrium as: $y = 0$ _(remember that $y = \ln Y \to Y = 1$)_ and $m = p$. <br/>
 For the indidual good, this means:
 
 $$
@@ -703,7 +713,160 @@ Criticism:
 
 ## <a id="4"><b>4. Consumption and Investment</b> </a>
 
+<b>The Keynesian Consumption Function</b>
+
+The Keynesian consumption function has the form:
+
+$$
+C_t = \bar C + c Y_t, \quad \quad \bar C > 0, 0 < c < 1.
+$$
+
+We immediately notice that consumption depends only on <b>current income</b>.
+
+We then define the <b>Marginal. Propensity of Consumption </b>(MPC), that lies between $0$ and $1$ as:
+
+$$
+MPC \equiv \frac{\partial C_t}{\partial Y_t} = c
+$$
+
+Furthermore, the <b>Average Propensity of consumption</b> (APC), that dereases with an increasing income, is defined as:
+
+$$
+APC \equiv \frac{C_t}{Y_t} \equiv \frac{\bar C}{Y_t} + c
+$$
+
+_Intuition: savings are luxuries and can only be afforted with higher income_.
+
+However, empirial observation don't proove this result: APC decreases with increasing income in the short term but, as the income increases over a long-term horizon, the APC remains constant.
+
 ---
+<br/>
+<b>The Life Cycle and Permanent Income Hypotheses</b>
+
+The Life Cycle and Permanent Income hypoteses try to solve the previous inconsistency.<br/>
+<a href="https://www.investopedia.com/terms/l/life-cycle-hypothesis.asp" target="_blank" >The Life Cycle Hypotesis</a> was proposed by Ando, Brumberg and Mofigliani in the 1950s
+
+The core idea is that households pursue <b>consumption-smoothing</b>, i.e. they want to spend eqial amount of money in each period of their life _(so they borrow when they earn less and save in the opposite situation)_.
+
+As a result, wealth is <b>increasing until retirement</b>, and is gradually used for consumption afterwards. 
+<br/>Savings, on the other hand, do not depend nuch on current income, but on total lifetime income.
+
+<a href="https://www.investopedia.com/terms/p/permanent-income-hypothesis.asp" target="_blank">The Permanent Income Hypotesis</a>, proposed by Milton Friedman in 1971, states that income $Y$ is a sum of permament income $Y_p$ and transitory insome $Y_t$:
+
+$$
+Y = Y_p + Y_t
+$$
+- Permanent income is the long-term/average income 
+$$Y_p \approx r \cdot \sum_{s=0}^{\infty} \frac{E[Y_{t+s}]}{(1+r)^s}
+$$
+- Transitory income is the one coming from surprises and fluctuates, with $\mathbb{E}[Y_t] = 0$.
+
+_Consider the permanent income as your salary for your work contract, hopefully increasing with seniority; and the transitory income as some unexpected bonus, lottery wins, monetary heritage etc..._.
+
+The theory suggests that, since people want to avoid fluctuactions in consumption, current consumption will mainly depend on permanent income. Moreover, people will use borrowings and savings to smooth their consumption over time.
+
+At the limit, transitory income becomes _irrilevant_: $C = \alpha Y_p$ with $\alpha in (0,1)$.
+
+In this model, the APC can also be expressed as: 
+$$
+APC = \frac{C_t}{Y_t} = \alpha \frac{Y_p}{Y}
+$$
+
+
+As a result, for a given level of permament income, people with high levels of transitory income will have APCs lower than average.
+<br/>Also, over the long-period, the APC should be independent on the transitory income, since $\mathbb{E}[Y_t] = 0$ _(shocks and fluctuactions cancel each other)_.
+
+According to this theory then, economic policy can affect consumption only if it affects permanent income _(example: tax cuts can increase consumption only if they are not perceived as transitory)_.
+<br/>
+---
+<br/>
+<b>The Fisher Approach to Life Cycle Hypotesis </b>
+
+We now consider a simple formal model of optimal consumption/saving.
+
+- Consider an agent that lives for $2$ periods.
+- The agent has a period utility $u(C_t)$ with a discount factor $\delta$ with $0 < \delta < 1$. <br/>We also assume $u'(.)>0$ and $u''(.)<0$.
+- The agents faces the following budget constraints:
+    1. Period: $S = Y_1 - C$
+    2. Period: $C_2 = S(1+r) + Y_2$
+    where $r$ denotes the real interest rate.
+
+So, if we plug toghether, we end up with the following <b>intertemporal-budget constraint</b>:
+
+$$
+C_1 + \frac{C_2}{1 + r} = Y_1 + \frac{Y_2}{1 + r}
+$$
+
+The agent then faces the following optimization probel:
+
+$$
+\max_{C_1,C_2} u(C_1) + \delta u (C_2)\\
+
+s.t. \quad C_1 + \frac{C_2}{1 + r} = Y_1 + \frac{Y_2}{1 + r}
+
+$$
+
+At the optimum, the <b>Euler/Tancency condition</b> _(the point where a consumer has perfectly balanced their budget to get the maximum possible satisfaction)_ must hold:
+
+$$
+u'(C_1) = \delta(1 + r) u'(C_2)
+$$
+
+_Intuition_:
+- if $u'(C_1)>\delta (1 + r)u'(C_2)$: the agent should consume more on the first period and save less.
+- if $u'(C_1)>\delta (1 + r)u'(C_2)$: the agent should shift consumption to the second period and save more.
+The model has then these implications:
+- Consumption depends on the (expected) discounted income over both periods _(in contrast with the Keynesian approach when consumption depends only on current income)_
+- Consumption typically depend on the real interest rate _(changes in $r$ lead to income and substitution effect)_.
+<br/>
+---
+<br/>
+<b>Intertemporal Budget Constraint of the Government</b>
+
+In a 2-period model, the government levies taxes $T_t$ and spends $G_t$ in public goods (non rival and non-excludable).
+- In the first period, the government can end up in a fiscal defitic (or surplus if $D<0$): 
+$$
+D_1 := G_1 - T_1
+$$
+- in the second period, the government has to repay the deficit plus the interests:
+$$
+T_2 = D_1(1 + r) + G_2
+$$
+
+If we combine the two equationsm,we obtain the <b>Intertemporal Budget Constraint</b>:
+
+$$
+T_2 = G_2 + (1+r)(G_1 - T_1) \implies \\
+
+T_1 + \frac{T_2}{1 + r} = G_1 + \frac{G_2}{1 + r}
+$$
+
+_Intuition: the present value of governemtn spending equals the present values of tax incomes._
+
+As a consequence:
+- if the governement decides to lower taxes in the first period by $\Delta T$ keeping spending constant
+- then, in the second period, it has to raise taxes by $\Delta T (1 + r)
+- the tax cut increases the income of the houdeholds by $\Delta T$ in period 1 and decreases it in period 2 by $\Delta T (1 + r)$
+- lifetime income is given by $Y_1 + Y_2/(1 + r)$, so, after the changes in taxation, it becomes:
+
+$$
+(Y_1 + \Delta T) + \frac{Y_2 - (1+r)\Delta T}{1+r} = Y_1 + \frac{Y_2}{1+r}
+$$
+
+- according to the <b>Fisher model</b>, in each period, the households consume the _same amount as before the tax policy_, since lifetime income was NOT affected.
+This is called <b>Ricardian Equivalence Theorem</b>.
+
+<a href="https://www.investopedia.com/terms/r/ricardianequivalence.asp" target="_blank">The Ricardian Equivalence Theorem in detail [Investopedia]</a>
+
+_Intuition: househols have more money in the first period, but they know they will have less in the second, so they save to pay higher taxes in the future_.
+
+Despite this theorem, governments often try to simulate consumption by reducing taxes and keeping spending costant. These policies are NOT completely futile, since, in practice, the Ricardian Equivalent Theorem doesnt hold perfectly. _(The increase in households' current income increases their consumptoion by some positive fraction of the additional income)_.
+<br/>This comes from the fact that, in most cases, household are myope: they notice an increase in income, but they are unable to predict a future increase in taxation _(households are not 100% rational and follow simple rules)_.
+
+However, even in theory, there are some possible deviations from the <b>Ricardian Equivalence</b>:
+- <b>Limited lifetime</b>: the government can take long periods of times to repay its debt, shifting the tax burden to future generation and redistributing consumption from a generation to another.
+    - For this reason, if households took the utility of future generations into account, they should save m,ore and NOT expand consumption for the expected future tax burden.
+- <b>Distortionary taxation</b>: not always who benefit the tax reduction will also repay the tax burden _(the governement can levy taxes from different parts of the population)_
 
 ## <a id="5"><b>5. The Solow Growth Model</b> </a>
 
