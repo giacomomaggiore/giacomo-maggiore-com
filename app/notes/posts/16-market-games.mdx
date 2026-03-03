@@ -1,0 +1,163 @@
+---
+title: 'Market and Games'
+publishedAt: '2026-03-03'
+summary: ''
+---
+
+### Index
+
+- [Introduction](#introduction)
+- [Normal form games and Nash equilibrium](#normal-form-games-and-nash-equilibrium)
+- [Nash equilibrium with mixed strategies](#nash-equilibrium-with-mixed-strategies)
+- [Applications to market competition](#applications-to-market-competition)
+- [Extensive form games and backward induction](#extensive-form-games-and-backward-induction)
+- [Subgame Perfect equilibrium (SPE)](#subgame-perfect-equilibrium-spe)
+- [Applications to vertical relations and mergers](#applications-to-vertical-relations-and-mergers)
+- [Applications to innovation and R&D](#applications-to-innovation-and-rd)
+- [Infinitely repeated games](#infinitely-repeated-games)
+- [Applications to collusion and cartels](#applications-to-collusion-and-cartels)
+
+## <a id="1"><b>Introduction</b> </a>
+
+<b>Game Theory</b>: analyzing strategic interactions between agents where the outcome depends on the decisions of other agents.
+
+The key assumptions is that <b>agents act "rationally"</b>, meaning that:
+- agents choose actions that they believe is best for them while taking into account information available to them.
+- agents anticipate that other agents will also act _rationally/strategically_.
+
+But what is _rationality_?
+- Rationality does NOT preclude the possibility of mistakes, errors, non-material values, altruistic or social preferences, social norms and cultures. 
+
+---
+
+There are several ways to describe what an _economic model: is.
+
+- <b>The Standard one</b>: _an economic model is a simplied (usually mathematical) description of reality, designed to yield hypotheses about economic behavior that can be tested_.
+- <b>The Fable one</b>: _economic theory formulates thoughts via "models". The word model sounds more scientific that the word fable or tale, but I think we are talking about the same thing._ (Rubinstein, 2009)
+
+In Game Theory, the approach lies between these 2 views:
+- we will develop and analyze simplified models that are certainly _"fictional"_ (often with unrealistic assumptoins)
+- in most cases, predictions are consistent with intuitions under real-world policy and competition law.
+
+Generally speaking, we can say that _"all modelrs are wrong, but some are useful"_.
+- all models are abstractions, i.e. _intentionally neglet or simplify some aspects
+- a model is good if it has the right level of abstraction for a specific goal.
+
+Indeed, <b>unrealistic assumptions</b>allow a theory to focus only on the crucial and relevant elements required to obtaina prediction.
+- some research suggests that <b>over-simplified assumptions</b> _(parsimonious economic models)_ deliver better predictions than <b>black box algorithms</b> _(random forest and kernel regressions) when <b>moving across different contexts</b>.
+
+<a href="https://arxiv.org/abs/2202.04796" target="_blanket">Oversimplified models are often superior, source: The transfer performance of economic models, 2022</a>.
+
+---
+
+## <a id="2"><b>Normal form games and Nash equilibrium</b> </a>
+
+Each game theory's game requires:
+- 2 or more individuals _(players, agents)_
+- players interascting by making choices that jointly determine an outcome 
+- _(usually)_ every player can affect the outcome but no player has full control of the outocme 
+
+A <b>solution</b> is a set of reccomendations about how to play the game, such taht no player will have an incentive to not follow the recomendation.
+
+---
+
+Let's try to formalize it: <b>Formal Form Games with _pure strategies_</b>
+
+An $n$-player normal form game consists in:
+- for each player $i = 1,2 \ldots n$, a set of strategies $S_i$
+- for each player $i = 1,2 \ldots n$, a utility function $u_i$ that, for each strategy profile $(s_1, s_2 \ldots s_n) \in S_1 \times \ldots \times S_n$ specified a real number: $u_i(s_1 \ldots s_n) \in \R$.
+
+We denote the game by $G = (S_1, \ldots S_n, u_1 \ldots u_n)$.
+
+A <b>Nash Equilibrium </b> is a strategy profile such that no player has an incentive to _unilaterally deviate_ from their corresponding strategy.
+
+Let $S$ be the set of strategy profiles, i.e. $S = S_1 \times \ldots \times S_n$.
+
+Given a $n$-player normal form game $G$, a strategy profile $s^* = (s_1^*, \ldots s_n^*)$ is a <b>Nash Equilibrium</b> of $G$ if for each player $ i = 1, \ldots n$:
+
+$$
+u_i(s_1^*, \ldots s_{i-1}^*, s_i^*, s_{i+1}^*, \ldots s_n^*) \ge u_i(s_1^*, \ldots s_{i-1}^*, s_i^, s_{i+1}^*, \ldots s_n^*) \forall s_i \in S_iπ
+
+$$
+- _The asterisk $^*$ is often used to denote an equilibrium profile rather than a generic profile._
+- When strategy $s_i \neq s_i^*$, it is called _"unilateral deviation"_ from $s^*$.
+
+An alternative definition of <b>Nash Equilibrium</b> is: a strategy profile $(s_1, \ldots s_n$) is NOT a Nash Equilibrium if at least one player has an incentive to unilaterally deviate.
+
+---
+
+We now consider a $n$-player normal form game $G = \{S_1, \ldots S_n; u_1, \ldots u_n \}$ and a strategy profile $(s_1, \ldots s_n)$.
+
+<b>Definitin: Best response in pure strategies</b>
+
+The set of player $i$'s <b>best responses </b> against $(s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ is the set of player's strategies that solve:
+
+$$
+\max_{s_i' \in S_i} u_i(s_1, \ldots, s_{i-1}, s_i', s_{i+1}, \ldots s_n)
+$$
+
+We denote as $R_i(s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ the set of player $i$'s best responses against $(s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$.
+
+<b>Theorem: Nash Equilibrium in pure strategies</b>
+
+A strategy profile $(s_1^*, \ldots s_n^*)$ is a _Nash Equilibrium_ if an omly if, $\forall i = 1, \ldots n$, we have:
+
+$$
+s_i^* \in R_i(s_1^*, \ldots, s_{i-1}^*, s_{i+1}^*, \ldots s_n^*)
+$$
+
+In mathematics, we would call this a <b>fixed point</b>.
+
+---
+
+WHen we are analyzing the strategic interactions in both theoretical and real-orld settings, we are often interested in <b>"efficiency"</b>.
+
+- Altought there are many different definition for it, the most standard one is called <b>"Pareto-efficiency"</b>.
+
+An outocome is Pareto-efficient if there is an outcome that makes an individual better off without making another individual worse off. In other words:
+
+<b>Definition: Pareto Efficiency</b>
+
+A strategy profile $s = (s_1, \ldots s_n) \in S$ is Pareto inefficient if there is a strategy profile $s' \in S$ such that:
+- all agents are <b>weakly better off</b>: $u_i(s') \ge u_i(s)$ for sall $i$ <b>AND </b> 
+- at least one agent $j$ is <b>strictly better off</b>: $u_j(s) \ge u_j(s)$.
+
+An outcome that is not pareto <b>inefficient</b> is Pareto efficient.
+
+---
+
+## <a id="3"><b>Nash equilibrium with mixed strategies</b> </a>
+
+---
+
+## <a id="4"><b>Applications to market competition</b> </a>
+
+
+
+---
+
+## <a id="5"><b>Extensive form games and backward induction</b> </a>
+
+
+
+---
+
+## <a id="6"><b>Subgame Perfect equilibrium (SPE)</b> </a>
+
+---
+
+## <a id="7"><b>Applications to vertical relations and mergers</b> </a>
+
+---
+
+## <a id="8"><b>Applications to innovation and R&D</b> </a>
+
+---
+
+## <a id="9"><b>Infinitely repeated games</b> </a>
+
+---
+
+## <a id="10"><b>Applications to collusion and cartels</b> </a>
+
+---
