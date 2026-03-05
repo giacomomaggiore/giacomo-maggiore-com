@@ -15,8 +15,6 @@ export default function Page() {
     I'm now pursuing a Master in <b><a href="https://mtec.ethz.ch/studies.html" target="_blank">Economnics, Management & Technology</a></b> at <a href="https://ethz.ch/en.html" target="_blank"><u><i>ETHZ</i></u></a>, 
     previously worked as a Research Assistant at <a href="https://kof.ethz.ch/en/" target="_blank">KOF Swiss Economic Institute</a> and now as a working student in the Financial Risk team at Zurich Insurance Group.
     
-    and working as a research assistant at <a href="https://kof.ethz.ch/it/" target="_blank"><u><i>KOF (Swiss Economic Institute)</i></u></a>.
-
     <br></br><br></br>
     Deeply interested in how <b>numbers model money</b>: financial risk, macroeconomic forecasting, and both quantitative and personal finance.
     <br></br><br></br>
