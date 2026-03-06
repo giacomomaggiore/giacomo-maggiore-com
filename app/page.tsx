@@ -13,7 +13,7 @@ export default function Page() {
     I've co-founded <a href="https://scenesnap.co/" target='_blank'><u><i>SceneSnap</i></u></a>, a B2B and B2C <b>EdTech startup </b> building an AI-powered learning ecosystem.
     <br></br><br></br>
     I'm now pursuing a Master in <b><a href="https://mtec.ethz.ch/studies.html" target="_blank">Economnics, Management & Technology</a></b> at <a href="https://ethz.ch/en.html" target="_blank"><u><i>ETHZ</i></u></a>, 
-    previously worked as a Research Assistant at <a href="https://kof.ethz.ch/en/" target="_blank">KOF Swiss Economic Institute</a> and now as a working student in the Financial Risk team at Zurich Insurance Group.
+    previously worked as a Research Assistant at <a href="https://kof.ethz.ch/en/" target="_blank"><u>KOF Swiss Economic Institute</u></a> and now as a working student in the Financial Risk team at<a href="https://www.zurich.com/" target="_blank"><u>Zurich Insurance Group.</u></a>
     
     <br></br><br></br>
     Deeply interested in how <b>numbers model money</b>: financial risk, macroeconomic forecasting, and both quantitative and personal finance.
