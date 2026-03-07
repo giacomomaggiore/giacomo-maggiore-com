@@ -207,7 +207,7 @@ Using this terminology, we can define:
 - $\text{Sum of Squares Explained (SST)} = \sum_i (\hat y_i - \bar y)^2$
 - $\text{Sum of Squares Residuals (SST)} = \sum_i (\cap \mu_i)^2$
 
-To understand how well does the sample fit the regression line, we define:
+To understand how well does the sample fit the regression line, we define: <span id="R_squared"></span>
 
 $$
 R^2 = \frac{\text{SSE}}{\text{SST}} = 1 - \frac{\text{SSR}}{\text{SST}}
@@ -265,7 +265,317 @@ Moreover, we divide by $(n-2)$ because, estimating $b_0, b_1$, we lost 2 degrees
 
 ## <a id="3"><b>3 Multiple Regression Analysis: Basics</b> </a>
 
+The key problem with simple linear regression is that the assumption $\mathbb{E}[u | x] = \mathbb{E}[u] =0 $is _often problematic_.
+
+Consider, for example, that the _true population model_ is:
+
+$$
+\begin{align*}
+\text{wage} &= \beta_0 + \beta_1 \text{education} + \beta_2 \text{IQ} + \mu \\
+
+\text{wage} &=\beta_0 + \beta_1 \text{education} + v
+
+\end{align*}
+$$
+
+The previous assumption states that the error term $v = \beta_2 \text{IQ} + \mu$ has $0$ (zero) expected value _(no trend)_ or, in other words, the \text{IQ} <b>does not</b> correlate with the $\text{wage}$.
+
+This causes $\beta_1$ to be <b>biased</b> compared to the "true parameter", so it _doesn't measure_ the causal effect of education to wage.
+
+Thus, instead of assuming that multiple variables are _uncorrelated_ with the output variable, the <b>multiple regression model </b> allows to include them directly in the model.
+
+$$
+
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 \ldots \beta_k x_k + \mu
+$$
+
+- $\beta_0$ is still the <b>intercept</b>
+- $\beta_0 \ldots \beta_k$ are the <b>slope parameters</b> 
+- $\mu$ is the error term.
+
+We still need a <b>zero conditional mean</b>: $\mathbb{E}[u | x_1 \ldots x_k] = 0$, that means, in other words, that all the factors that influence the outcome are included in the model.
+
 ---
+
+In order to estimate the parameters, we still use the <b>Ordinary Least Squares </b> method and we minimize the residuals:
+
+$$
+\min_{\beta_0 \ldots \beta_k} \sum_i (y_i - \beta_0 - \beta_1 x_1 \ldots \beta_k x_k -\mu)^2
+$$
+
+leading to $k + 1$ conditions to derive $k + 1$ parameters.
+
+The <b>estimate model</b> $\hat y = b_0 + b_1 x_1 + b_2 x_2 \ldots b_k x_k + \mu$ alloqs a <b>ceteris paribus</b> interpretation, that means that a change in $x_1$, $\Delta x_1$, leads to a change in $y$ given by $b_1 \Delta x_1$, keeping all the other $x_i$ fixed.
+
+---
+
+<b>Frisch-Waugh-Lovell (FWL) Theorem</b>
+
+Given a multiple (dual for example) regression model y = \beta_0 + \beta_1 x_1 + \beta_2 x_2  + \mu$, the coefficient $\beta_1$ can be found in 2 steps:
+
+1. Regress $x_1$ on $x_2$:
+
+$$
+x_1 = \alpha_0 + \alpha_1 x_2 + u
+$$
+
+Save then the <b>residuals</b> $\hat r_1 = x_1 - \hat x_1$. This represents the part of $x_1$ _not correlated_ with $x_2$.
+
+2. Regress $y$ on the residuals:
+
+$$
+y = \gamma \hat{r}_1 + e
+$$
+
+The resulting coefficient $\gamma$ will be identical $b_1$ of the original model.
+
+---
+
+The <a href="#R_squared"> previous definition of $R^2$ is still valid</a>, but we can add the following remarks:
+
+- $R^2$ is the <b>squared correlation coefficient </b> between $y$ and the predicted $\hat y$.
+- $R^2$ <b>never decreases</b>  when adding independent variables to a regression _(usually will increase)_.
+- Because it increases changing the number of parameters, it <b>NOT</b> a good measure to compare different models.
+
+As in the simple regression model, we can formalize the assumptions for the multiple one:
+
+- **MLR.1: Linear in parameters**  
+  in the population model the following relation holds:
+  $$
+  y = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k + \mu
+  $$
+
+- **MLR.2: Random sampling**  
+  we have a random sample of size $n$:
+  $$
+  \{(y_i, x_{i1}, \ldots, x_{ik})\}_{i=1}^n
+  $$
+
+- **MLR.3: No perfect collinearity (sample variation in explanatory variables)**  
+  no explanatory variable is an exact linear combination of the others, and each regressor has variation in the sample.
+
+- **MLR.4: Zero Conditional Mean**  
+  $$
+  \mathbb{E}[\mu \mid x_1,\ldots,x_k] = 0
+  $$
+  or, for every slice of population determined by $(x_1,\ldots,x_k)$, the average of $\mu$ is zero.
+
+  This also implies:
+  $$
+  \mathbb{E}[y \mid x_1,\ldots,x_k] = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k
+  $$
+  also called the **Population Regression Function**.
+
+Then, we can derive the following:
+
+<b>Implication 1: Unbiasedness of OLS</b>
+
+Under the previous assumptions, the OSL estimator is <b>unbiased</b>: $\mathbb{E}[b_i] = \beta_i$.
+
+- If we include _irrelevant variables_ in our model, the OLS estimator remains still <b>unbiased</b>.
+- If we exclude _relevant variables_, OLS will usually be <b>biased</b>.
+
+Let's suppose the true model is:
+
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \mu 
+$$
+
+but our model is:
+
+$$
+y = \gamma_0 + \gamam x_\ + v
+$$
+
+and we actually estimate:  
+$$
+y = c_0 + c_1 x_1.
+$$
+
+The slope parameter will then be:
+
+$$
+
+c_1 = \frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^{n}(x_i-\bar{x})^2}
+$$
+
+Recall that the numerator is:
+
+$$
+\begin{align*}
+
+& \sum_{i=1}^{n}(x_{i1}-\bar{x}_1)(y_i-\bar{y}) =\\
+
+= &\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)\left(
+\beta_0+\beta_1 x_{i1}+\beta_2 x_{i2}+u_i
+-\beta_0-\beta_1\bar{x}_1-\beta_2\bar{x}_2
+\right)
+\\
+ =&
+\beta_1\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)^2
++\beta_2\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)(x_{i2}-\bar{x}_2)
++\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)u_i
+\end{align*}
+$$
+
+Since $\mathbb{E}[\mu_i] = 0$, it implies that:
+
+$$
+\mathbb{E}[c_1]
+=
+\beta_1
++
+\beta_2
+\frac{
+\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)(x_{i2}-\bar{x}_2)
+}{
+\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)^2
+}
+$$
+
+Note that the bart after $\beta_2$ is the slope from the regression of $x_2$ on $x_1$:
+
+$$
+d_1
+=
+\frac{
+\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)(x_{i2}-\bar{x}_2)
+}{
+\sum_{i=1}^{n}(x_{i1}-\bar{x}_1)^2
+}
+$$
+
+so we have:
+
+$$
+
+
+\mathbb{E}[c_1] = \beta_1 + \beta_2 d_1
+
+
+$$
+
+<Table
+  data={{
+    headers: ["", "Corr($x_1, x_2$) > 0, $d_1$ > 0", "Corr($x_1, x_2$) < 0, $d_1$ < 0"],
+    rows: [
+      ["$\\beta_2 > 0$", "Positive bias", "Negative bias"],
+      ["$\\beta_2 < 0$", "Negative bias", "Positive bias"]
+    ]
+  }}
+/>
+
+
+Then we can consider two corner cases:
+- $\beta_2 = 0$: $x_2$ doesn't affect $y$:
+- $d_1 = 0$, so $x_1, x_2$ uncorrelated in the sample.
+<br/>
+---
+<br/>
+<b>Assumption 2: Efficiency of OLS Estimator</b>
+
+Once we know that the estimate is centered around the true parameter, we want to understand how it is distributed.
+
+If we add a fifth assumption (<b>MLR.5 Heteroskedasticity</b>), we know that:
+$$
+\text{Var}[\mu | x_1 \ldots x_k] = \mathbb{E}[\mu^2 | x_1 \ldots x_k] - \mathbb{E}[\mu | x_1 \ldots x_k]^2 = \sigma^2
+$$
+
+we also know/derive that:
+
+$$
+\text{Var}[y | x_1 \ldots x_k] = \mathbb{E}[y^2 | x_1 \ldots x_k] - \mathbb{E}[y | x_1 \ldots x_k]^2 = \sigma^2
+
+$$
+
+<br/>
+---
+<br/>
+
+<b>Theorem: Sampling Variances of the OLS Slope Estimators</b>
+
+Given the assumptions from MLR.1 to MLR.5,
+$$
+\text{Var}[b_i] = \frac{\sigma^2}{SST_i (1 - R^i)}
+$$
+
+where $SST_i = \sum_i (x_{i,j} - \bar x_j)^2$ and $R_j^2$ is the $R^2$ from the regression $x_j$ from all other $x_i$.
+
+- a larger $\sigma^2$ leads to larger variance in the estimarors.
+- a smaller $SST_i$ implies a smaller variance in the estimators.
+- a larger $R_j^2$ _(linear dependence between the variables)_ implies larger variance in the estimators.
+    - this is called <b>multicollinearity problem</b>.
+
+Let's analyze now what happens if we mis-specify the model. Consider again the true and the mis-specified models:
+
+$$
+y = c_0 + c_1 x_1 \\
+\bar y = b_0 + b_1 x_1 + b_2 x_2
+$$
+
+In this case the estimated variance equals $\text{Var}[c_1] = \sigma^2 / SST_1$.
+
+On the other hand, the variance using the _true model_ equals: $\text{Var}[b_1] = \frac{ \sigma^2 }{SST_1 ( 1 - R_1^2)}$
+
+So, unless $x_1, x_2$ are uncorrelated:
+
+$$
+\text{Var}[c_1] < \text{Var}[b_1]
+$$
+
+_Intuition:_ 
+- the variance of the estimaor is smaller in the mis-specified model_.
+- the mis-specified model is biased 
+- As the sample size grows, the variance of each estimator shrinks to zero, making the variance difference less important
+
+---
+
+<b>Estimating the error</b>
+
+- Estimate of the errorr variance
+
+$$
+s^2 = \hat{\sigma}^2
+= \frac{SSR}{df}
+= \frac{\sum_{i=1}^{n}\hat u_i^2}{n-(k+1)},
+\qquad
+df = n-(k+1)
+$$
+
+where $df$ represents the degrees of freedom.
+
+- Standard deviation of $b_j$:
+$$
+\operatorname{sd}(b_j)
+= \sqrt{\operatorname{Var}(b_j\mid X)}
+= \frac{\sigma}{\sqrt{SST_j(1-R_j^2)}}
+$$
+
+- Standard error of $b_j$:
+
+$$
+\operatorname{se}(b_j)
+= \frac{s}{\sqrt{SST_j(1-R_j^2)}}
+
+$$
+
+<br/>
+---
+<br/>
+
+<b>Theorem: Unbiased Estimation of $\sigma^2$:</b>:
+
+Under the assumptions MLR.1 to MLR.5, the $s^2$ estimator is unbiased, $\mathbb{E}[s^2] = \sigma^2$.
+<br/>
+---
+<br/>
+<b>Theorem: Gauss-Markov Theorem </b>
+
+Under the assumptions MLR.1 to MLR.5, the OLS estimators $b_0 \ldots b_k$ are the <b>best linear unbiased estimators (BLUEs)</b> of $\beta_0 \ldots \beta_k$:
+- <b>Best</b>: estimators have the lowest possible variance 
+- <b>Linear</b>: estimators are a linear function of $y$
+- <b>Unbiased</b>: expected value equala the population paramters.
+
 
 ## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
 
