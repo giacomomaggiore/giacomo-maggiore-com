@@ -128,9 +128,183 @@ An outcome that is not pareto <b>inefficient</b> is Pareto efficient.
 
 ## <a id="3"><b>Nash equilibrium with mixed strategies</b> </a>
 
+So far, we assumed that players only choose "pure" strategies _(non-random or deterministic)_. But, more generally, we could consider <b>mixed (random) strategies </b>, to ensure that a Nash Equilibrium exists for a broder class of games.
+
+Consider for example the following example. Two players can choose between $H$, $T$ and obtain the respect payoff.
+
+It can be shown that there's no Nash Equilibrium with pure strategies.
+
+
+
+<div align = "center">
+![Mixed Strategies](/images/notes/market-games/mixed.png)
+</div>
+
+So let's suppose that player $1$ chooses $H$ with probability $x$ and $T$ with probability $1-x$. The same applies for player $2$: he chosses $H$ with probability $y$, $T$ with probability $1-y$.
+
+We want to find $x, y \in [0,1]$ such that it is a Nash Equilibrium.
+
+Given that player $1$ chooses $H$ with probabilkty $x$, Player's $2$ payoffs are:
+- $\text{Player 2's payoff from  H} = -x + (1-x) = 1 - 2x$
+- $\text{Player 2's payoff from  T} = x  + (-1)(1-x) = 2x - 1$
+
+Player $2$ stricly prefers $H$ if:
+
+$$
+1-2x > 2x -1 \implies x < 1/2
+$$
+
+We can write Player $2$ choices in a more compact way:
+
+$$
+R_2(x) = 
+\begin{cases} 
+y = 1 & \text{if } x < 1/2, \\
+0 \le y \le 1 & \text{if } x = 1/2, \\
+y = 0 & \text{if } x > 1/2,
+\end{cases}
+
+$$
+
+Simirarly, given that Player $2$ chooses $H$ with probability $y$, we can write:
+- $\text{Player 1's payoff from  H} = y + (-1)(1 -y) = 2y - 1$
+- $\text{Player 1's payoff from  T} = (-1)y + (1)(1 -y) = 1 - 2y$
+
+$$
+R_1(y) = 
+\begin{cases} 
+x = 1 & \text{if } y > 1/2, \\
+0 \le x \le 1 & \text{if } y = 1/2, \\
+x = 0 & \text{if } y < 1/2,
+\end{cases}
+
+$$
+
+
+A Nash equilibrium occurs when the strategy profile is such every player is playing a best response to the other player’s strategy.
+
+In other words, we have to find $x^*, y^*$ such that:
+
+$$
+R_1(y^*) = x^*,\quad R_2(x^*) = y^*
+$$
+
+By plotting, we can easily identify them:
+
+<div align = "center">
+![Mixed Strategies](/images/notes/market-games/mixed2.png)
+</div>
+
+The Nash Equilibrium is then $x^* = y^* = 1/2$.
+
+---
+<br/>
+<b>Mixed Strategies: formal definition</b>
+<br/>
+
+A mixed strategy for a player $i$ is a probability distribution $p_i$ over their set of pure strategies.
+
+The set of all the pure strategies $S_i$ is denoted by $\Delta(S_i)$.
+
+
+
+In general, there' NO always a Nash Equilibrium with mixed strategies but, for a broad class of games, there's always a Nash Equilibrium.
+
+<a href="https://www.pnas.org/doi/10.1073/pnas.36.1.48" target="_blank">This result was proven by <b> John F. Nash</b>, Jr. in his seminal 1950 paper “Equilibrium points in $n$-person games”</a>. Nash was awarded 1994 Nobel Prize in Economics for this and other contributions to game theory.
+
+Consider then a $n$-player normal form game $G = (S_1 \ldots S_k, u_i \ldots u_k)$, with $n$ finite number and $S_i$ finite for every $i$.
+<br/>
+---
+<br/>
+
+<b>Theorem (Nash, 1950)</b>
+
+The game $G$ as at least one Nash equilibrium, possibly involving mixed strategies.
+
+A couple of funny notes:
+- The paper is extremley short, just 3 pages!
+- There is a book and film about Nash’s life <a href="https://it.wikipedia.org/wiki/A_Beautiful_Mind" target="_blank"> “A Beautiful Mind”</a>
+
+<b>Important result #1</b>: When checking for profitable unilaterally decisions, it is necessary and sufficient only pure strategy decisions $p_i = s_i$, i.e. $p^*$ is a Nash Equilibrium only if:
+
+$$
+U_i(p_1^*, \ldots p_i^*, \ldots p_n^*) > U_i(p_1^*, \ldots s_i, \ldots p_n^*)
+$$
+
+for every pure strategy $s_i$.
+
+<b>Important result #2</b>: Suppose $p = (p_1^*, \ldots p_n^*)$ is Nash Equilibrium. If players other than $i$ play according to $(p_1^*, \ldots p_n^*)$, then player $i$ is indifferent between any two pure strategies that they play with strictly positive probability in $p_i^∗$.
+
+<br/>
+---
+<br/>
+
+
+<b>Best response: formal definition</b>
+
+The set of player $i$'s best responses against $(p_1, \ldots p_{i-1}, p_{i+1},\ldots p_n)$ is the set of strategies that solve:
+
+$$
+\max_{s_i \in \Delta(S_i)} U_i (p_1, \ldots p_{i-1}, p'_i, p_{i+1},\ldots p_n)
+$$
+
+We denote by $R_i(p_1, \ldots p_{i-1}, p_{i+1},\ldots p_n)$ the set of best responses against $(p_1, \ldots p_{i-1}, p_{i+1},\ldots p_n)$.
+
+
+
+<b>Theorem (N.E.  characterization via best responses)</b>
+
+A strategy profile $(p_1^*, \ldots p_n^*)$ is a Nash Equilibrium if and only if, $\forall i = 1, \ldots n$, we have:
+
+$$
+p_i^* \in R_i(p_1^*, \ldots p_{i-1}^*, p_{i+1}^*,\ldots p_n^*)
+$$
+
+
+_Intuition_:
+- when looking for Nash Equilibrium:
+    - we calculate the player's best response functions 
+    - find the intersection(s) of all players' best response functions
+    - translate the response functions into strategies.
+
+<br/>
 ---
 
+<b>Formal definition: strictly dominated strategies</b>
+
+Given a game $G$, the mixed strategy $p_i$ is <b>strictly dominated by $p_i$ </b> if, for every pure strategy profile of the other players, we have:
+
+$$
+U_i(s_i, \ldots s_{i-1}, p_i, s_{i+1}, \ldots s_n) <U_i(s_i, \ldots s_{i-1}, p_i', s_{i+1}, \ldots s_n) <
+
+$$
+
+If a player has a stricly dominated strategy, he will never use it in a Nash Equilibrium.
+
+<b>Theorem:  (Iterated deletion of strictly dominated strategies)</b>
+
+Let G be an $n$-player normal form game such that player $i$ has a strictly dominated strategy in $G$. Let $G′$ be the $n$-player normal form game that is obtained from $G$ by removing such a strictly dominated pure strategy.
+
+Then $G$ and $G′$ have the same set of Nash equilibria.
+
+<b>Formal definition: weakly dominated strategies</b>
+
+_Instead of writing the full strategy profile of the other players as $(s_i, \ldots s_{i-1}, s_{i+1}, \ldots s_n)$, it is convenient to write as $s_{-i}$._
+
+Given a game $G$, the mixed strategy $p_i$ is weakly dominated by $p_i'$ if, for <b>every pure strategy</b> profile of the other players $s_{-i}$, we have:
+
+$$
+U_i(s_{-i}, p_i) \le U_i(s_{-i}, p_i')
+$$
+
+and there exists at least one pure strategy profile $s'_{i-1}$ such that:
+
+$$
+U_i(s_{-i}', p_i) < U_i(s_{-i}', p_i')
+$$
+
 ## <a id="4"><b>Applications to market competition</b> </a>
+
 
 
 
