@@ -49,7 +49,7 @@ In relation to this, we define <b>Capital</b> $K$ as stock that can be used to d
 
 <b>Comprehensive Wealth</b> incluse the total value of all capital stocks. 
 
-<b>- "Weak" sustainability</b> use and invest in natural and human-made capital stock such that comprehensive wealth doesn't decline:
+- <b> "Weak" sustainability</b> use and invest in natural and human-made capital stock such that comprehensive wealth doesn't decline:
 
 $$
 \frac{\partial K (K_h, K_n, K_p)}{\partial t} \ge 0
@@ -73,7 +73,7 @@ _Example: a strong approach to climate change limits temperature change below cr
 - <b>the production approach </b>
 - <b>the expenditure approach </b>
 - <b>the income approach</b>
-
+<br/>
 <a href="https://ourworldindata.org/grapher/gdp-per-capita-worldbank?tab=line" target="_blank">GDP Stats by Country [Our World in Data]</a>
 
 The idea behind the <b>production approach</b> is to sum up the market value of the final goods and services _produced_ in a year.
@@ -169,7 +169,7 @@ $$
 
 _Intuition: using more (and cheap) energy today increases GDP today_.
 
-Then, we add climate model to account for effectsof fossil use energy on warking $T_t$:
+Then, we add climate model to account for effects of fossil use energy on warking $T_t$:
 
 $$
 T_t = H(E_{1750, E_{1751}... E_t})
@@ -183,6 +183,9 @@ $$
 
 _Note that, in reality, energy consumption $E$ affects all the determinants of GDP, not only the productivity (for example, investments depends on depreciation rate, also affected by climate change)._
 Most important, climate changes also has strong effects that don't affect GDP directly (_non-market_ impacts such as elderly mortality, biodiversity etc etc...)
+
+---
+
 
 ## <a id="2.2"><b>2.2 Economic Growth, Sustainability, Market Failures - Microeconomic Refresher</b> </a>
 
@@ -277,7 +280,7 @@ T_t &= f_t(E_0, E_1, \dot E_t) \\
 \end{align*}
 $$
 
-Then, the model summarizes the climate change impacts on economy with a <b>damage function</b> $D(T_t), which captures the faction of GDP-equivalent loss from warming $T_t$, so we can write:
+Then, the model summarizes the climate change impacts on economy with a <b>damage function</b> $D(T_t)$, which captures the faction of GDP-equivalent loss from warming $T_t$, so we can write:
 
 $$
 Y_t^{Net} = (1 - \Lambda_t(\mu_t)) \cdot \Big [ (1 - D(T_t)) \cdot Y_t^{Gross}   \Big]
@@ -298,7 +301,7 @@ Recall that the final goal of the DICE model was to estimate the <b>social cost 
 
 $$
 \begin{align*}
-SCC_t &= \frac{\partial W}{\partial E_t} \\
+SCC_t &= \frac{\partial W}{\partial E_t}  =\\
 
 
 &= \sum_{j=0}^{T_{max}} \underbrace{\left( \frac{1}{1 + \rho} \right)^j}_{\text{Discount Factor}} \cdot \underbrace{\frac{u'(c_{t+j})}{u'(c_t)}}_{\text{Wealth Effect}} \cdot \underbrace{\frac{\partial Y_{t+j}}{\partial T_{t+j}}}_{\text{Economic Damage}} \cdot \underbrace{\frac{\partial T_{t+j}}{\partial E_t}}_{\text{Climate Response}}
@@ -334,11 +337,102 @@ Furthermore, regarding the DICE model, we can consider 5 <b>different scenarios<
 
 ## <a id="3"><b>3. Quantifying the Economic Value of the Environment, Part 1</b> </a>
 
+The definition of <b>value</b> is not sttraightforward.
+
+
+
 ---
 
 ## <a id="4"><b>4. Quantifying the Economic Value of the Environment, Part 2</b> </a>
 
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/value.png)
+</div>
+
+Methods to value the enviroment include:
+- statistical methods
+- experiments 
+- structural models 
+- structured surveys
+
+<b>Statistical Methods: Correlation vs Causation</b>
+
+If two variables $A,B$ are correlated, it may be the case that:
+- $A$ causes $B$
+- $B$ causes $A$
+- a third factor $C$ causes both $A,B$
+
+The <b>omitted variable bias</b> occurs when the association of $A,B$ gives an iaccurate _(biased)_ impression of the causal impact of $A$ on $B$ _(or viceversa)_ because of an omitted third variable.
+
+<b>Cross-sectional analysis</b> implies comparing outcomes across unit at a given point in time. _(example: evaluating different countries parameters in the same year)_. 
+
+The omitted variable bias is particularly common in the cross-sectiona analyses since it is difficult to isolate effects of a specific variable out of all the other things _(ceteris paribus concept, please refer also to my <a href="https://giacomomaggiore.com/notes/15-econometrics#1-introduction-to-statistics-and-econometrics" target="_blank">Econometrics Notes about that</a>)_.
+
+<b>Time-series analysis</b>, in contrast, compares outcomes across time.
+
+<b>Pane analysis</b> tracks and compares outcomes across _both_ time and units. It casn easily control for _some_ omitted variables such as time-invariant differences across units or shocks that affected everyone.
+
+In general, even with carefully designed analyses of sample data, we cannot guarantee that there are not omitted variables (bias), one way to ensure better accuracy is to couple <b>laboratory experiments</b> in controlled settings with <b>field experiments</b> in real world. _Example: <a href="https://en.wikipedia.org/wiki/Randomized_controlled_trial" target="_blank"> randomized control trials (RCTs)</a>_.
+
+
 ---
+
+<br/>
+<b>Structural Models</b>
+
+Experiments and quasi-experimental analyses of sample data can provide _precise insights_ from _specific settings_, but they cannot provide any intelligence regardging:
+- interactions/effects not-observed in historical data 
+- effects on a larger scale 
+- welfare impacts of enviromental changes beyond immediate monetary costs.
+
+<b>Structural models</b> can help us provide a broader measure of economic value of the enviromental capital.
+
+_Strictly related to that_, we can define the <b>Value of Statistical Life (VSL) </b> as the _additional cost that invididuals would be willing to pay for improvements in satefy that, in the aggregate, reduce the expected numbers of fatalies by one_.
+
+$$
+\text{VSL} \neq \text{Value of an individual human life}
+$$
+
+VLS represents the value of the _mortality risk reduction_.<br/>
+_Examples: how much are you willing to pay to travel in airplan with higher safety standards? How much are you willing to pay to go to the doctor for regular health-cancer checks?_
+
+_Lets' consider this example:_ look at the labor market compensation for fatality risk:
+- Job $1$: annual fatality risk: $2%$, Salary: $ 60 000 \text{CHF}$
+- Job $1$: annual fatality risk: $1%$, Salary: $ 50 000 \text{CHF}$
+$ \implies$ workers are paying $10 000 \text{CHF}$ to reduce fatality risk by $1%$.
+
+If we consider 100 workers, 1 life would be saved statistically, so we can derive:
+$$
+\text{Implied VSL} = 100 \times 10 0000 \text{CHF} = 1 000 000 \text{CHF} 
+$$
+
+Structural model, in this context, often rely on VSL to estimate the impacts of a factor.
+
+For example, the <a href="https://www.researchgate.net/profile/Nicholas_Muller/publication/253359043_The_Air_Pollution_Emission_Experiments_and_Policy_Analysis_Model_APEEP_Technical_Appendix/links/02e7e527248d726274000000/The-Air-Pollution-Emission-Experiments-and-Policy-Analysis-Model-APEEP-Technical-Appendix.pdf" target="_blank">APEEP (AP2, AP3) Model</a> analyzed the <b>total PM2.5 mortality health damages</b> caused by each sector in the US economy, with the following steps:
+- models pollution emissions from almost 10'000 sources across US 
+- models each flow of pollution present in  each county, independently on where the pollution originates 
+- combines demographic data for each county with pollution, using a <b>Dose-Response function </b> to estimate how pollution correlates with mortality. _For example_:
+
+$$
+$$\text{Mortality} = \text{Baseline Death Rate} \times \text{Population} \times \text{Change in Concentration} \times \text{Response Coefficient}$$
+$$
+- translate mortality impacts into monetary terms based on the VSL approach.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/gdp.png)
+</div>
+
+<b>Surveys</b>
+
+Economists generally prefer looking at _what people do_ instead at _what people say_ _(revealed preferences vs stated preferences)_.
+
+_Example_: <b>the hypotetical biasis:</b> people generally exaggerate their willingness to pay for enviromental protection.
+
+However, in some csases surveys can still be useful.<br/>
+Consider this example: the <b>non-use values</b> for specific species _(how do you value the life of 250'000 sea birds killed by a oli company?)_ 
+
+<b>Contingent valuation (CV)</b> is a highly structured survey used to understand values for very specific good and scenarios.
 
 ## <a id="5"><b>5. Quantifying the Market Value of Firms’ Sustainability Investments – Part 1</b> </a>
 

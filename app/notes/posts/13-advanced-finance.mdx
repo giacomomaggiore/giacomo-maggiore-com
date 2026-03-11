@@ -230,11 +230,15 @@ Note that the price of _long-term_ bonds is<b> more sensitive</b> to changes in 
 ![GDP by country](/images/notes/a-finance/sensitivity.png)
 </div>
 
+<b>Expected vs Promised Yield</b>
+
 However, it is very important to distinguish between <b>promised</b> and <b>expected yields</b>.
 
 
 Suppose Giacomo GmbH offers a 5% 1-year note, emitted at par ($1000 CHF$), with a risk-free rate $5%$.
 <br/>Consider also that, unfortunately, Giacomo has a $20%$ chance of default and only pay $500 CHF$.
+
+
 
 The <b>Present Value of the Note </b> is then:
 
@@ -267,6 +271,9 @@ $$
 \text{Expected Yield} = \frac{940 CHF}{895 CHF} - 1 = 5%
 $$
 
+---
+
+
 $AAA$ bonds by Moody's are the highest-grade bonds and are issued only by a few _blue-chips_ companies.
 <br/>Historically, the <b>promised yield</b> on these bonds has been about $1%$ higher than the yield on 10-Year Treasuries.
 <br/>On the other hand, $BAA$ bonds are rated _three so called notches lower_, and the yield is historically $2%$ higher.
@@ -275,6 +282,56 @@ $AAA$ bonds by Moody's are the highest-grade bonds and are issued only by a few 
 <div align = "center">
 ![Yield Spreads](/images/notes/a-finance/yield-spreads.png)
 </div>
+
+<b>Rate of Return</b>
+
+The total return on a bond investment over a specific period, accounting for both the coupons received and the change in the bond's market price.
+
+$$
+\text{RoR} = \frac{\text{Coupon} + (P_{t+1} - P_t)}{P_t}
+
+$$
+
+
+<b>Yield to Maturity (YTM)</b>
+
+YTM is the internal rate of return (IRR) earned by an investor who buys the bond today at the market price and holds it until maturity, assuming that _all coupons are reinvested at the same rate._
+
+$$
+
+P = \sum_{t=1}^{T} \frac{C}{(1 + \text{YTM})^t} + \frac{FV}{(1 + \text{YTM})^T}
+$$
+
+<b>Macaulay Duration</b>
+
+Duration is the weighted average of the times to each of the cash payments. It is the primary tool for estimating a bond's sensitivity to interest rate changes.
+
+$$
+D = \sum_{t=1}^{T} \frac{t \times PV(C_t)}{P}
+$$
+
+Often we use <b>Modified Duration</b> to calculate the actual percentage change in price for a 1% change in yield ($y$):
+
+$$
+\Delta P \% \approx - \frac{D}{1+y} \times \Delta y
+
+$$
+
+
+<b>Convexity</b>
+
+Duration is a linear approximation of the interest rate and the price, convexity takes into account the second order relation, especially important for bigger interest rate changes.
+
+$$
+\text{Convexity} = \frac{1}{P \times (1+y)^2} \sum_{t=1}^{T} \left[ \frac{C_t}{(1+y)^t} \times (t^2 + t) \right]
+$$
+
+_Intuition:_ A bond with higher convexity drops less when rates rise and gains more when rates fall compared to a bond with lower convexity.
+
+---
+
+<br/>
+
 
 <b>Credit Default Swaps</b>
 
@@ -298,7 +355,7 @@ _Example_ during the Credit Suisse Crisis, CDS of that banks went incredibily hi
 
 The main difference between corporate and treasury bonds is that the company has the option to default, whereas the government supposedly doesn't.
 
-_Consider the following example:_Assumption
+_Consider the following example:_
 
 Giacomo's GmbH borrowed $ 50 CHF$ per share but then the firm faced hard itmes and market value of its assets fell to $30 CHF$. <br/>
 Giacomo's Bond and stock prices fell respectively to $27 CHF$ and $3 CHF$.
@@ -393,6 +450,118 @@ _Common interpretations_:
 
 
 ## <a id="4"><b>4. The Many Different Kinds of Debt</b> </a>
+
+<div align = "center">
+![Yield Spreads](/images/notes/a-finance/corporate-debt.png)
+</div>
+
+Before we start, some <b>bond terminology</b>:
+- <b>indenture/trust deed</b>: between the c9ompany and a trustee that represents the bond-holders. The trustee must see that the terms of the identure are respected and look after the bond-holders in case of default. _(usually a big commercial bank that monitors and acts in case of default)_ 
+- <b>registerd bond</b>: the company keep records of the owners, interest and principal are paid directly to the bondholders _(the big majority of bonds traded today)_
+- <b>bearer bond</b>: the company doesn't keep records of the owners, that have to physically cut off a coupon and present it to a bank to receive the interest payment
+- <b>accrued interest</b>: amount of accumulated interest since the last coupon payment 
+- <b>coupon</b>: annual/semi-annual interest paid on a bond 
+- <b>depentures (=bonds)</b>: long term unsecured issues on debt 
+- <b>mortgage bonds</b>: long term secured debt, often containing clamins against a specific property 
+- <b>collateral trust bonds</b>: bonds secured by common stocks of other securities from the borrower 
+- <b>equipment trust certificate</b>: secured debt generally used to finance railroad equipment
+- <b>asset-backed securities (ABS)</b>: sale of cash-flows derived directly from a set of bundled assets
+- <b>mortgage-backed securities</b>: set of mortgage loans sold, owners recieve a portfion of mortgage payments _(off-balance sheeet)_.
+- <b>foreign bond</b>: bonds sold to local investor in another' country's bond market 
+- <b>yankee bond</b>: bonds sold publicly by a foreign company in the US 
+- <b>samurai</b>: bonds sold by a foreign firm in Japan 
+- <b>bulldog</b>: bonds sold ny a foreign firm in the UK 
+- <b>eurobond</b>: bond demoninated in one country's currency but marketed internationally 
+- <b>global bonds</b>: very larg bond issues marketed internationally and on individual domestic markets.
+
+A <b>callable bond</b> allows the issuer to call back _(repay)_ the debt before maturity, valuable to reduce the company's leverage, it often happens when interest rates fall.
+<br/>A <b>puttable (retractable) bond </b> allows the investor to be repaid for the debt, it is a protective covenant for the investor, it often happens when interest rates increase.
+
+A <b>sinking fund</b> is a fund established to retire debt before maturity.
+
+<b>Bond covenants</b>
+
+Since invesotrs know that there's risk of default, covenants are used to limit the company default position, for example by:
+- <b>debt ratios</b>: limits of further borrowing _(senior debt limits senior borrowing, junior debt limits senior and junior borrowing)_.
+- <b>Security: negative pledge</b>: the company promises not to give any of its assets to create a security interest for other lenders, unless the current bondholders are given an equal share of that security.
+- <b>Leasing </b> (similar to secured borrowing)
+- <b>Dividends</b> 
+
+<div align = "center">
+![Yield Spreads](/images/notes/a-finance/covenants.png)
+</div>
+
+<b>Convertible Securities and some unusual bonds</b> 
+
+A convertible securty can change during his life: it stars as a bond, but it can be subsequently turned into equity.
+
+$$
+\text{Convertile Bond} = \text{Plain Bond} + \text{Option to acquire shares}
+
+$$
+
+$$
+\text{Conversion value} = \text{Conversion ratio } \times \text{Share price}
+$$
+
+- Value of the plain bond _(if not converted)_, think at this values as a lower bound of the price of the convertible bond:
+
+<div align = "center">
+![GDP by country](/images/notes/a-finance/convertible-bonds-1.png)
+</div>
+
+- Value of the converted bond/stock if the bond is converted:
+
+<div align = "center">
+![GDP by country](/images/notes/a-finance/convertible-bonds-2.png)
+</div>
+
+- At maturity, the bondholder can choose to receive the payment of the bond or convert it into common stock:
+<div align = "center">
+![GDP by country](/images/notes/a-finance/convertible-bonds-3.png)
+</div>
+
+<b>The Bond-Warrant Package</b>
+
+Instead of selling convertible bonds, firms sometimes sell a package of straight bonds and warrants. Warrants are simply long-term <b>call options</b> that give the investor the right to buy equity.
+<br/>Warrants are usually issued privately, can be detached, exercised for cash and are usually taxed differently. _Note also that warrants can be issued on their own_.
+
+---
+
+<br/>
+<b>Bond innovations</b>
+- <b>Catastrophe (CAT) bonds</b>: payments are reduced in the event of a specified natural disaster 
+- <b>Contingent convertibles (CoCos)</b>: bonds that convert automatically into equity as the value of the company falls 
+- <b>Equity-linked bonds</b>: payments are linked to the performance of a stock market index 
+- <b>Longevity bonds</b>: payments are reduced or eliminated if there's a fall in mortality rates 
+- <b>Mortality bonds</b>: payments are reduced or elimitated if there's a jump in mortality rates 
+- <b>Pay-in-find bonds (PKIs)</b>: issuer can choose to make interest payments in cash or in more bonds with same face value 
+- <b>Credit-linked bonds</b>: coupon rate changes with the company's rating 
+- <b>Reverse floaters (yield-curve notes)</b>: floating-rate bonds that pay a higher rate of interest when other interest rates fall (and a lower rate when othe rates rise)
+- <b>Set-up bonds</b>: coupon payments increase over time.
+
+---
+
+<b>Bank Loans</b>
+
+<b>Commitment</b>:
+- Revolving credit: maximum amount a company can borrow, repay, and re-borrow as needed during the period.
+- Evergreen credit: revolving credit without a fixed maturity that automatically renews.
+<br/>
+<b>Maturity</b>
+- Bridge loan: short-term loan between permanent finaning or important debt events
+- Self-liquidating: loan designed to be repaid by the asset it was used to purchase.
+- Term loans: standard loans for a specific amount that are repaid over a set period (usually 1–10 years)
+
+In a <b>Syndicated Loan</b>, a group of banks _(the syndicate)_ works together to provide the funds.
+- Lead Bank: Arranges the deal and does the heavy lifting.
+- Participants
+
+<b>LIBOR</b>: it was the interbank offered rate, commonly used as the reference for loans. _The financial crisis undercut confidence in LIBOR, now it is now longer used_.
+
+<b>SOFR</b> (SECURED OVERNIGHT FINANCING RATE): designed to replace LIBOR, it is the average interest rates on overnight Treasury repo transactions _(the main difference is that SOFR is transaction-based, not banker-estimated based as the LIBOR).
+<br/>
+In an overnight repo transaction, one party sells a security (usually a US Treasury Bond) to another party with a simultaneous agreement to buy it back the very next day at a slightly higher price.
 
 ---
 
