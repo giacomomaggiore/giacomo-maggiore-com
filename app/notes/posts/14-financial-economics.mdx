@@ -541,8 +541,46 @@ $$
 \alpha = \frac{S_1^u - X}{S_1^u - S_1^d}, \quad \beta = \frac{(S_1^u - X)S_1^d}{(1 + r_f)(S_1^d - S_1^u)}
 $$
 
+In absence of arbitrage, we then conclude: $C_0 = \alpha S_0 + \beta$.
+
+We can now apply the same reasoning in <b>continuous-time</b>. Considering a give time range $T$, we split the time range in _(infinitely many)_ periods $dt$ and we assume that in any period the stock price is multiplied by either $(1 +\alpha dt), (1 + \beta dt)$.
+<br/>We assume the distribution of the stock price at time $T$ is <b>log-normal</b>. <br/> Applying _(infinitely many times)_ the two state valuation model makes it possible to compute the value of the call.
+
+---
+<br/>
+<b>Black-Scholes Formula</b>
+
+Formally, the value of the stock at time $t$ denoted $S(t)$ is assume to vary as follows:
+
+$$
+dS(t) = \mu S(dt) + \sigma S(t) dB(t)
+$$
+
+where $B(t) is a standard <b>Brownian Motion</b>, so for any $y$ the distribution of $S(t)$ is log-normal.
+
+We then assume:
+- constant risk-free interest rate 
+- no arbitrage 
+
+and we get the <b>famous</b> Black-Scholes formula:
+
+$$
+C_0 = S_0 N(d_1) - X e^{-rT} N (d_2)
+$$
+
+- $d_1 = \frac{\ln (S_0 / X) + (r + \sigma^2/2)T}{\sigma \sqrt(T)} $
+
+- $d_2 = d_1- \sigma \sqrt(T)$
+
+- $N(d)$ probability that a random draw from a standard normal distribution will be less than $d$
+- $r$: risk free interest rate, _(annualized continuously compounded rate with same maurity as the expiration o the option, note that is different from $r_f$)_,
+- $\sigma$: standard deviation of the annualized continuously compounded rate of return of the stock.
+
+_Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that the call option will expisre in-the-money ($X < S_T$)
 
 <a href="https://www.youtube.com/watch?v=A5w-dEgIU1M" target="_blank">The Trillion Dollar Equation [VIDEO - Veritasium]</a>
+
+
 
 ---
 
