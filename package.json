@@ -39,6 +39,7 @@
     "rehype-katex": "7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "6.0.0",
+    "resend": "^6.9.4",
     "rss": "^1.2.2",
     "sugar-high": "^0.6.0",
     "tailwindcss": "4.0.0-alpha.13",

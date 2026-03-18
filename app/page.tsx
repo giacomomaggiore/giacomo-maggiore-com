@@ -20,7 +20,7 @@ export default function Page() {
     <br></br><br></br>
 
     Running, cycling and exploring unconventional travel destinations the rest of the time.
-    <br></br><br></br>
+    
       </p>
 
       
