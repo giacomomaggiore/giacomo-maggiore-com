@@ -36,7 +36,7 @@ async function sendWelcomeEmail(email: string, unsubscribeUrl: string) {
   }
 
   const { error } = await resend.emails.send({
-    from: "giacomomaggiore",
+    from,
     to: email,
     subject: "ciao!",
     replyTo: "giaco.maggiore@gmail.com",
