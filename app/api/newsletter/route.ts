@@ -7,6 +7,30 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+async function sendWelcomeEmail(email: string) {
+  const from = process.env.NEWSLETTER_FROM_EMAIL;
+  if (!from) {
+    console.warn("Missing NEWSLETTER_FROM_EMAIL: welcome email skipped");
+    return;
+  }
+
+  const { error } = await resend.emails.send({
+    from,
+    to: email,
+    subject: "Welcome to Giacomo's Newsletter",
+    html: `
+      <p>Ciao!</p>
+      <p>Thanks for subscribing to my newsletter.</p>
+      <p>I will only send occasional updates when I publish something new.</p>
+      <p>Best,<br/>Giacomo</p>
+    `,
+  });
+
+  if (error) {
+    throw new Error(error.message || "Failed to send welcome email");
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const form = await req.formData();
@@ -38,11 +62,20 @@ export async function POST(req: Request) {
       unsubscribed: false,
     });
 
+    let isDuplicate = false;
     if (error) {
       const msg = String(error.message || "").toLowerCase();
-      const duplicate = msg.includes("already");
-      if (!duplicate) {
+      isDuplicate = msg.includes("already");
+      if (!isDuplicate) {
         return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+    }
+
+    if (!isDuplicate) {
+      try {
+        await sendWelcomeEmail(email);
+      } catch (welcomeErr) {
+        console.error("Welcome email error:", welcomeErr);
       }
     }
 
