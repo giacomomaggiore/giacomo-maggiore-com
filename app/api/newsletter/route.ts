@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { createHmac } from "crypto";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -7,7 +8,27 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-async function sendWelcomeEmail(email: string) {
+function getUnsubscribeSecret() {
+  return process.env.NEWSLETTER_UNSUBSCRIBE_SECRET || process.env.RESEND_API_KEY || "";
+}
+
+function signUnsubscribeToken(email: string, ts: string) {
+  const secret = getUnsubscribeSecret();
+  return createHmac("sha256", secret).update(`${email}:${ts}`).digest("hex");
+}
+
+function buildUnsubscribeUrl(req: Request, email: string) {
+  const ts = String(Date.now());
+  const sig = signUnsubscribeToken(email, ts);
+  const base = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin;
+  const url = new URL("/api/newsletter/unsubscribe", base);
+  url.searchParams.set("email", email);
+  url.searchParams.set("ts", ts);
+  url.searchParams.set("sig", sig);
+  return url.toString();
+}
+
+async function sendWelcomeEmail(email: string, unsubscribeUrl: string) {
   const from = process.env.NEWSLETTER_FROM_EMAIL;
   if (!from) {
     console.warn("Missing NEWSLETTER_FROM_EMAIL: welcome email skipped");
@@ -15,13 +36,15 @@ async function sendWelcomeEmail(email: string) {
   }
 
   const { error } = await resend.emails.send({
-    from,
+    from: "giacomomaggiore",
     to: email,
-    subject: "Welcome to Giacomo's Newsletter",
+    subject: "ciao!",
+    replyTo: "giaco.maggiore@gmail.com",
     html: `
       <p>Ciao!</p>
-      <p>Thanks for subscribing to my newsletter.</p>
-      <p>I will only send occasional updates when I publish something new.</p>
+      <p>Thanks for subscribing. I will only send occasional updates when I publish something new.</p>
+      <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${unsubscribeUrl}">here</a></p>
+      
       <p>Best,<br/>Giacomo</p>
     `,
   });
@@ -73,7 +96,8 @@ export async function POST(req: Request) {
 
     if (!isDuplicate) {
       try {
-        await sendWelcomeEmail(email);
+        const unsubscribeUrl = buildUnsubscribeUrl(req, email);
+        await sendWelcomeEmail(email, unsubscribeUrl);
       } catch (welcomeErr) {
         console.error("Welcome email error:", welcomeErr);
       }
