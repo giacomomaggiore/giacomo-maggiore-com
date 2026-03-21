@@ -8,6 +8,19 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+function normalizeFromAddress(rawFrom: string) {
+  // Accept values with accidental wrapping quotes/spaces from env providers.
+  const from = rawFrom.trim().replace(/^['"]|['"]$/g, "");
+  const bareEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const namedEmail = /^.+\s<[^\s@]+@[^\s@]+\.[^\s@]+>$/;
+
+  if (!bareEmail.test(from) && !namedEmail.test(from)) {
+    return null;
+  }
+
+  return from;
+}
+
 function getUnsubscribeSecret() {
   return process.env.NEWSLETTER_UNSUBSCRIBE_SECRET || process.env.RESEND_API_KEY || "";
 }
@@ -29,20 +42,25 @@ function buildUnsubscribeUrl(req: Request, email: string) {
 }
 
 async function sendWelcomeEmail(email: string, unsubscribeUrl: string) {
-  const from = process.env.NEWSLETTER_FROM_EMAIL;
-  if (!from) {
+  const rawFrom = process.env.NEWSLETTER_FROM_EMAIL;
+  if (!rawFrom) {
     console.warn("Missing NEWSLETTER_FROM_EMAIL: welcome email skipped");
     return;
   }
 
+  const from = normalizeFromAddress(rawFrom);
+  if (!from) {
+    console.error("Invalid NEWSLETTER_FROM_EMAIL format");
+    return;
+  }
+
   const { error } = await resend.emails.send({
-    from: "giacomomaggiore",
+    from,
     to: email,
     subject: "ciao!",
     replyTo: "giaco.maggiore@gmail.com",
     html: `
-      <p>Ciao!</p>
-      <p>Thanks for subscribing. I will only send occasional updates when I publish something new.</p>
+      <p>Thanks for subscribing. I promise not to spam you, just the occasional <i>"what's new”</i> message.</p>
       <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${unsubscribeUrl}">here</a></p>
       
       <p>Best,<br/>Giacomo</p>

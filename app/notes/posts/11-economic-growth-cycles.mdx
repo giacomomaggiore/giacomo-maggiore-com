@@ -871,8 +871,215 @@ However, even in theory, there are some possible deviations from the <b>Ricardia
 
 ## <a id="5"><b>5. The Solow Growth Model</b> </a>
 
-<Quote>
-(Productivity) growth isn't everything, but in the long run it's almost everything. <a href="https://it.wikipedia.org/wiki/Paul_Krugman" target="_blank">Paul Krugman, 1990</a></Quote>
+<Quote>(Productivity) growth isn't everything, but in the long run it's almost everything. <a href="https://it.wikipedia.org/wiki/Paul_Krugman" target="_blank">Paul Krugman, 1990</a></Quote>
+
+Real GDP per capita is often considered the most important indicator for average standard of living.
+
+_(Is this really the case? Luciano Canova <a href="https://www.amazon.it/metro-della-felicità-Luciano-Canova-ebook/dp/B07P6GKJPY" target="_blank"> in this book answers this</a>: is the PIL the right measure to measure happiness?)_
+
+More in detail:
+- <b>Economic growth </b> is the increase in value of all goods and services produced by an economy. It is conventionally measured as the percent rate of increase in <b>real gross domestic product</b>.
+- <b>GDP</b> is defined as the total market valoue of all final goods and servied produced in a country in a gived time period. It's defined by the <b>National Income Identity</b>:
+$$
+\text{GDP} = \text{Consumption}+\text{}+\text{Gross Investing} + \text{Gov. Spending} + \text{Exports}- \text{Imports}
+$$
+
+---
+<br/>
+<b>The Solow Model - General Assumptions</b>
+
+- A closed economy _(no trade)_
+- One good that can be consumed or used as capital 
+- Houseolds save a _costant exogenous fraction_ $s$ of their income _(we are not intered in why they save $s$, we simply put that value into the model)_
+- Rate of technological progress is _exogenous_ 
+- No taxes, no subsidies _($\approx$ no governement)
+- Discrete time $t = 0,1,2...$
+
+Outpiut $Y_t$ is produced according to the <b>aggregate production function:</b>
+
+$$
+Y_t = F(A_t L_t, K_t)
+$$
+
+- $A_t$: efficiency of labor 
+- $L_t$: size of the labor force $\implies A_t L_t$ is the <b>effective labor</b>
+- $K_t$: stock of capital 
+
+Further assumptions:
+- constant return to scale (CRS): $F(\lambda A_t L_t, K_t) = \lambda F(A_t L_t, K_t)
+- $F' > 0, F'' < 0$ for each argument
+
+We model technological progress as $(A_{t+1}-A_t)/A_t$ and we consider as exogenous.
+
+Most of the times, in the Solow Model, we assume a <b>Cobb-Douglas</b> production function:
+
+$$
+F(A_t L_t, K_t) = (A_t L_t)^{1 - \alpha} K_t ^{\alpha}, \quad \alpha \in (0,1)
+$$
+
+_(it can be easily checked that this function respectes all the assumptios)_.
+
+Because of the costan return to scale, the productionm function can be written in <b>intestive form</b>:
+
+$$
+\frac{Y_t}{(A_t L_t)} = F\Big (1, \frac{K_t}{L_t A_t} \Big)
+$$
+
+if we now introduce:
+- $f(x) := F(1,x)$ 
+- $k := K_t / (A_t L_t)$
+- $y_t := Y_t / (A_t L_t)$
+
+we obtain:
+
+$$
+y_t = f(k_t) = k_t ^{\alpha}.
+$$
+_(This makes easier to solve the model since we only have one argument)_.
+
+We now introduce some assumptions on the population growth and the technological progress:
+- population _(coinciding with labor force)_ at $t = 0$ is $L_0$
+- population grows at a costant rate $n$: 
+$$
+L_{t+1} =L_t + n L_t \implies L_t = L_0 (1 + n)^t
+$$
+- technological level at $t = 0$ is $A_0$ 
+- technological level grows at a costant rate $g$: $A_t = A_0 (1 + g)^t$
+
+The <b>capital stock</b> increases by investment $I$ and decreases by depreciation at a costant rate $\delta$.
+
+We then obtain the <b>foundamental law of motion</b> of the Solow Model:
+
+$$
+K_{t+1} = K_t + I_t - \delta K_t = (1 - \delta) K_t + I
+$$
+
+In a closed economy without government spending:
+
+$$
+Y_t = C_t + I_t, \quad I_t = S_t.
+$$
+
+If we also assume that $S_t = s Y_t, s \in (0,1)$ is costant over time, this implies:
+
+$$
+C_t = (1 -s) Y_t \\
+
+K_{t+1} = (1 - \delta)K_t + sY_t
+$$
+
+---
+
+
+We now take some time to describe the variable. Given the ones in absolute form ($K_t, L_t, A_t, Y_t, C_t)$, we have the <b>Per Capita Values</b> _(simply dividing by population)_ as:
+- $\bar k_t := \frac{K_t}{L_t}$
+- $\bar y_t := \frac{Y_t}{L_t}$
+- $\bar c_t := \frac{C_t}{L_t}$
+
+and the <b>Intensive Form</b> _(simply dividing by effective labor)_ as:
+- $ k_t := \frac{K_t}{L_t A_t}$
+- $ y_t := \frac{K_t}{L_t A_t }$
+- $ c_t := \frac{K_t}{L_t A_t}$
+
+
+If we divide the foundamental law of motion by the effective labor too, we obtain the <b>Capital Accumulation Equation</b> in intensive form:
+
+$$
+\begin{align*}
+K_{t+1}/(A_t L_t) &= (1 - \delta) \frac{K_t}{A_t L_t} + s \frac{Y_t}{A_t L_t}\\
+
+k_{t+1}(1 + g)(1 + n) &= (1 - \delta)k_t + s y_t \\
+
+(k_{t+1} -k_t)(1 + n)(1 + g) &= s f(k_t) - (\delta + n + g + n g)k_t\\
+
+(k_{t+1} -k_t)(1 + n)(1 + g) &= s (k_t)^{\alpha} - (\delta + n + g + n g)k_t\\
+
+
+\end{align*}
+$$
+Where the last equality is true if we consider the Cobb-Douglas function and it represent the <b>Foundamental La of motion</b> in intensive form.
+
+$(\delta + n + g + ng)k_t$ is the <b>break-even</b> investment _(the min investment needed to prevent the capital stock in intensive form from shrinking)_. If actual investment $s k_t ^{\alpha}$ is equal to the break-even investment, $k_t$ is costant over time.
+
+A _diminishing marginal product_ of capital implies that $k_t$ converges to where actual investment equals break-even investment.
+<br/>In the long run, $k_t$ is costant over time, reaching a <b>steady state</b>
+$$
+k_{t+1} = k_t = k^*
+$$
+
+<div align = "center">
+![Steady State in the Solow Model](/images/notes/economic-growth/solow.png)
+</div>
+<div align = "center">
+![Steady State in the Solow Model](/images/notes/economic-growth/solow2.png)
+</div>
+
+The long-run equilibrium ($k_{t+1} = k_t = k^*$) implies the following mathematical solution:
+
+$$
+0 = (k_{t+1} -k_t)(1 + n)(1 + g) = s k_t^{\alpha}- (\delta + n + g + n g)k_t \implies \\ 
+
+0 = s(k^*)^{\alpha}- (\delta + n + g + n g)k^* \implies \\ 
+
+k^* = \Big (  \frac{s}{\delta + n +g + ng} \Big) ^{1 /( 1 - \alpha)}
+$$
+
+that brings the following properties:
+- $y^*$, the ratio of output fo effective labor, is costant:
+
+$$
+y^* = (k^*)^{\alpha} =  \Big (  \frac{s}{\delta + n +g + ng} \Big) ^{\alpha /( 1 - \alpha)}
+$$
+- $c^*$ is costant 
+
+$$
+c^* = (1 - s)y^* = (1 - s) \Big (  \frac{s}{\delta + n +g + ng} \Big) ^{\alpha /( 1 - \alpha)}
+$$
+
+- $k^*, c^*, y^*$ do NOT depend on the initial capital $k_0$.
+- Capital per capita $\bar k$, output per capita $\bar y$ and consumptio per capita $\bar c$ grow at rate $g$ of technological progress:
+
+$$
+\frac{\bar x_{t+1}-x_t}{\bar x_t} = \frac{x^* (A_{t+1}-A_t)}{x^* A_t} = \frac{x^* (A_t(1 + g)- A_t)}{x^* A_t} = g
+$$
+
+- $K, Y, C$ grow at rate $g + n + gn \approx g + n$ for $g,n << 1$:
+
+$$
+\frac{X_{t+1}-X_t}{X_t} = \frac{x?* (A_{t+1}L_{t+1} - A_t L_t)}{x^* A_t L_t} = \frac{x^* A_t L_t ((1 + g)(1 +g)-1)}{x^* A_t L_t} = \\
+= (1 + g)(1 + n)-1 = g+ n + gn
+$$
+
+We can also se that changes in $s, n, \delta, \alpha$ have only effects on per-capita steady-state value.
+<br/>A change in $g$ has growth effects on per-capital steady-state values.
+<br/>A shock to the capital stock has temporary (but no long-run) effects.
+
+_Example: the Second World brought a shock to the capital stock:_
+
+<div align = "center">
+![Steady State in the Solow Model](/images/notes/economic-growth/ww2.png)
+</div>
+
+We now ask which saving rate $s^*$ maximizes steady-state consumption $c^*$:
+
+$$
+\max _s c^* (s) = (1 - s) f(k^*(s)) = f((k^*)) - (\delta + n + g + ng)k^*(s)
+$$
+
+whoose solution is characterized by:
+
+$$
+f'(k_{gold}) = n + \delta + g + ng
+$$
+
+which is called the <b>Golden Rule of Caèital Accumulation</b>.
+
+_Note that, for the Cobb-Douglas production function, $s_{gold} = \alpha$_ and that an economy with $s > s_{gold}$ is <b>dynamically inefficient</b>.
+
+<b>Implications of the Solow Model</b>:
+- long-run growth per-capita is only driven by technological progress 
+- in the long-run, capital accumulation is a consequence of growth in technology 
+- in the short run, growth is faster for countries far away that their steady state.
 
 ---
 

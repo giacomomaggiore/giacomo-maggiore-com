@@ -434,11 +434,96 @@ Consider this example: the <b>non-use values</b> for specific species _(how do y
 
 <b>Contingent valuation (CV)</b> is a highly structured survey used to understand values for very specific good and scenarios.
 
+---
+
 ## <a id="5"><b>5. Quantifying the Market Value of Firms’ Sustainability Investments – Part 1</b> </a>
+
+One common metric to classify how much a firm is sustainable is the <b>ESG (enviromental, social, governance) Rating</b>.
+
+ESG rating method may differ across providers and they are usuaolly proprietary up to some level but, while credit ratingds from different providers show high correlation ($\approx 0.99$), correlation of ESG ratings is lower ($\approx 0.54$)
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/esg-corr.png)
+</div>
+
+This disagreement comes from different factors:
+- different agencies consider different attributes _(38% od the divergence)_
+- different agencies measure same attributes with different methods :(56% of divergence)_
+- different agencies weight them differently _(6% of divergence)_.
+<br/>
 
 ---
 
-## <a id="6"><b>6. Costs of Sustainability Investments: Basics</b> </a>
+A potentially more objective and more directly climate-relevant indicator may be the firm's <b>carbon emissions</b>.
+- <b>Scope 1: direct emissions:</b> emissions from the firm's production _(the apprea highly consistent across data providers)_.
+- <b>Scope 2: indirect emissions:</b> emissions from purchased heat, electricity, stea, cooling etc _(slightly less but still highly correlated across providers)_.
+- <b>Scope 3: indirect emissions from productio of purchased materials, activities and services</b> _(data are more noisy, substantial disagreement)_.
+
+However, often the carbon emissions are not a good indicator of how much a firm is green. <br/>For example, firms with higher carbon emissions and low ESG scores are also the most active _innovators_ in low carbon technologies.
+
+Another potential solution is to measure <b>greenes at the _product_ level</b>.
+
+---
+<br/>
+<b>Cost of Capital </b>
+
+_How can we distinguish the effects of firm sustainability from potential other factors (such as skilled management or external factors)?_ 
+
+If we collect data on corporate bonds spreads _(measure of borrowing costs or cost of capital)_ and ESG scores, we can estimate the following specification:
+
+$$
+\text{Spread}_{ij,t} = \alpha + \beta_1 \text{ESG}_{ij,t} + \beta_2 \text{Firm Control }_{ij,t} + \beta_4 \text{Industry} + \beta_5 \text{Year} \times \text{Year }+\epsilon_{ij,t}
+$$
+
+$\beta_1$ is the _"Sustainability" factor_, in other words it is the coefficient that tells you the relationship between the overall spread and the ESG ratings. If $\beta_1$ is negative and statistically significant, it suggests that as ESG scores go up, borrowing costs go down.
+
+<br/>
+
+<b>Carbob Offsets</b>
+
+The _basic intuition_ behind this strategy is that if some other firms can reduce their gas emissions cheaper than a specific firm, that firm could pay the others to reduce its emissions, so _everyone can benefit_.
+(Indeed, many companies use carbon offsets to hekp neutralize carbon emissions that are very expensive or impossible to eliminate).
+
+Some possible _negative consequences_:
+- <b>Rebound effect</b>: people may increase energy/resources consumètion in response to the offset.
+- <b>Lack of additionality</b>: the "paid"/sold emissions would have been reduced even with out carbon offset program payments.
+- <b>Carbon Leakage</b>: tree planting in one country may increase emissions inn other countries throguth displacement of agricultural land and increase imports.
+<br/>
+---
+
+<b>Market Valuation of Firm Sustainability: Insights</b>:
+
+With these challenges and potential problems in mind, let's study 5 general insights on _indirect benefits_ behind sustainability:
+1. (Some)<b>Consumers are often willing to pay more for sustainable products</b>. _Intuitively_, this is easy to observe with products that differ only from an enviromental point of view _(same price, dimension, quality etc...)_. Also note that estimating demand curves _(how demand changes depending on sustainability)_ may be very difficult and require lot of data.
+
+_For example_, in Switzerland, organic products have around $12%$ share of the total grocery expenditure, very high compared to the rest of Europe.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/eggs.png)
+</div>
+
+2. <b>Consumers are not always willing to pay more</b>, especially for CO2 emissions reductions or offsets. _For example_, considering 64k online bookings at a Swiss Airlin where $82%$ of the buyers could have paid for "carbon tax/offset" for less than $30$ EUR/Ton, only $5%$ actually offset their emissions. The median willingness to pay for offsets as $0$ EUR.
+
+3. <b>Consumers sometimes respond even to unverified claims of greeness</b>, providing incentives for green-washing.
+
+4. <b>Labor recruitment and retention may benefit fro corporate social responsibility</b>, even if evidence is still limited. This is particularly hard to proove since more sustainable firms may also have _better management_ and other reasons why they might have better labor outcomes. However, _experimental evidence_ shows that kobs seekers _(on average)_, give importance to ESG signals.
+
+5. <b>Capital costs are likely lower for more sustainable firms</b>, even if evidence is mixed. In 2021, _for example_, Bolton and Kapcerzyk analyze the associatoin of firm's carbon emissions and stock returns in the US:
+
+$$
+\text{Stock Returns} = f(\text{Firm Carbon Emissions}) + \text{Controls} + \epsilon
+$$
+
+_(However, it is not clear what measure for carbon emissions is the best for this use)_.
+
+The study prooved that there's an <b>increasing risk premium </b> based on emissions levels:
+-  $+1 \text{ std dev}$ Scope 1 Total Emissions $\implies  +1.5%$ annual increase in stock return
+-  $+1 \text{ std dev}$ Scope 2 Total Emissions $\implies  +2.8%$ annual increase in stock return
+-  $+1 \text{ std dev}$ Scope 3 Total Emissions $\implies  +3.6%$ annual increase in stock return
+
+However, the study failed to capture significant effect of carbon emissions intensity _(emissions per unit of sales)_.
+
+## <a id="6"><b>6. Costs ofxSustainability Investments: Basics</b> </a>
 
 ---
 
