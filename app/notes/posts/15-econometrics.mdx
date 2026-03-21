@@ -580,6 +580,115 @@ Under the assumptions MLR.1 to MLR.5, the OLS estimators $b_0 \ldots b_k$ are th
 
 ## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
 
+So far, we've seen that, given the MLR 1-5, the <b>OLS is BLUE</b> (mosy precise, most accurate).
+
+To do hypotesis testig, we add another assumption.
+
+<b>MLR. 6: Normality</b> (Classica Linear Model [CLS] Assumption): the disturbance $\mu$ is independent of $x_1, ... x_k$ and it is normally distributed with zero mean and variance $\sigma^2$: $\mu \sim N(0, \sigma^2)$.
+
+Under this assumption, conditional on the sample values of the independent variables we obtain:
+$$
+
+b_i \sim N(\beta_j, \text{Var}(b_i))
+$$
+_(the coefficient estimate is normally distributed around the true beta)_ 
+
+This implies that:
+$$
+\frac{b_i - \beta_j }{ \text{std. dev.}(b_j) } \sim N(0,1)
+$$ 
+
+_(the standardized average deviation from the true value is standardized normal)_ 
+
+Furthermore, if we use the estimate $s^2$ of the variance of the disturbance ($\sigma^2$), under the CLM assumptions we obtain:
+
+$$
+\frac{(b_j - \beta_j)}{\text{se}(b_j)} \sim t_{n-k-1}
+$$
+
+where $\text{se}_{b_j} = s / \sqrt(SST_j (1 - R_j^2))$ and $n-k-1$ is the degree of freedom.
+
+This result will be useuf to determine how likely an estimate $b_j$ is similar to $\beta_j$.
+
+Both the $t$-Student and the Normal distribution are symmetric bell-shaped but the $t$-Student:
+- has fatter tails than the normal 
+- converges to the normal for an infinite sample 
+- is conditional to the degree of freedom 
+- <b>can be approximated with a normal distribution where the degree of freedom </b> $> 30$ or similar.
+
+<div align = "center">
+![Population Model](/images/notes/econometrics/t-student.png)
+</div>
+
+
+<b>Test Hypotesis</b>
+
+Before starting with the test, let's take a look to the different errors:
+
+- <b>Type I Error</b>: we reject the null hypotesis when it is true _(false positive)_.
+$$
+\alpha = P(H_0 \text{ rejected when it is true })
+$$
+
+- <b>Type II Error</b>: we don't reject the null hypotesis when it is false _(false negative)_.
+$$
+\beta = P(\text{failing to reject } H_0 \text{when it is false})
+$$
+
+<b>$t$ Test</b>
+
+1. Set up the hypotesis. $H_0, H_1$ can be one-sided ($H_0: b_j \le 0, H_1: b_j > 0$) or two sided ($H_0: b_j = 0, H_1: b_j \neq 0$).
+2. Determine the $t$-statistic using the estimates for $b_j, se(b_j).
+
+_For example, as seen before:_ $t = \frac{b_j - 0}{se(b_j)}$
+
+3. Select a _significant level_, or, in other terms, the chane to make Type I error and determine the _critical value_, depending if it is one or two sided hypotesis.
+
+4. Decide: reject $H_0$ if ansolute value of the $t$-statistic is larger than the critical value.
+
+For example, let's consider the following model:
+
+$$
+\text{employment} = b_0 + b_1 \text{education} + ... + b_k x_{ik} + \mu_i
+$$
+
+1. We set up the hypotesis: $H_0: b_1 \le 0, H_1: b_1 > 0$ _($H_0$: education doesn't increase employment)_ 
+2. We calculate $t = b_1 / se(b_1)$ 
+3. We consider $c$ using $\alpha$ (confidence level)$ and degree of freedom $ = n - k - 1$ 
+4. We reject $H_0$ if $t > c$ _(if $H_0: b_1 > 0$ use $t < - c$)_
+
+- If we reject the null hypotesis, we typically say: _$x_j$ is statistically _significant/has statistically significant effect on $y$ at the $\alpha %$ level._
+- 
+Graphically:
+<div align = "center">
+![Population Model](/images/notes/econometrics/t-test-1.png)
+</div>
+<div align = "center">
+![Population Model](/images/notes/econometrics/t-test-2.png)
+</div>
+
+More generally, we can test wheter an estimate fits a specific value: $H_0: b_j = a$.
+
+In this case, we use the appropriate $t$-statistic: $t = (b_j - a)/se(b_j)$, where $a = 0$ for the standard test.
+
+---
+
+<b>Confidence Intervals</b>
+
+Another way to use. stastistical testing is to construct confidence intervals using the same critical value for a two-sided test.
+
+A $(1 - \alpha)\%$ confidence interval is defined as $b_j \pm c \cdot se(b_j)$ where $c$ is the (1 - \alpha / 2)$ percentile in a $t_{n-k-1}$ distribution.
+
+<b> P-Values for $t$-Tests</b>
+
+An alternative approach is to calculate what is the _smallest significance level_ at which the null hypotesis would be rejected given the data.
+
+So we compute the $t$-statistic and we look up at which percentile it is in the appropriate $t$-distribution. This is called the <b>p-value</b>.
+
+The p-value represnets the probability that we would observe the $t$-statistic we did, if the null were true.
+
+slide 30
+
 ---
 
 ## <a id="5"><b>5 Multiple Regression Analysis: Further Issues</b> </a>
