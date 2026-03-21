@@ -577,6 +577,62 @@ Under the assumptions MLR.1 to MLR.5, the OLS estimators $b_0 \ldots b_k$ are th
 - <b>Linear</b>: estimators are a linear function of $y$
 - <b>Unbiased</b>: expected value equala the population paramters.
 
+---
+
+<b>Testing ore complex hypotheses - Linear Combination</b> 
+
+Suppose we want to test if $b_1$ is equal to another parameter, that is: $H_0: b_1 = b_2$. Then the statistic test is $ t = (b_1 - b_2)/se(b_1 - b_2)$. 
+
+But, if we expand the formula:
+$$
+
+se(b_1 - b_2) = \sqrt{\text{Var}(b_1 - b_2)} =\sqrt{\text{Var}(b_1)+\text{Var}(b_2)-2\text{CoV}(b_1,b_2)} =\\
+=\sqrt{se(b_1)^2 + se(b_2)^2-2s_{12}}
+$$
+
+So we need $s_{12}, which we don't usually have.
+
+To avoid this, we can use the following _"trick"_.
+
+We set $H_0: q_1 = b_1 - b_2 = 0$. To do that, we also have to substitute $q_1 = b_1 - b_2$ in our model.
+
+So, for example, we can consider:
+
+$$
+y = b_0 + b_1 x_1 + b_2 x_2 + \mu \implies \\
+
+y = b_0 + q_1 x_1 + b_2 (x_1 + x_2) + \mu
+$$
+
+<b>Multiple Linear Restrictions</b>
+
+So far we tested a single linear restriction ($b_1 = 0, b_1 = b_2$). Now we want to jointly test multiply hypotesis about the parameters.
+
+A typical example is testing _"exclusion restrictions"_, that means knowing if a group of parameters are equal to zero.
+
+Then the null hypotesis might be something like: $H_0: b_{k-q+1} = 0, ... b_k = 0$, but we cannot check each statistic separately because we want to know fi the $q$ parameters are jointly significant each other.
+<br/>We instead need to estimate the _restricted model_ without all the $x_{k-q+1}..x_k$ as the _un-restricted model_ with all the $x$ included.
+
+_Intuition: we want to know if the change in SSR is bigh enough_.
+
+This is called $F$-statistic, defined as: 
+
+$$
+ F =\frac{ (SSR_r - SSR_{ur})}{/SSR_{ur}}\frac{  (n-k-1)}{q}
+$$
+
+where $r$ is the restricted, $ur$ the un-restricted. _Note that the $F$ statistic is always positive_.
+
+_Intuition: the $F$ statistic is measuring the relative increase in the SSR when moving from the unrestricted to the restricted model.
+-$q = df_r - dr_{ur}, quad df_{ur} = n - k - 1$.
+
+To decide if the increases in SSR is _"big enough"_, to reject the exclusions, we compare if with the $F$ distribution, indeed we know that: $F \sim F_{q, n-k-1} where:
+-  $q$ is the numerator degrees of freedom 
+- $n-k-q$ is the denominator degrees od freedom.
+
+<div align = "center">
+![Population Model](/images/notes/econometrics/f-test.png)
+</div>
 
 ## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
 
