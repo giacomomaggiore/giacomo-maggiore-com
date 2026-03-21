@@ -60,8 +60,7 @@ async function sendWelcomeEmail(email: string, unsubscribeUrl: string) {
     subject: "ciao!",
     replyTo: "giaco.maggiore@gmail.com",
     html: `
-      <p>Ciao!</p>
-      <p>Thanks for subscribing. I will only send occasional updates when I publish something new.</p>
+      <p>Thanks for subscribing. I promise not to spam you, just the occasional <i>"what's new”</i> message.</p>
       <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${unsubscribeUrl}">here</a></p>
       
       <p>Best,<br/>Giacomo</p>
