@@ -577,7 +577,115 @@ Under the assumptions MLR.1 to MLR.5, the OLS estimators $b_0 \ldots b_k$ are th
 - <b>Linear</b>: estimators are a linear function of $y$
 - <b>Unbiased</b>: expected value equala the population paramters.
 
+
+## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
+
+So far, we've seen that, given the MLR 1-5, the <b>OLS is BLUE</b> (mosy precise, most accurate).
+
+To do hypotesis testig, we add another assumption.
+
+<b>MLR. 6: Normality</b> (Classica Linear Model [CLS] Assumption): the disturbance $\mu$ is independent of $x_1, ... x_k$ and it is normally distributed with zero mean and variance $\sigma^2$: $\mu \sim N(0, \sigma^2)$.
+
+Under this assumption, conditional on the sample values of the independent variables we obtain:
+$$
+
+b_i \sim N(\beta_j, \text{Var}(b_i))
+$$
+_(the coefficient estimate is normally distributed around the true beta)_ 
+
+This implies that:
+$$
+\frac{b_i - \beta_j }{ \text{std. dev.}(b_j) } \sim N(0,1)
+$$ 
+
+_(the standardized average deviation from the true value is standardized normal)_ 
+
+Furthermore, if we use the estimate $s^2$ of the variance of the disturbance ($\sigma^2$), under the CLM assumptions we obtain:
+
+$$
+\frac{(b_j - \beta_j)}{\text{se}(b_j)} \sim t_{n-k-1}
+$$
+
+where $\text{se}_{b_j} = s / \sqrt(SST_j (1 - R_j^2))$ and $n-k-1$ is the degree of freedom.
+
+This result will be useuf to determine how likely an estimate $b_j$ is similar to $\beta_j$.
+
+Both the $t$-Student and the Normal distribution are symmetric bell-shaped but the $t$-Student:
+- has fatter tails than the normal 
+- converges to the normal for an infinite sample 
+- is conditional to the degree of freedom 
+- <b>can be approximated with a normal distribution where the degree of freedom </b> $> 30$ or similar.
+
+<div align = "center">
+![Population Model](/images/notes/econometrics/t-student.png)
+</div>
+
+
+<b>Test Hypotesis</b>
+
+Before starting with the test, let's take a look to the different errors:
+
+- <b>Type I Error</b>: we reject the null hypotesis when it is true _(false positive)_.
+$$
+\alpha = P(H_0 \text{ rejected when it is true })
+$$
+
+- <b>Type II Error</b>: we don't reject the null hypotesis when it is false _(false negative)_.
+$$
+\beta = P(\text{failing to reject } H_0 \text{when it is false})
+$$
+
+<b>$t$ Test</b>
+
+1. Set up the hypotesis. $H_0, H_1$ can be one-sided ($H_0: b_j \le 0, H_1: b_j > 0$) or two sided ($H_0: b_j = 0, H_1: b_j \neq 0$).
+2. Determine the $t$-statistic using the estimates for $b_j, se(b_j).
+
+_For example, as seen before:_ $t = \frac{b_j - 0}{se(b_j)}$
+
+3. Select a _significant level_, or, in other terms, the chane to make Type I error and determine the _critical value_, depending if it is one or two sided hypotesis.
+
+4. Decide: reject $H_0$ if ansolute value of the $t$-statistic is larger than the critical value.
+
+For example, let's consider the following model:
+
+$$
+\text{employment} = b_0 + b_1 \text{education} + ... + b_k x_{ik} + \mu_i
+$$
+
+1. We set up the hypotesis: $H_0: b_1 \le 0, H_1: b_1 > 0$ _($H_0$: education doesn't increase employment)_ 
+2. We calculate $t = b_1 / se(b_1)$ 
+3. We consider $c$ using $\alpha$ (confidence level)$ and degree of freedom $ = n - k - 1$ 
+4. We reject $H_0$ if $t > c$ _(if $H_0: b_1 > 0$ use $t < - c$)_
+
+- If we reject the null hypotesis, we typically say: _$x_j$ is statistically _significant/has statistically significant effect on $y$ at the $\alpha %$ level._
+- 
+Graphically:
+<div align = "center">
+![Population Model](/images/notes/econometrics/t-test-1.png)
+</div>
+<div align = "center">
+![Population Model](/images/notes/econometrics/t-test-2.png)
+</div>
+
+More generally, we can test wheter an estimate fits a specific value: $H_0: b_j = a$.
+
+In this case, we use the appropriate $t$-statistic: $t = (b_j - a)/se(b_j)$, where $a = 0$ for the standard test.
+
 ---
+
+<b>Confidence Intervals</b>
+
+Another way to use. stastistical testing is to construct confidence intervals using the same critical value for a two-sided test.
+
+A $(1 - \alpha)\%$ confidence interval is defined as $b_j \pm c \cdot se(b_j)$ where $c$ is the (1 - \alpha / 2)$ percentile in a $t_{n-k-1}$ distribution.
+
+<b> P-Values for $t$-Tests</b>
+
+An alternative approach is to calculate what is the _smallest significance level_ at which the null hypotesis would be rejected given the data.
+
+So we compute the $t$-statistic and we look up at which percentile it is in the appropriate $t$-distribution. This is called the <b>p-value</b>.
+
+The p-value represnets the probability that we would observe the $t$-statistic we did, if the null were true.
 
 <b>Testing ore complex hypotheses - Linear Combination</b> 
 
@@ -634,7 +742,29 @@ To decide if the increases in SSR is _"big enough"_, to reject the exclusions, w
 ![Population Model](/images/notes/econometrics/f-test.png)
 </div>
 
-## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
+<b>OLS asymptotics</b>
+
+Imder the Gauss-Markov assumptions the OLS is BLUE, however they are not always fullfilled with real data. Large samples _(big data!)_ come to our rescue! It can be shown that some nice properties keep intact if $n \to \infty$. _(Larger samples allow to relax some assumptions)_.
+
+- <b>Consistency</b>: if $n \to \infty$ estimators are consistent, that means that the distribution of the estimator collapses to the parameter value. <br/>This implies that when $n \to \infty$ we can use MLR.4 (zero mean and zero correlation).
+
+Just as we derived the omitted variable bias earlier, we can think about the inconsistency _(asymptotic bias)_.
+
+Consider the true model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + v$ and the estimated model: $y = \beta_0 + \beta_1 x_1 + \mu$, so that $\mu = \beta_2 x_2 + v$. <br/>In this case, $b_1 = \beta_1 + \beta_2 \delta$, where $\delta = \text{Cov}{x_1,x_2}/\text{x_1}$, that tells how much our estimate ($b_1$) will deviate from the truth ($\beta_1$).
+
+_Intuition: inconsistecy is a large sample problem: it does not go away as we add data_.
+
+<b>Large Sample Inference</b>
+
+So far, we relied on assumption about normal distribution of errors, but this assumption can often break down! Again, large samples come to the rescue: as $n \to \infty$, the central limit theorem shows that OLS estimates are asymptotically normal.
+
+Thus, we no longer need to assume normality with a large sample, we get it anyway.
+
+If $\mu$ is not normally distributed, we sometimes will refr to the standard error as the <b>asymptotic stanfard error</b>. In general, we can expect stanfard errors to shrink at a rate proportional to the inverse of $\sqrt{n}$.
+
+<b>Asymptotic Efficiency</b>
+
+Thereare other estimaotrs besided OLS that are consistent. However, under the Gauss-Markov assumptions, the OLS estimators will have the smallest asymptotic variances, therefore we say that the OLS is _asymptotically_ efficient.
 
 ---
 
