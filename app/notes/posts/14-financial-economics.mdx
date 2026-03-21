@@ -585,6 +585,185 @@ _Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that th
 ---
 
 ## <a id="3"><b>3. Pricing by arbitrage</b></a>
+
+We consider two periods: _ex-ante, ex-post_, denoted by $t = 0,1$ and $\Omega$ contingent states at time $t = 1: \omega \in {1, ... \Omega}$.
+<br/>There are $K$ assets available at time $t = 0: k = \in {1, ... K}$.
+- $a_k^{\omega}$ is the value of asset $k$ in state $\omega$ at time $t = 1$
+- we denote $p_k$ the price of asset $k$ at time $t = 0$ 
+- a <b>market </b> is the data: $(a_k^{\omega}, p_k)$
+
+A <b>portfolio</b> $(z_k)$ is a vector of asset quantities: $z_k$ is the quantit of asset $k$ in the portfolio.
+- the price of portolio is: $\sum_k p_k z_k$
+- the value of the portfolio in state $w$ is: $\sum_k a_k{\omega} z_k$
+
+Given now a market with:
+
+$$
+
+a = \begin{pmatrix}
+a_1^1 & \dots & a_1^\Omega \\
+\vdots & & \vdots \\
+a_K^1 & \dots & a_K^\Omega
+\end{pmatrix} \text{ and prices } p = \begin{pmatrix}
+p_1 \\
+\vdots \\
+p_K
+\end{pmatrix}
+
+$$
+
+a portfolio with asset quantities $(z_1, ... z_k)$ has price:
+
+$$
+(z_1, \dots, z_K) \begin{pmatrix}
+p_1 \\
+\vdots \\
+p_K
+\end{pmatrix} 
+$$
+and values 
+$$
+ (z_1, \dots, z_K) \begin{pmatrix}
+a_1^1 & \dots & a_1^\Omega \\
+\vdots & & \vdots \\
+a_K^1 & \dots & a_K^\Omega
+\end{pmatrix}.
+$$
+
+We then introduce the followig definitions:
+- an asset is <b>risk-free</b> if $a_k^{\omega}$ is independent of $w$ 
+- an asset $k$ can be replicated by a subset of assets, indexed $i \in S$, if there exists a costant $(z_i)$ such that:
+
+$$
+a_k^{\omega} = \sum_{i \in S} z_i a_i^{w} \quad \forall w
+$$
+
+_(in such cas the asset $k$ is called <b>redudant</b>)_.
+
+A market $(a_l^{omega}, p_k)$ is <b>incomplete</b> i f for any asset $b^{\omega}$ there exists a costant $(z_k)$ such that:
+
+$$
+b^{\omega} = sum_k z_k a_k^{omega}
+$$
+
+On the other hand, markets are <b>complete</b> when all revenue configurations are replicable through some portfolio.
+
+<b>Consequences of complete markets</b>:
+- there are at least as many assets at the states: $| \Omega| \le K$
+- a market is complete if and only if the payoff matrix $a$ ith dimension $(K \times \Omega)$ has rank $\Omega$.
+- if a marekt is complete with $K > \Omega$, there are $\Omega$ independent assets, then we can eliminate $K - \Omega$ assets which are linear combinations of the independent ones.
+<br/>
+---
+<br/>
+An <b>arbitrage portfolio</b> is a portfolio $(z_k)$ such that:
+
+$$
+\sum_k a_k^{w} z_k \ge 0\quad \forall \omega
+\\
+\sum_k p_k z_k \le 0
+$$
+at least one of these $\Omega + 1$ inequalities being strict.
+
+A market is <b>arbitrage free</b> if there is no arbitrage portfolio.
+
+A marekt $(a_k^{w}, p_k)$ without arbitrage opportunity satisfies the <b>Law of One Price:</b><br/>
+_If two assets $i,j$ satisfy $a_i^{\omega} = a_j^{\omega}$ for every state $\omega$, then the two assets have the same price $p_i = p_j$._
+
+<b>Proof</b>
+
+Assume that $p_i > p_j$, then the portfolio such that $z_i = -1, z_j = 1, z_k = 0$ for $k \neq i,j$ satisfies the following:
+$$
+\sum_k a_k^{w}z_k = 0\\
+
+\sum_k p_k z_k = p_j - p_i < 0
+$$
+
+that is an arbitrage portfolio.
+
+<b>The No-Arbitrage Theorem</b>
+
+A market $(a_k^{w}, p_k)$ is arbitrage-free is and only if there exists a vector $q = (q_1 ... q_{\Omega}) \in \R^{\Omega}$ such that:
+
+- $q^{\omega} > 0$ for every state 
+- $p_k = \sum_{\omega} a_k^{\omega} q_{\omega}$ for every assets 
+
+$q_{\omega}$ is then called <b>state-price vector</b>.
+
+In matrix form, the state-price vector with positive components solves:
+
+$$
+\begin{pmatrix} p_1 \\ .\\.\\ p_k\end{pmatrix} = \begin{pmatrix} a_1^1 \quad ... \quad a_1^{\Omega}\\.\\.\\ a_K^1 \quad ... \quad a_K^{\Omega}\end{pmatrix} \begin{pmatrix}  q_1 \\.\\.\\ q_{\Omega}\end{pmatrix}
+$$
+
+_There may exists several state price vectors in a market_.
+
+_Intuition_:
+- the state price ($q_\omega$) is simply the price you must pay today to receive that $1 in state $\omega$ tomorrow.
+- the state-price Vector is just the collection of these prices for every possible future state.
+
+---
+
+
+<b>Risk Neutral Probability</b>
+
+Assume a state price vector $(q_{\omega})$.
+
+Denote $\pi^*_{\omega} = \frac{q_w}{\sum_{\omega} q_{\omega}} > 0$, with $\sum_{\omega} \pi^*_{\omega} = 1$. 
+<br/>Therefore $\pi^*_{\omega}$ can be interpreted as a probability. In particular, $(\pi^*_{\omega})$ is called <b>the risk neutral probability.</b>
+- if a market admis several state price vectors, it admits also as many risk neutral probabilities.
+
+If we define: $r_k^{\omega} = \frac{a_k^{\omega}}{p_k}$ the return of asset $k$ in state $\omega$, using $p_k = \sum_{\omega} = a_k^{\omega}q_{\omega}$:
+
+$$
+\sum_{\omega} = \pi^*_{\omega}  r_k^{\omega} = \mathbb{E}^*_{\omega} [r_k^{\omega}] = \frac{1}{\sum_{\omega}q_{\omega}}
+
+$$
+
+<b>All asset returns have the same-risk neutral expectation.</b>. _(This does not imply that all assets have the same returns expectactions according on physical probability)_.
+
+---
+
+
+For any state $\omega_0$, the corresponding <b>Arrow-Debreu</b> security, denoted by $a_{\omega_0}% is the asset with values given, for all $\omega$, by:
+
+$$
+a_{\omega_0}^{\omega} = 1 _{\omega = \omega_0}
+$$
+
+- If the market is arbitrage free and $q$ is a state-price vectoro, then the price of $a_{\omega_0}$ is $q_0$.
+- A market that contains all Arrow-Debreu securities is complete.
+
+_Intuition: a contract that pays exactly $1$ if a specific state of the world and $0$ in every other possible scenario._
+
+Assume now that a market includes a risk-free asset that pays $1$ in all state of the world and denote by $p_0$ its price ($p_0 = \sum q_{\omega}$) and $r_f = 1 / p_0$, then:
+- for all assets $k$: $\mathbb{E}_{\pi^*}[r_k^{\omega}] = r_f$
+- if the market contains the Arrow-Debreu security $a_{\omega_0}$, its price is $p_0 \pi^*_{\omega_0}$
+<br/>
+---
+<br/>
+<b>Arbitrage Bounds</b>
+
+Given an arbitrage-free market $M$, define $Q_M$ the set of state price vectors for this market:
+- $Q_M$ is a convex set 
+- $Q_M$ empty $\iff M$ offers arbitrage opportunities 
+- $Q_M$ is reduced to a point $\iff$ M is complete and arbitrage-free 
+- if $q, q' \in Q_M$, then $q - q' \perp M$, that means:
+
+$$
+\sum_{\omega} (q_{\omega} - q'_{\omega}) a_k^{\omega} = 0 \quad \forall k
+$$
+
+<b>Theorem (Arbitrage Bounds)</b>
+
+For amy claim $c = (c_1, ... c_{\Omega})$, _not necessarily replicable_ in $M$, the set of prices $p_c$ for such a claim to not generage arbitrage opportunities is:
+
+$$
+\{ p_c \quad|\quad  p_c = \sum_{\omega} q_{\omega} c_{\omega} \text{ for some } q \in Q_M \}
+$$
+- this set is singleton $\iff$ $c$ is replicable in $M$
+- if $c$ is not replicable, the adding it to the market with a price within arbitrage bounds will reduce $Q_M$ _(dimension decreases by one)_
+
+
 ---
 
 ## <a id="4"><b>4. An introduction to the economic analysis of asset markets</b></a>
