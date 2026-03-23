@@ -5,8 +5,8 @@ export default function Footer() {
     <footer className="mb-4 mt-2">
     <form action="/api/newsletter" method="POST" className="mb-2 rounded-lg border border-neutral-200 dark:border-neutral-800 p-4">
   
-    <p className="mt-1 text-m  text-neutral-600 dark:text-neutral-400">
-      <b>Real updates. No spam.</b>
+    <p className="mt-0.5 text-m  text-neutral-600 dark:text-neutral-400">
+      <b>Giacomo's updates. No spam.</b>
     </p>
   
 
@@ -50,7 +50,7 @@ export default function Footer() {
       className="mt-0.4 h-3 w-3 rounded border-neutral-300 bg-transparent dark:border-neutral-700"
     />
     <span>
-      I agree to receive mail updates and I have read the<a href="./privacy"> <u>Privacy Policy.</u></a> <i><b>No spam, promise you.</b></i>
+      I agree to receive mail updates and I have read the<a href="./privacy"> <u>Privacy Policy.</u></a> <i><b>Only new articles, promise you.</b></i>
     </span>
   </label>
 
