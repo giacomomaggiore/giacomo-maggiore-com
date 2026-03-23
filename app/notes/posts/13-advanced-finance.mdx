@@ -567,9 +567,170 @@ In an overnight repo transaction, one party sells a security (usually a US Treas
 
 ## <a id="5"><b>5. Leasing</b> </a>
 
+A <b>lease</b> is a rental agreement that involves a series of fixed paymentsfromthe lessee _(user)_ to the lessor _(owner)_. 
+- <b>Operating lease</b>: short-term, cancelable. _(Historically, these were "off-balance sheet," but modern accounting standards (like IFRS 16) now require to be recognized as liabilities.)_
+- <b>Financial lease</b>: long-term, non cancelable. _(Often, at the end of the term, the lessee often has the option to buy the asset)_.
+
+Some more possitibilities in leasing include:
+- Rental lease (full service): the lessor handles everything, including maintenance, insurance and taxes.
+- Net lease: the opposite of full service.
+- Direct lease: arrangement where the lessee identifies an asset, and the lessor _(often a bank or leasing company)_ buys it from the manufacturer just to lease it to the lessee. 
+- Sale and leaseback: A company sells an asset they already own (like a headquarters building) to a buyer and immediately leases it back in order to unlock some capital _(liquidity)_ while still using the asset.
+- Leveraged lease: a three-party transaction involving a lessee, a lessor, and a lender. The lessor borrows a significant portion of the asset's cost (usually $60\%$ to $80\%$) to purchase it.
+
+PROs of leasing:
+- short-term leases are often convenient
+- maintenance is provided
+- standardization leads to lower costs 
+- tax shields/advantages can be used 
+- leasing preserves capital
+
+CONs of leasing:
+- leasing avoid capital expenditures control 
+- leases may be off-balace sheet financing 
+
+<b>Lease treatment in bankruptcy</b>
+
+_What happens if a bankrupt lessee takes a lease? What happens if the lease is rejected?_ 
+
+If the leases is confirmed,the lessee continutes to use the asset and must sustain the payments. If the lease is rejected, the asset is returned to the lessor. <br/>
+If the value of the returned asset is not enough to cover the remaining payments, the lessor's loss becomes an unsecured claim on the bankrupt firm.
+
+---
+
+<br/>
+
+<b>Operating Leases </b>
+
+The Equivalent Annual Cost of an asset is the rental payment sufficient to cover the present value of all the costs of owning and operating an asset. The rental payments are hypothetical, _(just a way of converting a present value to an annual cost)_. In the leasing business the payments are real. 
+
+If a business/firm needs an asset:
+- buy it if the equivalent annual cost of ownership and operating is less than the best lease rate 
+- if it plans to use it for extended period, usually annual cost of ownership and operating is less than the leasing rate.
+There are two corner cases here operating lease make even sense despite the _higher cost_:
+- the lessor is able to manage the asset more efficiently/at less expense than the lessee 
+- operating leases often contain useful options 
+
+As mentioned before, historically, operating leases have been off-balance sheet. Consider then the following scenario.
+
+Suppose that, in the past _(when leaes were off-balance sheet)_, a company needed one asset. It has two main options:
+- borrow the capital and buy the asset $\implies$ _the debt shows up under the liabilities, the bought asset under assets._
+- lease the asset $\implies$ _the lease rate shows up under expenses in the income statement, no impact on the Balanche Sheet_.
+
+Companies usually preferred the secondo option becasue, by keeping the new need off the balance sheet, they showed <b>stronger financial metrics:</b>
+- <b>Lower Leverage:</b> Debt-to-Equity ratios look lower
+- <b>Higher ROA:</b> Return on Assets ($ROA = \frac{Net \ Income}{Total \ Assets}$) looks higher because the "Total Assets" denominator is smaller.
+
+According to actual accounting standards however, most leases  _(even operating ones)_ must now be recorded on the balance sheet as a _Right-of-Use (ROU)_ Asset and a corresponding _Lease Liability._
+
+---
+
+_Suppose then the following example_. <br/>Giacomo's GmbH needs to buy a _camper-van_ and asks for a 1-year lease to RoadSurfer GmBh. How much should RoadSurfer charge for that lease?
+
+
+<div align = "center">
+![Operating Leasing](/images/notes/a-finance/leasing-1.png)
+</div>
+
+<small> <i>Note that the tax shield is calculated as: $12 * \text{Tax Rate}$, same applies for the depreciation tax shield related to the initial investment.</i></small>
+
+Knowing all its costs _(initial cost, maintenance, tax shields, depreciation)_ RoadSurfer can then calculate it's break-even rent.
+
+---
+
+<br/>
+<b>Financial Leases</b>
+
+_Consider now the following example_. Giacomo GmBh is again considering to buy a _camper-van_ worth $100'000 \text{ CHF}$ with a 8 years life. Roadsurfer offers the 8 years loan at $16.200 \text{ CHF}$ per year, but Giacomo remains responsible for maintenance, insurance and operating expenses.
+
+<div align = "center">
+![Operating Leasing](/images/notes/a-finance/leasing-2.png)
+</div>
+
+To calculate the Net Present Value of the lease, we have to value the incremental cash flows from the lease and discount them at the _after-tax interest rate_.
+
+$$
+\text{After-tax IR}= r_{at} = \text{Borrowing Rate} (1 - \text{Tax Rate})
+$$
+$$
+\begin{align*}
+\text{NPV lease} &= \text{Initial Financing Provided} - \sum_{t=1} \frac{\text{lease cash flow}}{(1 + r_{ad})^t} = \\
+\\
+
+&=\sum_{t=0} \frac{\text{lease cash flow}}{(1 + r_{ad})^t}
+\end{align*}
+$$
+
+Another financing options would be represented by loan. To compare leasing and loans, we can compare a lease to a loan that has the same impact on future cash flow.
+
+<div align = "center">
+![Operating Leasing](/images/notes/a-finance/leasing-loan.png)
+</div>
+
+- The lease requires paying $12.80$/year for 7 years.
+- We create a hypothetical loan that also requires paying $12.80$/year _("Net cash flow of equivalent loan" row):.
+
+Considering the same interest rate, we then see which one brings the bigger amount of money at time 0:
+- The loan gives you $66.86$ today in exchange for those future 12.80 payments.
+- The lease gives you $66.20$ _(the value of the asset you get to use)_ for the same future payments.
+
+
+
+---
+<br/>
+<b>Leveraged Lease</b>
+
+
+<div align = "center">
+![Leveraged Leasing](/images/notes/a-finance/leverage-lease.png)
+</div>
+
+
+
+
 ---
 
 ## <a id="6"><b>6. Managing Risk, Options</b> </a>
+
+<b>Understanding options: terminology</b> 
+- <b>Derivatives</b>: _any financial contract derived from another_ 
+- <b>Option</b>: _gives the holder the right to buy/sell a security in the future at specified price_ 
+- <b>Option Premium</b>: _price paid for the option above the price of the underlying_ 
+- <b>Intrinsic Value</b>: _difference between the strike price and the security price_ 
+- <b>Time Premium</b>: _value of the option above the intrinsic value_ 
+- <b>Exercise Price</b> (Strike): _price at which the underlying can be bough/sold_ 
+- <b>Expiration Date</b> (Maturity): _last date on which the option can be exercised_ 
+- <b>American Option</b>: _can be exercised any time_
+- <b>European Option</b>: _can. be exercised only on the expiration_
+
+
+
+<br/>
+
+---
+<br/>
+<b>The Put-Call Parity</b>
+
+- a call option gives the right to buy the underlying.
+- a put option gives the right to sell the underlying.
+
+_For an European Option:_ 
+
+$$
+\text{C} + PV(K) = \text{P} + \text{S} 
+$$
+
+- $\text{C}$: premium of the call option
+- $\text{P}$ premium of the put option
+- $PV(K)$: present value of the strike price 
+- $\text{S}$: underlying price
+
+slide 40
+
+
+
+
+
 
 ---
 
