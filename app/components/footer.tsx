@@ -26,7 +26,7 @@ export default function Footer() {
 
     <button
       type="submit"
-      className="rounded-md bg-neutral-600 px-4 py-1 text-sm text-neutral-50 transition-colors hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
+      className="rounded-md bg-neutral-500 px-4 py-1 text-sm text-neutral-50 transition-colors hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
     >
       Subscribe
     </button>
