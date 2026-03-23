@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="mb-4 mt-2">
     <form action="/api/newsletter" method="POST" className="mb-2 rounded-lg border border-neutral-200 dark:border-neutral-800 p-4">
   
-    <p className="mt-0.5 text-m  text-neutral-600 dark:text-neutral-400">
+    <p className="mt-0.5 text-m  text-neutral-400 dark:text-neutral-400">
       <b>Giacomo's updates. No spam.</b>
     </p>
   
@@ -26,7 +26,7 @@ export default function Footer() {
 
     <button
       type="submit"
-      className="rounded-md bg-neutral-500 px-4 py-1 text-sm text-neutral-50 transition-colors hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
+      className="rounded-md bg-neutral-900 px-4 py-1 text-sm text-neutral-50 transition-colors hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
     >
       Subscribe
     </button>
