@@ -5,8 +5,8 @@ export default function Footer() {
     <footer className="mb-4 mt-2">
     <form action="/api/newsletter" method="POST" className="mb-2 rounded-lg border border-neutral-200 dark:border-neutral-800 p-4">
   
-    <p className="mt-0 text-xs text-neutral-600 dark:text-neutral-400">
-      Real updates. No spam.
+    <p className="mt-1 text-m  text-neutral-600 dark:text-neutral-400">
+      <b>Real updates. No spam.</b>
     </p>
   
 
