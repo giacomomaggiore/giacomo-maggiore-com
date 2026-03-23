@@ -4,10 +4,11 @@ export default function Footer() {
   return (
     <footer className="mb-4 mt-2">
     <form action="/api/newsletter" method="POST" className="mb-2 rounded-lg border border-neutral-200 dark:border-neutral-800 p-4">
-  {/*
+  
     <p className="mt-0 text-xs text-neutral-600 dark:text-neutral-400">
+      Real updates. No spam.
     </p>
-  */}
+  
 
   <div className="mt-1 flex flex-col gap-2 sm:flex-row">
     <label htmlFor="newsletter-email" className="sr-only">
