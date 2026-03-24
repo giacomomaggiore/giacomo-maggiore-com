@@ -57,7 +57,7 @@ async function sendWelcomeEmail(email: string, unsubscribeUrl: string) {
   const { error } = await resend.emails.send({
     from,
     to: email,
-    subject: "ciao!",
+    subject: "See you in the next one, ciao!",
     replyTo: "giaco.maggiore@gmail.com",
     html: `
       <p>Thanks for subscribing. I promise not to spam you, just the occasional <i>"what's new”</i> message.</p>
