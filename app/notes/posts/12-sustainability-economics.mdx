@@ -337,15 +337,6 @@ Furthermore, regarding the DICE model, we can consider 5 <b>different scenarios<
 
 ## <a id="3"><b>3. Quantifying the Economic Value of the Environment, Part 1</b> </a>
 
-The definition of <b>value</b> is not sttraightforward.
-
-
-
----
-
-## <a id="4"><b>4. Quantifying the Economic Value of the Environment, Part 2</b> </a>
-
-
 <div align = "center">
 ![GDP by country](/images/notes/sust-econ/value.png)
 </div>
@@ -415,7 +406,7 @@ For example, the <a href="https://www.researchgate.net/profile/Nicholas_Muller/p
 - combines demographic data for each county with pollution, using a <b>Dose-Response function </b> to estimate how pollution correlates with mortality. _For example_:
 
 $$
-$$\text{Mortality} = \text{Baseline Death Rate} \times \text{Population} \times \text{Change in Concentration} \times \text{Response Coefficient}$$
+\text{Mortality} = \text{Baseline Death Rate} \times \text{Population} \\\times \text{Change in Concentration} \times \text{Response Coefficient}
 $$
 - translate mortality impacts into monetary terms based on the VSL approach.
 
@@ -436,7 +427,7 @@ Consider this example: the <b>non-use values</b> for specific species _(how do y
 
 ---
 
-## <a id="5"><b>5. Quantifying the Market Value of Firms’ Sustainability Investments – Part 1</b> </a>
+## <a id="4"><b>4. Quantifying the Market Value of Firms’ Sustainability Investments – Part 2</b> </a>
 
 One common metric to classify how much a firm is sustainable is the <b>ESG (enviromental, social, governance) Rating</b>.
 
@@ -523,7 +514,118 @@ The study prooved that there's an <b>increasing risk premium </b> based on emiss
 
 However, the study failed to capture significant effect of carbon emissions intensity _(emissions per unit of sales)_.
 
-## <a id="6"><b>6. Costs ofxSustainability Investments: Basics</b> </a>
+---
+
+## <a id="5"><b>5. Market Value of Firms’ Sustainability Investments</b> </a>
+
+<div align = "center">
+![Sustainable Investing](/images/notes/sust-econ/sust-assets.png)
+</div>
+
+In the last chapter, we saw tha there's some evidence that _greener firms_ may face lower capital costs.
+
+According to the <a href="https://www.gsi-alliance.org/" target="_blank">Global Sustainable Investment Alliance</a>, in the last years, there has been a increasing trend in sustainable investments:
+- global sustainable investment grew $+55\%$ from 2016-2020, reaching around $ 35.3 $ trillion dollar.
+- $35\%$ of AuM is made by sustainable investments in 2020.
+- _"Green bonds"_, issued to support specific enviromental projects, represent also a growing market _(even if the methods to certificate them is still challenge)_.
+
+So, if some investors prefer _"green securities"_ and there are enough of them, green investments may <b>lower the cost of capital</b>, leading to two potential outcomes:
+- cause greener firms to growth relatively more _(growth effect)_ 
+- incentivize firms to become greener _(reform effect)_.
+
+Consider thenm the following <b>Partial Equilibium  profit-maximization model</b>.
+
+Consider any firm maximizing profits by choosing capital $K$ with cost $r$, labor $L$ with wage-cost $w$, fossil energy $E$ with energy price $p_e$:
+
+$$
+\max p F(K,L,E)- rK - wL - p_e E
+$$
+
+Without green investors, if we normalize the price $p$ to $p = 1$ and hold labor constant for an easy rappresentation, we obtain the following simplication:
+
+$$
+\max F(K,E) - rK - p_e E
+$$
+
+that, if we put the partial derivatives of the profit function equal to zero, brings to the following maximizing conditions:
+
+$$
+\frac{\partial F(K,E)}·{\partial K} = r, \quad \frac{\partial F(K,E)}{\partial E} = p_e
+$$
+
+That, in ecomomic terms, translates into:
+
+$$
+\text{Marginal Product of Capital} = r \quad (\text{Cost of Capital})\\
+\text{Marginal Product of Fossil Energy} = p_e \quad (\text{Cost of Fossil Energy})
+
+$$
+
+
+_(Generally speakiog, we assume that, holding other inputs costant, the marginal product of capital is decreasing)_.
+
+We now introduce green investment, by saying that green investors can lower capital costs. For example, $r$ (cost of capital) may become an _increasing function_ of the energy consumption $E$:
+
+$$
+\max F(K, E) - r(E)K - p_e E
+$$
+
+In this case, the maximizing conditions become:
+
+$$
+\frac{\partial F(K,E)}·{\partial K} = r(E), \quad \frac{\partial F(K,E)}{\partial E} = p_e + \frac{\partial r}{\partial E}K
+$$
+
+$$
+\text{Marginal Product of Capital} = r \quad (\text{Cost of Capital})\\
+\text{Marginal Product of Fossil Energy} = \text{Cost of Fossil Energy} \\+
+\text{ Marginal Capital Cost of increase from fossil energy}
+$$
+
+If then a firm is green enough to face lower capital cost $r(E) < r$, we would expect to increase its capital investments, resulting in the growth effect:
+
+<div align = "center">
+![Growth Effect](/images/notes/sust-econ/growth-effect.png)
+</div>
+
+Furthermore, the new equilibrium coming from the marginal product of fossil energy acts an an _effective tax_ on fossil inputs, incentivizing firms to reduce the use of fossil energy _(reform effect)_.
+
+<div align = "center">
+![Reform Effect](/images/notes/sust-econ/reform-effect.png)
+</div>
+
+
+But... _how do esg rating changes affect who owns shares in a firm?_A
+
+Recent research shows that ESG funds and individual investors are reponsiveto their mandate:
+- _2 years after a rating upgrade_ $\implies 17\%$ higher ownership 
+- _2 years after a rating downgrade $\implies 13\%$ lower ownership 
+
+However, changes in the ESG ratings do NOT affect firms' ESG strategy and actions.
+
+<a href="https://academic.oup.com/rof/article/26/6/1315/6590670" target="_blank">Florian Berg </a> shows then that, while stock market and ESG asset managers are sensible to ESG rating upgrades/downgrades, there's no evidence that these have some economic impact.
+
+---
+
+
+<br/>
+<b>3 stylized facts about Capital Costs, Sustainability and Enviromental Risks</b>
+
+- Climate risk effect on borrowing costs has been <b>increasing</b> in both slope and magnitude _($\approx$ cost of debt is rising for entities highly exposed to climate risk)._ 
+- Climate risk capitalization remains incomplete in many markets _($\implies$ financial markets have not yet fully priced the true cost of climate change into asset values)_
+    - _Example_: consider two identical homes in the same location, but one is more exposed to flood risk then it should be priced less thanks to the _presentvalue of future insurance/flood costs_. However, often one key issue in similar scenarios is that there are _limited information_ regarding enviromental risks.
+
+- Climate risk effects can be _incorrectly measured_ by conventional methods that rely on historicla data.
+    1. often there no measure of an asset's physical climate and enviromental risk exposure
+    2. climate risks are correlated with other factors for asset prices.
+<div align = "center">
+![Enviromental Risk Bonds](/images/notes/sust-econ/enviromental-risk-bonds.png)
+</div>
+
+---
+
+
+## <a id="6"><b>6. Costs of Sustainability Investments: Basics</b> </a>
 
 ---
 
