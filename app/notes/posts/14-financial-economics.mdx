@@ -576,7 +576,7 @@ $$
 - $r$: risk free interest rate, _(annualized continuously compounded rate with same maurity as the expiration o the option, note that is different from $r_f$)_,
 - $\sigma$: standard deviation of the annualized continuously compounded rate of return of the stock.
 
-_Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that the call option will expisre in-the-money ($X < S_T$)
+_Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that the call option will expisre in-the-money ($X < S_T$)_
 
 <a href="https://www.youtube.com/watch?v=A5w-dEgIU1M" target="_blank">The Trillion Dollar Equation [VIDEO - Veritasium]</a>
 
@@ -680,6 +680,8 @@ $$
 
 that is an arbitrage portfolio.
 
+---
+<br/>
 <b>The No-Arbitrage Theorem</b>
 
 A market $(a_k^{w}, p_k)$ is arbitrage-free is and only if there exists a vector $q = (q_1 ... q_{\Omega}) \in \R^{\Omega}$ such that:
@@ -698,24 +700,50 @@ $$
 _There may exists several state price vectors in a market_.
 
 _Intuition_:
-- the state price ($q_\omega$) is simply the price you must pay today to receive that $1 in state $\omega$ tomorrow.
+- the state price ($q_\omega$) is simply the price you must pay today to receive that $1$ in state $\omega$ tomorrow.
 - the state-price Vector is just the collection of these prices for every possible future state.
+<br/>
 
 ---
 
-
+<br/>
 <b>Risk Neutral Probability</b>
 
 Assume a state price vector $(q_{\omega})$.
 
 Denote $\pi^*_{\omega} = \frac{q_w}{\sum_{\omega} q_{\omega}} > 0$, with $\sum_{\omega} \pi^*_{\omega} = 1$. 
 <br/>Therefore $\pi^*_{\omega}$ can be interpreted as a probability. In particular, $(\pi^*_{\omega})$ is called <b>the risk neutral probability.</b>
-- if a market admis several state price vectors, it admits also as many risk neutral probabilities.
+- if a market admits several state price vectors, it admits also as many risk neutral probabilities.
 
 If we define: $r_k^{\omega} = \frac{a_k^{\omega}}{p_k}$ the return of asset $k$ in state $\omega$, using $p_k = \sum_{\omega} = a_k^{\omega}q_{\omega}$:
 
+
 $$
-\sum_{\omega} = \pi^*_{\omega}  r_k^{\omega} = \mathbb{E}^*_{\omega} [r_k^{\omega}] = \frac{1}{\sum_{\omega}q_{\omega}}
+E^*[r_{k\omega}] = \sum_{\omega} \pi_\omega^* r_{k\omega}
+$$
+
+If we substitute the definition of $\pi_\omega^* = \frac{q_\omega}{\sum_j q_j}$:
+
+$$
+E^*[r_{k\omega}] = \sum_{\omega} \left( \frac{q_\omega}{\sum_j q_j} \right) \frac{a_{k\omega}}{p_k}
+$$
+
+If we extract  the constants ($p_k$ and the total sum of state prices) out of the summation:
+
+$$
+
+E^*[r_{k\omega}] = \frac{1}{p_k \sum_{\omega} q_{\omega}} \sum_{\omega} q_\omega a_{k\omega}
+$$
+
+Since $\sum_{\omega} q_\omega a_{k\omega}$ is exactly the definition of $p_k$, the terms cancel out:
+
+$$
+E^*[r_{k\omega}] = \frac{1}{\sum_{\omega} q_{\omega}}
+
+$$
+
+$$
+\sum_{\omega}  \pi^*_{\omega}  r_k^{\omega} = \mathbb{E}^*_{\omega} [r_k^{\omega}] = \frac{1}{\sum_{\omega}q_{\omega}}
 
 $$
 
@@ -753,6 +781,9 @@ $$
 \sum_{\omega} (q_{\omega} - q'_{\omega}) a_k^{\omega} = 0 \quad \forall k
 $$
 
+---
+<br/>
+
 <b>Theorem (Arbitrage Bounds)</b>
 
 For amy claim $c = (c_1, ... c_{\Omega})$, _not necessarily replicable_ in $M$, the set of prices $p_c$ for such a claim to not generage arbitrage opportunities is:
@@ -767,10 +798,489 @@ $$
 ---
 
 ## <a id="4"><b>4. An introduction to the economic analysis of asset markets</b></a>
+
+Some introductionary definitions for the following chapters:
+
+<Table
+  data={{
+    headers: ["", "Ex-ante", "Ex-post"],
+    rows: [
+      [
+        "Knowledge",
+        "→ Possible states of the world occurring with known probabilities",
+        "→ Realization of state; → Income received"
+      ],
+      [
+        "Action",
+        "→ Contract/commit on what will happen ex-post",
+        "→ Implement the contracts; → Consumption"
+      ],
+      [
+        "Action in a market setting",
+        "→ Purchase/sell assets",
+        "→ Realization of assets' payoffs; → Consumption"
+      ]
+    ]
+  }}
+/>
+
+We begin this chapter with a simple example about marketet equilibrium.
+
+Consider two agents $A,B$ and two-states of the world (ex-post) $w = 1,2$:
+- in state $ w = 1$, agents get income $w_A^1, w_B^1$
+- in state $ w = 2$, agents get income $w_A^2, w_B^2$
+Denote then by $c_A^1, c_A^2, c_B^1, c_B^2$ their consumption.<br/>The feasible allocations must satisfy:
+
+$$
+c_A^1 + c_B^1 = w_A^1 + w_B^1\\
+c_A^2 + c_B^2 = w_A^2 + w_B^2
+$$
+
+The no-trade situation corresponds to $c_A^1 = w_A^1, c_B^1 = w_B^1$ and $c_A^2 = w_A^2, c_B^2 = w_B^2$.
+
+<div align = "center">
+![Feasible allocations](/images/notes/financial-econ/edgeworth.png)
+</div>
+
+In this chapter, we rely on the standard specification fro the <b>Expected Utility Theory</b>:
+
+$$
+U_i(c_i^1,c_i^2) = \pi_1 u_i (c_i^1) + \pi_2 u_i (c_i^2)
+$$
+
+where $\pi_1, \pi_2$ are the probability for scenario $w = 1,2$ and $u_i : \R_+ \to \R$ is the <b>utility index function</b>.
+
+<div align = "center">
+![Preferences](/images/notes/financial-econ/preferences.png)
+</div>
+<div align = "center">
+![Preferences](/images/notes/financial-econ/preferences-2.png)
+</div>
+
+An allocation is <b>Pareto-optimal</b> $\iff$ there is no alternative feasible allocation at which every individual in the economy is at least as well off and some individuals is strictly betteroff.
+
+_Graphically_, Pareto-optimal allocations are the ones where the indifference curves are <b>tangent</b>.
+
+<div align = "center">
+![Preferences](/images/notes/financial-econ/pareto-optimal.png)
+</div>
+
+The <b>contract curve</b> (or core) is the part of the Pareto set for which both agents do at least as well as their initial endownets. On the core, both agents gain from trade and the outcome is Pareto-optimal.
+<div align = "center">
+![Preferences](/images/notes/financial-econ/contract-curve.png)
+</div>
+
+Agents interact by trading assets on a market:
+- assets are purchased/sold _ex-ange_ (before uncertainty realizes)
+- payoffs are given ex-post 
+- market equilibrium occurs when asset prices are such that individual strategies are _globally compatible_ (demand = supply).
+<br/>
+---
+<br/>
+<b>A Complete Market</b>
+
+We consider two assets _(Arrow-Debreu Securities)_ in a two-states world:
+- A <b>risky</b> asset $1$:
+    - it can be purchased/sold ex-ante at $p_1$
+    - ex-post it pays $1$ for $w = 1$ and zero otherwise 
+- A <b>risky</b> asset $2":
+    - it can purchased/sold ex-ante at $p_2$
+    - ex-post it pays $2$ for $w = 2$ and zero otherwise.
+
+$z_A^1, z_B^1, z_A^2, z_B^2$denote the quantities of assets per period for agents $A,B$ _(they can be positive or negative depending on purchase/sell)_.
+
+Ex-ante, each agent has zero initial wealth and a budget constraint:
+
+$$
+p_1 z_i^1 + p_2 z_i^2 = 0
+$$
+
+Ex-post, assets' pay-offs and income and realize and agent $i$ consumes $w_i^i + z_i^i$.
+
+Therefore, agent $i$ solves the following optimization problem:
+
+$$
+\max_{z_i^1, z_i^2} U^i (w_i^1 + z_i^1, w_i^2, z_i^2) \quad p_1 z_i^1 + p_2 z_i^2 = 0
+$$
+
+This problem generates the demand functions:
+
+$$
+z_i^2(w_i^1, w_i^2, p_1, p_2), \quad z_i^2(w_i^1,w_i^2, p_1,p_2)
+$$
+
+<b>Market Clearing</b>
+<br/>
+
+A market is balanced _(cleared)_ when demand equals supply for all assets (<b>Market Clearing Conditions</b>):
+
+$$
+z_A^1 + z_B^1 = 0\\
+z_A^2 + z_B^2 = 0
+$$
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/no-market-clearing.png)
+</div>
+
+At equilibriu, we thenm have 2 equations in 2 unkwnowns:
+
+$$
+z_A^1(w_A^1, w_A^2, p_1, p_2) + z_B^1(w_B^1, w_B^2, p_1, p_2) = 0
+z_A^2(w_A^1, w_A^2, p_1, p_2) + z_B^2(w_B^1, w_B^2, p_1, p_2) = 0
+$$
+
+Considering also the budget constraints, the previous two equations are then equal, so we have $1$ independent equation and $2$ unknowns.<br/>
+$\implies$ <b>Equilibrium prices are determined up to a multiplicative scalar</b>.
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/market-eq.png)
+</div>
+
+The following plot shows risk transfer: _A has NO income risk, but ratjer tales some risk from B_.
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/no-market-clearing.png)
+</div>
+
+<b>Comonoticity of Allocations</b>
+
+The allocaitons $(c_A^1,c_A^2),(c_B^1,c_B^2)$ are comonotonic if and only if:
+
+$$
+(c_A^1 - c_A^2) (c_B^1 - c_B^2) \ge 0
+$$
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/comonoticity.png)
+</div>
+
+All market equilibrium allocations are comonotone, this is also the case for Pareto-optimal allocations.
+
 ---
 
-## <a id="5"><b>5. Choice under uncertainty</b></a>
+<b>Price responseto changes in risk</b>
+
+Consider now the case where $B$'s endowent in state $2$ decreases, so $p_1/p_2$ is smaller.
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/risk-1.png)
+</div>
+
+In this case, an increase in the risk of $B$ leads $A$ to take more risk.
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/risk-2.png)
+</div>
+
+<div align = "center">
+![No market clearing](/images/notes/financial-econ/risk-2.png)
+</div>
+
+In general, low risk averse agents take the most of the risk.
+
+An <a href="https://finecoeth.shinyapps.io/app-2/" target="_blank"> interactive simulation of risk preferences can be found here</a>.
 ---
+
+
+## <a id="5"><b>5. Choice under uncertainty</b></a>
+
+Consider $Z$ a set of possible consequences. Let $\Omega = \{ 1, 2, |\Omega| \}$ the set of possible states of the world and $L(\Omega)$ the set of lotteris with consequences in $Z$.
+
+A lottery is a list of pairs $(x^{\omega}, \pi_{omega})$ where $\pi_{\omega}$ gives the probability that $\omega$ will occur, and $x^{\omega}$ is the outcome.
+
+_Example: $((0,0.5); (1,0.5))$ is the lottey that pays $0,1$ with equal probabilities.
+
+A <b>compound lottery</b> is a lottery whose prizes are themselves lotteries.
+
+<b>Mizture operation</b>
+
+Consider two lotteries $L, L'$.<br/>
+The <b>compound lottery</b> with $\lambda \in [0,1]$ corresponds to the lottery which consists in playing the first lottery with probability $\lambda$ and the second with probability $(1-\lambda)$.
+
+The resulting lottery is denoted by $(\lambda L + (1-\lambda)L')$. The operation <b>+</b> is called a <b>mixture operation</b>.
+
+_Example:_
+$$
+L = ((0,p);(1, 1-p))\\
+L' = ((1,q); (2, 1-q))\\
+\lambda L + (1-\lambda)L' = \Big( (0, \lambda p); (1; \lambda(1-p)+ (1-\lambda)q); (2, (1-\lambda)(1-q)) \Big)
+$$
+
+<div align = "center">
+![Mixture](/images/notes/financial-econ/mixture.png)
+</div>
+
+---
+<br/>
+
+<b>Preference Relation</b>
+
+We want to define a theory of preference defined over $L(Z)$.
+
+A _relation of preferences_ $\ge$ on $L(Z)$ is a binary relation which is:
+
+1.<b>Complete</b>
+    - for any $L, L' \in L(Z)$, we have $L \ge L' $ or $L' \ge L$
+2. <b>Transitive</b>
+    - $L_1 \ge L_2$ and $L_2 \ge L_3 \implies L_1 \ge L_3$
+
+<br/>
+---
+<br/>
+<b>Axioms of Expected Utility Theory</b>
+
+<b>Von Neuman and Morgenstern</b> suggested to assume the following about the relation of preference:
+- <b>Independence</b>: for all $L, L', L"$ and $\lambda \in (0,1):
+
+$$
+L \ge L' \iff \lambda L + (1 - \lambda)L" \ge \lambda L' + (1 - \lambda)L"
+$$
+
+- <b>Continuity</b>: if $L \ge L' \ge L"$, then there exists $\lambda \in [0,1]$ such that $L' \sim \lambda L + (1 - \lambda)L"$.
+
+_Graphically, the independence axiom:
+<div align = "center">
+![Mixture](/images/notes/financial-econ/ind-axiom.png)
+</div>
+
+---
+
+<br/>
+A relation of preferences is represented by a utility function $V: L(Z) \to \R$ if and only if: $L \ge L' \iff V(L) \ge V(L')$.
+
+<b>Theorem (Von Neuman-Morgenstern)</b>
+
+If $\ge$ is a preference relation on $L(Z)$ that satisfies the previous axioms, then there exists $u : Z \to \R$ such that:
+
+$$
+(x^{\omega}, \pi_{\omega}) \ge (\tilde x^{\omega}, \tilde \pi_{\omega}) \iff \sum_{\omega} \pi_{\omega} u (x^{\omega}) \ge \sum_{\omega} \tilde \pi_{\omega} u (\tilde x^{\omega})
+$$
+
+that can also be rewritten as: 
+$$
+\mathbb{E}_{\pi_{\omega}}[u(x^{\omega})] \ge \mathbb{E}_{\tilde \pi_{\omega}}[u(\tilde x^{\omega})]
+$$
+
+In thi case, we say that _the agent is said to have "VNM preferences"_.
+
+A little note on terminology:
+- $V: L(Z) \to \R$ is the utilility function _(expected utility function)_.
+- $u: Z \to \R$ is just a function that appears when looking at the structure of v _(utility index)_. Furthermore, for the rest of the chapters, we assume that$u$ is strictly <b>increasing</b> and <b>twice continuously differentiable</b>.
+
+---
+
+<b>Risk Aversion</b>
+
+We done the average of lottery $L$ by $\mathbb{E}_[x] = \sum_{\omega} \pi_{\omega}x^{\omega}$.<br/>We represent with $\delta_{\mathbb{E}_[x]}$ the <b>degenerate lottery</b> that gives the expected payoff of $L$ with probability one.
+
+An agent is said to be <b>risk averse </b>if and only if for all $L \in L(Z)$:
+
+$$
+\delta_{\mathbb{E}_[x]} \ge L
+$$
+
+An agent with VNM preferences is <b>risk averse</b> if and only if her utility index is concave: $u'\ge0, u"\le0$.
+
+
+To prove it, we consider the _Jensen Inequality_: if a function $u$ is concave, then we have:
+
+$$
+\mathbb{E}_L[u(x)] \le u(\mathbb{E}_L[x])
+$$
+
+---
+
+<br/>
+_Recall:_ for any lottery $L$ we can define the <b>cumulative distribution function</b> $F_L: \R \to [0,1]$ as:
+
+$$
+FL(x) = \mathbb{P}(L \le x)
+$$
+
+<b>Second-order Stochastic Dominance</b>
+
+A lottery $L$ is said to second-order stochastically dominates $L' (\text{SOSD})$ if and only if: $\mathbb{E}_L[x] \ge \mathbb{E}_L'[x]$ and:
+
+$$
+\int_{-\infty}^y F_L(x)dx \le \int_{-\infty}^yF_{L'}(x)dx \quad \forall x
+$$
+_(Note that the first order stochastic dominace implies the second one)
+
+<a href="https://www.youtube.com/watch?v=q0fOJ9vC3iQ" target="_blank">Clearest Explanation of Second-Order Stochastic Dominance! [VIDEO]</a>
+<br/> <a href="https://www.youtube.com/watch?v=xGEIoicxmWo" target="_blank">Understanding First-Order Stochastic Dominance[VIDEO]</a>.
+
+<div align = "center">
+![SOSD](/images/notes/financial-econ/sosd.png)
+</div>
+<div align = "center">
+![SOSD](/images/notes/financial-econ/sosd-2.png)
+</div>
+
+---
+<br/>
+<b>Mean Preserving Spreads</b>
+
+Consider $L_1, L_2$ with the same mean and with density functions $f_1(x), f_2(x)$. $L_2$ is said to be a <b>mean preserving spread </b> of $L_1$ if there exists an interval $I$ such tat:
+
+$$
+f_2(x) \ge f_1(x)\quad \forall x \notin I \\
+f_2(x) \le f_1(x) \quad \forall x \in I
+
+$$
+
+<div align = "center">
+![Mean Preserving](/images/notes/financial-econ/mean-preserving.png)
+</div>
+---
+<br/>
+
+<b>Increases in Risk</b>
+
+There are different ways to define an _increase in risk_:
+- $L$ is riskier than $L'$ if $L' \text{ SOSD } L$ _($L'$ second ordder stochastically dominates $L$)_. 
+- $L$ is riskier than $L'$ id $L$ is a _mean preserving_ spread of $L'$.
+- _Adding a white noise:_ $L$ is riskier than $L'$ if $L = L' + \epsilon$, where $\mathbb{E}[\epsilon] = 0$. _(Note that $L, \epsilon$ do not neet to be independetly distriunted)_.
+
+An agent with VNM preferences dislikes increases in risk if and only if her utility index $u$ is concave.
+
+---
+
+
+<br/>
+<b>Quantifying Risk Aversion - Certainty Equivalent</b>
+
+For a lottery $L$, its certainty equivalent is amount $e_L \in \R$ such that: $\delta_{e_L} \sim L$ or, in other terms:
+
+$$
+u(e_L) = \mathbb{E}_L[u(x)]
+$$
+
+_Intuition: $e_L$ is the amount of momey for which the individual is indifferent between playing $L$ and a fixed amount of momney_.
+- For a concave utility _(risk averse agent):_ $\mathbb{E}_L[u(x)] - e_L > 0$
+- For a linear utility _(risk neutral agent):_ $\mathbb{E}_L[u(x)] = e_L$
+
+<b>Risk Premium</b>
+
+
+For any $L$ the risk premium is:
+
+$$
+\pi_L = \mathbb{E}_L[u(x)]- e_L
+$$
+
+For a VNM agent, we also have:
+
+$$
+u(\mathbb{E}_L[X]-\pi_L) = \mathbb{E}_L[u(x)]
+$$
+- A risk neutral individual has zero risk premium
+- A _(strictly)_ risk averge agent associates a positive risk premium to any _non-degenerate_ lottery.
+<div align = "center">
+![Risk Premium ](/images/notes/financial-econ/risk-premium.png)
+</div>
+
+<b>Absolute Risk Premium for small risks</b>
+
+Consider $x \in \R$, $\epsilon$ small and the following lottery:
+
+$$
+L = x + \tilde \epsilon, \quad \mathbb{E}[\tilde \epsilon ] = 0
+$$
+
+Using Taylor expansions, we can show that the <b>(absolute) risk premium</b> $\pi_a$ when $\epsilon$ is small_(Arrow-Pratt approximation)_ is such :
+
+$$
+\pi_a \approx -\frac{1}{2} \frac{u''(x)}{u'(x)} \mathbb{E}[\tilde \epsilon^2]
+$$
+
+The <b>absolute ris aversion coefficient</b> $R_a(x)$ for wealth level $x$ is defined as:
+
+$$
+R_a(x) = -\frac{u''(x)}{u'(x)}
+$$
+
+For small risks of the form $x + \tilde \epsilon$:
+
+$$
+\pi_a \approx \frac{1}{2}R_a (x)\mathbb{E}[\tilde \epsilon ^2]
+$$
+
+_Note that $\mathbb{E}[\tilde \epsilon ^2]$ is the variance of the risk._
+
+<b>Relative Risk premium for small risks</b>
+
+Consider $x \in \R$ and the same lottery as before, $L + \tilde \epsilon$. <br/>We can define the <b>relative risk premium</b> $\pi_r$ by:
+
+$$
+(1 + \tilde \epsilon) x \sim (1 + \pi_r)x
+$$
+
+and, using the Taylor expansion when $\tilde \epsilon$ is small:
+
+$$
+\pi_r \approx - \frac{1}{2}\frac{x u''(x)}{u'(x)}\mathbb{E}[\tilde \epsilon ^2]
+$$
+
+The <b>relative risk aversion coefficient</b> $R_r(x)$ for wealth level $x$ is then define as:
+
+$$
+R_r(x) = -\frac{x u''(x)}{u'(x)} = x R_a(x)
+
+$$
+
+For a small risk of the form $(1 + \tilde \epsilon)x$:
+
+$$
+\pi_r \approx \frac{1}{2}R_r(x)\mathbb{E}[\tilde \epsilon ^2]
+$$
+
+---
+
+<br/>
+<b>Comparing Risk Aversion</b>
+
+For two agents $A, B$ all the following sentences are equivalent:
+- $\forall L$ the certainty equivalent of $A$ is smaller or equal than the one of $B$.
+- $\forall L$ the risk premium for $B$ is smaller or equal than the one for $A$
+- $u_A$ is more concave than $u_B$: there exists and <b>increasing concave</b> functio $\phi$ such that: $u_A = \phi (u_B)$.
+- $\forall x$ we have:
+
+$$
+-\frac{u''_A(x)}{u'_A(x)} \ge - \frac{u''_B(x)}{u'_B(x)}
+$$
+-$A$ is at least as risk averse as $B$
+<br/>
+---
+<br/>
+<b>Common Classes of VNM utility indices</b>
+- <b>Costant Absolute Return Aversion (CARA)</b>
+$$
+\u_{\lambda}(x) = \frac{1 - e^{-\lambda x}}{\lambda}, \quad u_0 = x
+$$
+- <b>Constant Relative Risk Aversion (CRRA)</b>
+$$
+u_{\gamma}(x) = \frac{x^{1-\gamma}}{1-\gamma},\quad 
+
+\forall \gamma >0, \gamma \neq 1\quad u_1 = \log(x)
+$$
+- <b>Hyperbolic Absolute Risk Aversion (HARA)</b>
+$$
+u(x) = \frac{\gamma}{1 - \gamma}(b + x/\gamma)^{1-\gamma}, \quad b \ge 0 \implies R_a = \frac{\gamma}{x + b \gamma} 
+
+$$
+- <b>Quadratic Utility Index</b>
+$$
+u(x) = x - \frac{\beta}{2}x^2, \quad R_a = \frac{\beta}{1 - \beta x}
+$$
+
+Note that for a quadratic utility index:
+$$
+\mathbb{E}[u(x)] = \mathbb{E}[x] - \frac{\beta}{2}\mathbb{E}[x^2] = \bar x - \frac{\beta}{2}\bar x^2 - \frac{\beta}{2}\text{Var}(x)
+$$
+
+then the utility of a lottery only depends on its mean and variance.
+_
 
 ## <a id="6"><b>6. Demand for risk</b></a>
 ---
