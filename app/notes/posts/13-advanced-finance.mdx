@@ -692,7 +692,24 @@ Considering the same interest rate, we then see which one brings the bigger amou
 
 ## <a id="6"><b>6. Managing Risk, Options</b> </a>
 
+<b>Why manage risk</b>
+
+Reason why risk reduction does NOT add value:
+- hedging is a zero sum game 
+- investors can hedge themself $\to$ they have a do-it yourself alternative 
+<br/>
+<b>Insurance</b>
+
+Most businesses face the risk of events that can cause financial stress to them (both financial or business-related risks). The cost and risk of a loss can be shared by others who share the same risk $\to$ the firm can transfer the risk to an insurance company.
+
+<b>Catastrophe bonds _(CAT bonds)_ </b>allow insurers to transfer risk to bonholders by selling bonds whose cash flow payments depend on the level of insurable losses NOT oncurring.<br/> <a href="https://www.investopedia.com/terms/c/catastrophebond.asp" target="_blank">More on CAT bonds here [Investopedia]</a>.
+- on some CAT bonds (<b>Indemnity Trigger</b>), payments are reduced if claims against the issuer exceed a limit  $\to$ the problem is that the insurance company, knowing this, may try to underwrite more counterparties to gain additional premia, therefore creating a problem of _moral hazard_ for the insurance company _(since it has less incentives to be careful)_
+- in some other cases (<b>Index Trigger</b>), payments are reduced if claims against the _entire industry_ exceed a limit $\to$ partial solution to the _moral hazard_ problem 
+<br/>
+---
+
 <b>Understanding options: terminology</b> 
+<br/>
 - <b>Derivatives</b>: _any financial contract derived from another_ 
 - <b>Option</b>: _gives the holder the right to buy/sell a security in the future at specified price_ 
 - <b>Option Premium</b>: _price paid for the option above the price of the underlying_ 
@@ -702,8 +719,6 @@ Considering the same interest rate, we then see which one brings the bigger amou
 - <b>Expiration Date</b> (Maturity): _last date on which the option can be exercised_ 
 - <b>American Option</b>: _can be exercised any time_
 - <b>European Option</b>: _can. be exercised only on the expiration_
-
-
 
 <br/>
 
@@ -725,14 +740,137 @@ $$
 - $PV(K)$: present value of the strike price 
 - $\text{S}$: underlying price
 
-slide 40
+<br/>
+---
+<br/>
+<b>Example: Future and Options for Jack Mining Company</b>
 
+<a href="https://en.wikipedia.org/wiki/Simmer_and_Jack#:~:text=Simmer%20and%20Jack%20Mines%20Ltd,at%20the%20Johannesburg%20Stock%20Exchange." target="_blank">Jack Mining Company</a> is worried about _short-term volatility_ in revnues.<br/>
+Gold currently seels for USD $1300$/ounce, but the price is volatile and could fall to $1220$ or rise to $1380$ in the next momth. Jack will sell $1000$ ounces to the market in the same period.
 
+1. If Jack remains <b>unhedged</b> (Market Exposure), he remains fully exposed to the "spot" price.
+$$
+\text{Revenue} = S \times Q
+$$
 
+(Where $S$ is the spot price and $Q$ is the quantity of 1,000 ounces) 
 
+2. If Jack hedges his position with <b>futures</b> (Price Lock), he eliminates all uncertainty by pre-selling their gold at a fixed price, ensuring a guaranteed revenue regardless of the future price.
 
+$$
+\text{Revenue} = F \times Q
+$$
+(Where $F$ is the locked-in futures price of $1,310)
+
+- in this case, Jack enters a <b>short position</b> on futures _(obligation to sell the ounces at a specified price)_.
+
+3. If Jack hedges with <b>option</b>, he an "insurance" that sets a minimum sale price _(strike $K$)_ while allowing them to benefit from higher market prices, but they must subtract the cost of the insurance _(premium)_ from their total.
+$$
+\text{Revenue} = (\max(S, K) - P) \times Q
+$$
+(Where $K$ is the strike price of $1,300$ and $P$ is the premium of $110 per ounce)
 
 ---
+
+Generally speaking, a business has:
+- <b>Business risk</b> affecting fixed and variable costs and revenues $\to$ operating leverage
+- <b>Financial Risk</b> due to IR, FX, commodity price changes etc...
+
+<b>Trading and Pricing Financial Futures Contracts</b>
+
+The basic relationship between futures prices and spot prices for equityies:
+$$
+F_t = S_0 \times (1 + r_f - y)^t
+$$
+- $F_t$: futures price on contract of $t$ length 
+- $S_0$: spot price _(today)_ 
+- $r_f$: risk-free rate 
+- $y$: dividend yield
+
+For commodities, the basi relationship becomes:
+$$
+F_t = S_0 \times (1 + r_f +\text{storage costs}-\text{convenience yield} y)^t
+\\
+\text{NCY} = \text{convenience yield }-\text{storage cost} = \text{Net Convenience Yield}
+$$
+
+- The <b>net convenience zield</b> is generally positive and future prices are generally _below spot prices_. _(This dynamic is called <b>backwardation</b>).
+- Sometimes storage prices are high and there's plenty of commodities available, so future prices are above spot prices. _(This dynamic is called <b>contango</b>).
+
+_Note that the convenience yield is the implicit, non-monetary benefit of physically holding a commodity compared to owning a futures contract (example: avoiding shortages or ensuring production)._
+
+Consider also that the holder of a future contract <b>misses out</b> any dividend or interest payment from the underlying but he doesn't not have to pay for storage costs.
+
+---
+<br/>
+<b>Interest Rate Risk</b>
+
+A <b>forward interest rate</b> is a rate for a loan starting in the future. To price it, we use the following formula:
+$$
+f_{n,m} = \left[ \frac{(1 + r_m)^m}{(1 + r_n)^n} \right]^{\frac{1}{m-n}} - 1
+$$
+
+where $r_n$ is the current rate for a $n$-year term and the same applies for $m$.
+<br/>
+---
+<br/>
+<b>Interest Rate Swaps</b>
+
+Some future cash flows are fixed, others may vary depending on the interest rates, rates of exchanes or prices of commodities. In a <b>swap contract</b>, one counterparty exchanges a _fixes set of cash_ for a _floaitmg set of cash flow_ and the second counterparty takes the oppositve position.
+
+A swap uses a Notional Principal ($L$). <br/>
+This amount is never exchanged between parties; it is simply the "dummy numner"  to calculate interest.
+
+- <b>Fixed Rate Payer</b>: Pays an agree and constant interest rate. They are essentially "shorting" interest rates _(betting they will go up)_.
+- <b>Floating Rate Payer:</b> Pays a variable market rate _(like SOFR)_. They are "long" interest rates _(betting they will stay low)_A
+
+In practice, only the difference between the two interest amounts is payed _(this reduces credit risk for both parties)_.
+
+- Scenario A _(Market Rate < Fixed Rate):_ the Fixed Payer pays the difference.
+- Scenario B (Market Rate > Fixed Rate): the Floating Payer pays the difference.
+- Scenario C (Market Rate = Fixed Rate): no money moves _("Wash" scenario)_A
+
+When a swap is created, its Net Present Value (NPV) is $0$. The fixed rate is mathematically _"calibrated"_ with discount factor $Z$ so that the expected value of the floating payments equals the fixed payments today.
+$$
+r_{\text{fixed}} = \frac{1 - Z_n}{\sum_{t=1}^{n} Z_t}
+$$
+
+To calculate the current value value of an existing swap that changes to a new $r^*$:
+$$
+V_{\text{swap}} = \sum_{t=1}^{n} \frac{(r_{\text{fixed}} - r_{\text{floating\_expected}}) \times L}{(1 + r^*)^t}
+$$
+
+A swap curve _(also called the "LIBOR curve/SOFR curve/EURIBOR curve)_ is the graphical representation of the relationship between swap rates and different maturities (tenors).
+It's a line that shows you the "fixed rate" the market expects to pay for a swap lasting different maturities.
+
+---
+<br/>
+
+<b>Currency Swaps</b>
+
+A currency swap is a contract where two parties exchange cash flows in different currencies over time.
+
+It can be decomposed in:
+- a spot FX transaction today
+- plus a series of interest payments
+- plus a reverse FX transaction at maturity
+
+<br/>
+---
+<br/>
+<b>Heding Interest Rate Risk</b>
+
+When a business receive cash flows that depends on interest rate, the firm can manage its risk by buying a bond and matching duration. In this way, exposure to small interest rate changes is _zero_.
+
+---
+
+In general, if we want to hedge against changes in the value of asset $A$ _(oil)_ using an offsetting sale of asset $B$ _(example: oil futures)_, we use the following formula:
+
+$$
+\mathbb{E}[\Delta A] = \alpha + \delta \times (\Delta B)
+$$
+- $\delta$: sensitivity of $A$ to change in value of $B$ _(hedge ratio)_ 
+- $\alpha$: unexpected drift/changes
 
 ## <a id="7"><b>7. International Financial Management</b> </a>
 
