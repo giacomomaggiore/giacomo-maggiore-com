@@ -739,7 +739,7 @@ To decide if the increases in SSR is _"big enough"_, to reject the exclusions, w
 - $n-k-q$ is the denominator degrees od freedom.
 
 <div align = "center">
-![Population Model](/images/notes/econometrics/f-test.png)
+![f testl](/images/notes/econometrics/f-test.png)
 </div>
 
 <b>OLS asymptotics</b>
@@ -750,7 +750,7 @@ Imder the Gauss-Markov assumptions the OLS is BLUE, however they are not always 
 
 Just as we derived the omitted variable bias earlier, we can think about the inconsistency _(asymptotic bias)_.
 
-Consider the true model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + v$ and the estimated model: $y = \beta_0 + \beta_1 x_1 + \mu$, so that $\mu = \beta_2 x_2 + v$. <br/>In this case, $b_1 = \beta_1 + \beta_2 \delta$, where $\delta = \text{Cov}{x_1,x_2}/\text{x_1}$, that tells how much our estimate ($b_1$) will deviate from the truth ($\beta_1$).
+Consider the true model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + v$ and the estimated model: $y = \beta_0 + \beta_1 x_1 + \mu$, so that $\mu = \beta_2 x_2 + v$. <br/>In this case, $b_1 = \beta_1 + \beta_2 \delta$, where $\delta = \frac{\operatorname{Cov}(x_1, x_2)}{\operatorname{Var}(x_1)}$, which tells us how much our estimate ($b_1$) deviates from the true parameter ($\beta_1$).
 
 _Intuition: inconsistecy is a large sample problem: it does not go away as we add data_.
 
@@ -764,17 +764,554 @@ If $\mu$ is not normally distributed, we sometimes will refr to the standard err
 
 <b>Asymptotic Efficiency</b>
 
-Thereare other estimaotrs besided OLS that are consistent. However, under the Gauss-Markov assumptions, the OLS estimators will have the smallest asymptotic variances, therefore we say that the OLS is _asymptotically_ efficient.
+Thereare other estimators besided OLS that are consistent. However, under the Gauss-Markov assumptions, the OLS estimators will have the smallest asymptotic variances, therefore we say that the OLS is _asymptotically_ efficient.
 
 ---
 
 ## <a id="5"><b>5 Multiple Regression Analysis: Further Issues</b> </a>
 
+<b>Review</b>
+
+To test hypotheses about estimates, we previously relied on assumption about <b>normal distribution of errors</b> (MLR.6) in order to redive $t$ and $F$ distributions.
+
+This implied that the distribution of $y$ given $x$ was normal as well.
+
+However, <b>this assumption about normality can often break down!</b> _(example: amy clearly skewed variable, like wages, arrests, savings etc... cannot be normal, since normal distributions are symmetric)_.
+
+Also in this case, large samples are the solution: if $n \to \infty$ the Cental Limit Theorem shows that OLS estimates are _asymptotically_ normal-.
+
+_In other terms_, for any population with mean $\mu$ and standard deviation $\sigma$, the sampling distribution of the <b>sample mean</b> is _approx_ normal with mean $\mu$ and standard deviation $\sigma / \sqrt(n)$.
+
+Secondly, the $t$-distributoin approaches a normal distribution for a large $df$ (degree of freedom), so we no longer need to assume normality with a large sample.
+
+As we said, if the error is NOT _normally_ distributed, we sometimes will refer to it as the _asymptotic standard error_. _(We can expect standard errors to shrink at rate proportional to the inverse of $\sqrt(n)$)_.
+
+<b>Further Issues in Multiple Regression Analysis: Scaling Variables</b>
+
+Changing the scale of the $y$ variable will lead to a change in the scale of the coefficients and the standard error, without a meaningfull change in significante/interpretation. The same applies for a change in $x$.
+
+_Occasionally_, we will see references to <b>standardized coefficient</b>, calculate usig the standardized version of $x,y$, so coefficients reflect a standard deviation change of $y,x$.
+
+<b>Functional Form</b>
+
+OLS can also be used for relationship that are not strictly linear in $x,y$ by using non-linear functions of $x,y$ _(as long the model is linear in the parameters)_.
+
+<Table
+  data={{
+    headers: ["Model", "Equation", "Interpretation"],
+    rows: [
+      ["Level-level", "$y = \\beta_0 + \\beta_1 x + u$", "$\\Delta y = \\beta_1\\Delta x$"],
+      ["Level-log", "$y = \\beta_0 + \\beta_1\\ln(x) + u$", "$\\Delta y = (\\beta_1/100)\\%\\Delta x$"],
+      ["Log-level", "$\\ln(y) = \\beta_0 + \\beta_1 x + u$", "$\\%\\Delta y = (100\\beta_1)\\Delta x$"],
+      ["Log-log", "$\\ln(y) = \\beta_0 + \\beta_1\\ln(x) + u$", "$\\%\\Delta y = \\beta_1\\%\\Delta x$"]
+    ]
+  }}
+/>
+<br/>
+<b>Log Models</b>
+
+- they are invariant to the sale of the variables since it's all about percentage changes 
+- they give a direct estimate of the _elasticity_ 
+- for models with $y > 0$, the conditional distribution is often Heteroskedastic or skewed, whil $\ln(y)$ is much less.
+- the distribution of $\ln(y)$ is narrower, limiting the effect of outliers.
+
+_Note that, when using the log form, variables have to be positive!_
+
+<b>Quadratic Models</b> 
+
+For a model like $y = \beta_1 x_1 + \beta_2 x_2^2 +\mu$ we know that:
+- if $\beta_1$ is positive and $\beta_2$ is negative, $y$ is increasing in $x$ at first and then decreasing.
+- if $\beta_1$ is negative and $\beta_2$ is positive the opposite happens.
+- The turning point is calculated setting the derivative to zero and lies at: $x^* = - \beta_1 / \beta_2$
+
 ---
+
+<br/>
+<b>AdjustedR-Squared</b>
+
+Recall that $R^2$ always icrease as more variables are added to the model since $SSR$ never decreases with more variables:
+$$
+R^2 = \frac{SSE}{SST} = 1 - \frac{SSR}{SST}
+$$
+
+The <b>adjusted </b> $R^2$ takes then into account the number of variables in the model:
+
+$$
+\text{Adj.} R^2 = 1 - \frac{SSR}{SST}\frac{(n-1)}{(n-k-1)}
+$$
+
+The adjusted $R^2$ penalies models with more variables, especially for low $n$ and high $k$ and increases only when additional variables are added whose $t$-statistic is larger than $\approx$ 1. $\implies$ adding variables with poor explanatory opower decreases adjusted $R^2$.
+
+In other terms, we usually use adjusted $R^2$ to compare models with the same $y$, but never with models with different $y$.
+
+<b>(Standard Errors for) Predictions</b>
+
+Suppose we want to use our estimates to obtain a _specific prediction_, in this case we want to estimate:
+
+$$
+\mathbb{E}(y | x_1 = c_1, ..., x_k = _k) = \theta_0 + b_0 + b_1 c_1 + ... b_k c_k
+$$
+
+If we want to have an idea of the precision of the estimate _(easily done by substituting values)_ we can:
+- rewrite  $\beta_0 = \theta_0 - \beta_1 c_1 - ... \beta_k c_k$
+- substitute in to obtain: $y = \theta_0 + \beta_1 (x_1 - c_1) + ... + \beta_k (x_k - c_k) + \mu
+- regress $y_i$ on $(x_{ij}-c_{ij})$ and the intercept will gie the predicted value and its standard error $\implies$ the minum standard error is obtained when the $c$ equal the means of the $x$.
+
+---
+<br/>
+<b>Regression with Dummy Variables</b>
+
+A dummy _(binary)_ variable is variable that takes on the value of $1$ o $0$.
+
+Consider a simple model with one continuous variable $x$ and a dummy $D$:
+$$
+y = \beta_ 0 + \delta_0 D + \beta_1 x_1 + \mu 
+$$
+- $D=1$ if female, $0$ otherwise 
+- $x$: education in years 
+- $y$: wage 
+
+This can be interprete as an _incercept shift_:
+- if $D= 0 \implies y = \beta_ 0 + \beta_1 x_1 + \mu \quad $ _(male, BASE GROUP)_
+- if $D = 1 \implies y = (\beta_0 + \delta_0) + \beta_1 x_1 + \mu \quad$ _(female)_ 
+
+<div align = "center">
+![Population Model](/images/notes/econometrics/dummy.png)
+</div>
+---
+
+<b>Dummies for Multiple Categories</b>
+
+Any categorial variable can be turned into a set of dummy variables. Because the base group is represented by the intercept, if there are $n$ categories there should be $n-1$ dummy variables.
+
+_Note that we can model interaction between dummies to divide in subgroups and between dummies with continuous variables $x$ to model a change in slope._
+<div align = "center">
+![Dummy Vars](/images/notes/econometrics/dummy-2.png)
+</div>
+
+<b>Testing for Differences Acorss Groups</b>
+
+Testing wheter a regression function is different for one group versun one another can be thought as of _testing for the joint significance of the dummy and its interaction_ with all other $x$ variables.
+
+So we can estimate the model _with_ and _without_ the interactions and form a $F$-statistic _(very tedious in practise!)_.
+
+<b>The Chow Test</b>
+
+We can compute the $F$-statistic without running the unrestricted model with all interactions with $k$ continuous variables, but intead we can:
+- run the restricted model for group 1 _(using observations $n_1$) and get $SSR_1$
+- run the restricted model for group 2 _(using observations $n_2$) and get $SSR_2$
+- run the restricted model for all _(using $N = n_1 + n_2$) and get $SSR$
+- compute the $F$-statistic as:
+
+$$
+F = \frac{[SSR - (SSR_1 + SSR_2)]}{SSR_1 + SSR_2} \frac{n-2(k + 1)}{k + 1}
+$$
+
+<b>Dummy as Dependent Value: Linear Probability Model</b>
+
+$\mathbb{P}(y = 1|x) = \mathbb{E}[y | x]$ when $y$ is binary model, so we can write our model as:
+
+$$
+\mathbb{
+P}(y = 1|x) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k + \mu
+$$
+- $\beta_j$ represents the change in the probability when $x_j$ changes by 1 _around the mean_.
+- the predicted $y$ is the probability 
+
+_However_, potential problems arise since the prediction can be outside $[0,1]$.<br/>Also, this model will violate the assumption of homoskedasticity, which will affect inferece.
+
+_Despite everything_, OLS is usually a good starting point when $y$ is binary.
+
 
 ## <a id="6"><b>6 Heteroskedasticity and Other Problems</b> </a>
 
+<b>Assumptions Multiple Linear Regressin (MLR) Model</b>
+
+- <b>MLR.1: Linear in parameters</b>
+  - In the population model, the following relationship holds:
+$$
+y = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k + u
+$$
+
+- <b>MLR.2: Random sampling</b>  
+  - We have a random sample of size $n$:
+$$
+\{(y_i, x_{i1}, \ldots, x_{ik})\}_{i=1}^{n}
+$$
+
+- <b>MLR.3: No perfect collinearity</b>  
+  - None of the independent variables is constant, and there are no exact linear relationships among regressors.
+
+- <b>MLR.4: Zero conditional mean</b>  
+  - The error has zero conditional mean:
+$$
+\mathbb{E}[u \mid x_1, x_2, \ldots, x_k] = 0
+$$
+  - This implies $\mathbb{E}[u] = 0$.
+
+- <b>MLR.5: Homoskedasticity</b>  
+  - Assume constant conditional variance of the error:
+$$
+\operatorname{Var}(u \mid x_1, x_2, \ldots, x_k) = \sigma^2
+$$
+
+- <b>MLR.6: Normality</b>  
+  - The disturbance is independent of $x_1,\ldots,x_k$ and normally distributed with zero mean and variance $\sigma^2$:
+$$
+u \sim \mathcal{N}(0, \sigma^2)
+
+$$
+
+Recall that the assumption of _homoskedasticity_ implied that, _conditional on the explanatory variables_, the <b>variance of the unobserved error $\mu$ was costant</b>. <br/>If this is not true, then the variance is different for different values of $x$ and errors are said to be <b>heteroskedastic</b>.
+
+<div align = "center">
+![Population Model](/images/notes/econometrics/heterosk.png)
+</div>
+
+OLS is <b>still unbiased and consistent</b>, even if we do not assume homoskedasticity.
+
+_However_, the standard errors of the estimates are biased if we have heteroskedasticity.
+- If the standard errors are biased, we <b>cannot do inferece</b> based on the usual $t$, $F$, $LM$-statistic. _(The $LM$-statisitc is $LM: n R^2_{\mu}$, and $R^2_{\mu}$ is obtained regressing $\mu$ on all variables. The LM statistic has a $X^2_k$-distributio.)_
+<br/>
+
 ---
+<br/>
+<b>Variance with Heteroskedasticity</b>
+
+For the <b>simple bivariate case</b>, heteroskedasticity implies that:
+
+OLS slope decomposition:
+$$
+b_1=\beta_1+\frac{\sum_{i=1}^{n}(x_i-\bar{x})u_i}{\sum_{i=1}^{n}(x_i-\bar{x})^2}
+$$
+
+Conditional variance of $b_1$ under heteroskedasticity:
+$$
+\operatorname{Var}(b_1\mid X)=
+\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2\sigma_i^2}{(SST_x)^2},
+\qquad
+SST_x=\sum_{i=1}^{n}(x_i-\bar{x})^2
+$$
+
+_Note that this differs from the homoskedastic case_
+$$
+\operatorname{Var}(b_1\mid X)=\frac{\sigma^2}{SST_x}
+$$
+
+A valid _(consistent)_ estimator of the variance of $b_1$ when $\sigma_i^2\neq\sigma^2$ is:
+
+$$
+\widehat{\operatorname{Var}}(b_1)=
+\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2\hat{u}_i^2}{(SST_x)^2}
+$$
+
+where $\hat{u}_i$ are the OLS residuals.
+
+_Note that this is different from the homoskedastic estimator_:
+$$
+\widehat{\operatorname{Var}}(b_1)=
+\frac{\frac{1}{n-2}\sum_{i=1}^{n}\hat{u}_i^2}{SST_x}
+=
+\frac{SSR}{(n-2)SST_x}
+$$
+---
+<br/>
+<b>Robust Standard Errors</b>
+
+Consider the model:
+$$
+y = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k + u
+$$
+
+With heteroskedasticity, a valid _(consistent)_ estimator of $\operatorname{Var}(b_j)$ is:
+
+$$
+\widehat{\operatorname{Var}}(b_j)
+=
+\frac{\sum_{i=1}^{n} r_{ij}^{\,2}\hat{u}_i^{\,2}}
+{\left(SSR_j\right)^2}
+$$
+
+where:
+- $r_{ij}$ is the $i$-th residual from regressing $x_j$ on all other independent variables.
+- $SSR_j = \sum_{i=1}^{n} r_{ij}^{\,2}$ is the sum of squared residuals from this auxiliary regression.
+- $\hat{u}_i$ are the OLS residuals from the original model.
+
+So, the corresponding <b>robust standard error</b> is:
+
+$$
+\operatorname{se}_{rob}(b_j)=\sqrt{\widehat{\operatorname{Var}}(b_j)}
+$$
+
+Sometimes a finite-sample correction is used:
+$$
+\widehat{\operatorname{Var}}_{corr}(b_j)
+=
+\frac{n}{n-k-1}\,\widehat{\operatorname{Var}}(b_j)
+$$
+
+As $n \to \infty$, this correction becomes negligible.
+
+_Note that robust standard errors are justified asymptotically.  In small samples, $t$-statistics based on robust SE may not be close to a $t$ distribution._ 
+
+---
+
+<br/>
+<b>Testing for Heteroskedasticity</b>
+
+We want to test: 
+
+$$
+H_0 = \text{Var}(\mu |x_1, ... x_k) = \sigma^2 \iff H_0 : \mathbb{E}(\mu^2 | x_1, ... x_k)= \mathbb{E} = \sigma^2
+$$
+
+If we assume the relationship betwee $\mu^2$ and $x_j$ to be linear, we can test it as a _linea restriction_:
+
+$$
+\mu^2 = \delta_0 + \delta_1 x_1 + ... + \delta_k x_k + v \iff H_0: \delta_1 = ... = \delta_k = 0
+$$
+
+<b>The Breush-Pagan Test</b>
+
+In this test, we do not observe the error, but we can estimate it with the residuals from the OLS regrssion.
+
+_After regressing the residuals squared on all $x$_, we can use the $R^2$ to form a $F$ or $LM$-test.
+- The $F$-statistic is distributed as $F_{k,n-k-1}$ and it is equal to:
+
+$$
+F = \frac{R^2 (n-k-1)}{(1-R^2)k}
+$$
+- THe $LM$-statistic follows a $X^2_k$-distribution and is:
+
+$$
+LM = nR^2
+$$
+
+_Note that the Bresuch-Pagan test detect any <b>linear forms of heteroskedasticity</b>.
+
+---
+
+<br/>
+<b>The White Test </b>
+
+The White Test allows for non-linearities by using squares and cross-products of all $x$.
+
+Consider thenm the fitted values from OLS $\hat y$ are a function of all $x$. Therefore $\hat y^2$ will be a function of the squares and cross-produts, so we can:
+- regress the residuals squared on $\hat y, \hat y^2$
+- use the $R^2$ to form a $F$ or $LM$-statistic 
+<br/>
+<b>Weighted Least Squares</b>
+
+While it is always possible to estimate robust standard errors, if we know something about the _specific form of heteroskedasticity_ we can obtain a more efficient estimates.
+
+_Intuition_: transforming the model into one that has homoskedastic errors $\implies$ if we do it, we call the estimators <b>weighted least squares</b>.
+
+
+Suppose the original model is: $y_i=\beta_0+\beta_1x_{i1}+\cdots+\beta_kx_{ik}+\mu_i $
+
+and heteroskedasticity has the form:
+$$
+\operatorname{Var}(\mu_i\mid x_i)=\sigma^2 h_i,\qquad h_i=h(x_i)>0
+$$
+
+We can define the variable:
+
+$$
+\mu_i^*=\frac{\mu_i}{\sqrt{h_i}}
+$$
+
+Because $h_i$ is a function of $x_i$, conditional on $x_i$ it is a constant and has costant variance.
+$$
+\mathbb{E}(\mu_i^*\mid x_i)
+=
+\mathbb{E}\!\left(\frac{\mu_i}{\sqrt{h_i}}\middle|x_i\right)
+=
+\frac{1}{\sqrt{h_i}}\mathbb{E}(\mu_i\mid x_i)
+=
+0
+$$
+$$
+\operatorname{Var}(\mu_i^*\mid x_i)
+=
+\operatorname{Var}\!\left(\frac{\mu_i}{\sqrt{h_i}}\middle|x_i\right)
+=
+\frac{1}{h_i}\operatorname{Var}(\mu_i\mid x_i)
+=
+\frac{1}{h_i}\sigma^2 h_i
+=
+\sigma^2
+$$
+
+Hence the transformed error is homoskedastic.
+
+We now trasform the whole equation model by dividing the original model by by $\sqrt{h_i}$:
+$$
+\frac{y_i}{\sqrt{h_i}}
+=
+\beta_0\frac{1}{\sqrt{h_i}}
++\beta_1\frac{x_{i1}}{\sqrt{h_i}}
++\cdots+
+\beta_k\frac{x_{ik}}{\sqrt{h_i}}
++\frac{\mu_i}{\sqrt{h_i}}
+$$
+
+We can then define the transformed variables as:
+$$
+y_i^*=\frac{y_i}{\sqrt{h_i}},
+\quad
+x_{ij}^*=\frac{x_{ij}}{\sqrt{h_i}},
+\quad
+c_i=\frac{1}{\sqrt{h_i}},
+\quad
+u_i^*=\frac{\mu_i}{\sqrt{h_i}}
+$$
+
+so we obtain:
+$$
+y_i^*=\beta_0 c_i+\beta_1x_{i1}^*+\cdots+\beta_kx_{ik}^*+u_i^*
+$$
+$$
+\mathbb{E}(u_i^*\mid x_i)=0,
+\qquad
+\operatorname{Var}(u_i^*\mid x_i)=\sigma^2
+$$
+
+So OLS on this transformed model is <b>BLUE</b> _(under the usual assumptions)._
+
+_But why this is called “weighted” least squares?_
+
+OLS on transformed data minimizes:
+$$
+\sum_{i=1}^n\left(y_i^*-\beta_0c_i-\sum_{j=1}^k\beta_jx_{ij}^*\right)^2
+=
+\sum_{i=1}^n
+\frac{\left(y_i-\beta_0-\sum_{j=1}^k\beta_jx_{ij}\right)^2}{h_i}
+=
+\sum_{i=1}^n \frac{\hat u_i^2}{h_i}
+$$
+
+Therefore WLS minimizes weighted residual squares with weights $w_i=\frac{1}{h_i}$
+
+_Intuition_:
+- If $h_i$ is large, observation $i$ has high error variance $\Rightarrow$ lower weight.
+- If $h_i$ is small, observation $i$ has low error variance $\Rightarrow$ higher weight.
+
+<br/>
+---
+<br/>
+<b>Feasible GLS (FGLS) for Unknown Heteroskedasticity</b>
+
+In reality, we often do <b>NOT</b> know the exact form of heteroskedasticity ($h(x)$), so we need to estimate it.
+
+We generally assume a <b> flexible variance model:</b>
+$$
+\operatorname{Var}(u_i \mid x_i)=\sigma^2 \exp(\delta_0+\delta_1x_{i1}+\cdots+\delta_kx_{ik})
+$$
+
+So, under this assumption, we have:
+
+$$
+\operatorname{Var}(u_i \mid x_i)=\sigma^2 h(x_i),
+\qquad
+h(x_i)=\exp(\delta_0+\delta_1x_{i1}+\cdots+\delta_kx_{ik})
+$$
+
+_Note that exponential form guarantees $h(x_i)>0$, so variance cannot be negative._
+
+From this assumption:
+$$
+u_i^2=\sigma^2 \exp(\delta_0+\delta_1x_{i1}+\cdots+\delta_kx_{ik})\,v_i
+$$
+if we assume $v_i$ independent of $x_i$ and
+$$
+\mathbb{E}(v_i\mid x_i)=1
+$$
+
+If we take the logarithms we obtain:
+$$
+\ln(u_i^2)=\alpha_0+\delta_1x_{i1}+\cdots+\delta_kx_{ik}+e_i
+$$
+$$
+\alpha_0=\ln(\sigma^2)+\delta_0,
+\qquad
+e_i=\ln(v_i),
+\qquad
+\mathbb{E}(e_i\mid x_i)=0
+$$
+
+Since $u_i$ is unobserved, use OLS residuals $\hat u_i$ from the original regression and estimate:
+$$
+\ln(\hat u_i^2)=\alpha_0+\delta_1x_{i1}+\cdots+\delta_kx_{ik}+e_i
+$$
+
+Let fitted values from this auxiliary regression be $\hat g_i$, then:
+$$
+\hat h_i=\exp(\hat g_i)
+$$
+with  weights equals $w_i=\frac{1}{\hat h_i}$.
+
+---
+
+<br/>
+<b>Specification and Data Issues</b>
+
+We have seen that a linear regression can really fit _nonlinear_ relationship, but _how do we know if we have the right functional form_ for our model?
+<br/>Firstly, economic theory shoud guide you, but a test of functional form can be useful.
+
+<b>Ramsey's RESET  (Regression Specification Error Test)</b>
+
+RESET test lies on a trick similarto the special form of the _White Test_.
+
+Instead of adding functions of the $x$ directly, we add and test functions on $\hat y$:
+- estimate $y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k + \delta_1 \hat y^2 + \delta_2 \hat y^3 + v$
+- test: $H_0 : \delta_1 = \delta_2 = 0$
+- a significant $F$-test suggests that the <b>model is not correctly specified</b> _(using $F \sim F_{2, n-k-3}$ or $LM\sim X^2_k$)
+
+<b>Proxy Variables</b>
+
+_What if a model is mis-specified because no data is available on a important $z$ variable?_ 
+
+It's possible to avoid omitted variable bias using a proxy variable. A <b>proxy variable</b> must be related to the unbobservable variable.
+
+Consider for example: $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \mu$ and suppose we do NOT have data about $x_3$ but we have data on other inputs, so we can write:
+
+$$
+x_3^* = \delta_0 + \delta_3 \hat x_3 + v_3 
+$$
+
+where $*$ implies <b>unobserved</b>. Then we can just substitute $x_3$ for $x_3^*$.
+
+However, to have consistent estimates of $\beta_1, \beta_2$, we need:
+
+$$
+\mathbb{E}(x_3^* | x_1, x_2, x_3) = \mathbb{x^*_3 | x_3} = \delta_0 + \delta_3 x_3
+$$
+
+or, _in other terms_, we need $\mu$ uncorrelated with $x_1,x_2, x_3^*$ and $v_3$ uncorrelated with $x_1,x_2,x_3$.
+
+Only in this case we can run the regression:
+
+$$
+y =( \beta_0+ \beta_3 \delta_0)+ \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + (\mu +\beta_3 v_3)
+$$
+
+Without the previous assumption, we could end up with <b>biased estimates</b>:
+
+If we consider for example $x_3^*$ correlated with $x_1,x_2, x_3$:
+
+$$
+x_3 = \delta_0 + \delta_1 x_1 + \delta_2 x_2 + \delta_3 x_2 + v_3
+$$
+
+them we end up in the regression:
+
+$$
+y = (\beta_0 + \beta_3 \delta_0) + (\beta_1 + \beta_3 \delta_1)x_1 + (\beta_2 + \beta_3 \delta_2)x_2 + \beta_3 \delta_3 x_3 + (\mu + \beta_3 v_3)
+$$
+
+_Intuitio: the bias depends on the signs of $\beta_3, \delta_j$, but it is still smaller than the omitted variable bias.
+
+slide 24
 
 ## <a id="7"><b>7 Time Series Data</b> </a>
 
