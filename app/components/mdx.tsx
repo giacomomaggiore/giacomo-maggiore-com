@@ -228,8 +228,9 @@ function createHeading(level) {
 
 function Quote({ children }) {
   return (
-    <blockquote
+    <span
       style={{
+        display: 'block',
         borderLeft: '4px solid #ccc',
         margin: '1em 0',
         padding: '0.5em 1em',
@@ -239,7 +240,7 @@ function Quote({ children }) {
       }}
     >
       {children}
-    </blockquote>
+    </span>
   )
 }
 

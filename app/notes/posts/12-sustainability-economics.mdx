@@ -627,7 +627,114 @@ However, changes in the ESG ratings do NOT affect firms' ESG strategy and action
 
 ## <a id="6"><b>6. Costs of Sustainability Investments: Basics</b> </a>
 
+<b>Accounting vs Economic Cost</b>
+
+- Accounting cost: _actual expenses + capital depreciation_
+- Economic cost: _social cost of utilizing resources (taking into consideration also the <b>opportunity cost</b>)_
+
+<br/>
+<b>Marginal vs Average Cost</b>
+- Average cost: _cost per unit produced ($\text{Total Cost}/Q$)
+- Marginal cost: _cost of an additional unit produce ($\text{Total Cost}_N - \text{Total Cost}_{N-1}$)
+
+In sustainability, we already mentioned marginal cost considering the <b>abatement cost curves</b>, representing the costs of redcution of $CO_2$ emissions by an additional ton.<br/>
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/abatement-curve.png)
+</div>
+
+_The curve, given the actual technologies and resources, order all the actions we can do, from the cheapest to the most expensive, to reduce emissions._ 
+<br/>_Also, te curve takes into consideration <b>negative costs</b>._
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/abatement-curve-2.png)
+</div>
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/abatement-curve-3.png)
+</div>
+_(Teorically, we could draw the marginal-benefit curve in the first initial abatement graph to understand where the optimal equilibrium lies, however, costs and benefits are really dinamic and hard to solve)_.
+
+<b>Static vs Dinamic Costs</b>
+
+- Static costs: _costs of a specific project (could be measured via present discounted valoue)_ 
+- Dinamic costs: _overall costs of a project, including future effects and spillovers (learning-by-doing, scale effects, positive externalities etc...)_
+
+_Example: in the wird-turbines sector, doubling manufacturing experience lowers costs by $14-29\%$_.
+
+_However, note that the costs reduction can be given by two factors (correlation $\ne$ causation): increase in experience or increase in supply, so it's hard to draw conclusions._
+
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/wind-turbines.png)
+</div>
+
+<b>Partial vs General Equilibrium Costs</b>
+- Partial equilibrium: _focus on one market in isolation_
+- General equilibrium: _consider effects on other markets_.
+
+_Example: airline depaiting bunying sustainable aviation fuel_:
+- PE cost: _extra cost of sustainable aviation fuel (fuel cost only)_
+- GE cost: _also consider changes in cost of labor and capital cost (it this change attracts workers/investors)
+
+<br/>
+<b>Levelized Costs</b>
+
+_How can we measure the costs of di§erent electricity generating technologies in a comparable way?_
+
+The <b>levelized cost</b> is the _(constant, real)_ price of power that would equate the net present value of revenue from a plantís output with the net present value of the cost of production.
+
+Assuming that a plant existas for $N$ periods and produces $q_n$ units per period $n$, the present value of costs is:
+
+$$
+\sum_n^N \frac{C_n(q_1, ... q_N)}{(1 + r)^n}
+$$
+
+were $C_n$ is the cost of producing in period $n$ including also the capital costs.
+
+With the same assumptions, the net present value of revenue is:
+
+$$
+\sum_n^N \frac{q_n p_{LCOE}}{(1 + r)^n}
+$$
+
+If we equate the expressions we can solve for $p_{LCOE}$:
+$$
+\sum_n^N \frac{C_n(q_1, ... q_N)}{(1 + r)^n} = \sum_n^N \frac{q_n p_{LCOE}}{(1 + r)^n}
+
+$$
+$$
+p_{LCOE} = \frac{\sum_n^N \frac{C_n(q_1, ... q_N)}{(1 + r)^n}}{\sum_n^N \frac{q_n }{(1 + r)^n}
+}
+$$
+
+The LCOE (levelized cost of energy) provides a easy way to compare cost of energy... but, there are two key facts about the electricity market that we must consider:
+- it's costly to trasport and store 
+- demand is higly volatile in space and time
+
+$\implies$ _.The value of electricity depends critically on the timing, location, and controllability (dispatchability) of its production._
+
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/energy-demand.png)
+</div>
+
+With increasing share of variable resources sources, some markets show _zero_ or _negative_ spot prices for electricity.
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/negative-prices.png)
+</div>
+
+<b>Adjustments to Levelized Cost Estimates</b>
+
+Sould subsidies and tax beneifts be included in the estimation?
+- from private (investor) perspective: _yes_ 
+- from public (economist) perspective: _no_ 
+
+Should externalities be included in LCOE?
+- Public (economist) perspective: _yes_
+<div align = "center">
+![Abatement Curve](/images/notes/sust-econ/levelized-cost.png)
+</div>
+
+_Note: GHG cost: greenhouse gas emissions cost, Non-GHG: particulate matter_.
+
 ---
+
 
 ## <a id="7"><b>7. Firm’s Capital Costs, Sustainability, and Environmental Risks</b> </a>
 

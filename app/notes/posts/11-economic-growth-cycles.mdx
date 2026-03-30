@@ -493,10 +493,17 @@ However, in 1980, monetarism lost his appeal for different reasons:
 </div>
 
 Today's money architecture is structured as follows:
-- <b>Money in the hand of the public</b>
-    - cash _(issued by central banks)_
-    - bank deposits _(created by commercial banks)_
-- <b>Digital central bank money</b>: reserves created by central banks that can be only used by commercial banks to settle interbank claims.
+
+<Table
+    data={{
+        headers: ["Instrument", "Issuer", "Users", "Role"],
+        rows: [
+            [<b>Cash</b>, "Central bank", "Everyone", "Public central bank money"],
+            [<b>Reserves</b>, "Central bank", "Banks", "Interbank settlement asset"],
+            [<b>Deposits</b>, "Commercial banks", "Households, firms", "Main money in everyday payments"]
+        ]
+    }}
+/>
 
 <br/>
 ---
@@ -871,7 +878,9 @@ However, even in theory, there are some possible deviations from the <b>Ricardia
 
 ## <a id="5"><b>5. The Solow Growth Model</b> </a>
 
-<Quote>(Productivity) growth isn't everything, but in the long run it's almost everything. <a href="https://it.wikipedia.org/wiki/Paul_Krugman" target="_blank">Paul Krugman, 1990</a></Quote>
+<Quote>
+(Productivity) growth isn't everything, but in the long run it's almost everything. <a href="https://it.wikipedia.org/wiki/Paul_Krugman" target="_blank">Paul Krugman, 1990</a>
+</Quote>
 
 Real GDP per capita is often considered the most important indicator for average standard of living.
 
@@ -1084,6 +1093,186 @@ _Note that, for the Cobb-Douglas production function, $s_{gold} = \alpha$_ and t
 ---
 
 ## <a id="6"><b>6. Money holding: Inflation and Monetary Policy</b> </a>
+
+<div align = "center">
+![Steady State in the Solow Model](/images/notes/economic-growth/why-money.png)
+</div>
+
+<b>Why money? The double coincidence of wants problem</b>
+
+In barter, each side must want exactly what the other side offers. Money solvey this by provding a _generally accepted medium of exchange_.
+
+<b>Fiat money</b> has value because people expect it to be acceptedby future exchange. This expectation is _self-fulfilling_ as long as confidence is maintained. 
+
+<Quote>
+The dollar is the strongest convention man has ever invented
+</Quote>
+
+In economics and monetary economics, money is typically defined by its functions:
+- <b>unit of account</b>
+- <b>medium of exchange</b> 
+- <b>store of value</b>
+
+A practical definition: money is the set of instruments that are <b>widely accepted at par </b> _(at par means: $1$ dollar is $1$ dollar, no due diligence or questions asked)_ to settle obligations and make payments.
+
+_Note that, according the economics and monetary definition, Bitcoin (and other criptocurrencies) are not a form of money: they usually miss te unit-of-measure function and the medium one_.
+
+<a href="https://www.sciencedirect.com/science/article/pii/S1062976919301528" target="_blank">Is bitcoin money? And what that means [Paper]</a>
+
+<div align = "center">
+![Fiat money](/images/notes/economic-growth/fiat-money.png)
+</div>
+
+<b>Types of money in the modern system</b>
+
+<Table
+  data={{
+    headers: ["Instrument", "Issuer", "Users", "Role"],
+    rows: [
+      [<b>Cash</b>, "Central bank", "Everyone", "Public central bank money"],
+      [<b>Reserves</b>, "Central bank", "Banks", "Interbank settlement asset"],
+      [<b>Deposits</b>, "Commercial banks", "Households, firms", "Main money in everyday payments"]
+    ]
+  }}
+/>
+
+In the current economic system, cash doesn't play a major role anymore
+- In Switzerland _(december 2025): banknotes and coir Sns represented the $9.7\%$ of aggregate money M1.
+
+<br/>
+<b>The two-tier structure</b>
+<div align = "center">
+![Two Tier Structure](/images/notes/economic-growth/two-tier.png)
+</div>
+
+A bank trasfer is _essentialy_: a <b>message</b> $+$ a <b>balance sheet update</b>
+<br/>It can be broken down in two steps:
+- Clearing: who owes what to whom?
+- Settlement: how are obligations discharged _(with what asset)?_
+
+_In the two-tier system, interbank settlement uses central bank reserves._
+
+_Let's condier the following transaction:_ Alice trasfers $10$ to Bob
+1. Alice instructs Bank A to <b>transfer </b>10 to Bob.
+2. Bank A <b>debits Alice’s deposit account </b> by 10.
+3. Bank A sends<b> the interbank payment instruction</b> into the payment system.
+4. <b>At the central bank layer,</b> Bank A’s reserve account is debited by 10 and Bank B’s reserve account is credited by 10.
+5. Bank B <b>credits Bob’s deposit account </b> by 10.
+6. The payment is complete once the interbank obligation has been settled in central bank money.
+
+<div align = "center">
+![Steady State in the Solow Model](/images/notes/economic-growth/settlement.png)
+</div>
+
+
+<b>How do banks acquire reserves?</b>
+- Incoming payments from other banks
+- Borrowing from other banks or the central bank _(a bank borrows from another in the interbank market, a bank borrows from the central bank through central bank lending operations against collateral)_.
+- Selling assets.
+
+_Banks can redistribute reserves among themselves, but only the central bank can create reserves for the system as a whole_.
+
+<b>How is money created?</b>
+- Central bank money
+    - <b>cash</b> is created physically through the issuance of banknotes and coins 
+    - <b>reserves</b> are created electronically through central bank operations _(lending, asset purchases)_ 
+- Commercial Bank Money (deposits)
+    - Created electronically when banks expand their balance sheets and credit deposit accounts _(main case: banks make loans, some other options include when banks buy assets from non-banks)_.
+
+The <b>Bank balance sheet</b> can be simplified in:
+- assets: _loands, securities, reserves_ 
+- liabilities: _depotis, wholesale funding, equity_.
+
+_Example: a new loan of $x$ to a customer increases assets and liabilities by $x$. Iin this case $x$ units of money (deposits) are created._<br/>
+_The bank doesn't need to "find depotis first" to make the loan_.
+
+Bank can create deposits ($\approx$ give loans) and expand their balance sheet, but there're some limits:
+- capital and leverage constraints
+- liquidity constraints
+- profitability and risk: _credit risk, funding cost, competition..._
+- borrower demand 
+- monetary policy
+
+In securities trade, the <b>buyer owes cash</b> and te <b>seller owes securities</b>. If te two egs are exchange sequentially, one side may deliver while te oter side fails. This creates the principal risk problem in securities trade_, since there's exposure to the full value of te trade, not just the _"replacement"_ cost.
+
+<b>Delivery versus Payment (DvP)</b> was designed to solve this problem.
+
+<div align = "center">
+![DvP](/images/notes/economic-growth/dvp.png)
+</div>
+
+<b>Why look beyond current forms of money? </b>
+
+Current frictions in payments and settlmenet:
+- cross-border payments can be slow, costly and opaque _(multiple intermediaries, different time zones etc...)_ 
+- settlmenent is often fragmented across different ledgers and insititutions _(example: in DvP cas leg and asset leg may sit on different systems)_ 
+- real-tie 24/7 settlment is not universal _(many systems are still limited to operating hours)_ 
+- programmability is limited _(conditional payments, automated settlmenent and integrated DvP are difficult to implement)_ 
+- access to central bank money is restricted _(households can old cash, not reserves, for digital settlment, most users rely on commercial bank money)_ 
+
+$\implies$ The current system <b>works very well in many domestic settings</b>, but it is not frictionless, especially across borders.
+
+<Table
+    data={{
+        headers: ["Form", "Limits as medium of exchange", "Limits as store of value"],
+        rows: [
+            [<b>Cash</b>, "not digital; inconvenient for remote or large payments", "costly to store in large amounts; theft/loss risk; no interest"],
+            [<b>Deposits</b>, "rely on banks and payment systems; not always instant; cross-border frictions", "exposed to bank risk above insurance limits"],
+            [<b>Reserves</b>, "not available to the public", "very safe, but only for banks / eligible institutions"]
+        ]
+    }}
+/>
+
+
+<b>New forms of money: crypto, stablecoins, tokenized deposits, CBDC</b>
+<br/>
+
+<b>Crypto-asset</b>
+
+Crypto-assets _(like Bitcoin) are not typically a claim on a issuer: _no underlying liability or redemption at par_. <br/>They are <b>native digital assets</b>: trasfer and settlment take placde on its own ledger and its value is market-determined and often _highly volatile_. <br/>Generally speaking, it often functions more like a <b>speculative asset</b> tan as money.
+
+
+<b>Stablecoins</b>
+
+A stablecoin is a <b>digital token designed to maintain a stable value</b> relative to a reference asset _(usually a fiat currency)_.
+<br/>The biggest ones are currently _(march 2026)_ Theter (USDT) and USDC, both tied one to one to the US dollar.
+
+They are typically issued by a private equity and backed by reserve assets, together with a redemption premise. In the past, there were also some algorith-backed stablecoins _(<a href="https://en.wikipedia.org/wiki/Terra_(blockchain)" target="_blank">see for example TerraUSD</a>).
+
+Unlike unbacked-crypto assets, stablecoins aim at <b>price stability in the unit of account</b> but, unlinke deposits:
+- they operate outside the banking framework
+- they are tradable on the secondary market
+- transfers can settle without interbank settlement in central bank money
+
+<div align = "center">
+![DvP](/images/notes/economic-growth/stablecoins.png)
+</div>
+
+Currently _(march 2026)_ the total stable coins market is about $320$ Bn USD. The two biggest ones USDC and USDT account for more than 90% of te market cap.
+
+They have been _"relatively"_ stable in the past:
+
+<div align = "center">
+![DvP](/images/notes/economic-growth/stablecoin-stable.png)
+</div>
+
+But stress episodes happened. In _March 2023_ for example, USDC came under stress during the Silicon Valley Bank failure and a portiio of Circle's reserves (USDC's issuer) became temporarily uncertain.
+<div align = "center">
+![DvP](/images/notes/economic-growth/stablecoin-stress.png)
+</div>
+
+<b>What are stablecoins currently used for?</b> (March 2026)
+- <b>Within the crypto-markets</b>:
+    - as a relatively stable trading and settlment asset 
+    - as a collateral and liquidy in DeFi _(decentralized finance)_ 
+    -as a place to "park" value between more volatile positions 
+- <b>Beyond crypto-markets</b>:
+    - cross-borders trasfers 
+    - dollar access in some countries 
+    - digital payments on a token-based system 
+    - to bypass restrictions in traditional financial systems _(example: capital controls, <b> anti-money laundering (AML) </b> or <b>combating the financing of terrorism (CFT)</b> safeguards)_ 
+
+$\implies$ Still, there are several core risks: reserve quality, redemption/run dynaimcs, governance and integrity, AML issues and bank disintermediation.
 
 ---
 
