@@ -1309,9 +1309,77 @@ $$
 y = (\beta_0 + \beta_3 \delta_0) + (\beta_1 + \beta_3 \delta_1)x_1 + (\beta_2 + \beta_3 \delta_2)x_2 + \beta_3 \delta_3 x_3 + (\mu + \beta_3 v_3)
 $$
 
-_Intuitio: the bias depends on the signs of $\beta_3, \delta_j$, but it is still smaller than the omitted variable bias.
+_Intuition: the bias depends on the signs of $\beta_3, \delta_j$, but it is still smaller than the omitted variable bias.
 
-slide 24
+<b>Measurement Error in a dependent variable</b>
+
+Consider the following situation. We would like to esitimate: $y^* = \beta_0 + \beta_1 x_1 + ... \beta_k x_k + \mu$, but we only measure the true value _plus an error_:
+
+$$
+y = y^* + e_0
+$$
+
+We then define the <b>measurement error</b> $e_0 = y - y^*$.
+
+Therefore, we really estimate:
+$$
+y = \beta_0 + \beta_1 x_1 + ... \beta_k x_k + \mu + e_0
+$$
+- if $e_0$ and $x_j$ are uncorrelated, then the estimate is <b>unbiased</b>
+- if $\mathbb{E}[e_0] = 0$, then the estimate of $\beta_0$ is biased
+<br/>
+---
+<br/>
+<b>Measurement Error in an Explanatory Variable</b>
+
+We want to estimate: $y =\beta_0 + \beta_1 x_1^* + \mu$, so we define the measurement error as $e_1 = x_1 - x_1^*$ and we assume:
+
+$$
+\mathbb{E}[e_1] = 0, \quad \mathbb{E}[y | x_1^*, x_1] = \mathbb{E}[y | x^*_1]
+$$
+
+Therefore, we really estimate:
+
+$$
+y = \beta_0 + \beta_1 x_1 + (\mu -\beta_1 e_1)
+$$
+
+The effect of the measurement error depends on assumptions abou the correlation betweeen $e_1, x_1$:
+- if $\text{Cov}(x_1,e_1) = 0$: OLS remains unbiased but we get higher variaces _(similar to the proxy variable case)_ 
+- if $\text{Cov}(x_1^*,e_1) = 0$ _(case known as the <b>Classical errors-in-variavles assumption</b>) $\implies x_1, e_1$ are correlated with:
+
+$$
+\text{Cov}(e_1, x_1) = \mathbb{E}[x_1 e_1] = \mathbb{x^*_1, e_1} + \mathbb{E}[e^2_1] = 0 + \sigma^2
+$$
+This implies that $x_1$ is correlated with the error so the estimate is biased:
+
+$$
+\lim_{n \to \infty} (b_1) = \beta_1 + \frac{\text{Cov}(x_1, \mu -\beta_1 e_1)}{\text{Var}(x_1)} = \\
+\\ = \beta_1 + frac{\beta_1 \sigma_e^2}{\sigma_x^2 + \sigma_e^2} = = \beta_1 + frac{\beta_1 \sigma_{x^*}^2}{\sigma_x^2 + \sigma_e^2} =
+$$
+_Note that the multiplicative error is $< 1$ so the estimate is biased toward zero _(attenuatoin bias)_.
+
+---
+
+<br/>
+<b>Nonrandom Samples</b>
+
+If the sample is chosen on the basis of an $x$ variable, then estimates are unbiased.
+
+If the sample is chosen on the basis of the $y$ variable, them we <b>sample selection bias</b>.
+
+Note that sample selection can be very subtle! For example, looking at wages for workers _(people choose to work for this wage)_ is different that looking for the wage offers.
+
+<b>Outliers</b>
+
+Sometimes an individual observation can be very different from the others and can have large effects on the outcome. Outliers are often caused by errors in data entry _(reason why looking at data summary statistic is very important!)_.
+
+Multiple strategies to deal with outliers:
+- fix observation where it is clea there was just an extra zero or similar 
+- drop outlier observations and show regressions with/without them 
+- winsorize estreme observations _(for istance: observations below $p1$ set to $p1$ and above $p99$ set to $p9$)._
+
+<a href="https://en.wikipedia.org/wiki/Winsorizing" target="_blank">More on winsorization (Wikipedia)</a>
 
 ## <a id="7"><b>7 Time Series Data</b> </a>
 

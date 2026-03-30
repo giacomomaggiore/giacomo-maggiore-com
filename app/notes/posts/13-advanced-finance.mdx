@@ -874,7 +874,72 @@ $$
 
 ## <a id="7"><b>7. International Financial Management</b> </a>
 
+<b>The Forward Premium/Discount</b>
+
+The forward-premium measures whether the market expects a currency to be more expensive or cheaper in the future compared to right now. It is represented by the <b>annualized  rate</b>, defined as:
+
+$$
+\text{Annualized Rate} = \left( \frac{\text{Spot}}{\text{Forward}} - 1 \right) \times \frac{12}{\text{Months}}
+$$
+- If the result is Positive (+): the currency is at a <b>Forward Premium</b> _(It is expected to become more expensive)._
+- If the result is Negtative (-): the currency is at a <b>Forward Discount</b> _(It is expected to become cheaper)._
+
+<b>Basic relationships: The International Fisher Effect and the Interest Rate Parity</b>
+
+In general, these relationships are known as the <b>International Fisher Effect (IFE)</b> and<b> Interest Rate Parity (IRP).</b>, that describe the equilibrium between a home/domestic currency ($H$) and a foreign currency ($F$).
+
+The <b>Fisher Effect</b> represents the relationship between <b>nominal interest rates</b> ($r$) and <b>expected inflation </b>(ì$i$). In an  _efficient market_, the ratio of nominal interest rates equals the ratio of expected inflation:
+
+$$
+\frac{1 + r_H}{1 + r_F} = \frac{1 + E(i_H)}{1 + E(i_F)}
+$$
+
+The <b>Interest Parity Equation</b>  shows that the difference between the Spot rate ($S$) and the Forward rate ($F$) should offset the difference in interest rates between the two countries to prevent arbitrage:
+
+$$
+\frac{1 + r_H}{1 + r_F} = \frac{F_{H/F}}{S_{H/F}}
+$$
+
+We can then add a final equation, the <b>Purchasing Power Parity</b>: it explains that the expected change in the exchange rate is driven by the difference in inflation rates between the two countries:
+
+$$
+\frac{1 + E(i_H)}{1 + E(i_F)} = \frac{E(S_{H/F})}{S_{H/F}}
+$$
+
+If combine them all, we get the  the <b> International Finance Linkages </b> _("Four-Way Equivalence")_: 
+
+$$
+\frac{1 + r_H}{1 + r_F} = \frac{1 + E(i_H)}{1 + E(i_F)} = \frac{F_{H/F}}{S_{H/F}} = \frac{E(S_{H/F})}{S_{H/F}}
+$$
+
 ---
+<br/>
+<b>The Cost of Capital for International Investments</b>
+
+When calculating the cost of capital in an international context, we need to adjust local valuation to account for foreign exchange risk, country risk, and differing inflation rates.
+
+To obtain the required return for a project, the <b>Capital Asset Pricing Model </b> (CAPM) is often the starting point: 
+$$
+
+\text{Required Return} = \text{Risk-Free Rate}_{Swiss} + (\beta \times \text{Market Risk Premium})
+$$
+
+To discount the expected cash flows in _another currency_, we convert the cost of capital from $CHF$ to second currency _($USD$ in the folloeing example)
+
+$$
+(1 + \text{dollar return}) = (1 + \text{Swiss return}) \times \frac{(1 + \text{interest rate}_{US})}{(1 + \text{interest rate}_{Swiss})}
+$$
+
+_Note that this formula (or method) doesn't take into account business risk!_(every country is exposed to risk, but some parts of the world are _more vulnerabil, see the below table)_.
+
+
+<div align = "center">
+![Political Risk](/images/notes/a-finance/political-risk.png)
+</div>
+
+---
+
+
 
 ## <a id="8"><b>8. No Lecture</b> </a>
 
