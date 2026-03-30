@@ -16,6 +16,9 @@ const navItems = {
   '/resources': {
     name: 'resources',
   },
+  '/newsletter': {
+    name: 'newsletter',
+  },
   '/cv_giacomo_maggiore.pdf': {
     name: 'cv',
   }
