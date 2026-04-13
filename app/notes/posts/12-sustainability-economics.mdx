@@ -14,7 +14,7 @@ summary: ''
 - [Market Value of Firms’ Sustainability Investments](#5)
 - [Costs of Sustainability Investments: Basics](#6)
 - [Firm’s Capital Costs and Environmental Risks](#7)
-- [Sustainability Costs: Managerial and Technological Innovation](#8)
+- [Welfare Economics](#8)
 - [Principles of Benefit-Cost Analysis (BCA)](#9)
 - [Extensions of BCA: Distribution, Substitutability, and Uncertainty](#10)
 - [Environmental Policy: Instrument Choice and Efficiency](#11)
@@ -676,7 +676,7 @@ _Example: airline depaiting bunying sustainable aviation fuel_:
 <br/>
 <b>Levelized Costs</b>
 
-_How can we measure the costs of di§erent electricity generating technologies in a comparable way?_
+_How can we measure the costs of different electricity generating technologies in a comparable way?_
 
 The <b>levelized cost</b> is the _(constant, real)_ price of power that would equate the net present value of revenue from a plantís output with the net present value of the cost of production.
 
@@ -738,17 +738,297 @@ _Note: GHG cost: greenhouse gas emissions cost, Non-GHG: particulate matter_.
 
 ## <a id="7"><b>7. Firm’s Capital Costs, Sustainability, and Environmental Risks</b> </a>
 
+
 ---
 
-## <a id="8"><b>8. Sustainability Costs: Managerial and Technological Innovation</b> </a>
+## <a id="8"><b>9. Welfare Economics</b> </a>
 
+<Quote>
+<b>Economics</b> studies human behaviour as a relationship between ends and scarce means which have alternative uses.
+</Quote>
+
+<Quote>
+<b>Sustainability Economics</b> tries to iudnerstand and manage the long-term relationships between humans and nature so that scarse enviromental goods, and their human-made substitues or complements, are being used efficiently for achieving the normative goals of:
+1. satisfaction of the needs and wants of individuals.
+2. justice, including justice between humans of same and different generations and between humans and non-human nature
+</Quote>
+
+The sustainability challenge implies meeting _basic_ needs today while safeguarding opportunities for future generations:
+
+<div align = "center">
+![Donut Economics](/images/notes/sust-econ/donut.png)
+</div>
+
+<b>First Fundamental Theorem of Welfare Economics</b>
+
+All market equilibria _(in a ideal-utopian market)_ are Pareto-efficient. 
+
+<b>Second Fundamental Theorem of Welfare Economics</b>
+
+Any Pareto efficient allocation can be achieved as a competitive equilibrium through a suitable redistribution of initial endowments, allowing for a separatio of efficiency and distribution concerns.
+
+$ \implies$ _as the conditions for a perfect market are not usually satisfied, governmental actions should be considered_.
+
+In particular, economic policy is both needed to <b>correct market failures</b>:
+- too little internalization of external effects 
+- too little provision of public goods 
+- distorted competition due to market power or information asymetry 
+
+or to enable a "fair" <b>distribution</b> between:
+- humans of different generations _(intergenerational justice)_ 
+- humans of the same generations _(intragenerational justice)_ 
+- humans and the non-human nature _(interspecies justice)_ 
+
+To select and analyze the right economic policy, we firstly need to define a <b>moral compass</b> _(moral theory)_:
+- <b>Consequentialism</b>: justed the moral worth of the effects of an action.
+- <b>Deontological values</b>: focus on judjing the actions themselves.
+- <b>Virtue Ethics</b>: considers as the right action what a virtuout person whould do in that scenario.
+<br/>
+---
+<br/>
+<b>Consequentialism-Utilitarianism-Welfarism</b>
+
+Given the assumption that _individual utilities are measurable and comparable_, <b>utilitarism</b> sums um all the values of all the pleasures on the one oe side and those of all the pains on the other.
+
+According to different theories, the welfare function $W$ can have different shapes but it's always increasing in all its arguments.
+
+$$
+W^{utilitarism} = \sum_{i = 1}^{i = n} u_i
+$$
+
+$$
+W^{maxmim} = \min_i {u_i}
+$$
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/utilitarism.png)
+</div>
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/maxmin.png)
+</div>
+
+The 2015 Nobel Prize for analyzed the relationship between life satisfaction and Per Capita GDP, showing that each doubling of GDP is associated with a costant increases in satisfaction.
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/gdp-happy-1.png)
+</div>
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/gdp-happy-2.png)
+</div>
+
+However, the relationship between income and utility is not so simple. Assuming all other aspects fixed, common findings say that _utility increases with income at decreasing rate_:
+
+$$
+u(y) = \begin{cases}
+
+\frac{y ^{1 - \eta}-1}{1 - \eta} \quad \text{for } 0 < \eta < \infty, \eta \neq = 1 \\
+\ln(y) \quad  \text{for } \eta = 1
+
+\end{cases}
+$$
+
+where $\eta$ determines the <b>elasticity</b> of marginal utility income:
+
+$$
+\epsilon_{u'(y),y} = \frac{\partial u'(y)}{\partial y}\frac{y}{u'(y)} = - \eta
+$$
+
+_Intuition: if income increases by by $1 \%$, marginal utility decreases by $\eta \%$._ 
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/utility-income.png)
+</div>
+
+<b>Utilitarism optimization</b>
+
+In the case of $W^{utilitarism}$ for $n = 2$ in a pure distribution probel ($y_2 = S - y_1$), the maximization of the welfare function brings to:
+
+$$
+u'_1(y_1) = u'_2(y_2)
+$$
+
+If both individuals have identical preferences, equal incomes are welfare-optimal.
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/utilitarism-plots.png)
+</div>
+
+<b>Maximin optimization</b>
+
+If we want to maximize the utility of the worst-off individual, that is:
+
+$$
+\max W^{maximin} = \max \{ \min \{  u_1(y_1), u_2(y_2) \} \}
+$$
+
+that, if it feasible, to:
+
+$$
+u_1(y_1) = u_2 (y_2)
+$$
+
+Note that, in this csase, maximin optimization doesn't always bring to equal incomes.
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/maximin-1.png)
+</div>
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/maximin-2.png)
+</div>
+
+
+
+<b>Utilitarianism optimization with unequal weights</b>
+
+If we want to maximize the weighted sum of utilites with $D$ utility discount factor _(useful in the case of 2 generations, but could also work for the intertemporal utility of a single individidual)_, we write:
+
+$$
+W^{wu} = u_1 + D u_2, \quad D = \frac{1}{(1 + \delta)^t}
+$$
+
+<div align = "center">
+![Utilitarianism](/images/notes/sust-econ/change-d.png)
+</div>
+
+In this scenario, consider now the utility discount factor $D = \frac{1}{(1 + \delta)^t}$ that, for different values parameters, assumes different meanings:
+- $ \delta = 0 \implies D = 1$: <b>Impartial Consequentialism</b> 
+- Arguments $\delta > 0 \implies D < 1$:
+    - risk of humankind's exinction _(i.e. the change of surviving in the next 100 years)_ brings to:
+
+    $$
+    \mathbb{P}(\text{surviving}) = 0.5 = D = \frac{1}{(1 + \delta)^100} \implies \delta \approx 0.69
+    $$
+    $$
+    \mathbb{P}(\text{surviving}) = 0.9 = D = \frac{1}{(1 + \delta)^100} \implies \delta \approx 0.11
+    $$
+
+    _Intuition: the greater probability of surviving, the utility discount factor $D$_.
+
+Coming back at the maximization problem, it rewrites as:
+
+$$
+W^{wu}(y_1, y_2) = \frac{y_1 ^{1 - \eta}-1}{1 - \eta} + D \frac{y_2 ^{1 - \eta}-1}{1 - \eta}
+$$
+
+in the case of maximal distribution of a resource $S$:
+
+$$
+\max_{y_1} W^{wu}(y_1, S - y_1) = \frac{y_1 ^{1 - \eta}-1}{1 - \eta} + D \frac{(S - y_1) ^{1 - \eta}-1}{1 - \eta}
+$$
+
+that brings to the following welfare maximizing condition:
+
+$$
+y ^{-\eta} = D (S - y_1)^{-\eta}\\
+
+S - y_1 = D^{1 / \eta} y_1 \\
+
+y_1 = S / (1 + D^{1 \ \eta})
+$$
+
+
+---
+
+<br/>
+<b>Critiques of Welfarism</b> 
+
+<a href="https://it.wikipedia.org/wiki/John_Rawls" target="_blank">John Rawls</a> gave the following the main key critiques:
+- some people derive welfare from _"offensive tastes"_ 
+- some people derive welfare from _"expensive tastes"_
+- the conception of welfare are so _diverse_ and cannot be measurable 
+
+In 1971, he then propose the <b>Theory of Justice</b>: 
+
+1. each person is to have an equal right to the most extensive basic liberty compatible with a similar liberty ofr others.
+2. socio-economic inequalities are to be arranged so that they are _(a)_ reasonably expeted to be everyone's advantage, _(b)_ attached to positions open to all.
+
+_Intuition: equalization of equal liberty must be complete and is prior to the distribution of the other primary goods, then maximize the remaining three primary social goods starting to the lwast well-off_.
+
+In contrast, <a href="https://it.wikipedia.org/wiki/Amartya_Sen" target="_blank">Amartya Sen</a> argued that Rawls went _too far_ in the opposite direction of welfarism since <b>primary goods are not the right maximanda</b>. Instead, the focus should be on <b>what goods to for people</b> _(capability approach)_.
+
+In this debate, if the various institutional primary goods were equally supplied:
+- Rawls would call for equalizing the remaining one _(income)_ 
+- Sen would call for distributing income in order to equalize the functionoing that people can achieve with that income.
+    - Sen defined a <b>person's capacility</b> as the set of vectors of functionings available to him $\implies$ he suggests not to equalize the indec of functionings, but rather for equalizing the capabilities across all people.
+    - Also, since there are multiple measures of humand advantage and capability, Sen claims there's no single recipes for justice and proposes and ideal theory of justice to reduce clear inequalities.
+
+
+<br/>
 ---
 
 ## <a id="9"><b>9. Principles of Benefit-Cost Analysis in the Climate Context</b> </a>
 
----
+A <b>cost-benefit analysis</b> is based on the idea of potential Pareto improvements and the <b>Kaldor-Hicks-Scitovsky</b> compensation criterion.<br/>
+In this context, a reallocation _is desirable_ if:
+- the winner could compensate the losers and still be better off 
+- the losers could not compensate the winners for the reallocation not occuring and still be as well off as they would have been if it did not occur.
+
+_Note that, in realty, these compensation rarely take place and don't necessarily balance out across different projects!_.
+
+<b>CBA in Integraded Assessment Models (DICE)</b>
+
+In simple BCA terms, we want to balance avoided climate damages with<b> mitigation costs</b>, defined as:
+
+
+$$
+\Lambda(t) = \theta_1(t)\mu(t)^{\theta_2}
+$$
+
+- $\theta_1(t)$: fraction of economic output that is required to reduce emissions to zero.
+- $\mu(t)$:  emission control rate.
+- $\theta_2$:  cost convexity parameters
+
+Furthermore, we model the <b>famage function</b> as:
+
+$$
+D(t) = \psi T(t)^2
+$$
+
+- $\psi$:  aggregate scaling parameter for the damages on consumption via production-damages.
+
+_Note that there's a quadratic Scaling: in the DICE model, damages scale quadratically with $T(t)$ _(change in atmospheric temperature compared to pre-industrial levels)._
+
+As we seen before, the welfare function is then calculate as:
+
+$$
+W_0(\tilde{c}_t, L_t) = \sum_{t=0}^{100} L_t \frac{1}{(1+\delta)^{5t}} \frac{\tilde{c}_t^{1-\eta}}{1-\eta}
+$$
+
+- $L_t$:  population size in period $t$.
+- $\delta$:  rate of pure time preference, it reflects how much less we value the utility of future generations compared to the present.
+- $\eta$: the (minus) elasticity of the marginal utility of comprehensive consumption, it represents society's desire for consumption smoothing or inequality aversion.
+- $\tilde{c}_t$:  index of generalized _(per capita)_ consumption.
+
+
+Following the DICE model, we can end up with the following estimation:
+
+
+<Table
+  data={{
+    headers: [
+      " ",
+      "social cost of CO2",
+      "world",
+      "Switzerland"
+    ],
+    rows: [
+      ["CO2-eq. emissions 2020", " ", "36 bill. tonnes", "43 mill. t"],
+      ["Nordhaus", "≈ 36 USD / t CO2", "1285 bill. USD", "1.5 bill. CHF"],
+      ["Stern", "≈ 300 USD / t CO2", "10,786 bill. USD", "12.9 bill. CHF"]
+    ]
+  }}
+/>
+
+- Swiss contribition to global climate costs amounts between 2% _(Nordhais)_ and 17% _(Stern)_ of the 2020 Swiss GDP.
+- The difference between the estimates is due to the different _discounting terms_. $\implies% choosing yher right long-term discount rate for CBA is one of the most critical problems in economics.
+
 
 ## <a id="10"><b>10. Extensions of Benefit-Cost Analysis: Distributional Weights, Limited Substitutability, and Uncertainty</b> </a>
+
+
 
 ---
 
