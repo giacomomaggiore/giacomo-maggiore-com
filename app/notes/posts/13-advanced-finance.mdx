@@ -739,6 +739,21 @@ $$
 - $PV(K)$: present value of the strike price 
 - $\text{S}$: underlying price
 
+_The idea behind the put-call parity equation is that the two following portfolio must have the same value, otherwise we end up with an arbitrage opportunity_:
+- <b>Portfolio 1</b>: $\text{Call} + \text{ Money to buy the asset at }K,T$
+- <b>Portfolio 2</b>: $\text{Put} + \text{ Asset}$
+
+In case this equation doesn't hold, there's of course an _arbitrage opportunity_ and, to capture a profit, the following strategies can be used:
+- $C + PV(K) > S + P$:
+    - <b>Reversal (the Call is overpriced)</b>:
+    - The "synthetic" stock position (the call and the cash) is worth more than the actual stock and the put.
+    - <b>Strategy</b> Sell the Call, Borrow the present value of the strike price, Buy the Put, and Buy the Stock.
+   
+- $C + PV(K) < S + P$: 
+    - <b>Conversion (the Put is overpriced)</b>:
+    - <b>Strategy:</b> Buy the Call, Lend (invest) the present value of the strike price, Sell the Put (Write it), and Short the Stock.
+    
+
 <br/>
 ---
 <br/>
