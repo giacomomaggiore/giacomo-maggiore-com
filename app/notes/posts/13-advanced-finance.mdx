@@ -12,12 +12,12 @@ summary: ''
 - [Leasing](#5)
 - [Managing Risk, Options](#6)
 - [International Financial Management](#7)
-- [Financial Analysis](#9)
-- [Financial Planning, Working Capital Management](#10)
-- [Treasury at Holcim / Amrize Case](#11)
-- [Mergers](#12)
-- [Corporate Restructuring](#13)
-- [Financial Crises and Regulatory](#14)
+- [Financial Analysis](#8)
+- [Financial Planning, Working Capital Management](#9)
+- [Treasury at Holcim / Amrize Case](#10)
+- [Mergers](#11)
+- [Corporate Restructuring](#12)
+- [Financial Crises and Regulatory](#13)
 
 ---
 
@@ -957,32 +957,279 @@ _Note that this formula (or method) doesn't take into account business risk!_(ev
 
 ---
 
+## <a id="8"><b>8. Financial Analysis</b> </a>
+
+<b>The Balance Sheet</b>
+- Assets are listed in declining order of liquidity 
+- _Current assets_ are inventories of raw materials, WIP and finished goods 
+- _Current liabilities_ include debts that are due to be repaid and payables 
+
+$$
+\text{Net Working Capital} = \text{Current Assets} - \text{Current Liabilities}
+$$
+
+- Net Working Capital indicates a company has sufficient short-term assets to cover its debt, signaling financial stability.
+
+<div align = "center">
+![Political Risk](/images/notes/a-finance/holcim-bs.png)
+</div>
 
 
-## <a id="8"><b>8. No Lecture</b> </a>
+<br/>
+<b>The Income Statement</b>
+
+<div align = "center">
+![Political Risk](/images/notes/a-finance/holcim-is.png)
+</div>
+
+To measure revenues and earnings:
+$$
+\text{EBIT} = \text{Total Revnues} - \text{Costs} - \text{Depreciation} + \text{Other Income}
+$$
+
+$$
+\text{Gross Profit} = \text{Net Sales} - \text{COGS} \quad | \quad 
+\text{Gross Margin} = \frac{\text{Gross Profit}}{\text{Net Sales}}
+$$
+
+$$
+\text{EBITDA} = \text{EBIT} + \text{Depreciation} + \text{Amortization}
+$$
+
+
+To measure margin: 
+$$
+\text{Operating Margin} = \frac{\text{EBIT}}{\text{Net Sales}}
+\quad |  \quad
+\text{Net Margin} = \frac{\text{Net Income}}{\text{Net Sales}}
+$$
+
+$$
+\text{ROA} = \frac{\text{Net Income}}{\text{Average Total Assets}}
+\quad | \quad
+\text{ROE} = \frac{\text{Net Income}}{\text{Average Shareholders' Equity}}
+$$
+
+To measure profit (net operating profit after tax) and cash flow:
+
+$$
+\text{NOPAT} = \text{EBIT} \times (1 - \text{Tax Rate})
+$$
+
+$$
+\text{FCF} = \text{Operating Cash Flow} - \text{CapEx}
+\quad |    \quad
+\text{FCF Margin} = \frac{\text{FCF}}{\text{Net Sales}}
+$$
+
+
+
+Other relevant metrics:
+
+$$
+\text{Debt-to-Equity} = \frac{\text{Total Debt}}{\text{Shareholders' Equity}}
+$$
+
+$$
+\text{Interest Coverage} = \frac{\text{EBIT}}{\text{Interest Expense}}
+$$
+
+$$
+\text{Asset Turnover} = \frac{\text{Net Sales}}{\text{Average Total Assets}}
+$$
+
+---
+<br/>
+<b>Financial Metrics</b>
+
+The <b>Total Market Capitalization</b> is the total market of equity:
+
+$$
+\text{Total Market Cap} = \# \text{ Shares Outstanding} \times \text{Price per share}
+$$
+
+The <b>Market Value Added</b> (MVA) is the Market Cap minus the <b>book value of equity</b>:
+
+$$
+\text{MVA} = \text{Total Market Cap } - \text{Equity Book Value}
+$$
+
+The <b>Market-to-Book Ratio</b> summarizes the previous information:
+
+$$
+\text{Market-to-book Ratio} = \frac{\text{Market Value of Equity}}{\text{Book Value of Equity}}
+$$
+
+The <b>residual income</b> is the net dollar return after deducting the cost of capital.<br/>
+The <b>Economic Value Added </b> (EVA) is then defined as:
+
+$$
+\text{EVA} = \text{Residual Income} =\\
+= (\text{After-tax interest} + \text{Income}) - (\text{Cost of Capital} \times \text{Capital})
+$$
+
+---
+<br/>
+<b>Accounting Rates of Return</b>
+
+$$
+\text{ROC} = \frac{\text{EBIT}(1-\text{Tax Rate})}{\text{Average Invested Capital}}
+\quad \text{or} \quad
+\text{ROC} = \frac{\text{NOPAT}}{\text{Average Invested Capital}}
+$$
+
+<b>Measuring Efficiency</b>
+
+$$
+\text{ROA} = \frac{\text{Net Income}}{\text{Average Total Assets}}
+$$
+
+$$
+\text{ROE} = \frac{\text{Net Income}}{\text{Average Shareholders' Equity}}
+$$
+
+Note that ROE can be decomposed in <b>Asset Turnover</b> _(measuring how efficiently a company uses it assets to generate profits)_ and <b>Operating Profit Margin</b> _(measuring how much out of every dollar keeps in earnings)_ with the <b>Du-Pont System</b>:
+
+$$
+\text{Asset Turnover} = \frac{\text{Net Sales}}{\text{Average Total Assets}}
+$$
+
+$$
+\text{Operating Profit Margin} = \frac{\text{EBIT}}{\text{Net Sales}}
+$$
+
+$$
+\text{Operating ROA} = \text{Operating Profit Margin} \times \text{Asset Turnover} = 
+$$
+$$
+= \frac{\text{EBIT}}{\text{Net Sales}} \times \frac{\text{Net Sales}}{\text{Average Total Assets}}
+= \frac{\text{EBIT}}{\text{Average Total Assets}}
+$$
+
+<div align = "center">
+![Asset Turnover](/images/notes/a-finance/asset-turnover.png)
+</div>
+
+However, _unlike market-value based measures,_ these indices show the current performance and are not affected by the future expectations. Moreover, in some industries _(pharma, start-up etc...)_, $\text{EVA}$ and $\text{ROI}$ would be negative although the projects might be on track with a positive NPV. <br/>Finally, book-equity is reduced when companies repurchase stocks and this can make non-sense measures of $\text{EVA}$ of the book-rate of return.
+
+Other relevant efficienty metrics are:
+
+$$
+\text{Inventory Turnover Ratio} = \frac{\text{COGS}}{\text{Average Inventory}}
+$$
+_This ratio measures how many times a year a company seels and replaces its entire inventory, the following one translates this info into days:_ 
+$$
+\text{Average Inventory}=\frac{\text{Beginning Inventory}+\text{Ending Inventory}}{2}
+$$
+
+The same logic can be applied to receivables _(how many times per year a company collects its average accounts receivables)_:
+
+$$
+\text{Receivables Turnover} = \frac{\text{Net Credit Sales}}{\text{A/R at Start of Year}}
+$$
+
+$$
+\text{A/R Period (days)} = \frac{\text{A/R at Start of Year}}{\text{Daily Net Credit Sales}}
+$$
+$$
+\text{Daily Net Credit Sales}=\frac{\text{Net Credit Sales}}{365}
+$$
 
 ---
 
-## <a id="9"><b>9. Financial Analysis</b> </a>
+<br/>
+<b>Measuring Leverage</b>
+
+$$
+\text{Long-Term Debt Ratio} = \frac{\text{Long-Term Debt}}{\text{Long-Term Debt} + \text{Total Equity}}
+$$
+
+$$
+\text{Long-term debt-to-equity} = \frac{\text{Long-term debt}}{\text{Equity}}
+$$
+
+Total-debt ratio shows what percentage of the company's assets are financed by creditors _(and not shareholders)_.
+
+$$
+\text{Total Debt Ratio} = \frac{\text{Total Debt}}{\text{Total Assets}}
+$$
+
+The following one shows how easily a company can pay its interest expenses out of its EBIT.
+
+$$
+\text{Times-Interest-Earned (TIE)} = \frac{\text{EBIT}}{\text{Interest Expense}}
+$$
+
+Since depreciation is a _non-cash_ expense, this ratio adds it back to provide a more accurate picture of the available to pay interest.
+
+$$
+\text{Cash Coverage Ratio} = \frac{\text{EBIT} + \text{Depreciation} + \text{Amortization}}{\text{Interest Expense}}
+= \frac{\text{EBITDA}}{\text{Interest Expense}}
+$$
+
+<b>Leverage and the Return on Equity</b>
+
+$$
+\text{ROE}
+=
+\underbrace{\frac{\text{assets}}{\text{equity}}}_{\text{Leverage ratio}}
+\times
+\underbrace{\frac{\text{sales}}{\text{assets}}}_{\text{Asset turnover}}
+\times
+$$
+
+$$
+\times \quad
+\underbrace{\frac{\text{after-tax interest} + \text{net income}}{\text{sales}}}_{\text{Operating profit margin}}
+\times
+\underbrace{\frac{\text{net income}}{\text{after-tax interest} + \text{net income}}}_{\text{Debt burden}}
+$$
+---
+<br/>
+<b>Measuring Liquidity</b>
+
+The NWC to Tota-assets shows what percentage of the company's total resources is tied up in working capital.
+$$
+\text{NWC to total assets} = \frac{\text{Net working capital}}{\text{Total assets}}
+$$
+
+The Current-ratio is the _standard metric_ used to determine if a company can cover its short-term obligations.
+
+$$
+\text{Current ratio} = \frac{\text{Current assets}}{\text{Current liabilities}}
+$$
+
+The Quick Ratio _(also known as ACID-TEST)_  includes only the most liquid assets: cash, short-term investments, and money owed by customers (receivables). It excludes
+inventory because selling products can take time and isn't guaranteed.
+$$
+\text{Quick ratio} = \frac{\text{Cash} + \text{Marketable securities} + \text{Receivables}}{\text{Current liabilities}}
+$$
+
+The Cash-ratio is the most conservative liquidity measure: it looks only at actual cash and marketable securities on hand.
+
+$$
+\text{Cash ratio} = \frac{\text{Cash} + \text{Marketable securities}}{\text{Current liabilities}}
+$$
 
 ---
 
-## <a id="10"><b>10. Financial Planning, Working Capital Management</b> </a>
+
+## <a id="9"><b>9. Financial Planning, Working Capital Management</b> </a>
 
 ---
 
-## <a id="11"><b>11. Treasury at Holcim / Amrize Case</b> </a>
+## <a id="10"><b>10. Treasury at Holcim / Amrize Case</b> </a>
 
 ---
 
-## <a id="12"><b>12. Mergers</b> </a>
+## <a id="11"><b>11. Mergers</b> </a>
 
 ---
 
-## <a id="13"><b>13. Corporate Restructuring</b> </a>
+## <a id="12"><b>12. Corporate Restructuring</b> </a>
 
 ---
 
-## <a id="14"><b>14. Financial Crises and Regulatory</b> </a>
+## <a id="13"><b>13. Financial Crises and Regulatory</b> </a>
 
 ---
