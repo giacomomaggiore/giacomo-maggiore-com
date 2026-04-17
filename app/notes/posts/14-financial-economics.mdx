@@ -1159,7 +1159,7 @@ $$
 _Intuition: $e_L$ is the amount of momey for which the individual is indifferent between playing $L$ and a fixed amount of momney_.
 - For a concave utility _(risk averse agent):_ $\mathbb{E}_L[u(x)] - e_L > 0$
 - For a linear utility _(risk neutral agent):_ $\mathbb{E}_L[u(x)] = e_L$
-
+<br/>
 <b>Risk Premium</b>
 
 
@@ -1283,6 +1283,101 @@ then the utility of a lottery only depends on its mean and variance.
 _
 
 ## <a id="6"><b>6. Demand for risk</b></a>
+
+<b>Static Portfolio Choice - Setting Up the Problem</b>
+
+Consider an agent with wealth $W$ who can invest at time zero $t_0$ in a risk-free asset with return $r_0$ and in a risky asset with random return $\tilde r$.
+
+If the agent invests $\alpha$ in the risky assets, he gets in period $1$:
+
+$$
+(W - \alpha) r_0 + \alpha \tilde r = W r_0 + \alpha (\tilde r - r_0)
+$$
+
+with $\omega = Wr_0$ and $ \tilde R = \tilde r - r_0$, the agent's problem rewrites as:
+
+$$
+\max_{\alpha} V(\alpha) = \mathbb{E}[u(w + \alpha \tilde R)]
+$$
+
+<b>Positive Demand for Risky Asset</b>
+
+Let's stard deriving some properties:
+
+$$
+V'(\alpha) = \mathbb{E}[\tilde R u'(w + \alpha \tilde R)]
+$$
+
+$$
+V''(\alpha) = \mathbb{E}[\tilde R^2 u(w + \alpha \tilde R)]
+$$
+
+Then if the agent is risk-averse, $V$ is concave and therefore $V'$ is _non-increasing_, so we can conclude that:
+
+- if $\mathbb{E}[\tilde r] > 0 \implies \mathbb{E}[\tilde R] > 0$: the agent should purchase some risky asset _(regardless of how much risk averse he migh be)_.
+- if $\mathbb{E}[\tilde r] < 0$: it is _never optimal_ to purchase the risky asset.
+
+<b>Static Portfolio Choice - First Order Conditions</b>
+
+We derive the first order conditions to quantify how much the agent should invest.
+
+$$
+V'(\alpha^*) = 0 \implies $\mathbb{E}[\tilde R u' (\omega \alpha^* \tilde R) r] = 0
+$$
+
+- If $\tilde R$ is always of the same sign $\implies$ there is _no interior solution_.
+- Even if the agent is risk-averse and $\tilde R$ changes sign, there _may not be_ an interior solution.
+
+In the following, we assume that there exists an interior solution and that $$\mathbb{E}[\tilde R] > 0$, so that the solution is positive ($\alpha^* > 0$).
+
+<b>Static Portfolio Choice - Small Risks</b>
+
+We assume $\tilde R = \epsilon + \tilde R'$, with $\mathbb{E}[\tilde R'] =0$ and $\epsilon > 0$.<br/>
+We denote by $\alpha(\epsilon)$ the solution to:
+
+$$
+\max_{\alpha} $\mathbb{E}[ u(\omega (\epsilon + \tilde R') \alpha)]
+$$
+
+from which we can derive the <b>first-order condition</b>:
+
+$$
+\mathbb{E}[(\epsilon + \tilde R')u'(\omega + \alpha(\epsilon)\epsilon + \alpha (\epsilon)\tilde R')] = 0
+$$
+
+We know that $\alpha(0) = 0$, so using a Taylor Approximation, we can show that $\alpha(\epsilon) \approx \epsilon \alpha'(0)$ and that:
+
+$$
+u'(\omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R') \approx u'(\omega) + \epsilon \alpha' (0) \tilde R u''(\omega).
+$$
+
+If we plug it into the first-order condition, we obtain:
+
+$$
+\epsilon u'(\omega) + \epsilon \alpha' (0) u''(\omega) \mathbb{E}[\tilde R'^2] = 0
+$$
+$$
+\implies \alpha'(0) = \frac{1}{\mathbb{E}[\tilde R'^2] R_a (\omega)}
+$$
+
+that finally gives:
+
+$$
+\alpha \approx \frac{\mathbb{\tilde R}}{\mathbb{V}(\tilde R) R_a (\omega)}
+$$
+
+Then the share of wealth invested in the risky asset is:
+
+$$
+\frac{\alpha}{\omega} \approx \frac{\mathbb{\tilde R}}{\mathbb{V}(\tilde R) R_r (\omega)}
+$$
+
+where $R_r(\omega) = - \omega \frac{u''(\omega)}{u'(\omega)}$ is the coefficient of relative risk aversion.
+
+<b>Static Portfolio Choice - Quadratic Utility Indices </b>
+
+slide 12 
+
 ---
 
 ## <a id="7"><b>7. Risk sharing and insurance</b></a>
