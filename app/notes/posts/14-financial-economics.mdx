@@ -1322,7 +1322,7 @@ Then if the agent is risk-averse, $V$ is concave and therefore $V'$ is _non-incr
 We derive the first order conditions to quantify how much the agent should invest.
 
 $$
-V'(\alpha^*) = 0 \implies $\mathbb{E}[\tilde R u' (\omega \alpha^* \tilde R) r] = 0
+V'(\alpha^*) = 0 \implies \mathbb{E}[\tilde R u' (\omega \alpha^* \tilde R) r] = 0
 $$
 
 - If $\tilde R$ is always of the same sign $\implies$ there is _no interior solution_.
@@ -1336,7 +1336,7 @@ We assume $\tilde R = \epsilon + \tilde R'$, with $\mathbb{E}[\tilde R'] =0$ and
 We denote by $\alpha(\epsilon)$ the solution to:
 
 $$
-\max_{\alpha} $\mathbb{E}[ u(\omega (\epsilon + \tilde R') \alpha)]
+\max_{\alpha} \mathbb{E}[ u(\omega (\epsilon + \tilde R') \alpha)]
 $$
 
 from which we can derive the <b>first-order condition</b>:
@@ -1363,7 +1363,7 @@ $$
 that finally gives:
 
 $$
-\alpha \approx \frac{\mathbb{\tilde R}}{\mathbb{V}(\tilde R) R_a (\omega)}
+\alpha \approx \frac{\mathbb{E}[\tilde R]}{\mathbb{V}(\tilde R) R_a (\omega)}
 $$
 
 Then the share of wealth invested in the risky asset is:
@@ -1376,7 +1376,140 @@ where $R_r(\omega) = - \omega \frac{u''(\omega)}{u'(\omega)}$ is the coefficient
 
 <b>Static Portfolio Choice - Quadratic Utility Indices </b>
 
-slide 12 
+We assume now <b>quadratic utility index</b>, with $c = \omega + \alpha + \tilde R$, that is:
+
+$$
+u(c) = c - \frac{\beta}{2}c^2
+$$
+
+Under this scenario, the FOC writes as:
+
+$$
+(1 - \beta \omega) \mathbb{E}[\tilde R] - \alpha \beta \mathbb{\tilde R^2} = 0
+$$
+
+that brings the following value for $\alpha$:
+
+$$
+\alpha = \frac{1- \beta \omega}{\beta}\frac{\mathbb{\tilde R}}{\mathbb{\tilde R^2}}
+$$
+
+_Intuition: the amount invested in the risky asset only depends on the mean and the variance of $\tilde R = \tilde r - r_0$.
+
+---
+<br/>
+<b>Static Portfolio Choice - Hyperbolic Absolute Risk Aversion</b>
+
+Consider now the HARA utility index, with $c = \omega + \alpha \tilde R$.
+
+
+$$
+u(c) = \frac{\gamma}{1 - \gamma} ( b + \frac{c}{\gamma})^{(1-\gamma)}
+$$
+
+Under this scenario, the FOC gives:
+
+$$
+\mathbb{E}[\tilde R (\omega + \alpha \tilde R + b \gamma)^{-\gamma}] = 0 \iff 
+$$
+$$
+\iff \mathbb{E}[\tilde R (1 + \frac{\alpha}{(\omega / \gamma + b)\gamma})^{-\gamma}] = 0
+$$
+
+if we denote by $a$ the solution of $ \mathbb{E}[\tilde R (1 + a \frac{\tilde R}{\gamma})^{-\gamma}] = 0$, we end up with:
+
+$$
+a = \frac{\alpha}{\omega/\gamma + b} \quad \implies \quad \alpha = a ( \frac{\omega}{\gamma}+b)
+$$
+
+_Inutiotion behind corner cases:_
+- <b>CARA </b> ($\gamma \to \infty$): $\alpha$ is independent of $\omega$.
+- <b>CRRA</b> ($b = 0$): $\alpha$ is proportional to $\omega$.
+<br/>
+---
+<br/>
+<b>Static Portfolio Choice - The Impact of Risk Aversion</b>
+
+<b>Proposition</b>
+
+The demand for the risky asset decreases with risk aversion.
+
+<b>Proof</b>
+
+We consider $u_1 = \phi (u_2)$, with $\phi$ concave, then we assume that $\alpha_1, \alpha_2$ solve the following:
+
+$$
+\mathbb{E}[\tilde R u_1 (\omega + \alpha_1 \tilde R)] = 0\quad \mathbb{E}[\tilde R u_2 (\omega + \alpha_2 \tilde R)] = 0 
+$$
+
+that translates to $V'_1(\alpha_1) = V'_2(\alpha_2) = 0$. The concavity implies that:
+
+$$
+\forall \alpha \in [0,1], \quad \forall R \in \mathbb{R}: 
+$$
+
+$$
+R \phi' (u_2 (\omega + \alpha R)) \le R \phi0 (u_2 (\omega))
+$$
+
+Therefore we can write:
+
+$$
+\begin{align*}
+V'_1(\alpha_2) &= \mathbb{E}[{\tilde R u'_1 (\omega + \alpha_2 \tilde R)}\\
+
+&= \mathbb{E}[{\tilde R u'_2 (\omega + \alpha_2 \tilde R)} \phi' (u_2 (\omega + \alpha_2 \tilde R))]\\
+&\le \mathbb{E}[\tilde R u'_2(\omega + \alpha_2 \tilde R)\phi'(u_2(\omega))]\\
+&= \phi'(u_2 (\omega))V'_2 (\alpha_2)//
+&= 0
+
+\end{align*}
+
+$$
+
+Thus, $V'_1(\alpha_2)\le 0 = V'(\alpha_1)$. Since $V$ concave, we have also that $\alpha_1 \le \alpha_2$.
+
+
+---
+<br/>
+<b>Wealth and Demand for Risk</b>
+
+A utility index is said to exhibit decreasing absolute risk aversion <b>(DARA)</b> if and only if $R_a$ is a decreasing function of wealth.
+
+<b>Proposition $I$</b>
+
+The utility index $u$ exhinbits DATA if and only if for all $\tilde x$ the risk premium $\pi$ associated with the lottery $\omega + \tilde x$ is decraeasing in $\omega$.
+
+Consider now an expected utility maximiizng investor with utility index $u$ and initial wealth $\omega$. Assume that there is one safe asset and one risky asset with higher expected return.
+
+<b>Proposition $II$</b>
+
+If the absolute risk aversion is decreasing _(increasing)_ then the dollar amount invested in the risky asset increases (decreases) with investor's wealth.
+
+<b>Proposition $II$</b>
+
+If the relative risk aversion is increasing _(decreasing)_, then the fration of wealth invested in the risky asset decreases _(increases)_ with wealth.
+
+
+<div align = "center">
+![Risky Asset](/images/notes/financial-econ/risky-asset-evolution.png)
+</div>
+
+_Example: share of wealth to risy asset over wealth percentiles (Fagerend, Andreas et al: "Heterogeneity and persistence in return to wealth")_.
+
+_Intuition:_
+- it is common discussion that wealthier people are willing to bear more risk than poorer people 
+- this is often complemented by a stronger assumption: _non-increasing (or decreasing) relative risk aversion_.
+<br/>
+<b>Impact of a change in risk</b>
+
+Should the demand for a risky asset increase or decrease with the riskiness of such an asset?
+
+<b>Proposition</b>
+
+A shift of the distribution of returns increases the demand for the risky asset is:
+- the shift is first-order stochastically dominant and $R_r(x) < 1$ for all $x$.
+- the shift is second-order stochastically dominant and $R_r(x) \le 1$ for all $x$, relative risk aversion is increasing and absolute risk aversion is decreasing.
 
 ---
 

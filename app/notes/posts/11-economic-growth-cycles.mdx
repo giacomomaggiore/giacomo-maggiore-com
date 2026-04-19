@@ -1274,6 +1274,58 @@ But stress episodes happened. In _March 2023_ for example, USDC came under stres
 
 $\implies$ Still, there are several core risks: reserve quality, redemption/run dynaimcs, governance and integrity, AML issues and bank disintermediation.
 
+
+
+Note that a stablecoin-dominated system would be a distinc monetary architecture from today's one, with privately issued settlmenet assets potentially operating outside the traditional two-tier system. <br/>An alternative is <b>CDBC + tokenized deposits</b> that is mainly a modernization of existing forms of money within the current architecture.
+
+<div align = "center">
+![cbdc](/images/notes/economic-growth/cbdc.png)
+</div>
+
+<b>Tokenized Deposits</b>
+
+A tokenized deposit is _still_ a bank deposit _(a calim on regulated commercial bank)_ but it's represented as a <b>digital token</b> on a programmable platform, often using DLT. It preserves both the <b>two-tier monetary system</b> while still changing the transfer and settlmenet infrastructure, promising for greater programmability and potentially more integraded settlement in tokenized markets.
+
+This would be part of a broader trend: not only money, but also bonds and contracts can be brought onto programmable digital rails.
+<br/>Indeed a toekn can bundle both information about an asset or claim and the rules governing how it can be used.
+<div align = "center">
+![cbdc](/images/notes/economic-growth/token.png)
+</div>
+
+<b>Retail example: programmable fundraise</b>
+
+If the target is not reached $\implies$ the funds are automatically returned, reducing the risk of fraude or delay.
+
+<div align = "center">
+![cbdc](/images/notes/economic-growth/retail-ex.png)
+</div>
+
+<b>Wholesale CBDC (wCBDC)</b>
+
+wCBDC are <b>Digital Central Bank Money</b> for banks and financial institutions only, they are _economically_ close to the central bank reserves,but _potentially_ with new functionalities enabled by the tokenization.
+
+<div align = "center">
+![cbdc](/images/notes/economic-growth/wcbdc.png)
+</div>
+
+
+<b>Retail CBDC</b>
+
+Retail CBDC are a digital form of central bank money for the general public, often with a token-based design, an intermediate model and more privacy and offline capabilities.
+
+Often described as _"digital cash"_, but its design can differ substiantally depending on policy goals and they would be more than a new payment technology _(a now <b>monetary architecture choice</b>!).
+
+<div align = "center">
+![cbdc](/images/notes/economic-growth/retail-cbdc.png)
+</div>
+
+Currently _(april 2026)_ the world is still not ready for this system:
+- avanced pilots in wholesale market infrastructure for wCBDC are ongoing 
+- The SNB Prokect Helvetia on SDX and the Eurosystem DLT work 
+- In China, laege-scale pilots (e-CNY) for rCBDC are in place 
+- The US is still hostile to rCBDC.
+
+
 ---
 
 ## <a id="7"><b>7. Crises in Market Economies</b> </a>
@@ -1282,6 +1334,143 @@ $\implies$ Still, there are several core risks: reserve quality, redemption/run 
 
 ## <a id="8"><b>8. IS-LM Model and Open Economy</b> </a>
 
+The <b>monetary policy goals</b> can be summarized, as in the standard US textbook by <a href="https://en.wikipedia.org/wiki/Frederic_Mishkin" target="_blank">Frederic Mishkin</a>, in:
+- low unemployment (high GDP)
+- economic growth 
+- price stability 
+- interest rate stability 
+- financial market stability
+
+The problem is that this multitude of goals often anno be reached simultaneously, requiring some trade-offs.
+
+We speak by of <b>discretionary policy</b> when the central bank can choose its policy period by period.<br/>We speak of <b>rule-based monetary policy</b> when policy is _constrained_ by a previously announced rule or commitment.
+
+At first look, a discretionary policy seems superior to a _less-flexible_ rule based, however, when current policy affects private expectatios for the future, discretion may lead to inferior outcomes.
+
+_(Since the early 1990s, many countries have moved towards a more rule-based monetary system, largely independent by the government)_.
+
+On the other side, a dicretionary-policy has some major drawbacks and the most important is the _so-called_ <b>Time Inconsistency Problem</b>.
+
+<b>The Time Inconsistency Problem</b>
+
+The classic analysis of this problmes comes from Kydlan and Prescott, that, for this achievement, received <a href="https://www.nobelprize.org/prizes/economic-sciences/2004/press-release/" target="_blank">the Nobel Prize</a>.
+
+A plan is time inconsistent if it is judjed optimal at $t_0$, but at $t_1$ the same decision maker prefers to revise the plan, even though no new relevant information is available and the current enviroment has not yet changed.
+
+_(This problem is also linked with credibility: announcements are no longer credible if one knows that they will later changed)._
+
+<b>The TI Problem in Monetary Policy</b>
+
+When a central bank knows that it cannot influencer real variables _in the long run_ but it can influence inflation rate, it will _ex-ante_ formulate its poity in a such a way that it results in a optimal inflation. 
+
+However, if the central bank can influence real-variables _in the short run_, it will be tempted to deviate from the previous policy.
+
+Therefore, it is no longer time-consistent.
+
+The equilibrium is thus an inflation rate which is <b>higher than socially desired</b>, but without changing output in the long run.
+
+_(The solution would be a independent CB with rule-based monetary policy)_.
+
+---
+<br/>
+<b>The Barro-Gordon (1983) Model I</b>
+
+The model a CB that bases in actions on a <b>social welfare function</b> _(discrete-monetary policy)_.
+
+The CB can directly coose an infòation rate $\pi$ for the short-run.
+
+The private sector is the second player and it is described by rational expectations, we then model a strategic game with simultaneous decisions.
+
+The social welfare funtion can be defined as:
+
+$$
+S = - \alpha(\pi - \tilde \pi)^2 - (y - \tilde y)^2
+$$
+
+or as a <b>loss function</b> as:
+
+$$
+L = - S =   \alpha(\pi - \tilde \pi)^2 + (y - \tilde y)^2
+$$
+
+with:
+- $\alpha >0$: costant
+- $\pi$: inflation rate 
+- $y$: output
+- $\tilde \pi$: target inflation _(we assume here $\tilde \pi = 0$)
+- $\tilde y$: target production.
+
+The Philipps curve summarizes the interplay between real and nominal variables:
+
+$$
+y = y^N + \beta (\pi - \pi_E)
+$$
+
+with:
+- $y^N <\tilde y$: natural output (\tilde y = \lambda y^N$ with $\lambda > 1$)
+- $\beta > 0$: costant 
+- $\pi_E$: expected inflcation
+
+The prive sector has rational expectations, that is:
+
+$$
+\pi_E = \mathbb{E}(\pi) = \pi
+$$
+
+This immediately im,plies that _(via the Philipps Curve)_ in equilibrium $y$ must satisfy:
+
+$$
+y = y^N \quad \pi = 0
+$$
+
+_Unfortunately,_ with discrete-monetary policyt, this is not what we get in equilibrium!
+
+So let's go back to the loss function and let's substitute the Phillips curve:
+
+$$
+L =   \alpha(\pi - \tilde \pi)^2 + (y - \tilde y)^2
+\\
+y = y^N + \beta ( \pi - \pi_E) \implies \\
+
+L = \alpha \pi^2 + [( 1 - \lambda)y^N + \beta (\pi - \pi_E)]^2
+$$
+
+We now minimize this function with respect to $\pi$:
+$$
+\frac{\partial L}{\partial \pi} = 2 \alpha \pi + 2 \beta [(1 - \lambda)y^N + \beta (\pi - \pi_E)] = 0 \implies 
+$$
+
+that leads to the <b>Monetary policy reaction function</b>:
+$$
+\pi = \frac{\beta}{\alpha + \beta^2}[\beta \pi_E + (\lambda -1)y^N]
+$$
+
+Together with the reaction function _(expecations)_ of the private sector, $ \pi_E = \pi$, the equilibrium is:
+
+$$
+\pi = \frac{\beta (\lambda -1)}{\alpha}y^N \quad \pi > 0 \forall \lambda > 1
+$$
+
+The equilibrium ouput is then: $y = y^N$.
+
+Therefore, the optimal scenario ($\pi = 0, y = y^N$) is not reached in equilibrium, but rahter a solution that is _inferior_.
+
+- The inferior solution is time-consistent, while announging $\pi = 0$ is cleary not.
+- There's a suboptimal high inflation is the equilibrium, called <b>inflation-bias</b>
+- _Intuition_: a discretionary policy provides an inferior result and a monetary policy dependent on _ad-hoc_ governement decisions is therefore not optimal.
+
+For these reasons, sine discretionary policy does not provide the desired results, it is _socially-optimal_ to delegate monetary policy to an independent institution, that it then credibily announce $\pi = 0$.
+
+Along these lines the constitutions of the ECB was drafted.
+
+<b>Possible extensions of the Barro-Gordon Model</b>:
+
+- Look at repeated games instead of a one-shot game
+- Include information imperfecions 
+- Take supply-shocks into account 
+- Model wage settings
+
+$\implies$ also with these changes, the results presented here remain qualitatively very robust.
 
 ---
 
