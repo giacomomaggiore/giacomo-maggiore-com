@@ -29,8 +29,8 @@ But what is _rationality_?
 - Rationality does NOT preclude the possibility of mistakes, errors, non-material values, altruistic or social preferences, social norms and cultures. 
 
 ---
-
-There are several ways to describe what an _economic model: is.
+<br/>
+There are several ways to describe what an _economic model_ is.
 
 - <b>The Standard one</b>: _an economic model is a simplied (usually mathematical) description of reality, designed to yield hypotheses about economic behavior that can be tested_.
 - <b>The Fable one</b>: _economic theory formulates thoughts via "models". The word model sounds more scientific that the word fable or tale, but I think we are talking about the same thing._ (Rubinstein, 2009)
@@ -40,7 +40,7 @@ In Game Theory, the approach lies between these 2 views:
 - in most cases, predictions are consistent with intuitions under real-world policy and competition law.
 
 Generally speaking, we can say that _"all modelrs are wrong, but some are useful"_.
-- all models are abstractions, i.e. _intentionally neglet or simplify some aspects
+- all models are abstractions, i.e. _intentionally neglet or simplify some aspects_
 - a model is good if it has the right level of abstraction for a specific goal.
 
 Indeed, <b>unrealistic assumptions</b>allow a theory to focus only on the crucial and relevant elements required to obtaina prediction.
@@ -65,7 +65,7 @@ Let's try to formalize it: <b>Formal Form Games with _pure strategies_</b>
 
 An $n$-player normal form game consists in:
 - for each player $i = 1,2 \ldots n$, a set of strategies $S_i$
-- for each player $i = 1,2 \ldots n$, a utility function $u_i$ that, for each strategy profile $(s_1, s_2 \ldots s_n) \in S_1 \times \ldots \times S_n$ specified a real number: $u_i(s_1 \ldots s_n) \in \R$.
+- for each player $i = 1,2 \ldots n$, a utility function $u_i$ that, for each strategy profile $(s_1, s_2 \ldots s_n) \in S_1 \times \ldots \times S_n$ specify a real number: $u_i(s_1 \ldots s_n) \in \R$.
 
 We denote the game by $G = (S_1, \ldots S_n, u_1 \ldots u_n)$.
 
@@ -76,11 +76,11 @@ Let $S$ be the set of strategy profiles, i.e. $S = S_1 \times \ldots \times S_n$
 Given a $n$-player normal form game $G$, a strategy profile $s^* = (s_1^*, \ldots s_n^*)$ is a <b>Nash Equilibrium</b> of $G$ if for each player $ i = 1, \ldots n$:
 
 $$
-u_i(s_1^*, \ldots s_{i-1}^*, s_i^*, s_{i+1}^*, \ldots s_n^*) \ge u_i(s_1^*, \ldots s_{i-1}^*, s_i^, s_{i+1}^*, \ldots s_n^*) \forall s_i \in S_iπ
+u_i(s_1^*, \ldots s_{i-1}^*, s_i^*, s_{i+1}^*, \ldots s_n^*) \ge u_i(s_1^*, \ldots s_{i-1}^*, s_i^, s_{i+1}^*, \ldots s_n^*) \quad \forall s_i \in S_iπ
 
 $$
 - _The asterisk $^*$ is often used to denote an equilibrium profile rather than a generic profile._
-- When strategy $s_i \neq s_i^*$, it is called _"unilateral deviation"_ from $s^*$.
+- When strategy $s_i \neq s_i^*$, it is called <b> _"unilateral deviation"_ </b> from $s^*$.
 
 An alternative definition of <b>Nash Equilibrium</b> is: a strategy profile $(s_1, \ldots s_n$) is NOT a Nash Equilibrium if at least one player has an incentive to unilaterally deviate.
 
@@ -100,7 +100,7 @@ We denote as $R_i(s_1, \ldots, s_{i-1}, s_{i+1}, \ldots s_n)$ the set of player 
 
 <b>Theorem: Nash Equilibrium in pure strategies</b>
 
-A strategy profile $(s_1^*, \ldots s_n^*)$ is a _Nash Equilibrium_ if an omly if, $\forall i = 1, \ldots n$, we have:
+A strategy profile $(s_1^*, \ldots s_n^*)$ is a _Nash Equilibrium_  $\iff  \forall i = 1, \ldots n$, we have:
 
 $$
 s_i^* \in R_i(s_1^*, \ldots, s_{i-1}^*, s_{i+1}^*, \ldots s_n^*)
@@ -110,7 +110,7 @@ In mathematics, we would call this a <b>fixed point</b>.
 
 ---
 
-WHen we are analyzing the strategic interactions in both theoretical and real-orld settings, we are often interested in <b>"efficiency"</b>.
+When we are analyzing the strategic interactions in both theoretical and real-world settings, we are often interested in <b>"efficiency"</b>.
 
 - Altought there are many different definition for it, the most standard one is called <b>"Pareto-efficiency"</b>.
 
@@ -120,7 +120,7 @@ An outocome is Pareto-efficient if there is an outcome that makes an individual 
 
 A strategy profile $s = (s_1, \ldots s_n) \in S$ is Pareto inefficient if there is a strategy profile $s' \in S$ such that:
 - all agents are <b>weakly better off</b>: $u_i(s') \ge u_i(s)$ for sall $i$ <b>AND </b> 
-- at least one agent $j$ is <b>strictly better off</b>: $u_j(s) \ge u_j(s)$.
+- at least one agent $j$ is <b>strictly better off</b>: $u_j'(s) > u_j(s)$.
 
 An outcome that is not pareto <b>inefficient</b> is Pareto efficient.
 
@@ -208,24 +208,24 @@ The set of all the pure strategies $S_i$ is denoted by $\Delta(S_i)$.
 
 
 
-In general, there' NO always a Nash Equilibrium with mixed strategies but, for a broad class of games, there's always a Nash Equilibrium.
+In general, there's _NO always_ a Nash Equilibrium with mixed strategies but, for a broad class of games, there's always a Nash Equilibrium.
 
 <a href="https://www.pnas.org/doi/10.1073/pnas.36.1.48" target="_blank">This result was proven by <b> John F. Nash</b>, Jr. in his seminal 1950 paper “Equilibrium points in $n$-person games”</a>. Nash was awarded 1994 Nobel Prize in Economics for this and other contributions to game theory.
 
-Consider then a $n$-player normal form game $G = (S_1 \ldots S_k, u_i \ldots u_k)$, with $n$ finite number and $S_i$ finite for every $i$.
 <br/>
 ---
 <br/>
 
 <b>Theorem (Nash, 1950)</b>
 
+Consider then a $n$-player normal form game $G = (S_1 \ldots S_k, u_i \ldots u_k)$, with $n$ finite number and $S_i$ finite for every $i$.<br/>
 The game $G$ as at least one Nash equilibrium, possibly involving mixed strategies.
 
 A couple of funny notes:
 - The paper is extremley short, just 3 pages!
 - There is a book and film about Nash’s life <a href="https://it.wikipedia.org/wiki/A_Beautiful_Mind" target="_blank"> “A Beautiful Mind”</a>
 
-<b>Important result #1</b>: When checking for profitable unilaterally decisions, it is necessary and sufficient only pure strategy decisions $p_i = s_i$, i.e. $p^*$ is a Nash Equilibrium only if:
+<b>Important result #1</b>: When checking for profitable unilaterally decisions, it is necessary and sufficient to look only at pure strategy decisions $p_i = s_i$, _i.e. $p^*$ is a Nash Equilibrium only if:_
 
 $$
 U_i(p_1^*, \ldots p_i^*, \ldots p_n^*) > U_i(p_1^*, \ldots s_i, \ldots p_n^*)
@@ -269,13 +269,13 @@ _Intuition_:
 
 <br/>
 ---
-
+<br/>
 <b>Formal definition: strictly dominated strategies</b>
 
 Given a game $G$, the mixed strategy $p_i$ is <b>strictly dominated by $p_i$ </b> if, for every pure strategy profile of the other players, we have:
 
 $$
-U_i(s_i, \ldots s_{i-1}, p_i, s_{i+1}, \ldots s_n) <U_i(s_i, \ldots s_{i-1}, p_i', s_{i+1}, \ldots s_n) <
+U_i(s_i, \ldots s_{i-1}, p_i, s_{i+1}, \ldots s_n) <U_i(s_i, \ldots s_{i-1}, p_i', s_{i+1}, \ldots s_n) 
 
 $$
 
@@ -306,7 +306,374 @@ $$
 ## <a id="4"><b>Applications to market competition</b> </a>
 
 
+We now spend some time to analyze two models of duopoly market competitions:
 
+- <b>Cournout competition</b>: firms compete by choosing to supplky different quantities of the same good
+- <b>Betrand competition</b>: firms compete by choosing to set different prices
+
+_A funny example of Bertrand competition: <a href="https://www.nytimes.com/2012/03/31/nyregion/in-manhattan-pizza-war-price-of-slice-keeps-dropping.html" target="_blank"> In a Manhattan Pizza War, price of slice keeps dropping (NY Times - 2012)</a>._
+
+---
+<br/>
+<b>Cournot Model of Duopoly Competition</b>
+
+We start with the following assumptions:
+- there are two firms $1,2$ competing in a duopolistic market 
+- the firms produce an identical good and choose quantities to produce $q_1, q_2$
+- producing $q_1$ units of the good costs $cq_1$ and the same applies for $q_2, with $0 < c < 1$.
+- the market clearing per-unit price when $Q = q_1 + q_2$ is defined by the total amount of goods:
+
+$$
+p(Q) = 1 - Q
+$$
+
+We can now model the game:
+- <b>strategy ser for firm $1$:</b> any number $q_1 \ge 0$, i.e $S_1 = [0, \infty)$
+- <b>strategy ser for firm $2$:</b> any number $q_2 \ge 0$, i.e $S_2 = [0, \infty)$
+
+The corresponding payoff are:
+
+$$
+U_1(q_1, q_2) = p(Q)q_1 - cq_1 = (1 - q_1 - q_2)q_1 - cq_1\\
+U_2(q_1, q_2) = p(Q)q_2 - cq_2 = (1 - q_1 - q_2)q_2 - cq_2
+
+$$
+
+<b>Definition: Nash Equilibrium for Cournot Model</b>
+
+A strategy profile $(q_1^*, q_2^*) is a Nash Equilibrium $iff$:
+
+$$
+U_1(q_1^*, q_2^*) \ge U_1 (q_1, q_2^*) \quad \forall q_1 \in S_1\\
+U_2(q_1^*, q_2^*) \ge U_1 (q_1^*, q_2) \quad \forall q_2 \in S_2
+$$
+
+To find the Nash Equilibrium, we start looking at <b>best responses</b>: we fix firm's 2 strategy at some $q_2$ and then we model the best response for firm 1.
+
+Indeed, firm 1 chooses $q_1$ that maximizes:
+
+$$
+\begin{align*}
+\max_{q_1 \in S_1} U_1 (q_1, q_2)&= \max_{q_1 \in S_1} (1 - q_1 - q_2)q_1 - cq_1 =\\
+&= \max_{q_1 \in [0, \infty) } (1 - c - q_2)q_1 - q_1^2
+
+\end{align*}
+$$
+
+We proceed with <b>First Order Condition (FOC)</b> since we are maximizing a _concave-down_ quadratic function:
+
+$$
+\frac{\partial (1 - c - q_2)q_1 - q_1^2}{\partial q_1} = 0 \iff\\
+(1 -c - q_2) - 2q_1 = 0 \iff\\
+q_1 = \frac{1}{2}(1 - c - q_2)
+$$
+
+we now remember that $q_1 \in S_1 \implies q_1 > 0$, so $q_1$ is feasible if $q_2 \le 1 - c$. In this case, firm 1's best response is:
+
+$$
+R_1 (q_2) =
+\begin{cases}
+ \frac{1}{2}(1 - c - q_2) \quad \text{if } q_2 \le 1 - c \\
+ 0 \quad \quad \quad \quad \quad \quad \text{otherwise}
+
+\end{cases}
+$$
+
+If we use the same steps, we can also show that firm's 2 best response function is:
+
+$$
+R_2 (q_1) =
+\begin{cases}
+ \frac{1}{2}(1 - c - q_1) \quad \text{if } q_1 \le 1 - c \\
+ 0 \quad \quad \quad \quad \quad \quad \text{otherwise}
+
+\end{cases}
+$$
+
+_Intuition: the firms are identical:_
+- they share the same marginal cost and profit function 
+- if any of the above were _NOT_ the same, then we should suspect that the best response fuctions will be different!
+
+To find the Nash Equilibium, we look at the intersection of the best response functions.
+
+We assume $q_1 \le 1 - c$ and $q_2 \le 1 - c$, then we equal:
+
+$$
+ R_1(q_2^*) = \frac{1}{2}(1 - c - q_2^*) = q_1^* = q_2^* = R_2(q_1^*) = \frac{1}{2}(1 - c - q_1^*) \implies \\
+ \implies
+
+ q_1^* = q_2^* = \frac{1 - c}{3}
+
+$$
+
+_Note that the assumptions remain both valid at this solution!_
+
+The equilibrium total quantity is then:
+
+$$
+Q^* = q_1^* + q_2 * = \frac{2}{3}(1 - c)
+$$
+
+The equilibrium price is then:
+
+$$
+p(Q^*) = 1 - Q^* = \frac{1 + 2c}{3}
+$$
+
+The equilbrium profits, given $q_1^*, q_2^*$ are:
+
+$$
+p(Q^*)q_i^* - cq_i^é = \frac{1 + 2c}{3}\frac{1-c}{3} - c \frac{1-c}{3} = \frac{(1-c)^2}{9} > 0
+$$
+
+<b>The Nash Equilibrium is inefficient from firm's perspective</b>:
+
+Both firms can do strictly better by colluding to act together as one profit-maximizing firm and splitting the total profits but:
+- as the model stands, doing so it _NOT_ an equilibrium 
+- fundamentally, it's a similar game to the _Prisoner's dilemma!_
+
+To see this, suppose the firms cooperate and choose to supply a lower quantity: $q_1 = q_2 = \frac{1-c}{4}$.
+
+This would lead to:
+
+$$
+Q = q_1 + q_2 = \frac{1-c}{2}, \quad p(Q) = 1 - Q = \frac{1+c}{2}\\
+\text{Profits} = p(Q)(\frac{1-c}{4}) - c \frac{1-c}{4} = \frac{(1-c)^2}{8} > \frac{(1 -c)^2}{9}
+$$
+
+_Note that $Q = (1-c)/2$ correspons to what a monopolist would do, therefore $q_1 = q_2 = Q / 2$ corresponds to splitting the optimal monopoly quantity equally._
+
+We now analyze why does collusion allow the firmst to do _strictly better_.
+
+If firm 1 is the _merged monopolist_ (i.e. obtains the profit from both $q_1, q_2$), they solve:
+
+$$
+\max_{q_1 \in S_1} (1 - q_1 - q_2)(q_1 + q_2) - c (q_1 + q_2)
+$$
+
+The derivative with respect to $q_1$ leads to three effects:
+
+$$
+
+\underbrace{(1 - q_1 - q_2)}{\text{sales effect}}
++\underbrace{-(q_1 + q_2)}{\text{price effect}}
++\underbrace{-c}_{\text{cost of production}}
+
+
+$$
+
+
+The optimal solution is obtained setting the previous to $0$. Increasing $q_1$ has 3 effects:
+- sales effect: move revnue from selling more $q_1$
+- price effect: more $q_1$ means lower price 
+- cost of production equal to $-c$
+
+In, on the other hand, firm 1 is not merged, they solve:
+
+$$
+\max_{q_1 \in S_1} (1 - q_1 - q_2)(q_1) - c (q_1)
+$$
+
+Increasing $q_1$ has the same 3 effects but the _(negative)_ price effect is smaller in magnitude:
+- increasing $q_1$ reduces the price for both $q_1, q_2$ sales 
+- _unlike the monopoly case, firm 1 doesn't care about $q_2$ sales!
+- firm's 1 _doesn't internalize_ the price externality on firm 2
+
+$$\implies$ firm 1 as a duopolist will <b>oversupply</b> $q_1$ relative to a monopoly benchmmark.
+
+Important result from this model:
+- Monopoly markets lead to a _lower quantity_ and _higher prices_ than a duopoly _($\implies$ bad for consumers!)_ 
+- duopolist have incentives to collude and act like a monopoly! 
+    - however, collusion is hard to sustain!
+    - firms might also seek to formally combine their companies in a merger 
+
+For these reasons, policymakers are often concerned about monopoly markets. In practise however, mergers are _NOT always rejected_ since there could be some efficiency fains from merging than benefit consumers even if a monopoly forms.
+
+<b>Policy Implications</b>
+
+We now try to incorporate _efficiency gains_ into our model, indeed we modify the m,odel so that after a merger the marginal cost decreases to $c'$, with $0 < c' < c$.
+
+At this point, there's a minimum level of efficiency gain so that the monopoly price is lower than the monopoly price:
+
+$$
+\frac{1+c'}{2} < \frac{1 + 2c}{3} \implies (c- c') > \frac{1-c}{3}
+$$
+
+---
+<br/>
+<b>Variations of the Cournot Models</b>
+
+
+- The model can be generalized with more than $N > 2$ firms. In this case, we see that _competition is good for consumers_ and that equilibrium price is decreasing in $N$ and in the limit, as $N \to \infity$, we get a _"perfectly competitive market"_ where the marginal cost equals the price.
+- We can consider a market with two goods are complements and we can arrive at a _different conclusion_: merging 2 firms can be better for both firms and consumers.
+- We can extend the analysis in a multi-stage interagion, showing that it is possible to sustain collusive relationships between firms.
+
+
+<br/>
+---
+<br/>
+<b>Bertrand Model of Duopoly Competition</b>
+
+In this model firmst compete by setting prices, i.e. each firm chooses a price $p_i \in P_i = [0, \infty)$, for $i = 1,2$.
+
+Products are identical and hence conusmers always buy from the cheapest firm. The demand functions are then:
+$$
+q_1(p_1,p_2)=
+\begin{cases}
+1-p_1, & \text{if } p_1<p_2,\\[4pt]
+\dfrac{1-p_1}{2}, & \text{if } p_1=p_2,\\[6pt]
+0, & \text{if } p_1>p_2.
+\end{cases}
+$$
+$$
+q_2(p_1,p_2)=
+\begin{cases}
+0, & \text{if } p_1<p_2,\\[4pt]
+\dfrac{1-p_2}{2}, & \text{if } p_1=p_2,\\[6pt]
+1-p_2, & \text{if } p_1>p_2.
+\end{cases}
+$$
+Each firm wants to maximize profits:
+
+$$
+U_i(p_i, p_j) = p_i q_i (p_1, p_2)- c q_i (p_1, p_2)
+$$
+
+where $c$ is the marginal cost, $0 < c < 1$.
+
+<b>Nash Equilibium of Bertrand Model</b>
+
+A strategy profile $(p_1^*, p_2^*)$ is Nash equilibrium if:
+$$
+U_1(p_1^*,p_2^*) \ge U_1(p_1, p_2^*)\quad \forall p_1 \in P_1\\
+U_2(p_1^*,p_2^*) \ge U_2(p_1^*, p_2)\quad \forall p_2 \in P_2
+$$
+
+As before, we find the Nash Equilibium by looking at the best responses.
+
+We fix firm's 2 strategy and we look at firm's 1 best response that maximizes:
+
+$$
+\max_{p_1 \in P_1}U_1(p_1, p_2) = \max_{p_1\in P_1}p_1 q_1 (p_1, p_2)- cq_1(p_1, p_2)\\
+= \max_{p_1 \in P_1} (p_1 - c)q_1 (p_1, p_2)
+$$
+
+In this case, the objective function we want to maximize is not continuous or differentiable anywhere and we cannot apply FOC:
+$$
+
+U_1(p_1,p_2)=
+\begin{cases}
+0, & \text{if } p_1>p_2,\\[6pt]
+(p_1-c)\dfrac{1-p_1}{2}, & \text{if } p_1=p_2,\\[8pt]
+(p_1-c)(1-p_1), & \text{if } p_1<p_2.
+\end{cases}
+$$
+
+Let's then proceed with some intuition. _What would happen if we had the monopoly problem and firm 2 does not exist?_  <br/>In this case, the firm's 1 problem rewrites as:
+$$
+\max{p_1 \in P_1}(p_1 - c)(1 - p_1)
+$$
+
+
+The objective function is _concave-down_ quandatric, so we can apply FOC as:
+
+$$
+\frac{\partial (p_1 -c)(1-p_1)}{\partial p_1} = 0 \iff (1 - p_1) + (p_1 - c)(-1) = 0 \iff \\
+\iff p^M = \frac{1+c}{2}
+$$
+
+We then know that, in absence of competition, firm 1 would like to choose $p_1 = p^M$ like in the monopolist scenario.
+
+We now analyze 3 different sets of $p_2$ values and firm's 1 best response.
+
+1. <b>Suppose</b> $p_2 > p^M$: in this case, firm's 1 best response would still be: $R_1(p_2) = p^M$ because we would still have $p_1 < p_2$ and firm 1 obtains the best-case monopoly outcome.
+
+<div align = "center">
+![Case 1](/images/notes/market-games/case-1.png)
+</div>
+
+_Mathematically_, we have:
+
+$$
+U_1(p_1,p_2)=
+\begin{cases}
+0, & \text{if } p_1>p_2,\\[6pt]
+(p_2-c)\dfrac{1-p_2}{2}, & \text{if } p_1=p_2,\\[8pt]
+(p_1-c)(1-p_1), & \text{if } p_1<p_2.
+\end{cases}
+$$
+
+2. <b>Suppose</b> $c < p_2 \le p^M$: for firm 1, choosing $p_1 = c$ ensures $p_1 < p_2$ and so the firms gets the whole market, but it also obtains _no profit_ since the price equals the marginal cost:
+
+$$
+U_1 (p_1,p_2) = (p_1 - c)q_1(p_1, p_2) = 0 \iff p_1 = c
+$$
+
+On the other hand, suppose that firm 1 _"undercuts"_ firm's2 price by a tiny amount $\epsilon > 0$, in this case we would have:
+$$
+U_1 (p_1,p_2) = (p_1 - c)(1 - p_1) = (p_2 -\epsilon- c)(1 - p_2 + \epsilon)
+$$
+
+that, for $\epsilon \approx 0$, is slighly less but close to $(p_2 - c)(1 - p_2)$ and, because $p_2 > c$, we get $U_1(p_1,p_2)>0$.
+
+This is better than $p_1 = p^M$ and $p_1 = c$, so it is firm's 1 best response:
+
+$$
+R_1(p_2) = p_2 - \epsilon
+$$
+
+<div align = "center">
+![Case 1](/images/notes/market-games/case-2.png)
+</div>
+
+3. <b>Suppose</b> $p_2 \le c$. In this case, firm 1 cannot _undercut_ $p_2$ by a tiny amount because profits would be negative, so the firm can do better by _not entering the market_. <br/>If $p_2 = c$, firm 1 is indifferent between $p_1 = c$ and $p_1 > p_2 = c$.
+
+So, if we want to summarize firm 1's best responses, we get:
+
+$$
+R_1(p_2)=
+\begin{cases}
+p^M=\dfrac{1+c}{2}, & \text{if } p_2>p^M,\\[8pt]
+p_2-\varepsilon, & \text{if } c<p_2\le p^M,\\[8pt]
+(p_2,\infty), & \text{if } p_2<c,\\[8pt]
+[c,\infty), & \text{if } p_2=c.
+\end{cases}
+
+$$
+$$
+R_2(p_1)=
+\begin{cases}
+p^M=\dfrac{1+c}{2}, & \text{if } p_1>p^M,\\[8pt]
+p_1-\eta, & \text{if } c<p_1\le p^M,\\[8pt]
+(p_1,\infty), & \text{if } p_1<c,\\[8pt]
+[c,\infty), & \text{if } p_1=c.
+\end{cases}
+$$
+
+where $\epsilon, \eta > 0$ are very small.
+
+The Nash Equilibrium is $(p_1^*, p_2^*) = (c,c)$ and lies at the intersection:
+
+<div align = "center">
+![Case 1](/images/notes/market-games/ne.png)
+</div>
+
+<b>Equilibium outcomes</b>:
+- rach firm chooses price equal to marginal cost and sells $q_1^* = q_2^* = (1-c)/2$ units 
+- firms earn zero profits 
+- equilibrium output equals $1 -c$
+<br/>
+---
+<br/>
+<b>Bertrand Paradox</b>
+
+With just 2 firms, we can have a _"perfectly competitive"_ market outcome where price equals marginal cost. Increasing competition beyod 2 firms has _NO_ effects on outcomes, differing drammatically from the Cournot Model.
+
+The paradox can be solved adding more realism to the model:
+- relax implicit assuptions _(add capacity constraints or a integer-pricing)_ 
+- one of the firms may be more productive 
+- product differentiation or geographic differentiation
+- dynamic competition or imperfect information
 
 ---
 
