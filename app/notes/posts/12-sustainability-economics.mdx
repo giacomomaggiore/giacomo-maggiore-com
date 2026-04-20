@@ -280,42 +280,6 @@ T_t &= f_t(E_0, E_1, \dot E_t) \\
 \end{align*}
 $$
 
-Then, the model summarizes the climate change impacts on economy with a <b>damage function</b> $D(T_t)$, which captures the faction of GDP-equivalent loss from warming $T_t$, so we can write:
-
-$$
-Y_t^{Net} = (1 - \Lambda_t(\mu_t)) \cdot \Big [ (1 - D(T_t)) \cdot Y_t^{Gross}   \Big]
-$$
-
-- reducing emissions (higher $\mu_t$) costs money today but reduces climate damage in the future ($T_t$ decreases)
-- macro-level inter-temporal trade-off are analogous to standard consumption/saving decisions.
-
-To understand the inter-temporal tradeoffs, we consider each household's <b>lifetime utility $U$ </b> as:
-
-$$
-U = u(c_0) + \sum_{t = 1}^{t = n} \Big[ (\frac{1}{1 + \rho})^t \cdot u(c_t) \Big]
-$$
-
-where $u(c_t)$ is concave function of utility of each household at period $t$ and $\rho$ the discount factor.
-
-Recall that the final goal of the DICE model was to estimate the <b>social cost of carbon (SSC)</b>, defined he total damage that one extra ton of carbon emitted today causes to the world for the rest of time.
-
-$$
-\begin{align*}
-SCC_t &= \frac{\partial W}{\partial E_t}  =\\
-
-
-&= \sum_{j=0}^{T_{max}} \underbrace{\left( \frac{1}{1 + \rho} \right)^j}_{\text{Discount Factor}} \cdot \underbrace{\frac{u'(c_{t+j})}{u'(c_t)}}_{\text{Wealth Effect}} \cdot \underbrace{\frac{\partial Y_{t+j}}{\partial T_{t+j}}}_{\text{Economic Damage}} \cdot \underbrace{\frac{\partial T_{t+j}}{\partial E_t}}_{\text{Climate Response}}
-
-\end{align*}
-$$
-
-_Intuition:_ $SCC_t$ sums all the discounted future changes in utility _(wealth effect)_, weighted by the effect on future GDP changes _(economic damage)_ and the effect of future temperature changes _(climate damage)_.
-
-<div align = "center">
-![GDP by country](/images/notes/sust-econ/discounting.png)
-</div>
-
-
 
 Furthermore, regarding the DICE model, we can consider 5 <b>different scenarios</b>:
 
@@ -347,39 +311,63 @@ Methods to value the enviroment include:
 - structural models 
 - structured surveys
 
-<b>Statistical Methods: Correlation vs Causation</b>
+<Table
+  data={{
+    headers: ["Source", "SCC estimate (USD/tCO2)"],
+    rows: [
+      ["Nordhaus (2018)", "36"],
+      ["Barrage and Nordhaus (2024)", "50"],
+      ["United States, EPA (pre-Trump)", "190"],
+      ["Haensel et al. (2020)", "210"],
+      ["Switzerland, Infras for BAFU (2024)", "500"],
+      ["Germany, EPA (2024)", "330 or 880"]
+    ]
+  }}
+/>
 
-If two variables $A,B$ are correlated, it may be the case that:
-- $A$ causes $B$
-- $B$ causes $A$
-- a third factor $C$ causes both $A,B$
+$\implies$ Differences are largely driven by:
+- (a) assumptions on discounting
+- (b) damage estimates
+- (c) model structures
 
-The <b>omitted variable bias</b> occurs when the association of $A,B$ gives an iaccurate _(biased)_ impression of the causal impact of $A$ on $B$ _(or viceversa)_ because of an omitted third variable.
+<b>Meta-analysis and expert-survey contributions</b>
 
-<b>Cross-sectional analysis</b> implies comparing outcomes across unit at a given point in time. _(example: evaluating different countries parameters in the same year)_. 
+1. Systematic analysis of SCC values and their structural drivers published between 2000 and 2020, using 1823 estimates from 147 studies.
+2. Complementary expert survey of SCC authors (N = 66/176), eliciting views on:
+   - the distribution of published SCC values ("literature SCC")
+   - the distribution of "true" SCC values ("all things considered")
+   - perceived drivers of the gap between these two distributions ("SCC wedge")
+3. Re-weighting of literature estimates using expert assessments of structural model choices and discount rates to generate new "synthetic SCC" estimates.
 
-The omitted variable bias is particularly common in the cross-sectiona analyses since it is difficult to isolate effects of a specific variable out of all the other things _(ceteris paribus concept, please refer also to my <a href="https://giacomomaggiore.com/notes/15-econometrics#1-introduction-to-statistics-and-econometrics" target="_blank">Econometrics Notes about that</a>)_.
+We identified 1823 SCC estimates from 147 papers, following this distribution:
 
-<b>Time-series analysis</b>, in contrast, compares outcomes across time.
+<Table
+  data={{
+    headers: ["Source", "SCC estimate (USD/tCO2)"],
+    rows: [
+      ["Nordhaus (2018)", "36"],
+      ["Barrage and Nordhaus (2024)", "50"],
+      ["United States, EPA (pre-Trump)", "190"],
+      ["Haensel et al. (2020)", "210"],
+      ["Switzerland, Infras for BAFU (2024)", "500"],
+      ["Germany, EPA (2024)", "330 or 880"]
+    ]
+  }}
+/>
 
-<b>Pane analysis</b> tracks and compares outcomes across _both_ time and units. It casn easily control for _some_ omitted variables such as time-invariant differences across units or shocks that affected everyone.
+$\implies$ Differences are largely driven by:
+- (a) assumptions on discounting
+- (b) damage estimates
+- (c) model structures
 
-In general, even with carefully designed analyses of sample data, we cannot guarantee that there are not omitted variables (bias), one way to ensure better accuracy is to couple <b>laboratory experiments</b> in controlled settings with <b>field experiments</b> in real world. _Example: <a href="https://en.wikipedia.org/wiki/Randomized_controlled_trial" target="_blank"> randomized control trials (RCTs)</a>_.
+<b>Meta-analysis and expert-survey contributions</b>
 
-
----
-
-<br/>
-<b>Structural Models</b>
-
-Experiments and quasi-experimental analyses of sample data can provide _precise insights_ from _specific settings_, but they cannot provide any intelligence regardging:
-- interactions/effects not-observed in historical data 
-- effects on a larger scale 
-- welfare impacts of enviromental changes beyond immediate monetary costs.
-
-<b>Structural models</b> can help us provide a broader measure of economic value of the enviromental capital.
-
-_Strictly related to that_, we can define the <b>Value of Statistical Life (VSL) </b> as the _additional cost that invididuals would be willing to pay for improvements in satefy that, in the aggregate, reduce the expected numbers of fatalies by one_.
+1. Systematic analysis of SCC values and their structural drivers published between 2000 and 2020, using 1823 estimates from 147 studies.
+2. Complementary expert survey of SCC authors (N = 66/176), eliciting views on:
+   - the distribution of published SCC values ("literature SCC")
+   - the distribution of "true" SCC values ("all things considered")
+   - perceived drivers of the gap between these two distributions ("SCC wedge")
+3. Re-weighting of literature estimates using expert assessments of structural model choices and discount rates to generate new "synthetic SCC" estimates.
 
 $$
 \text{VSL} \neq \text{Value of an individual human life}
@@ -1023,10 +1011,359 @@ Following the DICE model, we can end up with the following estimation:
 />
 
 - Swiss contribition to global climate costs amounts between 2% _(Nordhais)_ and 17% _(Stern)_ of the 2020 Swiss GDP.
-- The difference between the estimates is due to the different _discounting terms_. $\implies% choosing yher right long-term discount rate for CBA is one of the most critical problems in economics.
+- The difference between the estimates is due to the different _discounting terms_. $\implies$ choosing yher right long-term discount rate for CBA is one of the most critical problems in economics.
+<br/>
+<b>The Social Discount Rate (SDR) for the long-run: THe Simple Ramsey Rule </b>
+
+$$
+\text{SDR} = r = \sigma + \eta g
+$$
+
+- $r$ is the expected average risk-free market interest rate 
+- $\sigma$ is the rate of _pure time preference_ 
+- $g$ is the expected per-capital real growth rate of consumption 
+- $\eta$ is the elasticity of marginal utility of consumption _(inequality aversion)_. _Intuition_: it represents to what degree should the relatively poorer present invest to support the relatively weπalthier future.
+
+---
+<br/>
+<b>Nordhaus's view and DICE-2016 climate policy path</b>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/nordhaus-view.png)
+</div>
+
+- These conclusions are of course sensitive to the parameters that determine the social discount rate. 
+- By academic community, these estimated are _"reasonable"_ and lie the plausible range of views on these parameters.
+
+_Generally speaking, depending on the view on $\sigma, \eta$, the DICE model can return very different results.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/sigma-eta.png)
+</div>
+
+Howevers, these choices were historically done just by economists and it is unclear if they posses any special ethical expertise $\implies$ Neet for a broader input.
+<br/>In this scenario, <b>philosophers</b> give responses on discount parameters, resulting in:
+- lower median pure time preference $\sigma \implies$ higher SSC
+- higher median inequality aversion $\eta \implies$ lower SSC
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/philosophers.png)
+</div>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/philosophers-2.png)
+</div>
+
+_However_, experts do <b>NOT</b> use the Simple Ramsey Rule.
+- for 81% of expeters this rules doesn't hold 
+- the SDR is, on average, 1.2 % points lower than the _imputed_ one from the Simple Ramsey Rule _($\implies$ expets give much more importance to the long-term future than simple theory suggest)_
+
+In particular, this rule doesn't work for the following reasons:
+- limited sustainability of non-market goods 
+- intragenerational inequality 
+- risk and uncertainties ignored in the model
+- alternative ethical approaches
+<br/>
+<b>Extensions of the model: qualitative quotes from Drupp et al. (2018)</b>
+<Quote>
+Because the discount rate is dependent on future scarcities [...] etc. there should be no single discount rate across the board. Natural assets, monetary investments, infrastructure projects etc. should be discounted at diﬀerent rates.
+</Quote>
+
+<Quote>
+“If future costs/benefits accrue e.g. to environmental amenities, I would argue for a very low discount rate, based on an expectation of increasing relative prices for these goods.”
+</Quote>
+
+<b>Extension (1); Discounting enviromental goods</b>
+
+COnsider a standard discounted <b>Utilitarian social welfare function</b> where ecosystem services are a direct source of utility $U(C,E)$. In this scenario, the social welfare function $W$ can be defined as:
+
+$$
+W = \int_{t= 0}^{T} U(C_t, E_t) e^{-\sigma t} dt
+$$
+We can proceed in two mays.<br/>
+Firstly, we can  consider two different discount rates, one for consumption one for ecosystem services:
+- $r_{C_t} = \sigma + \eta_{CC} g_{C_t} + \eta_{CE} g_{E_t}$
+- $r_{E_t} = \sigma + \eta_{EE} g_{C_t} + \eta_{EC} g_{C_t}$
+
+Secondly, we can account for <b>relative (shadow) price changes_</b> (RPC) of ecosystem servies relative to human-made consumption goods:
+
+$$
+	\text{RPC} = \frac{p_{E_t}}{p_{C_t}} = \frac{\frac{d}{dt}\left(\frac{U_E}{U_C}\right)}{\frac{U_E}{U_C}}
+$$
+
+This second approach values the enviromental good with an implicit price in terms of market goods _(with the marginal rate od substitution)_, telling us how much would the consumption of market goods need to increase to keep utility costant if the consumption of enviromental goods decreases.
+
+
+
+<b>Equivalence of dual discounting and RPC approach under CES</b>
+
+We now make the assumption of <b>costant elasticity of substitution</b> (CES) preferences for utility:
+
+$$
+u(C_t, E_t) = \Big( \alpha C_t^{\frac{\sigma -1}{\sigma}} + (1 - \alpha)E_t^{\frac{\sigma -1}{\sigma}} \Big)^{\frac{\sigma}{\sigma-1}}
+$$
+
+where $\alpha \in (0,1)$ is the utility share of consumption and $\sigma \in (0, \infty)$ us the elasticity of substitution, with $\epsilon = 1/ \sigma$.
+
+With CES preferences _(i.e. the utility function defined above)_, we get the following equivalence:
+
+$$
+\text{RPC}_t = r_{C_t} - r_{E_t} = \frac{1}{\sigma} [g_c - g_E] = \epsilon [g_c - g_E]
+$$
+
+Note that $\epsilon$ is also the <b>income elasticity to WTP</b> (willingness to pay). The charts below represent the above model.
+
+_You can play around with it: <a href="https://moritzdrupp.shinyapps.io/increasing-benefits-from-scarce-ecosystems/" target="_blak">please use this tool (from Lint Barrage and Moritz Drupp) to see the increasing value of scarce ecosystem!</a>._
+
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/projected-g.png)
+</div>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/rpc.png)
+</div>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/wtp.png)
+</div>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/npv-ecosystem.png)
+</div>
+
+<b>Relative Prices and weak vs strong sustainability</b>
+
+Literature distinguish between:
+- weak sustainability $\implies$ _enviromental goods are substitutable_ 
+- strong sustainability $\implies$ _limited sustainability_ 
+
+We can model this difference in the CES preferences by setting $\sigma = \frac{1}{(1 - \theta)}$, with the special cases of perfect substitues ($\theta = 1, \sigma = \infty)$ and perfect complements ($\theta = - \infty, \sigma = 0).
+
+$$
+\begin{aligned}
+U(E,c)
+&=
+\frac{1}{1-\eta}
+\left(
+\alpha c_t^{\frac{\sigma-1}{\sigma}}
++
+(1-\alpha)E_t^{\frac{\sigma-1}{\sigma}}
+\right)^{\frac{\sigma(1-\eta)}{\sigma-1}},
+\\
+&=
+\frac{1}{1-\eta}
+\left(
+\alpha c_t^{\theta}
++
+(1-\alpha)E_t^{\theta}
+\right)^{\frac{1-\eta}{\theta}}.
+\end{aligned}
+$$
+
+<b>Baumgärtner </b>adopted this view looking at what happens to our spending and consumption habits when we absolutely need a certain amount of nature to survive <b>(subsistence requirement for enviromental goods, $E$)</b>.
+
+If <b>subsistence is satisfied</b>, ($E > \bar E$), utility is given by:
+
+$$
+U_h(E,c) = [\alpha (E - \bar E)^{\theta} + (1 - \alpha)c^{\theta}]^{1 /\theta}
+$$
+
+In this model, the elasticity of substitution $\sigma(E,c)$ in _non-costant_ and depends on $E$ relative to $\bar E$:
+
+$$
+\sigma(E,c)
+\frac{1}{1-\theta}
+\left[
+1-
+\frac{(1-\alpha),\dfrac{\overline{E}}{E}}
+{\alpha\left(\dfrac{E-\overline{E}}{c}\right)^{\theta}+(1-\alpha)}
+\right]^{-1}
+\neq
+\frac{1}{1-\theta}.
+$$
+
+---
+<br/>
+<b>Limited Substitutability and the SCC</b>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/limited-s.png)
+</div>
+
+
+The <b>degree of limited substitutability</b> is often informed by expert assesments and non-market evalutations. _Negleting limited substitutability_ in the central calibration would underestimated the SSC by 50% in 2020, as compared to perfect substitutability.
+
+<b>Extension (2): Intragenerationa inequality</b>
+
+We use the <b>standard isoelastic utility functio</b> $U(c)$ and the concept of equally distributed equivalent (EDE) level of consumption.
+$$
+U(c) = \frac{c^{1 - \eta}-1}{1 - \eta}
+$$
+
+This tells us for some given degress of ineqaulity aversoin what _(lower)_ consumption level is judged equivalent in terms of social welfare to the prevailing average consumption.
+
+The EDE level of consuption is defined as:
+
+$$
+c^{EDE} = ( \epsilon_i c_i^{1-\eta})^{\frac{1}{1 - \eta}}
+$$
+
+
+where $\epsilon_i$ is the <b>average operator</b> and $c^{EDE}$ is the equal level that gives the same social welfare as the unequal distribution.
+
+Assuming log-normal income distribtion, this yield the <b>inequality-adjusted SDR</b>:
+
+$$
+\text{SDR}^{IA} = \sigma + \eta g_c^{EDE} = \sigma + \eta g_c^{mean} + \eta^2 (g_c^{median}-g_c^{mean})
+$$
+
+_Intuition: when people in the same generation have unequal consumption, social welfare should be evaluated using an “equality-equivalent” consumption level, not just average consumption._
+
+---
+<br/>
+<b>Equity weightining in CBA</b>
+
+A dolar to the rich is typically considered _less_ valuable than the same dollar to the poor thanks to _diminishing marginal utility_. Due to unequal incoes, monetized effects on the poor receive a lower weight in the standard CBA, but this can be "solved" with <b>explicit distributional weights</b> by assigning distributional weights $w_i$ to people with an income $\hat y_i$ where $y_{med}$ is the median income:
+
+$$
+w_i = (\frac{\hat y_i}{y_{med}})^{-\eta}
+$$
+
+For example, in the case of the Swiss SCC, equity weighening drammatically affects the result.<br/>According to 2021 data, we indeed have that:
+
+- Utility discount rate of 1%, no equity weighting: $SCC = 130$ CHF
+- Utility discount rate of 1%, equity weighting: $SCC = 430$ CHF
+- Utility discount rate of 0%, equity weighting: $SCC = 1370$ CHF
+
+_However_, if we are interested primarly in determining an efficient interanlization of the climate externality fiven the current status quo distribution, we'd likely _NOT_ perform equity weighening. If, on the other hand, we are also intered in equity, we should perform a equity weightining.
+
+---
+<br/>
+<b>Extension (3): Uncertainty in the model</b>
+
+<Table
+  data={{
+    headers: [" ", "certainty", "risk", "uncertainty", "ignorance"],
+    rows: [
+      ["Possible states of the world $s_i$", "a single one", "many, known", "many, known", "unknown"],
+      ["Probabilities $\\pi_i$", "100%", "objectively given", "not objectively given", "not given"]
+    ]
+  }}
+/>
+
+Many risks of uncertainities:
+- about economic development and emissions
+- about climate change given emissions 
+- about climate damages given climate change.
+
+In general, this leads to:
+- <b>precationary savings</b> $\implies$ higher SCC 
+- <b>insurance</b> $\implies$ ambiguous effect on SCC
+
+
+If growth in each year id _indepdently and identically normally distributed_, we can use a <b>Extended Ramsey Rule</b> (ERR):
+
+$$
+\text{ERR} = \sigma + \eta \bar g - 0.5 \eta( \eta +1)\sigma^2 < \text{SRR}
+$$
+
+with $\bar g = \mu + 0.5 \sigma^2$ where $\mu$ is the mean of the real pre-capita logarithmic conumption and $\sigma^2$ its variance.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/ipcc2022.png)
+</div>
+
+Note that, climate change has a <b>"fat-tail"</b>. The chart below show the climate sensitivity's distribution density function derived from different studies.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/fat-tails.png)
+</div>
+
+<b>Weitzman's "Dismal Theorem" - Dealing with catastrophies</b>
+
+This theorem can emerge in the standard model _under uncertainty_ if:
+- the bad tail of climate damages has sufficieently fat probabilitiy 
+- society is sufficiently risk-averse ($\eta > 1$)
+
+The theorem them states that, even if the benefit of _averting_ (avoid) each potential catastrophy exceeds the cost, we should not necessarily avert them all.
+
+Alternative models and ethical approaches are then needed to deal with theese uncertainities:
+
+<Quote>
+Instead of imposing a social welfare function (including pure time preference, inequality aversion) and calculate the corresponding optimum, it is “better” to depict a set of feasible paths of consumption, production, temperature, income distribution, etc. and let policy makers choose.
+</Quote>
+
+<Quote>
+Rather than using a discounted-utilitarian approach [...], I would recommend to the governmental body to use a ”Tolerable Windows”-approach. That is: set limits in physical terms to the future development that must not be exceeded for reasons of intra- and intergenerational justice, e.g. on climate change, biodiversity loss, infrastructure deterioration/enhancement, education level, life/health expectancy etc...). Then, use a discounted utilitarian approach to optimize development only within these limits.
+</Quote>
+
+Some other alternatives:
+- <b>Sustainable discounted utilitarism</b>: Maximize the sum of discounted utilities and assign a zero utility discount rate if the present is better oﬀ than the future.
+- <b>Maximin</b>:  Rank alternatives by their worst possible outcomes and adopt the alternative for which the worst possible outcome is better than all the other worst outcomes.
+- <b>Safety first</b>: Maximize social welfare subject to the probability of the welfare of the worst oﬀ being less than some safety threshold
+- <b>Non-Consequentialist approach</b>:
+<br/>
+---
+<br/>
+<b>Summary: SCCs in perspective</b>
+
+<Table
+  data={{
+    headers: ["Source", "SCC estimate (USD/tCO2)"],
+    rows: [
+      ["Nordhaus (2018)", "36"],
+      ["Barrage and Nordhaus (2024)", "50"],
+      ["United States, EPA (pre-Trump)", "190"],
+      ["Haensel et al. (2020)", "210"],
+      ["Switzerland, Infras for BAFU (2024)", "500"],
+      ["Germany, EPA (2024)", "330 or 880"]
+    ]
+  }}
+/>
+
+$\implies$ differences are largely driven by:
+- assumptions on discounting
+- damage estimates
+- model structures
+
+We then identified 1823 SCC estimates from 147 papers, following this distribution:
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/scc-dist.png)
+</div>
+
+The following plot shows then _how do SCC distributions vary along structural changes_:
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/scc-dist-2.png)
+</div>
+
+However, if we see data from 2020, we notice that experts _understedimated_ the SCC.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/scc-dist-3.png)
+</div>
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/scc-dist-4.png)
+</div>
+
+<b>Summary: climate policy should be more stringent</b>
+
+- Estimating the Social Cost of Carbon (SCC) is fraught with _uncertainty and ethical contestation_, and requires multiple methods and disciplines.
+- SCC estimates in the literature are likely biased downward.
+- About 50% of experts’ SCC wedges relate to climate risks (damages and tipping points), followed by ethical issues (about 25%), substitutability (about 15%), and uncertainty (about 10%).
+- A synthesis of evidence yields an SCC of about 300 CHF per metric ton of CO2 (2025 values).
+    - This is roughly 0.75 CHF per litre of gasoline.
+    - This is about the same order of magnitude as the Swiss mineral oil tax, which is not environmentally motivated (it finances infrastructure).
+- It is higher than all explicit carbon prices (World Bank, 2025); for example, the Swiss CO2 tax on industrial fuels is the second highest at CHF 120.
+
+Therefore, there is a strong economic case for more ambitious climate policy.
 
 
 ## <a id="10"><b>10. Extensions of Benefit-Cost Analysis: Distributional Weights, Limited Substitutability, and Uncertainty</b> </a>
+
+
 
 
 
