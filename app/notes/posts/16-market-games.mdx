@@ -394,7 +394,7 @@ _Intuition: the firms are identical:_
 - they share the same marginal cost and profit function 
 - if any of the above were _NOT_ the same, then we should suspect that the best response fuctions will be different!
 
-To find the Nash Equilibium, we look at the intersection of the best response functions.
+To find the Nash Equilibrium, we look at the intersection of the best response functions.
 
 We assume $q_1 \le 1 - c$ and $q_2 \le 1 - c$, then we equal:
 
@@ -541,7 +541,7 @@ $$
 
 where $c$ is the marginal cost, $0 < c < 1$.
 
-<b>Nash Equilibium of Bertrand Model</b>
+<b>Nash Equilibrium of Bertrand Model</b>
 
 A strategy profile $(p_1^*, p_2^*)$ is Nash equilibrium if:
 $$
@@ -549,7 +549,7 @@ U_1(p_1^*,p_2^*) \ge U_1(p_1, p_2^*)\quad \forall p_1 \in P_1\\
 U_2(p_1^*,p_2^*) \ge U_2(p_1^*, p_2)\quad \forall p_2 \in P_2
 $$
 
-As before, we find the Nash Equilibium by looking at the best responses.
+As before, we find the Nash Equilibrium by looking at the best responses.
 
 We fix firm's 2 strategy and we look at firm's 1 best response that maximizes:
 
@@ -658,7 +658,7 @@ The Nash Equilibrium is $(p_1^*, p_2^*) = (c,c)$ and lies at the intersection:
 ![Case 1](/images/notes/market-games/ne.png)
 </div>
 
-<b>Equilibium outcomes</b>:
+<b>Equilibrium outcomes</b>:
 - rach firm chooses price equal to marginal cost and sells $q_1^* = q_2^* = (1-c)/2$ units 
 - firms earn zero profits 
 - equilibrium output equals $1 -c$
@@ -679,9 +679,219 @@ The paradox can be solved adding more realism to the model:
 
 ## <a id="5"><b>Extensive form games and backward induction</b> </a>
 
+In simple terms, in a <b>extensive form game</b> players choose actions sequentially, observe each other's actions and know each other's payoffs. In this way, we can model more realistic scenarios: market comptition, political competition, countries responding to conflict since it can be _misleading_ to study sequential interacions using a simultaneous move.
 
+<b>Extensive-form games with perfect information</b>
+
+An extensive-form game can be represented with a <b>game tree</b>
+
+<div align = "center">
+![Case 1](/images/notes/market-games/game-tree.png)
+</div>
+
+- The open circle is the <b>initial node</b> _(where the game begins)_ 
+- Black circles and open circles are <b>decision nodes</b> 
+-$L,R,a,b$ are choices _(actions)_ 
+- $1,2$ are the players 
+- we specify the payoff vector at eat <b>final, terminal</b> node.
+
+In thi scenario, we can distinguish between 3 different concepts of strategies:
+- <b>Pure strategies</b>: a _complete contingency plan_ of action _(for every possible sequence of events, an action needs to be specified regardless of the sequence)_ 
+- <b>Mixed strategies</b>: a probability distribution function over a player's pure strategies 
+- <b>Behavioral strategies</b>: at each decision node, a probability distribution over their possible actions must be specified.
+
+For example, in the three below, the set of behavioral strategies is:
+
+$$
+(xL + (1-x)R, ya + (1 - y)b, zc + (1-z)d)
+$$
+
+where $0 \le x \le 1, 0 \le y \le 1, 0 \le z \le 1$.
+
+<div align = "center">
+![Case 1](/images/notes/market-games/game-tree.png)
+</div>
+
+<b>Relation between extensive-form games and norma-form games</b>
+
+Given an extensive form game, using _pure strategies_, we can write down the normal-form representation.
+
+<div align = "center">
+![Case 1](/images/notes/market-games/extensive-formal.png)
+</div>
+
+The Nash Equilibrium of an extensive form game is the <b>Nash Equilbrium of its normal form representation</b>.
+
+_However_, Nash Equilibria of extensive form games can be _"unreasonable"_ and rely on _non-credible threats_.<br/>For this issue, a simple method to find N.E. that avoids this issue is called <b>Backwards induction</b>.
 
 ---
+<br/>
+<b>Backward Induction</b>
+
+The Backward induction algorithm is composed by three main steps:
+- start by determining the optimal actions at the final optimal node 
+- Proceed to the next to last decision node and determine actions by players who correctly anticipate optimal actions in the final node 
+- Repeat until you reach the initial node.
+
+_Generally speaking,_ with backward induction we end up with the following results:
+- it can always be applied to extensive-form games so far 
+- it produces _(at least one)_ strategy profile 
+- any strategy profile obtained with it is a N.E. _(it will also be a "Subgame Perfect Equilibrium, coming soon)_.
+
+_Note that, in some cases_ the strategy profile found with the backward induction includes actions that never actually occur _(because the othe player choose the opposide branch)_. Nonetheless, we MUST specify these actions to correctly define a strategy profile.
+
+In real life, even people try to anticipate their opponents, they rarely backward induct:
+- individuals in the lab typicall fail to backward induct
+- many possible explanations: lack of ratinality, altruistic preferences or social preferences aren't captured by the model.
+
+_However,_ deviations from theoretical predictions are rarer when:
+- individuals are experienced and sophisticated 
+- when indvidiauls interact with others who they expect to be sophisticated 
+
+_In general_, the main assumption for the backward induction is that _everyone is rartional, everyone know that everyone is rational, everyone knows that everyone knows that everyone is rational and so on_.
+
+---
+<br/>
+<b>A new model of market competition: the Stackelberg model for duopoly</b> 
+
+_Main intuition of this model_: in major industries there's always a _"market leader"_.
+
+We consider then 2 firms producing exactly the same good _(perfect subsitutes)_ competing by choosing how much to produce.
+
+Firm $1,2$ choose their quantities $q_1, q_2$ _sequentially_:
+- Firm $1$ (Leader) chooses $q_1 > 0$
+- Firm $2$ (Follower) observes $q_1$ and then chooses $q_2 > 0$.
+
+We model the price with the <b>inverse demand function</b>:
+
+$$
+p(Q) = 1 - Q, \quad Q = q_1 + q_2
+$$
+
+The unit cost of production for both firms is costant and equal to $c$, with $0 < c < 1$.<br/>Therefore each firm has payoff given by:
+
+$$
+U_i(q_1, q_2) = (1 - Q)q_i + c_qi
+$$
+
+We now solve the model with <b>backward induction</b> looking for a strategy profile $(q_1^*, q_2^*(q_1))$ such that at every decision node each player chooses an optimal action.
+<br/>Recall that this strategy prpfile will also be a N.E. that avoidds the credibility issue.
+
+Suppose that firm $1$ chose $q_1$.
+
+Firm $2$ observes this and wants to choose $q_2$ to maximize his profits:
+
+$$
+U_2(q_1, q_2) = (1 - (q_1 + q_2))q_2 - c_q2 = (1 -c - (q_1 + q_2))q_2
+
+$$
+
+The FOC gives:
+
+$$
+\frac{\partial U_2(q_1, q_2)}{\partial q_1} = 0 \iff (1 - c(q_1 + q_2))  - q_2 \\
+\iff q_2 = \frac{1}{2}(1 - c - q_1)
+
+$$
+
+Since we need $q_2 > 0$, we also need $q_1 \le 1 -c$, so we end up with:
+$$
+q_2^*(q_1) = \begin{cases}
+\frac{1}{2}(1-c-q_1) \quad \text{if}q_1 \le 1 - c\\
+0 \quad   \quad \text{otherwise}
+end{cases}
+
+$$
+
+We now go back at the first stage of the game. Firm $1$ chooses $q_1$ to maximize his payoff. However, firm $1$ will know what firm $2$ will do for every choice of $q_1$.<br/>So firm $1$ wants to choose $q_1$ to maximize $U_1(q_1, q_2^*{q_1})$.
+
+- <b>Case $1$:</b> if Firm $1$ chooses $q_1 > 1 - c$, then $q_2^*{q_1} = 0$ and we have:
+$$
+U_1(q_1, q_2^*(q_1)) = (1 - c -q_1)q_1
+$$
+
+but this is negative if $q_1 > 1 - c$ and thus cannot be optimal.
+
+- <b>Case $2$</b>: if firm $1$ chooses $q_1$ such that $0 \le q_1 \le 1 - c$, then $q_2^*(q_1) = \frac{1}{2}(1 - c - q_1)$ and so firm $1$ can maximize:
+
+$$
+U_1(q_1, q_2^*(q_1)) = (1 - c - (q_1 + q_2^*(q_1)))q_1 = \\
+\\ (1 - c - (q_1 + \frac{1-c-q_1}{2}))q_1
+$$
+
+In this case, FOC gives:
+
+$$
+\frac{\partial U_1(q_1, q_2^*(q_1))}{\partial q_1} = 0 \iff \big( 1 - (q_1 + \frac{1-c-q_1}{2})-\frac{1}{2}q_1 - c = 0 \big)
+\\
+q_1 = \frac{1-c}{2}
+$$
+
+_Therefore_, anticipating firm $2"'s optimal strategy in every decision node, firm $1$ optimal choise is:
+
+$$
+q_1^* = \frac{1-c}{2}
+
+$$
+
+Thus, the equilibrium outocme is:
+
+$$
+q_1^* = \frac{1-c}{2} \quad q_2^*(q_1) = \frac{1}{2}(1 - c - q_1) = \frac{1-c}{4}
+$$
+
+The equilibrium price is then:
+
+$$
+p(Q) = 1 - (q_1^* + q_2^*) = \frac{1+3c}{4}
+$$
+
+In this game, <b>who is better off</b>?
+
+- Firm $1$ (Leader) payoff:
+$$
+U_1(q_1^*, q_2^*) = \frac{(1-c)^2}{8}
+$$
+
+- Firm $2$ (Follower) payoff:
+
+$$
+U_2(q_1^*, q_2^*) = \frac{(1-c)^2}{16}
+$$
+
+---
+<br/>
+<b>Comparing models of competition</b>
+
+If we compare Stackelberg and Cournot competition, we can clearly see that:
+- The Market leader in Stackelberg competition does better that they would do in Cournot model _(the opposite applies for the follower)_.
+- Equilibrium price is higher in Cournot thatin Stackelberg:
+
+$$
+P_{Cournot} = \frac{1+2c}{3} > \frac{1+3c}{4} = P_{Stackelberg}
+$$
+
+_Intuition_: leaders always must do better in Stackelberg competition, otherwise they could choose not to anticipate and choose the Cournot output.
+
+Mechanism that underlines this result is called <b>Commitment Power</b>:
+- once the leader chooses an output, it is fixed and cannot be re-adjusted in the current period... _even if the leader would like to, which is the case in Stackelberg competition_.
+- _paradoxicaly_, if the leader had more flexibility to re-adjust output, this would hurt them _(the follower would anticipate it and produce higher output reducing the leader's firm profits)_.
+
+<div align = "center">
+![Competitions](/images/notes/market-games/visuals.png)
+</div>
+
+- It can be surprising that equilibrium price is lower _(better for consumers)_ with Stackelberg competition compared to Cournot.
+- This is common in markets with a large firm and a small firm _(with respect to quantities produced)_.
+
+_In general_, we should think markets as Stackelberg:
+- there are often market leaders with products and pricing decisions 
+- markets may have firms enter in sequence because some entrants become aware of opportunities 
+
+_Note that_ Stackelberg model can be seen as a _sequential version_ of Cournot. In contrast, <b>Sequential Bertrnand</b> leads to an identical equilibrium outocome to the standard simultaneous-move Bertrand model with $\text{Price} = \text{Marginal Cost}$ and zero profits.
+
+---
+
 
 ## <a id="6"><b>Subgame Perfect equilibrium (SPE)</b> </a>
 
