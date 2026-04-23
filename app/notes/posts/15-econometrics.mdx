@@ -340,22 +340,22 @@ The <a href="#R_squared"> previous definition of $R^2$ is still valid</a>, but w
 
 As in the simple regression model, we can formalize the assumptions for the multiple one:
 
-- **MLR.1: Linear in parameters**  
+- <b>MLR.1: Linear in parameters</b>  
   in the population model the following relation holds:
   $$
   y = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k + \mu
   $$
 
-- **MLR.2: Random sampling**  
+- <b>MLR.2: Random sampling</b>  
   we have a random sample of size $n$:
   $$
   \{(y_i, x_{i1}, \ldots, x_{ik})\}_{i=1}^n
   $$
 
-- **MLR.3: No perfect collinearity (sample variation in explanatory variables)**  
+- <b>MLR.3: No perfect collinearity (sample variation in explanatory variables)</b>
   no explanatory variable is an exact linear combination of the others, and each regressor has variation in the sample.
 
-- **MLR.4: Zero Conditional Mean**  
+- <b>MLR.4: Zero Conditional Mean</b>  
   $$
   \mathbb{E}[\mu \mid x_1,\ldots,x_k] = 0
   $$
@@ -365,7 +365,7 @@ As in the simple regression model, we can formalize the assumptions for the mult
   $$
   \mathbb{E}[y \mid x_1,\ldots,x_k] = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k
   $$
-  also called the **Population Regression Function**.
+  also called the <b>Population Regression Function</b>.
 
 Then, we can derive the following:
 
@@ -1382,6 +1382,179 @@ Multiple strategies to deal with outliers:
 <a href="https://en.wikipedia.org/wiki/Winsorizing" target="_blank">More on winsorization (Wikipedia)</a>
 
 ## <a id="7"><b>7 Time Series Data</b> </a>
+
+Time sereis data have a <b>temporal ordering</b>:
+
+$$
+y_t = \beta_0 + \beta_1 x_1 + \mu_t
+$$
+
+Recall that, _on the other hand_, <b>cross sectional data </b>: $y_i = \beta_0 + \beta_1 x_i + \mu_i$.
+
+So, instead of having a _random sample of individuals_, we have <b>one realization of a stochastic process</b>, therefore we need to adapt some assumptions for OLS.
+
+<b>Examples of Time Series Models</b>
+
+- A <b>static model</b> related _contemporaneous variables_:
+
+$$
+y_t = \beta_0 + \beta_1 z_t + \mu_t
+$$
+
+- A <b>finite distributed lag (FDL)</b> model with otder $n$ _(in which we then have $n$ lags)_ allows one or more variables to affect $y$ with a lag:
+
+$$
+y_t = \alpha_0 + \delta_0 z_t + \delta_1 z_{t-1} + ... + \delta_n z_{t-n} + \mu_t
+$$
+
+We call $\delta_0$ the <b>impact propensity</b> that reflects the immediate change in $y$ given by $z$.<br/>$\delta_i$ represent the change in $y$ $i$ periods after a one-period change in $z$. _(so for a temporary 1 period change in $z$, $y$ returns to its original level in $n+1$ periods)_.<br/>
+We call $\delta_0 + ... + \delta_n$ the <b>long-run propensity (LRP)</b> that reflects the _long-run change_ in $y$ after a permanent change in $z$.
+
+---
+<br/>
+<b>Properties</b> 
+
+We now take some time to understand which properties need to be adapted to time series data in order to use OLS in a proper way. Recall that the MLR assumptions are _(as discussed before)_:
+
+- <b>MLR.1: Linear in parameters: </b>$y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_k x_{ik} + u_i$
+
+- <b>MLR.2: Random sampling</b>
+
+- <b>MLR.3: No perfect collinearity</b>
+
+- <b>MLR.4: Zero conditional mean: </b>  $\mathbb{E}(u_i \mid x_{i1}, x_{i2}, \ldots, x_{ik}) = \mathbb{E}(u_i) = 0$
+
+- <b>MLR.5: Homoskedasticity: </b>$  \operatorname{Var}(u_i \mid x_{i1}, x_{i2}, \ldots, x_{ik}) = \sigma^2$
+
+- <b>MLR.6: Normality</b>
+
+
+_Recall also that_:
+- MLR.1 to MLR.5 $\implies$  <b>OLS is unbiased and BLUE </b>
+- MLR.% $\implies$ we can do <b>inference (hypotesis testing)</b> in small samples.
+<br/>
+---
+
+In order to still have a unbiased OLS, for time series data we need the following properties:
+
+- <b>TS.1: Linear in parameters</b>
+  - The stochastic process $\{(x_{t1},\ldots,x_{tk},y_t): t=1,\ldots,n\}$ follows the linear model:
+  $$
+  y_t=\beta_0+\beta_1x_{t1}+\cdots+\beta_kx_{tk}+u_t
+  $$
+
+- <b>TS.2: No perfect collinearity</b>
+  - In the sample, no independent variable is constant and no independent variable is a perfect linear combination of the others.
+<br/>
+- <b>TS.3: Zero conditional mean</b>
+  $$
+  \mathbb{E}(u_t\mid X)=0,\quad t=1,\ldots,n
+  $$
+  - where $x_t=(x_{t1},\ldots,x_{tk})$ and $X$ collects all explanatory variables for all time periods.
+  - Implication: the error term in any given period is uncorrelated with explanatory variables in all periods (regressors are strictly exogenous).
+<br/>
+- <b>Alternative assumption (weaker)</b>
+  $$
+  \mathbb{E}(u_t\mid x_t)=0
+  $$
+  - This implies regressors are <b>contemporaneously exogenous</b>.
+  - Contemporaneous exogeneity is generally sufficient for consistency in large samples.
+
+
+Note that we <b>skipped the assumption of a random sample</b>:
+- the key impact of the random samples is that $\mu_i$ is independent since the exogeinity assumption takes are of it in this case.
+- Based on these 3 assumptions, the OLS estimators are unbiased.
+- TS.3 can _easily_ break down. If we consider for example $y_t = \beta_0 + \beta_1 x_{t1} + \mu_t$ when past value of $x$ affect $y$ but we just set up a _contemporaneous_ model.
+
+<b>Variances of OLS estimators for Time Series Data</b>
+
+To derive variances of estimators, we stard with some assumptions. We then assume that the variance is _independent_ of all the $x$'s and it is _costant over time_ (TS.4):
+
+$$
+\text{Var}(\mu_t | X) = \text{Var}(\mu_t) = \sigma^2
+$$
+
+We also assume _no-serial correlation: (TS.%)_
+
+$$
+\text{Cor}(u_t,\mu_s|X) = 0 \quad \forall t \neq s
+$$
+
+Under TS.1 to TS.5 (<b>Gauss-Markov Assumptions</b>) the OLS variances in the time-series case are the same as in the cross-sectoin case, consequently we have:
+- the estimator of $\sigma^2$ is the same 
+- OLS is BLUE.
+
+With the additional inference (TS.6) of <b>Normality</b> (errors are independent of $X$ and are <b>independently and identically distributed as Normal</b> $\mu_t \sim N(0, \sigma^2$)):
+- inference is the same as before.
+<br/>
+---
+<br/>
+<b>Comparison of the assumptions</b>
+<br/>
+<Table
+  data={{
+    headers: [
+      "Cross-section data",
+      "Time-series data"
+    ],
+    rows: [
+      [
+        "MLR.1: Linear in parameters; $y_i = \\beta_0 + \\beta_1 x_{i1} + \\cdots + \\beta_k x_{ik} + u_i$",
+        "TS.1: Linear in parameters; $y_t = \\beta_0 + \\beta_1 x_{t1} + \\cdots + \\beta_k x_{tk} + u_t$"
+      ],
+      [
+        "MLR.2: Random sampling",
+        "No direct counterpart (time series are ordered in time, not randomly sampled)"
+      ],
+      [
+        "MLR.3: No perfect collinearity",
+        "TS.2: No perfect collinearity"
+      ],
+      [
+        "MLR.4: Zero conditional mean; $\\mathbb{E}(u_i \\mid x_{i1}, x_{i2}, \\ldots, x_{ik}) = 0$",
+        "TS.3: Zero conditional mean; $\\mathbb{E}(u_t \\mid X) = 0$"
+      ],
+      [
+        "MLR.5: Homoskedasticity; $\\operatorname{Var}(u_i \\mid x_{i1}, x_{i2}, \\ldots, x_{ik}) = \\sigma^2$",
+        "TS.4: Homoskedasticity; $\\operatorname{Var}(u_t \\mid X) = \\sigma^2$"
+      ],
+      [
+        "No serial-correlation assumption in cross-sectional baseline",
+        "TS.5: No serial correlation; $\\operatorname{Cor}(u_t, u_s \\mid X) = 0\\ \\text{for}\\ t \\neq s$"
+      ],
+      [
+        "MLR.6: Normality",
+        "TS.6: Normality"
+      ]
+    ]
+  }}
+/>
+
+<br/>
+<b>Trending</b>
+
+Some examples of trend:
+- <b>linear trend</b>: $y_t = \alpha_0 + \alpha_1 t + e_t$
+- <b>exponential trend</b>: $\log(y_t) + \alpha_0 + \alpha_1 t + e_t$
+- <b>quadratic trend</b>: $y_t = \alpha_0 + \alpha_1 t + \alpha_2 t^2 + e_t$
+
+Regression with a linear trend is the same things as using a _"detrended_" sereis in a regression.
+
+<b>Detrending</b> implies regressing each variable on $t$ (including a costant) and than take the residuals of this regression _(the result is the <b>detrended series</b>)_.
+
+Some advaantages od detrending for calculating $R^2$:
+- time-series regression tend to have a very high $R^2$ as the trend is _"very well explained"_. 
+- $R^2$ from a regression on detrended data better reflect how well $x$ explain $y$.
+
+<br/>
+---
+<br/>
+<b>Seasonality</b> 
+
+Often time-series data has some <b>periodicity</b>, in this case there are two major practices:
+- adding a set of seasonal dummy variables 
+- series can be ajusted before running the regression.
+
 
 ---
 
