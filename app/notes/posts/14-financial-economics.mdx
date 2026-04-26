@@ -961,7 +961,7 @@ All market equilibrium allocations are comonotone, this is also the case for Par
 
 <b>Price responseto changes in risk</b>
 
-Consider now the case where $B$'s endowent in state $2$ decreases, so $p_1/p_2$ is smaller.
+Consider now the case where $B$'s endowment in state $2$ decreases, so $p_1/p_2$ is smaller.
 
 <div align = "center">
 ![No market clearing](/images/notes/financial-econ/risk-1.png)
@@ -1514,9 +1514,281 @@ A shift of the distribution of returns increases the demand for the risky asset 
 ---
 
 ## <a id="7"><b>7. Risk sharing and insurance</b></a>
+
+We consdier a <b>single good</b> and two dates:
+- $t_0$: where the contingent exchange contracts are signed 
+- $t_1$: where the contracts are settled.
+
+We now consider a probability space, $\Omega$, with $\omega \in \Omega$ is a state of the world.<br/>
+$\pi_{\omega} \ge 0$ is the known probability distribution on $\Omega \implies$ if state of the world $\omega$ occurs, a total amount of $e^{\omega}$ resources is shared across agents.
+
+There is a ifnite number of agents. They have NVM preferences and are risk averse. <br/>The utility of agent $i$ is denoted as $u_i$ and satisfites the _Inada Condition_:
+$$
+\lim_{c \to 0} u_i'(c) = + \infty
+$$
+
+
+<b>Optimal Allocation</b>
+
+An allocation $c = (c_i^{\omega})_{1 \le i \le I}$ with $c_i^{\omega}\ge 0$ is the specification of a contingent consu,ption plan for all the individuals $i$ in each state of the world.
+
+An allocation is <b>feasible</b> if in each state the total consumption equals the total resources:
+
+$$
+\forall \omega, \sum_{i = 1}^{I} c_i^{\omega} = e^{\omega}
+$$
+
+An allocation is <b>Pareto Optimal</b> if it is a _feasible_ and if there is no other feasible allocation $\tilde c$ such that, $\forall i \in \{1,... I\}$:
+
+$$
+\mathbb{E}_{\pi}[u_i(\tilde c_i)] \ge \mathbb{E}_{\pi}[u_i( c_i)]
+$$
+
+with at least one strict inequality.
+
+---
+<br/>
+<b>Mutuality Principle</b>
+
+<b>Proposition (Borhc)</b>
+
+If all agents are strictly risk averse and have identical beliefs, then for any Pareto-optimal alllocation:
+
+$$
+e^{\omega} = e^{\omega'} \implies c_i^{\omega} = c_i^{\omega'}
+$$
+Let's then proceed with the following example.<br/>
+Consider the matrix of state-contingent consumption, where lines corresponds to individuals and column to states of the world:
+
+
+
+$$
+c =
+\begin{bmatrix}
+2 & 5 & 4 & 8 & 9 \\
+2 & 5 & 3 & 7 & 8 \\
+4 & 6 & 5 & 12 & 10
+\end{bmatrix}
+$$
+
+In this case, the matrix is not a Pareto Optimal allocation.
+
+The columns represent the aggregate resources by state:
+$$
+e = (8, 16, 12, 27, 27)
+$$
+
+State 4 and 5 have the same aggregate resources: $e^4 = e^5 = 27$, but the Borch condition is not satisfied: $c^4 = (8, 7, 12) \neq c^5 = (9, 8, 10)$.
+
+---
+<br/>
+<b>Optimal allocation: characterization</b>
+
+<b>Theorem</b>
+
+A feasible allocation $c$ such that $c_i^{\omega} > 0$ is Pareto optimal $iff$ there are nonnegative weights $(\lambda^i)_{1 \le i le I}$ and $(\mu^{\omega})_{\omega \in \Omega}$ such tat $\forall \omega \in \Omega$ and $\forall i$:
+
+$$
+\lambda^i u_i'(c_i^{\omega}) = \mu^{\omega}
+$$
+
+
+This condition can be restated as:
+- the ratio of marginal utilities in a given state $\omega$ for 2 agents $i \neq j$ is independent of the state $\omega$:
+
+$$
+\frac{u'_i(c_i^{\omega})}{u_j'(c_j^{\omega})} = \frac{\lambda_j}{\lambda_i} 
+$$
+
+- the ratio of margina utilities in 2 given state $\omega, \omega'$ is the same across all agents:
+
+$$
+\frac{u_i'(c_i^{\omega})}{c_i^{\omegai}} = \frac{\mu^{\omega}}{\mu^{\omega'}}
+
+$$
+
+<b>Corollary</b>
+
+Assume that all agents are risk averse. Then, for any Pareto-optimal allocation, $c$ and $e$ are comonotonic:
+
+$$
+e^{\omega} \ge e^{\omega'} \iff c_i^{\omega} \ge c_i^{\omega'}
+$$
+
+_Intuition: $e$ is about the aggregate risk (how much total output/income the economy has in each scenario, $c$ is about _risk sharing_, who beras how much risk across scenarios)_.
+
+Since $\sum_{i = 1}^I c_i^{\omega} = e^{\omega}$, the variables $e^{\omega}, c_i^{\omega}$ are also comonotonic.
+
+<b>Proof</b>
+
+Assume that the allocation is Pareto optimal. Then $\lambda_i u_iì(c_i) = \mu^{\omega}$ and the ratio $u_i'(c_i^{\omega})/u_i'(c_i^{\omega'}) =\mu^{\omega}/\mu^{\omega'}$ is _independent_ of $i$. Hence $\forall i$ the cariables $c_i^{\omega}$ are _comonotonic_:
+
+$$
+c_i^{\omega} > c_i^{\omega'} \iff c_j^{\omega} \ge c_j^¶{\omega'}
+$$
+
+Let's proceed with an example. Consider the following matrix where lines correspond to individuals and columns to states of the world:
+
+$$
+c = \begin{bmatrix}
+2 & 5 & 4 & 8 & 9
+2 & 5 & 4 & 8 & 11
+4 & 6 & 5 & 11 & 12
+\end{bmatrix}
+$$
+
+In this case, we have resources equal to:
+
+$$
+e^{\omega} = \sum_i(c_i^{\omega}) = (8, 16, 13, 27, 32)
+$$
+
+To check if it is Pareto-optimal for risk averse individuals _(not necessarily with the same preferences)_, we check the _commonoticity with aggregate endowment/resources_: when $e^{\omega}$ is higher, also each $c_i^{\omega}$ should be _weakly higher_.
+
+We order the states by $(e)$, $(1 < 3 < 2 < 4 < 5)$ and we see that _each row follows the same order_ for each agent, resulting then in a Pareto-optimal allocation:
+- agent 1: $(2 < 4 < 5 < 8 < 11)$
+- agent 2: $(2 < 4 < 5 < 8 < 9)$
+- agent 3: $(4 < 5 < 6 < 11 < 12)$
+
+If the agents have same preferences, we need to check the condition: 
+
+$$
+\frac{u'(c_1^{\omega})}{u'(c_2^{\omega})} = \text{costant across } \omega
+$$
+But in states 1–4, $(c_1^\omega=c_2^\omega)$, so the ratio must be $=1$.
+Then in state 5 you would need $(u'(11)=u'(9))$, impossible with strictly decreasing $(u')$ (strictly risk-averse $(u)$)
+
+---
+<br/>
+<b>Risk neutral agents should bear all the risk</b>
+
+<b>Corollary</b>
+
+Assume mthat there is a risk-neutral agent and that the allocation $(c_i)_{1 \le i \le I}$ is pareto-optimal. If agent $i$ is strictly risk-averse, then her consumption must be determnistic:
+
+$$
+\forall (\omega, \omega') \in \Omega^2, \quad c_i^{\omega} = c_i^{\omega'}
+$$
+
+_In other words: for a risk-averse agent, the consu,ption is independent of the state of the world $\omega$.
+
+---
+
+<br/>
+<b>An example of Pareto-optimal allocation - CARA preferences</b>
+
+Assume $u_i(x) = - e^{k_i x}$. Them we have:
+
+$$
+\frac{u_i'(c_i^{\omega})}{u_i'(c_i^{\omega'})} = e ^{-k_i (c_i^{\omega} - c_i^{\omega'})}
+$$
+
+For an allocatio to be optimal, the ratio has to be independent of $i$, that means:
+
+$$
+e ^{-k_i (c_i^{\omega} - c_i^{\omega'})} = f(\omega, \omega')
+$$
+
+that, if we assume $g(\omega, \omega') = \ln (f(\omega, \omega'))$, implies:
+
+$$
+-k_i (c_i^{\omega} - c_i^{\omega'}) = g(\omega,\omega') \implies  c_i^{\omega} = c_i^{\omega'} - \frac{g(\omega, \omega')}{k_i}
+$$
+
+If we denote by $\beta_i = \frac{1}{k_i}$ the <b>absolute risk tolerance</b> of $i$ and $\beta =\sum_i \beta_i$ the <b>aggregate absolute risk tolerance</b>, summing over $i$ and using the _feasibility condition_ $\sum_i c_i^\omega=e^\omega$ gives:
+
+$$
+e^{\omega} = e^{\omega'} - \beta g(\omega, \omega') \iff g(\omega, \omega') =\frac{ e^{\omega}- e^{\omega'}}{\beta}
+$$
+
+and thus 
+
+$$
+c_i^{\omega} = c_i^{\omega'} + \frac{\beta_i}{\beta} (e^{\omega}- e^{\omega'})
+$$
+
+Taking the expectation under the distribution of $\omega'$ gives:
+
+$$
+c_i^{\omega} = \mathbb{E}_{\pi} [c_i] + \frac{\beta_i}{\beta} (e^{\omega}- \mathbb{E}_{\pi}[e])
+$$
+
+_(Note that $\mathbb{E}_{\pi}[c_i^{\omega}] = c_i^{\omega}$, the value taken in state $\omega$ is not random)_.
+
+- All Pareto-optima assume that the allocation is the same. Agent $i$ takes $\frac{\beta_i}{\beta}$ of the aggregate risk, where $\beta_i$ is, again, the <b>absolute risk tolerance</b>.
+- Aggregate risk is therefore spread over all the agents, but the more risk averge agent take less risk.
+- The difference between different Pareto-optimal equilibria is only reflected in the levels of expected consumption $\mathbb_{\pi}{c_i}$.
+
+---
+<br/>
+<b>Risk Sharing Equilibrium</b>
+
+Suppose there are $I$ agents with strictly concave utilities, each with endowment $e^{\omega}_i$. Suppose that there' a <b>complete market</b> $a = (a_k^{\omega})_{1 \le k \le K}$.
+
+An equilibrium is given by a <b>state price vector </b> $q = (q_{\omega})$ and a <b>consumption plan</b> $c = (c_i^{\omega})$ such that:
+- $\sum_i c_i^{\omega} = \sum_i e^{\omega}_i $ for all $w$ _(scarcity constraint of feasibility)_ 
+- each agent's consumption plan is optimal, i.e. solves:
+
+$$
+\max \mathbb{E}_{\pi} [u_i (c_i)] \text{  s.t. } \sum q_{\omega} c_i^{\omega} = \sum q_{\omega} e^{\omega}_i
+$$
+
+
+_Intuition: agents trade claims so that consumption is moved from states where they are relatively well off to states where they are relatively poorly off._ 
+
+_Economically speaking, $p_{\omega}$ is the today-price of getting 1 unit of consumption only in state $\omega$ (market-insurance price of the future state)_.
+
+
+If we denote by $\lambda_i$ the <b>Lagrange multiplier</b> associated with investor $i$'s budget constraint, the first order condition for the individual utility maximization is:
+
+$$
+\pi_{\omega} u_i'(c_i^{\omega}) = \lambda_i q_{\omega}
+$$
+
+_Intuition: at the optimum, the marginal utility of consumption in each state, weighted by its probability, equals the its price._
+
+which implies that any equilibrium allocation is _necessarily_ Pareto-optimal.
+
+<b>Risk Sharing Equilibrium - Theorem</b>
+
+For any initial endowment $e^{\omega}_i$, there exists a <b>competitive equilibrium</b> supported by some prices $q_{\omega}$. This equilibrium is Pareto-Optimal.
+
+_Intuition: if all claims can be traded, then a competitive equilibrium exists and it is efficient_.
+
+_Financially speaking, this is the model behind insurance and asset pricing: markets aggregate beliefs and redistribute risk implementing the best feasible risk sharing given the initial resources and preferences_.
+
 ---
 
 ## <a id="8"><b>8. Mean variance analysis</b></a>
+
+Mean-variance analysis was proposed independetly in 1952 by <a href="https://it.wikipedia.org/wiki/Harry_Markowitz" target="_blank">Harry Markowitz</a>.<br/>For his research, Markowitz was awarded with the Nodel Price, along with <a href="https://en.wikipedia.org/wiki/William_F._Sharpe" target="_blank">Sharpe</a>.
+
+<a href="https://www.youtube.com/watch?v=6do_11UZNu4" target="_blank">Mean Variance Intuition in 2 minutes [Video] </a>
+
+The main assumptions are that preferences over portfolios are:
+- increasing with respect to expected return _(reward)_
+- decreasing with respect to variance _(risK)_
+
+The basic idea of the optimization is that, given returns, variance is minized and reciprocally, given variance, return is maimized.  This leaves <b>one free parameter</b>, that is the agent's risk aversion parameter, which determines their choice upon the risk/reward tradeoff.
+
+_In other words, Given some assets agents are assumed to maximize expected returns while keeping the variance at the desired level, or the opposite way, minimize the variance for a desired expected return._
+
+But _why do we care for mean and variance only?_ Results can be shown to be _independent_ from higher monents in 2 specific cases:
+- Agents have a <b>quadratic utility index</b>: $u(x) = x - \frac{\beta}{2} x^2$ with 
+
+$$
+\mathbb{E}[u(\tilde x)] = u ( \mathbb{E}[\tilde x]- \frac{\rho}{2}\text{Var}[\tilde x])
+$$
+
+- Agents have a <b>CARA</b> utility index and <b>returns are normally distributed</b>: $u(x) = -e^{\rho x}$:
+
+$$
+\mathbb{E}[u(\tilde x)] = \mathbb{E}[\tilde x] - \frac{\beta}{2}(\mathbb{E}[\tilde x]^2) - \frac{\beta}{2}\text{Var}[{\tilde x}]
+$$
+
+
+Slide 6
+
 ---
 
 ## <a id="9"><b>9. CAPM</b></a>
