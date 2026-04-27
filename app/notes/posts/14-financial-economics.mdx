@@ -1787,7 +1787,246 @@ $$
 $$
 
 
-Slide 6
+<b>Mean-variance analysis: the general setting </b>
+
+We consider a probability space $\Omega$, $\omega \in \Omega$ is a state of the world with probability $\pi_{\omega}$.
+
+Any random variable defined on $\Omega$ iss denoned with a tilde $\tilde y$.
+- $\tilde y$ takes the value $y^{\omega}$ in a state $\omega$, hence: $\tilde y = (y^{\omega})$ 
+- the expected value of $\tilde y$ is $\mathbb{E}[\tilde y] = \sum_{\omega} \pi_{\omega} y^{\omega}$.
+
+We denote by $\tilde a_k = (a^{\omega}_k)$ the random payoff of asset $k$ and by $p_k$ its price 
+
+Whem it exists, we shall denote by $a_0$ the safe asset, bringing a costant payoff $a_0^{\omega}$ in every state.
+
+- By convention, the Latin subscript of $\tilde a_k$ denotes the risky assets $k \in \{ 1, ..., K\}$. When we mean all assets, including the riskless one, we use the Greep subscript $\tilde a_{\kappa}$.
+
+We call $z = (z_{\kappa})$ the composition of an investor's portfolio and $w$ the initial wealth, _Note that short positions are possible, so we can have $z_{\kappa} < 0$ for some assets._
+
+Moreover, we denote by:
+
+
+- $\tilde{R}_k = (R_k^\omega)_{\omega \in \Omega}$: gross return of asset $k$, where $  R_k^\omega = \frac{a_k^\omega}{p_k}. $
+
+- $R_k = \mathbb{E}_\pi[\tilde{R}_k]$: expected return of asset $k$.
+ 
+  $$
+  R = (R_1,\ldots,R_K)^\top, 
+  \qquad
+  \tilde{R} = (\tilde{R}_1,\ldots,\tilde{R}_K)^\top.
+  $$
+
+- $  \sigma_{kl}=   \operatorname{Cov}_\pi(\tilde{R}_k,\tilde{R}_l)= (  \mathbb{E}_\pi[\tilde{R}_k\tilde{R}_l] - R_kR_l)$ covariance between returns of assets $k$ and $l$.
+
+- $  \Sigma = (\sigma_{kl})_{(k,l)\in\{1,\ldots,K\}^2} $ the $K \times K$ covariance matrix of asset returns.
+
+- $   x_k = \frac{p_k z_k}{w}$   share of initial wealth invested in asset $k$.
+
+<b>Expected return and variance of the portfolio</b>
+
+The expected return of the portfolio is given by:
+
+$$
+\mathbb{E}_{\pi}[\tilde R_p] = x_1 R_1 + x_2 R_2 + ... + x_k R_k = \sum_k x_k R_k 
+$$
+
+Or, in matrix form as:
+
+$$
+\mathbb{E}_{\pi}[\tilde R_p] = x^T R
+$$
+
+The variance of the portfolio is given by:
+
+$$
+\begin{align*}
+\operatorname{Var}{\pi}[\tilde R_p]
+&= \mathbb{E}{\pi}[(\tilde R_p-\mathbb{E}{\pi}[\tilde R_p])^2] \\
+&= \sum_{k,l=1}^{K} x_k x_l\sigma_{kl} \\
+&= x^\top \Sigma x.
+\end{align*}
+$$
+
+<b>Example with 2 stocks</b>
+
+Assume an investor has allocated her wealth equally between two stocks, $x_1 = x_2 = 0,5$.
+
+Suppose also that $R_1 = 0.1, R_2 = 0.05$, $\sigma^2_1 = 0.04$, $\sigma^2_2 = 0.01$ and $\rho_{12} = 0.5$.
+
+The expected return of the portfolio is given by:
+
+$$
+\mathbb{E}_{\pi}[\tilde R_p] = x_1 R_1 + x_2 R_2 = 0.075
+$$
+
+and the variance by:
+
+$$
+\operatorname{Var}[\tilde R_p] = x_1^2 \sigma_{11}^2 + x_1 x_2 \sigma_{12} + x_2^2 \sigma_2^2 = 0.0175
+$$
+
+_Note that in the same formulation sometimes we use correlation coefficient $\rho_{12} = \frac{\sigma_{12}}{\sigma_1 \sigma_2}$_.
+
+---
+<br/>
+<b>Minimum variance portfolio with two stocks</b> 
+
+Given $R_1, R_2, \sigma_1, \sigma_2, \rho_{12} = \frac{\sigma_{12}}{\sigma_1 \sigma_2} < 1$, the investor choose $x_1$ to minimize the variance of the portfolio:
+
+$$
+\frac{1}{2} \sigma_p^2 = \min \frac{1}{2} (x_1^2 \sigma_1^2 + 2 x_1 x_2 \sigma_1 \sigma_2 \rho_{12} + x_2^2 \sigma_2^2) \text{ s.t } x_1 + x_2 = 1
+$$
+
+If we apply the first order condition:
+
+$$
+\frac{\partial \sigma^2_p}{\sigma x_1} = x_1 \sigma_1^2 (1 - x_1)\sigma^2_2 + ((1 - x_1)-x_1)\sigma_1 \sigma_2 \rho_{12} = 0 \implies
+$$
+
+$$
+x_1^{MVP} = \frac{\sigma^2_2 - \sigma__1 \sigma_2 \rho_{12}}{\sigma_1^2 + \sigma_2^2 - 2 \sigma_1 \sigma_2 \rho_{12}}
+$$
+
+_(assuming $\sigma_1^2 \new \sigma_2^2$ or $\rho_{12} \neq 1$)._
+
+If we plug the solution into the formula for the variance of the portfolio we get:
+
+$$
+\sigma_p^{2, MVP} = \frac{\sigma_1^2 \sigma_2^2 ( 1 - \rho_{12}^2)}{\sigma_1^2 + \sigma_2^2 - 2 \sigma_1 \sigma_2 \rho_{12}}
+$$
+
+We can then see two special cases:
+- $\sigma_1^2 = \sigma^2, \rho_{12} = 0 \implies $: $x_1^{MVP} = 1/2, \quad \sigma_p^{2, MVP} = \sigma^2_1 / 2 < \sigma_1^2$
+- $\sigma_1^2 = \sigma^2, \rho_{12} = -1 \implies $: $x_1^{MVP} = 1/2, \quad \sigma_p^{2, MVP} = 0$
+
+and we can do the following remarks:
+- with $K$ assets with identical variances and that are indepedent, the optimal minimum variance portfolio is such that the same amount is invested in each stock: $\sigma_p^{2, MVP} = \sigma^2_1 / k$. _This is the idea behind diversification_.
+- with perfectly negative correlated stocks, we can obtain a portfolio with no risk.
+
+---
+<br/>
+<b>Efficient frontier, no safe asset</b>
+
+In the general case, the problem for the investor is to minimize the variance of the portfolio for a given expected return $m$.
+
+The problem writes as:
+
+$$
+\frac{1}{2}\sigma^2 = \min \frac{1}{2} \sum _{k,l} \sigma^2 x_k x_l \text{ s.t. }\\
+\sum_k x_k R_k = m \text{ performance}\\
+\sum_k x_k = 1 \text{ budget}
+$$
+
+_(assuming no redundant asset)_
+
+In matrix form:
+
+$$
+\frac{1}{2} \sigma^2 = \min \frac{1}{2} x^T \Sigma x \text{ s.t. } \\
+x^T R = m\\
+x^T 1 = 1
+$$
+
+
+Let's now denote by $\lambda$ and $\mu$ the Lagrande mnultipliers for the costraints and write the Lagrangian:
+
+$$
+\mathcal{L}(x, \lambda, \mu) = \frac{1}{2}\sum_{k,l} \sigma_{kl}x_k - x_k x_l + \lambda (m - \sum_k x_k R_k) + \mu (1 - \sum_k x_k)
+$$
+
+By FOC _($x_j$ appears when summing over $k$ and when summing over $$)_
+$$
+0 = \frac{\partial \mathcal{L}(x, \lambda, \mu)}{\partial x_j} = \sum_k \sigma_{kj}x_l - \lambda R_k - \mu
+$$
+
+If we denote by $\Chi = (\gamma^{kl})$ the inverse of the covariance matrix $\Sigma$:
+
+$$
+x_k = \lambda \sum_l \gamma^{kl}R_l + \mu \sum_l \gamma^{kl}
+$$
+
+If we plug this into the two costraints yields to:
+
+$$
+\lambda\left(\sum_{k,l=1}^K \gamma^{kl}R_kR_l\right)
++\mu\left(\sum_{k,l=1}^K \gamma^{kl}R_k\right)=m,
+
+$$
+
+$$
+\lambda\left(\sum_{k,l=1}^K \gamma^{kl}R_l\right)
++\mu\left(\sum_{k,l=1}^K \gamma^{kl}\right)=1.
+
+$$
+
+or, in compact notation:
+
+$$
+c:=R^\top\Gamma R,\qquad
+b:=R^\top\Gamma\mathbf{1}=\mathbf{1}^\top\Gamma R,\qquad
+d:=\mathbf{1}^\top\Gamma\mathbf{1},
+
+$$
+$$
+\lambda c+\mu b=m,\qquad
+\lambda b+\mu d=1.
+
+$$
+
+A solution for this system is given by:
+
+$$
+\lambda = \frac{dm - b}{\Delta}, \quad \mu = \frac{-bm +c}{\Delta}, \quad \Delta = dc - b^2
+$$
+
+Pre-multiplying thr FOC of the problem by $x^T$ gets:
+
+$$
+\sigma^2 = \lambda m + \mu \implies \sigma^2 = \frac{dm^2 - 2mb + c}{\Delta}
+$$
+
+or, equivalently:
+
+$$
+\frac{\Delta}{d} \sigma^2 - ( m - \frac{b}{d})^2 = \frac{\Delta}{d^2}
+$$
+
+<div align = "center">
+![GDP by country](/images/notes/financial-econ/ef.png)
+</div>
+
+<b>The Global Minimum Variance Portfolio</b>
+
+The global minimum variance portfolio _(hedging portfolio)_ is the portgolio $x_G \in \mathbb{R}^K$ with the smallest variance. This portfolio (obtained with $\lambda = 0$) is given by:
+
+$$
+x_{G,k} = \frac{1}{2} \sum_l \gamma^{kl}
+$$
+
+It has expected returng $m_G = b/d$ and risk $\sigma^2 = 1/
+
+<div align = "center">
+![GDP by country](/images/notes/financial-econ/ef.png)
+</div>
+
+_Note that portfolio on the efficient frontier with $m < b/d$ are dominated, since one can get higher returns with the same variance._1
+
+---
+<br/>
+<b>The Mutual Fund Theorem I (no safe asset)</b>
+
+Given two frontier portfolios $x_A, x_B$, all efficient portfolios can be obtained by mixing $x_A, x_B$. Thus all agents seeking for frontier portfolios need only to invest in a combination of these two funds.
+
+Every efficient portfolio is characterized by a scalar $\phi$ such that:
+$$
+x_k = \phi x_{A,k} + (1 - \phi)x_{B,k}
+$$
+
+So, given two portfolios with return $R_A, R_B$, $\phi$ alows to move along the efficient frontier:
+
+$$
+\phi R_A + (1 - \phi)R_B = m
+$$
 
 ---
 
