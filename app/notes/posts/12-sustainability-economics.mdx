@@ -226,6 +226,9 @@ Interdisciplary and policy IAMs often take these assumptions are given, but they
 ![Nordhaus](/images/notes/sust-econ/nordhaus.png)
 </div>
 
+
+
+
 The <b>Nordhaus DICE Model</b> (1992) is based on the <b>Ramsey-Cass-Koopmans</b> growth model, whose aggregate production function is:
 
 $$
@@ -969,7 +972,7 @@ $$
 - $\mu(t)$:  emission control rate.
 - $\theta_2$:  cost convexity parameters
 
-Furthermore, we model the <b>famage function</b> as:
+Furthermore, we model the <b>damage function</b> as:
 
 $$
 D(t) = \psi T(t)^2
@@ -1012,6 +1015,15 @@ Following the DICE model, we can end up with the following estimation:
 
 - Swiss contribition to global climate costs amounts between 2% _(Nordhais)_ and 17% _(Stern)_ of the 2020 Swiss GDP.
 - The difference between the estimates is due to the different _discounting terms_. $\implies$ choosing yher right long-term discount rate for CBA is one of the most critical problems in economics.
+
+<br/>
+---
+
+
+## <a id="10"><b>10. Extensions of Benefit-Cost Analysis: Distributional Weights, Limited Substitutability, and Uncertainty</b> </a>
+
+
+
 <br/>
 <b>The Social Discount Rate (SDR) for the long-run: THe Simple Ramsey Rule </b>
 
@@ -1024,7 +1036,7 @@ $$
 - $g$ is the expected per-capital real growth rate of consumption 
 - $\eta$ is the elasticity of marginal utility of consumption _(inequality aversion)_. _Intuition_: it represents to what degree should the relatively poorer present invest to support the relatively weπalthier future.
 
----
+
 <br/>
 <b>Nordhaus's view and DICE-2016 climate policy path</b>
 
@@ -1035,7 +1047,7 @@ $$
 - These conclusions are of course sensitive to the parameters that determine the social discount rate. 
 - By academic community, these estimated are _"reasonable"_ and lie the plausible range of views on these parameters.
 
-_Generally speaking, depending on the view on $\sigma, \eta$, the DICE model can return very different results.
+_Generally speaking, depending on the view on $\sigma, \eta$, the DICE model can return very different results._
 
 <div align = "center">
 ![GDP by country](/images/notes/sust-econ/sigma-eta.png)
@@ -1360,22 +1372,146 @@ However, if we see data from 2020, we notice that experts _understedimated_ the 
 
 Therefore, there is a strong economic case for more ambitious climate policy.
 
-
-## <a id="10"><b>10. Extensions of Benefit-Cost Analysis: Distributional Weights, Limited Substitutability, and Uncertainty</b> </a>
-
-
-
-
-
 ---
 
 ## <a id="11"><b>11. Environmental Policy: Instrument Choice, Efficiency and Effectiveness</b> </a>
+
+When applying a enviromental policy, there are are several instruments available:
+- <b>Law</b>: bans, standards
+- <b>Market-based instruments</b>: taxes, subsidies, emissions trading 
+- <b>Others</b>: <a href="https://en.wikipedia.org/wiki/Feed-in_tariff" target="_blank">feed-in tariffs</a>, infrastructure planning, green R&D, education, information, nudges...
+
+On average, enviromental policy leads to costs that will be payed by houseolds but usually the extra cost is minimized if _externalities are reduced_ where it is cheaper to do it. <br/>
+$\implies$ The marginal costs of emitting a ton of CO2, _for example_, should be equal to the marginal benefits of avoided damages.
+
+<b>Emissions trading schemese (ETS)</b>
+
+<b>Bans and standard </b>are sometimes easy to understand and introduce but, _due to the binding costraints_, marginal abatement cost will differ across economic agents, leaving benefitial trades on the table.
+
+<b>ETS</b> can yield the same effectiveness _by setting an hard cap,_ but due to the trading of permits, emissions can be reduced where it is least costly to do it, also allowing to generate revenues for government _(that can be recycled back to houseolds or firms to correct undesired distributional effects)_.
+
+<a href="https://en.wikipedia.org/wiki/Carbon_emission_trading" target="_blank">More about Carbon Emission Trading [Wikipedia]</a>
+
+Similarly, <b>CO2-taxes</b>, while still aiming to uniform the CO2 price, are often easier to indtorudce but bring a _negative connotation_. They send a <b>clear price signal</b> but there's uncertainty about how much reduction they will introduce.
+
+On the other hand, ETS are designed to meet some quantity reduction _(given that the purpose is to limit climate change by creating a market with limited allowances for emissions)_ but there's uncertainty about costs and CO2-prices can be volatile, making investment planning more difficult.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/ets.png)
+</div>
+
+Given the situation, some "hybrid" approaches, such as an ETS with flexible min and max prices _(price collar)_ are implemented. 
+
+From a welfare perspective, it is even better to choose a flexible version in-between, a so called _"smart cap"_ with may eliminate the welfare costs of assymetric information on abatement costs.
+
+In this scenario the government creates a supply curve for CO2 permits that matches the expected slope of the environmental benefit, ensuring that:
+- When abatement is cheap: $\implies$ The cap automatically tightens _(fewer permits)_, forcing more emission reductions.
+- Wen abatement is expensive: The cap automatically relaxes _(more permits)_, preventing economic collapse.
+
+_Generally speaking_, we <b>should not rely</b> solely on emissions pricing.
+- There are related failures related to this approach 
+- Regulatory policy has been an important component, also because it is generally more accepted than _market-based_ instruments.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/env-policies.png)
+</div>
+
+<b>Policy-sequencing and instrument mix</b>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/policy-mix.png)
+</div>
+
+<b>Enviromental effectiveness</b>
+
+_DO CO2-prices redue CO2-emissions?_ <br/>
+In general: <b>Yes!</b>, but it is not so easy to demonstrate, as we would need to compare the actual development with a counterfactual one, where the world have developed in absence of CO2-price.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/counterfactual.png)
+</div>
+
+_For example_, the <b>1999 ecological tax reform </b> in Germany raised taxes on petrol, diesel, electricity and natural gas in 1999-20003 with a _"sizable implic price"_ of 84 dollar for ton of CO2 from diesel, second in magnitude only to the Swedish carbon tax _(but on a much larger bases)_. Then Germany used these revnues to cut non-wage labor costs, reducing pension contribution. In this case, health-benefits account for $\approx 2/3% of reduced damaged of the tax on trasport fuels.
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/1999-germany.png)
+</div>
+
+<b>Semi-Elasticity Models</b>
+
+The following equations estimate the fuel consumption per capita in relation to time trends _(macro or tech developement)_ and country specific effects:
+
+The <b>Real Price Elasticity Model</b> focuses on the aggregate price effect:
+
+$$\log(y_{it}) = \beta_0 + \varphi_1 p^{real}_{it} + \lambda' \mathbf{X}_{it} + D^{eco}_t \times \phi_i + \epsilon_{it}
+
+$$
+
+The <b>Eco Tax Elasticity Model</b> focuses on on decomposed tax effects:
+
+$$
+\log(y_{it}) = \beta_0 + \varphi_2 p^{excl}_{it} + \varphi_3 p^{eco}_{it} + \varphi_4 p^{energy}_{it} + \lambda' \mathbf{X}_{it} + D^{eco}_t \times \phi_i + \epsilon_{it}
+$$
+
+where:
+- $y_{it}$: Fuel consumption per capita (logged).
+- $p^{real}_{it}$: Total real fuel price.
+-$p^{excl}_{it}$: Price excluding taxes _(market price + VAT)._1
+- $p^{eco}_{it}$: Real eco tax rate.
+- $p^{energy}_{it}$: Real energy tax rate.
+- $D^{eco}_t$: Post-1999 Reform dummy variable.
+- $\phi_i$: Country-specific fixed effects.
+- $\epsilon_t£: idiosyncratic error term
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/gasoline.png)
+</div>
 
 ---
 
 ## <a id="12"><b>12. Environmental Policy: Distribution, Re-distribution and International Cooperation</b> </a>
 
+_Intuition: If the gasoline price rises by 1%, then gasoline demand dropbs by $\approx $0.5%, i.e. if we sought to reduce gasoline demand by 15%, the price would need to increase by $\approx $30%_
+
+
+In summary, we can say that the <b>demand response</b> to an enviromental tax is _much larger_ tham the equivalent market-price effects, likely driven by tax salience and expected persistence.
+
 ---
+<br/>
+<b>Effectiveness of emissions trading</b>
+
+The European Union Emissions Trading System (EU ETS, _introduced in 2005_) is te largest supra-national ETS in the world, it regulated almost half of the EU's CO2 emissions by:
+- setting a cap on the max number of emissions 
+- reducing the cap over time (with the goal to reach zero emissions by around 2040)
+
+_Generally speaking,_ we can say that, <b>Yes</b>, the EU ETS has reduced emissions.
+
+- _Colmer et al. (2024 ReStud):_<br/>
+“Using administrative data, we estimate that, on average, the EU ETS induced regulated manufacturing firms to reduce carbon dioxide emissions by 14-16%, with no detectable contractions in economic activity.”
+- _Bayer&Aklin (2020 PNAS):_ <br/>
+"CO2 emission reductions relative to the counterfactual without the EU ETS are estimated to be around 8% between 2005 and 2016."
+- _Basaglia et al. (2024 PNAS):_ <br/>
+"EU ETS has also reduced air pollution, when quentified in monetary terms in the order of hundreds of billions of Euros."
+
+To prove that <b>generalized synthetic control method </b> (GSCM) is used to generate counterfactual pathwars for SO2, PM2.5 and NOX emissions with a weighted combinatio of unregolated sectors.
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/gscm.png)
+</div>
+
+<div align = "center">
+![GDP by country](/images/notes/sust-econ/gscm-2.png)
+</div>
+
+To sum up, we have different souces of evidence that both taxes and ETS can reduce emissions, but the extent to which they are successful varies, so we end with the following question: _"do CO2 prices reduce CO2-emissions also if the raised revenue is re-distributed back?"_ <br/>
+The answer is still <b>yes!</b> but:
+- CO2-pricing changes the relative prices of clean vs dirty inputs and goods _(CO2-intensive goods become more expensive)_ 
+- If revenues are re-distributed with a lump-sum, then the steering effect of carbon pricing remains intact 
+- if revnues are used such that the steering effect is watered down, for example by making polloutig goods cheaper again, then this counteracts the reduction.
+<br/>
+
+---
+
+
 
 ## <a id="13"><b>13. Collapse, Resilience and the Sustainable Management of Common Pool Resources</b> </a>
 
