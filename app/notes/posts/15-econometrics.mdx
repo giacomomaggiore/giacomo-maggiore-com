@@ -1726,6 +1726,56 @@ Previously we assume that $a_i$ was correlated with the $x$. If it is not the ca
 
 In this case, we can use the <b>Generalized Least Squares (GLS) approach</b> and trasform the model to make errors serially uncorrelated. 
 
+We start by doing:
+
+$$
+\theta = 1 - \sqrt{\sigma_{\mu}^2 / (\sigma^2_{\mu}+ T \sigma_a^2)}
+$$
+
+then we subtract:
+
+$$
+\theta \bar y_i = \beta_0 \theta + \beta_1 \theta \bar x_{i1} + ... + beta_k \theta \bar_{ik} + \theta \bar v_i
+$$
+
+to obtain the new model:
+
+$$
+\tilde y_{it} = \beta_1 \tilde x_{it} + ... + \beta_k \tilde x_{ik} + \tilde v_{it}, \quad \tilde_{it} = z_{it}- \theta \bar z_i
+$$
+
+we end up with a sort of weighted averaged of OLS and fixed effects.
+- if $\theta = 1 \implies$ this is just the fixed effect estimator 
+- if $\theta = 0 \implies$ this is just the OLS
+
+also, the bigger the variance on the unobserved effect $\sigma_a^2$, the closer is to FE, the smaller the variance, the closer to OLS.
+
+Usually, iti is often more appropriate to use the fixed effect since the unobserved fixed effects are often correlated with the $x$.
+
+The testing procedure is the following:
+- <b>Hausman Test </b> (to compare fixed effects with random effects model):
+  - compare estimates of the $\beta$-vector with and without the additional randome effect assumption 
+  - if the additional assumptions are true, then the estimates should be similar.
+
+<br/>
+<b>Correlated Random Effects approach</b>
+
+We can end up in the case of $a_i$ split up between a part related to the time-averages of the explanatory variables and a part $r_i$ uncorrelaed to the explanatory variables.
+
+$$
+a_i = \alpha + t_i \bar x_{i1} + ... + y_k \bar x_{k1} + r_i
+$$
+
+The resulting model is an ordinary random effects model with uncorrelaed random effect $r_i$ but with the time averages as additional regressors:
+
+$$
+y_{it} = (\beta_0 + \alpha) + \beta_1 x_{it1} + ... + \beta_k x_{ik} + y_1 + \bar x_{i1} + ... y_k \bar x_{k1} + (r_i + \mu_{it})
+$$
+
+_Note that in this case the $\beta$-vector is identical to the one of the fixed effect estimator.
+
+We can also test the ordinary FE with the Corrrelated Random Effect approach, testing for the relevance of the $y$-parameters (<b>Mundlak Test</b>)
+
 ---
 
 ## <a id="9"><b>9 Instrumental Variables</b> </a>
