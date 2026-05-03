@@ -1,0 +1,157 @@
+---
+title: 'Dovresti andare in leva?'
+publishedAt: '2026-05-03'
+summary: ''
+---
+
+<small><i>Disclaimer: this is not a financial advice.</i></small>
+
+### <b>Wall Street è l’unico posto in cui le persone in Rolls-Royce chiedono consiglio a chi prende la metropolitana _(W. Buffet)_ </b>
+
+La <b>lezione 0 </b>di finanza personale insegna che le azioni sono rischiose e le obbligazioni sicure. <br/>
+Qualche capitolo dopo, si impara l'importanza della diversificazione: se un’azione scende, l’obbligazione solitamente sale _(o almeno regge il colpo)._<br/>
+Alla lezione 6 o 7, a seconda del guru di finanza personale di riferimento, viene spiegato che, _nel lungo periodo,_ il mercato azionario tende inesorabilmente a salire.
+
+La verità è che la realtà è estremamente più complessa: la finanza personale e la conseguente a pianificazione finanziaria sono <b>problemi di ottimizzazione strettamente personali</b> e <b>time-dependent</b>. 
+
+Non c’è una strategia <b>"one-size-fits-all"</b>: bensì soluzioni che si adattano agli obiettivi presenti e futuri di ciascuno. È infatti ragionevole pensare che oggi, _a 23 anni,_ io abbia prospettive e necessità ben diverse da quelle che avrò tra 10, 30 _o... 100 anni;_ motivo per cui è altrettanto logico che la mia tolleranza al rischio _(e di conseguenza la mia esposizione ai relativi fattori)_ si evolva nel tempo.
+
+<div align = "center">
+![Vanguard Total World ETF](/images/blog/meme-msci-world.png)
+</div>
+
+### <b>Questo grande amore per gli USA</b>
+
+Generalmente, esistono due metodi principali per rendere un portafoglio più <b>"aggressivo"</b>:
+
+1. <b>Aumentare la concentrazione</b>, allocando una porzione maggiore del capitale in asset rischiosi (tradizionalmente *equity*).
+2. <b>Utilizzare la leva finanziaria</b>, prendendo a prestito del capitale per amplificare l'esposizione.
+
+La maggior parte degli investitori retail tende a concentrarsi sulla prima opzione _(percepita come più convenzionale),_ spesso sovrastimando il reale livello di diversificazione geografica e settoriale dei propri investimenti e al contempo, tende ad associare la leva a qualcosa di <b>troppo pericoloso e speculativo</b>, preferendo la concentrazione perché _"psicologicamente"_ più rassicurante del debito.
+
+<div align = "center">
+![Vanguard Total World ETF](/images/blog/vt.png)
+</div>
+<small><i>Cosa intendo quando dico che gli USA sono il motore del mondo...</i></small>
+
+Esistono tuttavia almeno due motivi tecnici per cui la leva merita un approfondimento: 
+
+1. <b>La quota allocabile in asset rischiosi ha un limite fisico</b> _(100%)._ Oltre questa soglia, l'unico modo per aumentare la concentrazione è fare stock-picking, esponendosi tuttavia a un rischio specifico _(idiosincratico)_ non ricompensato dal mercato.
+2. <b>A parità di rischio complessivo</b> _(inteso sia come volatilità che come probabilità di non raggiungere i propri obiettivi)_, l’utilizzo della leva su un portafoglio ben diversificato può portare a risultati preferibili.
+
+_"Andare in leva"_ significa però tutto e nulla, trattandosi di un concetto estremamente ampio che dipende da numerose variabili: il rapporto di leva, gli strumenti utilizzati, le strategie di deleveraging, la frequenza di ribilanciamento e la natura degli asset sottostanti.
+Per l'investitore retail, le strade più percorribili sono solitamente due: <b>l'investimento a margine</b> o l'utilizzo di <b>ETF a leva </b>(Leveraged ETFs), strumenti finanziari che amplificano il rendimento giornaliero _(o su altri timeframe)_ del sottostante per un fattore costante tramite un ribilanciamento interno periodico. 
+
+Si noti, tuttavia, che il mercato di questi strumenti _(soprattutto in Europa)_ è ancora relativamente ridotto e la disponibilità dei prodotti varia sensibilmente in base alla residenza fiscale.
+
+<div align = "center">
+![Occupy Wall Street](/images/blog/occupy-wall-street.png)
+</div>
+<small><i>Una delle foto più iconiche dal movimento di contestazione pacifica <a href="https://www.amazon.com/Occupying-Wall-Street-Changed-America/dp/160846251X" target="_blank">Occupy Wall Street</a> del 2011.</i></small>
+
+### <b>L'economia mondiale è oggi un gigantesco casinò _(Fidel Castro)_ </b>
+
+L’analisi che segue si concentra quindi su strategie di investimento passive con rapporti di leva variabili applicati ai movimenti giornalieri dell'indice. 
+
+Per farlo, ho simulato la creazione di <b>ETF leveraged "sintetici"</b> basati sui principali indici mondiali, applicando la seguente formula per calcolarne il rendimento:
+
+$$
+R_{L,t} = L \cdot R_{i,t} - \left[ \frac{TER}{252} + (L-1) \cdot \frac{Rate_t + Spread}{252} \right]
+$$
+
+Dove $L$ è il rapporto di leva, $R_{i,t}$ il ritorno giornaliero dell'indice/etf sottostante, $TER$ il *Total Expense Ratio* dell'ETF e $Rate_t + Spread$ quantifica il costo del finanziamento per il capitale preso a prestito.
+
+Invece di validare i portafogli tramite un semplice backtest storico _(spesso ricco di bias)_, è stato adottato un approccio basato su <b>simulazioni Monte Carlo</b> tramite metodo <b>Bootstrap</b>, campionando i ritorni dal periodo _(purtroppo limitato dalla disponibilità dei dati)_ 2012-2026. I risultati restano comunque distorti e influenzati da tale scelta, caratterizzata da un regime di <b>tassi reali negativi </b>o bassissimi per la maggior parte del tempo e da una <b>dominance dell'equity USA</b>senza precedenti. 
+
+Sarebbe di conseguenza opportuno replicare la stessa analisi rimuovendo ogni <b>survivorship bias</b> nella composizione degli indici e, _ancora più rilevante_, confrontando diverse strategie in periodi di tassi alti, stagflazione o recessioni prolungate.
+
+
+Inoltre, i portafogli analizzati sono un sottoinsieme ristretto di quelli possibili; mi sono infatti concentrato su quelli più comuni nel mondo retail utilizzando il<b> dollaro come valuta di riferimento</b> _(per una maggiore disponibilità di dati, omettendo quindi il rischio di cambio)_ e assumendo <b>costi di transazione</b> e <b>tasse sulle plusvalenze flat al 26%</b> _(indipendentemente dall'asset class)_. Ciò non toglie che, _adattando i ticker,_ l’analisi possa essere estesa a qualsiasi portafoglio e valuta.
+
+<div align = "center">
+![Results Montecarlo](/images/blog/spaghetti-montecarlo.png)
+</div>
+
+### <b>Montecarlo Spaghetti</b>
+
+Come accennato, essendo la finanza personale una <b>"scienza imperfetta" e soggettiva</b>, occorre in primis definire le metriche da ottimizzare. Avendo un orizzonte temporale nell’ordine dei decenni, un capitale umano ampio considerato "safe" _(motivo per cui, nel complesso, risulto sottoesposto all'azionario)_ e la capacità di accettare grandi oscillazioni, <b>ottimizzare il CAGR</b> mantenendo il <b>Max Drawdown entro limiti accettabili</b> appare una scelta razionale. 
+
+Trattandosi di simulazioni, è opportuno capire come interpetare la distribuzione dei risultati: per la maggior parte delle metriche, ho preferito il <b>valore mediano </b> per ridurre l'impatto degli outliers, mantenendo. comunque un occhio di riguardo per i casi più disastrosi ($p95$).*
+
+<div align = "center">
+![Results Montecarlo](/images/blog/results-montecarlo.png)
+</div>
+<small><i>I risultati delle 10000 simulazioni Montecarlo con ribilanciamento annuale e capital gain tax al 26%</i></small>
+
+
+Comparando i risultati, non sorprende notare come il<b> 100% equity (VT)</b>, nelle versioni spot _(1x)_ e a leva _(1.5x, 2x, 3x)_, mostri i CAGR e Max drawdown mediani crescenti: rispettivamente <b>13%, 17%, 21%, 27% </b>e  <b>-27%, -41%, -52% e -69%</b>. Il fattore di leva _(giornaliero)_ non si riflette tuttavia linearmente sui ritorni composti _(annuali)_ a causa del costo del finanziamento e, soprattutto, del <b>volatility drag</b>, il cui impatto è approssimato bene dalla seguente:
+
+$$
+ g_L \approx   L \cdot \mu - \frac{1}{2} L^2 \sigma^2 
+$$
+
+
+
+Il problema di ottimizzazione base dell’investimento a leva consiste infatti nel <b>massimizzare il rendimento atteso</b> $g_L$ in funzione del rendimento aritmetico atteso e della varianza del sottostante. Si noti comunque che  in mercati laterali, _in cui $\mu$ tende a zero,_ il termine $-\frac{1}{2} L^2 \sigma^2$ mantiene la posizione in rosso.
+
+<div align = "center">
+![volatility drag](/images/blog/vol-drag.png)
+</div>
+
+
+Ancora più importante: all’aumentare della leva, <b>l’efficienza corretta per il rischio peggiora:</b> i rapporti di Sharpe e Sortino diminuiscono infatti progressivamente e aumenta il rischio di margin call.
+
+Per i più avversi al rischio, si osservi inoltre che il <b>100% stocks 3x</b>, nel caso peggiore _($p5$)_, presenta un CAGR del <b>-2%</b>, il che implica un <b>ritorno nominale negativo</b> nel lungo periodo.
+
+In parallelo, emerge come una leva mirata possa migliorare un portafoglio bilanciato. Nella versione "vanilla", il 60/40 ha un CAGR mediano dell'<b>8%</b>, con una volatilità contenuta _(0.10 vs 0.17 del 100% azioni)_ e un Max Drawdown mediano di appena il 17%. Applicando un fattore di leva 2x <b>alla sola componente azionaria</b>, si ottiene un CAGR mediano del <b>13%</b> _(identico al 100% azioni spot),_ ma con una distribuzione dei risultati potenzialmente più favorevole e una gestione del rischio diversa _(soprattutto in ottica goal-based investing, avendo un 40% di titoli di stato in grado di far fronte a spese previste o emergenze)._
+
+<div align = "center">
+![Results Montecarlo](/images/blog/60x2-40.png)
+</div>
+
+### <b>Non è tutto oro quel che luccica</b>
+
+È curioso notare come applicare la leva <b>anche alla parte obbligazionaria non porti i benefici sperati:</b> il portafoglio in questione risulta infatti <b>Pareto-inferior</b> rispetto alla versione con leva solo azionaria a causa del rapporto tra rendimento dei bond e costo del debito: se il ritorno del sottostante non supera abbondantemente il costo del denaro e il drag della volatilità, <b>la leva distrugge valore invece di crearlo.</b> 
+
+Infine, l'<b>All Weather</b> e il <b>Golden Butterfly</b> si confermano i più conservativi, con CAGR ridotti ma drawdown estremamente contenuti nelle varianti spot. Queste allocazioni risentono del fatto che, _nell'ultimo decennio,_ l'azionario USA ha sovraperformato quasi ogni altra asset class. Tuttavia, se consideriamo <b>l’Ulcer Index</b> _(che sintetizza bene profondità e durata dei periodi di sofferenza),_ il Golden Butterfly e l'All Weather si piazzano ai primi posti, mantenendo un buono profilo di rischio anche nelle versioni leveraged.
+
+In conclusione, andare in leva non significa necessariamente <b>rincorrere irrealistici a discapito della stabilità</b> e, di conseguenza, non dovrebbe essere vista <b>solo come uno strumento speculativo</b> riservato a _Long Term Capital Management_, bensì come un <b>grado di libertà aggiuntivo</b> nell’asset allocation per superare i limiti della diversificazione tradizionale e ottimizzare l'efficienza del capitale.
+
+Detto ciò, lungi da me proporre strategie di investimento o fare "la lezione" sulla leva _(per quello esiste già The Italian Leather Sofa);_ questa analisi, _con tutte le sue inevitabili semplificazioni_, ha solo scopo intrattenitivo e informativo.
+
+Rimando alla <a href="https://github.com/giacomomaggiore/leveraged-et-pf/" target="_blank">repo github</a> per i più curiosi. <b>Cheers!</b>
+
+<div align = "center">
+![Vanguard Total World ETF](/images/blog/ltcm.png)
+</div>
+<small><i>L'importante è non fare la fine di LTCM...</i></small>
+<br/>
+<br/>
+---
+<br/>
+<b>Per saperne di più</b>
+<br/>
+<a href="https://github.com/giacomomaggiore/leveraged-et-pf/" target="_blank">Leveraged ETFs: la repo GitHub (made with ❤️ by me)</a>
+<br/>
+
+<a href="https://arxiv.org/abs/2103.10157" target="_blank"> Leveraged ETF Investing _(Tal Miller, 2021)_</a>
+<br/>
+
+<a href="https://scispace.com/pdf/long-term-investing-with-leveraged-exchange-traded-funds-2b9b97g2pw.pdf" target="_blank">Long-Term Investing With Leveraged Exchange Traded Funds _(Loehr et Lamb, 2013)_ </a>
+<br/>
+
+<a href="https://www.aqr.com/Insights/Research/Alternative-Thinking/Why-Do-Most-Investors-Choose-Concentration-Over-Leverage" target="_blank">Why Do Most Investors Choose Concentration Over Leverage? _(ARQ, 2012)_ </a>
+<br/>
+
+<a href="https://www.youtube.com/watch?v=Ll3TCEz4g1k" target="_blank">Investing with Leverage _(Ben Felix, 2019)_ </a>
+<br/>
+
+<a href="https://www.youtube.com/watch?v=zoHdL-SwzP0&t=89s" target="_blank">Parliamo di Leva e DCA _(Mr. Rip, 2023)_ </a>
+<br/>
+
+<a href="https://www.youtube.com/watch?v=c6iMnCC_CWM" target="_blank">Gli ETF a Leva: analisi dei veri costi e rendimenti _(Coletti, 2024)_ </a>
+<br/>
+
+<a href="https://theitalianleathersofa.com/" target="_blank">The Italian Leather Sofa _(Blog, Nicola Protasoni)_ </a>
+<br/>
+
