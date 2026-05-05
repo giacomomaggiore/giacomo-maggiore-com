@@ -26,8 +26,9 @@ Please refer to his <a href="https://drive.google.com/file/d/1xVfUo16AxQmlWKle8E
 - [Money holding: Inflation and Monetary Policy](#6)
 - [Crises in Market Economnies](#7)
 - [IS-LM Model and Open Economy](#8)
-- [Theories of exchange rate determination](#9)
-- [Technical Appendix](#10)
+- [Bank Runs $ The Diamon-Dybvig Model](#9)
+- [Theories of exchange rate determination](#10)
+- [Technical Appendix](#11)
 ---
 
 ## <a id="1"><b>1.1 Introduction</b> </a>
@@ -1474,8 +1475,206 @@ $\implies$ also with these changes, the results presented here remain qualitativ
 
 ---
 
-## <a id="9"><b>9. Theories of exchange rate determination</b> </a>
+## <a id="9"><b>Bank Runs $ The Diamon-Dybvig Model</b> </a>
+
+Banks hold only a fractio of their deposits as cash and reserves. The remainder of banks' assets is _illiquid_. $\implies$ this makes banks prone to <b>bank runs</b>
+
+A bank run is often characterized by a sequence of events:
+- depositors lose trust in a bank's viability 
+- depositors withdraw demand deposits 
+- the bank must <b>liquidate its long-term assets</b> to serve its short-term liabilities 
+- the bank <b>defaults</b> if the assets' liquidation value is too small for the bank to serve all withdrawals
+
+a _"not so healty"_ bank can fail due to a bank run:
+- a bank runs out of liquidity due to unexpected liquidity shock 
+- yet, he market value of its _(illiquid)_ assets exceeds its liabilities
+- the bank defaults if it must <b>fire-sell</b> its assets at low prices.
+
+Note the distinction between:
+- <b>solvency risk</b>: long-term risk on the balance sheet, given by excessive debt, declining asset values 
+- <b>liquidity risk</b>: short-term risk on the cash flow _(availability of liquid assets)_ caused by a poor cash and timing manageent 
+
+Therefore:
+- A company _(bank)_ can  be <b>solvent but not liquid </b> _(if it has enough assets but lacks the cash to meet immediate obligatoins)_.
+- A company _(bank)_ can be <b>liquid but not solvent</b> _(if it has enough cash to meet short-term obligations but not enough assets compared to long-term liabilities)_  
+<br/>
+---
+<br/>
+<b>The Diamond-Dybvig Model</b>
+
+This model formalizes bank runs in with two important features:
+- banks offer deposit contracts, which provide <b>risk sharing and liquidity insurance</b> in case of shocks on consuption needs 
+- deposits contracts can have _underisarble_ <b>bank run equilibria</b> in which all depositors panic and withdraw immediately, _including the ones who would prefer to consume late_. 
+<br/>
+<b>The Consumer's perspective</b>
+
+We start with a _slightly simplified version_ of the enviroment.
+- there are three dates, $t = 0,1,2$ 
+- there is a mass of <b>ex-ante identical, risk-averse agents</b>
+- there are two types of investment technologies:
+    - <b>storage</b> yields $1$ at $t = 1$
+    - <b>long-term investment</b> yields $R > 1$ at $t = 2$ but only $0.8$ it it must be liquidated early at $t = 1$ _(fire sale)_ $\implies$ <b>early liquidation is costly</b>!
+
+At $t =0$, all agents are identical. They don't know in advance whem they will need to consume. 
+
+At $t = 1$, each agent learns their type _(which is a private information)_:
+- with probability $\pi$ they will need liquidity early ($t = 1$)
+- with probability $1 - \pi$ they can wait and consume later ($t = 2$)
+
+_(we can interpret $\pi$ as the probability to be hit by a liquidity shock)_ 
+
+Suppose now that one unit of the good is available at you at $t = 0$. There are two ways to use it:
+- <b>storage</b> (liquid asset)
+- <b>long-term investment</b> offering a return while being illiquid
+
+Suppose that each person acts alone, _without a bank_. Then each individual must deal with the possibility of needing early consumption by itself, creating a difficult chice: _keep in storage and be liquid or invest for the long-term and risk a early-liquidation loss_.
+
+$\implies$ <b>Without a bank, each person bears their own liquidity risk</b>.
+
+$\implies$ <b>Optimal allocation</b> for an individual depends on $R, \pi$ and his degree of <b>risk-aversion</b>.
+
+<b>Pooling </b> helps because, even if each individual is uncertain about their own liquidity needs_, in a large group, the fraction of people who need early consumption is often fairly predictable $\implies$ _by the Law of Large Numbers_, a <b>fraction</b> $\pi$ will need liquidity early at $t = 1$.
+
+_Economic intuition (<b>Liquidity Insurance</b>): if many people pool their funds, some can withdraw early, while the rest of the resources can remain invested long term_.
+
+<b>The Bank's perspective</b>
+
+Banks collect deposits from many households. They can then invest a share $1 -\pi$ of these funds in long-term assets and keep a share $\pi$ as liquid.
+
+- all depositors are then offered the possibility of withdrawing on demand 
+- they partecipate in the returns of the asset portfolios held by banks throught interest earned on their deposits 
+- Banks perfom <b>maturity transformation</b>:
+    - they hold <b>relatively illiquid-long-term assets</b>
+    - they issue <b>relatively liquid-short-term liabilities</b>
+<br/>_(This mechanism allow society to invest in productive long-term assets while agents with unexpected early consumption needs can still access fund at any $t$)_ 
+
+As a consequence: 
+- more resources can remain invested in high-return long-term projects. 
+- depositors partecipate in these returns with interest on deposits 
+- early consumers gain access to liquidity when they need it 
+
+But, _at the same time_, this structure also creates <b>fragility</b>: if too many depositors demand liquidity at once, the bank can run out into troubles.
+
+In particular, this mechanism becomes fragile if a larger fraction $> \pi$ tries to withdraw early since a bank can promise liquidity to each depositor individually, but not to all depositors simultaneously _(the bank is liquid only against "normal" withdrawal demand, not against everyone withdrawing at once)_
+
+<div align = "center">
+![Timeline](/images/notes/economic-growth/timeline.png)
+</div>
+
+Assume now the following:
+- loands repaid at $t = 2$
+- loands can be sold off at $t = 1$ but at a _fire-scale_ discount of 20%
+- there are<b> 20 depositors of the early type, 80 of the late type </b>and <b>10 equity holders</b> owning the bank
+- each agent owns 1 unit of funds iin $t = 0$
+- _for simplicity_: no interest is paid on loans or deposits, eliminating the need to account of interest income or expense 
+
+At $t = 1$, if we consider Loans (L), Cash (C), Deposits (D) and Equity (E):
+
+<div align = "center">
+![Timeline](/images/notes/economic-growth/timeline-2.png)
+</div>
+
+At $t = 2$ there's <b>limited liability</b>: shareolders cannot be forced to recapitalize, so the remainign 8 units of deposits are written off, they get nothing.
+
+<div align = "center">
+![Timeline](/images/notes/economic-growth/timeline-3.png)
+</div>
+
+_In general_, if only people with real liquidity needs mithdraw at $t = 1$ tge bank can still meet these withdrawals from:
+- its liquid reseves 
+- _if needed;_ limited liquidation of long-term assets 
+in this case, the remainin gassets can stay invested and generate return at $t = 2$.
+
+<b>The panic-scenario</b> 
+
+Now suppose that many depositors try to withdrawal at $t = 1$, including those whou could actually wait. In this case, the bank must liquidate a large amount of its long-term assets early _(remember that early liquidation is costly)_, so <b>panic destroys value</b>.
+
+$\implies$ if too many depositors demand liquidity at once, the bank may be forced to sell long-term assets at a loss and may be unable to satisfy everyone in full.
+
+For a depositor who does _not_ need funds early:
+- if they expect the others to remain calm/rationale, it is best to wait until $t = 2$
+- if they expect many others to run, <b>waiting becomes dangerous</b>:
+    - the bank may run out of liquidity 
+    - long-term assets may be liquidated at a loss 
+    - late withdrawers may receive less/zero 
+
+<br/>
+<b>The first-mover advantage</b>
+
+Banks typically serve withdrawal requests in the order in which they arrive <br/> $\implies$
+those who arrive _early_ are more likely to be paid in full 
+
+In a panic, it can be <b>individually rational</b> to withdraw early simply because others may do so first <br/>$\implies$
+this <b>first-mover advantage</b> is the central ingredient of the Diamon-Dybvig logic.
+
+If everyone expects a run, the running becomes <b>individually rational</b> and so the run occurs. 
+
+---
+<br/>
+<b>Liquidity Crisis vs Solvency Crisis</b>
+
+A bank can fail even when it is solvent $\implies$ the prblem may be of liquidity, not necessarily of solvency
+- if the assets could be held to maturity, they might be sufficient to cover the bank's obligations 
+- if the bank is forced to liquidate them early under stress, it may realize losses and fail 
+
+_In general,_ a <b>liquidity crisis</b> arises because fund are needed now, a <b>solvency crisis</b> arises because assets are worth too little<br/> $\implies$ 
+The Diamond-Dybvig model is a story about a <b>liquidity crisis that can turn into a solvency crisis</b>
+
+Note that crsis can also begin in the opposite direction: <b>doubts about solvency can trigger a liquidity crisis</b>.
+
+---
+<br/>
+<b>From classic bank runs to modern digital banks</b>
+
+In this model, depositors try to withdraw cash at the same time. However, _in modern banking systems,_ this often no longer means queuing up physically at the bank. Instead, the run can be even more frictionless and consist in:
+- rapid digital transfers to other banks 
+- shift into money market funds or Treasury Bills 
+
+A modern bank run is often not a run <b>into cash</b>, but a run <b>out of a bank's liabilities</b> and into alternative stores of value.
+
+<b>Policy, interpretation and limits</b>
+
+The previous model doesn't state that banks are undesiderable, banks are indeed _socially useful_ because they provide liquidity insurance. The policy is therefore not to eliminate banking, but the challenge is to preserve the <b>good equilibrium</b> while ruling out the run equilibrium.
+
+<b>Suspension of Convertibility</b>
+
+One classic solution is a <b>suspension of convertibilitiy</b>. When cash reserves are depleted in $t = 1$, this prevents runs:
+- the bank stops withdrawals in $t = 1$ after first 20 depositors in queue withdrew $\implies$ it closes down when initial cash reserves are depleted 
+- this ensures that loans can mature without _fire-sales_.
+
+In this case, this action <b>restores confidence</b>:
+- late types know they are safe and there's no reason to withdrawal early 
+- early types can each withdraw successfully at $t = 1$ because late types have no incentive to run 
+
+But this not _necessarily_ work well if $\pi$ is unknown or understimated.
+
+<b>Deposit Insurance and Lender of Last Resort (LOLR)</b>
+
+Another solution is <b>deposit insurance</b>:
+- if depositors know their funds are protected even it the bank comes under pressure, then the incentive to run is reduced 
+- in this case patient depositors no longer need to runsh to run early 
+
+A further solution is a <b>Lender of Last Resort</b>:
+- the central bank can provide liquidity to a foundamentally healty but illiquid bank
+- this prevent inefficient fire-sales and disorders that can lead to failure 
+
+$\implies$ but these solutions can raise other issues, _such as moral hazard_:
+- deositors may pay less attention to bank risks 
+- banks may have stronger incentives to take risk 
+
+$\implies$ it downside risks are partly absorbed by the <b>public sector</b>, private actors may take on more risk than is <b>socially desiderable</b>.
+
+This is why modern banking systems do not realy on deposit insurance or LOLR, they also provide a <b>prudential framework</b> to limit risk-taking in the first place. Two core elements are:
+- <b>capital regulation</b>: banks must have enough loss-absorbing equity 
+- <b>liquidity regulation</b>: banks must hold enough liquid assets
+
+$\implies$ a stable system requires both crisis-management tools and ex-ante regulation.
+
+---
+<br/>
+## <a id="10"><b>10. Theories of exchange rate determination</b> </a>
+
 
 ---
 
-## <a id="10"><b>10. Technical Appendix</b> </a>
+## <a id="11"><b>11. Technical Appendix</b> </a>

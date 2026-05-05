@@ -1,0 +1,153 @@
+---
+title: 'Should you go leveraged?'
+publishedAt: '2026-05-03'
+summary: ''
+---
+
+<small><i>Disclaimer: this is not financial advice.</i></small>
+
+### <b>Wall Street is the only place that people ride to in a Rolls-Royce to get advice from those who take the subway _(W. Buffet)_ </b>
+
+<b>Lesson 0</b> of personal finance teaches that stocks are risky and bonds are safe. <br/>
+A few chapters later, you learn the importance of diversification: if a stock goes down, the bond usually goes up._<br/>
+By Lesson 6 or 7, depending on your personal finance guru of choice, it is explained that, _in the long run,_ the stock market tends to rise.
+
+The truth is that reality is far more complex: personal finance and consequent financial planning are <b>strictly personal</b> and <b>time-dependent optimization problems</b>. 
+
+There is no <b>"one-size-fits-all"</b> strategy: rather, there are solutions that adapt to each individual's present and future goals. It is, in fact, reasonable to think that today, _at 23 years old,_ I have very different perspectives and needs than those I will have in 10, 30 _or... 100 years;_ which is why it is equally logical that my risk tolerance _(and consequently my exposure to related factors)_ evolves over time.
+
+<div align = "center">
+![Vanguard Total World ETF](/images/blog/meme-msci-world.png)
+</div>
+
+### <b>This Great Love for the USA</b>
+
+Generally, there are two main ways to make a portfolio more <b>"aggressive"</b>:
+
+1. <b>Increasing concentration</b>, by allocating a larger portion of capital into risky assets (traditionally *equity*).
+2. <b>Using financial leverage</b>, by borrowing capital to amplify exposure.
+
+Most retail investors tend to focus on the first option _(perceived as more conventional),_ often overestimating the real level of geographical and sector diversification of their investments. At the same time, they tend to associate leverage with something <b><a href="https://finance.yahoo.com/quote/GME/" target="_blank">too dangerous and speculative</a></b>, preferring concentration because it is "psychologically" more reassuring than debt.
+
+<div align = "center">
+![Vanguard Total World ETF](/images/blog/vt.png)
+</div>
+<small><i>What I mean when I say the USA is the engine of the world...</i></small>
+
+However, there are at least two technical reasons why leverage deserves a closer look: 
+
+1. <b>The share allocatable to risky assets has a physical limit</b> _(100%)._ Beyond this threshold, the only way to increase concentration is through <a href="https://www.quiverquant.com/scores/memestocks" target="_blank">stock-picking</a>, which however exposes one to specific _(idiosyncratic)_ risk that is not rewarded by the market.
+2. <b>For the same level of overall risk</b> _(intended both as volatility and the probability of not reaching one's financial goals)_, using leverage on a well-diversified portfolio can lead to preferable results.
+
+But "using leverage" means everything and nothing, as it is an extremely broad concept that depends on numerous variables: the leverage ratio, the instruments used, deleveraging strategies, rebalancing frequency and the nature of the underlying assets.
+For the retail investor, the most viable paths are usually two: <b><a href="https://www.investopedia.com/terms/m/margin.asp" target="_blank">margin investing</a></b> or using <b><a href="https://www.investopedia.com/terms/l/leveraged-etf.asp" target="_blank">Leveraged ETFs</a></b>, financial instruments that amplify the daily return _(or other timeframes)_ of the underlying by a constant factor through periodic internal rebalancing. 
+
+Note, however, that the market for these instruments _(especially in Europe)_ is still relatively small, and product availability varies significantly based on tax residence.
+
+<div align = "center">
+![Occupy Wall Street](/images/blog/occupy-wall-street.png)
+</div>
+<small><i>One of the most iconic photos from the <a href="https://www.amazon.com/Occupying-Wall-Street-Changed-America/dp/160846251X" target="_blank">Occupy Wall Street</a> peaceful protest movement of 2011.</i></small>
+
+### <b>The world economy is today a giant casino _(Fidel Castro)_ </b>
+
+The following analysis therefore focuses on passive investment strategies with variable leverage ratios applied to the daily movements of the index. 
+
+To do this, I simulated the creation of <b>"synthetic" leveraged ETFs</b> based on major world indices, applying the following formula to calculate their return:
+
+$$
+R_{L,t} = L \cdot R_{i,t} - \left[ \frac{TER}{252} + (L-1) \cdot \frac{Rate_t + Spread}{252} \right]
+$$
+
+Where $L$ is the leverage ratio, $R_{i,t}$ is the daily return of the underlying index/ETF, $TER$ is the *Total Expense Ratio* of the ETF, and $Rate_t + Spread$ quantifies the cost of financing for the borrowed capital.
+
+Instead of validating the portfolios through a simple historical backtest _(often full of bias)_, an approach based on <b><a href="https://www.monte-carlo.mc/it/" target="_blank">Monte Carlo simulations</a></b> via the <b>Bootstrap</b> method was adopted, sampling returns from the period _(unfortunately limited by data availability)_ 2012-2026. The results remain distorted and influenced by this choice, characterized by a regime of <b>negative </b> or very low <b>real rates</b> for most of the time and an unprecedented <b>US equity dominance</b>. 
+
+Consequently, it would be appropriate to replicate the same analysis by removing any <b>survivorship bias</b> in the composition of the indices and, _even more importantly_, comparing different strategies during periods of high rates, stagflation, or prolonged recessions.
+
+Furthermore, the analyzed portfolios are a narrow subset of those possible; I have in fact focused on the most common ones in the retail world using the <b>dollar as the reference currency</b> _(for greater data availability, thus omitting exchange rate risk)_ and assuming <b>transaction costs</b> and <b>capital gains taxes flat at 26%</b> _(regardless of the asset class)_. This does not change the fact that, by _adapting the tickers,_ the analysis can be extended to any portfolio and currency.
+
+<div align = "center">
+![Results Montecarlo](/images/blog/spaghetti-montecarlo.png)
+</div>
+
+### <b>Montecarlo Spaghetti</b>
+
+As mentioned, since personal finance is an <b>"imperfect and subjective science"</b>, we must first define the metrics to optimize. Having a time horizon in the range of decades, a large human capital considered "safe" _(which is why, overall, I am under-exposed to equities)_ and the ability to accept large swings, <b>optimizing CAGR</b> while keeping the <b>Max Drawdown within acceptable limits</b> appears to be a rational choice. 
+
+Since these are simulations, it is appropriate to understand how to interpret the distribution of results: for most metrics, I preferred the <b>median value</b> to reduce the impact of outliers, while still keeping an eye on the most disastrous cases ($p95$).
+
+<div align = "center">
+![Results Montecarlo](/images/blog/results-montecarlo.png)
+</div>
+<small><i>Results of the 10,000 Monte Carlo simulations with annual rebalancing and 26% capital gains tax</i></small>
+
+
+Comparing the results, it is no surprise to see how <b>100% equity (VT)</b>, in the spot _(1x)_ and leveraged _(1.5x, 2x, 3x)_ versions, shows increasing median CAGRs and Max Drawdowns: respectively <b>13%, 17%, 21%, 27%</b> and <b>-27%, -41%, -52% and -69%</b>. The _(daily)_ leverage factor, however, does not reflect linearly on the _(annual)_ compound returns due to financing costs and, above all, the <b>volatility drag</b>, the impact of which is well approximated by the following:
+
+$$
+ g_L \approx  L \cdot \mu - \frac{1}{2} L^2 \sigma^2 
+$$
+
+The basic optimization problem of leveraged investing consists of <b>maximizing the expected return</b> $g_L$ as a function of the expected arithmetic return and the variance of the underlying. Note, however, that in sideways markets, _where $\mu$ tends to zero,_ the term $-\frac{1}{2} L^2 \sigma^2$ keeps the position in the red.
+
+<div align = "center">
+![volatility drag](/images/blog/vol-drag.png)
+</div>
+
+
+More importantly: as leverage increases, <b>risk-adjusted efficiency worsens:</b> the <a href="https://it.wikipedia.org/wiki/William_Sharpe" target="_blank">Sharpe</a> and Sortino ratios progressively decrease and the risk of margin call increases.
+
+For the most risk-averse, it should also be noted that <b>100% stocks 3x</b>, in the worst case _($p5$)_, presents a CAGR of <b>-2%</b>, which implies a <b>negative nominal return</b> in the long run.
+
+In parallel, it emerges how targeted leverage can improve a balanced portfolio. In the "vanilla" version, the 60/40 has a median CAGR of <b>8%</b>, with contained volatility _(0.10 vs 0.17 for 100% stocks)_ and a median Max Drawdown of just 17%. By applying a 2x leverage factor <b>to the equity component only</b>, a median CAGR of <b>13%</b> is obtained _(identical to spot 100% equity),_ but with a potentially more favorable distribution of results and different risk management _(especially in terms of goal-based investing, having 40% in government bonds capable of meeting planned expenses or emergencies)._
+
+<div align = "center">
+![Results Montecarlo](/images/blog/60x2-40.png)
+</div>
+
+### <b>All That Glitters Is Not Gold</b>
+
+It is curious to note how applying leverage <b>also to the bond portion does not bring the hoped-for benefits:</b> the portfolio in question is in fact <b><a href="https://it.wikipedia.org/wiki/Vilfredo_Pareto" target="_blank">Pareto-inferior</a></b> compared to the equity-only leverage version due to the ratio between bond yield and debt cost: if the underlying return does not significantly exceed the cost of money and the volatility drag, <b>leverage destroys value instead of creating it.</b> 
+
+Finally, the <b>All Weather</b> and <b>Golden Butterfly</b> confirm themselves as the most conservative, with reduced CAGRs but extremely contained drawdowns in the spot variants. These allocations suffer from the fact that, _over the last decade,_ US equities have outperformed almost every other asset class. However, if we consider the <b>Ulcer Index</b> _(which synthesizes well the depth and duration of periods of suffering),_ the Golden Butterfly and All Weather rank at the top, maintaining a good risk profile even in the leveraged versions.
+
+In conclusion, using leverage does not necessarily mean <b>chasing unrealistic returns at the expense of stability</b> and, consequently, should not be seen <b>only as a speculative tool</b> reserved for _Long Term Capital Management_, but rather as an <b>additional degree of freedom</b> in asset allocation to overcome the limits of traditional diversification and optimize capital efficiency.
+
+That said, far be it from me to propose investment strategies or "lecture" on leverage _(for that, The Italian Leather Sofa already exists);_ this analysis, _with all its inevitable simplifications_, is for entertainment and informational purposes only.
+
+I refer you to the <a href="https://github.com/giacomomaggiore/leveraged-et-pf/" target="_blank">repo github</a> for the curious. <b>Cheers!</b>
+
+<div align = "center">
+![Vanguard Total World ETF](/images/blog/ltcm.png)
+</div>
+<small><i>The important thing is not to end up like LTCM...</i></small>
+<br/>
+<br/>
+---
+<br/>
+<b>Per saperne di più</b>
+<br/>
+<a href="https://github.com/giacomomaggiore/leveraged-et-pf/" target="_blank">Leveraged ETFs: la repo GitHub (made with ❤️ by me)</a>
+<br/>
+
+<a href="https://arxiv.org/abs/2103.10157" target="_blank"> Leveraged ETF Investing _(Tal Miller, 2021)_</a>
+<br/>
+
+<a href="https://scispace.com/pdf/long-term-investing-with-leveraged-exchange-traded-funds-2b9b97g2pw.pdf" target="_blank">Long-Term Investing With Leveraged Exchange Traded Funds _(Loehr et Lamb, 2013)_ </a>
+<br/>
+
+<a href="https://www.aqr.com/Insights/Research/Alternative-Thinking/Why-Do-Most-Investors-Choose-Concentration-Over-Leverage" target="_blank">Why Do Most Investors Choose Concentration Over Leverage? _(ARQ, 2012)_ </a>
+<br/>
+
+<a href="https://www.youtube.com/watch?v=Ll3TCEz4g1k" target="_blank">Investing with Leverage _(Ben Felix, 2019)_ </a>
+<br/>
+
+<a href="https://www.youtube.com/watch?v=zoHdL-SwzP0&t=89s" target="_blank">Parliamo di Leva e DCA _(ITA - Mr. Rip, 2023)_ </a>
+<br/>
+
+<a href="https://www.youtube.com/watch?v=c6iMnCC_CWM" target="_blank">Gli ETF a Leva: analisi dei veri costi e rendimenti _(ITA - Coletti, 2024)_ </a>
+<br/>
+
+<a href="https://theitalianleathersofa.com/" target="_blank">The Italian Leather Sofa _(Blog, Nicola Protasoni)_ </a>
+<br/>

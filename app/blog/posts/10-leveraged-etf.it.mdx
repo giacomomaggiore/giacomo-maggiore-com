@@ -27,7 +27,7 @@ Generalmente, esistono due metodi principali per rendere un portafoglio più <b>
 1. <b>Aumentare la concentrazione</b>, allocando una porzione maggiore del capitale in asset rischiosi (tradizionalmente *equity*).
 2. <b>Utilizzare la leva finanziaria</b>, prendendo a prestito del capitale per amplificare l'esposizione.
 
-La maggior parte degli investitori retail tende a concentrarsi sulla prima opzione _(percepita come più convenzionale),_ spesso sovrastimando il reale livello di diversificazione geografica e settoriale dei propri investimenti e al contempo, tende ad associare la leva a qualcosa di <b>troppo pericoloso e speculativo</b>, preferendo la concentrazione perché _"psicologicamente"_ più rassicurante del debito.
+La maggior parte degli investitori retail tende a concentrarsi sulla prima opzione _(percepita come più convenzionale),_ spesso sovrastimando il reale livello di diversificazione geografica e settoriale dei propri investimenti e al contempo, tende ad associare la leva a qualcosa di <b><a href="https://finance.yahoo.com/quote/GME/" target="_blank">troppo pericoloso e speculativo</a></b>, preferendo la concentrazione perché _"psicologicamente"_ più rassicurante del debito.
 
 <div align = "center">
 ![Vanguard Total World ETF](/images/blog/vt.png)
@@ -36,11 +36,11 @@ La maggior parte degli investitori retail tende a concentrarsi sulla prima opzio
 
 Esistono tuttavia almeno due motivi tecnici per cui la leva merita un approfondimento: 
 
-1. <b>La quota allocabile in asset rischiosi ha un limite fisico</b> _(100%)._ Oltre questa soglia, l'unico modo per aumentare la concentrazione è fare stock-picking, esponendosi tuttavia a un rischio specifico _(idiosincratico)_ non ricompensato dal mercato.
+1. <b>La quota allocabile in asset rischiosi ha un limite fisico</b> _(100%)._ Oltre questa soglia, l'unico modo per aumentare la concentrazione è fare <a href="https://www.quiverquant.com/scores/memestocks" target="_blank">stock-picking</a>, esponendosi tuttavia a un rischio specifico _(idiosincratico)_ non ricompensato dal mercato.
 2. <b>A parità di rischio complessivo</b> _(inteso sia come volatilità che come probabilità di non raggiungere i propri obiettivi)_, l’utilizzo della leva su un portafoglio ben diversificato può portare a risultati preferibili.
 
 _"Andare in leva"_ significa però tutto e nulla, trattandosi di un concetto estremamente ampio che dipende da numerose variabili: il rapporto di leva, gli strumenti utilizzati, le strategie di deleveraging, la frequenza di ribilanciamento e la natura degli asset sottostanti.
-Per l'investitore retail, le strade più percorribili sono solitamente due: <b>l'investimento a margine</b> o l'utilizzo di <b>ETF a leva </b>(Leveraged ETFs), strumenti finanziari che amplificano il rendimento giornaliero _(o su altri timeframe)_ del sottostante per un fattore costante tramite un ribilanciamento interno periodico. 
+Per l'investitore retail, le strade più percorribili sono solitamente due: <b><a href="https://www.investopedia.com/terms/m/margin.asp" target="_blank">l'investimento a margine</a></b> o l'utilizzo di <b><a href="https://www.investopedia.com/terms/l/leveraged-etf.asp" target="_blank">ETF a leva</a></b>(Leveraged ETFs), strumenti finanziari che amplificano il rendimento giornaliero _(o su altri timeframe)_ del sottostante per un fattore costante tramite un ribilanciamento interno periodico. 
 
 Si noti, tuttavia, che il mercato di questi strumenti _(soprattutto in Europa)_ è ancora relativamente ridotto e la disponibilità dei prodotti varia sensibilmente in base alla residenza fiscale.
 
@@ -61,7 +61,7 @@ $$
 
 Dove $L$ è il rapporto di leva, $R_{i,t}$ il ritorno giornaliero dell'indice/etf sottostante, $TER$ il *Total Expense Ratio* dell'ETF e $Rate_t + Spread$ quantifica il costo del finanziamento per il capitale preso a prestito.
 
-Invece di validare i portafogli tramite un semplice backtest storico _(spesso ricco di bias)_, è stato adottato un approccio basato su <b>simulazioni Monte Carlo</b> tramite metodo <b>Bootstrap</b>, campionando i ritorni dal periodo _(purtroppo limitato dalla disponibilità dei dati)_ 2012-2026. I risultati restano comunque distorti e influenzati da tale scelta, caratterizzata da un regime di <b>tassi reali negativi </b>o bassissimi per la maggior parte del tempo e da una <b>dominance dell'equity USA</b>senza precedenti. 
+Invece di validare i portafogli tramite un semplice backtest storico _(spesso ricco di bias)_, è stato adottato un approccio basato su <b><a href="https://www.monte-carlo.mc/it/" target="_blank">simulazioni Monte Carlo</a></b> tramite metodo <b>Bootstrap</b>, campionando i ritorni dal periodo _(purtroppo limitato dalla disponibilità dei dati)_ 2012-2026. I risultati restano comunque distorti e influenzati da tale scelta, caratterizzata da un regime di <b>tassi reali negativi </b>o bassissimi per la maggior parte del tempo e da una <b>dominance dell'equity USA</b>senza precedenti. 
 
 Sarebbe di conseguenza opportuno replicare la stessa analisi rimuovendo ogni <b>survivorship bias</b> nella composizione degli indici e, _ancora più rilevante_, confrontando diverse strategie in periodi di tassi alti, stagflazione o recessioni prolungate.
 
@@ -99,7 +99,7 @@ Il problema di ottimizzazione base dell’investimento a leva consiste infatti n
 </div>
 
 
-Ancora più importante: all’aumentare della leva, <b>l’efficienza corretta per il rischio peggiora:</b> i rapporti di Sharpe e Sortino diminuiscono infatti progressivamente e aumenta il rischio di margin call.
+Ancora più importante: all’aumentare della leva, <b>l’efficienza corretta per il rischio peggiora:</b> i rapporti di <a href="https://it.wikipedia.org/wiki/William_Sharpe" target="_blank">Sharpe</a> e Sortino diminuiscono infatti progressivamente e aumenta il rischio di margin call.
 
 Per i più avversi al rischio, si osservi inoltre che il <b>100% stocks 3x</b>, nel caso peggiore _($p5$)_, presenta un CAGR del <b>-2%</b>, il che implica un <b>ritorno nominale negativo</b> nel lungo periodo.
 
@@ -111,7 +111,7 @@ In parallelo, emerge come una leva mirata possa migliorare un portafoglio bilanc
 
 ### <b>Non è tutto oro quel che luccica</b>
 
-È curioso notare come applicare la leva <b>anche alla parte obbligazionaria non porti i benefici sperati:</b> il portafoglio in questione risulta infatti <b>Pareto-inferior</b> rispetto alla versione con leva solo azionaria a causa del rapporto tra rendimento dei bond e costo del debito: se il ritorno del sottostante non supera abbondantemente il costo del denaro e il drag della volatilità, <b>la leva distrugge valore invece di crearlo.</b> 
+È curioso notare come applicare la leva <b>anche alla parte obbligazionaria non porti i benefici sperati:</b> il portafoglio in questione risulta infatti <b><a href="https://it.wikipedia.org/wiki/Vilfredo_Pareto" target="_blank">Pareto-inferior</a></b> rispetto alla versione con leva solo azionaria a causa del rapporto tra rendimento dei bond e costo del debito: se il ritorno del sottostante non supera abbondantemente il costo del denaro e il drag della volatilità, <b>la leva distrugge valore invece di crearlo.</b> 
 
 Infine, l'<b>All Weather</b> e il <b>Golden Butterfly</b> si confermano i più conservativi, con CAGR ridotti ma drawdown estremamente contenuti nelle varianti spot. Queste allocazioni risentono del fatto che, _nell'ultimo decennio,_ l'azionario USA ha sovraperformato quasi ogni altra asset class. Tuttavia, se consideriamo <b>l’Ulcer Index</b> _(che sintetizza bene profondità e durata dei periodi di sofferenza),_ il Golden Butterfly e l'All Weather si piazzano ai primi posti, mantenendo un buono profilo di rischio anche nelle versioni leveraged.
 

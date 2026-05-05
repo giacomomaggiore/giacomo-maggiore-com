@@ -1321,18 +1321,305 @@ Furthermore, note that cash <b>earns zero interest</b>, therefore treasury manag
 
 ---
 
-## <a id="10"><b>10. Treasury at Holcim / Amrize Case</b> </a>
+## <a id="11"><b>11. The Art of M&A: Investment banking at UBS</b> </a>
 
+_The following chapters comes from the UBS Guest Lecture - Advanced Finance ETH Course, Spring 2026_
+
+<b>Modern Investment Banking</b>
+
+The investment bank is today split into two main divisions: 
+- <b>Global Markets (GM)</b>: often referred as <b>Sales and Trading</b>, focusing on the execution of trades, risk management and providing liquidity across various asset classes.
+- <b>Global Banking (GB)</b>: often referred as <b>Advisory and Capital raising</b>, focusing the strategic side of finance, including M&A advisory and helping companies raise money in the capital markets 
+
+<div align = "center">
+![GDP by country](/images/notes/a-finance/ib.png)
+</div>
+
+Some number about UBS:
+- 2000+ bankers employeed worldwide 
+- 8000+ clients 
+- 83 countries with bankers in 40 cities 
+- strategic operations centered in <b>major financial hubs</b> _(New York, London and Hong Kong)_
+<br/>
 ---
+<br/>
+<b>How can business combination be classified?</b>
+<div align = "center">
+![IB](/images/notes/a-finance/business-combination.png)
+</div>
 
-## <a id="11"><b>11. Mergers</b> </a>
+<b>Overview of a typical M&A sell-side process</b>
 
+1. <b>Preparation</b> (informal, pre-launch): it involves reviewing strategic rationale for scale, prepare internal financial and equity story, set-up an internal project team and external advisors, identify potential buyers and sign all the _confidentiality agreement_ required 
+2. <b>Phase 1</b>: distribute information memorandum, management presentation, initial valuation framing and buyer positioning $\implies$ _first round bid_ 
+3. <b>Phase 2</b>: full virtual data room access, vendor due diligence, written Q&A, site visits if applicable $\implies$ _binding offer,  binding financing commitments_
+4. <b>Negotiation and signing</b>: shortlist to 2-3 bidders, review of any _black-box information_, final price $\implies$ Final SPA _(sales and purchase agreement)_
+<br/>
 ---
+<br/>
+<b>How to value a company</b>
+
+Market value and enterprise value relate returns to different stakeholders or, _in other terms_:
+- <b>Market value</b>: it measures the equity value, excludes debt, cash and other financial obligation,  _most common in stock valuation_ 
+- <b>Enterprise value</b>: it measures a company's total value, including both equity and debt, minus cash. It represents the theoretical cost to acquire the entire company.
+<div align = "center">
+![GDP by country](/images/notes/a-finance/value-company.png)
+</div>
+
+<Table
+  data={{
+    headers: ['Valuation Methodology', 'Comparable Companies', 'Comparable Acquisitions', 'Discounted Cash Flows (DCF)'],
+    rows: [
+      [
+        'Method',
+        'Key multiples of operating figures (e.g., Sales, EBITDA, EBIT, Net Income) for comparable traded companies.',
+        'Key multiples of operating figures (e.g., EBITDA, EBIT, Net Income) for comparable M&A transactions.',
+        'Present value of projected free cash flows using WACC as discount rate; terminal value based on perpetual growth or exit multiple.',
+      ],
+      [
+        'Rationale',
+        'Generates theoretical current market value; provides market-based check for DCF valuation.',
+        'Reflects strategic value, including premiums paid for control.',
+        'Generates intrinsic enterprise value; allows sensitivity analysis; provides operating figures for other methods.',
+      ],
+      [
+        'Issues',
+        'Limited comparable companies; valuations influenced by market conditions; small-cap stocks may not reflect fundamental value.',
+        'Limited comparable transactions; deal-specific factors (e.g., synergies) cause wide valuation ranges.',
+        'Requires detailed understanding of business model; prone to optimistic assumptions; highly sensitive to inputs.',
+      ],
+    ],
+  }}
+/>
+<br/>
+<b>DiscountedC Cash Flow (DFC) analysis</b>
+
+Major stpes:
+- <b>Due diligence</b>: analysis of the business and the business enviroment coming up with assumptions 
+- <b>Financial modelling</b>: link all the assumptions and the data collected in some actual financial numbers 
+- <b>Project free cash flows</b> at the end of the period 
+- <b>Estimate the discount rate</b>, usually using the <b>WACC</b> (weighted average cost of capital) as the opportunity cost of FCSd 
+- <b>Discount</b> and calculate the present value of FCFs and the terminal value _(fai r value of the assets that generate the FCFs)_ 
+- <b>Make adjustments</b> and calculate the <b>Enterprise value</b> by adding or substracting assets and liabilities omitted in FCFs.
+
+_Note that the most critical part if often estimating the discount rate_:
+
+<div align = "center">
+![GDP by country](/images/notes/a-finance/wacc.png)
+</div>
+
+<Table
+  data={{
+    headers: ['Multiple', 'Pros', 'Cons'],
+    rows: [
+      [
+        '**EV/EBITDA**',
+        'Independent of leverage and capital structure. Good ratio in cyclical industries.',
+        'Distorted by differences in capex levels.',
+      ],
+      [
+        '**EV/cash flow or EV/(EBITDA – capex)**',
+        'Accounts for high capital intensity, corrects for different depreciation policies. Ideal for cyclical companies.',
+        'Inconsistent definition of cash flow across firms. Requires most information.',
+      ],
+      [
+        '**Price/earnings (P/E)**',
+        'Widely used by investors and P/E.',
+        'Distorted by different accounting habits (particularly depreciation). Sensitive in cyclical companies. Can be distorted by leverage.',
+      ],
+      [
+        '**EV/EBIT**',
+        'Independent of leverage and capital structure. Well-understood metric.',
+        'Distorted by different depreciation/accounting policies. EV/EBITDA is usually preferable.',
+      ],
+      [
+        '**Equity FCF yield**',
+        'Cash-based and forward-looking. Comparable across capital structures and business models.',
+        'Sensitive to forecasts and assumptions. Can misrepresent cyclicality as cashflow generation.',
+      ],
+      [
+        '**Price/book value**',
+        'Used primarily for financial institutions. Reflects long-term profitability.',
+        'Distorted by accounting differences. Need profitability check.',
+      ],
+      [
+        '**EV/sales**',
+        'Used primarily for high-growth/tech companies not yet in a EBITDA-positive stage.',
+        'Highly dependent on profitability. Requires similar path to profitability.',
+      ],
+      [
+        '**Growth-adjusted multiples**',
+        'Typically used in the valuation of early-stage businesses.',
+        'Relies on the assumption that growth is the key value driver.',
+      ],
+    ],
+  }}
+/>
 
 ## <a id="12"><b>12. Corporate Restructuring</b> </a>
 
----
+<b>Leverage Buyout</b>
 
+Leverage buyouts (LBO) are characterized by the fac that <b>large portion of the buyout</b> is financed by debt $\implies$ shares of the LBO no longer trade on the open market.
+
+Consider also the special case: a <b>management buyout</b> is a buyout led by the existing managers.
+
+<div align = "center">
+![LBO](/images/notes/a-finance/lbo.png)
+</div>
+
+_Consider also that leveraged loans volumes have rebounded in 2024, mirroring the increase in LBo activity.
+
+<div align = "center">
+![LBO](/images/notes/a-finance/lbo-2.png)
+</div>
+
+_In Europe,_ leveraged finance is increasing in 2025: interest rate cuts in 2024 created a more favorable ndition for the syndicated loand high yield bond markets, while the competition between public and private lenders is reshaping the financing industry.
+
+<b>Leverage Restructuring</b>
+
+The difference between LBO and ordinary acquisitions lies in the followng:
+- a large fraction of the purchase is debt financed, usually with _junk bonds_
+- the LBO goes private 
+    -  sometimes, after the termina period of the LBO, a spin-off or a carve-out _(like a spin-off, but the new business is sold in a public offering)_ can happen.
+
+$\implies$ we can summarize then the 4 main characteristics of LBOs:
+- high debt 
+- incentives 
+- private ownership
+<br/>
+---
+<br/>
+<b>Overview of Private Equity</b>
+
+<div align = "center">
+![PW](/images/notes/a-finance/pe.png)
+</div>
+
+Even if PE funds can be similar to public conglomerate, they show some differences: 
+
+<Table
+  data={{
+    headers: ['**Private–Equity Fund**', '**Public Conglomerate**'],
+    rows: [
+      [
+        'Widely diversified, investment in unrelated industries',
+        'Widely diversified, investment in unrelated industries',
+      ],
+      [
+        'Limited-life partnership forces sale of portfolio companies',
+        'Public corporations designed to operate divisions for the long run',
+      ],
+      [
+        'No financial links or transfers between portfolio companies',
+        'Internal capital market',
+      ],
+      [
+        'General partners "do the deal," then monitor; lenders also monitor',
+        'Hierarchy of corporate staff evaluates divisions’ plans and performance',
+      ],
+      [
+        'Managers’ compensation depends on exit value of company',
+        'Divisional managers’ compensation depends mostly on earnings',
+      ],
+    ],
+  }}
+/>
+<br/>
+---
+<br/>
 ## <a id="13"><b>13. Financial Crises and Regulatory</b> </a>
+
+<b>Why regulate the banks? </b>
+
+Banks play a special role in the economy _(combination of payments, lending, deposit taking etc...)_, so the impact of banking crises can be huge and lead to <b>permanent GDP losses</b>. For this reason, there's a lot of support from the public sector to promote financial stability _(deposit insurance, lender of last resort)_.
+
+The primary metric is of course <b>capital</b>. <br/>We define the <b>commono equity (net assets) of any company</b> as the difference between its assets and liabilities. Common equity can be understood as the shareholders's residual calim on the assets othe company, after taking account of the claims of other funders.
+
+With positive common equity, depositors and other funders can be comfortable that assets are sufficient to cover their claims and _"will be happy"_ to continue funding the bank.
+
+Common equity is also considered the <b>first form of funding to bear a loss</b>, as it does it _instantaneously_.
+
+<b>Subordinated debt </b> _(subordinated loan, subordinated bond, or junior debt)_ is a type of debt that ranks below other debts in terms of claims on a company's assets.<br/>In the event of a liquidation or bankruptcy, subordinated debt holders are paid only after the senior debt holders have been fully repaid.
+
+
+
+<b>Hybrid capital</b> is a form of subordinate debt that shares some features of common share:
+- it is usually perpetual _(no maturity date)_ 
+- it enables the bank to cancel interest payments _(similar to cancelling dividend payments on common shares)_ 
+
+<b>Liquidity</b> (funding liquidity) can be defined as having cash when you need it to meet repayments or to provide business to clients:
+- can be generated from the asset side of the balance sheet selling assets 
+- can be generate from the liability side raising duns through additional borrowing _(it doesn't change size the balance sheet)_ 
+
+An asset is considered <b>liquid</b> if it can be rapidly converted into cash with <b>no loss of value</b> $\implies$ it means _typically_ that there's a deep and active market where the asset can be traded.
+
+---
+<br/>
+<b>Regulatory metrics: Capital</b>
+
+There are two key metrics for capital:
+
+$$
+\text{Leverage Ratio Requirement} = \frac{\text{Capital}}{\text{Leverage Ratio Exposure}} \ge 3 \%
+$$
+
+The <b>leverage ratio exposure </b> is a measure of the bank size _(= total assets + off-balanche sheet items converted into on-balance sheet equivalents)_ but it doesn't discriminate between the riskiness of assets.
+$$
+\text{Risk-based Capital Requirement} = \frac{\text{Capital}}{\text{Risk-weighted assets}} \ge 8\%
+$$
+
+<b>Risk-weighted assets (RWA)</b> are the nominal exposure converted into risk-weighted exposure using standardised risk-weights set by regulations or banks' internal models.
+
+<b>Optimal Capital Requirements</b>
+
+<Table
+  data={{
+    headers: ['Study', 'LEI (2010)', 'Miles et al (2013)', 'Yan et al (2012)', 'Martinez-Miera and Suarez (2014)', 'Nguyen (2014)', 'Mendicino et al (2015)'],
+    rows: [
+      ['Definition of capital', 'Tier 1', 'Tier 1', 'CET1', 'Tier 1', 'Tier 1', 'Total capital ratio'],
+      ['Optimal capital requirement (% of RWAs)', '13', '16–20', '10', '14', '8', '12–16'],
+    ],
+  }}
+/>
+
+<br/>
+---
+<br/>
+<b>Regulatory metrics: Liquidity</b>
+
+There are two metrics for liquidity:
+- <b>Liquidity Cover Ratio (LCR):</b>
+$$
+\text{LCR} = \frac{\text{Stock of High Quality Liquid Assets (HWLA)}}{\text{Total net cash out over next 30dd}} \ge 100 \%
+$$
+
+- <b>Net Stable Funding Requirement (NSFR)</b>:
+$$
+\text{NSFR} = \frac{\text{Available amount of stable funding (ASF)}}{\text{Required amount of stable funding (RSF)}} \ge 100 \%
+$$
+
+---
+<br/>
+<b>The 2023 Banking Turmoil: a recap</b>
+
+It was the most significant system-wide banking stress since the Great Financial Crisis $\implies$ 5 banks with total assets of $ 1.1 trillion failed, merged or liquidated.
+
+_In general_, it was a <b>broader crisi of confidence</b> that needed extensive public support measures.
+
+<div align = "center">
+![PW](/images/notes/a-finance/2023.png)
+</div>
+
+The following plot shows the LR outflows from distressed banks
+
+<div align = "center">
+![PW](/images/notes/a-finance/2023-2.png)
+</div>
+
+Some takeaways from this crisis:
+- outflows of some deposits were larger and faster than assumed in the LCR and NSFR 
+- additional liquidity needs not covered by the LCR can be material 
+
 
 ---
