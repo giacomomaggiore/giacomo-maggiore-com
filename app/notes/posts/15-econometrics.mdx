@@ -1780,4 +1780,256 @@ We can also test the ordinary FE with the Corrrelated Random Effect approach, te
 
 ## <a id="9"><b>9 Instrumental Variables</b> </a>
 
+One of the most problematic assumption of OLS is the <b>zero conditional meanassuption</b> _(the explanatory variables are assumed <b>exogenous</b>)_ $\implies$ it this doesn't hold, the parameter estimates are biaed and inconsistent.
+
+So if the error term contains variables _(i.e. if the error term is correlated with them)_ that are correlated with one of the explanatory variables we can:
+- pull the variable out of the error term including more relevant regressors 
+- _in case of panel data,_ assume that the variable is costant over time.
+
+We consider then an example of regression with endogeneity problems: i.e. $\operatorname{Cov}(x, \mu) \neq = 0$:
+
+$$
+\log{\text{wage}_i} = \beta_0 + \beta_\ \text{educ}_i + \mu_i 
+$$
+
+and we know that $\mu$ contains <b>abilitiy</b>, so $\operatorname{Cov}(\text{educ}_i, \mu) \neq 0$, so we if we use OLS, $\beta_1$ is biased and inconsistent due to omission of ability.
+
+To solve this <b>endogenity problem</b> we use an <b>instrumental variable (IV)</b> denotes as $Z$ that:
+- is <b>correlated with the endogenous variable</b> 
+- is <b>uncorrelated with the error term</b> $\mu$
+- affects the dependent variable <b>only through the endogenous variable</b> _(only by changing $X$)_
+
+In the previous example:
+- $Z$ affects the number of years of education, so wehave $X = \text{educ}$ 
+- $Z$ indirectly affects wages $Y$ through its effect on education.
+
+<b>Conditions for valid instruments</b>:
+
+1. <b>First Stage</b>: $\operatorname{Cov}(Z,X) \neq 0$ _($Z$ must be correlated with $X$)_ 
+2. <b>Independence</b>: $\operatorname{Cov}(Z,\mu) = 0$ _(the instrument must be endogenous)_ 
+3. <b>Exclusion restriction</b>: Z can affect the outcome only by changing $X4
+
+<div align = "center">
+![Instrumental Variable](/images/notes/econometrics/iv.png)
+</div>
+
+<b>The Angrist and Krueger (1991) natural experiment <a href="https://www.nobelprize.org/prizes/economic-sciences/2021/popular-information/" target="_blank">(Nobel Prize 2021)</a></b>
+
+Angrist and Krueer studied which factors drive out of the full control of individuals _(uncorrelated wth $\mu$)_ drive education, finding an interesting variation created by US schooling laws in the early 1930:
+- <b>Law 1</b>: students enter school in calendar year in which they turn 6 $\implies$ 
+
+$$
+\text{School Starting Age} = f(\text{Date of birth})
+$$
+
+- <b>Law 2</b>: Compulsory schooling require students to remain in school until became $16$ so, since school starts for everyone in the same day of the month, depending on the birth date students can stay in school morel/less time.
+
+So these laws can create a <b>natural experiment</b> that incluences the number of years of education.
+
+In particular, they observed that, _on average_, people with born in the 4th quarter showed an _higher average_ level of education.
+
+$$
+\text{Education} = \pi_{10} + \pi_{11} \text{Q4} + v_1
+$$
+
+As a consequence, people born in the 4th quarter show _higher average_ level of wage:
+
+$$
+\log(\text{wage}) = \pi_{20} + \pi_{21}\text{Q4} + v_2
+$$
+
+<div align = "center">
+![Instrumental Variable](/images/notes/econometrics/1980.png)
+</div>
+
+<br/>
+---
+<br/>
+<b>Instrumental Variable Estiation in the Simple Regressoin Case</b>
+
+We consider the model with $x$ explanatory variable <b>correlated with the error</b> and $z$ instrumental variable _(uncorrelated with $\mu$, correlated with $x$)_: 
+
+$$
+y = \beta_0 + \beta_1 x + \mu
+$$
+
+We firstly write the covariance of $x, y$:
+
+$$
+\operatorname{Cov}(z, y) = \operatorname{Cov}(z, \beta_0 + \beta_1 x + \mu)
+$$
+using the linerarity of covariance and that $\operatorname{Cov}(z,\mu) = 0$, we then get:
+$$
+\operatorname{Cov}(z, y) = \beta_1 \operatorname{Cov}(z, x) + \operatorname{Cov}(z, \mu) \implies
+\beta_1 = \frac{\operatorname{Cov}(z, y)}{\operatorname{Cov}(z, x)} \implies
+\beta_1 = \frac{\frac{\operatorname{Cov}(z, y)}{\operatorname{Var}(z)}}{\frac{\operatorname{Cov}(z, x)}{\operatorname{Var}(z)}}
+
+$$
+
+
+Them the <b>IV estimator</b> for $\beta_1$ is:
+
+$$
+\beta_1 = \frac{\sum(z_i - z^{avg})(y_i - y^{avg})}{\sum (z_i - z^{avg})(x_i - x^{avg})}
+$$
+
+
+---
+<br/>
+<b>Two Stage Least Squares</b>
+
+IV estimation can be extended to the <b>multiple instruments case</b>. In this case we talk about <b>Two Stage Least Squares (2SLS)</b>
+
+We consider the initial <b>structural model</b> _(the equation we want to estimate, example)_:
+
+$$
+\log(\text{wage}) = b_0 + b_1 \cdot \text{educ} + b_2 \cdot X + u
+$$
+
+The goal is to estimate $b_1$ _(the causal effect of educatoin on wages)_ while controlling for $X$.
+
+We are now assuming that both $z_1,z_2$ are <b>valid instruments</b> _(correlated with $\text{educ}$ and uncorrelated with the error)_.<br/>Note that $\text{educ}$ is the endogenous variable and $X$ are again exogenous regressors.
+
+- <b>Stage 1</b>: the best instrument is a <b>linear combination of all the exogenous variables</b>: so we regress the endogenous variable $\text{educ}$ on the instruments ($Q3, Q4$)and $X$.
+
+$$
+\text{educ} = \pi_{10} + \pi_{11} \cdot \text{Q3} + \pi_{12} \cdot \text{Q4} + \pi_{13} \cdot X + v_1
+$$
+
+From this regression with obtain the <b>predicted values</b>, denote as $\widehat{\text{educ}}$.
+
+$$
+\widehat{\text{educ}} = \hat{\pi}{10} + \hat{\pi}{11} \cdot \text{Quarter3} + \hat{\pi}{12} \cdot \text{Quarter4} + \hat{\pi}{13} \cdot X
+
+$$
+
+The predited $\widehat{\text{educ}}$ is then a <b>Linear cobination of the instruments and the exogenous variable</b>. <br/>Furthermore, the instruments must be <b>jointly significant</b> in explaining $\text{educ}$ and this can be tested using a $F-$statistic _(usually we set $F > 10$ to ensure strong instruments)_.
+
+$$
+H_0: \pi_{11} = 0, \quad \pi_{12} = 0
+$$
+
+_Intuition: the first stage isolates the part of $\text{educ}$ explained by the 9instruments and the exogenous variable_.
+
+- <b>Stage 2</b>: we use the predicted $\widehat{\text{educ}}$ as a regressor:
+
+$$
+\log(\text{wage}) = b_0 + b_1 \cdot \widehat{\text{educ}} + b_2 \cdot X + u_1
+$$
+
+Note that this regressor uses $\widehat{\text{educ}}$ _(exogenous)_ instead of the "old" $\text{educ}$ _(endogenous)_.
+
+Then the coefficient $b_1$ is the <b>IV estimate</b> of the causal effect of education on wages. _Note that in this second stage, the standard errors of the estimates need to be corrected to account for the two-stage procedure. This is typically done automatically in statistical software like STATA._
+
+_Intuition: the second stage uses this predicted $\widehat{\text{educ}}$ to estimate the causal effect of education on wages ensuring exogeinity_.
+
+
+<div align = "center">
+![Instrumental Variable](/images/notes/econometrics/1991.png)
+</div>
+
+
+
+---
+<br/>
+<b>Inference with IV estimation</b> 
+
+We consider again the case $y = \beta_0 + \beta_1 x + \mu$ with one endogenous regressor $x$ and one instrument $z$.
+
+The homoskedasticity assumption in this case is:
+
+$$
+\mathbb{E}[\mu^2 | z] = \sigma^2 = \operatorname{Var}(\mu) = \text{costant}
+$$
+
+Also, as in the OLS case the <b>asymptotic variance </b> is $\operatorname{Var}(\beta_1) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}$.<br/>
+It can be estaimted using the sample counterparts:
+
+$$
+\operatorname{Var}(b_1) = \frac{s^2}{SST_x R_{x,z}^2} 
+$$
+
+where:
+- $s^2 = (n-2)^{-1}\sum_i \hat \mu_i^2$ are taken from the residuals $\hat u_i = y - b_0 - b_1 x$
+- $\sigma_x^2$ is the sample variance of $x$
+- $R_{z,x}^2$ is the R-squared of the regresson of $x$ on $z$
+
+$\implies$ The standard error is just the square root of this.
+
+So the IV case differs from the OLS only in the $R^2$ from regressing $x$ on $z$ since in the OLS case we just have $\operatorname{Var}(b_1) = s^2 / (SST_x)$.
+- since $R^2 \le 1$, the IV standard error is <b>always larger</b> $\implies$ stronger the correlation between $x,z$, smaller the IV error.
+- however, IV is consistent, while OLS is not when $\operatorname{Cov}(x, \mu) \neq 0$.
+
+<br/>
+---
+<br/>
+<b>The Effect of poor instruments</b>
+
+If the assumption $\operatorname{Cov}(z, x) \neq = 0$ <b>is false</b> _($z,x$ are only weakly correlated )_ the IV estimator will be <b>inconsistent too</b>. This happens because the the numerator of the IV estimator depends on the correlation between $z,x$. 
+
+We can indeed compare the <b>asymptotic bias</b> in OLS, IV as:
+- <b>IV</b>: $\lim b_1 = \beta_1 + \frac{\text{Corr}(z, \mu \sigma_{\mu})}{\text{Corr}(x, z)\sigma_x}$
+- <b>OLS</b>: $\lim b_1 = \beta_1 + \text{Corr}(x, \mu) \sigma_{\mu}$
+
+This shows that even small correlation of $z, \mu$ can lead to large biases particularly if the correlation between $x,z$ is _also small_.
+
+
+
+<br/>
+<b>The Charter School Experiment</b>
+
+The main question is: _"do better charter schools prosuce better pupils?"_ (But wait, <a href="https://charterschoolcenter.ed.gov/what-charter-school#:~:text=A%20Brief%20History%20of%20Charter,charter%20to%20operate%20a%20school." target="_blank">what is a charter school?</a>)
+
+Characteristics of charter schools:
+- public schools operating with more autonomy than public schools 
+- expanded instruction time 
+- selective teacher hiring 
+- serve in poor districts 
+
+We can answer this question using data from Massachusetts schools in 2005-2008 and regressing:
+
+$$
+\text{grade} = b_0 + b_1 \text{KIPP} + \mu
+$$
+
+where $\text{KIPP}$ <b>(knowledge is power program)</b> is a binary variable indicating where a student attends a KIPP charter school.
+
+The problem is that $\operatorname{Cov}(\text{KIPP}, \mu) \neq 0$ since more motivade kigs might go to charter school.
+
+The solution is a <b>random assignment of schools through lotteries</b> (due too many applicants and capacity constraints):
+- participants were _randomly_ selected to get an offer $Z$ to attend KIPP however:
+  - not all applicants with an offer enrolled in KIPP and attended ($Z = 1, \text{KIPP} = 0$)
+  - some applicants without an offer managed to get into ($Z = 0, \text{KIPP} = 1$)
+
+We can still exploit the randomization of the offer $Z$ to extract the causal variation in attedance.
+
+<div align = "center">
+![Instrumental Variable](/images/notes/econometrics/kipp.png)
+</div>
+
+<b>Local average treatment effect (LATE)</b>
+
+Not all students who win the lottery attend KIPP schools _(only 74%)_. These individuals whose treatment status is determined by the instrument _(the lotter)_ are called <b>"compliers"</b>:
+- offer $= 0 \implies$ KIPP $=0$
+- offer $= 1 \implies$ KIPP $=1$
+
+There are individuals that do not care about the lottery outcomes: 
+- <b>Always takers</b>: attend KIPP wheter they win the lottery or not (4.6%)
+- <b>Never-takers</b>: never attend KIPP irrespective of the lottery (21.3%)
+- <b>Defiers</b>: who attent KIPP only if they lose the lottery (0%).
+
+The IV estimate measures the Local Average Treatment Effect (LATE), which is the <b>average causal effect of the treatment (attending KIPP) for the compliers.</b>
+- the IV estimate does not provide information about the treatment effect for the <b>always takers, never takers, defiers</b> $\implies$ this because the IV method relies on the variation in the treatment caused by the instrument _(and the treatment status of always takers, never takers and defiers is not influenced by the instrument)_
+
+Then the <b>external validity</b> of the IV estimate is limited because:
+- the IV estimate is limited to the <b>compliers</b>
+- the causal effect for compliers may not be the same of the causal effect for the entire population.
+
+_In the case of the KIPP study:_
+- the IV estimate measures the causal effect of students attending KIPP schools because they won the lottery 
+- it doesn't measure the effect of attending KIPP for always takers, never taker or defiers 
+
+ $\implies$ the results are only valid for a _subgroup_.
+
+<br/>
 ---

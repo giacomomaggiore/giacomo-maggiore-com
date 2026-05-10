@@ -2290,9 +2290,208 @@ $\implies$ CAPM has never been really tested
 - the CAPM relies on <b>strong and unrealistic assumptions</b>:
  $\implies$ need to develop more sophisticated asset pricing models _(example_ <b>Consumption Based CAPM</b>)
 
-<a href="https://en.wikipedia.org/wiki/Consumption-based_capital_asset_pricing_model" target="_blank">More on the Consumption Based CAPM here (Wikipedia)</a>
+<br/>
+
 ---
+<br/>
 
 ## <a id="10"><b>10. Risk sharing and asset prices in a market equilibrium</b></a>
 
+
+<b>The Consumption Based CAPM</b>
+
+We consider a probability space $\Omega$, where $\omega in \Omega$ is a state of the world with probability $\pi_{\omega}$.
+
+We denote by $\tilde y$ any random variabkle define on $\Omega$. We say that $\tilde y$ takes the value $y^{\omega}$ in state $\omega$ and its expected value if $\mathbb{E}_{\pi}[\tilde y] = \sum_{\omega} \pi_{\omega}y^{\omega}$.
+
+We consider then $I$ agents living in two periods. For each agent $i$:
+- at $t = 0$: <b>deterministic endowment </b>$e_i^0$ with consumption $c_i^0$
+- at $t = 1$ <b>random endowment</b> $\tilde e_i = (e_i^{\omega})$ with consumption $\tilde c_i = (c_i^{\omega})$
+
+We write $\tilde C_i = (c_i^0 \tilde c_i)$.
+
+Agents are <b>expected utility maximizers</b> with additively sperable utility function:
+
+$$
+U_i (\tilde C_i) = u_i(c_i^0) + \delta \mathbb{E}_{\pi}[v_i(\tilde c_i)]
+
+$$
+
+where $\delta$ denotes the time preference.
+
+We then consider a <b>market</b> with $K$ risky assets where $a_k = (a_k^{\omega})$ is the random payoff of asset $k$ with price $p_k$.<br/>There's also a risk-free asset $a_0$ yielding a costant payoff $a_0$ for every state.
+
+We then define $r$ by: $(1 + r) = \frac{a_0}{p_0}$.
+
+
+<b>Agents' optimization problem</b>
+
+Agent $i$ maximizes his utility function, that means:
+
+$$
+\max_{z_i^{\kappa}} \{ U_i (\tilde C_i) = u_i (c_i^0) + \delta \mathbb{E}_{\pi}[v_i(\tilde c_i)] \}
+$$
+
+under the budget costraints:
+
+$$
+c_i^0 = e_i^0 - \frac{z_i^0}{1 + r} - \sum_k^K p_k k_i^k \\
+
+c_i^{\omega} = e_i^{\omega} + z_i^0 + \sum_k^K z_i^K a_k^{\omega}
+$$
+
+_Intuition: the first costraint represents the current consumption as the initial endowment, minus the cost of investing $z_i^0$ in a risk-free asset (discounted by $r$) and the cost of investing $z_i^k$ for each asset $k$._ 
+
+_The second budget costraint represents that future consumptio is equal to the sum of the future endowment, the return of the risk-free asset and the return from risky assets._
+
+We can then substitute in the utility formula and we get:
+
+$$
+U_i = u_i \left( e_i^0 - \frac{z_i^0}{1 + r} - \sum_{k=1}^K p_k z_i^k \right) + \delta \mathbb{E}_{\pi} \left[ v_i \left( \tilde{e}_i + z_i^0 + \sum_{k=1}^K z_i^k \tilde{a}_k \right) \right].
+$$
+
+We apply the FOC as:
+
+$$
+\forall \kappa \in \{ 0 ... K\}, \quad \frac{\partial u_i}{\partial z_i^{\kappa}} = 0
+$$
+
+that brings to:
+
+$$
+u_i'(c_i^0) = (1 + r )\delta \mathbb{E}[v'_i (\tilde c_i)]\\
+p_k u_i'(c_i^0) = \delta \mathbb{E}[\tilde a_k v_i'(\tilde c_i)]
+$$
+
+_Intuition: intertemporal margin rate of substitution, since it equates the marginal utility of current consumption with the discounted expected marginal utility of future consumption $\implies$ the he first equation describes the trade-off between current and future consumption, incorporating the risk-free interest rate and time preference_ 
+
+_The second equation representsw the optimality condition for risky asset allocation, since it equates the marginal cost of investing in risky asset to the discounted expected marginal utility of the returns._
+
+They can be combined as:
+
+$$
+\begin{align*}
+(1 + r)p_k \mathbb{E}_{\pi}[v_i'(\tilde c_i)] &= \mathbb{E}_{\pi}[\tilde a_k v'_i(\tilde c_i)] \\
+&= \mathbb{E}_{\pi}[\tilde a_k]\mathbb{E}_{\pi}[v_i'(\tilde c_i)] + \operatorname{Cov}_{\pi}(\tilde a_k, v_i'(\tilde c_i))
+\end{align*}
+$$
+
+We now focus on the case $v'_i$ <b>linear</b>, that means: $v_i(c) = c - \alpha_i c^2 \implies v_i' (c) = 1 - 2\alpha_i c$.
+
+We then get:
+
+$$
+\operatorname{Cov}_{\pi}(\tilde a_k, v_i'(\tilde c_i)) = - 2\alpha_i \operatorname{Cov}(\tilde a_k, \tilde c_i)
+$$
+
+If we plug the covariance in the FOC we obtain:
+
+$$
+\frac{1}{2 \alpha_i}\mathbb{E}_{\pi}[v_i'(\tilde c_i)] \Big[  \mathbb{E}_{\pi}[\tilde a_k] - (1 + r)p_k \Big] = \operatorname{Cov}_{\pi}(\tilde a_k, \tilde c_i)
+$$
+
+We now model the consumption as:
+
+$$
+\tilde c_i =\tilde e_i + z_i^0 + z_i' \tilde a
+$$
+
+we then denote by $\Sigma$ the variance-covarianc matrix of $\tilde a$ and we get, in matrix notation:
+
+$$
+\Sigma z_i = - \operatorname{Cov}(\tilde a, \tilde e_i) + \frac{\mathbb{E}_{\pi}[v_i'(\tilde c_i)]}{2 \alpha_i}[\mathbb{E}_{\pi}[\tlde a]- (1 + r)p]
+$$
+
+We then define by $T_i^a$ the <b>absolute risk tolerance </b> for investor $i$:
+
+$$
+T_i^a = - \frac{v_i'(c)}{v_i"(c)}
+$$
+
+If $v_i'$ is linear we have:
+- $\mathbb{E_{\pi}}[v_i'(\tilde c_i)] = v_i'(\mathbb{E}_{\pi}[\tilde c_i])$
+- "v_i" (c) = - 2 \alpha_i$
+
+so the previous equation rewrites as:
+$$
+\Sigma z_i = -\text{Cov}_{\pi}(\tilde{a}, \tilde{e}_i) + T_i^a \left( \mathbb{E}_{\pi}[\tilde{c}_i] \right) \left\{ \mathbb{E}_{\pi}[\tilde{a}] - (1 + r)p \right\}.
+$$
+
+<b>Market Clearing</b>
+
+The accounting balance is $\sum_i^I z_i = 0$, this implies that in all states of the world:
+
+$$
+\sum_i^I c_i^{\omega} = c_M^{\omega} = e_M^{\omega} = \sum_i^I c_i^{\omega}
+$$
+
+_Intuition: the total consumption in any state of the world cannot exceed the total resources (endowments) available in that state._
+
+We now sum $\Sigma z_i$ over all individuals and we get:
+
+$$
+\Sigma \cdot \left( \sum_{i=1}^I z_i \right) = \sum_{i=1}^I \left[ T_i^a \left( \mathbb{E}_{\pi}[\tilde{c}_i] \right) \left( \mathbb{E}_{\pi}[\tilde{a}] - (1 + r)p \right) - \text{Cov}_{\pi}(\tilde{a}, \tilde{e}_i) \right].
+$$
+
+<b>Aggregate risk-tolerance</b>
+
+We define by $T^a$ the <b>aggregate risk tolerance</b> as:
+
+$$
+T^a(c_M) = \sum_i^I T_i^a (c_i)
+$$
+
+
+Then if we use $\Sigma_i^I z_i = 0$ and $c_M = e_M$ in every state we get:
+
+$$
+0 = T^a (\mathbb{E}_{\pi}[\tilde e_M]) (\mathbb{E}_{\pi}[\tilde a]-(1 + r)p)- \operatorname{Cov}_{\pi}(\tilde a, \tilde e_M)
+$$
+
+If we isolate $p_k$ we obtain the <b>Consumption Based Capital Asset Pricing Model (CCAPM)</b>:
+
+$$
+p_k = \frac{1}{1 + r} \left\{ \mathbb{E}_{\pi}[\tilde{a}_k] - \frac{\text{Cov}_{\pi}(\tilde{e}_M, \tilde{a}_k)}{T^a \left( \mathbb{E}_{\pi}[\tilde{e}_M] \right)} \right\}.
+
+$$
+
+In the CCAPM we can decompose the price of a <b>risky security</b> as the sum of:
+
+- the <b>discounted expected value of its payoff</b>
+$$
+\frac{\mathbb{E}_{\pi}[\tilde a_k]}{(1 + r)}
+$$
+
+- minus a <b>risk-premium</b> that is proportional to the correlation between the security's payoff and the aggregat risk:
+
+$$
+- \frac{\text{Cov}_{\pi}(\tilde{e}_M, \tilde{a}_k)}{T^a ( \mathbb{E}_{\pi}[\tilde{e}_M] )} 
+$$
+
+_Important_: the CCAPM is <b>more general than the CAPM</b> $\implies$ it's explicitly derived from a market equilibrium.<br/>The CCAPM links the price of securities to <b>underlying movements </b> in the fundamental characteristics of the economy _(macroeconomic fluctuations in aggregate consumption or income)_.
+
+<br/>
+<b>Interpretation of the CCAPM</b>
+
+According to CCAPM, the expected return of an asset is equal to the risk-free rate if its payoff is _uncorrelated_ with the aggregate risk in the economy.
+
+Like in the CAPM, the risk-premium can be <b>positive/negative</b> depending on the sign of the correlation:
+- a positive correlation between the security and the aggregate risk $\tilde e_M$ <b>lowers the security price</b> 
+    - note that the aggregate/total endowment in the economy represents the risk/uncertainty in the econommy $\implies$ when the economy is doing poorly, people value consumption more 
+    - the security's payoff is high when the economy is doing well and the opposite $\implies$ the security is _less desiderable_ because it doesn't provide _insurance_ against bad states of the world $\implies$ the investors require <b>higher risk-premium</b> to hold this security
+- a security that shows a negative correlation with the aggregate risk can be then used to <b>hedge against macroeconomic risk</b> $\implies$ the price of the security will be higher.
+<br/>
 ---
+<br/>
+<b>The risk-free rate</b>
+
+Under CARA and preferences and Gaussian risks, the risk free rate of interest:
+- decreases with $\delta$ _(impatience effect)_ 
+- increases with $\mathbb{E}_{\pi}[\tilde e_M]- e_M^0$ _(average endowment effect)_
+- decreases with risk _(precautionary savings effect)_
+
+<a href="https://www.youtube.com/watch?v=FO8DsJb4qlE" target="_blank">More on the CCAPM (Videolecture)</a>
+<br/>
+<br/>
+---
+
