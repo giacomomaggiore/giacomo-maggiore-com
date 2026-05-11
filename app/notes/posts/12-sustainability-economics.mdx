@@ -1658,10 +1658,261 @@ _Note that, even if Europe has a sort of common CO2 pricing, it should not be co
 
 ## <a id="13"><b>13. Collapse, Resilience and the Sustainable Management of Common Pool Resources</b> </a>
 
+<b>Classification of goods and commons</b>
+
+<Table
+  data={{
+    headers: ["", "Excludable", "Nonexcludable"],
+    rows: [
+      ["Rival", "Pure private goods\nMost nonrenewable natural resources\n(Fossil fuels & minerals)\nSome privatized renewable resources\n(Aquaculture)", "Renewable natural resources\ncharacterized by open access\n(Ocean fishing)\nSome nonrenewable resources\n(Ogallala Aquifer)"],
+      ["Nonrival", "Club goods\n(Water quality of municipal pond)", "Pure public goods\n(Clean air, greenhouse gases\nand climate change)"]
+    ]
+  }}
+/>
 
 
+The key difference is <b>rivalry</b> in resource use/consumption:
+- behavioral differences can be studied and inllustraded in laboratory experiments 
+- in their canonical form, both games are finitely repeated, so they are _multi-period, multi-person_ social dilemma games hard to replicate in the lab.
+<br/>
 
 ---
+<br/>
+<b>The pure public good VCM game</b>
+
+Agents can voluntarily invest in their prevision, no agent ca be excluded from enjoying the public good benefits. <br/>Benefits are a<b>linear function</b> of the subjects's contribution: <br/> $\implies$
+aggregate payoffs are maximized if each one invests her entire wealth/effort in the public good.
+
+On the other hand, the single (own)-payoff maximizing strategy is pocket (get from himself) nthe one's endowment independent of the amount contributed by others.
+<br/>$\implies$ contributing 0 to the public good is a <b>dominant strategy</b> if:
+- all agents only care about their own private payoffs 
+- this is common knowledge 
+
+In contrast, experiments show that, _on average_, 40-60% of people's endowment is invested in the first period but, over time, contributions decline to zero in the last period.
+
+<b>The Common Pool Resource (CPR) game in the lab</b>
+
+Agents can extract from a common pool and the benefits of doing it are <b>decreasing function</b> of the extraction levels chosen _(from the aggregate, not the individual)_.
+<br/>$\implies$ The CPR is a <b>non-linear Public Bad Game</b> and cooperation typicall disappears quickly.
+
+Aggregate extraction typically starts closely to the social optimal, then it quickly converses to the Nash Equilibrium, _indepdently of the number of periods_.
+
+The lack of cooperation in the CPR game may be done due to the facrt that some can undo the good works of others, intead in the VCM game the worst a freerider can do is nothing.
+
+<b>Comparing the share of Cooperators in the VCM and CPR games</b>
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/vcm.png)
+</div>
+
+_In generally_, allowing subjects to <b>undo the contributions</b> of others results in:
+- aggregate contribution that are not _significantly different_ from zero in all the periods 
+- immediate collapse of cooperation 
+
+<br/>
+<b>Aspects missing in a simple Claim/CPR lab game</b>
+<br/>
+<b>Facilitating cooperation:</b>
+- communication
+- non-anonymity/reputation 
+- social norms 
+- leadership/coordination 
+- enforcement mechanism/punishment option 
+<br/>
+<b>Hindering cooperation:</b> 
+- much larger $N$ of users 
+- asymmetry/heterogeneity 
+- uncertainty 
+- time delays of the benefits 
+- positional consumption/competition
+<br/>
+---
+
+<br/>
+<b>Example: the simple fishery economics, from Stavins (2011)</b>
+
+The efficient outcome occurs at $E_e$ where $MB = MC$ _(marginal benefit equals marginal cost)_.
+<br/>This point generally differs from the <b>maximum sustainable yield</b> (MSY): MSY maximizes biological harvest, while $E_e$ maximizes <i>economic</i> surplus once fishing costs are included.
+<br/>For this reason, the efficient outcome typically implies lower fishing effort than $E_{msy}$.
+
+If we consider a <b>competitive open-access equilibrium</b>, this occurs at $E_c$, where marginal benefit equals average cost.
+<br/>At $E_c$, individual fishers ignore the future value of the stock (the shadow price of the resource is effectively $0$), so entry continues until economic rents are dissipated.
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/fish.png)
+</div>
+
+---
+<br/>
+<b>The Tragedy of the commons</b> 
+
+Open access to resources may lead to <b>over-use</b> _(example: overfishing)_, sometimes called <b>"tragedy of commons"</b>.
+
+This is, however, an oversimplification: commons can be managed sustainably, depending on institutions, governance quality, and property rights.
+
+<b>Elinor Ostrom</b> (Nobel Prize in Economics, 2009) identified 8 core design principles associated with long-enduring commons governance:
+1. <b>Clearly defined boundaries:</b> users and resource boundaries are explicit.
+2. <b>Congruence with local conditions:</b> appropriation and provision rules fit local ecological and social realities.
+3. <b>Collective-choice arrangements:</b> most affected users can participate in modifying the rules.
+4. <b>Monitoring:</b> resource conditions and user behvior are monitored by accountable monitors.
+5. <b>Graduated sanctions:</b> rule violations are penalized with sanctions that escalate with severity and repetition.
+6. <b>Conflict-resolution mechanisms:</b> low-cost, accessible arenas exist to resolve disputes quickly.
+7. <b>Minimal recognition of rights to organize:</b> external authorities do not undermine users' right to self-organize.
+8. <b>Nested enterprises:</b> in larger systems, governance is organized in multiple, coordinated layers.
+
+In general, we can distinguish 4 <b>commons management</b>, depending on property and use rights:
+- open access _(absence of property rights)_ 
+- group property _(defined by Ostrom, resources rights are held by a group who can exclude others)_ 
+- individual property _(resource rights are held by individiduals who can exclude others)_ 
+- government property _(the government holds and regulates the use)_
+
+<br/>
+---
+<br/>
+<b>COllapse (Diamond 2005)- consted popoular science</b>
+
+Diamond uses a loose "framework" when considering the collpase of society _(defined as the conflict between the short-term interest of those in power and the long-term interests of the society)_, explained by 5 factors:
+- enviromental damage 
+- climate damage 
+- hostile neighbors 
+- loss of trading partners 
+- society's responses to its enviromental problems 
+
+<b>The simple-economics of the collapse of Easter Island: a Richardo-Matlthus model</b>
+
+The model relies on a simple renewable resource model:
+
+$$
+S_2 = S_1 - H_1 + r(S_1 - H_1) (1 - \frac{S_1-H_1}{K})
+\\
+
+S_2 - S_1 = r(S_1 - H_1)(1 - \frac{S_1-H_1}{K}) - H_1
+$$
+
+This is very similar to the equations in <b>Brander and Taylor</b> model for where $S$ is forest and soil. Combined, they give:
+
+$$
+\frac{dS}{dt} = rS (1 - \frac{S}{K}) - H
+$$
+
+where $K$ is the carrying capacity _(maximum possible resource stock)_ and $r$ is the "intrisic" growth _(regeneratoin)_ rate.
+
+<br/>
+
+where
+
+- $S$: stock of the renewable resource (on Easter Island: forests and soil)
+- $H$: harvest rate _(annual extraction)_
+- $r$: intrinsic growth rate _(how fast the resource regenerates in the absence of harvesting)_
+- $K$: carrying capacity _(the maximum stock the environment can sustain indefinitely)_
+- $t$: time 
+
+The idea is the <b>logistic growth term</b> $rS(1 - \frac{S}{K})$ that represents how fast the resource grows. When $S$ is small relative to $K$, growth is approximately $rS$ (fast). But as $S$ approaches $K$, the term $(1 - \frac{S}{K})$ goes to zero, so growth slows down. _(This is realistic: forests grow quickly when space and resources are abundant, but slower when they become crowded.)_
+
+The <b>equilibrium condition</b> _(where the stock remains stable)_ occurs when harvest equals growth: $H = rS(1 - \frac{S}{K}) \implies $ maximum sustainable yield (MSY).
+
+On Easter Island, initial overharvesting of forests _(high $H$ relative to available growth)_ caused the stock $S$ to decline. As forests disappeared, the carrying capacity itself decreased, reducing future growth capacity. This creates a <b>collapse dynamic</b>: overharvesting in one period reduces the stock available for future periods, which further reduces growth capacity, making it impossible to sustain  modest harvests, so the society faced an impossible choice: reduce consumption or watch resource collapse.
+
+<div>
+![VCM](/images/notes/sust-econ/stavins.png)
+</div>
+
+
+In the model, the economy produced and consumes two goods: 
+- $H$ is the harvest of the renewable resource 
+- $M$ is the aggregate of the other good 
+
+Aside from the resource stock $S$, the only other factor of production is labor $L$ with a Cobb-Douglas utility function: $u = h^{\beta}m^{(1-\beta)}$.
+
+Harvest depends on both resource stock and labor size: $H = \alpha \beta LS$.
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/brander.png)
+</div>
+
+Now we add a "malthusian" population dynamics that with:
+- <b>proportional birth rate</b> $b$ 
+- <b>proportional deadh rate</b> $d$
+
+So the population increases by $(b-d)$ and it is assumed to be negative, implyling that without any forest stock or soil the population would disappear. 
+
+However, the resource consumption increases fertility and decrease mortatlity, so this increases the populatio growth rate:
+
+$$
+\frac{dL}{dt} = L ( b- d + F)
+$$
+
+where $F = \theta H/ L$ is the <b>fertility function</b>.
+
+$\implies$ <b>higher pro-capita consumption</b> of the resource good leads to higher population growth, leading to cyclical dynamics:
+
+
+_Furthermore,_ after the initial population builds up with abudant resources, population collapses too much:
+
+<div>
+![VCM](/images/notes/sust-econ/malthusian-2.png)
+</div>
+
+_Furthermore,_ after the initial population builds up with abudant resources, population collapses too much:
+
+<div>
+![VCM](/images/notes/sust-econ/stavins.png)
+</div>
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/malthusian-2.png)
+</div>
+
+However, note that this model may be inaccurate for _(at least)_ two reasons:
+- biology _(there may be a minimum viable population below with the stock of renewable resource cannot recover)_ 
+- preferences _(subsistence needs in consumption)_ 
+
+<br/>
+---
+<br/>
+<b>Resilience</b>
+<br/>
+<b>The omnipresent case: a system in equilibrium</b>
+
+A system has one single and stable equilibrium _(good state of the system)_. 
+
+However, there are systems with _(at least)_ two potential equilibria, each of them is locally stable.
+
+<b>Resilience</b> is the "amount of disturbance an ecosystem can absorb without changing its basic structure".
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/resilience.png)
+</div>
+
+Note that resilience should not be confused with hysteresis!
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/resilience-12.png)
+</div>
+
+- <b>Specified resilience</b>: refers to a specific system, to a specifc performance/service in response to a specific disturbance 
+- <b>General resilience</b> refers to all system, services and performances in response to all disturbances.
+
+Resilience can be interpred as a stock $R_t$ equal to the <b>distance of the current driver condition to the tipping pointa</b> from state 1 to state 2. <br/>This distance also determines the probability $P(R_t)$ that the system flips to the alternative state. 
+
+A <b>more resilient</b> ecosystem is _less likely_ to receive a catastrophic regime shift.
+- resilience "insures" the ecosystem against functional failure 
+- resilience "insures" users of the system against welfare loss 
+
+However, even it can be interpred as an insurance, this doesn't fully capture its <b>total economical value</b>, since it doesn't represent that:
+- <b>higher resilience will raise expected income</b>
+- <b>resilience raises/lowers the perceived riskiness of income</b>
+
+_In general,_ according to Walker and Salt (2012), a <b>resilient world values</b>:
+- <b>diversity</b>: multiple species, livelihoods, institutions, and strategies make a system less fragile.
+- <b>ecological variability</b>: systems should be able to absorb shocks such as droughts, floods, or price swings without breaking.
+- <b>modularity</b>: if parts of the system are partially separated, local failures are less likely to spread everywhere.
+- <b>slow variables and thresholds</b>: policy should monitor the long-run drivers that change slowly but can push the system past a tipping point.
+- <b>tight feedbacks</b>: problems should be detected quickly, so the response comes before damage compounds.
+- <b>social capital</b>: trust, cooperation, and shared norms help people coordinate under stress.
+- <b>innovation</b>: resilience depends on the ability to adapt and reorganize when conditions change.
+- <b>overlap with governance</b>: institutions should match the scale of the ecological system they manage.
+- <b>ecosystem services</b>: healthy ecosystems provide the background services that support human well-being and adaptation.
 
 ## <a id="14"><b>14. Measuring Sustainable Development</b> </a>
 
