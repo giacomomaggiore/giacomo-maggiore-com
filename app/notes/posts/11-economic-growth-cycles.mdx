@@ -27,7 +27,7 @@ Please refer to his <a href="https://drive.google.com/file/d/1xVfUo16AxQmlWKle8E
 - [Crises in Market Economnies](#7)
 - [IS-LM Model and Open Economy](#8)
 - [Bank Runs $ The Diamon-Dybvig Model](#9)
-- [Theories of exchange rate determination](#10)
+- [Crises in Market Economies](#10)
 - [Technical Appendix](#11)
 ---
 
@@ -1672,8 +1672,154 @@ $\implies$ a stable system requires both crisis-management tools and ex-ante reg
 
 ---
 <br/>
-## <a id="10"><b>10. Theories of exchange rate determination</b> </a>
+## <a id="10"><b>10. Crises in Market Economies</b> </a>
 
+Crises can be either single _(as standalone events: financial market, real estate, currency, public debt, banking, private debt etc...)_  or the combination of two or more aspects at the same time.
+
+<b>2008 Banking Crisis</b>
+
+_For example_, during the banking crisis in 2008, house prices in the US dropped by about 20-30% $\implies$ many households suddenly saw the value of their houses fall below the amount they still owed to the bank _(this is called negative equity)_ $\implies$ they could no longer refinance their mortgage or sell the house to repay the loan $\implies$ many borrowers became stressed or defaulted $\implies$ <b>private debt crisis</b>.
+
+In simple terms: when the value of the house falls a lot, but the debt stays the same, the borrower is trapped. If many households face this situation at the same time, the problem spreads from the housing market to the whole economy.
+
+<a href="https://www.netflix.com/ch-en/title/80075560" target="_blank">More about: The Big Short</a>.
+
+Banks, in particular, had losses on <b>Mortgages Backed Securities (MBS)</b> when private borrowers defaulted.
+
+A MBS is a <b>security backed by mortgages</b>, it represents an interest in a pool of mortgage loans).
+
+Unlike a bond, in the MBS case the cash flows are not fixed, they depend on mortgage repayments, prepayments _(borrowers can refinance or pay early)_, higher default risk and the discount rate used by the market. 
+
+For many agency MBS, people often use an <b>option-adjusted spread approach</b> _(extra yield added to a benchmark so the bond's model price matches the market price accounting for embedded optioins)_, that means that the bond is priced as the present value of the cash flows after adjusting for the prepayment.
+
+$$
+P = \sum_{t=1}^{T} \frac{\mathbb{E}[CF_t]}{(1+r_t+\text{OAS})^t}
+$$
+
+Banks had very little equity _(in the extreme case: UBS and some other around 2% of total assets)_ so:
+- some banks could not absorb losses and started to move toward default 
+- healthy banks were affected through interbank loans 
+<br/>$\implies$ many more banks moved to default $\implies$ danger of banking system collapse.
+
+Since a collapse of the banking system would have cause <b>large losses</b> (in GDP, employment, panic etc...), the <b>government rescued banks</b>.
+
+As a consequence, in some countries public debt increases so much that a <b>public debt crisis occurred</b>.
+
+_What could have been done to prevent such a crisis?_ 
+- increase equity ratios in banks so they can absorb losses (<b>banking crisis</b>)
+- reduce public debt over time (<b>public debt crisis</b>)
+- require at least 20% of house value as equity investment (<b>private debt crisis</b>)
+
+The criteria to choose a good instrument usually are: 
+- is the criteria effective?
+- does it have negative consequences for the economu today or in the future? 
+- does it burden taxpayers excessively? 
+
+From a <b>crisis-management</b> point of view, the goal is simple:
+- stop panic in the short run
+- avoid a collapse of credit to households and firms
+- stabilize output and employment.
+
+The main actors and tools are:
+
+1. <b>Central Bank (liquidity manager)</b>
+    - provides emergency liquidity to banks _(typically short-term loans against collateral)_
+    - lowers policy rates to reduce funding stress
+    - can expand its balance sheet to calm markets.
+
+2. <b>Government / Treasury (solvency backstop)</b>
+    - recapitalizes weak banks _(injecting public capital and becoming shareholder if needed)_
+    - supports restructuring or temporary public control of failing institutions
+    - can purchase or ring-fence distressed assets to reduce uncertainty
+    - can provide targeted fiscal support to households and firms.
+
+3. <b>Public Guarantees (confidence tools)</b>
+    - stronger deposit guarantees to prevent retail bank runs
+    - guarantees on interbank funding to restart lending between banks
+    - guarantees on loans to firms to avoid a credit freeze in the real economy.
+
+4. <b>Standard macro policies (demand stabilization)</b>
+    - monetary easing: lower short-term interest rates
+    - fiscal expansion: higher government spending and, in some cases, temporary tax relief.
+
+5. <b>Direct government/CB interventions:</b>
+    - providing loans to firms by government 
+    - buying up toxic asset by CB in the market.
+
+_Intuition:_ the central bank mainly addresses <b>liquidity</b>, while the government addresses <b>solvency</b> and supports demand. Using both together is often necessary in systemic crises.
+
+Main trade-off: stronger support reduces the probability of collapse today, but can increase public debt and moral hazard tomorrow.
+
+In 2008, there should have been injected new funds to become equity holders, increased depotis guarantees and interbank loans and lowered the short term interest rate.
+
+Note that measures 4 and 5, at least alone, _do not resolve a banking crisis!_.
+
+---
+<br/>
+<b>Public Debt Crisis</b>
+
+The most common reasons for a <b>public debt crisis</b> are:
+- <b>Persistent deficits over many years</b>: governments spend more than they collect in taxes, not only in recessions but often also in normal times.
+- <b>Large extraordinary shocks</b>: wars, natural disasters, banking rescues, and major infrastructure programs can suddenly raise debt.
+- <b>Higher interest costs</b>: if interest rates rise while debt is already high, debt dynamics can deteriorate quickly.
+
+In theory, a Keynesian approach suggests:<b> deficits in recessions, surpluses in expansions.</b> In practice, many governments do the first part, but not the second one.
+
+The <b>common pool problem</b> means that many political actors push for spending that benefits their own group, while the tax cost is spread across all taxpayers and often shifted to the future. As a result, total spending can become too high.
+
+Typical political mechanisms behind debt accumulation are:
+- <b>Political budget cycles</b>: before elections, policymakers may increase spending or cut taxes to gain support.
+- <b>Delayed stabilization</b>: even when adjustment is needed, political conflict can postpone decisions, so debt keeps rising.
+- <b>Fiscal illusion</b>: voters may see the immediate benefit of spending, but underestimate the future cost of taxes and debt service.
+
+$\implies$ The outcome is often asymmetric policy: debt rises in bad times, but is not reduced enough in good times.
+
+To address this, countries use different <b>fiscal rules</b>:
+- <b>Balanced-budget rules</b>: budgets should be close to balance over the cycle.
+- <b>Debt brakes</b>: if debt rises too much, automatic correction is triggered in later years.
+- <b>Stabilization reserves</b>: governments save in good times, then use those buffers in recessions.
+- <b>Expenditure rules</b>: spending growth is capped to avoid permanent expansion of public spending.
+- <b>Institutional accountability</b>: stronger monitoring, fiscal councils, and political penalties for repeated violations.
+<br/>
+---
+<br/>
+<b>Deep dive: Maastricht criteria (EU)</b>
+
+The Maastricht framework introduced two famous reference values:
+- annual public deficit should not exceed <b>3% of GDP</b>
+- public debt should not exceed <b>60% of GDP</b>, or should move clearly toward that level over time.
+
+_The economic intuition is simple:_
+- the <b>3%</b> limit tries to avoid persistent large yearly deficits
+- the <b>60%</b> limit tries to keep total debt at a sustainable level.
+
+Over time, this framework evolved through <b>the Stability and Growth Pact:</b>
+- a <b>preventive arm</b>: _countries should keep their structural budget close to a medium-term objective_
+- a <b>corrective arm</b>: _if deficit/debt limits are breached, an excessive deficit procedure can be opened._
+
+In practice, there are also <b>escape clauses</b> for severe recessions or extraordinary shocks _(for example systemic crises)_, because strict consolidation during a deep downturn can worsen the recession.
+
+_Main strengths:_
+- creates common criteria for fiscal discipline
+- improves comparability across countries
+- reduces the risk that one country's fiscal instability influence others.
+
+_Main weaknesses:_
+- one rule cannot fit all countries all the times
+- enforcement can become political and uneven
+- complex rules are harder for voters to monitor.
+
+So there is a clear trade-off:
+- very <b>rigid</b> rules increase discipline, but can be too harsh in crises
+- very <b>flexible</b> rules help stabilization, but may fail to stop debt accumulation.
+
+So the main policy challenge is to combine both $\implies$ credible long-run debt reduction with enough short-run flexibility in major shocks.
+
+A new approach to limit public debt accumulation is a <b>debt-sensitive majority rule</b>:
+- the majority needed to approve the budget is 50% when there is no deficit, but the required majority increases as the planned deficit increases.
+<br/>$\implies$ for instance, a deficit of 1% of GDP may require 55% of votes, while a deficit of 2% may require 60%, and so on.
+
+_According to this rule_: the higher the planned public debt, the higher the parliamentary majority needed to approve it.
 
 ---
 
