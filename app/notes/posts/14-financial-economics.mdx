@@ -1320,14 +1320,14 @@ V'(\alpha) = \mathbb{E}[\tilde R u'(w + \alpha \tilde R)]
 $$
 
 $$
-V''(\alpha) = \mathbb{E}[\tilde R^2 u(w + \alpha \tilde R)]
+V''(\alpha) = \mathbb{E}[\tilde R^2 u''(w + \alpha \tilde R)]
 $$
 
 Then if the agent is risk-averse, $V$ is concave and therefore $V'$ is _non-increasing_, so we can conclude that:
 
-- if $\mathbb{E}[\tilde r] > 0 \implies \mathbb{E}[\tilde R] > 0$: the agent should purchase some risky asset _(regardless of how much risk averse he migh be)_.
-- if $\mathbb{E}[\tilde r] < 0$: it is _never optimal_ to purchase the risky asset.
-
+- if $\mathbb{E}[\tilde r] > r_f \implies \mathbb{E}[\tilde R] > 0$: the agent should purchase some risky asset _(regardless of how much risk averse he migh be)_.
+- if $\mathbb{E}[\tilde r] < r_f$: it is _never optimal_ to purchase the risky asset.
+<br/>
 <br/>
 <b>Static Portfolio Choice - First Order Conditions</b>
 <br/>
@@ -1362,6 +1362,36 @@ We know that $\alpha(0) = 0$, so using a Taylor Approximation, we can show that 
 $$
 u'(\omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R') \approx u'(\omega) + \epsilon \alpha' (0) \tilde R u''(\omega).
 $$
+
+<b>Detailed derivation:</b>
+
+**Step 1: Taylor expand $\alpha(\epsilon)$ around $\epsilon = 0$**
+
+Since $\alpha(0) = 0$ (at zero mean excess return, the agent doesn't buy the risky asset), the first-order Taylor expansion is:
+$$\alpha(\epsilon) \approx \alpha(0) + \epsilon \alpha'(0) = \epsilon \alpha'(0)$$
+
+**Step 2: Substitute into the wealth argument**
+
+The final wealth is:
+$$W(\epsilon) = \omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R' = \omega + \alpha(\epsilon)(\epsilon + \tilde R')$$
+
+Substituting $\alpha(\epsilon) \approx \epsilon \alpha'(0)$:
+$$W(\epsilon) \approx \omega + \epsilon \alpha'(0)(\epsilon + \tilde R') = \omega + \epsilon^2 \alpha'(0) + \epsilon \alpha'(0) \tilde R'$$
+
+**Step 3: Taylor expand $u'(W(\epsilon))$ around $\omega$**
+
+Using the first-order Taylor expansion $u'(x) \approx u'(\omega) + (x - \omega)u''(\omega)$:
+
+$$u'(W(\epsilon)) \approx u'(\omega) + [W(\epsilon) - \omega] u''(\omega)$$
+$$= u'(\omega) + [\epsilon^2 \alpha'(0) + \epsilon \alpha'(0) \tilde R'] u''(\omega)$$
+
+**Step 4: Drop second-order terms**
+
+The $\epsilon^2$ term is second-order in $\epsilon$, so we drop it:
+$$u'(W(\epsilon)) \approx u'(\omega) + \epsilon \alpha'(0) \tilde R' u''(\omega)$$
+
+Since $\tilde R = \epsilon + \tilde R'$, for small $\epsilon$ we can write this as:
+$$u'(\omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R') \approx u'(\omega) + \epsilon \alpha'(0) \tilde R u''(\omega)$$
 
 If we plug it into the first-order condition, we obtain:
 
