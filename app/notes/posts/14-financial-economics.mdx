@@ -646,7 +646,7 @@ _(in such cas the asset $k$ is called <b>redudant</b>)_.
 A market $(a_l^{\omega}, p_k)$ is <b>complete</b> if for any asset $b^{\omega}$ there exists a costant $(z_k)$ such that:
 
 $$
-b^{\omega} = \sum_k z_k a_k^{omega}
+b^{\omega} = \sum_k z_k a_k^{\omega}
 $$
 
 On the other hand, markets are <b>complete</b> when all revenue configurations are replicable through some portfolio.
@@ -1171,18 +1171,17 @@ _Intuition: $e_L$ is the amount of momey for which the individual is indifferent
 <br/>
 <b>Risk Premium</b>
 
+For any lottery $L$ with payoff $X$, define the **certainty equivalent** $e_L$ as:
 
-For any $L$ the risk premium is:
+$$u(e_L) = \mathbb{E}_L[u(X)]$$
 
-$$
-\pi_L = \mathbb{E}_L[u(x)]- e_L
-$$
+The **risk premium** is then:
 
-For a VNM agent, we also have:
+$$\pi_L = \mathbb{E}_L[X] - e_L$$
 
-$$
-u(\mathbb{E}_L[X]-\pi_L) = \mathbb{E}_L[u(x)]
-$$
+For a VNM agent, this is equivalent to:
+
+$$u(\mathbb{E}_L[X]-\pi_L) = \mathbb{E}_L[u(X)]$$
 - A risk neutral individual has zero risk premium
 - A _(strictly)_ risk averge agent associates a positive risk premium to any _non-degenerate_ lottery.
 <div align = "center">
@@ -1357,40 +1356,29 @@ $$
 \mathbb{E}[(\epsilon + \tilde R')u'(\omega + \alpha(\epsilon)\epsilon + \alpha (\epsilon)\tilde R')] = 0
 $$
 
-We know that $\alpha(0) = 0$, so using a Taylor Approximation, we can show that $\alpha(\epsilon) \approx \epsilon \alpha'(0)$ and that:
+We know that $\alpha(0) = 0$, so using a Taylor Approximation, we expand $\alpha(\epsilon)$ around $\epsilon = 0$**
 
-$$
-u'(\omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R') \approx u'(\omega) + \epsilon \alpha' (0) \tilde R u''(\omega).
-$$
+Since $\alpha(0) = 0$ _(at zero mean excess return, the agent doesn't buy the risky asset),_ the first-order Taylor expansion is:
+$$\alpha(\epsilon) \approx \alpha(0) + \epsilon \alpha'(0) = \epsilon \alpha'(0)$$.
 
-<b>Detailed derivation:</b>
+We then substitute into the wealth argument, so the final wealth is:
 
-**Step 1: Taylor expand $\alpha(\epsilon)$ around $\epsilon = 0$**
-
-Since $\alpha(0) = 0$ (at zero mean excess return, the agent doesn't buy the risky asset), the first-order Taylor expansion is:
-$$\alpha(\epsilon) \approx \alpha(0) + \epsilon \alpha'(0) = \epsilon \alpha'(0)$$
-
-**Step 2: Substitute into the wealth argument**
-
-The final wealth is:
 $$W(\epsilon) = \omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R' = \omega + \alpha(\epsilon)(\epsilon + \tilde R')$$
 
 Substituting $\alpha(\epsilon) \approx \epsilon \alpha'(0)$:
+
 $$W(\epsilon) \approx \omega + \epsilon \alpha'(0)(\epsilon + \tilde R') = \omega + \epsilon^2 \alpha'(0) + \epsilon \alpha'(0) \tilde R'$$
 
-**Step 3: Taylor expand $u'(W(\epsilon))$ around $\omega$**
-
-Using the first-order Taylor expansion $u'(x) \approx u'(\omega) + (x - \omega)u''(\omega)$:
+We then expand $u'(W(\epsilon))$ around $\omega$, using $u'(x) \approx u'(\omega) + (x - \omega)u''(\omega)$:
 
 $$u'(W(\epsilon)) \approx u'(\omega) + [W(\epsilon) - \omega] u''(\omega)$$
 $$= u'(\omega) + [\epsilon^2 \alpha'(0) + \epsilon \alpha'(0) \tilde R'] u''(\omega)$$
-
-**Step 4: Drop second-order terms**
 
 The $\epsilon^2$ term is second-order in $\epsilon$, so we drop it:
 $$u'(W(\epsilon)) \approx u'(\omega) + \epsilon \alpha'(0) \tilde R' u''(\omega)$$
 
 Since $\tilde R = \epsilon + \tilde R'$, for small $\epsilon$ we can write this as:
+
 $$u'(\omega + \alpha(\epsilon)\epsilon + \alpha(\epsilon)\tilde R') \approx u'(\omega) + \epsilon \alpha'(0) \tilde R u''(\omega)$$
 
 If we plug it into the first-order condition, we obtain:
@@ -1411,11 +1399,13 @@ $$
 Then the share of wealth invested in the risky asset is:
 
 $$
-\frac{\alpha}{\omega} \approx \frac{\mathbb{\tilde R}}{\mathbb{V}(\tilde R) R_r (\omega)}
+\frac{\alpha}{\omega} \approx \frac{\mathbb{E}[\tilde R]}{\mathbb{V}(\tilde R) R_r (\omega)}
 $$
 
 where $R_r(\omega) = - \omega \frac{u''(\omega)}{u'(\omega)}$ is the coefficient of relative risk aversion.
 
+---
+<br/>
 <b>Static Portfolio Choice - Quadratic Utility Indices </b>
 
 We assume now <b>quadratic utility index</b>, with $c = \omega + \alpha + \tilde R$, that is:
@@ -1427,16 +1417,16 @@ $$
 Under this scenario, the FOC writes as:
 
 $$
-(1 - \beta \omega) \mathbb{E}[\tilde R] - \alpha \beta \mathbb{\tilde R^2} = 0
+(1 - \beta \omega) \mathbb{E}[\tilde R] - \alpha \beta \mathbb{E}[\tilde R^2]= 0
 $$
 
 that brings the following value for $\alpha$:
 
 $$
-\alpha = \frac{1- \beta \omega}{\beta}\frac{\mathbb{\tilde R}}{\mathbb{\tilde R^2}}
+\alpha = \frac{1- \beta \omega}{\beta}\frac{\mathbb{E}[\tilde R]}{\mathbb{E}[\tilde R^2]}
 $$
 
-_Intuition: the amount invested in the risky asset only depends on the mean and the variance of $\tilde R = \tilde r - r_0$.
+_Intuition: the amount invested in the risky asset only depends on the mean and the variance of $\tilde R = \tilde r - r_0$._
 
 ---
 <br/>
@@ -1458,10 +1448,10 @@ $$
 \iff \mathbb{E}[\tilde R (1 + \frac{\alpha}{(\omega / \gamma + b)\gamma})^{-\gamma}] = 0
 $$
 
-if we denote by $a$ the solution of $ \mathbb{E}[\tilde R (1 + a \frac{\tilde R}{\gamma})^{-\gamma}] = 0$, we end up with:
+if we denote by $\alpha$ the solution of $ \mathbb{E}[\tilde R (1 + a \frac{\tilde R}{\gamma})^{-\gamma}] = 0$, we end up with:
 
 $$
-a = \frac{\alpha}{\omega/\gamma + b} \quad \implies \quad \alpha = a ( \frac{\omega}{\gamma}+b)
+a = \frac{\alpha}{(\omega/\gamma + b)\gamma} \quad \implies \quad \alpha = a \left(\frac{\omega}{\gamma}+b\right)\gamma
 $$
 
 _Inutiotion behind corner cases:_
@@ -1520,7 +1510,7 @@ A utility index is said to exhibit decreasing absolute risk aversion <b>(DARA)</
 
 <b>Proposition $I$</b>
 
-The utility index $u$ exhinbits DATA if and only if for all $\tilde x$ the risk premium $\pi$ associated with the lottery $\omega + \tilde x$ is decraeasing in $\omega$.
+The utility index $u$ exhinbits DARA if and only if for all $\tilde x$ the risk premium $\pi$ associated with the lottery $\omega + \tilde x$ is decraeasing in $\omega$.
 
 Consider now an expected utility maximiizng investor with utility index $u$ and initial wealth $\omega$. Assume that there is one safe asset and one risky asset with higher expected return.
 
@@ -1557,14 +1547,14 @@ A shift of the distribution of returns increases the demand for the risky asset 
 
 ## <a id="7"><b>7. Risk sharing and insurance</b></a>
 
-We consdier a <b>single good</b> and two dates:
+We consider a <b>single good</b> and two dates:
 - $t_0$: where the contingent exchange contracts are signed 
 - $t_1$: where the contracts are settled.
 
 We now consider a probability space, $\Omega$, with $\omega \in \Omega$ is a state of the world.<br/>
 $\pi_{\omega} \ge 0$ is the known probability distribution on $\Omega \implies$ if state of the world $\omega$ occurs, a total amount of $e^{\omega}$ resources is shared across agents.
 
-There is a ifnite number of agents. They have NVM preferences and are risk averse. <br/>The utility of agent $i$ is denoted as $u_i$ and satisfites the _Inada Condition_:
+There is a infite number of agents. They have NVM preferences and are risk averse. <br/>The utility of agent $i$ is denoted as $u_i$ and satisfites the _Inada Condition_:
 $$
 \lim_{c \to 0} u_i'(c) = + \infty
 $$
@@ -1572,7 +1562,7 @@ $$
 
 <b>Optimal Allocation</b>
 
-An allocation $c = (c_i^{\omega})_{1 \le i \le I}$ with $c_i^{\omega}\ge 0$ is the specification of a contingent consu,ption plan for all the individuals $i$ in each state of the world.
+An allocation $c = (c_i^{\omega})_{1 \le i \le I}$ with $c_i^{\omega}\ge 0$ is the specification of a contingent consumption plan for all the individuals $i$ in each state of the world.
 
 An allocation is <b>feasible</b> if in each state the total consumption equals the total resources:
 
@@ -1624,11 +1614,11 @@ State 4 and 5 have the same aggregate resources: $e^4 = e^5 = 27$, but the Borch
 
 ---
 <br/>
-<b>Optimal allocation: characterization</b>
-
+<b>Optimal allocation: Characterization</b>
+<br/>
 <b>Theorem</b>
 
-A feasible allocation $c$ such that $c_i^{\omega} > 0$ is Pareto optimal $iff$ there are nonnegative weights $(\lambda^i)_{1 \le i le I}$ and $(\mu^{\omega})_{\omega \in \Omega}$ such tat $\forall \omega \in \Omega$ and $\forall i$:
+A feasible allocation $c$ such that $c_i^{\omega} > 0$ is Pareto optimal $\iff$ there are nonnegative weights $(\lambda^i)_{1 \le i le I}$ and $(\mu^{\omega})_{\omega \in \Omega}$ such tat $\forall \omega \in \Omega$ and $\forall i$:
 
 $$
 \lambda^i u_i'(c_i^{\omega}) = \mu^{\omega}
@@ -1645,7 +1635,7 @@ $$
 - the ratio of margina utilities in 2 given state $\omega, \omega'$ is the same across all agents:
 
 $$
-\frac{u_i'(c_i^{\omega})}{c_i^{\omegai}} = \frac{\mu^{\omega}}{\mu^{\omega'}}
+\frac{u_i'(c_i^{\omega})}{u_i'(c_i^{\omega_i})} = \frac{\mu^{\omega}}{\mu^{\omega'}}
 
 $$
 
@@ -1673,8 +1663,8 @@ Let's proceed with an example. Consider the following matrix where lines corresp
 
 $$
 c = \begin{bmatrix}
-2 & 5 & 4 & 8 & 9
-2 & 5 & 4 & 8 & 11
+2 & 5 & 4 & 8 & 9\\
+2 & 5 & 4 & 8 & 11\\
 4 & 6 & 5 & 11 & 12
 \end{bmatrix}
 $$
@@ -1712,7 +1702,7 @@ $$
 \forall (\omega, \omega') \in \Omega^2, \quad c_i^{\omega} = c_i^{\omega'}
 $$
 
-_In other words: for a risk-averse agent, the consu,ption is independent of the state of the world $\omega$.
+_In other words: for a risk-averse agent, the consumption is independent of the state of the world $\omega$._
 
 ---
 
@@ -1740,7 +1730,7 @@ $$
 If we denote by $\beta_i = \frac{1}{k_i}$ the <b>absolute risk tolerance</b> of $i$ and $\beta =\sum_i \beta_i$ the <b>aggregate absolute risk tolerance</b>, summing over $i$ and using the _feasibility condition_ $\sum_i c_i^\omega=e^\omega$ gives:
 
 $$
-e^{\omega} = e^{\omega'} - \beta g(\omega, \omega') \iff g(\omega, \omega') =\frac{ e^{\omega}- e^{\omega'}}{\beta}
+e^{\omega} = e^{\omega'} - \beta g(\omega, \omega') \iff g(\omega, \omega') =\frac{ e^{\omega'}- e^{\omega}}{\beta}
 $$
 
 and thus 
@@ -1759,8 +1749,8 @@ _(Note that $\mathbb{E}_{\pi}[c_i^{\omega}] = c_i^{\omega}$, the value taken in 
 
 - All Pareto-optima assume that the allocation is the same. Agent $i$ takes $\frac{\beta_i}{\beta}$ of the aggregate risk, where $\beta_i$ is, again, the <b>absolute risk tolerance</b>.
 - Aggregate risk is therefore spread over all the agents, but the more risk averge agent take less risk.
-- The difference between different Pareto-optimal equilibria is only reflected in the levels of expected consumption $\mathbb_{\pi}{c_i}$.
-
+- The difference between different Pareto-optimal equilibria is only reflected in the levels of expected consumption $\mathbb{E}_{\pi}{c_i}$.
+<br/>
 ---
 <br/>
 <b>Risk Sharing Equilibrium</b>
@@ -1811,11 +1801,11 @@ The main assumptions are that preferences over portfolios are:
 - increasing with respect to expected return _(reward)_
 - decreasing with respect to variance _(risK)_
 
-The basic idea of the optimization is that, given returns, variance is minized and reciprocally, given variance, return is maimized.  This leaves <b>one free parameter</b>, that is the agent's risk aversion parameter, which determines their choice upon the risk/reward tradeoff.
+The basic idea of the optimization is that, given returns, variance is  minimized and reciprocally, given variance, return is maimized.  This leaves <b>one free parameter</b>, that is the agent's risk aversion parameter, which determines their choice upon the risk/reward tradeoff.
 
-_In other words, Given some assets agents are assumed to maximize expected returns while keeping the variance at the desired level, or the opposite way, minimize the variance for a desired expected return._
+_In other words, given some assets agents are assumed to maximize expected returns while keeping the variance at the desired level, or the opposite way, minimize the variance for a desired expected return._
 
-But _why do we care for mean and variance only?_ Results can be shown to be _independent_ from higher monents in 2 specific cases:
+But _why do we care for mean and variance only?_ Results can be shown to be _independent_ from higher moments in 2 specific cases:
 - Agents have a <b>quadratic utility index</b>: $u(x) = x - \frac{\beta}{2} x^2$ with 
 
 $$
@@ -1841,7 +1831,7 @@ We denote by $\tilde a_k = (a^{\omega}_k)$ the random payoff of asset $k$ and by
 
 Whem it exists, we shall denote by $a_0$ the safe asset, bringing a costant payoff $a_0^{\omega}$ in every state.
 
-- By convention, the Latin subscript of $\tilde a_k$ denotes the risky assets $k \in \{ 1, ..., K\}$. When we mean all assets, including the riskless one, we use the Greep subscript $\tilde a_{\kappa}$.
+- By convention, the Latin subscript of $\tilde a_k$ denotes the risky assets $k \in \{ 1, ..., K\}$. When we mean all assets, including the riskless one, we use the Greek subscript $\tilde a_{\kappa}$.
 
 We call $z = (z_{\kappa})$ the composition of an investor's portfolio and $w$ the initial wealth, _Note that short positions are possible, so we can have $z_{\kappa} < 0$ for some assets._
 
@@ -1885,6 +1875,7 @@ $$
 \operatorname{Var}{\pi}[\tilde R_p]
 &= \mathbb{E}{\pi}[(\tilde R_p-\mathbb{E}{\pi}[\tilde R_p])^2] \\
 &= \sum_{k,l=1}^{K} x_k x_l\sigma_{kl} \\
+&= \sum_{k = 1}^K x_k^2 \sigma_k^2 + 2 \sum_{k < l} x_k x_l \sigma_{kl}\\
 &= x^\top \Sigma x.
 \end{align*}
 $$
@@ -1929,7 +1920,7 @@ $$
 x_1^{MVP} = \frac{\sigma^2_2 - \sigma_1 \sigma_2 \rho_{12}}{\sigma_1^2 + \sigma_2^2 - 2 \sigma_1 \sigma_2 \rho_{12}}
 $$
 
-_(assuming $\sigma_1^2 \new \sigma_2^2$ or $\rho_{12} \neq 1$)._
+_(assuming $\sigma_1^2 \neq \sigma_2^2$ or $\rho_{12} \neq 1$)._
 
 If we plug the solution into the formula for the variance of the portfolio we get:
 
@@ -1938,13 +1929,13 @@ $$
 $$
 
 We can then see two special cases:
-- $\sigma_1^2 = \sigma^2, \rho_{12} = 0 \implies $: $x_1^{MVP} = 1/2, \quad \sigma_p^{2, MVP} = \sigma^2_1 / 2 < \sigma_1^2$
-- $\sigma_1^2 = \sigma^2, \rho_{12} = -1 \implies $: $x_1^{MVP} = 1/2, \quad \sigma_p^{2, MVP} = 0$
+- $\sigma_1 = \sigma_2, \rho_{12} = 0 \implies $: $x_1^{MVP} = 1/2, \quad \sigma_p^{2, MVP} = \sigma^2_1 / 2 < \sigma_1^2$
+- $\sigma_1 = \sigma_2, \rho_{12} = -1 \implies $: $x_1^{MVP} = 1/2, \quad \sigma_p^{2, MVP} = 0$
 
 and we can do the following remarks:
 - with $K$ assets with identical variances and that are indepedent, the optimal minimum variance portfolio is such that the same amount is invested in each stock: $\sigma_p^{2, MVP} = \sigma^2_1 / k$. _This is the idea behind diversification_.
 - with perfectly negative correlated stocks, we can obtain a portfolio with no risk.
-
+<br/>
 ---
 <br/>
 <b>Efficient frontier, no safe asset</b>
@@ -1954,9 +1945,10 @@ In the general case, the problem for the investor is to minimize the variance of
 The problem writes as:
 
 $$
-\frac{1}{2}\sigma^2 = \min \frac{1}{2} \sum _{k,l} \sigma^2 x_k x_l \text{ s.t. }\\
-\sum_k x_k R_k = m \text{ performance}\\
-\sum_k x_k = 1 \text{ budget}
+\min_{x} \frac{1}{2} \sum _{k,l} \sigma_{kl} x_k x_l \quad \text{ s.t. }\begin{cases}
+\sum_k x_k \mathbb{E}[R_k] = m & \text{(target return)}\\
+\sum_k x_k = 1 & \text{(budget)}
+\end{cases}
 $$
 
 _(assuming no redundant asset)_
@@ -1964,73 +1956,77 @@ _(assuming no redundant asset)_
 In matrix form:
 
 $$
-\frac{1}{2} \sigma^2 = \min \frac{1}{2} x^T \Sigma x \text{ s.t. } \\
-x^T R = m\\
-x^T 1 = 1
+\min_{x} \frac{1}{2} x^T \Sigma x \quad \text{s.t.} \begin{cases}
+x^T \mu = m \\
+x^T \mathbf{1} = 1
+\end{cases}
 $$
 
+where $\Sigma$ is the covariance matrix and $\mu = \mathbb{E}[R]$ is the vector of expected asset returns.
 
-Let's now denote by $\lambda$ and $\mu$ the Lagrande mnultipliers for the costraints and write the Lagrangian:
+_(assuming no redundant asset)_
 
-$$
-\mathcal{L}(x, \lambda, \mu) = \frac{1}{2}\sum_{k,l} \sigma_{kl}x_k - x_k x_l + \lambda (m - \sum_k x_k R_k) + \mu (1 - \sum_k x_k)
-$$
-
-By FOC _($x_j$ appears when summing over $k$ and when summing over $$)_
-$$
-0 = \frac{\partial \mathcal{L}(x, \lambda, \mu)}{\partial x_j} = \sum_k \sigma_{kj}x_l - \lambda R_k - \mu
-$$
-
-If we denote by $\Chi = (\gamma^{kl})$ the inverse of the covariance matrix $\Sigma$:
+Let's now denote by $\lambda$ and $\nu$ the Lagrange multipliers for the constraints and write the Lagrangian:
 
 $$
-x_k = \lambda \sum_l \gamma^{kl} R_l + \mu \sum_l \gamma^{kl}
+\mathcal{L}(x, \lambda, \nu) = \frac{1}{2}\sum_{k,l} \sigma_{kl}x_k x_l + \lambda (m - \sum_k x_k \mathbb{E}[R_k]) + \nu (1 - \sum_k x_k)
 $$
 
-If we plug this into the two costraints yields to:
-
+By FOC _(note: $x_j$ appears in the sum when $k=j$ and when $l=j$)_
 $$
-\lambda\left(\sum_{k,l=1}^K \gamma^{kl}R_kR_l\right)
-+\mu\left(\sum_{k,l=1}^K \gamma^{kl}R_k\right)=m,
-
+0 = \frac{\partial \mathcal{L}(x, \lambda, \nu)}{\partial x_j} = \sum_l \sigma_{jl}x_l - \lambda \mathbb{E}[R_j] - \nu
 $$
 
+If we denote by $\Gamma = (\gamma^{kl})$ the inverse of the covariance matrix $\Sigma$:
+
 $$
-\lambda\left(\sum_{k,l=1}^K \gamma^{kl}R_l\right)
-+\mu\left(\sum_{k,l=1}^K \gamma^{kl}\right)=1.
+x_k = \lambda \sum_l \gamma^{kl} \mathbb{E}[R_l] + \nu \sum_l \gamma^{kl}
+$$
+
+If we plug this into the two constraints we get:
+
+$$
+\lambda\left(\sum_{k,l=1}^K \gamma^{kl}\mathbb{E}[R_k]\mathbb{E}[R_l]\right)
++\nu\left(\sum_{k,l=1}^K \gamma^{kl}\mathbb{E}[R_k]\right)=m,
+
+$$
+
+$$
+\lambda\left(\sum_{k,l=1}^K \gamma^{kl}\mathbb{E}[R_l]\right)
++\nu\left(\sum_{k,l=1}^K \gamma^{kl}\right)=1.
 
 $$
 
 or, in compact notation:
 
 $$
-c:=R^\top\Gamma R,\qquad
-b:=R^\top\Gamma\mathbf{1}=\mathbf{1}^\top\Gamma R,\qquad
+c:=\mathbb{E}[R]^\top\Gamma \mathbb{E}[R],\qquad
+b:=\mathbb{E}[R]^\top\Gamma\mathbf{1}=\mathbf{1}^\top\Gamma \mathbb{E}[R],\qquad
 d:=\mathbf{1}^\top\Gamma\mathbf{1},
 
 $$
 $$
-\lambda c+\mu b=m,\qquad
-\lambda b+\mu d=1.
+\lambda c+\nu b=m,\qquad
+\lambda b+\nu d=1.
 
 $$
 
 A solution for this system is given by:
 
 $$
-\lambda = \frac{dm - b}{\Delta}, \quad \mu = \frac{-bm +c}{\Delta}, \quad \Delta = dc - b^2
+\lambda = \frac{dm - b}{\Delta}, \quad \nu = \frac{-bm +c}{\Delta}, \quad \Delta = dc - b^2
 $$
 
-Pre-multiplying thr FOC of the problem by $x^T$ gets:
+Pre-multiplying the FOC of the problem by $x^T$ yields:
 
 $$
-\sigma^2 = \lambda m + \mu \implies \sigma^2 = \frac{dm^2 - 2mb + c}{\Delta}
+\sigma_p^{2} = \lambda m + \nu \implies \sigma_p^{2} = \frac{dm^2 - 2mb + c}{\Delta}
 $$
 
 or, equivalently:
 
 $$
-\frac{\Delta}{d} \sigma^2 - ( m - \frac{b}{d})^2 = \frac{\Delta}{d^2}
+\frac{\Delta}{d} \sigma_p^{2} - \left( m - \frac{b}{d}\right)^2 = \frac{\Delta}{d^2}
 $$
 
 <div align = "center">
@@ -2039,19 +2035,19 @@ $$
 
 <b>The Global Minimum Variance Portfolio</b>
 
-The global minimum variance portfolio _(hedging portfolio)_ is the portgolio $x_G \in \mathbb{R}^K$ with the smallest variance. This portfolio (obtained with $\lambda = 0$) is given by:
+The global minimum variance portfolio _(hedging portfolio)_ is the portfolio $x_G \in \mathbb{R}^K$ with the smallest variance. This portfolio (obtained with $\lambda = 0$) is given by:
 
 $$
-x_{G,k} = \frac{1}{2} \sum_l \gamma^{kl}
+x_{G,k} = \frac{1}{d}\sum_l \gamma^{kl}
 $$
 
-It has expected returng $m_G = b/d$ and risk $\sigma^2 = 1/
+It has expected return $m_G = b/d$ and risk $\sigma_G^2 = \frac{1}{d}$.
 
 <div align = "center">
 ![GDP by country](/images/notes/financial-econ/ef.png)
 </div>
 
-_Note that portfolio on the efficient frontier with $m < b/d$ are dominated, since one can get higher returns with the same variance._1
+_Note that portfolio on the efficient frontier with $m < b/d$ are dominated, since one can get higher returns with the same variance._
 
 ---
 <br/>
@@ -2092,7 +2088,8 @@ $$
 The FOC are:
 
 $$
-\sum_k \sigma_{kl}x_k = \lambda R_l + \mu \\ 0 = \lambda R_0 + \mu
+\sum_k \sigma_{kl}x_k = \lambda R_l + \mu \\
+0 = \lambda R_0 + \mu
 $$
 
 Subtracting the two equations removes $\mu$ and gives:
@@ -2101,7 +2098,7 @@ $$
 \sum_k \sigma_{kl} x_k = \lambda (R_l - R_0)
 $$
 
-so the risky portfolio is chosen to match the vector of excess return $(R_l - R_0)$.<br/>We then put $\Gamma = \Sigma^{-1}$ and calculate $\gamma$:
+so the risky portfolio is chosen to match the vector of excess returns $(R_l - R_0)$.<br/>We then put $\Gamma = \Sigma^{-1}$ and calculate $\gamma$:
 
 $$
 x_k = \lambda \sum_l \gamma^{kl} (R_l - R_0)\\
@@ -2110,28 +2107,22 @@ $$
 
 This means each <b>risky weight is proportional to a weighted combination of excess returns</b>, where the weights come from the inverse covariance matrix. _Intuition: assets with higher expected excess return get more weight, but assets are also penalized if they are highly risky or strongly correlated with other risky assets._
 
-We can see that for any efficient portfolio, the sub-portfolio of risky assets $x_0$ IS <b>proportional</b> to $\sum_l \gamma^{kl} (R_l - R_0)$.
+We can see that for any efficient portfolio, the risky-asset sub-portfolio is <b>proportional</b> to $\sum_l \gamma^{kl} (R_l - R_0)$.
 
 We then define the <b>tangent portfolio</b> $x_T$ as the only efficient portfolio which does not use the safe assets, such that $x_{T,0} = 0$ and, $\forall k \in \{1 ... K \}$ we have:
 
 $$
-x_{T,k} = \frac{\sum_l \gamma^{kl}(R_l - R_0)}{\sum_{i,j}\gamma^{ij}(R_l - R_0)}
+x_{T,k} = \frac{\sum_l \gamma^{kl}(R_l - R_0)}{\sum_{i,j}\gamma^{ij}(R_j - R_0)}
 $$
 
 Once we define the tangent portfolio and a risk-free asset exists, all efficient portfolios are built in the same way combining a common risky portfolio _(tangent portfolio)_ and some amount of the same asset.
-
-So for any efficient portfolio we have:
-$$
-x_{T,k} = \lambda \Big(\sum_{i,j}\gamma^{ij}(R_l - R_0)x_{T,k}\Big) \implies \\
-x_0 = \lambda \Big(\sum_{i,j}\gamma^{ij}(R_l - R_0)x_T\Big)
-$$
 
 So the tangent portfolio is the unique risky-only efficient portfolio. It is “special” because every other efficient portfolio has the same risky-asset mix, just scaled up or down.
 
 In formulas, we write:
 
 $$
-x = \lambda y_0 + (1- \alpha) x_T
+x = \alpha y_0 + (1-\alpha)x_T
 $$
 
 where $y_0^T = (1, 0, .... 0)$ is the portfolio composed of the risk-free asset only and $x_T^T = (0, x_1.... x_K)$ is the tangent portfolio _(with no investment in the risk-free asset)_.
@@ -2181,32 +2172,36 @@ $$
 
 _Intuition: it quantifies the performance of a portfolio measuring the excess return per unit of risk (deviation)._ The slopes of the drawn lines are equal to the Sharpe Ratio of the portfolios located on the EF.
 
-<div align = "center">
-</div>
-
 - the tangent portfolio has the <b>highest Sharpe ratio</b> among portfolios of only risky assets.
 - all efficient portfolios have the same Sharpe ratio equaling the one of the tangent portfolio.
 - the slope of the capital allocation line is equal to that Sharpe ratio.
-<br/>
+
+
+<div align = "center">
+![Efficient Frontier](/images/notes/financial-econ/draw-lines.png)
+</div>
+
+
+
 ---
 
 ## <a id="9"><b>9. CAPM</b></a>
 
-The CAPM (<b>Capital Asset Pricing Model</b>) was independetly introduced by Treynor, Sharpe, Lintner and Mossin in the 1960's.
+The CAPM (<b>Capital Asset Pricing Model</b>) was independently introduced by Treynor, Sharpe, Lintner and Mossin in the 1960's.
 
-The motivation of thesr works was to adress criticisms of Markowitz's MVA, some of them were:
-- MVA requries the full known of the returns' correlation, which grows quadratically with the number of assets 
+The motivation of their works was to address criticisms of Markowitz's MVA, some of them were:
+- MVA requires the full knowledge of the returns' correlation, which grows quadratically with the number of assets 
 - even if robust estimation of $\Sigma$ are available, MVA makes global predictions ignoring the information present in the market.
 
 The CAPM brings two key assumptions added to the Markowitz model:
 - <b>complete agreement</b> on the joint distribution of asset returns 
 - <b>borrowing and lending</b> at a risk-free rate available to all investors.
 
-Under these assumptions, all investors see the same opportunity set and hold the same tangent portfolio of risky assets, which ust therefore be the <b>value-weight market portfolio</b>.
+Under these assumptions, all investors see the same opportunity set and hold the same tangent portfolio of risky assets, which is therefore the <b>value-weight market portfolio</b>.
 
-The CAPM rests on the notion of <b>market portfolio</b>, which is the simply aggregatoin of the economy's financial assets. Therefore, we fundamental assumption of the CAPM is that <b>the market portfolio is efficient</b> in the sense of Markowitz and this implies that all investors know the Capital Allocation Line which can be read in the market.
+The CAPM rests on the notion of <b>market portfolio</b>, which is simply the aggregation of the economy's financial assets. Therefore, a fundamental assumption of the CAPM is that <b>the market portfolio is efficient</b> in the sense of Markowitz and this implies that all investors know the Capital Allocation Line which can be read in the market.
 
-We now define the market portfolioa s $z_M = (z_{M,0}.... z_{M,K})$ as the portfolio of all assets in the economy.
+We now define the market portfolio as $z_M = (z_{M,0}, \ldots, z_{M,K})$ as the portfolio of all assets in the economy.
 
 $\forall k \in (0, 1... K)$, the share of wealth in asset $k$ (<b>market weight</b>)is given by:
 
@@ -2222,7 +2217,7 @@ $$
 <b>The gross return of the market portfolio</b> is determined by the weighted average of the asset returns as:
 
 $$
-\tilde R_M = \sigma_{\kappa} x_{M,\kappa} \tilde R_{\kappa}
+\tilde R_M = \sum_{\kappa} x_{M,\kappa} \tilde R_{\kappa}
 $$
 
 If we now recall that $\sigma_{kl} = \operatorname{Cov}(\tilde R_k, \tilde R_l)$:
@@ -2249,22 +2244,19 @@ $$
 \operatorname{Var}_{\pi} (\tilde R_M) = \lambda (R_M - R_0)
 $$
 
-if we substitute out $\lambda$ _(the Lagrange multiplier from the mean-variance optimization that links covariance to excess returns)_, we get the <b>very famous CAPM relatioin</b>
-
-Indeed, at equilibrium, the expected return of asset $k$ satisfies:
-
+if we substitute out $\lambda$ _(the Lagrange multiplier from the mean-variance optimization that links covariance to excess returns)_, we get the <b>very famous CAPM relation</b>:
 
 $$
-R_k = R_0 = \frac{\operatorname{Cov}(\tilde R_k, \tilde R_M)}{\operatorname{Var}(\tilde R_M)} (R_M - R_0) = \beta_k (R_M - R_0)
+R_k = R_0 + \frac{\operatorname{Cov}(\tilde R_k, \tilde R_M)}{\operatorname{Var}(\tilde R_M)} (R_M - R_0) = R_0 + \beta_k (R_M - R_0)
 $$
 
 $$
 \beta_k = \frac{\operatorname{Cov}(\tilde R_k, \tilde R_M)}{\operatorname{Var}(\tilde R_M)}
 $$
 
-The CAPM tells us that the <b>risk premium associated to asset</b> $k$ì is given by the product of the asset's _beta_ with the risk premium of the market portfolio.
+The CAPM tells us that the <b>risk premium associated to asset</b> $k$ is given by the product of the asset's _beta_ with the risk premium of the market portfolio.
 
-- we call <b>idiosyncratic</b> a risk which has <b>zero correlation wth the market</b>. According to CAPM, idiosyncratic risk has zero premium. _(This doesn't mean that this risk is liked by all investors, it just means that there is zero net supply/demand in the economy for that risk)_ 
+- we call <b>idiosyncratic</b> a risk which has <b>zero correlation with the market</b>. According to CAPM, idiosyncratic risk has zero premium. _(This doesn't mean that this risk is liked by all investors, it just means that there is zero net supply/demand in the economy for that risk)_ 
 - in equilibrium, no agent bears any idiosyncratic risk as every agent has a combination of the market portfolio and the safe asset 
 
 On the other hand, we call <b>systematic</b> a risk which has correlation $=1$ to the market risk and cannot be avoided by investing in the market.
@@ -2280,7 +2272,7 @@ Empirical strategy:
 - compute expected returns of each individual asset $k$
 - compute all covariances between the asset and the index
 - compute the variance of the index 
-- compute $\beta_k = \frac{\operatorname{Cov}(\tilde R_k, \tilde R_m)}{\operatorname{Var}(\tilde R_M)}$ 
+- compute $\beta_k = \frac{\operatorname{Cov}(\tilde R_k, \tilde R_M)}{\operatorname{Var}(\tilde R_M)}$ 
 - regress a cross-section of average asset returns on estimates of asset betas 
 
 The CAPM should then predict:
@@ -2301,7 +2293,7 @@ The regression line is called the <b>security market line</b>, its origin is the
 <br/>
 <b>Time-series regression tests</b>
 
-According to CAPM, the expected value on an asset's excess return is _completely_ explaine by its expected CAPM risk premium $beta_k (R_k - R_0)$.
+According to CAPM, the expected value on an asset's excess return is _completely_ explaine by its expected CAPM risk premium $\beta_k (R_k - R_0)$.
 
 This suggests estimating the following-time series regression:
 
@@ -2377,7 +2369,7 @@ $$
 under the budget costraints:
 
 $$
-c_i^0 = e_i^0 - \frac{z_i^0}{1 + r} - \sum_k^K p_k k_i^k \\
+c_i^0 = e_i^0 - \frac{z_i^0}{1 + r} - \sum_k^K p_k z_i^k \\
 
 c_i^{\omega} = e_i^{\omega} + z_i^0 + \sum_k^K z_i^K a_k^{\omega}
 $$
@@ -2441,7 +2433,7 @@ $$
 we then denote by $\Sigma$ the variance-covarianc matrix of $\tilde a$ and we get, in matrix notation:
 
 $$
-\Sigma z_i = - \operatorname{Cov}(\tilde a, \tilde e_i) + \frac{\mathbb{E}_{\pi}[v_i'(\tilde c_i)]}{2 \alpha_i}[\mathbb{E}_{\pi}[\tlde a]- (1 + r)p]
+\Sigma z_i = - \operatorname{Cov}(\tilde a, \tilde e_i) + \frac{\mathbb{E}_{\pi}[v_i'(\tilde c_i)]}{2 \alpha_i}[\mathbb{E}_{\pi}[\tilde a]- (1 + r)p]
 $$
 
 We then define by $T_i^a$ the <b>absolute risk tolerance </b> for investor $i$:
@@ -2452,7 +2444,7 @@ $$
 
 If $v_i'$ is linear we have:
 - $\mathbb{E_{\pi}}[v_i'(\tilde c_i)] = v_i'(\mathbb{E}_{\pi}[\tilde c_i])$
-- "v_i" (c) = - 2 \alpha_i$
+- $v_i" (c) = - 2 \alpha_i$
 
 so the previous equation rewrites as:
 $$
@@ -2531,7 +2523,7 @@ Under CARA and preferences and Gaussian risks, the risk free rate of interest:
 - decreases with $\delta$ _(impatience effect)_ 
 - increases with $\mathbb{E}_{\pi}[\tilde e_M]- e_M^0$ _(average endowment effect)_
 - decreases with risk _(precautionary savings effect)_
-
+<br/>
 <a href="https://www.youtube.com/watch?v=FO8DsJb4qlE" target="_blank">More on the CCAPM (Videolecture)</a>
 <br/>
 <br/>
