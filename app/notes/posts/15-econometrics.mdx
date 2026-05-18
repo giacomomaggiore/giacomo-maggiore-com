@@ -1099,7 +1099,7 @@ $$
 LM = nR^2
 $$
 
-_Note that the Bresuch-Pagan test detect any <b>linear forms of heteroskedasticity</b>.
+_Note that the Bresuch-Pagan test detect any <b>linear forms of heteroskedasticity</b>._
 
 ---
 
@@ -1272,13 +1272,22 @@ We have seen that a linear regression can really fit _nonlinear_ relationship, b
 
 <b>Ramsey's RESET  (Regression Specification Error Test)</b>
 
-RESET test lies on a trick similarto the special form of the _White Test_.
+RESET test lies on a trick similar to the special form of the _White Test_.
 
 Instead of adding functions of the $x$ directly, we add and test functions on $\hat y$:
 - estimate $y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k + \delta_1 \hat y^2 + \delta_2 \hat y^3 + v$
 - test: $H_0 : \delta_1 = \delta_2 = 0$
 - a significant $F$-test suggests that the <b>model is not correctly specified</b> _(using $F \sim F_{2, n-k-3}$ or $LM\sim X^2_k$)
 
+What the test does: the RESET adds nonlinear (and/or interaction) functions of the fitted values `\hat y` to the regression to detect whether important non-linearities or omitted transformations are missing from the specified model form. Under the null hypothesis the added coefficients (here `\delta_1`, `\delta_2`) are zero, so the restricted model _(original regression)_ is OK with respect to them.
+
+How to read the F-statistic:
+- Degrees of freedom: numerator $q =$ number of added terms (2 here); denominator = $n - K - q$, where $K$ is the number of parameters estimated in the original model _(including the intercept)._ The test compares the restricted SSR to the unrestricted SSR.
+- Decision rule: compute the F-statistic and either compare it to the critical value from $F_{q, n-K-q}$ at the chosen $\alpha$ or use the p-value. If $F > F_{crit}$or $p < \alpha$, reject $H_0$ and conclude there is evidence the model is misspecified.
+
+Practical interpretation and next steps: a significant RESET does not tell you which specific variable or transformation is missing — only that the current functional form is likely inadequate. After rejection, examine residual plots, try theory-driven transformations (logs, polynomials, interactions), include specific nonlinear terms of `x` (rather than `\hat y` powers alone), or run targeted specification tests. If the RESET is not significant you have no evidence (from this test) of the particular misspecifications it detects, but this is not proof the model is correct.
+
+<br/>
 <b>Proxy Variables</b>
 
 _What if a model is mis-specified because no data is available on a important $z$ variable?_ 
@@ -1321,11 +1330,13 @@ $$
 y = (\beta_0 + \beta_3 \delta_0) + (\beta_1 + \beta_3 \delta_1)x_1 + (\beta_2 + \beta_3 \delta_2)x_2 + \beta_3 \delta_3 x_3 + (\mu + \beta_3 v_3)
 $$
 
-_Intuition: the bias depends on the signs of $\beta_3, \delta_j$, but it is still smaller than the omitted variable bias.
+_Intuition: the bias depends on the signs of $\beta_3, \delta_j$, but it is still smaller than the omitted variable bias._
 
+---
+<br/>
 <b>Measurement Error in a dependent variable</b>
 
-Consider the following situation. We would like to esitimate: $y^* = \beta_0 + \beta_1 x_1 + ... \beta_k x_k + \mu$, but we only measure the true value _plus an error_:
+Consider the following situation. We would like to esitimate: $y^* = \beta_0 + \beta_1 x_1 + ... \beta_k x_k + \mu$ but we only measure the true value _plus an error_:
 
 $$
 y = y^* + e_0
@@ -1367,10 +1378,9 @@ This implies that $x_1$ is correlated with the error so the estimate is biased:
 
 $$
 \lim_{n \to \infty} (b_1) = \beta_1 + \frac{\text{Cov}(x_1, \mu -\beta_1 e_1)}{\text{Var}(x_1)} = \\
-\\ = \beta_1 + frac{\beta_1 \sigma_e^2}{\sigma_x^2 + \sigma_e^2} = = \beta_1 + frac{\beta_1 \sigma_{x^*}^2}{\sigma_x^2 + \sigma_e^2} =
-$$
-_Note that the multiplicative error is $< 1$ so the estimate is biased toward zero _(attenuatoin bias)_.
+\\ = \beta_1 + frac{\beta_1 \sigma_e^2}{\sigma_x^2 + \sigma_e^2} = \beta_1 + frac{\beta_1 \sigma_{x^*}^2}{\sigma_x^2 + \sigma_e^2}$
 
+_Note that the multiplicative error is $< 1$ so the estimate is biased toward zero (attenuatoin bias)_.
 ---
 
 <br/>
@@ -1390,8 +1400,10 @@ Multiple strategies to deal with outliers:
 - fix observation where it is clea there was just an extra zero or similar 
 - drop outlier observations and show regressions with/without them 
 - winsorize estreme observations _(for istance: observations below $p1$ set to $p1$ and above $p99$ set to $p9$)._
-
+<br/>
 <a href="https://en.wikipedia.org/wiki/Winsorizing" target="_blank">More on winsorization (Wikipedia)</a>
+
+<br/>
 
 ## <a id="7"><b>7 Time Series Data</b> </a>
 

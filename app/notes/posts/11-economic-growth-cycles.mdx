@@ -28,7 +28,9 @@ Please refer to his <a href="https://drive.google.com/file/d/1xVfUo16AxQmlWKle8E
 - [IS-LM Model and Open Economy](#8)
 - [Bank Runs $ The Diamon-Dybvig Model](#9)
 - [Crises in Market Economies](#10)
-- [Technical Appendix](#11)
+- [Macroeconomic Forecasting](#11)
+- [Technical Appendix](#12)
+<br/>
 ---
 
 ## <a id="1"><b>1.1 Introduction</b> </a>
@@ -539,16 +541,16 @@ $$
 U_i(C_i, N_i) = C_i - \frac{1}{\theta}N_i^{\theta} \quad \quad \theta > 1
 $$
 
-Since there's perfect information, each individual knows the aggregate price level $P$ and can solve the optimization problem:
+Since there's perfect information, each individual knows the aggregate price level $P$, by substituting $C_i =   \frac{Y_i}{P}P_i =  \frac{P_i}{P}N_i$, each individual faces the following optimization problem:
 
 $$
-\max_{N_i} U_i = \Big ( \frac{P}{N} \Big ) N_i -\frac{1}{\theta}N_i^{\theta}
+\max_{N_i} U_i = \Big ( \frac{P_i}{P} \Big ) N_i -\frac{1}{\theta}N_i^{\theta}
 $$
 
 that leads to:
 
 $$
-N_i = \Big ( \frac{P}{N} \Big )^{1/(\theta -1)}
+N_i = \Big ( \frac{P_i}{P} \Big )^{1/(\theta -1)}
 $$
 
 if we consider $n_i = \ln N_i$ and $y_i = \ln Y_i$, we can rewrite the first-order condition as:
@@ -1823,4 +1825,180 @@ _According to this rule_: the higher the planned public debt, the higher the par
 
 ---
 
-## <a id="11"><b>11. Technical Appendix</b> </a>
+## <a id="11"><b>11. Macroeconomic Forecasting</b> </a>
+
+Macroeconomic forecasting refers to the process of <b>predicting future realizations </b> of economic aggregates _(GDP, indlation, unemployment, interest rate etc...)_.
+
+- <b>Forecasting</b>: the process of looking ahead using historical data to predict values at a specific points in the future.
+    - _Idea: Predict $Y_{T+h}$ where $h > 0$ (horizon), given all information available up to to $T$._
+- <b>Nowcasting</b>:  the prediction of the present, the very near future, or even the very recent past where $h$ is very small.
+- <b>Backcasting</b>: can have separate meanings:
+    - _Estimating missing data from the past before your data collection began._
+    - _Imagining a specific future and working backward to determine what needs to happen to make it happen._
+
+Several approchaes possible to forecasting:
+- judgental/expert forecasting, based on opinions, inution, visual data inspection and prior economic theory. 
+    - strengths: _flexiblility to incorporate current events of breaks, useful when data is limited or unreliable_
+    - weaknesses: _subjective to bias, hard to replicate_
+- time-series model 
+- machine learning models that learns complex, often non linear patterns from data with minimal prior structur.
+    - main difference from time-series: _ML mainly focused on large unstructured data, it emphazises flexbible and data drive prediction, while TS models rely on explicit statistical structure and assumptions._
+- structursal macroeconomic models 
+    - dynamic stochastic general equilibrium (DSGE) models: they model the behavior and the interdependencies between agents based on micro-economic theory $\implies$ they provide a set of equations describing how the economy works. 
+    - Structural model an be either calibrated or estimated _(based on macro-economic time-series data)_ 
+<br/>
+---
+<br/>
+<b>Time-series Basics</b>
+
+A time series is a sequence $y_1, y_2... y_T$. We define the forecast horizon as $h \in [1...H]$ and we forecast:
+
+$$
+\mathbb{E}_t [y_{t+h}] \quad \text{or} \mathbb{E}_{t-h} [y_{t}]
+$$
+
+to obtain a forecast series:
+
+$$
+\mathbb{E}_t [y_1] = \hat y_1,\mathbb{E}_t [y_2] = \hat y_2 ... \mathbb{E}_t [y_T] = \hat y_T
+
+$$
+
+We define the forecast error as:
+
+$$
+e_t = \mathbb{E}_{t-h}[y_1 ]- y_t
+$$
+
+
+The <b>Loss Function</b> $L = F(e_1, e_2 ... e_T)$ defines the criterium for forecast accuracy. Some common examples are:
+- <b>Root mean squared forecast error (RMSFE)</b>:
+
+$$
+L = \frac{1}{T}\sum_i^T e_t^2
+$$
+
+- <b>Mean absolute forecast error (MAFE)</b>:
+
+$$
+L = \frac{1}{T}\sum_i^T | e_t |
+$$
+
+---
+<br/>
+<b>The Random Walk forecast model</b>
+
+We consider the simple case in which we want to forecast $y_{t+1}$ at period $t$ _(one-step ahead)_. 
+
+The random walk model is simply:
+
+$$
+y_t = y_{t-1} + \epsilon_t, \quad \epsilon_t \sim N(0, \sigma^2)
+$$
+
+Conditioning on the information set at time $t$ and using $\mathbb{E}_t[\epsilon_{t+1}] = 0$:
+
+$$
+\mathbb{E}_t[y_{t+1}] = \mathbb{E}_t[y_t + \epsilon_{t+1}] = y_t
+$$
+
+So the one-step forecast is:
+
+$$
+\hat y_{t+1} = y_t
+$$
+
+The corresponding forecast error is:
+
+$$
+e_{t+1|t} = y_{t+1} - \hat y_{t+1} = \epsilon_{t+1}, \quad \mathbb{V}_t(e_{t+1|t}) = \sigma^2
+$$
+
+For horizon $h$:
+
+$$
+y_{t+h} = y_t + \sum_{j=1}^{h}\epsilon_{t+j}
+\quad \Rightarrow \quad
+\hat y_{t+h|t} = y_t,
+\quad
+\mathbb{V}_t(e_{t+h|t}) = h\sigma^2
+$$
+
+_Intuition: the best prediction is the latest observed value, while uncertainty increases linearly with the horizon._
+
+---
+<br/>
+<b> AR(1) forecast model</b>
+
+The autoregressive model of order 1 can be defined as:
+
+$$
+y_t = \phi y_{t-1} + \epsilon_t
+$$
+
+where $\phi$ is the <b>autoregressive parameter</b>.
+
+The one-step-ahead conditional expectation is:
+
+$$
+\mathbb{E}_t[y_{t+1}] = \mathbb{E}_t[\phi y_t + \epsilon_{t+1}] = \phi y_t
+$$
+
+In practice, replacing $\phi$ with its estimate $\hat\phi$, we get:
+
+$$
+\hat y_{t+1 } = \hat \phi y_t
+$$
+
+For $h$ steps ahead:
+
+$$
+\hat y_{t+h|t} = \hat\phi^{h}y_t
+$$
+
+and the forecast error can be written as:
+
+$$
+e_{t+h|t} = \sum_{j=0}^{h-1}\phi^j\epsilon_{t+h-j}
+$$
+
+If $|\phi|<1$ _(stationary case)_, then $\hat y_{t+h|t} \to 0$ as $h \to \infty$.
+
+_Intuition_:
+- if $\phi \approx 1$, dynamics are highly persistent and close to a random walk.
+- if $0<\phi<1$, shocks fade out gradually (mean reversion).
+- if $\phi<0$, the process tends to alternate signs around its mean.
+
+<a href="https://giacomomaggiore.com/notes/04-bvar" target="_blank">More detail on AR models can be found here!</a>.
+
+---
+<br/>
+<b>Dynamic factor model (DFM) framework </b>
+
+Let the variation in the data be captured by $q$ high-frequency factors. 
+
+We consider the <b>measurement equation</b> for the dynamic factors $f_t$:
+
+$$
+y_t = \Lambda f_t + e_t
+$$
+
+and the <b>state equation</b> for the dynamic factors:
+
+$$
+f_t = \Phi f_{t-1} + v_t
+$$
+
+Firstly, we forecast the factors using the state equation:
+
+$$
+\hat f_{t+1 | t} = \hat \Phi \hat f_t
+$$
+
+Then, we use the measurement equation to forecast observables:
+
+$$
+\hat y_{t+1|t} = \hat \Lambda \hat f_{f+1|t}
+$$
+
+## <a id="12"><b>11. Technical Appendix</b> </a>

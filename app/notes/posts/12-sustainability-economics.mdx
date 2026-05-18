@@ -1913,6 +1913,73 @@ _In general,_ according to Walker and Salt (2012), a <b>resilient world values</
 - <b>innovation</b>: resilience depends on the ability to adapt and reorganize when conditions change.
 - <b>overlap with governance</b>: institutions should match the scale of the ecological system they manage.
 - <b>ecosystem services</b>: healthy ecosystems provide the background services that support human well-being and adaptation.
-
+<br/>
+---
 ## <a id="14"><b>14. Measuring Sustainable Development</b> </a>
 
+<b>Money-metric wealth measures</b>
+
+To assess where we are making progress towards sustainable development, we look at <b>comprehensive wealth</b>, given by the sum of all capital stocks valued at "shadow prices" that represent their contribution to current and future well-being.
+
+We then distinguish two different paradigms:
+- <b>weak sustainability</b>: all forms of capital are substitutes; it allows for the depletion of natural resources so long as such depletion is offset by an increase in other forms of capital 
+- <b>strong sustainability</b>: all forms of capital must be maintained intact independent of one another. Different forms of capital are _mainly complementary_.
+<br/>
+<b>Are we consuming too much</b> 
+
+We consider the discounted present value of the utility stream problem as:
+
+$$
+\max V = \int_0^{\infty } U(C_t) e ^{-\rho t} dt
+$$
+
+and we consider the change of intertemporal social welfare as:
+
+$$
+\frac{dV}{dt} \ge0 
+$$
+
+Whether society is on a sustainable path depends particularly on the change of the <b>resource base</b>:
+
+$$
+\frac{dV}{dt} = \sum p_{it} I_{it}
+$$
+
+where $I_i$ is the change of stock and $p$ the shadow price.
+
+Arrow et al. in 2004 concluded that:
+- the consumption's share of output is likely to be higher than what is prescribed by the present value criterion $\implies$ _we are consuming too much!_ 
+- several nations fail to meet the sustainability criterion $\implies$ _their investment in human and physical capital is not sufficient to offset the depletion of natural capital_.
+
+Under some assumptions, we can consider <b>inclusive wealth</b> as a measure of sustainability by setting:
+- value of investment in human-made capital $=$ value of extraction from natural resources
+- using shadow prices to value natural and human capital
+
+<div align = "center">
+![VCM](/images/notes/sust-econ/inclusive-wealth.png)
+</div>
+
+_However,_ the requirement to value investment at shadow prices introduces uncertainty since a shadow price is forward-looking and determined by current capital stocks and exogenous factors.
+
+To account for changing public natural capital values and evolving scarcities over time, we can capture the yearly relative price change (RPC) as:
+
+$$
+RPC = \eta (g_C - g_E)
+$$
+
+where $\eta$ is the elasticity of substitution (which can be identified from the income elasticity of willingness to pay) and $g_C, g_E$ are the growth rates of capital and the environment.
+
+We can then incorporate the RPC into the present value calculation as:
+
+$$
+PV = \int_0^T wtp(t) e^{-rt} dt = \int_0^T wtp(0)e^{RPC}e^{-rt}dt = wtp(0) \frac{1-e^{(-r-RPC)T}}{r- RPC}
+$$
+
+We can now show _"how much"_ this new calculation exceeds the default one with $RPC = 0$.
+
+$$
+\Delta PV = ( \frac{1-e^{(-r-RPC)T}}{r- RPC}) ( \frac{1-e^{-rT}}{r})^{-1} -1
+$$
+
+
+DASHBOARD APPROACHES

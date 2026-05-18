@@ -148,7 +148,7 @@ $$
 Or, in other words, the spot rate is the _geometric average_ of the per period forward rate of interest:
 
 $$
-\frac{1}{(1 + \bar r_t)^t} = \frac{1}{\prod^t_{i = 1}(1 + r_i)} \implies 1 + \bar r_t = \Big[\frac{1}{\prod^t_{i = 1}(1 + r_i)}  \Big]^{1/t}
+\frac{1}{(1 + \bar r_t)^t} = \frac{1}{\prod^t_{i = 1}(1 + r_i)} \implies 1 + \bar r_t = \Big[\prod^t_{i = 1}(1 + r_i)\Big]^{1/t}
 $$
 
 
@@ -418,8 +418,8 @@ Consider an agent that expect _large move_ in the stock's price but he's uncerta
 - 1 long put woth with strike $X$ and premium $C_0$
 
 Moreover, if he thinks:
-- the movement will be more likely <b>bullish</b>: $\implies$ buy to 2 calls (<b>strap</b>)
-- the movement will be more likely <b>bearish</b>: $\implies$ buy to 2 puts (<b>strap</b>)
+- a stronger <b>bullish</b> move is expected: $\implies$ buy 2 calls and 1 put (<b>long strap</b>)
+- a stronger <b>bearish</b> move is expected: $\implies$ buy 2 puts and 1 call (<b>long strip</b>)
 
 
 <div align = "center">
@@ -474,8 +474,8 @@ and $C_0 \ge 0$ since the call is an option.
 ---
 <br/>
 <b>Price Bounds on put options (European, no dividend)</b>
-
-- Upper boud: $P_0 \le PV(X)
+<br/>
+- Upper boud: $P_0 \le PV(X)$
 - Lower Bound: $P_0 \ge \max [PV(X) - S_0, 0]$
 
 _Proof:_<br/>
