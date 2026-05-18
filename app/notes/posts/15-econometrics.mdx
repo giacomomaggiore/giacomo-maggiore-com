@@ -4,7 +4,7 @@ publishedAt: '2026-03-02'
 summary: ''
 ---
 
-### Index
+### <b>Index</b>
 
 - [Introduction to Statistics and Econometrics](#1)
 - [Simple Regression Analysis](#2)
@@ -15,7 +15,9 @@ summary: ''
 - [Time Series Data](#7)
 - [Panel Data](#8)
 - [Instrumental Variables](#9)
-
+<br/>
+---
+<br/>
 ## <a id="1"><b>1 Introduction to Statistics and Econometrics</b> </a>
 
 <b>Econometrics</b> is the use of statistical methods to analyze economi data, starting _typically_ from <b>non-experimental data</b>.
@@ -65,14 +67,13 @@ $$
 X = \sum^n_{i = 1} Z_i^2
 $$
 
-has a chi-square distribution with $n$ degrees of freedom and we write $X \sim \chi^2_n.
+has a chi-square distribution with $n$ degrees of freedom and we write $X \sim \chi^2_n$.
 
 - <b>t-Distribution</b>
 
 Let $Z \sim N(0,1)$ and $X \sim \chi^2_n$, then 
 $$
-
-T = Z / \sqrt(X/n)
+T = Z / \sqrt{X/n}
 $$
 
 has a t-distribution with $n$ degrees of freedom and we write $T \sim t_n$.
@@ -92,12 +93,12 @@ has a F-distribution with $(k,l)$ degrees of freedom and we write $F \sim F_{k,l
 The standardized average $Z$ of any population with mean $\mu$ and variance $\sigma^2$ is _asymptotically_ $N(0,1)$ distributed, or, in other words:
 
 $$
-Z = (\bar y - \mu)(\sigma / \sqrt(n)) \sim N(0,2)
+Z = (\bar y - \mu) / (\sigma / \sqrt{n}) \sim N(0,1)
 $$
 
 <b>Law of Large Numbers</b>
 
-Let $y_1 \dot y_n$ be independent, identically distributed random variables with mean $\mu$, then:
+Let $y_1, \ldots, y_n$ be independent, identically distributed random variables with mean $\mu$, then:
 
 $$
 \lim_{n \to \infty}(\frac{1}{n} \sum^n_i y_i) = \mu
@@ -146,7 +147,7 @@ $$
 
 also called the <b>Populatio Regression Function</b>.
 
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/population-model.png)
 </div>
 
@@ -154,11 +155,11 @@ We now derive the <b>Ordinary Least Squares</b> (OLS).
 
 _Intuition:_ we estimate the population parameters from a <b>data sample</b> of two random variables.
 
-- Let $\{(x_i, y_i)  \} : \quad i = 1 \dot n$ denonte a random sample of size $n$
+- Let $\{(x_i, y_i)  \} : \quad i = 1, \ldots, n$ denote a random sample of size $n$
 - scatter plot in a $(x,y)$ system
 - the regression equation $y_i = \beta_0 + \beta_1 x_i + \mu_i$ allocates to each $x_i$ a value $y_i$ including a disturbance term $\mu_i$.
 
-But _how can we derive the estimates for $\beta_0, \beta_1$
+But _how can we derive the estimates for_ $\beta_0, \beta_1$
 
 We firstly rely on the <b>SLR.4</b> assumption to derive two equations:
 $$
@@ -206,7 +207,7 @@ Moreover, we notice that _each observation $y_i$_ is made up of an explained $\h
 Using this terminology, we can define:
 - $\text{Sum of Squares Total (SST)} = \sum_i (y_i - \bar y)^2$
 - $\text{Sum of Squares Explained (SST)} = \sum_i (\hat y_i - \bar y)^2$
-- $\text{Sum of Squares Residuals (SST)} = \sum_i (\cap \mu_i)^2$
+- $\text{Sum of Squares Residuals (SST)} = \sum_i (\hat u_i)^2$
 
 To understand how well does the sample fit the regression line, we define: <span id="R_squared"></span>
 
@@ -236,7 +237,7 @@ This question can be translated into another assumption:
 Using then the _Homoskedasticity assumption_, we can derive the variance of $b_1$.
 
 $$
-\text{Var}[\mu | x] = \mathbb{E}[\mu^2 | x] - \mathbb{E}[\mu | x]^2 = \mathbb{\mu^2 | x} =\\
+\text{Var}[\mu | x] = \mathbb{E}[\mu^2 | x] - \mathbb{E}[\mu | x]^2 = \mathbb{E}[\mu^2 | x] =\\
 
 \mathbb{E}[\mu^2] = \text{Var}[\mu] = \sigma^2
 $$
@@ -249,7 +250,7 @@ $$
 \text{Var}(b_1) = \frac{\sigma^2}{\sum_{i=1}^{n} (x_i - \bar{x})^2} =  \frac{\sigma^2}{SST_x}
 $$
 
-- the larger the error variance $\sigma^2£, the larger the variance of the slope estimate.
+- the larger the error variance $\sigma^2$, the larger the variance of the slope estimate.
 - the large the variability in the $x$ ($SST_x$), the smaller the variance of the slope estimate.
 
 Finally, starting from the residuals $\hat u_i$, we can form an <b> unbiased estimate of the error variance</b> (often called the <b>mean square error</b> (MSE)), denoted by $s^2$:
@@ -279,7 +280,7 @@ $$
 \end{align*}
 $$
 
-The previous assumption states that the error term $v = \beta_2 \text{IQ} + \mu$ has $0$ (zero) expected value _(no trend)_ or, in other words, the \text{IQ} <b>does not</b> correlate with the $\text{wage}$.
+The previous assumption states that the error term $v = \beta_2 \text{IQ} + \mu$ has $0$ (zero) expected value _(no trend)_ or, in other words, $\text{IQ}$ <b>does not</b> correlate with the $\text{wage}$.
 
 This causes $\beta_1$ to be <b>biased</b> compared to the "true parameter", so it _doesn't measure_ the causal effect of education to wage.
 
@@ -312,7 +313,7 @@ The <b>estimate model</b> $\hat y = b_0 + b_1 x_1 + b_2 x_2 \ldots b_k x_k + \mu
 
 <b>Frisch-Waugh-Lovell (FWL) Theorem</b>
 
-Given a multiple (dual for example) regression model y = \beta_0 + \beta_1 x_1 + \beta_2 x_2  + \mu$, the coefficient $\beta_1$ can be found in 2 steps:
+Given a multiple (dual for example) regression model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2  + \mu$, the coefficient $\beta_1$ can be found in 2 steps:
 
 1. Regress $x_1$ on $x_2$:
 
@@ -525,12 +526,12 @@ $$
 $$
 
 _Intuition:_ 
-- the variance of the estimaor is smaller in the mis-specified model_.
+- the variance of the estimaor is smaller in the mis-specified model.
 - the mis-specified model is biased 
 - As the sample size grows, the variance of each estimator shrinks to zero, making the variance difference less important
-
+<br/>
 ---
-
+<br/>
 <b>Estimating the error</b>
 
 - Estimate of the errorr variance
@@ -606,7 +607,7 @@ $$
 \frac{(b_j - \beta_j)}{\text{se}(b_j)} \sim t_{n-k-1}
 $$
 
-where $\text{se}_{b_j} = s / \sqrt(SST_j (1 - R_j^2))$ and $n-k-1$ is the degree of freedom.
+where $\text{se}_{b_j} = s / \sqrt{SST_j (1 - R_j^2)}$ and $n-k-1$ is the degree of freedom.
 
 This result will be useuf to determine how likely an estimate $b_j$ is similar to $\beta_j$.
 
@@ -616,7 +617,7 @@ Both the $t$-Student and the Normal distribution are symmetric bell-shaped but t
 - is conditional to the degree of freedom 
 - <b>can be approximated with a normal distribution where the degree of freedom </b> $> 30$ or similar.
 
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/t-student.png)
 </div>
 
@@ -638,7 +639,7 @@ $$
 <b>$t$ Test</b>
 
 1. Set up the hypotesis. $H_0, H_1$ can be one-sided ($H_0: b_j \le 0, H_1: b_j > 0$) or two sided ($H_0: b_j = 0, H_1: b_j \neq 0$).
-2. Determine the $t$-statistic using the estimates for $b_j, se(b_j).
+2. Determine the $t$-statistic using the estimates for $b_j, se(b_j)$.
 
 _For example, as seen before:_ $t = \frac{b_j - 0}{se(b_j)}$
 
@@ -654,16 +655,16 @@ $$
 
 1. We set up the hypotesis: $H_0: b_1 \le 0, H_1: b_1 > 0$ _($H_0$: education doesn't increase employment)_ 
 2. We calculate $t = b_1 / se(b_1)$ 
-3. We consider $c$ using $\alpha$ (confidence level)$ and degree of freedom $ = n - k - 1$ 
+3. We consider $c$ using $\alpha$ (confidence level) and degree of freedom $= n - k - 1$ 
 4. We reject $H_0$ if $t > c$ _(if $H_0: b_1 > 0$ use $t < - c$)_
 
 - If we reject the null hypotesis, we typically say: _$x_j$ is statistically _significant/has statistically significant effect on $y$ at the $\alpha %$ level._
 - 
 Graphically:
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/t-test-1.png)
 </div>
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/t-test-2.png)
 </div>
 
@@ -686,7 +687,7 @@ In this case, we use the appropriate $t$-statistic: $t = (b_j - a)/se(b_j)$, whe
 
 Another way to use. stastistical testing is to construct confidence intervals using the same critical value for a two-sided test.
 
-A $(1 - \alpha)\%$ confidence interval is defined as $b_j \pm c \cdot se(b_j)$ where $c$ is the (1 - \alpha / 2)$ percentile in a $t_{n-k-1}$ distribution.
+A $(1 - \alpha)\%$ confidence interval is defined as $b_j \pm c \cdot se(b_j)$ where $c$ is the $(1 - \alpha / 2)$ percentile in a $t_{n-k-1}$ distribution.
 
 <b> P-Values for $t$-Tests</b>
 
@@ -737,7 +738,7 @@ _Intuition: we want to know if the change in SSR is bigh enough_.
 This is called $F$-statistic, defined as: 
 
 $$
- F =\frac{ (SSR_r - SSR_{ur})}{/SSR_{ur}}\frac{  (n-k-1)}{q}
+ F = \frac{(SSR_r - SSR_{ur})}{SSR_{ur}} \frac{(n-k-1)}{q}
 $$
 
 where $r$ is the <b>restricted</b>, $u_r$ the <b>unrestricted.</b> _Note that the $F$ statistic is always positive_.
@@ -746,11 +747,11 @@ _Intuition: the $F$ statistic is measuring the relative increase in the SSR when
 
 -$q = df_r - dr_{ur}, \quad df_{ur} = n - k - 1$.
 
-To decide if the increases in SSR is _"big enough"_, to reject the exclusions, we compare if with the $F$ distribution, indeed we know that: $F \sim F_{q, n-k-1} where:
+To decide if the increases in SSR is _"big enough"_, to reject the exclusions, we compare if with the $F$ distribution, indeed we know that: $F \sim F_{q, n-k-1}$ where:
 -  $q$ is the numerator degrees of freedom 
 - $n-k-q$ is the denominator degrees od freedom.
 
-<div align = "center">
+<div align="center">
 ![f testl](/images/notes/econometrics/f-test.png)
 </div>
 
@@ -792,11 +793,11 @@ However, <b>this assumption about normality can often break down!</b> _(example:
 
 Also in this case, large samples are the solution: if $n \to \infty$ the Cental Limit Theorem shows that OLS estimates are _asymptotically_ normal-.
 
-_In other terms_, for any population with mean $\mu$ and standard deviation $\sigma$, the sampling distribution of the <b>sample mean</b> is _approx_ normal with mean $\mu$ and standard deviation $\sigma / \sqrt(n)$.
+_In other terms_, for any population with mean $\mu$ and standard deviation $\sigma$, the sampling distribution of the <b>sample mean</b> is _approx_ normal with mean $\mu$ and standard deviation $\sigma / \sqrt{n}$.
 
 Secondly, the $t$-distributoin approaches a normal distribution for a large $df$ (degree of freedom), so we no longer need to assume normality with a large sample.
 
-As we said, if the error is NOT _normally_ distributed, we sometimes will refer to it as the _asymptotic standard error_. _(We can expect standard errors to shrink at rate proportional to the inverse of $\sqrt(n)$)_.
+As we said, if the error is NOT _normally_ distributed, we sometimes will refer to it as the _asymptotic standard error_. _(We can expect standard errors to shrink at rate proportional to the inverse of $\sqrt{n}$)_.
 
 <b>Further Issues in Multiple Regression Analysis: Scaling Variables</b>
 
@@ -813,9 +814,9 @@ OLS can also be used for relationship that are not strictly linear in $x,y$ by u
     headers: ["Model", "Equation", "Interpretation"],
     rows: [
       ["Level-level", "$y = \\beta_0 + \\beta_1 x + u$", "$\\Delta y = \\beta_1\\Delta x$"],
-      ["Level-log", "$y = \\beta_0 + \\beta_1\\ln(x) + u$", "$\\Delta y = (\\beta_1/100)\\%\\Delta x$"],
-      ["Log-level", "$\\ln(y) = \\beta_0 + \\beta_1 x + u$", "$\\%\\Delta y = (100\\beta_1)\\Delta x$"],
-      ["Log-log", "$\\ln(y) = \\beta_0 + \\beta_1\\ln(x) + u$", "$\\%\\Delta y = \\beta_1\\%\\Delta x$"]
+      ["Level-log", "$y = \\beta_0 + \\beta_1\\ln(x) + u$", "$\\Delta y = (\\beta_1/100)\\\\%\\Delta x$"],
+      ["Log-level", "$\\ln(y) = \\beta_0 + \\beta_1 x + u$", "$\\\\%\\Delta y = (100\\beta_1)\\Delta x$"],
+      ["Log-log", "$\\ln(y) = \\beta_0 + \\beta_1\\ln(x) + u$", "$\\\\%\\Delta y = \\beta_1\\\\%\\Delta x$"]
     ]
   }}
 />
@@ -866,7 +867,7 @@ $$
 
 If we want to have an idea of the precision of the estimate _(easily done by substituting values)_ we can:
 - rewrite  $\beta_0 = \theta_0 - \beta_1 c_1 - ... \beta_k c_k$
-- substitute in to obtain: $y = \theta_0 + \beta_1 (x_1 - c_1) + ... + \beta_k (x_k - c_k) + \mu
+- substitute in to obtain: $y = \theta_0 + \beta_1 (x_1 - c_1) + ... + \beta_k (x_k - c_k) + \mu$
 - regress $y_i$ on $(x_{ij}-c_{ij})$ and the intercept will gie the predicted value and its standard error $\implies$ the minum standard error is obtained when the $c$ equal the means of the $x$.
 
 ---
@@ -887,7 +888,7 @@ This can be interprete as an _incercept shift_:
 - if $D= 0 \implies y = \beta_ 0 + \beta_1 x_1 + \mu \quad $ _(male, BASE GROUP)_
 - if $D = 1 \implies y = (\beta_0 + \delta_0) + \beta_1 x_1 + \mu \quad$ _(female)_ 
 
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/dummy.png)
 </div>
 ---
@@ -897,7 +898,7 @@ This can be interprete as an _incercept shift_:
 Any categorial variable can be turned into a set of dummy variables. Because the base group is represented by the intercept, if there are $n$ categories there should be $n-1$ dummy variables.
 
 _Note that we can model interaction between dummies to divide in subgroups and between dummies with continuous variables $x$ to model a change in slope._
-<div align = "center">
+<div align="center">
 ![Dummy Vars](/images/notes/econometrics/dummy-2.png)
 </div>
 
@@ -976,7 +977,7 @@ $$
 
 Recall that the assumption of _homoskedasticity_ implied that, _conditional on the explanatory variables_, the <b>variance of the unobserved error $\mu$ was costant</b>. <br/>If this is not true, then the variance is different for different values of $x$ and errors are said to be <b>heteroskedastic</b>.
 
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/heterosk.png)
 </div>
 
@@ -1040,8 +1041,7 @@ With heteroskedasticity, a valid _(consistent)_ estimator of $\operatorname{Var}
 $$
 \widehat{\operatorname{Var}}(b_j)
 =
-\frac{\sum_{i=1}^{n} r_{ij}^{\,2}\hat{u}_i^{\,2}}
-{\left(SSR_j\right)^2}
+\frac{\sum_{i=1}^{n} r_{ij}^{\,2}\hat{u}_i^{\,2}}{\left(SSR_j\right)^2}
 $$
 
 where:
@@ -1279,13 +1279,13 @@ Instead of adding functions of the $x$ directly, we add and test functions on $\
 - test: $H_0 : \delta_1 = \delta_2 = 0$
 - a significant $F$-test suggests that the <b>model is not correctly specified</b> _(using $F \sim F_{2, n-k-3}$ or $LM\sim X^2_k$)
 
-What the test does: the RESET adds nonlinear (and/or interaction) functions of the fitted values `\hat y` to the regression to detect whether important non-linearities or omitted transformations are missing from the specified model form. Under the null hypothesis the added coefficients (here `\delta_1`, `\delta_2`) are zero, so the restricted model _(original regression)_ is OK with respect to them.
+What the test does: the RESET adds nonlinear (and/or interaction) functions of the fitted values $\hat y$ to the regression to detect whether important non-linearities or omitted transformations are missing from the specified model form. Under the null hypothesis the added coefficients (here $\delta_1$, $\delta_2$) are zero, so the restricted model _(original regression)_ is OK with respect to them.
 
 How to read the F-statistic:
 - Degrees of freedom: numerator $q =$ number of added terms (2 here); denominator = $n - K - q$, where $K$ is the number of parameters estimated in the original model _(including the intercept)._ The test compares the restricted SSR to the unrestricted SSR.
 - Decision rule: compute the F-statistic and either compare it to the critical value from $F_{q, n-K-q}$ at the chosen $\alpha$ or use the p-value. If $F > F_{crit}$or $p < \alpha$, reject $H_0$ and conclude there is evidence the model is misspecified.
 
-Practical interpretation and next steps: a significant RESET does not tell you which specific variable or transformation is missing — only that the current functional form is likely inadequate. After rejection, examine residual plots, try theory-driven transformations (logs, polynomials, interactions), include specific nonlinear terms of `x` (rather than `\hat y` powers alone), or run targeted specification tests. If the RESET is not significant you have no evidence (from this test) of the particular misspecifications it detects, but this is not proof the model is correct.
+Practical interpretation and next steps: a significant RESET does not tell you which specific variable or transformation is missing — only that the current functional form is likely inadequate. After rejection, examine residual plots, try theory-driven transformations (logs, polynomials, interactions), include specific nonlinear terms of $x$ (rather than $\hat y$ powers alone), or run targeted specification tests. If the RESET is not significant you have no evidence (from this test) of the particular misspecifications it detects, but this is not proof the model is correct.
 
 <br/>
 <b>Proxy Variables</b>
@@ -1378,7 +1378,8 @@ This implies that $x_1$ is correlated with the error so the estimate is biased:
 
 $$
 \lim_{n \to \infty} (b_1) = \beta_1 + \frac{\text{Cov}(x_1, \mu -\beta_1 e_1)}{\text{Var}(x_1)} = \\
-\\ = \beta_1 + frac{\beta_1 \sigma_e^2}{\sigma_x^2 + \sigma_e^2} = \beta_1 + frac{\beta_1 \sigma_{x^*}^2}{\sigma_x^2 + \sigma_e^2}$
+\\ = \beta_1 + \frac{\beta_1 \sigma_e^2}{\sigma_x^2 + \sigma_e^2} = \beta_1 + \frac{\beta_1 \sigma_{x^*}^2}{\sigma_x^2 + \sigma_e^2}
+$$
 
 _Note that the multiplicative error is $< 1$ so the estimate is biased toward zero (attenuatoin bias)_.
 ---
@@ -1508,7 +1509,7 @@ Under TS.1 to TS.5 (<b>Gauss-Markov Assumptions</b>) the OLS variances in the ti
 - the estimator of $\sigma^2$ is the same 
 - OLS is BLUE.
 
-With the additional inference (TS.6) of <b>Normality</b> (errors are independent of $X$ and are <b>independently and identically distributed as Normal</b> $\mu_t \sim N(0, \sigma^2$)):
+With the additional inference (TS.6) of <b>Normality</b> (errors are independent of $X$ and are <b>independently and identically distributed as Normal</b> $\mu_t \sim N(0, \sigma^2)$):
 - inference is the same as before.
 <br/>
 ---
@@ -1544,7 +1545,7 @@ With the additional inference (TS.6) of <b>Normality</b> (errors are independent
       ],
       [
         "No serial-correlation assumption in cross-sectional baseline",
-        "TS.5: No serial correlation; $\\operatorname{Cor}(u_t, u_s \\mid X) = 0\\ \\text{for}\\ t \\neq s$"
+        "TS.5: No serial correlation; $\\operatorname{Cor}(u_t, u_s \\mid X) = 0\\quad\\text{for}\\quad t \\neq s$"
       ],
       [
         "MLR.6: Normality",
@@ -1586,7 +1587,7 @@ Often time-series data has some <b>periodicity</b>, in this case there are two m
 - <b>Pooled cross sectional data </b> refer to data on individuals and periods where individuals cannot be followed explicitily over time _(independent sampled observatoins with knowledge about the time dimension)_ 
 - <b>Panel data</b> follow the same cross-sectional units over time.
 
-<div align = "center">
+<div align="center">
 ![Population Model](/images/notes/econometrics/cross-sections-panel.png)
 </div>
 
@@ -1798,7 +1799,7 @@ So if the error term contains variables _(i.e. if the error term is correlated w
 - pull the variable out of the error term including more relevant regressors 
 - _in case of panel data,_ assume that the variable is costant over time.
 
-We consider then an example of regression with endogeneity problems: i.e. $\operatorname{Cov}(x, \mu) \neq = 0$:
+We consider then an example of regression with endogeneity problems: i.e. $\operatorname{Cov}(x, \mu) \neq 0$:
 
 $$
 \log{\text{wage}_i} = \beta_0 + \beta_\ \text{educ}_i + \mu_i 
@@ -1819,9 +1820,9 @@ In the previous example:
 
 1. <b>First Stage</b>: $\operatorname{Cov}(Z,X) \neq 0$ _($Z$ must be correlated with $X$)_ 
 2. <b>Independence</b>: $\operatorname{Cov}(Z,\mu) = 0$ _(the instrument must be endogenous)_ 
-3. <b>Exclusion restriction</b>: Z can affect the outcome only by changing $X4
+3. <b>Exclusion restriction</b>: Z can affect the outcome only by changing $X$
 
-<div align = "center">
+<div align="center">
 ![Instrumental Variable](/images/notes/econometrics/iv.png)
 </div>
 
@@ -1850,7 +1851,7 @@ $$
 \log(\text{wage}) = \pi_{20} + \pi_{21}\text{Q4} + v_2
 $$
 
-<div align = "center">
+<div align="center">
 ![Instrumental Variable](/images/notes/econometrics/1980.png)
 </div>
 
@@ -1911,7 +1912,7 @@ $$
 From this regression with obtain the <b>predicted values</b>, denote as $\widehat{\text{educ}}$.
 
 $$
-\widehat{\text{educ}} = \hat{\pi}{10} + \hat{\pi}{11} \cdot \text{Quarter3} + \hat{\pi}{12} \cdot \text{Quarter4} + \hat{\pi}{13} \cdot X
+\widehat{\text{educ}} = \hat{\pi}_{10} + \hat{\pi}_{11} \cdot \text{Quarter3} + \hat{\pi}_{12} \cdot \text{Quarter4} + \hat{\pi}_{13} \cdot X
 
 $$
 
@@ -1936,7 +1937,7 @@ Then the coefficient $b_1$ is the <b>IV estimate</b> of the causal effect of edu
 _Intuition: the second stage uses this predicted $\widehat{\text{educ}}$ to estimate the causal effect of education on wages ensuring exogeinity_.
 
 
-<div align = "center">
+<div align="center">
 ![Instrumental Variable](/images/notes/econometrics/1991.png)
 </div>
 
@@ -1977,7 +1978,7 @@ So the IV case differs from the OLS only in the $R^2$ from regressing $x$ on $z$
 <br/>
 <b>The Effect of poor instruments</b>
 
-If the assumption $\operatorname{Cov}(z, x) \neq = 0$ <b>is false</b> _($z,x$ are only weakly correlated )_ the IV estimator will be <b>inconsistent too</b>. This happens because the the numerator of the IV estimator depends on the correlation between $z,x$. 
+If the assumption $\operatorname{Cov}(z, x) \neq 0$ <b>is false</b> _($z,x$ are only weakly correlated )_ the IV estimator will be <b>inconsistent too</b>. This happens because the the numerator of the IV estimator depends on the correlation between $z,x$. 
 
 We can indeed compare the <b>asymptotic bias</b> in OLS, IV as:
 - <b>IV</b>: $\lim b_1 = \beta_1 + \frac{\text{Corr}(z, \mu \sigma_{\mu})}{\text{Corr}(x, z)\sigma_x}$
@@ -2015,7 +2016,7 @@ The solution is a <b>random assignment of schools through lotteries</b> (due too
 
 We can still exploit the randomization of the offer $Z$ to extract the causal variation in attedance.
 
-<div align = "center">
+<div align="center">
 ![Instrumental Variable](/images/notes/econometrics/kipp.png)
 </div>
 
