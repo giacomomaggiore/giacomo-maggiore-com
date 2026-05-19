@@ -1925,7 +1925,7 @@ We then distinguish two different paradigms:
 - <b>weak sustainability</b>: all forms of capital are substitutes; it allows for the depletion of natural resources so long as such depletion is offset by an increase in other forms of capital 
 - <b>strong sustainability</b>: all forms of capital must be maintained intact independent of one another. Different forms of capital are _mainly complementary_.
 <br/>
-<b>Are we consuming too much</b> 
+<b>Are we consuming too much?</b> 
 
 We consider the discounted present value of the utility stream problem as:
 
@@ -1961,25 +1961,201 @@ Under some assumptions, we can consider <b>inclusive wealth</b> as a measure of 
 
 _However,_ the requirement to value investment at shadow prices introduces uncertainty since a shadow price is forward-looking and determined by current capital stocks and exogenous factors.
 
-To account for changing public natural capital values and evolving scarcities over time, we can capture the yearly relative price change (RPC) as:
+To account for changing public natural capital values _(and then changing willingness-to-pay for environmental services)_ we can define a simple annual relative price change (RPC):
 
 $$
-RPC = \eta (g_C - g_E)
+RPC = \eta\, (g_C - g_E)
 $$
 
-where $\eta$ is the elasticity of substitution (which can be identified from the income elasticity of willingness to pay) and $g_C, g_E$ are the growth rates of capital and the environment.
+- $\eta$ is the elasticity of substitution _(which can be tied to the income-elasticity of willingness-to-pay)_
+- $g_C$ is the growth rate of human-made capital/consumption
+- $g_E$ is the growth rate of the environmental good.
+ 
+_Intuition: if consumption grows faster than the environment ($g_C>g_E$) and goods are substitutable ($\eta>0$), the relative price (or shadow price) of environmental services tends to rise over time and RPC will be positive._
 
-We can then incorporate the RPC into the present value calculation as:
-
-$$
-PV = \int_0^T wtp(t) e^{-rt} dt = \int_0^T wtp(0)e^{RPC}e^{-rt}dt = wtp(0) \frac{1-e^{(-r-RPC)T}}{r- RPC}
-$$
-
-We can now show _"how much"_ this new calculation exceeds the default one with $RPC = 0$.
+If the time-0 willingness-to-pay for the environmental service is $wtp(0)$ and it evolves proportionally with RPC, we can write
 
 $$
-\Delta PV = ( \frac{1-e^{(-r-RPC)T}}{r- RPC}) ( \frac{1-e^{-rT}}{r})^{-1} -1
+wtp(t) = wtp(0)\,e^{RPC\,t}.
 $$
 
+The present value over a horizon $T$ using a discount rate $r$ is then
 
-DASHBOARD APPROACHES
+$$
+PV 
+= \int_0^T wtp(t)\,e^{-r t}\,dt 
+= wtp(0)\int_0^T e^{(RPC - r) t}\,dt
+= wtp(0)\frac{1 - e^{-(r - RPC)T}}{r - RPC},
+$$
+
+provided $r\neq RPC$. The expression is simply the integral of an exponential growth/decay factor; when $RPC>0$ the numerator decays more slowly, raising the present value compared to the case $RPC=0$.
+
+If $r = RPC$ the integral simplifies to
+
+$$
+PV = wtp(0)\int_0^T dt = wtp(0)\,T,
+$$
+which is the limiting case where growth of willingness-to-pay exactly offsets discounting.
+
+We can compare this to the baseline case with no RPC (i.e. $RPC=0$). The baseline present value is
+
+$$
+PV_{0} = wtp(0)\frac{1 - e^{-rT}}{r}.
+$$
+
+Define the relative change in present value as
+
+$$
+\Delta PV = \frac{PV - PV_{0}}{PV_{0}} 
+= \frac{\dfrac{1 - e^{-(r - RPC)T}}{r - RPC}}{\dfrac{1 - e^{-rT}}{r}} - 1.
+$$
+
+This ratio isolates how much larger (or smaller) the present value becomes when we account for changing relative prices of environmental goods.
+
+---
+<br/>
+<b>Numerical example</b>
+
+Consider $\eta=0.5$, $g_C=2\%$, $g_E=-1\% \implies RPC=0.5\times(0.02-(-0.01))=0.015$
+
+So we have $RPC \approx$ 1.5%/yr. With a discount rate $r=3\%$ and horizon $T=50$ years,
+
+$$
+r - RPC = 0.03 - 0.015 = 0.015,
+$$
+so
+
+$$
+PV \propto \frac{1 - e^{-0.015\times 50}}{0.015} \approx 35.2,
+\quad
+PV_{0} \propto \frac{1 - e^{-0.03\times 50}}{0.03} \approx 25.9,
+$$
+giving
+
+$$
+\Delta PV \approx \frac{35.2}{25.9} - 1 \approx 0.36 \quad(\text{about }36\%\,\text{increase}).
+$$
+
+_Intuition: considering a rising shadow price of environmental services (positive RPC) can  increase the estimated present value of ecosystem benefits.
+
+---
+<br/>
+<b>Dashboard approaches</b>
+
+The most famous dashboard indicator is the <b>UN Sustainable Development 17 Goals (SDG) framework</b>, containing 231 indicator, also known as the _"world'd most important to-do list"._ 
+
+<a href="https://sdgs.un.org/goals" target="_blank">The 17 Goals - United Nations Website</a> 
+
+A similar framework is the <b>MONET 30 indicator system</b>, used in Switzerland to provide a picture about sustainability in the country through more tham 100 indicators.
+
+<a href="https://www.bfs.admin.ch/bfs/it/home/statistiche/sviluppo-sostenibile/monet-2030.html" target="_blank">The MONET 30 system - Website </a>.
+
+---
+<br/>
+<b>Composite Index</b> 
+
+Key problems for building a composite index include:
+- the choice of appropriate indicators and their measurement 
+- normalization and data trasformation 
+- weighting and aggregation 
+
+<br/>
+<b>Human Development Index (HDI)</b> 
+
+The index is simply the arirthmetic mean of:
+- the life epxectancy index (LEI): life expectancy at birth
+- education index (EI): mean and expected years of schooling
+- Indome index (II): the logarithm of GNI per capita 
+
+$$
+\text{HDI} = \frac{LEI + EI + II}{3}
+$$
+
+_Note that this index allows to easily compensate poor performance in one area with anoter_.
+
+To address this criticism, the HDI is computed, since 2001, using the <b>geometric mean</b> as:
+
+$$
+\text{HDI} = \sqrt[3]{LEI \times EI \times II}
+$$
+
+<a href="https://hdr.undp.org/data-center/human-development-index#/indicies/HDI" target="_blank">Do you wanto to track your country's performance? _Just use the tool!_</a>
+
+
+In general, if we want to measure strong/weak sustainability and we have to combine different inicators, we have multiple approach to determine and combine these three index _(also depending on how much we want the substitution/compensation to be strong)_ 
+
+- <b>Strong compensation</b>: arithmetic mean ($\eta = 0$)
+$$
+\sum_i^N \alpha_i I_i
+$$
+- <b>Imperfect compensation</b>: geometric mean ($\eta = 1$)
+$$
+\prod_i^N I_i^{\alpha_i}
+$$
+- <b>Imperfect/minimum compensation</b>: harmonic mean ($\eta = 2$)
+$$
+\frac{1}{\sum_i^N \alpha \frac{1}{I_i}}
+$$
+- <b>Minimum compensation</b>:  min ($\eta = \infty$)
+
+
+$$
+\min_i (I_i ... I_N)
+$$
+
+The <b>generalized mean </b> can then be defines as:
+
+$$
+\text{GM}(\eta) = \Big ( \sum_i^N \alpha_i I_i^{1- \eta} \Big)^{\frac{1}{1-\eta}}
+$$
+
+Sachs et al. (2022) computed SDG indices for the UN sustainable goals based on this method using the <b>aritmetic mean</b>, so the SDG index can be considered an assessment of SDG performance allowing for substitutability.
+
+<div align = "center">
+![SDG](/images/notes/sust-econ/sdg.png)
+</div>
+
+<b>Generalized mean and conceptualising substitutability</b>
+
+Recall that the generalized mean is 
+
+$$
+\text{GM}(\eta) = \Big ( \sum_i^N \alpha_i I_i^{1- \eta} \Big)^{\frac{1}{1-\eta}}
+
+$$
+
+with any value of $\eta$ larger than zero indicates <b>higher completarity/less substitutability</b>, with $\eta \to \infty$ indicase perfect substitutes.
+
+This has the same functional form of the standard <b>Constant Elasticity of Substitution (CES) utility function</b>, that, for two goods, is defined as:
+
+$$
+U(x, y) = (\alpha x^{1-\eta}+ (1 - \alpha)y^{1-\eta})^{\frac{1}{1-\eta}}
+$$
+
+So, if we can estimate the preference parameter of this utility function for individuals, we can also understand their preference regarding the index aggregation of the OHI.
+
+Disque et al. (2025) ran a large choice experiment (>6,000 respondents across 12 coastal countries). Participants repeatedly allocated scores between randomly drawn goal pairs under varying budget lines (exogenous changes in relative prices), which identifies the preference weight $\alpha$ and the substitution parameter $\eta$. 
+
+<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5903991" target="_blank">More about the research project can be found here.</a>.
+
+From the scores, an estimation of the corresponding CES demand function can be done with:
+$$
+p_x \pi_x^t = \frac{\left(\dfrac{\alpha_{ng}}{1-\alpha_{ng}}\right)^{\tfrac{1}{\eta_{ng}}}}
+{\left(\dfrac{p_y^t}{p_x^t}\right)^{\tfrac{1-\eta_{ng}}{\eta_{ng}}}
++\left(\dfrac{\alpha_{ng}}{1-\alpha_{ng}}\right)^{\tfrac{1}{\eta_{ng}}}}
++\varepsilon_{ng}^t
+$$
+where $\alpha_{ng}, \eta_{ng}$ are generated using a non-linear maximum likelihood model.
+
+---
+<br/>
+
+<b>Does it still make sense?</b> 
+
+Sustainability has multiple dimensions. Just for the SDGg, we have more tham 300 indicators. _Does it make sense to compress both into one metric?_ 
+
+The Stiglitz-Sen-Fitoussi commission provides the following answer:
+
+<Quote>
+“When driving a car, a meter that added up in one single number the current speed of the vehicle and the remaining level of gasoline would not be of any help to the driver. Both pieces of information are critical and need to be displayed in distinct, clearly visible areas of the dashboard.
+</Quote>
