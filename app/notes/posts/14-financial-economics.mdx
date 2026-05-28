@@ -4,6 +4,7 @@ publishedAt: '2026-03-01'
 summary: ''
 ---
 
+
 ### <b>Index</b>
 
 - [Introduction](#0.1)
@@ -18,7 +19,7 @@ summary: ''
 - [Risk sharing and insurance](#7)
 - [Mean variance analysis](#8)
 - [CAPM](#9)
-- [Risk sharing and asset prices in a market equilibrium](#10)
+- [Risk sharing and asset prices in a market equilibrium (CCAPM)](#10)
 
 Suggested readings:
 
@@ -46,14 +47,14 @@ Moreover, Fama argued that any test of EMH is actually testing two things at onc
 - That the market is efficient.
 - That the model is a correct way to measure risk.
 
-<a href="https://it.wikipedia.org/wiki/Robert_Shiller" target="_blank">Bob Shiller</a>, on the other hand, published in 1981 the paper <a href="https://www.aeaweb.org/aer/top20/71.3.421-436.pdf" target="_blank">Do stock prices move too much to be justified by subsequent changed in dividends?</a> that, answering _Yes!_ to the question, claims that the EMH was one of the _remarkable errors_ in the history of economics.
+<a href="https://it.wikipedia.org/wiki/Robert_Shiller" target="_blank">Bob Shiller</a>, on the other hand, published in 1981 the paper <a href="https://www.aeaweb.org/aer/top20/71.3.421-436.pdf" target="_blank">Do stock prices move too much to be justified by subsequent changes in dividends?</a> that, answering _Yes!_ to the question, claims that the EMH was one of the _remarkable errors_ in the history of economics.
 
-Regarding Fama's theories, Shiller opinion was something like...
+Regarding Fama's theories, Shiller's opinion was something like...
 - _I think that maybe he has a cognitive dissonance_
 - _It's like being a Catholic priest and then discovering that God doesn't exist [...], you can't deal with that, you've got to somehow rationalise it._
 
 In particular, Shiller’s empirical result is that stock prices move way more than the dividends.<br/>
-If a stock price is truly the _"discounted value of all future dividends",_ it should be stable because dividends don't change that much, but Shiller showed the opposite using the <b>Cyclically Adjusted Price-to-Earnings</b>(CAPE) ratio.
+If a stock price is truly the _"discounted value of all future dividends",_ it should be stable because dividends don't change that much, but Shiller showed the opposite using the <b>Cyclically Adjusted Price-to-Earnings</b> (CAPE) ratio.
 
 In the following years, empirical data <b>gave credit to Shiller's critic.</b>
 
@@ -78,7 +79,7 @@ _So, was Fama simply wrong?_
 - Additionally, according to Shiller markets are still the best tools we have for aggregating information.
 
 To sum up, the Fama-Shiller case is typical from a social science and economics: two theories can contradict each other and <b>still retain intellectual value</b>.
-<br/>_"All Models are wrong, but some are usesul"_ applies perfectly here: Fama gave an excellent structure to think the financial markets and, even if its work is imperfect, it's yet a solid starting point.
+<br/>_"All Models are wrong, but some are useful"_ applies perfectly here: Fama gave an excellent structure to think the financial markets and, even if his work is imperfect, it's yet a solid starting point.
 
 ---
 
@@ -88,7 +89,7 @@ A <b>financial system</b> is a set of institutions and markets that have the pri
 
 A financial system allows to match different financial needs of different agents in _two dimensions_:
 - <b>Time</b> (borrow and save):
-    - wish of continuousu consumption vs discrete income stream 
+    - wish of continuous consumption vs discrete income stream 
     - smooth consumption of time/the life-cycle
 - <b>Risk</b> (diversify, insure, hedge):
     - smooth consumption across state of nature and possible market scenarios.
@@ -101,7 +102,7 @@ A financial system allows to match different financial needs of different agents
 
 _(Note that the distinction between financial and non-financial asset is not binary and well defined: for example, "is gold a financial or physical/real asset?")_
 
-Financial assets can be caterogized as follows:
+Financial assets can be categorized as follows:
 - <b>Riskless assets</b>: assets whose future values can be known with certainty _(a government bond that yields 100 CHF in 5 years, assuming no default)_
 - <b>Risky assets</b>: assets whose future value may depend on some events _(insurance, stocks, options)_
 - <b>Derivatives</b> are risky assets whose future values depend on the price of other assets.
@@ -139,7 +140,7 @@ $$
 CV_t(x_0) = \prod_{i = 1}^t (1 +r_i) \cdot x_0
 $$
 
-The <b>discrete sport interest rate</b> $\bar r_t$, for a zerou coupon bond with maturity $t$ such that:
+The <b>discrete spot interest rate</b> $\bar r_t$, for a zero coupon bond with maturity $t$ such that:
 
 $$
 p_{0,t} = \frac{p_{0,0}}{(1 + \bar r_t)^t}
@@ -184,7 +185,7 @@ $$
 p(t) = p(0)e^{-\int^t_0 r(\tau)d \tau} = e^{-\int_0^t r(\tau) d\tau}
 $$
 
-This interest rate $r(\tau)$ is called _"instantanenous"_ since it represents the evolution of the bond's price process for a infinitesimally small period of time $dt$.
+This interest rate $r(\tau)$ is called _"instantaneous"_ since it represents the evolution of the bond's price process for an infinitesimally small period of time $dt$.
 
 Moreover, in continuous time we can define:
 
@@ -192,7 +193,7 @@ $$
 PV(x) = \int_0^{\infty} e^ {-\int_0^t r(\tau) d \tau} x(t)dt
 $$
 
-The <b>continuously compounended forward interest rate </b> between $t_1, t_2$, denoted by $\bar r_{t_1}(t_2)$ is defined as:
+The <b>continuously compounded forward interest rate </b> between $t_1, t_2$, denoted by $\bar r_{t_1}(t_2)$ is defined as:
 
 $$
 p(t_2) = p(t_1) e^{-(t_2 - t_1)\bar r_{t_1}(t_2)}
@@ -233,10 +234,10 @@ where the second formulation is needed if we want risk to be taken into account,
 - <b>Forward contracts</b>:  _OBLIGATION_ to purchase _(long position)_ or sell _(short position)_ the underlying at a specified future price at a specified delivery date.
 - <b>Options contracts</b>: _RIGHT_ to purchase or sell a specified amount of the underlying at a specified _exercise price_ at or before a specified _expiration date_.
 
-Options offer an advantage: the transaction does not have to occur if it not profitable for the owner of the option. This advantage comes at a price:
+Options offer an advantage: the transaction does not have to occur if it is not profitable for the owner of the option. This advantage comes at a price:
 - Forwards are entered at _NO cost_
-- Options are purchased or sold at positive price that the represents the _cost of the right_ to buy/sell.
-- Selling (or _writing_) an option implies an obligation (if the option is exericed, the seller must sell or buy the stock and incurs a loss) $\to$ the seller receives a compensation.
+- Options are purchased or sold at positive price that represents the _cost of the right_ to buy/sell.
+- Selling (or _writing_) an option implies an obligation (if the option is exercised, the seller must sell or buy the stock and incurs a loss) $\to$ the seller receives a compensation.
 
 Derivatives can help shaping the risk exposure:
 - <b>Hedging</b> means insuring against market price volatility
@@ -257,12 +258,12 @@ Profits at maturity $T$ are:
 - Payoff long position $ = S_t - X$
 - Payoff short position $ = X - S_t$
 
-For this reason, forwards are great for <b>speculation</b>. At a goiven time $t$, an unerlying has a price $S_t$, with <b>no clear evolution</b> for the future. If a speculator expectes:
+For this reason, forwards are great for <b>speculation</b>. At a given time $t$, an underlying has a price $S_t$, with <b>no clear evolution</b> for the future. If a speculator expects:
 - $S_T > S_t \implies$ long forward with $X < S_T$
 - $S_T < S_t \implies$ short forward with $X > S_T$
 
 On the other hand, forwards are used in hedging to <b>avoid risks</b>.<br/>
-Suppore, _for example_, that Giacomo's GmbH needs to sell an activity (_example: some running shoes_) at maturity $T$, with value $S_T$ at given time $T$.
+Suppose, _for example_, that Giacomo's GmbH needs to sell an activity (_example: some running shoes_) at maturity $T$, with value $S_T$ at given time $T$.
 <br/>Giacomo faces then a risk management problem: how can he insure against price fluctuations of the running shoes?
 
 Solution: use the forward contract to construct a <b>hedged portfolio</b> that fixes the profits _from the future sale_ at a desired level $\pi^*$:
@@ -279,7 +280,7 @@ _(The opposite - long forward contract - applies if you need to buy and you want
 
 <b>Options Payoff</b>
 
-An options is a right to purchase/sell a certain amount of the underlying at/before future expiration $T$ at exercise price _(strike)_ $X$.<br/>Options differ by:
+An option is a right to purchase/sell a certain amount of the underlying at/before future expiration $T$ at exercise price _(strike)_ $X$.<br/>Options differ by:
 - Position
     - <b>Long</b>: option holder _(right to exercise)_ 
     - <b>Short</b>: option writer _(obligation to facilitate the option's exercise)_ 
@@ -291,7 +292,7 @@ An options is a right to purchase/sell a certain amount of the underlying at/bef
     - <b>European option</b>: exercise only at expiration.
 
 Consider now:
-- $X$ exericse price of an option 
+- $X$ exercise price of an option 
 - $S_T$ market price of the underlying at expiration $T$
 - <b>Premium</b>: purchase price of an option _(market value)_:
     - $C_0$: premium for a <b>call</b> at $t = 0$
@@ -348,14 +349,14 @@ Profits are then given by:
 <br/>
 <b>Option Strategies</b>
 
-If the agent as an expectaction about the price development of the underlying:
+If the agent has an expectation about the price development of the underlying:
 - <b>Bullish strategies</b>: generate a profit when the underlying's price increases
-- <b>Bearich strategies</b>: generate a profit when the underlying's price decreases
+- <b>Bearish strategies</b>: generate a profit when the underlying's price decreases
 - <b>Non-directional strategies</b>: generate a profit depending on the underlying's actual volatility.
 
 But... _what are the reasons for trading in options rather than trading in the underlying directly?_ 
-- <b>Leverage effect</b>: option values respond more tham proportionately to changes in the underlying's value.
-- <b>Tailoring risk exposure of investment</b>: optinos can be less risky due to limitation of the downside risk.
+- <b>Leverage effect</b>: option values respond more than proportionately to changes in the underlying's value.
+- <b>Tailoring risk exposure of investment</b>: options can be less risky due to limitation of the downside risk.
 - <b>Portfolio insurance</b>: it can be insured by long on a put for that stock.
 <br/>
 ---
@@ -379,8 +380,8 @@ $$\quad \implies $$long put on the stock (exercise price $X$ in $T$ with premium
 
 <b>Option strategies: spreads (I)</b>
 
-Consider an agent that wants to take advange of higher_ future price of the underlying.
-<br/>He could buy the stock, buy a call or short a put, or as an alternative, construct a portfolio that allows to _reduce the risk_ at the cost of _givin up part of the profits:
+Consider an agent that wants to take advantage of higher future price of the underlying.
+<br/>He could buy the stock, buy a call or short a put, or as an alternative, construct a portfolio that allows to _reduce the risk_ at the cost of _giving up part of the profits:
 
 This is called <b>Bull spread strategy</b>:
 - 1 long call with strike $X_1$ and premium $C_{0,1}$
@@ -415,7 +416,7 @@ Consider an agent that expect _large move_ in the stock's price but he's uncerta
 
 <b>Straddle Strategy</b>:
 - 1 long call with strike $X$ and premium $C_0$
-- 1 long put woth with strike $X$ and premium $C_0$
+- 1 long put with strike $X$ and premium $C_0$
 
 Moreover, if he thinks:
 - a stronger <b>bullish</b> move is expected: $\implies$ buy 2 calls and 1 put (<b>long strap</b>)
@@ -439,8 +440,8 @@ We also use the following notation:
 
 An <b>Arbitrage Opportunity</b> is defined as a <b>financial strategy</b> that yields a (sure) cash flow $A_0 \ge 0$ at time $0$ and a cash-flow $A_T \ge 0$ at time $T$ and there is at least one stat of the word where one inequality is strict.
 
-- $A_0 > 0, A_T \ge$ almost surely is an abirtrage 
-- $A_0 \ge 0, A_t \ge 0$ almot surely with $\text{Prob}[A_T > 0]>0$ is an arbitrage
+- $A_0 > 0, A_T \ge 0$ almost surely is an arbitrage 
+- $A_0 \ge 0, A_T \ge 0$ almost surely with $\text{Prob}[A_T > 0]>0$ is an arbitrage
 
 In this chapter, we assume that the market is arbitrage-free _(the market clears out arbitrage opportunities)_.
 
@@ -455,7 +456,7 @@ Consider two portfolios:
     - Price in $t = 0$: $ [C_0 + PV(X)]
     - Value in $T$: $X + \max [S_t. X, 0] = \max [S_t, X]
 
-- Portoflio $B$: $1$ stock $S_0$
+- Portfolio $B$: $1$ stock $S_0$
     - Price in $t = 0: S_0$
     - Value in $T$: $S_T$
 <br/>
@@ -467,7 +468,7 @@ $$
 
 and $C_0 \ge 0$ since the call is an option.
 
-- Lower Boud:  $C_0 \max [S_0 - PV(X), 0]$ where $PV$ is the present value operator. 
+- Lower Bound:  $C_0 \ge \max [S_0 - PV(X), 0]$ where $PV$ is the present value operator. 
 
 
 <br/>
@@ -475,7 +476,7 @@ and $C_0 \ge 0$ since the call is an option.
 <br/>
 <b>Price Bounds on put options (European, no dividend)</b>
 <br/>
-- Upper boud: $P_0 \le PV(X)$
+- Upper bound: $P_0 \le PV(X)$
 - Lower Bound: $P_0 \ge \max [PV(X) - S_0, 0]$
 
 _Proof:_<br/>
@@ -483,7 +484,7 @@ Consider two portfolios:
 - Portfoio $C$: buy $1$ put + $1$ stock
     - Price in  $t = 0$: $C_0 + S_0$
     - Value in $T$: $\max(X - S_T, 0) + S_T = \max [S_t, X$] 
-- Portfolio $D$: cash $PV(X)
+- Portfolio $D$: cash $PV(X)$
     - Price in $t = 0$: $PV(X)$ 
     - Value  in $T$: $X$ 
 
@@ -512,7 +513,7 @@ the values of the two portfolio are equal in $t =T$, therefore they have to be e
 
 ---
 <br/>
-<b>Option Valutation</b>
+<b>Option Valuation</b>
 
 Determinants of the value _(price/premium)_ of a call option $C_0$ _(European, no dividend)_:
 - stock price $S_0$ (+), exercise price $K$ (-)
@@ -544,9 +545,16 @@ $$
 \alpha = \frac{S_1^u - X}{S_1^u - S_1^d}, \quad \beta = \frac{(S_1^u - X)S_1^d}{(1 + r_f)(S_1^d - S_1^u)}
 $$
 
-In absence of arbitrage, we then conclude: $C_0 = \alpha S_0 + \beta$.
+In absence of arbitrage, since the price of the replicating strategy and the option must be the same $\forall t$, we can conclude that: 
+$$C_0 = \alpha S_0 + \beta
+$$
 
-We can now apply the same reasoning in <b>continuous-time</b>. Considering a give time range $T$, we split the time range in _(infinitely many)_ periods $dt$ and we assume that in any period the stock price is multiplied by either $(1 +\alpha dt), (1 + \beta dt)$.
+_Intuition: in case of arbitrage, given the put-call parity formula $\text{C} + PV(K) = \text{P} + \text{S}$ we can construct an arbitrage opportunity by shorting the "cheapest" side and going long on the "expensive" one._
+
+
+Note that the same reasoning _(with different derivations)_ can be applied to any payoff.
+
+We can now apply the same reasoning in <b>continuous-time</b>. <br/>Considering a given time range $T$, we split the time range in _(infinitely many)_ periods $dt$ and we assume that in any period the stock price is multiplied by either $(1 +\alpha dt), (1 + \beta dt)$.
 <br/>We assume the distribution of the stock price at time $T$ is <b>log-normal</b>. <br/> Applying _(infinitely many times)_ the two state valuation model makes it possible to compute the value of the call.
 
 ---
@@ -576,10 +584,10 @@ $$
 - $d_2 = d_1- \sigma \sqrt(T)$
 
 - $N(d)$ probability that a random draw from a standard normal distribution will be less than $d$
-- $r$: risk free interest rate, _(annualized continuously compounded rate with same maurity as the expiration o the option, note that is different from $r_f$)_,
+- $r$: risk free interest rate, _(annualized continuously compounded rate with same maturity as the expiration of the option, note that is different from $r_f$)_,
 - $\sigma$: standard deviation of the annualized continuously compounded rate of return of the stock.
 
-_Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that the call option will expisre in-the-money ($X < S_T$)_
+_Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that the call option will expire in-the-money ($X < S_T$)_
 
 <a href="https://www.youtube.com/watch?v=A5w-dEgIU1M" target="_blank">The Trillion Dollar Equation [VIDEO - Veritasium]</a>
 
@@ -589,7 +597,7 @@ _Intuition: $N(d)$ can be interpreted as the risk-adjusted probabilities that th
 
 ## <a id="3"><b>3. Pricing by arbitrage</b></a>
 
-We consider two periods: _ex-ante, ex-post_, denoted by $t = 0,1$ and $\Omega$ contingent states at time $t = 1: \omega \in {1, ... \Omega}$.
+We consider two periods: _ex-ante, ex-post_, denoted by $t = 0,1$ and $\Omega$ contingent states at time $t = 1: \omega \in \{1, \ldots, \Omega\}$.
 <br/>There are $K$ assets available at time $t = 0: k \in {1, ... K}$.
 - $a_k^{\omega}$ is the value of asset $k$ in state $\omega$ at time $t = 1$
 - we denote $p_k$ the price of asset $k$ at time $t = 0$ 
@@ -597,7 +605,7 @@ We consider two periods: _ex-ante, ex-post_, denoted by $t = 0,1$ and $\Omega$ c
 
 A <b>portfolio</b> $(z_k)$ is a vector of asset quantities: $z_k$ is the quantit of asset $k$ in the portfolio.
 - the price of portolio is: $\sum_k p_k z_k$
-- the value of the portfolio in state $w$ is: $\sum_k a_k{\omega} z_k$
+- the value of the portfolio in state $\omega$ is: $\sum_k a_k^{\omega} z_k$
 
 Given now a market with:
 
@@ -634,8 +642,8 @@ a_K^1 & \dots & a_K^\Omega
 $$
 
 We then introduce the followig definitions:
-- an asset is <b>risk-free</b> if $a_k^{\omega}$ is independent of $w$ 
-- an asset $k$ can be replicated by a subset of assets, indexed $i \in S$, if there exists a costant $(z_i)$ such that:
+- an asset is <b>risk-free</b> if $a_k^{\omega}$ is independent of $\omega$ 
+- an asset $k$ can be replicated by a subset of assets, indexed $i \in S$, if there exists a constant $(z_i)$ such that:
 
 $$
 a_k^{\omega} = \sum_{i \in S, i \neq k} z_i a_i^{w} \quad \forall w
@@ -643,18 +651,26 @@ $$
 
 _(in such cas the asset $k$ is called <b>redudant</b>)_.
 
-A market $(a_l^{\omega}, p_k)$ is <b>complete</b> if for any asset $b^{\omega}$ there exists a costant $(z_k)$ such that:
+A market $(a_k^{\omega}, p_k)$ is <b>complete</b> if for any asset $b^{\omega}$ there exists a constant $(z_k)$ such that:
 
 $$
 b^{\omega} = \sum_k z_k a_k^{\omega}
 $$
+
+In other words, the market is complete if the payoff matri has max rank:
+
+$$
+\text{Complete} \iff \text{Rank}(A) = n \iff \text{A} \neq 0
+$$
+
+where $n$ is the number of states.
 
 On the other hand, markets are <b>complete</b> when all revenue configurations are replicable through some portfolio.
 
 <b>Consequences of complete markets</b>:
 - there are at least as many assets at the states: $| \Omega| \le K$
 - a market is complete if and only if the payoff matrix $a$ ith dimension $(K \times \Omega)$ has rank $\Omega$.
-- if a marekt is complete with $K > \Omega$, there are $\Omega$ independent assets, then we can eliminate $K - \Omega$ assets which are linear combinations of the independent ones.
+- if a market is complete with $K > \Omega$, there are $\Omega$ independent assets, then we can eliminate $K - \Omega$ assets which are linear combinations of the independent ones.
 <br/>
 ---
 <br/>
@@ -669,8 +685,14 @@ at least one of these $\Omega + 1$ inequalities being strict.
 
 A market is <b>arbitrage free</b> if there is no arbitrage portfolio.
 
-A marekt $(a_k^{w}, p_k)$ without arbitrage opportunity satisfies the <b>Law of One Price:</b><br/>
+---
+<br/>
+<b>Law of One Price</b>
+
+A market $(a_k^{w}, p_k)$ without arbitrage opportunity satisfies the <b>Law of One Price:</b><br/>
 _If two assets $i,j$ satisfy $a_i^{\omega} = a_j^{\omega}$ for every state $\omega$, then the two assets have the same price $p_i = p_j$._
+
+<a href="https://www.investopedia.com/terms/l/law-one-price.asp" target="_blank">More on the law of one price [Investopedia]</a>.
 
 <b>Proof</b>
 
@@ -754,18 +776,18 @@ $$
 
 $$
 
-<b>All asset returns have the same-risk neutral expectation.</b>. _(This does not imply that all assets have the same returns expectactions according on physical probability)_.
+<b>All asset returns have the same-risk neutral expectation.</b> _(This does not imply that all assets have the same returns expectations according to physical probability)_.
 
 ---
 
 
-For any state $\omega_0$, the corresponding <b>Arrow-Debreu</b> security, denoted by $a_{\omega_0}^{\omega}% is the asset with values given, for all $\omega$, by:
+For any state $\omega_0$, the corresponding <b>Arrow-Debreu</b> security, denoted by $a_{\omega_0}^{\omega}$, is the asset with values given, for all $\omega$, by:
 
 $$
 a_{\omega_0}^{\omega} = 1 _{\omega = \omega_0}
 $$
 
-- If the market is arbitrage free and $q$ is a state-price vectoro, then the price of $a_{\omega_0}$ is $q_0$.
+- If the market is arbitrage free and $q$ is a state-price vector, then the price of $a_{\omega_0}$ is $q_{\omega_0}$.
 - A market that contains all Arrow-Debreu securities is complete.
 
 _Intuition: a contract that pays exactly $1$ if a specific state of the world and $0$ in every other possible scenario._
@@ -831,7 +853,7 @@ Some introductionary definitions for the following chapters:
   }}
 />
 
-We begin this chapter with a simple example about marketet equilibrium.
+We begin this chapter with a simple example about market equilibrium.
 
 Consider two agents $A,B$ and two-states of the world (ex-post) $w = 1,2$:
 - in state $ w = 1$, agents get income $w_A^1, w_B^1$
@@ -849,7 +871,7 @@ The no-trade situation corresponds to $c_A^1 = w_A^1, c_B^1 = w_B^1$ and $c_A^2 
 ![Feasible allocations](/images/notes/financial-econ/edgeworth.png)
 </div>
 
-In this chapter, we rely on the standard specification fro the <b>Expected Utility Theory</b>:
+In this chapter, we rely on the standard specification for the <b>Expected Utility Theory</b>:
 
 $$
 U_i(c_i^1,c_i^2) = \pi_1 u_i (c_i^1) + \pi_2 u_i (c_i^2)
@@ -864,7 +886,7 @@ where $\pi_1, \pi_2$ are the probability for scenario $w = 1,2$ and $u_i : \R_+ 
 ![Preferences](/images/notes/financial-econ/preferences-2.png)
 </div>
 
-An allocation is <b>Pareto-optimal</b> $\iff$ there is no alternative feasible allocation at which every individual in the economy is at least as well off and some individuals is strictly betteroff.
+An allocation is <b>Pareto-optimal</b> $\iff$ there is no alternative feasible allocation at which every individual in the economy is at least as well off and some individuals is strictly better off.
 
 _Graphically_, Pareto-optimal allocations are the ones where the indifference curves are <b>tangent</b>.
 
@@ -930,10 +952,10 @@ $$
 ![No market clearing](/images/notes/financial-econ/no-market-clearing.png)
 </div>
 
-At equilibriu, we thenm have 2 equations in 2 unkwnowns:
+At equilibrium, we then have 2 equations in 2 unkwnowns:
 
 $$
-z_A^1(w_A^1, w_A^2, p_1, p_2) + z_B^1(w_B^1, w_B^2, p_1, p_2) = 0
+z_A^1(w_A^1, w_A^2, p_1, p_2) + z_B^1(w_B^1, w_B^2, p_1, p_2) = 0\\
 z_A^2(w_A^1, w_A^2, p_1, p_2) + z_B^2(w_B^1, w_B^2, p_1, p_2) = 0
 $$
 
@@ -944,13 +966,13 @@ $\implies$ <b>Equilibrium prices are determined up to a multiplicative scalar</b
 ![No market clearing](/images/notes/financial-econ/market-eq.png)
 </div>
 
-The following plot shows risk transfer: _A has NO income risk, but ratjer tales some risk from B_.
+The following plot shows risk transfer: _A has NO income risk, but rather takes some risk from B_.
 
 <div align = "center">
 ![No market clearing](/images/notes/financial-econ/no-market-clearing.png)
 </div>
 
-<b>Comonoticity of Allocations</b>
+<b>Comonotonicity of Allocations</b>
 
 The allocaitons $(c_A^1,c_A^2),(c_B^1,c_B^2)$ are comonotonic if and only if:
 
@@ -994,11 +1016,11 @@ An <a href="https://finecoeth.shinyapps.io/app-2/" target="_blank"> interactive 
 
 ## <a id="5"><b>5. Choice under uncertainty</b></a>
 
-Consider $Z$ a set of possible consequences. Let $\Omega = \{ 1, 2, |\Omega| \}$ the set of possible states of the world and $L(\Omega)$ the set of lotteris with consequences in $Z$.
+Consider $Z$ a set of possible consequences. Let $\Omega = \{ 1, 2, |\Omega| \}$ the set of possible states of the world and $L(\Omega)$ the set of lotteries with consequences in $Z$.
 
 A lottery is a list of pairs $(x^{\omega}, \pi_{\omega})$ where $\pi_{\omega}$ gives the probability that $\omega$ will occur, and $x^{\omega}$ is the outcome.
 
-_Example: $((0,0.5); (1,0.5))$ is the lottey that pays $0,1$ with equal probabilities._
+_Example: $((0,0.5); (1,0.5))$ is the lottery that pays $0,1$ with equal probabilities._
 
 A <b>compound lottery</b> is a lottery whose prizes are themselves lotteries.
 
@@ -1039,7 +1061,7 @@ A _relation of preferences_ $\ge$ on $L(Z)$ is a binary relation which is:
 <br/>
 <b>Axioms of Expected Utility Theory</b>
 
-<b>Von Neuman and Morgenstern</b> suggested to assume the following about the relation of preference:
+<b>Von Neumann and Morgenstern</b> suggested to assume the following about the relation of preference:
 - <b>Independence</b>: for all $L, L', L"$ and $\lambda \in (0,1)$:
 
 $$
@@ -1058,7 +1080,7 @@ _Graphically, the independence axiom:_
 <br/>
 A relation of preferences is represented by a utility function $V: L(Z) \to \R$ if and only if: $L \ge L' \iff V(L) \ge V(L')$.
 
-<b>Theorem (Von Neuman-Morgenstern)</b>
+<b>Theorem (Von Neumann-Morgenstern)</b>
 
 If $\ge$ is a preference relation on $L(Z)$ that satisfies the previous axioms, then there exists $u : Z \to \R$ such that:
 
@@ -1071,10 +1093,10 @@ $$
 \mathbb{E}_{\pi_{\omega}}[u(x^{\omega})] \ge \mathbb{E}_{\tilde \pi_{\omega}}[u(\tilde x^{\omega})]
 $$
 
-In thi case, we say that _the agent is said to have "VNM preferences"_.
+In this case, we say that _the agent is said to have "VNM preferences"_.
 
 A little note on terminology:
-- $V: L(Z) \to \R$ is the utilility function _(expected utility function)_.
+- $V: L(Z) \to \R$ is the utility function _(expected utility function)_.
 - $u: Z \to \R$ is just a function that appears when looking at the structure of $V$ _(utility index)_. Furthermore, for the rest of the chapters, we assume that$u$ is strictly <b>increasing</b> and <b>twice continuously differentiable</b>.
 <br/>
 ---
@@ -1089,7 +1111,7 @@ $$
 \delta_{\mathbb{E}_[x]} \ge L
 $$
 
-An agent with VNM preferences is <b>risk averse</b> if and only if her utility index is concave: $u'\ge0, u"\le0$.
+An agent with VNM preferences is <b>risk averse</b> if and only if her utility index is concave: $u'\ge 0, u''\le 0$.
 
 
 To prove it, we consider the _Jensen Inequality_: if a function $u$ is concave, then we have:
@@ -1114,7 +1136,7 @@ A lottery $L$ is said to second-order stochastically dominates $L' (\text{SOSD})
 $$
 \int_{-\infty}^y F_L(x)dx \le \int_{-\infty}^yF_{L'}(x)dx \quad \forall x
 $$
-_(Note that the first order stochastic dominace implies the second one)_
+_(Note that the first order stochastic dominance implies the second one)_
 
 <a href="https://www.youtube.com/watch?v=q0fOJ9vC3iQ" target="_blank">Clearest Explanation of Second-Order Stochastic Dominance! [VIDEO]</a>
 <br/> <a href="https://www.youtube.com/watch?v=xGEIoicxmWo" target="_blank">Understanding First-Order Stochastic Dominance[VIDEO]</a>.
@@ -1147,9 +1169,9 @@ $$
 <b>Increases in Risk</b>
 
 There are different ways to define an _increase in risk_:
-- $L$ is riskier than $L'$ if $L' \text{ SOSD } L$ _($L'$ second ordder stochastically dominates $L$)_. 
-- $L$ is riskier than $L'$ id $L$ is a _mean preserving_ spread of $L'$.
-- _Adding a white noise:_ $L$ is riskier than $L'$ if $L = L' + \epsilon$, where $\mathbb{E}[\epsilon] = 0$. _(Note that $L, \epsilon$ do not neet to be independetly distriunted)_.
+- $L$ is riskier than $L'$ if $L' \text{ SOSD } L$ _($L'$ second order stochastically dominates $L$)_. 
+- $L$ is riskier than $L'$ if $L$ is a _mean preserving_ spread of $L'$.
+- _Adding a white noise:_ $L$ is riskier than $L'$ if $L = L' + \epsilon$, where $\mathbb{E}[\epsilon] = 0$. _(Note that $L, \epsilon$ do not need to be independently distributed)_.
 
 An agent with VNM preferences dislikes increases in risk if and only if her utility index $u$ is concave.
 
@@ -1165,13 +1187,13 @@ $$
 u(e_L) = \mathbb{E}_L[u(x)]
 $$
 
-_Intuition: $e_L$ is the amount of momey for which the individual is indifferent between playing $L$ and a fixed amount of momney_.
+_Intuition: $e_L$ is the amount of money for which the individual is indifferent between playing $L$ and a fixed amount of money_.
 - For a concave utility _(risk averse agent):_ $\mathbb{E}_L[u(x)] - e_L > 0$
 - For a linear utility _(risk neutral agent):_ $\mathbb{E}_L[u(x)] = e_L$
 <br/>
 <b>Risk Premium</b>
 
-For any lottery $L$ with payoff $X$, define the **certainty equivalent** $e_L$ as:
+For any lottery $L$ with payoff $X$, define the <b>certainty equivalent</b> $e_L$ as:
 
 $$u(e_L) = \mathbb{E}_L[u(X)]$$
 
@@ -1183,10 +1205,12 @@ For a VNM agent, this is equivalent to:
 
 $$u(\mathbb{E}_L[X]-\pi_L) = \mathbb{E}_L[u(X)]$$
 - A risk neutral individual has zero risk premium
-- A _(strictly)_ risk averge agent associates a positive risk premium to any _non-degenerate_ lottery.
+- A _(strictly)_ risk-averse agent associates a positive risk premium to any _non-degenerate_ lottery.
 <div align = "center">
 ![Risk Premium ](/images/notes/financial-econ/risk-premium.png)
 </div>
+
+_Intuition (preference rule): a VNM agent (risk-averse) always prefers the lottery with the higher certainty equivalent. If the lotteries have the same mean $\mathbb{E}[X]$, the agent prefers the one with the smaller risk premium_.
 
 <b>Absolute Risk Premium for small risks</b>
 
@@ -1196,13 +1220,13 @@ $$
 L = x + \tilde \epsilon, \quad \mathbb{E}[\tilde \epsilon ] = 0
 $$
 
-Using Taylor expansions, we can show that the <b>(absolute) risk premium</b> $\pi_a$ when $\epsilon$ is small _(Arrow-Pratt approximation)_ is such :
+Using Taylor expansions, we can show that the <b>(absolute) risk premium</b> $\pi_a$ when $\epsilon$ is small _(Arrow-Pratt approximation)_ is such:
 
 $$
 \pi_a \approx -\frac{1}{2} \frac{u''(x)}{u'(x)} \mathbb{E}[\tilde \epsilon^2]
 $$
 
-The <b>absolute ris aversion coefficient</b> $R_a(x)$ for wealth level $x$ is defined as:
+The <b>absolute risk aversion coefficient</b> $R_a(x)$ for wealth level $x$ is defined as:
 
 $$
 R_a(x) = -\frac{u''(x)}{u'(x)}
@@ -1218,7 +1242,7 @@ _Note that $\mathbb{E}[\tilde \epsilon ^2]$ is the variance of the risk._
 
 <b>Relative Risk premium for small risks</b>
 
-Consider $x \in \R$ and the same lottery as before, $L + \tilde \epsilon$. <br/>We can define the <b>relative risk premium</b> $\pi_r$ by:
+Consider $x \in \mathbb{R}$ and the same lottery as before, $L + \tilde \epsilon$. <br/>We can define the <b>relative risk premium</b> $\pi_r$ by:
 
 $$
 (1 + \tilde \epsilon) x \sim (1 + \pi_r)x
@@ -1230,7 +1254,7 @@ $$
 \pi_r \approx - \frac{1}{2}\frac{x u''(x)}{u'(x)}\mathbb{E}[\tilde \epsilon ^2]
 $$
 
-The <b>relative risk aversion coefficient</b> $R_r(x)$ for wealth level $x$ is then define as:
+The <b>relative risk aversion coefficient</b> $R_r(x)$ for wealth level $x$ is then defined as:
 
 $$
 R_r(x) = -\frac{x u''(x)}{u'(x)} = x R_a(x)
@@ -1356,7 +1380,7 @@ $$
 \mathbb{E}[(\epsilon + \tilde R')u'(\omega + \alpha(\epsilon)\epsilon + \alpha (\epsilon)\tilde R')] = 0
 $$
 
-We know that $\alpha(0) = 0$, so using a Taylor Approximation, we expand $\alpha(\epsilon)$ around $\epsilon = 0$**
+We know that $\alpha(0) = 0$, so using a Taylor Approximation, we expand $\alpha(\epsilon)$ around $\epsilon = 0$.
 
 Since $\alpha(0) = 0$ _(at zero mean excess return, the agent doesn't buy the risky asset),_ the first-order Taylor expansion is:
 $$\alpha(\epsilon) \approx \alpha(0) + \epsilon \alpha'(0) = \epsilon \alpha'(0)$$.
@@ -1582,9 +1606,9 @@ with at least one strict inequality.
 <br/>
 <b>Mutuality Principle</b>
 
-<b>Proposition (Borhc)</b>
+<b>Proposition (Borch)</b>
 
-If all agents are strictly risk averse and have identical beliefs, then for any Pareto-optimal alllocation:
+If all agents are strictly risk averse and have identical beliefs _(same information)_, then for any Pareto-optimal alllocation:
 
 $$
 e^{\omega} = e^{\omega'} \implies c_i^{\omega} = c_i^{\omega'}
@@ -1693,10 +1717,10 @@ Then in state 5 you would need $(u'(11)=u'(9))$, impossible with strictly decrea
 ---
 <br/>
 <b>Risk neutral agents should bear all the risk</b>
-
+<br/>
 <b>Corollary</b>
 
-Assume mthat there is a risk-neutral agent and that the allocation $(c_i)_{1 \le i \le I}$ is pareto-optimal. If agent $i$ is strictly risk-averse, then her consumption must be determnistic:
+Assume that there is a risk-neutral agent and that the allocation $(c_i)_{1 \le i \le I}$ is pareto-optimal. If agent $i$ is strictly risk-averse, then her consumption must be determnistic:
 
 $$
 \forall (\omega, \omega') \in \Omega^2, \quad c_i^{\omega} = c_i^{\omega'}
@@ -2033,6 +2057,7 @@ $$
 ![GDP by country](/images/notes/financial-econ/ef.png)
 </div>
 
+
 <b>The Global Minimum Variance Portfolio</b>
 
 The global minimum variance portfolio _(hedging portfolio)_ is the portfolio $x_G \in \mathbb{R}^K$ with the smallest variance. This portfolio (obtained with $\lambda = 0$) is given by:
@@ -2155,6 +2180,8 @@ All efficient portfolios are on a real line in the $(\sigma, m)$ plane and this 
 <div align = "center">
 ![Efficient Frontier](/images/notes/financial-econ/ef-3.png)
 </div>
+
+_Intuition: in a economy with only risk-assets, all the efficient portfolios lie on the efficient frontier curve. If instead in the economy there exists a risk-free asset, the efficient frontier collapses into the capital allocation line (any efficient portfolio in that case lie on the straight line)_.
 
 With a combination of a safe portfolio and a risky portfolio, investors can improve and expand the set of opportunities available from the efficient frontier:
 - all portfolios on the capital allocation line offer a better expected return than risky portfolios with the same volatility located on the EF.
@@ -2329,14 +2356,14 @@ $\implies$ CAPM has never been really tested
 ---
 <br/>
 
-## <a id="10"><b>10. Risk sharing and asset prices in a market equilibrium</b></a>
+## <a id="10"><b>10. Risk sharing and asset prices in a market equilibrium (CCAPM)</b></a>
 
 
 <b>The Consumption Based CAPM</b>
 
-We consider a probability space $\Omega$, where $\omega in \Omega$ is a state of the world with probability $\pi_{\omega}$.
+We consider a probability space $\Omega$, where $\omega \in \Omega$ is a state of the world with probability $\pi_{\omega}$.
 
-We denote by $\tilde y$ any random variabkle define on $\Omega$. We say that $\tilde y$ takes the value $y^{\omega}$ in state $\omega$ and its expected value if $\mathbb{E}_{\pi}[\tilde y] = \sum_{\omega} \pi_{\omega}y^{\omega}$.
+We denote by $\tilde y$ any random variable define on $\Omega$. We say that $\tilde y$ takes the value $y^{\omega}$ in state $\omega$ and its expected value if $\mathbb{E}_{\pi}[\tilde y] = \sum_{\omega} \pi_{\omega}y^{\omega}$.
 
 We consider then $I$ agents living in two periods. For each agent $i$:
 - at $t = 0$: <b>deterministic endowment </b>$e_i^0$ with consumption $c_i^0$
@@ -2369,14 +2396,14 @@ $$
 under the budget costraints:
 
 $$
-c_i^0 = e_i^0 - \frac{z_i^0}{1 + r} - \sum_k^K p_k z_i^k \\
+c_i^0 = e_i^0 - \frac{z_i^0}{1 + r} - \sum_{k=1}^K p_k z_i^k \\
 
-c_i^{\omega} = e_i^{\omega} + z_i^0 + \sum_k^K z_i^K a_k^{\omega}
+c_i^{\omega} = e_i^{\omega} + z_i^0 + \sum_{k=1}^K z_i^k a_k^{\omega}
 $$
 
-_Intuition: the first costraint represents the current consumption as the initial endowment, minus the cost of investing $z_i^0$ in a risk-free asset (discounted by $r$) and the cost of investing $z_i^k$ for each asset $k$._ 
+_Intuition: the first constraint represents current consumption as the initial endowment, minus the cost of investing $z_i^0$ in the risk-free asset (discounted at rate $r$) and the cost of investing $z_i^k$ in each risky asset $k$._ 
 
-_The second budget costraint represents that future consumptio is equal to the sum of the future endowment, the return of the risk-free asset and the return from risky assets._
+_The second budget constraint represents that future consumption is equal to the sum of the future endowment, the return of the risk-free asset and the returns from risky assets._
 
 We can then substitute in the utility formula and we get:
 
@@ -2384,22 +2411,41 @@ $$
 U_i = u_i \left( e_i^0 - \frac{z_i^0}{1 + r} - \sum_{k=1}^K p_k z_i^k \right) + \delta \mathbb{E}_{\pi} \left[ v_i \left( \tilde{e}_i + z_i^0 + \sum_{k=1}^K z_i^k \tilde{a}_k \right) \right].
 $$
 
-We apply the FOC as:
+We apply the first-order conditions (FOC) with respect to every choice variable $z_i^{\kappa}$:
 
 $$
-\forall \kappa \in \{ 0 ... K\}, \quad \frac{\partial u_i}{\partial z_i^{\kappa}} = 0
+\forall \kappa \in \{ 0, \ldots, K\}, \quad \frac{\partial U_i}{\partial z_i^{\kappa}} = 0
 $$
 
 that brings to:
 
 $$
-u_i'(c_i^0) = (1 + r )\delta \mathbb{E}[v'_i (\tilde c_i)]\\
+\frac{1}{1 + r} u_i'(c_i^0) = \delta \mathbb{E}[v_i'(\tilde c_i)]\\
 p_k u_i'(c_i^0) = \delta \mathbb{E}[\tilde a_k v_i'(\tilde c_i)]
 $$
 
-_Intuition: intertemporal margin rate of substitution, since it equates the marginal utility of current consumption with the discounted expected marginal utility of future consumption $\implies$ the he first equation describes the trade-off between current and future consumption, incorporating the risk-free interest rate and time preference_ 
+_Intuition: the first equation describes the trade-off between current and future consumption, incorporating the risk-free interest rate and time preference_ 
 
-_The second equation representsw the optimality condition for risky asset allocation, since it equates the marginal cost of investing in risky asset to the discounted expected marginal utility of the returns._
+_The second equation represents the optimal condition for risky asset allocation, since it equates the marginal cost of investing in risky asset to the discounted expected marginal utility of the returns._
+
+More explicitly, the derivation is just the chain rule:
+
+- when $z_i^0$ increases by one unit, current consumption falls by $1/(1+r)$ and future consumption rises by one unit in every state;
+- when $z_i^k$ increases by one unit, current consumption falls by $p_k$ and future consumption in state $\omega$ rises by $a_k^{\omega}$.
+
+So the two FOCs are:
+
+$$
+\frac{\partial U_i}{\partial z_i^0}
+= -\frac{1}{1+r}u_i'(c_i^0) + \delta \mathbb{E}[v_i'(\tilde c_i)] = 0,
+$$
+
+$$
+\frac{\partial U_i}{\partial z_i^k}
+= -p_k u_i'(c_i^0) + \delta \mathbb{E}[\tilde a_k v_i'(\tilde c_i)] = 0.
+$$
+
+The first one tells you how much current consumption the agent is willing to sacrifice for a risk-free payoff tomorrow. The second one says that, at the optimum, the price of a risky asset must equal the discounted expected marginal utility value of its payoff.
 
 They can be combined as:
 
