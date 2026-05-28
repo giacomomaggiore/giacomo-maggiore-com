@@ -24,12 +24,10 @@ Please refer to his <a href="https://drive.google.com/file/d/1xVfUo16AxQmlWKle8E
 - [Consumption and investment](#4)
 - [The Solow Growth Model](#5)
 - [Money holding: Inflation and Monetary Policy](#6)
-- [Crises in Market Economnies](#7)
-- [IS-LM Model and Open Economy](#8)
-- [Bank Runs and The Diamond-Dybvig Model](#9)
-- [Crises in Market Economies](#10)
-- [Macroeconomic Forecasting](#11)
-- [Technical Appendix](#12)
+- [IS-LM Model and Open Economy](#7)
+- [Bank Runs and The Diamond-Dybvig Model](89)
+- [Crises in Market Economies](#9)
+- [Macroeconomic Forecasting](#10)
 <br/>
 ---
 
@@ -220,7 +218,7 @@ Even though the IS-curve is often referred to as the goods market equilibrium co
 Intuitively, if we consider an increase in public spending $G$:
 - increase in public spending moves the IS-curve to the right, $Y$ increases.
 - the LM-curve remains unchanged
-- in the short run, interest rate and outputincrease.
+- in the short run, interest rate and output increase.
 
 <div align = "center">
 ![Macroeconomic Schools](/images/notes/economic-growth/increase_g.png)
@@ -289,13 +287,13 @@ $$
 
 - It may be caused by financial crisis, wars, terror attacks or whatever
 - Households consume less and save more of given income
-- the IS-curve odes leftward
+- the IS-curve shifts leftward
 - LM-curve remains unchanged assuming, _for simplicity_, that the demand for money does not change
 - $Y$ and $i$ decline.
 
 Possible counter-measures to stabilize $Y$:
 - Expansive fiscal policy can shift the IS-curve to initial position 
-- Easing of monetary policy implies downard shift of LM-curve 
+- Easing of monetary policy implies downward shift of LM-curve 
 
 <div align = "center">
 ![Macroeconomic Schools](/images/notes/economic-growth/consumer_confidence.png)
@@ -527,7 +525,7 @@ The model, based on Lucas (1972) and Phelps (1970),  starts from the following a
 - each farmer selles its good in a competitive market at individual price $P_i$ and market price $P$
 - revenues allow each farmer to consume a bundle of goods
 - there are two <b>2 possible shocks</b>:
-    - prefrerence shock 
+    - preference shock 
     - monetary shock 
 
 For simplicity, we also add the assumption that there's perfect information. We then model each farmer's production as:
@@ -591,7 +589,7 @@ with $m$ assumed to be stochastic $m \sim N(0, \sigma^2)$, representing the mone
 
 In this setup, the <b>monetary shock is the unexpected realization</b> of $m$ _(i.e. an innovation in log money supply):_ a positive shock shifts up aggregate demand $y = m - p$, while under perfect information it only changes $p$ in equilibrium.
 
-In equilibrium, the market has to clear, i.g. $y_i = y_i^d$:
+In equilibrium, the market has to clear, i.e. $y_i = y_i^d$:
 
 $$
 \frac{1}{\theta - 1}(p_i - p) = y + z_i - \eta(p_i - p)
@@ -610,13 +608,13 @@ p = \frac{\theta - 1}{1 + \eta(\theta - 1)} y + p
 $$
 
 Hence, we obtain the equilibrium as: $y = 0$ _(remember that $y = \ln Y \to Y = 1$)_ and $m = p$. <br/>
-For the indidual good, this means:
+For the individual good, this means:
 
 $$
 y_i = \frac{1}{\theta - 1}(p_i - p) = \frac{z_i}{1 + (\theta - 1)\eta}
 $$
 
-_Intution:_
+_Intuition:_
 - money is neutral and can only affect the price level, output is fixed at the full employment rate $Y = 1$.
 (<b>Classical dichotomy</b>: monetary policy causes nominal prices and wages to change, leaving the real equilibrium unchanged).
 - the equilibrium $y_i$ depends only on the relative price $p_i$ which depends on $z_i$.
@@ -634,7 +632,7 @@ $$
 y = \int_0^1 n_i d_i = b(p - \mathbb{E}[p])
 $$
 
-where $p$ is the slope/sensitivity parameter _(how much output responds to a given price suprise)_, $p$ is the actual price level and $\mathbb{E}[p]$ is the expected aggregate price level before observing the actual price. 
+where $p$ is the slope/sensitivity parameter _(how much output responds to a given price surprise)_, $p$ is the actual price level and $\mathbb{E}[p]$ is the expected aggregate price level before observing the actual price. 
 
 _Intuition_:
 - deviation of $y$ from its natural level is an increasing function of the surprise in the price level
@@ -648,7 +646,7 @@ $$
 y = p =\frac{b}{1+b}m - \frac{b}{b+1}E(p)
 $$
 
-This model argues that there's a statistical output-inflation relation: however, if policy markers attempt to take advantage of this _(raising output by raising the money growth rate above the trend level)_, they may cause this relationship to break down.
+This model argues that there's a statistical output-inflation relation: however, if policy makers attempt to take advantage of this _(raising output by raising the money growth rate above the trend level)_, they may cause this relationship to break down.
 
 However, models based on Neoclassical economy (like Lucas Supply function) are appropriate to study:
 - if monetary policy has large effect if it surprises the public 
@@ -1013,7 +1011,7 @@ $$
 
 The <b>capital stock</b> increases by investment $I$ and decreases by depreciation at a constant rate $\delta$.
 
-We then obtain the <b>foundamental law of motion</b> of the Solow Model:
+We then obtain the <b>fundamental law of motion</b> of the Solow Model:
 
 $$
 K_{t+1} = K_t + I_t - \delta K_t = (1 - \delta) K_t + I
@@ -1057,7 +1055,7 @@ k_{t+1}(1 + g)(1 + n) &= (1 - \delta)k_t + s y_t
 \end{align*}
 $$
 
-If we substract from both sides $k_t(1 + n)(1 + g)$:
+If we subtract from both sides $k_t(1 + n)(1 + g)$:
 
 $$
 \begin{align*}
@@ -1068,7 +1066,7 @@ $$
 
 \end{align*}
 $$
-Where the last equality is true if we consider the Cobb-Douglas function and it represent the <b>Foundamental Law of motion</b> in intensive form.
+Where the last equality is true if we consider the Cobb-Douglas function and it represents the <b>Fundamental Law of motion</b> in intensive form.
 
 $(\delta + n + g + ng)k_t$ is the <b>break-even</b> investment _(the min investment needed to prevent the capital stock in intensive form from shrinking)_. If actual investment $s k_t ^{\alpha}$ is equal to the break-even investment, $k_t$ is constant over time.
 
@@ -1108,7 +1106,7 @@ c^* = (1 - s)y^* = (1 - s) \Big (  \frac{s}{\delta + n +g + ng} \Big) ^{\alpha /
 $$
 
 - $k^*, c^*, y^*$ do NOT depend on the initial capital $k_0$.
-- Capital per capita $\bar k$, output per capita $\bar y$ and consumptio per capita $\bar c$ grow at rate $g$ of technological progress:
+- Capital per capita $\bar k$, output per capita $\bar y$ and consumption per capita $\bar c$ grow at rate $g$ of technological progress:
 
 $$
 \frac{\bar x_{t+1}-x_t}{\bar x_t} = \frac{x^* (A_{t+1}-A_t)}{x^* A_t} = \frac{x^* (A_t(1 + g)- A_t)}{x^* A_t} = g
@@ -1121,7 +1119,7 @@ $$
 = (1 + g)(1 + n)-1 = g+ n + gn
 $$
 
-We can also se that changes in $s, n, \delta, \alpha$ have only effects on per-capita steady-state value.
+We can also see that changes in $s, n, \delta, \alpha$ have only effects on per-capita steady-state value.
 <br/>A change in $g$ has growth effects on per-capital steady-state values.
 <br/>A shock to the capital stock has temporary (but no long-run) effects.
 
@@ -1177,7 +1175,7 @@ _Note that, for the Cobb-Douglas production function, $s_{gold} = \alpha$_ and t
 - long-run growth per-capita is only driven by technological progress 
 - in the long-run, capital accumulation is a consequence of growth in technology 
 - in the short run, growth is faster for countries far away that their steady state.
-
+<br/>
 ---
 
 ## <a id="6"><b>6. Money holding: Inflation and Monetary Policy</b> </a>
@@ -1205,7 +1203,7 @@ A practical definition: money is the set of instruments that are <b>widely accep
 
 _Note that, according to the economics and monetary definition, Bitcoin (and other cryptocurrencies) are not a form of money: they usually miss the unit-of-measure function and the medium one_.
 
-<a href="https://www.sciencedirect.com/science/article/pii/S1062976919301528" target="_blank">Is bitcoin money? And what that means [Paper]</a>
+<a href="https://www.resistance.money/class/readings/is_bitcoin_money.pdf" target="_blank">Is bitcoin money? And what that means [Paper]</a>
 
 <div align = "center">
 ![Fiat money](/images/notes/economic-growth/fiat-money.png)
@@ -1234,14 +1232,14 @@ In the current economic system, cash doesn't play a major role anymore
 ![Two Tier Structure](/images/notes/economic-growth/two-tiers.png)
 </div>
 
-A bank trasfer is _essentialy_: a <b>message</b> $+$ a <b>balance sheet update</b>
+A bank transfer is essentially: a <b>message</b> + a <b>balance sheet update</b>
 <br/>It can be broken down in two steps:
 - Clearing: who owes what to whom?
 - Settlement: how are obligations discharged _(with what asset)?_
 
 _In the two-tier system, interbank settlement uses central bank reserves._
 
-_Let's condier the following transaction:_ Alice trasfers $10$ to Bob
+_Let's consider the following transaction:_ Alice transfers $10$ to Bob
 1. Alice instructs Bank A to <b>transfer </b>10 to Bob.
 2. Bank A <b>debits Alice’s deposit account </b> by 10.
 3. Bank A sends<b> the interbank payment instruction</b> into the payment system.
@@ -1261,18 +1259,29 @@ _Let's condier the following transaction:_ Alice trasfers $10$ to Bob
 
 _Banks can redistribute reserves among themselves, but only the central bank can create reserves for the system as a whole_.
 
+
+---
+<br/>
 <b>How is money created?</b>
-- Central bank money
-    - <b>cash</b> is created physically through the issuance of banknotes and coins 
-    - <b>reserves</b> are created electronically through central bank operations _(lending, asset purchases)_ 
-- Commercial Bank Money (deposits)
+- <b>Cash (banknotes and coins)</b>: cash is a central bank liability issued physically _(liability $\to$ cash is recognized as a claim on the central bank's balance sheet $\to$ cash is accepted at par by the central bank and the state $\to$ it functions as "final money" on the economy).
+    - when a central bank issues cash typically: banknotes _(liability)_ increase and assets _(typically something received in exchange)_ increase.
+    - When a person withdraws cash, the commercial bank gives away cash and its reserve account at the central bank is debited $\implies$ the central bank's liability _(cash)_ is now held by that person, not the bank anymore $\implies$ _cash issuance itself is just a change in who holds the liability_.
+
+- <b>Reserves</b>: they are central bank electronic liabilities. They are created by the central bank when:
+    - the central bank buys assets from banks. In this cases, the seller's reserve account is credited $\implies$ net reserves in the banking system increase. _(note that, unlike a household or a commercial bank, the central bank is the issuer of the monetary unit $\implies$ the creation of money is "just" an accounting entry on its books)_
+
+_Central bank buys  bonds $\implies$ increases banks's reserves and lowers short-term interest rates $\implies$ eases financing $\implies$ can boost spending (demand) $\implies$ if demand $>$ supply $\implies$ inflation._
+
+_Central bank sells bonds $\implies$ lower reverses $\implies$ tightening liquidity $\implies$ higher short-term rates._
+
+- <b>Commercial Bank Money (deposits)</b>
     - Created electronically, banks expand their balance sheets and credit deposit accounts _(main case: banks make loans, some other options include banks buying assets from non-banks)_.
 
 The <b>Bank balance sheet</b> can be simplified in:
 - assets: _loans, securities, reserves_ 
 - liabilities: _deposits, wholesale funding, equity_.
 
-_Example: a new loan of $x$ to a customer increases assets and liabilities by $x$. Iin this case $x$ units of money (deposits) are created._<br/>
+_Example: a new loan of $x$ to a customer increases assets and liabilities by $x$. In this case $x$ units of money (deposits) are created._<br/>
 _The bank doesn't need to "find deposits first" to make the loan_.
 
 Bank can create deposits ($\approx$ give loans) and expand their balance sheet, but there're some limits:
@@ -1281,6 +1290,10 @@ Bank can create deposits ($\approx$ give loans) and expand their balance sheet, 
 - profitability and risk: _credit risk, funding cost, competition..._
 - borrower demand 
 - monetary policy
+
+<br/>
+---
+
 
 In securities trade, the <b>buyer owes cash</b> and the <b>seller owes securities</b>. If the two legs are exchanged sequentially, one side may deliver while the other side fails. This creates the principal risk problem in securities trade, since there's exposure to the full value of the trade, not just the _"replacement"_ cost.
 
@@ -1292,12 +1305,12 @@ In securities trade, the <b>buyer owes cash</b> and the <b>seller owes securitie
 
 <b>Why look beyond current forms of money? </b>
 
-Current frictions in payments and settlmenet:
+Current frictions in payments and settlement:
 - cross-border payments can be slow, costly and opaque _(multiple intermediaries, different time zones etc...)_ 
-- settlmenent is often fragmented across different ledgers and insititutions _(example: in DvP cas leg and asset leg may sit on different systems)_ 
-- real-tie 24/7 settlment is not universal _(many systems are still limited to operating hours)_ 
+ - settlement is often fragmented across different ledgers and institutions _(example: in DvP cases the cash leg and the asset leg may sit on different systems)_ 
+- real-time 24/7 settlement is not universal _(many systems are still limited to operating hours)_ 
 - programmability is limited _(conditional payments, automated settlmenent and integrated DvP are difficult to implement)_ 
-- access to central bank money is restricted _(households can old cash, not reserves, for digital settlment, most users rely on commercial bank money)_ 
+- access to central bank money is restricted _(households can old cash, not reserves, for digital settlement, most users rely on commercial bank money)_ 
 
 $\implies$ The current system <b>works very well in many domestic settings</b>, but it is not frictionless, especially across borders.
 
@@ -1312,23 +1325,25 @@ $\implies$ The current system <b>works very well in many domestic settings</b>, 
     }}
 />
 
-
+<br/>
+---
+<br/>
 <b>New forms of money: crypto, stablecoins, tokenized deposits, CBDC</b>
 <br/>
 
 <b>Crypto-asset</b>
 
-Crypto-assets _(like Bitcoin) are not typically a claim on a issuer: _no underlying liability or redemption at par_. <br/>They are <b>native digital assets</b>: trasfer and settlment take placde on its own ledger and its value is market-determined and often _highly volatile_. <br/>Generally speaking, it often functions more like a <b>speculative asset</b> tan as money.
+Crypto-assets _(like Bitcoin)_ are not typically a claim on an issuer: _no underlying liability or redemption at par_. <br/>They are <b>native digital assets</b>: transfer and settlement take place on their own ledger and their value is market-determined and often _highly volatile_. <br/>Generally speaking, they often function more like a <b>speculative asset</b> than as money.
 
 
 <b>Stablecoins</b>
 
 A stablecoin is a <b>digital token designed to maintain a stable value</b> relative to a reference asset _(usually a fiat currency)_.
-<br/>The biggest ones are currently _(march 2026)_ Theter (USDT) and USDC, both tied one to one to the US dollar.
+<br/>The biggest ones are currently _(March 2026)_ Tether (USDT) and USDC, both tied one-to-one to the US dollar.
 
-They are typically issued by a private equity and backed by reserve assets, together with a redemption premise. In the past, there were also some algorith-backed stablecoins _(<a href="https://en.wikipedia.org/wiki/Terra_(blockchain)" target="_blank">see for example TerraUSD</a>).
+They are typically issued by a private entity and backed by reserve assets, together with a redemption premise. In the past, there were also some algorithm-backed stablecoins _(<a href="https://en.wikipedia.org/wiki/Terra_(blockchain)" target="_blank">see for example TerraUSD</a>)._
 
-Unlike unbacked-crypto assets, stablecoins aim at <b>price stability in the unit of account</b> but, unlinke deposits:
+Unlike unbacked-crypto assets, stablecoins aim at <b>price stability in the unit of account</b> but, unlike deposits:
 - they operate outside the banking framework
 - they are tradable on the secondary market
 - transfers can settle without interbank settlement in central bank money
@@ -1345,27 +1360,27 @@ They have been _"relatively"_ stable in the past:
 ![DvP](/images/notes/economic-growth/stablecoin-stable.png)
 </div>
 
-But stress episodes happened. In _March 2023_ for example, USDC came under stress during the Silicon Valley Bank failure and a portiio of Circle's reserves (USDC's issuer) became temporarily uncertain.
+But stress episodes happened. In _March 2023_, for example, USDC came under stress during the Silicon Valley Bank failure and a portfolio of Circle's reserves (Circle is USDC's issuer) became temporarily uncertain.
 <div align = "center">
 ![DvP](/images/notes/economic-growth/stablecoin-stress.png)
 </div>
 
 <b>What are stablecoins currently used for?</b> (March 2026)
 - <b>Within the crypto-markets</b>:
-    - as a relatively stable trading and settlment asset 
-    - as a collateral and liquidy in DeFi _(decentralized finance)_ 
-    -as a place to "park" value between more volatile positions 
+    - as a relatively stable trading and settlement asset
+    - as collateral and liquidity in DeFi _(decentralized finance)_
+    - as a place to "park" value between more volatile positions
 - <b>Beyond crypto-markets</b>:
-    - cross-borders trasfers 
-    - dollar access in some countries 
-    - digital payments on a token-based system 
-    - to bypass restrictions in traditional financial systems _(example: capital controls, <b> anti-money laundering (AML) </b> or <b>combating the financing of terrorism (CFT)</b> safeguards)_ 
+    - cross-border transfers
+    - dollar access in some countries
+    - digital payments on a token-based system
+    - to bypass restrictions in traditional financial systems _(example: capital controls, <b>anti-money laundering (AML)</b> or <b>combating the financing of terrorism (CFT)</b> safeguards)_
 
 $\implies$ Still, there are several core risks: reserve quality, redemption/run dynaimcs, governance and integrity, AML issues and bank disintermediation.
 
 
 
-Note that a stablecoin-dominated system would be a distinc monetary architecture from today's one, with privately issued settlmenet assets potentially operating outside the traditional two-tier system. <br/>An alternative is <b>CDBC + tokenized deposits</b> that is mainly a modernization of existing forms of money within the current architecture.
+Note that a stablecoin-dominated system would be a distinct monetary architecture from today's one, with privately issued settlement assets potentially operating outside the traditional two-tier system. <br/>An alternative is <b>CBDC (Central Bank Digital Currency) + tokenized deposits</b> that is mainly a modernization of existing forms of money within the current architecture.
 
 <div align = "center">
 ![cbdc](/images/notes/economic-growth/cbdc.png)
@@ -1373,17 +1388,17 @@ Note that a stablecoin-dominated system would be a distinc monetary architecture
 
 <b>Tokenized Deposits</b>
 
-A tokenized deposit is _still_ a bank deposit _(a calim on regulated commercial bank)_ but it's represented as a <b>digital token</b> on a programmable platform, often using DLT. It preserves both the <b>two-tier monetary system</b> while still changing the transfer and settlmenet infrastructure, promising for greater programmability and potentially more integraded settlement in tokenized markets.
+A tokenized deposit is _still_ a bank deposit _(a claim on a regulated commercial bank)_ but it's represented as a <b>digital token</b> on a programmable platform, often using DLT (decentralized ledger technology). It preserves the <b>two-tier monetary system</b> while still changing the transfer and settlement infrastructure, promising greater programmability and potentially more integrated settlement in tokenized markets.
 
 This would be part of a broader trend: not only money, but also bonds and contracts can be brought onto programmable digital rails.
-<br/>Indeed a toekn can bundle both information about an asset or claim and the rules governing how it can be used.
+<br/>Indeed a token can bundle both information about an asset or claim and the rules governing how it can be used.
 <div align = "center">
-![cbdc](/images/notes/economic-growth/token.png)
+![cbdc](/images/notes/economic-growth/token-info.png)
 </div>
 
 <b>Retail example: programmable fundraise</b>
 
-If the target is not reached $\implies$ the funds are automatically returned, reducing the risk of fraude or delay.
+If the target is not reached $\implies$ the funds are automatically returned, reducing the risk of fraud or delay.
 
 <div align = "center">
 ![cbdc](/images/notes/economic-growth/retail-ex.png)
@@ -1391,7 +1406,7 @@ If the target is not reached $\implies$ the funds are automatically returned, re
 
 <b>Wholesale CBDC (wCBDC)</b>
 
-wCBDC are <b>Digital Central Bank Money</b> for banks and financial institutions only, they are _economically_ close to the central bank reserves,but _potentially_ with new functionalities enabled by the tokenization.
+wCBDC are <b>Digital Central Bank Money</b> for banks and financial institutions only, they are _economically_ close to the central bank reserves, but _potentially_ with new functionalities enabled by the tokenization.
 
 <div align = "center">
 ![cbdc](/images/notes/economic-growth/wcbdc.png)
@@ -1402,26 +1417,23 @@ wCBDC are <b>Digital Central Bank Money</b> for banks and financial institutions
 
 Retail CBDC are a digital form of central bank money for the general public, often with a token-based design, an intermediate model and more privacy and offline capabilities.
 
-Often described as _"digital cash"_, but its design can differ substiantally depending on policy goals and they would be more than a new payment technology _(a now <b>monetary architecture choice</b>!).
+Often described as _"digital cash"_, but its design can differ substiantally depending on policy goals and they would be more than a new payment technology _(a now <b>monetary architecture choice</b>!)._
 
 <div align = "center">
 ![cbdc](/images/notes/economic-growth/retail-cbdc.png)
 </div>
 
 Currently _(april 2026)_ the world is still not ready for this system:
-- avanced pilots in wholesale market infrastructure for wCBDC are ongoing 
-- The SNB Prokect Helvetia on SDX and the Eurosystem DLT work 
+- advanced pilots in wholesale market infrastructure for wCBDC are ongoing 
+- The SNB Project Helvetia on SDX and the Eurosystem DLT work 
 - In China, large-scale pilots (e-CNY) for rCBDC are in place 
 - The US is still hostile to rCBDC.
 
+<br/>
 
 ---
 
-## <a id="7"><b>7. Crises in Market Economies</b> </a>
-
----
-
-## <a id="8"><b>8. IS-LM Model and Open Economy</b> </a>
+## <a id="7"><b>7. IS-LM Model and Open Economy</b> </a>
 
 The <b>monetary policy goals</b> can be summarized, as in the standard US textbook by <a href="https://en.wikipedia.org/wiki/Frederic_Mishkin" target="_blank">Frederic Mishkin</a>, in:
 - low unemployment (high GDP)
@@ -1434,12 +1446,14 @@ The problem is that this multitude of goals often anno be reached simultaneously
 
 We speak by of <b>discretionary policy</b>  the central bank can choose its policy period by period.<br/>We speak of <b>rule-based monetary policy</b>  policy is _constrained_ by a previously announced rule or commitment.
 
-At first look, a discretionary policy seems superior to a _less-flexible_ rule based, however,  current policy affects private expectatios for the future, discretion may lead to inferior outcomes.
+At first look, a discretionary policy seems superior to a _less-flexible_ rule based, however,  current policy affects private expectations for the future, discretion may lead to inferior outcomes.
 
 _(Since the early 1990s, many countries have moved towards a more rule-based monetary system, largely independent by the government)_.
 
 On the other side, a dicretionary-policy has some major drawbacks and the most important is the _so-called_ <b>Time Inconsistency Problem</b>.
 
+---
+<br/>
 <b>The Time Inconsistency Problem</b>
 
 The classic analysis of these problems comes from Kydland and Prescott, that, for this achievement, received <a href="https://www.nobelprize.org/prizes/economic-sciences/2004/press-release/" target="_blank">the Nobel Prize</a>.
@@ -1450,7 +1464,7 @@ _(This problem is also linked with credibility: announcements are no longer cred
 
 <b>The TI Problem in Monetary Policy</b>
 
- a central bank knows that it cannot influence real variables _in the long run_ but it can influence the inflation rate; it will _ex-ante_ formulate its policy in such a way that it results in an optimal inflation. 
+A central bank knows that it cannot influence real variables _in the long run_ but it can influence the inflation rate; it will _ex-ante_ formulate its policy in such a way that it results in an optimal inflation. 
 
 However, if the central bank can influence real-variables _in the short run_, it will be tempted to deviate from the previous policy.
 
@@ -1466,7 +1480,7 @@ _(The solution would be a independent CB with rule-based monetary policy)_.
 
 The model a CB that bases in actions on a <b>social welfare function</b> _(discrete-monetary policy)_.
 
-The CB can directly coose an infòation rate $\pi$ for the short-run.
+The CB can directly choose an inflation rate $\pi$ for the short-run.
 
 The private sector is the second player and it is described by rational expectations, we then model a strategic game with simultaneous decisions.
 
@@ -1496,7 +1510,7 @@ y = y^N + \beta (\pi - \pi_E)
 $$
 
 with:
-- $y^N <\tilde y$: natural output (\tilde y = \lambda y^N$ with $\lambda > 1$)
+- $y^N <\tilde y$: natural output ($\tilde y = \lambda y^N$ with $\lambda > 1$)
 - $\beta > 0$: constant 
 - $\pi_E$: expected inflation
 
@@ -1512,7 +1526,7 @@ $$
 y = y^N \quad \pi = 0
 $$
 
-_Unfortunately,_ with discrete-monetary policyt, this is not what we get in equilibrium!
+_Unfortunately,_ with discrete-monetary policy, this is not what we get in equilibrium!
 
 So let's go back to the loss function and let's substitute the Phillips curve:
 
@@ -1534,23 +1548,26 @@ $$
 \pi = \frac{\beta}{\alpha + \beta^2}[\beta \pi_E + (\lambda -1)y^N]
 $$
 
-Together with the reaction function _(expecations)_ of the private sector, $ \pi_E = \pi$, the equilibrium is:
+Together with the reaction function _(expectations)_ of the private sector, $ \pi_E = \pi$, the equilibrium is:
 
 $$
-\pi = \frac{\beta (\lambda -1)}{\alpha}y^N \quad \pi > 0 \forall \lambda > 1
+\pi = \frac{\beta (\lambda -1)}{\alpha}y^N \quad \pi > 0 \quad \forall \lambda > 1
 $$
 
-The equilibrium ouput is then: $y = y^N$.
+The equilibrium output is then: $y = y^N$.
 
-Therefore, the optimal scenario ($\pi = 0, y = y^N$) is not reached in equilibrium, but rahter a solution that is _inferior_.
+So the discretionary equilibrium delivers positive inflation but no increase in real output. That is the classic <b>inflation bias</b>: the policy maker would like to raise output above the natural level, but rational expectations eliminate the real gain.
 
-- The inferior solution is time-consistent, while announging $\pi = 0$ is cleary not.
-- There's a suboptimal high inflation is the equilibrium, called <b>inflation-bias</b>
+In this toy model, the commitment benchmark is $\pi = 0$ and $y = y^N$.
+
+
+- The inferior solution is time-consistent, while announcing $\pi = 0$ is clearly not.
+- There is a suboptimal high inflation in equilibrium, called <b>inflation-bias</b>.
 - _Intuition_: a discretionary policy provides an inferior result and a monetary policy dependent on _ad-hoc_ government decisions is therefore not optimal.
 
-For these reasons, since discretionary policy does not provide the desired results, it is _socially-optimal_ to delegate monetary policy to an independent institution, that it then credibly announce $\pi = 0$.
+For these reasons, since discretionary policy does not provide the desired results, it is _socially-optimal_ to delegate monetary policy to an independent institution, that then credibly announces $\pi = 0$.
 
-Along these lines the constitutions of the ECB was drafted.
+Along these lines, the constitution of the ECB was drafted.
 
 <b>Possible extensions of the Barro-Gordon Model</b>:
 
@@ -1563,7 +1580,7 @@ $\implies$ also with these changes, the results presented here remain qualitativ
 
 ---
 
-## <a id="9"><b>Bank Runs: The Diamond-Dybvig Model</b> </a>
+## <a id="8"><b>8. Bank Runs: The Diamond-Dybvig Model</b> </a>
 
 Banks hold only a fraction of their deposits as cash and reserves. The remainder of banks' assets is _illiquid_. $\implies$ this makes banks prone to <b>bank runs</b>
 
@@ -1574,8 +1591,8 @@ A bank run is often characterized by a sequence of events:
 - the bank <b>defaults</b> if the assets' liquidation value is too small for the bank to serve all withdrawals
 
 a _"not so healty"_ bank can fail due to a bank run:
-- a bank runs out of liquidity due to unexpected liquidity shock 
-- yet, he market value of its _(illiquid)_ assets exceeds its liabilities
+ - a bank runs out of liquidity due to an unexpected liquidity shock 
+ - yet, the market value of its _(illiquid)_ assets exceeds its liabilities
 - the bank defaults if it must <b>fire-sell</b> its assets at low prices.
 
 Note the distinction between:
@@ -1615,7 +1632,7 @@ Suppose now that one unit of the good is available at you at $t = 0$. There are 
 - <b>storage</b> (liquid asset)
 - <b>long-term investment</b> offering a return while being illiquid
 
-Suppose that each person acts alone, _without a bank_. Then each individual must deal with the possibility of needing early consumption by itself, creating a difficult chice: _keep in storage and be liquid or invest for the long-term and risk a early-liquidation loss_.
+Suppose that each person acts alone, _without a bank_. Then each individual must deal with the possibility of needing early consumption by itself, creating a difficult choice: _keep in storage and be liquid or invest for the long-term and risk an early-liquidation loss_.
 
 $\implies$ <b>Without a bank, each person bears their own liquidity risk</b>.
 
@@ -1630,15 +1647,15 @@ _Economic intuition (<b>Liquidity Insurance</b>): if many people pool their fund
 Banks collect deposits from many households. They can then invest a share $1 -\pi$ of these funds in long-term assets and keep a share $\pi$ as liquid.
 
 - all depositors are then offered the possibility of withdrawing on demand 
-- they partecipate in the returns of the asset portfolios held by banks throught interest earned on their deposits 
-- Banks perfom <b>maturity transformation</b>:
+ - they participate in the returns of the asset portfolios held by banks through interest earned on their deposits 
+ - Banks perform <b>maturity transformation</b>:
     - they hold <b>relatively illiquid-long-term assets</b>
     - they issue <b>relatively liquid-short-term liabilities</b>
-<br/>_(This mechanism allow society to invest in productive long-term assets while agents with unexpected early consumption needs can still access fund at any $t$)_ 
+<br/>_(This mechanism allows society to invest in productive long-term assets while agents with unexpected early consumption needs can still access funds at any $t$)_ 
 
 As a consequence: 
-- more resources can remain invested in high-return long-term projects. 
-- depositors partecipate in these returns with interest on deposits 
+ - more resources can remain invested in high-return long-term projects. 
+ - depositors participate in these returns with interest on deposits 
 - early consumers gain access to liquidity  they need it 
 
 But, _at the same time_, this structure also creates <b>fragility</b>: if too many depositors demand liquidity at once, the bank can run out into troubles.
@@ -1646,14 +1663,14 @@ But, _at the same time_, this structure also creates <b>fragility</b>: if too ma
 In particular, this mechanism becomes fragile if a larger fraction $> \pi$ tries to withdraw early since a bank can promise liquidity to each depositor individually, but not to all depositors simultaneously _(the bank is liquid only against "normal" withdrawal demand, not against everyone withdrawing at once)_
 
 <div align = "center">
-![Timeline](/images/notes/economic-growth/timeline.png)
+![Timeline](/images/notes/economic-growth/timeline-1.png)
 </div>
 
 Assume now the following:
 - loans repaid at $t = 2$
 - loans can be sold off at $t = 1$ but at a _fire-sale_ discount of 20%
 - there are<b> 20 depositors of the early type, 80 of the late type </b>and <b>10 equity holders</b> owning the bank
-- each agent owns 1 unit of funds iin $t = 0$
+- each agent owns 1 unit of funds in $t = 0$
 - _for simplicity_: no interest is paid on loans or deposits, eliminating the need to account of interest income or expense 
 
 At $t = 1$, if we consider Loans (L), Cash (C), Deposits (D) and Equity (E):
@@ -1662,14 +1679,14 @@ At $t = 1$, if we consider Loans (L), Cash (C), Deposits (D) and Equity (E):
 ![Timeline](/images/notes/economic-growth/timeline-2.png)
 </div>
 
-At $t = 2$ there's <b>limited liability</b>: shareolders cannot be forced to recapitalize, so the remainign 8 units of deposits are written off, they get nothing.
+At $t = 2$ there's <b>limited liability</b>: shareholders cannot be forced to recapitalize, so the remaining 8 units of deposits are written off; they get nothing.
 
 <div align = "center">
 ![Timeline](/images/notes/economic-growth/timeline-3.png)
 </div>
 
-_In general_, if only people with real liquidity needs mithdraw at $t = 1$ tge bank can still meet these withdrawals from:
-- its liquid reseves 
+_In general_, if only people with real liquidity needs withdraw at $t = 1$ the bank can still meet these withdrawals from:
+- its liquid reserves 
 - _if needed;_ limited liquidation of long-term assets 
 in this case, the remainin gassets can stay invested and generate return at $t = 2$.
 
@@ -1726,7 +1743,7 @@ The previous model doesn't state that banks are undesirable, banks are indeed _s
 
 <b>Suspension of Convertibility</b>
 
-One classic solution is a <b>suspension of convertibilitiy</b>.  cash reserves are depleted in $t = 1$, this prevents runs:
+One classic solution is a <b>suspension of convertibilitiy</b> if  cash reserves are depleted in $t = 1$, this prevents runs:
 - the bank stops withdrawals in $t = 1$ after first 20 depositors in queue withdrew $\implies$ it closes down  initial cash reserves are depleted 
 - this ensures that loans can mature without _fire-sales_.
 
@@ -1740,17 +1757,17 @@ But this not _necessarily_ work well if $\pi$ is unknown or understimated.
 
 Another solution is <b>deposit insurance</b>:
 - if depositors know their funds are protected even it the bank comes under pressure, then the incentive to run is reduced 
-- in this case patient depositors no longer need to runsh to run early 
+- in this case patient depositors no longer need to rush to withdraw early 
 
 A further solution is a <b>Lender of Last Resort</b>:
 - the central bank can provide liquidity to a fundamentally healthy but illiquid bank
 - this prevents inefficient fire-sales and disorders that can lead to failure 
 
 $\implies$ but these solutions can raise other issues, _such as moral hazard_:
-- deositors may pay less attention to bank risks 
+ - depositors may pay less attention to bank risks 
 - banks may have stronger incentives to take risk 
 
-$\implies$ it downside risks are partly absorbed by the <b>public sector</b>, private actors may take on more risk than is <b>socially desiderable</b>.
+$\implies$ its downside risks are partly absorbed by the <b>public sector</b>, private actors may take on more risk than is <b>socially desirable</b>.
 
 This is why modern banking systems do not rely on deposit insurance or LOLR, they also provide a <b>prudential framework</b> to limit risk-taking in the first place. Two core elements are:
 - <b>capital regulation</b>: banks must have enough loss-absorbing equity 
@@ -1760,7 +1777,7 @@ $\implies$ a stable system requires both crisis-management tools and ex-ante reg
 
 ---
 <br/>
-## <a id="10"><b>10. Crises in Market Economies</b> </a>
+## <a id="9"><b>9. Crises in Market Economies</b> </a>
 
 Crises can be either single _(as standalone events: financial market, real estate, currency, public debt, banking, private debt etc...)_  or the combination of two or more aspects at the same time.
 
@@ -1778,7 +1795,7 @@ A MBS is a <b>security backed by mortgages</b>, it represents an interest in a p
 
 Unlike a bond, in the MBS case the cash flows are not fixed, they depend on mortgage repayments, prepayments _(borrowers can refinance or pay early)_, higher default risk and the discount rate used by the market. 
 
-For many agency MBS, people often use an <b>option-adjusted spread approach</b> _(extra yield added to a benchmark so the bond's model price matches the market price accounting for embedded optioins)_, that means that the bond is priced as the present value of the cash flows after adjusting for the prepayment.
+For many agency MBS, people often use an <b>option-adjusted spread approach</b> _(extra yield added to a benchmark so the bond's model price matches the market price accounting for embedded options)_, which means that the bond is priced as the present value of the cash flows after adjusting for the prepayment.
 
 $$
 P = \sum_{t=1}^{T} \frac{\mathbb{E}[CF_t]}{(1+r_t+\text{OAS})^t}
@@ -1831,14 +1848,14 @@ The main actors and tools are:
     - fiscal expansion: higher government spending and, in some cases, temporary tax relief.
 
 5. <b>Direct government/CB interventions:</b>
-    - providing loans to firms by government 
-    - buying up toxic asset by CB in the market.
+    - providing loans to firms by the government
+    - buying up toxic assets by the central bank in the market.
 
 _Intuition:_ the central bank mainly addresses <b>liquidity</b>, while the government addresses <b>solvency</b> and supports demand. Using both together is often necessary in systemic crises.
 
 Main trade-off: stronger support reduces the probability of collapse today, but can increase public debt and moral hazard tomorrow.
 
-In 2008, there should have been injected new funds to become equity holders, increased deposit guarantees and interbank loans and lowered the short term interest rate.
+In 2008, new funds should have been injected, deposit guarantees increased, interbank loans provided, and the short-term interest rate lowered.
 
 Note that measures 4 and 5, at least alone, _do not resolve a banking crisis!_.
 
@@ -1911,7 +1928,7 @@ _According to this rule_: the higher the planned public debt, the higher the par
 
 ---
 
-## <a id="11"><b>11. Macroeconomic Forecasting</b> </a>
+## <a id="10"><b>10. Macroeconomic Forecasting</b> </a>
 
 Macroeconomic forecasting refers to the process of <b>predicting future realizations </b> of economic aggregates _(GDP, indlation, unemployment, interest rate etc...)_.
 
