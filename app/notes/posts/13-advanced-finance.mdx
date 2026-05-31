@@ -1044,7 +1044,7 @@ In general, these relationships are known as the <b>International Fisher Effect 
 The <b>Fisher Effect</b> represents the relationship between <b>nominal interest rates</b> ($r$) and <b>expected inflation </b>($i$). In an  _efficient market_, the ratio of nominal interest rates equals the ratio of expected inflation:
 
 $$
-\frac{1 + r_H}{1 + r_F} = \frac{1 + E(i_H)}{1 + E(i_F)}
+\frac{1 + r_H}{1 + r_F} = \frac{1 + \mathbb{E}(i_H)}{1 + \mathb{E}(i_F)}
 $$
 
 The <b>Interest Parity Equation</b>  shows that the difference between the Spot rate ($S$) and the Forward rate ($F$) should offset the difference in interest rates between the two countries to prevent arbitrage:
@@ -1056,13 +1056,13 @@ $$
 We can then add a final equation, the <b>Purchasing Power Parity</b>: it explains that the expected change in the exchange rate is driven by the difference in inflation rates between the two countries:
 
 $$
-\frac{1 + E(i_H)}{1 + E(i_F)} = \frac{E(S_{H/F})}{S_{H/F}}
+\frac{1 + E(i_H)}{1 + E(i_F)} = \frac{\mathb{E}(S_{H/F})}{S_{H/F}}
 $$
 
 If combine them all, we get the  the <b> International Finance Linkages </b> _("Four-Way Equivalence")_: 
 
 $$
-\frac{1 + r_H}{1 + r_F} = \frac{1 + E(i_H)}{1 + E(i_F)} = \frac{F_{H/F}}{S_{H/F}} = \frac{E(S_{H/F})}{S_{H/F}}
+\frac{1 + r_H}{1 + r_F} = \frac{1 + \mathb{E}(i_H)}{1 + \mathb{E}(i_F)} = \frac{F_{H/F}}{S_{H/F}} = \frac{\mathb{E}(S_{H/F})}{S_{H/F}}
 $$
 
 ---
@@ -1119,7 +1119,7 @@ $$
 
 To measure revenues and earnings:
 $$
-	ext{EBIT} = \text{Total Revenues} - \text{Costs} - \text{Depreciation} + \text{Other Income}
+	\text{EBIT} = \text{Total Revenues} - \text{Costs} - \text{Depreciation} + \text{Other Income}
 $$
 
 $$
@@ -1603,7 +1603,7 @@ Consider also the special case: a <b>management buyout</b> is a buyout led by th
 ![LBO](/images/notes/a-finance/lbo.png)
 </div>
 
-_Consider also that leveraged loans volumes have rebounded in 2024, mirroring the increase in LBo activity.
+_Consider also that leveraged loans volumes have rebounded in 2024, mirroring the increase in LBo activity._
 
 <div align = "center">
 ![LBO](/images/notes/a-finance/lbo-2.png)
@@ -1726,7 +1726,7 @@ $$
 There are two metrics for liquidity:
 - <b>Liquidity Coverage Ratio (LCR):</b>
 $$
-	ext{LCR} = \frac{\text{Stock of High Quality Liquid Assets (HQLA)}}{\text{Total net cash out over next 30 days}} \ge 100 \%
+	\text{LCR} = \frac{\text{Stock of High Quality Liquid Assets (HQLA)}}{\text{Total net cash out over next 30 days}} \ge 100 \%
 $$
 
 - <b>Net Stable Funding Requirement (NSFR)</b>:
@@ -1827,7 +1827,7 @@ $$
 The Merton model establishes that:
 - <b>equity</b> is a call option on a firm assets:
   - if the firm ha asset value $V_t$ and debt face value $D$, then:
-  - equity gets %\max(V_t-D,0)$ _(equity has the same pauyoff of a call option on the assets with strike price $D \implies$ if assets are worth more, shareholders keep the upside, otherwise they walk away and lose only their equity)_ 
+  - equity gets $\max(V_t-D,0)$ _(equity has the same pauyoff of a call option on the assets with strike price $D \implies$ if assets are worth more, shareholders keep the upside, otherwise they walk away and lose only their equity)_ 
 - <b>risky-debt</b> embeds a short put _(the bondholder is not holding a clean  risk-free, becuase oin case of default they don't receive the promided $D$)_:
   - debt gets $\min (V_t, D)$
 
