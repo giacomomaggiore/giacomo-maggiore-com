@@ -25,7 +25,7 @@ Please refer to his <a href="https://drive.google.com/file/d/1xVfUo16AxQmlWKle8E
 - [The Solow Growth Model](#5)
 - [Money holding: Inflation and Monetary Policy](#6)
 - [IS-LM Model and Open Economy](#7)
-- [Bank Runs and The Diamond-Dybvig Model](89)
+- [Bank Runs and The Diamond-Dybvig Model](#8)
 - [Crises in Market Economies](#9)
 - [Macroeconomic Forecasting](#10)
 <br/>
@@ -1500,7 +1500,7 @@ with:
 - $\alpha >0$: constant
 - $\pi$: inflation rate 
 - $y$: output
-- $\tilde \pi$: target inflation _(we assume here $\tilde \pi = 0$)
+- $\tilde \pi$: target inflation _(we assume here $\tilde \pi = 0$)_
 - $\tilde y$: target production.
 
 The Phillips curve summarizes the interplay between real and nominal variables:
@@ -1513,6 +1513,8 @@ with:
 - $y^N <\tilde y$: natural output ($\tilde y = \lambda y^N$ with $\lambda > 1$)
 - $\beta > 0$: constant 
 - $\pi_E$: expected inflation
+
+_Intuition:  The only way the CB can trick output into rising above its natural level ($y > y^N$) is by creating "surprise inflation" ($\pi > \pi_E$)._
 
 The private sector has rational expectations, that is:
 
@@ -1560,10 +1562,39 @@ So the discretionary equilibrium delivers positive inflation but no increase in 
 
 In this toy model, the commitment benchmark is $\pi = 0$ and $y = y^N$.
 
+Let's now suppose that $\pi_E$ (the expected inflation) is esogenous. The loss function in this case is:
 
-- The inferior solution is time-consistent, while announcing $\pi = 0$ is clearly not.
-- There is a suboptimal high inflation in equilibrium, called <b>inflation-bias</b>.
-- _Intuition_: a discretionary policy provides an inferior result and a monetary policy dependent on _ad-hoc_ government decisions is therefore not optimal.
+$$
+L(\pi, y) = \alpha(\pi - \tilde \pi)^2 + \beta( y - \tilde y)^2
+$$
+
+If we substitute the Phillips Curve and we calculate the first derivative w.r.t $\pi$:
+
+$$
+\frac{\partial L}{\partial \pi} = 2 \alpha (\pi -\tilde \pi) + 2 \beta (y^N - \beta(\pi - \pi_E)-\tilde y)^2
+$$
+
+that leads to:
+
+$$
+\pi = \frac{\beta (\beta \pi_E - y^N + \tilde y) + \alpha \tilde y}{\alpha + \beta^2}
+$$
+
+if it holds that $\tilde \pi = \pi_E$:
+
+$$
+\pi = \tilde \pi + \frac{\beta (\tilde y - y^N)}{\alpha + \beta^2}
+$$
+
+_Intuition: the central bank sets the inflation a bit higher than its target to bring y closer to $\tilde y$._
+
+We immediately notice that the first solution, $\pi = 0$,  is <b>time-inconsistent</b>.
+
+Indeed, if $\pi = \pi_E$, there's nop surprise inflation and the output would stays at its natural level $y = y^N$, still achieving the inflation target $\tilde \pi$.
+
+However, this plan is only _"ex-ante"_ optimal and in reality (_"ex-post"_) will break since the CB has an incentive to cheat one expectations are done.<br/>Indeed, if the private sector actually believes the CB can set low inflation $\pi_E = \tilde \pi$, the CB could just cause the a tiny bit of surprise inflation to boost output $y$.
+
+For this reason, the announcement $\pi = \tilde \pi$ is not credible. Furthermore, in a world of rational expectations, people understand in advance the CB's incentives and anticipate this behavior.
 
 For these reasons, since discretionary policy does not provide the desired results, it is _socially-optimal_ to delegate monetary policy to an independent institution, that then credibly announces $\pi = 0$.
 
@@ -1690,6 +1721,8 @@ _In general_, if only people with real liquidity needs withdraw at $t = 1$ the b
 - _if needed;_ limited liquidation of long-term assets 
 in this case, the remainin gassets can stay invested and generate return at $t = 2$.
 
+---
+<br/>
 <b>The panic-scenario</b> 
 
 Now suppose that many depositors try to withdraw at $t = 1$, including those who could actually wait. In this case, the bank must liquidate a large amount of its long-term assets early _(remember that early liquidation is costly)_, so <b>panic destroys value</b>.
@@ -1712,8 +1745,8 @@ those who arrive _early_ are more likely to be paid in full
 In a panic, it can be <b>individually rational</b> to withdraw early simply because others may do so first <br/>$\implies$
 this <b>first-mover advantage</b> is the central ingredient of the Diamond-Dybvig logic.
 
-If everyone expects a run, the running becomes <b>individually rational</b> and so the run occurs. 
-
+If everyone expects a run, then running becomes <b>individually rational</b> and so the run occurs. 
+<br/>
 ---
 <br/>
 <b>Liquidity Crisis vs Solvency Crisis</b>
@@ -1726,6 +1759,7 @@ _In general,_ a <b>liquidity crisis</b> arises because fund are needed now, a <b
 The Diamond-Dybvig model is a story about a <b>liquidity crisis that can turn into a solvency crisis</b>
 
 Note that crsis can also begin in the opposite direction: <b>doubts about solvency can trigger a liquidity crisis</b>.
+
 
 ---
 <br/>
@@ -1774,6 +1808,11 @@ This is why modern banking systems do not rely on deposit insurance or LOLR, the
 - <b>liquidity regulation</b>: banks must hold enough liquid assets
 
 $\implies$ a stable system requires both crisis-management tools and ex-ante regulation.
+
+
+Note that whether a bank can obtain emergency liquidity from the central bank depends on whether it is illiquid or insolvent: 
+- <b>panic runs</b> reflect temporary illiquidity _(LOLR can bridge the gap and prevent fire sales);_ 
+- <b>fundamental runs</b> reflect true insolvency _(LOLR cannot restore solvency and recapitalization/fiscal measures are required)._
 
 ---
 <br/>
@@ -1921,7 +1960,7 @@ So there is a clear trade-off:
 So the main policy challenge is to combine both $\implies$ credible long-run debt reduction with enough short-run flexibility in major shocks.
 
 A new approach to limit public debt accumulation is a <b>debt-sensitive majority rule</b>:
-- the majority needed to approve the budget is 50%  there is no deficit, but the required majority increases as the planned deficit increases.
+- the majority needed to approve the budget is 50% if there is no deficit, but the required majority increases as the planned deficit increases.
 <br/>$\implies$ for instance, a deficit of 1% of GDP may require 55% of votes, while a deficit of 2% may require 60%, and so on.
 
 _According to this rule_: the higher the planned public debt, the higher the parliamentary majority needed to approve it.
@@ -2014,7 +2053,7 @@ $$
 The corresponding forecast error is:
 
 $$
-e_{t+1|t} = y_{t+1} - \hat y_{t+1} = \epsilon_{t+1}, \quad \mathbb{V}_t(e_{t+1|t}) = \sigma^2
+e_{t+1|t} = y_{t+1} - \hat y_{t+1} = \epsilon_{t+1}, \quad \mathbb{Var}_t(e_{t+1|t}) = \sigma^2
 $$
 
 For horizon $h$:
@@ -2103,5 +2142,3 @@ Then, we use the measurement equation to forecast observables:
 $$
 \hat y_{t+1|t} = \hat \Lambda \hat f_{f+1|t}
 $$
-
-## <a id="12"><b>11. Technical Appendix</b> </a>
