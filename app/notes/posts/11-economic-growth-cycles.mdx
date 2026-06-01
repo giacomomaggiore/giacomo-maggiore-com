@@ -639,11 +639,11 @@ _Intuition_:
 - if we make use of the aggregate demand function $y = m - p$, we can solve Lucas Supply Function for $p$ and $y$:
 
 $$
-p = \frac{1}{1 + b}m + \frac{b}{1+b}E(p)
+p = \frac{1}{1 + b}m + \frac{b}{1+b}\mathbb{E}(p)
 
 $$
 $$
-y = p =\frac{b}{1+b}m - \frac{b}{b+1}E(p)
+y = p =\frac{b}{1+b}m - \frac{b}{b+1}\mathbb{E}(p)
 $$
 
 This model argues that there's a statistical output-inflation relation: however, if policy makers attempt to take advantage of this _(raising output by raising the money growth rate above the trend level)_, they may cause this relationship to break down.
@@ -766,7 +766,7 @@ $$
 MPC \equiv \frac{\partial C_t}{\partial Y_t} = c
 $$
 
-Furthermore, the <b>Average Propensity of consumption</b> (APC), that dereases with an increasing income, is defined as:
+Furthermore, the <b>Average Propensity of consumption</b> (APC), that decreases with an increasing income, is defined as:
 
 $$
 APC \equiv \frac{C_t}{Y_t} \equiv \frac{\bar C}{Y_t} + c
@@ -888,7 +888,9 @@ The model has then these implications:
 <b>Intertemporal Budget Constraint of the Government</b>
 
 In a 2-period model, the government levies taxes $T_t$ and spends $G_t$ in public goods (non rival and non-excludable).
--- In the first period, the government can end up in a fiscal deficit (or surplus if $D<0$): 
+
+- In the first period, the government can end up in a fiscal deficit (or surplus if $D<0$): 
+
 $$
 D_1 := G_1 - T_1
 $$
@@ -957,7 +959,7 @@ $$
 ---
 <br/>
 <b>The Solow Model - General Assumptions</b>
-
+<br/>
 - A closed economy _(no trade)_
 - One good that can be consumed or used as capital 
 - Households save a _constant exogenous fraction_ $s$ of their income _(we are not interested in why they save $s$, we simply put that value into the model)_
@@ -1270,7 +1272,7 @@ _Banks can redistribute reserves among themselves, but only the central bank can
 ---
 <br/>
 <b>How is money created?</b>
-- <b>Cash (banknotes and coins)</b>: cash is a central bank liability issued physically _(liability $\to$ cash is recognized as a claim on the central bank's balance sheet $\to$ cash is accepted at par by the central bank and the state $\to$ it functions as "final money" on the economy).
+- <b>Cash (banknotes and coins)</b>: cash is a central bank liability issued physically _(liability $\to$ cash is recognized as a claim on the central bank's balance sheet $\to$ cash is accepted at par by the central bank and the state $\to$ it functions as "final money" on the economy)._
     - when a central bank issues cash typically: banknotes _(liability)_ increase and assets _(typically something received in exchange)_ increase.
     - When a person withdraws cash, the commercial bank gives away cash and its reserve account at the central bank is debited $\implies$ the central bank's liability _(cash)_ is now held by that person, not the bank anymore $\implies$ _cash issuance itself is just a change in who holds the liability_.
 
