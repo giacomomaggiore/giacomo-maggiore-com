@@ -26,7 +26,7 @@ Common goals of econometric analysis are:
 - estimating relationships between variables 
 - testing economic theories and hypotheses
 - evaluating and implementing government and business policy
-
+<br/>
 <b>Structure of Econometric Data</b>
 
 - Cross sectional data 
@@ -128,8 +128,8 @@ We start now with <b>Population Modelling</b> and consider the following assumpt
 - <b>SLR.1: Linear parameters</b>
     - in the population model the following relation holds: $y = \beta_0 + \beta_1 x + \mu$
 
-- <b>SLR.2: Random sampling</b> 
-  - we have a random sample of size $n$ of random variables $(x,y)$
+-- <b>SLR.2: Random sampling</b> 
+  - we have a random sample of size $n$ of pairs $(x_i,y_i)$
 
 - <b>SLR.3: Sample variation in the explanatory variable</b>
   - the sample outcomes on $x$ are not all the same value
@@ -172,7 +172,9 @@ $$
 \end{align*}
 $$
 
-These are called <b>populatio moment restrictions</b>
+where the second equation comes from the covariance formula and the fact that $\mathbb{E}[\mu] = 0$.
+
+These are called <b>population moment restrictions</b>
 
 Using then the <b>sample moments</b> from the population, we can get estimates of the population moments.
 
@@ -180,15 +182,43 @@ Recall:
 - $\sum_i (y_i - \beta_0 - \beta_1 x_i)/n = 0\quad \quad  (1)$
 - $\sum_i x_i((y_i - \beta_0) - \beta_1 x_i)/n = 0 \quad (2)$
 
-we rewrite $(1)$ as: $\quad b_0 = \bar y - b_1 \bar x $, then we plug into $(2)$ and solve for $b_1$:
+We rewrite $(1)$ as:
 
 $$
-
-b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
-
+b_0 = \bar y - b_1 \bar x
 $$
 
-Finally, we can easily put back $b_1$ into the first equation and derive $b_0$.
+Plugging this into $(2)$ and solving yields the familiar slope estimator:
+
+$$
+b_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}.
+$$
+
+To obtain the intercept $b_0$, start from the sample first-order condition (1):
+
+$$
+\sum_{i=1}^n (y_i - b_0 - b_1 x_i) = 0.
+$$
+
+Rearrange:
+
+$$
+n b_0 = \sum_{i=1}^n y_i - b_1 \sum_{i=1}^n x_i
+$$
+
+Divide by $n$ and use the sample means $\bar y$ and $\bar x$:
+
+$$
+b_0 = \bar y - b_1 \bar x.
+$$
+
+Substituting the closed-form $b_1$ gives the explicit intercept estimate:
+
+$$
+b_0 = \bar y - \bar x \; \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}.
+$$
+
+This algebra shows the OLS line passes through the point $(\bar x,\bar y)$ and yields the intercept as the sample mean of $y$ minus the slope times the sample mean of $x$.
 
 _Intuition_: the slope estimate is the <b>sample covariance</b> between $x$ and $y$, divided by the sample variance of $x$.
 - if $x,y$ are positively correlated, the slope will be positive.
@@ -215,6 +245,31 @@ $$
 R^2 = \frac{\text{SSE}}{\text{SST}} = 1 - \frac{\text{SSR}}{\text{SST}}
 $$
 
+The second equality follows from the decomposition of total variation. Write each deviation from the mean as the explained part plus the residual: $y_i-\bar y=(\hat y_i-\bar y)+\hat u_i$. Then
+
+$$
+	\text{SST}=\sum_i (y_i-\bar y)^2=\sum_i\big[(\hat y_i-\bar y)+\hat u_i\big]^2
+=\sum_i(\hat y_i-\bar y)^2+\sum_i\hat u_i^2+2\sum_i(\hat y_i-\bar y)\hat u_i.
+$$
+
+The cross term vanishes because OLS residuals are orthogonal to the fitted values (equivalently to the regressors):
+
+$$
+\sum_i(\hat y_i-\bar y)\hat u_i = 0.
+$$
+
+Therefore
+
+$$
+	\text{SST}=\text{SSE}+\text{SSR}.
+$$
+
+Dividing by $\text{SST}$ gives
+
+$$
+1=\frac{\text{SSE}}{\text{SST}}+\frac{\text{SSR}}{\text{SST}}\quad\Longrightarrow\quad \frac{\text{SSE}}{\text{SST}}=1-\frac{\text{SSR}}{\text{SST}}.
+$$
+
 ---
 
 Be aware that, the term <b>linear </b> in a OLS model does not mean a linear relationship between the variables, but a model in which the parameters enter the model in a linear way. <br/>The following are all linear models (in the parameters):
@@ -226,8 +281,8 @@ Be aware that, the term <b>linear </b> in a OLS model does not mean a linear rel
 <br/>
 <b>Implication of the Simple Linear Regression</b>
 
-1. OLS is unbiased _(the proof depend on the 4 assumptions, if any fails, the OLS is not necessarily unbiased)_
-2. The sampling distibution of our estimates is centered around the true parameter 
+1. OLS is unbiased _(the proof depends on the four assumptions; if any fail, OLS is not necessarily unbiased.)_
+2. The sampling distribution of our estimates is centered around the true parameter.
 
 But, following the second implication, how likely is it that the true slope is slightly larger, smaller or zero?
 
@@ -251,9 +306,9 @@ $$
 $$
 
 - the larger the error variance $\sigma^2$, the larger the variance of the slope estimate.
-- the large the variability in the $x$ ($SST_x$), the smaller the variance of the slope estimate.
+- the larger the variability in the $x$ ($SST_x$), the smaller the variance of the slope estimate.
 
-Finally, starting from the residuals $\hat u_i$, we can form an <b> unbiased estimate of the error variance</b> (often called the <b>mean square error</b> (MSE)), denoted by $s^2$:
+Finally, starting from the residuals $\hat u_i$, we can form an <b>unbiased estimate of the error variance</b> (often called the <b>mean squared error</b> (MSE)), denoted by $s^2$:
 
 $$
 s^2 = (n-2)^{-1} \sum_i \hat u_i^2 = \frac{SSR}{n-2}
@@ -267,7 +322,7 @@ Moreover, we divide by $(n-2)$ because, estimating $b_0, b_1$, we lost 2 degrees
 
 ## <a id="3"><b>3 Multiple Regression Analysis: Basics</b> </a>
 
-The key problem with simple linear regression is that the assumption $\mathbb{E}[u | x] = \mathbb{E}[u] =0 $is _often problematic_.
+The key problem with simple linear regression is that the assumption $\mathbb{E}[u | x] = \mathbb{E}[u] = 0$ is _often problematic_.
 
 Consider, for example, that the _true population model_ is:
 
@@ -282,7 +337,7 @@ $$
 
 The previous assumption states that the error term $v = \beta_2 \text{IQ} + \mu$ has $0$ (zero) expected value _(no trend)_ or, in other words, $\text{IQ}$ <b>does not</b> correlate with the $\text{wage}$.
 
-This causes $\beta_1$ to be <b>biased</b> compared to the "true parameter", so it _doesn't measure_ the causal effect of education to wage.
+This causes $\beta_1$ to be <b>biased</b> compared to the "true parameter", so it _doesn't measure_ the causal effect of education on wage.
 
 Thus, instead of assuming that multiple variables are _uncorrelated_ with the output variable, the <b>multiple regression model </b> allows to include them directly in the model.
 
@@ -307,13 +362,13 @@ $$
 
 leading to $k + 1$ conditions to derive $k + 1$ parameters.
 
-The <b>estimate model</b> $\hat y = b_0 + b_1 x_1 + b_2 x_2 \ldots b_k x_k + \mu$ alloqs a <b>ceteris paribus</b> interpretation, that means that a change in $x_1$, $\Delta x_1$, leads to a change in $y$ given by $b_1 \Delta x_1$, keeping all the other $x_i$ fixed.
+The <b>estimate model</b> $\hat y = b_0 + b_1 x_1 + b_2 x_2 \ldots b_k x_k + \mu$ allows a <b>ceteris paribus</b> interpretation, that means that a change in $x_1$, $\Delta x_1$, leads to a change in $y$ given by $b_1 \Delta x_1$, keeping all the other $x_i$ fixed.
 
 ---
-
+<br/>
 <b>Frisch-Waugh-Lovell (FWL) Theorem</b>
 
-Given a multiple (dual for example) regression model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2  + \mu$, the coefficient $\beta_1$ can be found in 2 steps:
+Given a multiple regression model (two regressors, for example) $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2  + \mu$, the coefficient $\beta_1$ can be found in two steps:
 
 1. Regress $x_1$ on $x_2$:
 
@@ -329,15 +384,15 @@ $$
 y = \gamma \hat{r}_1 + e
 $$
 
-The resulting coefficient $\gamma$ will be identical $b_1$ of the original model.
+The resulting coefficient $\gamma$ will be identical to $b_1$ of the original model.
 
 ---
 
 The <a href="#R_squared"> previous definition of $R^2$ is still valid</a>, but we can add the following remarks:
 
 - $R^2$ is the <b>squared correlation coefficient </b> between $y$ and the predicted $\hat y$.
-- $R^2$ <b>never decreases</b>  when adding independent variables to a regression _(usually will increase)_.
-- Because it increases changing the number of parameters, it <b>NOT</b> a good measure to compare different models.
+- $R^2$ <b>never decreases</b> when adding independent variables to a regression (it usually increases).
+- Because it increases when the number of parameters changes, it is <b>NOT</b> a good measure for comparing different models.
 
 As in the simple regression model, we can formalize the assumptions for the multiple one:
 
@@ -480,7 +535,7 @@ Once we know that the estimate is centered around the true parameter, we want to
 
 If we add a fifth assumption (<b>MLR.5 Homoskedasticity</b>), we know that:
 $$
-	ext{Var}[\mu | x_1, \ldots, x_k] = \mathbb{E}[\mu^2 | x_1, \ldots, x_k] - \mathbb{E}[\mu | x_1, \ldots, x_k]^2 = \sigma^2
+	\text{Var}[\mu | x_1, \ldots, x_k] = \mathbb{E}[\mu^2 | x_1, \ldots, x_k] - \mathbb{E}[\mu | x_1, \ldots, x_k]^2 = \sigma^2
 $$
 
 we also know/derive that:
@@ -498,15 +553,24 @@ $$
 
 Given the assumptions from MLR.1 to MLR.5,
 $$
-	ext{Var}[b_i] = \frac{\sigma^2}{SST_i (1 - R_i^2)}
+  	\text{Var}[\,\hat b_j\,] \,=\, \frac{\sigma^2}{SST_j\,(1 - R_j^2)}
 $$
 
-where $SST_i = \sum_i (x_{i,j} - \bar x_j)^2$ and $R_j^2$ is the $R^2$ from the regression $x_j$ from all other $x_i$.
+where
+- $SST_j = \sum_{i=1}^n (x_{i,j} - \bar x_j)^2$ is the total sum of squares of the predictor $x_j$ (i indexes observations, j indexes the variable), and
+- $R_j^2$ is the $R^2$ from the auxiliary regression of $x_j$ on the other regressors (including the intercept).
 
- - a larger $\sigma^2$ leads to larger variance in the estimators.
- - a smaller $SST_i$ implies a larger variance in the estimators.
- - a larger $R_j^2$ _(linear dependence between the variables)_ implies larger variance in the estimators.
-    - this is called <b>multicollinearity problem</b>.
+Intuition and consequences:
+- a larger $\sigma^2$ increases the variance of the estimator.
+- a smaller $SST_j$ (less spread in $x_j$) increases the variance of the estimator.
+- a larger $R_j^2$ (strong linear dependence between $x_j$ and the other regressors) increases the variance of the estimator $\to$ this is the <b>multicollinearity</b> effect.
+
+Notes:
+- If you only have one regressor (no other x's), drop the j subscript: $SST=\sum_i(x_i-\bar x)^2$ and $R_j^2=0$, recovering $\text{Var}[\hat b]=\sigma^2/SST$.
+- The Variance Inflation Factor is $\mathrm{VIF}_j = 1/(1-R_j^2)$; it quantifies the multiplicative inflation of the variance due to collinearity.
+<br/>
+---
+
 
 Let's analyze now what happens if we mis-specify the model. Consider again the true and the mis-specified models:
 
@@ -526,15 +590,15 @@ $$
 $$
 
 _Intuition:_ 
-- the variance of the estimaor is smaller in the mis-specified model.
-- the mis-specified model is biased 
-- As the sample size grows, the variance of each estimator shrinks to zero, making the variance difference less important
+- the variance of the estimator is smaller in the mis-specified model.
+- the mis-specified model is biased.
+- As the sample size grows, the variance of each estimator shrinks to zero, making the variance difference less important.
 <br/>
 ---
 <br/>
 <b>Estimating the error</b>
 
-- Estimate of the errorr variance
+- Estimate of the error variance
 
 $$
 s^2 = \hat{\sigma}^2
@@ -576,16 +640,18 @@ Under the assumptions MLR.1 to MLR.5, the $s^2$ estimator is unbiased, $\mathbb{
 Under the assumptions MLR.1 to MLR.5, the OLS estimators $b_0 \ldots b_k$ are the <b>best linear unbiased estimators (BLUEs)</b> of $\beta_0 \ldots \beta_k$:
 - <b>Best</b>: estimators have the lowest possible variance 
 - <b>Linear</b>: estimators are a linear function of $y$
-- <b>Unbiased</b>: expected value equala the population paramters.
+- <b>Unbiased</b>: expected value equals the population parameters.
 
+<br/>
+---
 
 ## <a id="4"><b>4 Multiple Regression Analysis: Inference</b> </a>
 
-So far, we've seen that, given the MLR 1-5, the <b>OLS is BLUE</b> (mosy precise, most accurate).
+So far, we've seen that, given the MLR 1-5, the <b>OLS is BLUE</b> (most precise, most accurate).
 
 To do hypothesis testing, we add another assumption.
 
-<b>MLR. 6: Normality</b> (Classica Linear Model [CLS] Assumption): the disturbance $\mu$ is independent of $x_1, ... x_k$ and it is normally distributed with zero mean and variance $\sigma^2$: $\mu \sim N(0, \sigma^2)$.
+<b>MLR. 6: Normality</b> (Classical Linear Model [CLM] Assumption): the disturbance $\mu$ is independent of $x_1, ... x_k$ and it is normally distributed with zero mean and variance $\sigma^2$: $\mu \sim N(0, \sigma^2)$.
 
 Under this assumption, conditional on the sample values of the independent variables we obtain:
 $$
@@ -609,7 +675,7 @@ $$
 
 where $\text{se}_{b_j} = s / \sqrt{SST_j (1 - R_j^2)}$ and $n-k-1$ is the degree of freedom.
 
-This result will be useuf to determine how likely an estimate $b_j$ is similar to $\beta_j$.
+This result will be useful to determine how likely an estimate $b_j$ is similar to $\beta_j$.
 
 Both the $t$-Student and the Normal distribution are symmetric bell-shaped but the $t$-Student:
 - has fatter tails than the normal 
@@ -622,16 +688,16 @@ Both the $t$-Student and the Normal distribution are symmetric bell-shaped but t
 </div>
 
 
-<b>Test Hypotesis</b>
+<b>Test Hypotheses</b>
 
 Before starting with the test, let's take a look to the different errors:
 
-- <b>Type I Error</b>: we reject the null hypotesis when it is true _(false positive)_.
+-- <b>Type I Error</b>: we reject the null hypothesis when it is true _(false positive)_.
 $$
 \alpha = P(H_0 \text{ rejected when it is true })
 $$
 
-- <b>Type II Error</b>: we don't reject the null hypotesis when it is false _(false negative)_.
+-- <b>Type II Error</b>: we don't reject the null hypothesis when it is false _(false negative)_.
 $$
 \beta = P(\text{failing to reject } H_0 \text{when it is false})
 $$
@@ -653,12 +719,12 @@ $$
 \text{employment} = b_0 + b_1 \text{education} + ... + b_k x_{ik} + \mu_i
 $$
 
-1. We set up the hypotesis: $H_0: b_1 \le 0, H_1: b_1 > 0$ _($H_0$: education doesn't increase employment)_ 
+1. We set up the hypothesis: $H_0: b_1 \le 0, H_1: b_1 > 0$ _($H_0$: education doesn't increase employment)_ 
 2. We calculate $t = b_1 / se(b_1)$ 
 3. We consider $c$ using $\alpha$ (confidence level) and degree of freedom $= n - k - 1$ 
 4. We reject $H_0$ if $t > c$ _(if $H_0: b_1 > 0$ use $t < - c$)_
 
-- If we reject the null hypotesis, we typically say: _$x_j$ is statistically _significant/has statistically significant effect on $y$ at the $\alpha %$ level._
+- If we reject the null hypothesis, we typically say: _$x_j$ is statistically significant / has a statistically significant effect on $y$ at the $\alpha\%$ level._
 - 
 Graphically:
 <div align="center">
@@ -677,7 +743,7 @@ Graphically:
 - The intercept is tested exactly like any other coefficient, so include it unless the question explicitly excludes it.
 - If a coefficient is not significant, the safest interpretation is that the _ data do not provide enough evidence against the null at the chosen level._
 
-More generally, we can test wheter an estimate fits a specific value: $H_0: b_j = a$.
+More generally, we can test whether an estimate fits a specific value: $H_0: b_j = a$.
 
 In this case, we use the appropriate $t$-statistic: $t = (b_j - a)/se(b_j)$, where $a = 0$ for the standard test.
 
@@ -691,7 +757,7 @@ A $(1 - \alpha)\%$ confidence interval is defined as $b_j \pm c \cdot se(b_j)$ w
 
 <b> P-Values for $t$-Tests</b>
 
-An alternative approach is to calculate what is the _smallest significance level_ at which the null hypotesis would be rejected given the data.
+An alternative approach is to calculate what is the _smallest significance level_ at which the null hypothesis would be rejected given the data.
 
 So we compute the $t$-statistic and we look up at which percentile it is in the appropriate $t$-distribution. This is called the <b>p-value</b>.
 
@@ -724,16 +790,16 @@ $$
 
 <b>Multiple Linear Restrictions</b>
 
-So far we tested a single linear restriction ($b_1 = 0, b_1 = b_2$). Now we want to jointly test multiply hypotesis about the parameters.
+So far we tested a single linear restriction ($b_1 = 0, b_1 = b_2$). Now we want to jointly test multiple hypotheses about the parameters.
 
 A typical example is testing _"exclusion restrictions"_, that means knowing if a group of parameters are equal to zero.
 
-Then the null hypotesis might be something like: $H_0: b_{k-q+1} = 0 = ... = b_k = 0$, but we cannot check each statistic separately because we want to know fi the $q$ parameters are jointly significant each other.
+Then the null hypothesis might be something like: $H_0: b_{k-q+1} = 0 = ... = b_k = 0$, but we cannot check each statistic separately because we want to know if the $q$ parameters are jointly significant.
 <br/>We instead need to estimate:
 - the <b>restricted model</b> without all the $x_{k-q+1}..x_k$
 - the <b>unrestricted model</b> with all the $x$ included.
 
-_Intuition: we want to know if the change in SSR is bigh enough_.
+_Intuition: we want to know if the change in SSR is big enough_.
 
 This is called the $F$-statistic, defined as: 
 
@@ -777,7 +843,7 @@ If $\mu$ is not normally distributed, we sometimes will refer to the standard er
 
 <b>Asymptotic Efficiency</b>
 
-Thereare other estimators besided OLS that are consistent. However, under the Gauss-Markov assumptions, the OLS estimators will have the smallest asymptotic variances, therefore we say that the OLS is _asymptotically_ efficient.
+There are other estimators besides OLS that are consistent. However, under the Gauss-Markov assumptions, the OLS estimators will have the smallest asymptotic variances; therefore we say that OLS is _asymptotically_ efficient.
 
 ---
 
@@ -823,9 +889,9 @@ OLS can also be used for relationship that are not strictly linear in $x,y$ by u
 <br/>
 <b>Log Models</b>
 
-- they are invariant to the sale of the variables since it's all about percentage changes 
+- they are invariant to the scale of the variables since it's all about percentage changes.
 - they give a direct estimate of the _elasticity_ 
-- for models with $y > 0$, the conditional distribution is often Heteroskedastic or skewed, whil $\ln(y)$ is much less.
+- for models with $y > 0$, the conditional distribution is often heteroskedastic or skewed, while $\ln(y)$ is often less so.
 - the distribution of $\ln(y)$ is narrower, limiting the effect of outliers.
 
 _Note that, when using the log form, variables have to be positive!_
@@ -842,7 +908,7 @@ For a model like $y = \beta_1 x_1 + \beta_2 x_2^2 +\mu$ we know that:
 <br/>
 <b>AdjustedR-Squared</b>
 
-Recall that $R^2$ always icrease as more variables are added to the model since $SSR$ never decreases with more variables:
+Recall that $R^2$ always increases as more variables are added to the model since $SSR$ never decreases with more variables:
 $$
 R^2 = \frac{SSE}{SST} = 1 - \frac{SSR}{SST}
 $$
@@ -853,40 +919,43 @@ $$
 \text{Adj.} R^2 = 1 - \frac{SSR}{SST}\frac{(n-1)}{(n-k-1)}
 $$
 
-The adjusted $R^2$ penalies models with more variables, especially for low $n$ and high $k$ and increases only when additional variables are added whose $t$-statistic is larger than $\approx$ 1. $\implies$ adding variables with poor explanatory opower decreases adjusted $R^2$.
+The adjusted $R^2$ penalizes models with more variables, especially for low $n$ and high $k$, and increases only when additional variables are added whose $t$-statistic is larger than $\approx 1$. This means adding variables with poor explanatory power decreases adjusted $R^2$.
 
 In other terms, we usually use adjusted $R^2$ to compare models with the same $y$, but never with models with different $y$.
 
 <b>(Standard Errors for) Predictions</b>
 
-Suppose we want to use our estimates to obtain a _specific prediction_, in this case we want to estimate:
+Suppose we want to use our estimates to obtain a specific prediction at a point $c=(c_1,\ldots,c_k)$. The conditional mean is
 
 $$
-\mathbb{E}(y | x_1 = c_1, ..., x_k = _k) = \theta_0 + b_0 + b_1 c_1 + ... b_k c_k
+\mathbb{E}(y \mid x_1 = c_1, \ldots, x_k = c_k) = b_0 + b_1 c_1 + \cdots + b_k c_k.
 $$
 
-If we want to have an idea of the precision of the estimate _(easily done by substituting values)_ we can:
-- rewrite  $\beta_0 = \theta_0 - \beta_1 c_1 - ... \beta_k c_k$
-- substitute in to obtain: $y = \theta_0 + \beta_1 (x_1 - c_1) + ... + \beta_k (x_k - c_k) + \mu$
-- regress $y_i$ on $(x_{ij}-c_{ij})$ and the intercept will gie the predicted value and its standard error $\implies$ the minum standard error is obtained when the $c$ equal the means of the $x$.
+To assess the precision of this predicted mean, compute the standard error
+
+$$
+\operatorname{se}\big(\hat y(c)\big)=\sqrt{\operatorname{Var}\big(b_0 + b_1 c_1 + \cdots + b_k c_k\big)},
+$$
+
+which can be obtained from the covariance matrix of the OLS estimates. The standard error for a new observation also adds the error variance $\sigma^2$.
 
 ---
 <br/>
 <b>Regression with Dummy Variables</b>
 
-A dummy _(binary)_ variable is variable that takes on the value of $1$ o $0$.
+A dummy (binary) variable is a variable that takes the value 1 or 0.
 
 Consider a simple model with one continuous variable $x$ and a dummy $D$:
 $$
-y = \beta_ 0 + \delta_0 D + \beta_1 x_1 + \mu 
+y = \beta_0 + \delta_0 D + \beta_1 x_1 + \mu.
 $$
-- $D=1$ if female, $0$ otherwise 
-- $x$: education in years 
-- $y$: wage 
+- $D=1$ if female, $0$ otherwise.
+- $x$: education in years.
+- $y$: wage.
 
-This can be interprete as an _incercept shift_:
-- if $D= 0 \implies y = \beta_ 0 + \beta_1 x_1 + \mu \quad $ _(male, BASE GROUP)_
-- if $D = 1 \implies y = (\beta_0 + \delta_0) + \beta_1 x_1 + \mu \quad$ _(female)_ 
+This can be interpreted as an intercept shift:
+- if $D=0$ then $y = \beta_0 + \beta_1 x_1 + \mu$ (male, base group).
+- if $D=1$ then $y = (\beta_0 + \delta_0) + \beta_1 x_1 + \mu$ (female).
 
 <div align="center">
 ![Population Model](/images/notes/econometrics/dummy.png)
@@ -902,9 +971,9 @@ _Note that we can model interaction between dummies to divide in subgroups and b
 ![Dummy Vars](/images/notes/econometrics/dummy-2.png)
 </div>
 
-<b>Testing for Differences Acorss Groups</b>
+<b>Testing for Differences Across Groups</b>
 
-Testing wheter a regression function is different for one group versun one another can be thought as of _testing for the joint significance of the dummy and its interaction_ with all other $x$ variables.
+Testing whether a regression function is different for one group versus another can be thought of as _testing for the joint significance of the dummy and its interactions_ with all other $x$ variables.
 
 So we can estimate the model _with_ and _without_ the interactions and form a $F$-statistic _(very tedious in practise!)_.
 
