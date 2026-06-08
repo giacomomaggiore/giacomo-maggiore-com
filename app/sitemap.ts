@@ -1,4 +1,5 @@
 import { getBlogPosts } from './blog/utils'
+import { getBlogPosts as getNotes } from './notes/utils'
 
 export const baseUrl =
   process.env.NODE_ENV === "production"
@@ -25,10 +26,16 @@ export default async function sitemap() {
     lastModified: postsWithDates.get(slug)!,
   }))
 
-  const routes = ['', '/blog', '/resources'].map((route) => ({
+  // Notes: single-language, slug == filename (no .en/.it suffix to strip)
+  const notes = getNotes().map(note => ({
+    url: `${baseUrl}/notes/${note.slug}`,
+    lastModified: note.metadata.publishedAt,
+  }))
+
+  const routes = ['', '/blog', '/notes', '/resources'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }))
 
-  return [...routes, ...blogs]
+  return [...routes, ...blogs, ...notes]
 }

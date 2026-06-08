@@ -47,6 +47,7 @@ wiki/
   private/         # local Obsidian notes; queryable but NEVER a website page
     <topic>/
     index.md       # vault index ([[wikilink]] map, maintained by pipeline)
+    log.md         # append-only ingestion log (datetime, filename, topic, source path)
 lib/wiki/
   paths.ts         # dir constants: PUBLIC + PRIVATE
   frontmatter.ts   # shared parser (extracted from the two utils.ts)
@@ -145,6 +146,11 @@ tools/ingest/  pyproject.toml(watchdog, google-genai, python-frontmatter) cli.py
 - **link.py**: one Gemini call with the new body + exact existing-title list; prompt forbids inventing
   links. **Then validate programmatically**: regex every `[[...]]`, drop any target not in the allowlist
   (the real anti-hallucination guard). Update `wiki/private/index.md` (validated against real paths).
+  Append a line to `wiki/private/log.md`:
+  `| 2026-06-08 14:32 | my-paper.md | finance | wiki/source/my-paper.pdf |`
+  (columns: datetime ISO 8601, output filename, topic, original source path). Create the file with a
+  header row if it doesn't exist yet. Also append when a file is manually added to `wiki/public`
+  (watch.py detects any new `.md`/`.mdx` in `wiki/` and logs it even if parsing is skipped).
 - **CLI**: `python -m ingest ingest <pdf> [--topic x]` | `watch` | `lint`.
 - **lint.py**: deterministic checks always (orphans, broken `[[links]]`, missing frontmatter, pages not
   in index, dup titles); opt-in Gemini checks (contradictions, stale claims, missing concept pages,
