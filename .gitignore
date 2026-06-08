@@ -17,8 +17,15 @@
 
 # misc
 .DS_Store
+**/.DS_Store
 *.pem
 .vscode
+
+# obsidian
+**/.obsidian/
+
+# wiki source drop folder
+wiki/source/
 
 # debug
 npm-debug.log*
