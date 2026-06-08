@@ -80,46 +80,63 @@ app/
 4. Extract duplicated `parseFrontmatter` from both `utils.ts` into `lib/wiki/frontmatter.ts`.
 5. Verify the site builds and all existing pages render unchanged.
 
-## Phase 2 — Public wikilink rendering
-
-1. Add `remark-wiki-link` (dynamic-imported like `remark-math`/`remark-gfm` in
-   `app/components/mdx.tsx:306-310`).
-2. `lib/wiki/wikilinks.ts`: build a **public-only** `title -> /notes|blog/<slug>` map.
-   - `[[Title]]` → public page → internal `next/link` (reuse `CustomLink` branch, `mdx.tsx:147`).
-   - `[[Title]]` → private/unresolved → **plain text, not a link** (the site never links to something
-     that isn't a public page).
-3. Test: unknown `[[link]]` renders as text; known public one renders as internal link.
+lic one renders as internal link.
 
 ## Phase 3 — Full index (public + private), built at build time
 
+**Retrieval strategy: BM25 at note level → top 3-4 full notes sent to Gemini.**
+One index entry per note (not per section/chunk). BM25 scores notes, the top results are sent in
+full to Gemini. This preserves full intra-note context — if econometrics is relevant, Gemini reads
+the whole econometrics note, not just one section.
+
 1. `scripts/build-wiki-index.ts` (run via `tsx`): reads **`WIKI_PUBLIC_DIR` and `WIKI_PRIVATE_DIR`**.
-   Chunk by H2/H3 (reuse `slugify`, `mdx.tsx:179`), strip frontmatter/JSX/`<Table>`/HTML. Emit
-   `lib/wiki-index.generated.json`:
+   For each `.md`/`.mdx` file: strip frontmatter, JSX tags (`<Table .../>`, HTML), and normalize
+   whitespace. Emit `lib/wiki-index.generated.json`:
    ```ts
-   type WikiChunk = { id; slug; collection:'notes'|'blog'|'private';
-                      visibility:'public'|'private'; title; heading;
-                      url: string|null;            // null for private -> can never become a page link
-                      text; termFreq: Record<string,number> }
-   type WikiIndex = { generatedAt; docCount; chunkCount; avgChunkLen;
-                      df: Record<string,number>; chunks: WikiChunk[] }
+   type WikiNote = {
+     slug: string                        // filename without extension
+     collection: 'notes' | 'blog' | 'private'
+     visibility: 'public' | 'private'
+     title: string                       // from frontmatter
+     url: string | null                  // /notes/<slug> or /blog/<slug>; null for private
+     fullText: string                    // full cleaned note body (sent to Gemini)
+     termFreq: Record<string, number>    // token -> count, for BM25 scoring
+   }
+   type WikiIndex = {
+     generatedAt: string
+     noteCount: number
+     avgNoteLen: number                  // average token count, for BM25 length normalization
+     df: Record<string, number>          // document frequency per token, for IDF
+     notes: WikiNote[]
+   }
    ```
-   Tokenizer: lowercase, strip punctuation, EN+IT stopwords, tokens ≥3.
-2. `scripts/assert-no-private-pages.ts`: assert no `app/` page/route reads `WIKI_PRIVATE_DIR`; assert the
-   sitemap and `generateStaticParams` enumerate only public collections; assert every chunk with
-   `visibility:'private'` has `url===null`. `exit 1` on violation. **This is the enforcement of the one
-   invariant.**
-3. `package.json`: `"prebuild": "tsx scripts/build-wiki-index.ts && tsx scripts/assert-no-private-pages.ts"`,
+   Tokenizer: lowercase, strip punctuation, EN+IT stopword list, tokens ≥ 3 chars.
+
+2. **Retrieval at query time** (`lib/wiki/retrieve.ts`): BM25 (`k1=1.5, b=0.75`) over all notes,
+   return top 3–4 by score. Send their `fullText` (not excerpts) as context to Gemini.
+   If a note's `fullText` is very long (> ~50K chars), trim to that limit to stay within the model's
+   practical context budget while still covering the full note structure.
+
+3. `scripts/assert-no-private-pages.ts`: assert no `app/` page/route reads `WIKI_PRIVATE_DIR`; assert
+   the sitemap and `generateStaticParams` enumerate only public collections; assert every note with
+   `visibility:'private'` has `url===null`. `exit 1` on violation. **Enforcement of the one invariant.**
+
+4. `package.json`: `"prebuild": "tsx scripts/build-wiki-index.ts && tsx scripts/assert-no-private-pages.ts"`,
    add devDep `tsx`. (`prebuild` runs automatically before `next build`, locally and on Vercel.)
-4. `.gitignore` += `/wiki/source`, `/lib/wiki-index.generated.json`, `/tools/ingest/**/__pycache__`.
+
+5. `.gitignore` += `/wiki/source`, `/lib/wiki-index.generated.json`, `/tools/ingest/**/__pycache__`.
    (No `.vercelignore` needed for private — we don't care if it deploys; it just can't become a page.)
+
+**Local workflow:** `pnpm index` → regenerates the JSON after adding/editing notes → commit → push →
+Vercel redeploys with updated knowledge.
 
 ## Phase 4 — Query API + chat UI (answers over the whole wiki)
 
 1. `app/api/ask/route.ts` (`runtime='nodejs'`, `dynamic='force-dynamic'`; follow the server/env pattern
    of `app/api/posthog/route.ts`):
    - `import wikiIndex from 'lib/wiki-index.generated.json'` (read-only, bundled).
-   - `lib/wiki/retrieve.ts`: BM25 (`k1=1.5,b=0.75`) over **all** chunks; top-K≈8, group by slug, context
-     block capped ~30K chars; return `{contextText, citations}`.
+   - `lib/wiki/retrieve.ts`: BM25 (`k1=1.5,b=0.75`) over all notes; top 3–4 by score; return their
+     `fullText` concatenated as context + `citations` list `{title, url|null}`.
    - `lib/wiki/llm.ts`: Gemini via `@google/genai`, model from `GEMINI_MODEL`, streaming.
      System prompt: answer **only** from provided pages, cite each claim by title (`[Title]`); public
      pages get a URL, private pages cite title only (no link); refuse if not covered.
@@ -136,22 +153,31 @@ app/
 ## Phase 5 — Local ingestion pipeline (Python, under `tools/ingest/`)
 
 Python orchestrator (MinerU is a heavy Python pkg; `google-genai` for Gemini calls). Local only.
+**No file watcher — MinerU runs on-demand when you explicitly trigger it.**
+
+**Workflow:**
+1. Drop any number of PDFs into `wiki/source/` whenever you want.
+2. When ready, run one command — it processes all pending PDFs in the folder in batch.
+3. Each PDF goes through: MinerU (parse) → Gemini (link) → index + log update.
+
 ```
-tools/ingest/  pyproject.toml(watchdog, google-genai, python-frontmatter) cli.py watch.py mineru_run.py link.py vault.py lint.py
+tools/ingest/  pyproject.toml(google-genai, python-frontmatter) cli.py mineru_run.py link.py vault.py lint.py
 ```
-- **watch.py**: `watchdog` on `wiki/source/*.pdf`, debounce until file size stable.
-- **mineru_run.py**: subprocess MinerU (runs **fully locally** with its own models — no cloud call for
-  parsing) → markdown+assets → `wiki/private/<topic>/<name>.md` (`--topic` flag or Gemini-inferred).
-- **vault.py**: recursively scan vault (public+private) → `title -> relpath` = linking allowlist.
-- **link.py**: one Gemini call with the new body + exact existing-title list; prompt forbids inventing
-  links. **Then validate programmatically**: regex every `[[...]]`, drop any target not in the allowlist
-  (the real anti-hallucination guard). Update `wiki/private/index.md` (validated against real paths).
-  Append a line to `wiki/private/log.md`:
+
+- **mineru_run.py**: iterates all PDFs in `wiki/source/`, invokes MinerU subprocess for each (fully
+  local, no cloud call) → outputs markdown+assets into `wiki/private/<topic>/<name>.md`.
+  Topic comes from `--topic` flag; if omitted, Gemini infers it from the document title/content.
+- **vault.py**: recursively scans vault (public+private) → `title -> relpath` map = linking allowlist.
+- **link.py**: for each newly converted note, one Gemini call with the body + exact existing-title list;
+  prompt forbids inventing links. **Then validate programmatically**: regex every `[[...]]`, drop any
+  target not in the allowlist (the real anti-hallucination guard).
+  Updates `wiki/private/index.md` and appends to `wiki/private/log.md`:
   `| 2026-06-08 14:32 | my-paper.md | finance | wiki/source/my-paper.pdf |`
-  (columns: datetime ISO 8601, output filename, topic, original source path). Create the file with a
-  header row if it doesn't exist yet. Also append when a file is manually added to `wiki/public`
-  (watch.py detects any new `.md`/`.mdx` in `wiki/` and logs it even if parsing is skipped).
-- **CLI**: `python -m ingest ingest <pdf> [--topic x]` | `watch` | `lint`.
+  Creates `log.md` with a header row on first run.
+- **CLI**:
+  - `python -m ingest run [--topic x]` — process all PDFs currently in `wiki/source/` (batch)
+  - `python -m ingest run <file.pdf> [--topic x]` — process a single specific PDF
+  - `python -m ingest lint` — run health checks
 - **lint.py**: deterministic checks always (orphans, broken `[[links]]`, missing frontmatter, pages not
   in index, dup titles); opt-in Gemini checks (contradictions, stale claims, missing concept pages,
   suggested cross-refs/questions) → writes `wiki/private/_lint-report.md`. **Read-only — suggests, never
@@ -161,7 +187,7 @@ tools/ingest/  pyproject.toml(watchdog, google-genai, python-frontmatter) cli.py
 
 ## Libraries / env to add
 - npm: `@google/genai`, `remark-wiki-link`, devDep `tsx`; optional `@upstash/redis`.
-- Python (local only): `google-genai`, `watchdog`, `python-frontmatter`, MinerU (`magic-pdf`/`mineru`).
+- Python (local only): `google-genai`, `python-frontmatter`, MinerU (`magic-pdf`/`mineru`).
 - env: `GOOGLE_API_KEY` (server-only), `GEMINI_MODEL`; KV creds if used.
 
 ## Risks / trade-offs

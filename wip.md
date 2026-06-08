@@ -53,3 +53,90 @@ identical URLs).
   `strict: false`). Pre-existing KaTeX `No character metrics for '€'` warnings during build are unrelated.
 - `wiki/private/` does not exist yet — created in the ingestion phase (Phase 5). `WIKI_PRIVATE_DIR` is
   defined now so later phases have a stable import.
+
+---
+
+## Phase 5 — Local ingestion pipeline
+
+**Goal:** on-demand PDF → Markdown → `[[wikilinks]]` conversion, plus a vault health-check command.
+No file watcher — everything triggered manually.
+
+**Status:** ✅ Done. CLI smoke-tested; `lint` runs end-to-end against the real vault (36 notes scanned).
+
+### New files
+
+| File | Purpose |
+|------|---------|
+| `tools/ingest/__init__.py` | Makes `tools/ingest/` a Python package |
+| `tools/ingest/__main__.py` | Entry point for `python -m ingest`; adds package dir to `sys.path` |
+| `tools/ingest/pyproject.toml` | Dependency declaration (`google-genai`, `python-frontmatter`, `python-dotenv`) |
+| `tools/ingest/vault.py` | Scans all of `wiki/` (public + private) → builds `{title: filepath}` allowlist for link validation |
+| `tools/ingest/mineru_run.py` | Calls `/opt/anaconda3/bin/mineru` as subprocess; finds output `.md`; adds frontmatter (`title`, `date`, `source`, `topic`); copies images; writes to `wiki/private/<topic>/<stem>.md` |
+| `tools/ingest/link.py` | Calls Gemini to insert `[[wikilinks]]`; validates every link against the vault allowlist (drops hallucinated ones); updates `wiki/private/index.md` and appends to `wiki/private/log.md` |
+| `tools/ingest/lint.py` | Deterministic health checks (broken links, orphans, duplicate titles, missing frontmatter); optional `--llm` flag adds Gemini suggestions; writes `wiki/private/_lint-report.md` (read-only) |
+| `tools/ingest/cli.py` | `argparse` wiring for `run` and `lint` commands; loads `.env.local` automatically |
+
+### Files created at runtime (by the pipeline)
+
+- `wiki/source/` — PDF drop folder (gitignored). Place PDFs here before running.
+- `wiki/private/index.md` — vault index: one `[[Title]]` bullet per ingested note, grouped by topic.
+- `wiki/private/log.md` — append-only ingestion log (datetime, output file, topic, source PDF).
+- `wiki/private/_lint-report.md` — health-check report (overwritten on each lint run).
+
+### Dependencies installed
+
+- `python-frontmatter` 1.3.0
+- `python-dotenv` (new install)
+- `google-genai` 1.5.0 was already present
+
+### Key design decisions
+
+- **Anti-hallucination guard**: `link.py` validates every `[[...]]` against the vault allowlist after the LLM call. Any link whose target title doesn't exist in the vault is silently dropped.
+- **MinerU binary path**: hardcoded to `/opt/anaconda3/bin/mineru` in `mineru_run.py:MINERU_BIN`. Update if the path changes.
+- **LLM provider**: configured via `LLM_PROVIDER` in `.env.local`. Refactored in the next section.
+
+---
+
+## Phase 5 — LLM provider abstraction (refactor)
+
+**Goal:** decouple the pipeline from Google Gemini so the provider can be swapped via a single env var, with no code changes elsewhere.
+
+**Status:** ✅ Done.
+
+### New file
+
+| File | Purpose |
+|------|---------|
+| `tools/ingest/providers.py` | Single `generate(prompt) -> str` function. Reads `LLM_PROVIDER` from env and dispatches to `_gemini()` or `_openai()`. Each backend uses a cheap default model unless `LLM_MODEL` overrides it. |
+
+### Files edited
+
+| File | Change |
+|------|--------|
+| `tools/ingest/mineru_run.py` | Removed `from google import genai` and `_model()`. `_infer_topic()` and `run_pdf()` no longer accept a `client` parameter — they call `generate()` from `providers`. |
+| `tools/ingest/link.py` | Same: removed Gemini import, `_model()`, and `client` param from `insert_links()`. LLM call is now `linked_body = generate(prompt)`. Removed unused `import os`. |
+| `tools/ingest/lint.py` | Removed inline Gemini client creation from `_llm_suggestions()`. Now imports and calls `generate(prompt)`. |
+| `tools/ingest/cli.py` | `_require_api_key()` is now provider-aware (checks `GOOGLE_API_KEY` for gemini, `OPENAI_API_KEY` for openai). `cmd_run` no longer creates a `genai.Client` or passes it down. |
+| `tools/ingest/pyproject.toml` | Provider SDKs moved to optional extras: `pip install -e ".[gemini]"` or `pip install -e ".[openai]"`. Core deps are now only `python-frontmatter` and `python-dotenv`. |
+
+### Env vars (add to `.env.local`)
+
+```dotenv
+# Choose provider: gemini (default) or openai
+LLM_PROVIDER=gemini
+
+# Optional model override (otherwise uses the cheapest default for each provider)
+# LLM_MODEL=gemini-2.0-flash-lite   # default for gemini
+# LLM_MODEL=gpt-4o-mini             # default for openai
+
+# Key for the chosen provider:
+GOOGLE_API_KEY=...    # LLM_PROVIDER=gemini
+# OPENAI_API_KEY=...  # LLM_PROVIDER=openai
+```
+
+### Default models
+
+| Provider | Default | Notes |
+|----------|---------|-------|
+| `gemini` | `gemini-2.0-flash-lite` | Cheapest/fastest Gemini tier |
+| `openai` | `gpt-4o-mini` | Cheapest capable OpenAI model |

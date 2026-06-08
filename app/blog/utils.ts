@@ -3,17 +3,37 @@ import path from 'path'
 import { parseFrontmatter } from 'lib/wiki/frontmatter'
 import { WIKI_PUBLIC_BLOG_DIR } from 'lib/wiki/paths'
 
+
+/**
+
+ typical flow (short):
+
+Site list page → calls getBlogPosts() 
+→ render list (filter by language / strip .en/.it from slug).
+
+User opens /blog/:slug
+ → page loader calls getPost(slug, lang) 
+ → returns single post content →
+ render full post.
+
+ */
+
 export type Lang = 'it' | 'en'
 
+// returns list of .mdx files in a directory
 function getMDXFiles(dir: string) {
   return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
 }
 
+// Helper per leggere un singolo file MDX
+// e restituire un oggetto con metadata e content
 function readMDXFile(filePath: string) {
   let rawContent = fs.readFileSync(filePath, 'utf-8')
   return parseFrontmatter(rawContent)
 }
 
+// Helper per leggere tutti i file MDX in una directory e
+//  restituire un array di oggetti con metadata, slug e content
 function getMDXData(dir: string) {
   let mdxFiles = getMDXFiles(dir)
   return mdxFiles.map((file) => {
@@ -32,6 +52,9 @@ export function getBlogPosts() {
   return getMDXData(WIKI_PUBLIC_BLOG_DIR)
 }
 
+// Estrae tutti gli slug unici dai file MDX nella directory del blog
+// Considera che i file possono essere del tipo "slug.en.mdx" 
+// o "slug.it.mdx", ma vogliamo solo "slug"
 export function getAllSlugs(): string[] {
   const postsDirectory = WIKI_PUBLIC_BLOG_DIR
   const filenames = fs.readdirSync(postsDirectory)
