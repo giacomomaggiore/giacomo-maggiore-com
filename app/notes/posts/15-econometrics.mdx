@@ -16,19 +16,15 @@ summary: ''
 - [Panel Data](#8)
 - [Instrumental Variables](#9)
 <br/>
----
-<br/>
 ## <a id="1"><b>1 Introduction to Statistics and Econometrics</b> </a>
 
 <b>Econometrics</b> is the use of statistical methods to analyze economic data, starting _typically_ from <b>non-experimental data</b>.
 
-Common goals of econometric analysis are:
 - estimating relationships between variables 
 - testing economic theories and hypotheses
 - evaluating and implementing government and business policy
 <br/>
 <b>Structure of Econometric Data</b>
-
 - Cross sectional data 
   - observations that represent individuals, firms, cantons, countries _(normally, but not necessarily, at one point in time)_.
   - observations are drawn randomly from a population (if not, we have a sample-selection problem)
@@ -557,7 +553,7 @@ $$
 $$
 
 where
-- $SST_j = \sum_{i=1}^n (x_{i,j} - \bar x_j)^2$ is the total sum of squares of the predictor $x_j$ (i indexes observations, j indexes the variable), and
+- $SST_j = \sum_{i=1}^n (x_{i,j} - \bar x_j)^2$ is the total sum of squares of the predictor $x_j$ to its mean $\bar x_j$ ($i$ indexes observations, $j$ indexes the variable)
 - $R_j^2$ is the $R^2$ from the auxiliary regression of $x_j$ on the other regressors (including the intercept).
 
 Intuition and consequences:
@@ -566,8 +562,8 @@ Intuition and consequences:
 - a larger $R_j^2$ (strong linear dependence between $x_j$ and the other regressors) increases the variance of the estimator $\to$ this is the <b>multicollinearity</b> effect.
 
 Notes:
-- If you only have one regressor (no other x's), drop the j subscript: $SST=\sum_i(x_i-\bar x)^2$ and $R_j^2=0$, recovering $\text{Var}[\hat b]=\sigma^2/SST$.
-- The Variance Inflation Factor is $\mathrm{VIF}_j = 1/(1-R_j^2)$; it quantifies the multiplicative inflation of the variance due to collinearity.
+- If you only have one regressor, drop the $j$ subscript: $SST=\sum_i(x_i-\bar x)^2$ and $R_j^2=0$, recovering $\text{Var}[\hat b]=\sigma^2/SST$.
+- The <b>Variance Inflation Factor</b> is $\mathrm{VIF}_j = 1/(1-R_j^2) \to$ it quantifies the multiplicative inflation of the variance due to collinearity.
 <br/>
 ---
 
@@ -656,7 +652,7 @@ To do hypothesis testing, we add another assumption.
 Under this assumption, conditional on the sample values of the independent variables we obtain:
 $$
 
-b_i \sim N(\beta_j, \text{Var}(b_i))
+b_i \sim N(\beta_i, \text{Var}(b_i))
 $$
 _(the coefficient estimate is normally distributed around the true beta)_ 
 
@@ -687,23 +683,25 @@ Both the $t$-Student and the Normal distribution are symmetric bell-shaped but t
 ![Population Model](/images/notes/econometrics/t-student.png)
 </div>
 
-
+<br/>
+---
 <b>Test Hypotheses</b>
-
+<br/>
 Before starting with the test, let's take a look to the different errors:
 
--- <b>Type I Error</b>: we reject the null hypothesis when it is true _(false positive)_.
+- <b>Type I Error</b>: we reject the null hypothesis when it is true _(false positive)_.
 $$
 \alpha = P(H_0 \text{ rejected when it is true })
 $$
 
--- <b>Type II Error</b>: we don't reject the null hypothesis when it is false _(false negative)_.
+- <b>Type II Error</b>: we don't reject the null hypothesis when it is false _(false negative)_.
 $$
 \beta = P(\text{failing to reject } H_0 \text{when it is false})
 $$
-
+---
+<br/>
 <b>$t$ Test</b>
-
+<br/>
 1. Set up the hypothesis. $H_0, H_1$ can be one-sided ($H_0: b_j \le 0, H_1: b_j > 0$) or two sided ($H_0: b_j = 0, H_1: b_j \neq 0$).
 2. Determine the $t$-statistic using the estimates for $b_j, se(b_j)$.
 
@@ -721,12 +719,16 @@ $$
 
 1. We set up the hypothesis: $H_0: b_1 \le 0, H_1: b_1 > 0$ _($H_0$: education doesn't increase employment)_ 
 2. We calculate $t = b_1 / se(b_1)$ 
-3. We consider $c$ using $\alpha$ (confidence level) and degree of freedom $= n - k - 1$ 
+3. We consider $c$ using $\alpha$ (confidence level) and degree of freedom $= n - k - 1$
+    - $c$ is the ($1 - \alpha / 2)$ quantile of the distribution of the test for a two-sided test
+    - $c$ is the $(1-\alpha)$ quantile for an upper-tail test 
+    - $c$ is the $\alpha$ quantile for a lower-tail test
 4. We reject $H_0$ if $t > c$ _(if $H_0: b_1 > 0$ use $t < - c$)_
 
-- If we reject the null hypothesis, we typically say: _$x_j$ is statistically significant / has a statistically significant effect on $y$ at the $\alpha\%$ level._
-- 
-Graphically:
+    - If we reject the null hypothesis, we typically say: _$x_j$ is statistically significant / has a statistically significant effect on $y$ at the $\alpha\%$ (significante) level
+    - _Note that $1-\alpha$ is the confidence level!_.
+
+_Graphically:_
 <div align="center">
 ![Population Model](/images/notes/econometrics/t-test-1.png)
 </div>
@@ -734,21 +736,21 @@ Graphically:
 ![Population Model](/images/notes/econometrics/t-test-2.png)
 </div>
 
-<b>Quick summary remarks:</b>
+<b>Summary:</b>
 
-- A coefficient is significant at the 5% level when its estimate is _large relative to its standard error_, equivalently when its absolute $t$-statistic is large enough.
+- A coefficient is significant at the $\alpha$% level when its estimate is _large relative to its standard error_ $\implies$  when its absolute $t$-statistic is large enough.
 - Do not confuse the size of an estimate with significance: _a large effect can be imprecise, and a small effect can still be precisely estimated._
-- Significance answers a hypothesis-testing question; it does not by itself tell you whether the effect is economically important.
-- When a question asks for the number of significant coefficients, count the coefficients that reject the null individually, not the joint significance of the whole regression.
-- The intercept is tested exactly like any other coefficient, so include it unless the question explicitly excludes it.
-- If a coefficient is not significant, the safest interpretation is that the _ data do not provide enough evidence against the null at the chosen level._
+- Significance answers a hypothesis-testing question _(it does not tell you whether the effect is economically important)_
+- When a question asks for the number of significant coefficients, count the coefficients that reject the null individually, _not the joint significance of the whole regression._
+- The intercept is tested exactly like any other coefficient $\implies$ include it unless the question explicitly excludes it.
+- If a coefficient is not significant $\implies$ _data do not provide enough evidence against the null at the chosen level._
 
 More generally, we can test whether an estimate fits a specific value: $H_0: b_j = a$.
 
 In this case, we use the appropriate $t$-statistic: $t = (b_j - a)/se(b_j)$, where $a = 0$ for the standard test.
 
 ---
-
+<br/>
 <b>Confidence Intervals</b>
 
 Another way to use statistical testing is to construct confidence intervals using the same critical value for a two-sided test.
@@ -809,9 +811,9 @@ $$
 
 where $r$ is the <b>restricted</b>, $ur$ the <b>unrestricted</b>. _Note that the $F$ statistic is always positive_.
 
-_Intuition: the $F$ statistic is measuring the relative increase in the SSR when moving from the unrestricted to the restricted model.
+_Intuition: the $F$ statistic is measuring the relative increase in the SSR when moving from the unrestricted to the restricted model._
 
--$q = df_r - dr_{ur}, \quad df_{ur} = n - k - 1$.
+$q = df_r - dr_{ur}, \quad df_{ur} = n - k - 1$.
 
 To decide if the increases in SSR is _"big enough"_, to reject the exclusions, we compare if with the $F$ distribution, indeed we know that: $F \sim F_{q, n-k-1}$ where:
 -  $q$ is the numerator degrees of freedom 
@@ -820,6 +822,9 @@ To decide if the increases in SSR is _"big enough"_, to reject the exclusions, w
 <div align="center">
 ![f testl](/images/notes/econometrics/f-test.png)
 </div>
+---
+<br/>
+
 
 <b>OLS asymptotics</b>
 
@@ -833,6 +838,8 @@ Consider the true model $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + v$ and the es
 
 _Intuition: inconsistecy is a large sample problem: it does not go away as we add data_.
 
+---
+<br/>
 <b>Large Sample Inference</b>
 
 So far, we relied on assumption about normal distribution of errors, but this assumption can often break down! Again, large samples come to the rescue: as $n \to \infty$, the central limit theorem shows that OLS estimates are asymptotically normal.
@@ -849,8 +856,6 @@ There are other estimators besides OLS that are consistent. However, under the G
 
 ## <a id="5"><b>5 Multiple Regression Analysis: Further Issues</b> </a>
 
-<b>Review</b>
-
 To test hypotheses about estimates, we previously relied on assumption about <b>normal distribution of errors</b> (MLR.6) in order to redive $t$ and $F$ distributions.
 
 This implied that the distribution of $y$ given $x$ was normal as well.
@@ -865,6 +870,9 @@ Secondly, the $t$-distributoin approaches a normal distribution for a large $df$
 
 As we said, if the error is NOT _normally_ distributed, we sometimes will refer to it as the _asymptotic standard error_. _(We can expect standard errors to shrink at rate proportional to the inverse of $\sqrt{n}$)_.
 
+---
+
+<br/>
 <b>Further Issues in Multiple Regression Analysis: Scaling Variables</b>
 
 Changing the scale of the $y$ variable will lead to a change in the scale of the coefficients and the standard error, without a meaningful change in significance/interpretation. The same applies for a change in $x$.
@@ -902,7 +910,7 @@ For a model like $y = \beta_1 x_1 + \beta_2 x_2^2 +\mu$ we know that:
 - if $\beta_1$ is positive and $\beta_2$ is negative, $y$ is increasing in $x$ at first and then decreasing.
 - if $\beta_1$ is negative and $\beta_2$ is positive the opposite happens.
 - The turning point is calculated setting the derivative to zero and lies at: $x^* = - \beta_1 / \beta_2$
-
+<br/>
 ---
 
 <br/>
@@ -961,7 +969,7 @@ This can be interpreted as an intercept shift:
 ![Population Model](/images/notes/econometrics/dummy.png)
 </div>
 ---
-
+<br/>
 <b>Dummies for Multiple Categories</b>
 
 Any categorial variable can be turned into a set of dummy variables. Because the base group is represented by the intercept, if there are $n$ categories there should be $n-1$ dummy variables.
@@ -980,14 +988,26 @@ So we can estimate the model _with_ and _without_ the interactions and form a $F
 <b>The Chow Test</b>
 
 We can compute the $F$-statistic without running the unrestricted model with all interactions with $k$ continuous variables, but intead we can:
-- run the restricted model for group 1 _(using observations $n_1$) and get $SSR_1$
-- run the restricted model for group 2 _(using observations $n_2$) and get $SSR_2$
-- run the restricted model for all _(using $N = n_1 + n_2$) and get $SSR$
+- run the restricted model for group 1 _(using observations $n_1$)_ and get $SSR_1$
+- run the restricted model for group 2 _(using observations $n_2$)_ and get $SSR_2$
+- run the restricted model for all _(using $N = n_1 + n_2$)_ and get $SSR$
 - compute the $F$-statistic as:
 
 $$
 F = \frac{[SSR - (SSR_1 + SSR_2)]}{SSR_1 + SSR_2} \frac{n-2(k + 1)}{k + 1}
 $$
+
+knowing that $F \sim F_{k+1, N - 2(k+1)}$.
+
+We then set $H_0$ as "all coefficientsd are equal agross groups", that rewrites as:
+
+$$
+H_0 : \beta_0(1) = \beta_0(2), \beta_1(1) = \beta_1(2) = ... = \beta_k(1) = \beta_k(2)
+$$
+
+then we compute $F$ as defined above and we set $c$ as the $(1 - \alpha)$ upper quantile of $F_{k+1, N − 2(k+1)}£$.
+
+If $F > c$, we reject $H_0$ at the $\alpha$ significance level _(note that $F$ is an upper-tail test since it's non-negative)_.
 
 <b>Dummy as Dependent Value: Linear Probability Model</b>
 
@@ -1004,10 +1024,12 @@ _However_, potential problems arise since the prediction can be outside $[0,1]$.
 
 _Despite everything_, OLS is usually a good starting point when $y$ is binary.
 
+---
 
 ## <a id="6"><b>6 Heteroskedasticity and Other Problems</b> </a>
 
 <b>Assumptions Multiple Linear Regressin (MLR) Model</b>
+<br/>
 
 - <b>MLR.1: Linear in parameters</b>
   - In the population model, the following relationship holds:
@@ -1044,7 +1066,7 @@ u \sim \mathcal{N}(0, \sigma^2)
 
 $$
 
-Recall that the assumption of _homoskedasticity_ implied that, _conditional on the explanatory variables_, the <b>variance of the unobserved error $\mu$ was costant</b>. <br/>If this is not true, then the variance is different for different values of $x$ and errors are said to be <b>heteroskedastic</b>.
+Recall that the assumption of _homoskedasticity_ implied that, _conditional on the explanatory variables_, the <b>variance of the unobserved error $\mu$ was constant</b>. <br/>If this is not true, then the variance is different for different values of $x$ and errors are said to be <b>heteroskedastic</b>.
 
 <div align="center">
 ![Population Model](/images/notes/econometrics/heterosk.png)
@@ -1143,8 +1165,25 @@ _Note that robust standard errors are justified asymptotically.  In small sample
 We want to test: 
 
 $$
-H_0 = \text{Var}(\mu |x_1, ... x_k) = \sigma^2 \iff H_0 : \mathbb{E}(\mu^2 | x_1, ... x_k)= \mathbb{E} = \sigma^2
+H_0:\;\operatorname{Var}(\mu\mid x_1,\ldots,x_k)=\sigma^2\quad\text{for all }(x_1,\ldots,x_k).
 $$
+
+This statement is equivalent to
+
+$$
+\mathbb{E}[\mu^2\mid x_1,\ldots,x_k]=\sigma^2
+$$
+only under the additional (usual) assumption that
+
+$$
+\mathbb{E}[\mu\mid x_1,\ldots,x_k]=0,
+$$
+since
+$$
+\operatorname{Var}(\mu\mid x)=\mathbb{E}[\mu^2\mid x]-\big(\mathbb{E}[\mu\mid x]\big)^2.
+$$
+
+In practice we typically assume $\mathbb{E}[\mu\mid x]=0$, so testing whether $\mathbb{E}[\mu^2\mid x]$ is constant across $x$ is a valid way to test homoskedasticity.
 
 If we assume the relationship betwee $\mu^2$ and $x_j$ to be linear, we can test it as a _linea restriction_:
 
@@ -1175,11 +1214,38 @@ _Note that the Bresuch-Pagan test detect any <b>linear forms of heteroskedastici
 <br/>
 <b>The White Test </b>
 
-The White Test allows for non-linearities by using squares and cross-products of all $x$.
+The White Test allows for general _(including non-linear)_ forms of heteroskedasticity by using squares and cross‑products of the regressors _(or by using functions of the fitted values)._
 
-Consider thenm the fitted values from OLS $\hat y$ are a function of all $x$. Therefore $\hat y^2$ will be a function of the squares and cross-produts, so we can:
-- regress the residuals squared on $\hat y, \hat y^2$
-- use the $R^2$ to form a $F$ or $LM$-statistic 
+We can proceed in two ways:
+
+- Regress the squared residuals on powers and cross‑products of the original regressors _(full White specification):_
+$$
+\hat u_i^2 = \alpha_0 + \sum_j \alpha_j x_{ij} + \sum_j \sum_{l\ge j} \alpha_{jl} x_{ij} x_{il} + v_i
+$$
+- Regress the squared residuals on the fitted values and its square _(simpler form):_
+$$
+\hat u_i^2 = \alpha_0 + \alpha_1 \hat y_i + \alpha_2 \hat y_i^2 + v_i
+$$
+
+
+Test statistics:
+- $LM$-(asymptotic) form:
+$$
+LM = n R^2 \quad \sim \chi^2_m
+$$
+
+where $m$ is the number of explanatory variables in that auxiliary regression _(excluding the intercept)._
+
+- $F$-form 
+$$
+F = \frac{R^2 / m}{(1-R^2)/(n-m-1)} = \frac{R^2 (n-m-1)}{(1-R^2) m},\qquad F\sim F_{m,\,n-m-1}
+$$
+
+Notes:
+- including all squares and cross‑products allows to detect many nonlinear heteroskedastic patterns 
+- The LM form is preferred in large samples
+<br/>
+---
 <br/>
 <b>Weighted Least Squares</b>
 
@@ -1201,7 +1267,7 @@ $$
 \mu_i^*=\frac{\mu_i}{\sqrt{h_i}}
 $$
 
-Because $h_i$ is a function of $x_i$, conditional on $x_i$ it is a constant and has costant variance.
+Because $h_i$ is a function of $x_i$, conditional on $x_i$ it is a constant and has constant variance.
 $$
 \mathbb{E}(\mu_i^*\mid x_i)
 =
@@ -1346,60 +1412,68 @@ RESET test lies on a trick similar to the special form of the _White Test_.
 Instead of adding functions of the $x$ directly, we add and test functions on $\hat y$:
 - estimate $y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k + \delta_1 \hat y^2 + \delta_2 \hat y^3 + v$
 - test: $H_0 : \delta_1 = \delta_2 = 0$
-- a significant $F$-test suggests that the <b>model is not correctly specified</b> _(using $F \sim F_{2, n-k-3}$ or $LM\sim X^2_k$)
+- a significant $F$-test suggests that the <b>model is not correctly specified</b> _(using $F \sim F_{2, n-k-3}$ or $LM\sim X^2_k$)_
 
-What the test does: the RESET adds nonlinear (and/or interaction) functions of the fitted values $\hat y$ to the regression to detect whether important non-linearities or omitted transformations are missing from the specified model form. Under the null hypothesis the added coefficients (here $\delta_1$, $\delta_2$) are zero, so the restricted model _(original regression)_ is OK with respect to them.
+_Intuition: the RESET adds nonlinear (and/or interaction) functions of the fitted values $\hat y$ to the regression to detect whether important non-linearities or omitted transformations are missing from the specified model form._ 
+
+Under the null hypothesis the added coefficients (here $\delta_1$, $\delta_2$) are zero, so the restricted model _(original regression)_ is OK with respect to them.
 
 How to read the F-statistic:
 - Degrees of freedom: numerator $q =$ number of added terms (2 here); denominator = $n - K - q$, where $K$ is the number of parameters estimated in the original model _(including the intercept)._ The test compares the restricted SSR to the unrestricted SSR.
-- Decision rule: compute the F-statistic and either compare it to the critical value from $F_{q, n-K-q}$ at the chosen $\alpha$ or use the p-value. If $F > F_{crit}$or $p < \alpha$, reject $H_0$ and conclude there is evidence the model is misspecified.
+- Decision rule: compute the $F$-statistic and either compare it to the critical value from $F_{q, n-K-q}$ at the chosen $\alpha$ or use the p-value. 
+  - If $F > F_{crit}$ or $p < \alpha$, reject $H_0$ and conclude there is evidence the model is misspecified.
 
-Practical interpretation and next steps: a significant RESET does not tell you which specific variable or transformation is missing — only that the current functional form is likely inadequate. After rejection, examine residual plots, try theory-driven transformations (logs, polynomials, interactions), include specific nonlinear terms of $x$ (rather than $\hat y$ powers alone), or run targeted specification tests. If the RESET is not significant you have no evidence (from this test) of the particular misspecifications it detects, but this is not proof the model is correct.
-
+<br/>
+---
 <br/>
 <b>Proxy Variables</b>
 
 _What if a model is mis-specified because no data is available on a important $z$ variable?_ 
 
-It's possible to avoid omitted variable bias using a proxy variable. A <b>proxy variable</b> must be related to the unbobservable variable.
+It's possible to avoid omitted variable bias using a proxy variable. A <b>proxy variable</b> must be related to the unobservable variable.
 
-Consider for example: $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \mu$ and suppose we do NOT have data about $x_3$ but we have data on other inputs, so we can write:
+Consider the true model
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \mu
+$$
+and suppose we do not observe the true regressor $x_3$ but we have an observed proxy $x_3^*$.
+
+Then we can regress the proxy as:
 
 $$
-x_3^* = \delta_0 + \delta_3 \hat x_3 + v_3 
+x_3^* = \delta_0 + \delta_3 x_3 + v_3,
+$$
+with $\mathbb{E}[v_3\mid x_1,x_2,x_3]=0$. Then
+$$
+\mathbb{E}[x_3^*\mid x_1,x_2,x_3]=\delta_0+\delta_3 x_3.
 $$
 
-where $*$ implies <b>unobserved</b>. Then we can just substitute $x_3$ for $x_3^*$.
-
-However, to have consistent estimates of $\beta_1, \beta_2$, we need:
-
+Then we can regress $y$ on the proxy by substituting: 
 $$
-\mathbb{E}(x_3^* | x_1, x_2, x_3) = \mathbb{x^*_3 | x_3} = \delta_0 + \delta_3 x_3
+x_3 = \frac{x_3^* - \delta_0 - v_3}{\delta_3}
 $$
-
-or, _in other terms_, we need $\mu$ uncorrelated with $x_1,x_2, x_3^*$ and $v_3$ uncorrelated with $x_1,x_2,x_3$.
-
-Only in this case we can run the regression:
-
+into the true model to get
 $$
-y =( \beta_0+ \beta_3 \delta_0)+ \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + (\mu +\beta_3 v_3)
+y = \Big(\beta_0 - \frac{\beta_3\delta_0}{\delta_3}\Big) + \beta_1 x_1 + \beta_2 x_2 + \frac{\beta_3}{\delta_3} x_3^* + \Big(\mu - \frac{\beta_3}{\delta_3} v_3\Big).
 $$
+Hence:
+- The coefficient on the proxy is $\beta_3/\delta_3$; the intercept shifts by $-\beta_3\delta_0/\delta_3$.
+- The error in the regression using the proxy is $\mu - (\beta_3/\delta_3) v_3$. 
+  -  For OLS on $(x_1,x_2,x_3^*)$ to give consistent estimates of $\beta_1,\beta_2$ we therefore need
+  $\mathbb{E}[v_3\mid x_1,x_2]=0$ (so the proxy error is uncorrelated with $x_1,x_2$) and the usual $\mathbb{E}[\mu\mid x]=0$ condition.
 
-Without the previous assumption, we could end up with <b>biased estimates</b>:
-
-If we consider for example $x_3^*$ correlated with $x_1,x_2, x_3$:
-
+If instead the observed proxy is a linear combination of other regressors (a bad proxy), for example
 $$
-x_3 = \delta_0 + \delta_1 x_1 + \delta_2 x_2 + \delta_3 x_2 + v_3
+x_3^* = \delta_0 + \delta_1 x_1 + \delta_2 x_2 + v_3,
 $$
-
-them we end up in the regression:
-
+then substituting directly gives
 $$
-y = (\beta_0 + \beta_3 \delta_0) + (\beta_1 + \beta_3 \delta_1)x_1 + (\beta_2 + \beta_3 \delta_2)x_2 + \beta_3 \delta_3 x_3 + (\mu + \beta_3 v_3)
+y = (\beta_0 + \beta_3\delta_0) + (\beta_1 + \beta_3\delta_1)x_1 + (\beta_2 + \beta_3\delta_2)x_2 + (\mu + \beta_3 v_3),
 $$
+so the coefficients on $x_1,x_2$ are generally biased (they absorb the proxy's dependence on $x_1,x_2$).
 
-_Intuition: the bias depends on the signs of $\beta_3, \delta_j$, but it is still smaller than the omitted variable bias._
+
+_Intuition: condition for a valid proxy $\implies$ the proxy must contain variation that is informative about $x_3$ (large $\delta_3$) and its measurement error $v_3$ must be uncorrelated with regressors and the structural error._
 
 ---
 <br/>
@@ -1438,7 +1512,7 @@ $$
 
 The effect of the measurement error depends on assumptions abou the correlation betweeen $e_1, x_1$:
 - if $\text{Cov}(x_1,e_1) = 0$: OLS remains unbiased but we get higher variaces _(similar to the proxy variable case)_ 
-- if $\text{Cov}(x_1^*,e_1) = 0$ _(case known as the <b>Classical errors-in-variavles assumption</b>) $\implies x_1, e_1$ are correlated with:
+- if $\text{Cov}(x_1^*,e_1) = 0$ _(case known as the <b>Classical errors-in-variavles assumption</b>)_ $\implies x_1, e_1$ are correlated with:
 
 $$
 \text{Cov}(e_1, x_1) = \mathbb{E}[x_1 e_1] = \mathbb{x^*_1, e_1} + \mathbb{E}[e^2_1] = 0 + \sigma^2
@@ -1451,6 +1525,7 @@ $$
 $$
 
 _Note that the multiplicative error is $< 1$ so the estimate is biased toward zero (attenuatoin bias)_.
+
 ---
 
 <br/>
@@ -1458,7 +1533,7 @@ _Note that the multiplicative error is $< 1$ so the estimate is biased toward ze
 
 If the sample is chosen on the basis of an $x$ variable, then estimates are unbiased.
 
-If the sample is chosen on the basis of the $y$ variable, them we <b>sample selection bias</b>.
+If the sample is chosen on the basis of the $y$ variable, then we <b>sample selection bias</b>.
 
 Note that sample selection can be very subtle! For example, looking at wages for workers _(people choose to work for this wage)_ is different that looking for the wage offers.
 
@@ -1474,10 +1549,12 @@ Multiple strategies to deal with outliers:
 <a href="https://en.wikipedia.org/wiki/Winsorizing" target="_blank">More on winsorization (Wikipedia)</a>
 
 <br/>
+---
+
 
 ## <a id="7"><b>7 Time Series Data</b> </a>
 
-Time sereis data have a <b>temporal ordering</b>:
+Time series data have a <b>temporal ordering</b>:
 
 $$
 y_t = \beta_0 + \beta_1 x_1 + \mu_t
@@ -1525,7 +1602,7 @@ We now take some time to understand which properties need to be adapted to time 
 
 _Recall also that_:
 - MLR.1 to MLR.5 $\implies$  <b>OLS is unbiased and BLUE </b>
-- MLR.% $\implies$ we can do <b>inference (hypotesis testing)</b> in small samples.
+- MLR.5 $\implies$ we can do <b>inference (hypotesis testing)</b> in small samples.
 <br/>
 ---
 
@@ -1559,22 +1636,22 @@ Note that we <b>skipped the assumption of a random sample</b>:
 - the key impact of the random samples is that $\mu_i$ is independent since the exogeinity assumption takes are of it in this case.
 - Based on these 3 assumptions, the OLS estimators are unbiased.
 - TS.3 can _easily_ break down. If we consider for example $y_t = \beta_0 + \beta_1 x_{t1} + \mu_t$ when past value of $x$ affect $y$ but we just set up a _contemporaneous_ model.
-
+<br/>
 <b>Variances of OLS estimators for Time Series Data</b>
 
-To derive variances of estimators, we stard with some assumptions. We then assume that the variance is _independent_ of all the $x$'s and it is _costant over time_ (TS.4):
+To derive variances of estimators, we start with some assumptions. We then assume that the variance is _independent_ of all the $x$'s and it is _constant over time_ (TS.4):
 
 $$
 \text{Var}(\mu_t | X) = \text{Var}(\mu_t) = \sigma^2
 $$
 
-We also assume _no-serial correlation: (TS.%)_
+We also assume _no-serial correlation_ (TS.5):
 
 $$
-\text{Cor}(u_t,\mu_s|X) = 0 \quad \forall t \neq s
+	\text{Cor}(u_t,u_s\mid X) = 0 \quad \forall t \neq s
 $$
 
-Under TS.1 to TS.5 (<b>Gauss-Markov Assumptions</b>) the OLS variances in the time-series case are the same as in the cross-sectoin case, consequently we have:
+Under TS.1 to TS.5 (<b>Gauss-Markov Assumptions</b>) the OLS variances in the time-series case are the same as in the cross-section case, consequently we have:
 - the estimator of $\sigma^2$ is the same 
 - OLS is BLUE.
 
@@ -1632,11 +1709,11 @@ Some examples of trend:
 - <b>exponential trend</b>: $\log(y_t) + \alpha_0 + \alpha_1 t + e_t$
 - <b>quadratic trend</b>: $y_t = \alpha_0 + \alpha_1 t + \alpha_2 t^2 + e_t$
 
-Regression with a linear trend is the same things as using a _"detrended_" sereis in a regression.
+Regression with a linear trend is the same thing as using a _"detrended"_ series in a regression.
 
-<b>Detrending</b> implies regressing each variable on $t$ (including a costant) and than take the residuals of this regression _(the result is the <b>detrended series</b>)_.
+<b>Detrending</b> implies regressing each variable on $t$ (including a constant) and then take the residuals of this regression _(the result is the <b>detrended series</b>)_.
 
-Some advaantages od detrending for calculating $R^2$:
+Some advantages of detrending for calculating $R^2$:
 - time-series regression tend to have a very high $R^2$ as the trend is _"very well explained"_. 
 - $R^2$ from a regression on detrended data better reflect how well $x$ explain $y$.
 
@@ -1648,7 +1725,7 @@ Some advaantages od detrending for calculating $R^2$:
 Often time-series data has some <b>periodicity</b>, in this case there are two major practices:
 - adding a set of seasonal dummy variables 
 - series can be ajusted before running the regression.
-
+<br/>
 ---
 
 ## <a id="8"><b>8 Panel Data</b> </a>
@@ -1660,43 +1737,45 @@ Often time-series data has some <b>periodicity</b>, in this case there are two m
 ![Population Model](/images/notes/econometrics/cross-sections-panel.png)
 </div>
 
-_WHy should we use pooled cross-sections?_ 
+_Why should we use pooled cross-sections?_ 
 - to get a bigger sample size and then more degrees of freedom for a more precise estimate 
 - to investigate if the relations evolve over time 
   - <b>Chow test</b>: test if parameters change over time 
 - to have more dimensions of variation: cross-section and time _(difference in difference estimation, especially useful for evaluating policies)_ 
   - _Example: do house prices at different locations change differently after a climate policy?_ 
-
+<br/>
 ---
 <br/>
 <b>The Chow Test</b>
 
-It tests if there is difference in the slopes across 2 groups. 
+It tests if there is a difference in the coefficients across 2 groups. 
 
 _Basic idea:_ it's very similar to having 2 time periods as "groups" using a dummy variable for one of the two periods and test for <b>joint significance</b> of period (1) dummy and the period (2) interaction terms.
 
-If we have multiple periods, we can do the following: 
-- computer a proper $F$ statistic by running the strcited model allowing for dofferent time intercepts but no interaction with all the $k$ variables $\implies$ obtain $\text{SSR}_r$.
-- run the restricted model for period one and get $SSR_1$, then for period 2 etc etc....
-- they all form the unrestricted $\text{SSR}_u = \sum_k \text{SSR}_k$ 
-- then compute $F$ in the case of a twop period as:
+If we have two periods/groups, we can do the following: 
+- compute a proper $F$ statistic by running the restricted pooled model using all observations $\implies$ obtain $\text{SSR}$.
+- run separate unrestricted regressions for period/group 1 and get $SSR_1$, then for period/group 2 and get $SSR_2$.
+- they form the unrestricted $\text{SSR}_{ur} = \text{SSR}_1 + \text{SSR}_2$.
+- then compute $F$ in the case of two periods as:
 
 $$
-F = \frac{\text{SSR}-(\text{SSR_1}+\text{SSR_2})}{\text{SSR_1}+\text{SSR_2}} \frac{n - 2(k+1)}{k+1}
+F = \frac{[\text{SSR} - (\text{SSR}_1 + \text{SSR}_2)]/(k+1)}{(\text{SSR}_1 + \text{SSR}_2)/(N - 2(k+1))} \sim F_{k+1,\,N - 2(k+1)}
 $$
 
 The Chow test is just a simple $F$ test for exclusion/restriction.
 - note that we have $k+1$ restrictions 
-- note that the unrestricted model would estimate 2 different intercepts and slope coefficients, so the degree of freedom is $n-2(k+1) = n - 2k -2$.
+- note that the unrestricted model would estimate 2 different intercepts and slope coefficients, so the denominator degrees of freedom are $N-2(k+1)$.
 
 In real-world economics, we can't run randomized experiments _(RCTs)_ for ethical/practical reasons. We can just observe people's choices, which creates endogeneity _(people self-select into treatments)_.
 
-However, having repeated cross sections allows observing groups random samples of observations across time in data. Often policites can affect different groups differently, leaving a "trace" of variation that is sometimes "as good as randomly assigned" across groups.<br/>We call such events <b>natural experiments</b> because they create an _experimental setup_ with:
-- <b>treatment group</b>: the one assigned to treatment and trated after the event happened _(but not before)_ 
+However, having repeated cross sections allows observing random samples of groups across time in data. Often policies can affect different groups differently, leaving a "trace" of variation that is sometimes "as good as randomly assigned" across groups.<br/>We call such events <b>natural experiments</b> because they create an _experimental setup_ with:
+- <b>treatment group</b>: the one assigned to treatment and treated after the event happened _(but not before)_ 
 - <b>control group</b>: the one that does not get treated and has not been treated before.
 
 _(Note that the timing and the assignment are outside of anyone's control)_ 
 
+---
+<br/>
 <b>Example: Minimum Wage & Employment</b> (Card and Krueger, 1994)
 
 This analysis focused on the New Jersey raising its minimum wage from $4.25 to $5.05 per hour on April 1, 1992. Pennsylvania did not.
@@ -1722,7 +1801,7 @@ and we label this as the <b>Difference-in-difference (DiD)</b> estimator in the 
 We can then use a regression framework with dummy variables to do the same:
 
 $$
-y_{it} = \beta_0 + \beta_1 \text{treatment}_i + \beta_2 \text{after}_t + \beta_3 \text{treatment}_i \cdot \text{after}_t +\mu_t
+y_{it} = \beta_0 + \beta_1 \text{treatment}_i + \beta_2 \text{after}_t + \beta_3 \text{treatment}_i \cdot \text{after}_t +\mu_{it}
 $$
 where:
 - $\beta_0$: Baseline outcome _(control group, before treatment)_ 
@@ -1733,13 +1812,13 @@ where:
 _(Note that this model can be generalized with different dummies and interaction terms for different years)_
 
 Using the regression framework furthermore:
-- we can produce confidence intervals and to hypotesis testing 
+- we can produce confidence intervals and do hypothesis testing 
 - we can add additional variables to control the differences across the treatment and control group.
 
 _However_, the DiD estimator could be biased:
-- if there are already existing ttrend prior to a policy. In this case, we should get more than 2 periods and show how groups follow different trends prior to the event.
-- if the grouos are affected by other policites/evets at the time time, _in this case we should control for some other factors_ 
-- spill-pover for treatment to control groups, in this case simply _take a suitable control group_ that doesn't deviate
+- if there are already existing trends prior to a policy. In this case, we should get more than 2 periods and show how groups follow different trends prior to the event.
+- if the groups are affected by other policies/events at the same time, _in this case we should control for some other factors_ 
+- spillover from treatment to control groups, in this case simply _take a suitable control group_ that doesn't deviate
 - no selection bias if individuals cannot decide which group they are in 
 
 <br/>
@@ -1766,47 +1845,47 @@ We can adopt three approaches to address these time-invariant unobserved effects
 <br/>
 <b>First-difference Estimator</b>
 
-We perform $y_{it}- y_{it-1} $ to obtain:
+We perform $y_{it}- y_{i,t-1} $ to obtain:
 
 $$
-\Delta y_{it} = y_{it}-y_{it-1} = \beta_1 x_{it-1} + ... + \beta_k \Delta x_{itk} + \Delta \mu_{it}
+\Delta y_{it} = y_{it}-y_{i,t-1} = \beta_1 \Delta x_{it1} + ... + \beta_k \Delta x_{itk} + \Delta \mu_{it}
 $$
 
-  - to estimate this with OLS, we need that each $\\Delta x_{it}$ is uncorrelated with $\Delta_{uit}$, that only holfd if the $\mu_{it}$ is uncorrelated with each explanatory variable during the entire time sample 
-  - we need to assume strict <b>exogeneity</b>, $\mathbb{E}[\Delta \mu_{it} | \Delta X_j, a_j] = 0$.
-  - this can be done for more that just two time periods when $T > 2$.
+  - to estimate this with OLS, we need that each $\Delta x_{it}$ is uncorrelated with $\Delta \mu_{it}$, which only holds if $\mu_{it}$ is uncorrelated with each explanatory variable during the entire time sample 
+  - we need to assume strict <b>exogeneity</b>, $\mathbb{E}[\mu_{it} | X_i, a_i] = 0$ for all $t$.
+  - this can be done for more than just two time periods when $T > 2$.
 
-_However_, note that when there's little variatin in the $\Delta_{it}$ standard errors will be large.
+_However_, note that when there's little variation in $\Delta x_{it}$ standard errors will be large.
 
 <b>Fixed-effect Estimator</b>
 
-We then consider the individual mean with $a_i =0 , \bar u_i = 0$:
+We then consider the individual mean:
 
 $$
-\bar y_i = \beta_0 + \beta_1 \bar x_{i1} + .... + \beta_k \bar x_{il} + \bar a_i + \bar \mu_i
+\bar y_i = \beta_0 + \beta_1 \bar x_{i1} + .... + \beta_k \bar x_{ik} + a_i + \bar \mu_i
 
 $$
 
-and we opbtain the new model where $\ddot x_{it} = x_{it} - \bar x_i$:
+and we obtain the new model where $\ddot x_{itj} = x_{itj} - \bar x_{ij}$:
 
 $$
-\ddot y_{it} = y_{it} - \bar y_{it} = \beta_1 \ddot x_{it1} + ... + \beta_k \ddot x_{itk} + \mu_{it}
+\ddot y_{it} = y_{it} - \bar y_i = \beta_1 \ddot x_{it1} + ... + \beta_k \ddot x_{itk} + \ddot \mu_{it}
 $$
 
-  - this is identical to including a separate incercept _(dummy)_ for each individual $i$
+  - this is identical to including a separate intercept _(dummy)_ for each individual $i$
   - we still need the <b>strict exogeneity assumption</b> 
-  - in this case we loose $N$ _(number of individuals)_ degrees of freedom by de-meaning and we have to make sure that OLS uses $N(T-1)-k$ degree of freedom.
+  - in this case we lose $N$ _(number of individuals)_ degrees of freedom by de-meaning and we have to make sure that OLS uses $N(T-1)-k$ degrees of freedom.
 
 If we compare the two previous models, we see that the main difference lies in the _"no serial correlation assumption"_.
-- first-difference estimator's advantages is that _unit root_ problems are solved 
-- fixed effect is more efficient when $u_{it}$ is serially correlated
+- first-difference estimator's advantage is that _unit root_ (non stationary) problems are solved 
+- fixed effect is more efficient when $u_{it}$ is serially uncorrelated
 
 <br/>
 <b>Random Effect</b> 
 
 Previously we assume that $a_i$ was correlated with the $x$. If it is not the case, OLS would be consistent, but the composite error $v_{it} = a_i + \mu_{it}$ would be serially correlated.
 
-In this case, we can use the <b>Generalized Least Squares (GLS) approach</b> and trasform the model to make errors serially uncorrelated. 
+In this case, we can use the <b>Generalized Least Squares (GLS) approach</b> and transform the model to make errors serially uncorrelated. 
 
 We start by doing:
 
@@ -1817,78 +1896,78 @@ $$
 then we subtract:
 
 $$
-\theta \bar y_i = \beta_0 \theta + \beta_1 \theta \bar x_{i1} + ... + beta_k \theta \bar_{ik} + \theta \bar v_i
+{\theta}\bar y_i = \beta_0 \theta + \beta_1 \theta \bar x_{i1} + ... + \beta_k \theta \bar x_{ik} + \theta \bar v_i
 $$
 
 to obtain the new model:
 
 $$
-\tilde y_{it} = \beta_1 \tilde x_{it} + ... + \beta_k \tilde x_{ik} + \tilde v_{it}, \quad \tilde_{it} = z_{it}- \theta \bar z_i
+\widetilde y_{it} = \beta_0(1-\theta) + \beta_1 \tilde x_{it1} + ... + \beta_k \tilde x_{itk} + \tilde v_{it}, \quad \tilde z_{it} = z_{it}- \theta \bar z_i
 $$
 
-we end up with a sort of weighted averaged of OLS and fixed effects.
+we end up with a sort of weighted average of OLS and fixed effects.
 - if $\theta = 1 \implies$ this is just the fixed effect estimator 
 - if $\theta = 0 \implies$ this is just the OLS
 
 also, the bigger the variance on the unobserved effect $\sigma_a^2$, the closer is to FE, the smaller the variance, the closer to OLS.
 
-Usually, iti is often more appropriate to use the fixed effect since the unobserved fixed effects are often correlated with the $x$.
+Usually, it is often more appropriate to use the fixed effect since the unobserved fixed effects are often correlated with the $x$.
 
 The testing procedure is the following:
 - <b>Hausman Test </b> (to compare fixed effects with random effects model):
-  - compare estimates of the $\beta$-vector with and without the additional randome effect assumption 
+  - compare estimates of the $\beta$-vector with and without the additional random effect assumption 
   - if the additional assumptions are true, then the estimates should be similar.
 
 <br/>
 <b>Correlated Random Effects approach</b>
 
-We can end up in the case of $a_i$ split up between a part related to the time-averages of the explanatory variables and a part $r_i$ uncorrelaed to the explanatory variables.
+We can end up in the case of $a_i$ split up between a part related to the time-averages of the explanatory variables and a part $r_i$ uncorrelated with the explanatory variables.
 
 $$
-a_i = \alpha + t_i \bar x_{i1} + ... + y_k \bar x_{k1} + r_i
+a_i = \alpha + \gamma_1 \bar x_{i1} + ... + \gamma_k \bar x_{ik} + r_i
 $$
 
-The resulting model is an ordinary random effects model with uncorrelaed random effect $r_i$ but with the time averages as additional regressors:
+The resulting model is an ordinary random effects model with uncorrelated random effect $r_i$ but with the time averages as additional regressors:
 
 $$
-y_{it} = (\beta_0 + \alpha) + \beta_1 x_{it1} + ... + \beta_k x_{ik} + y_1 + \bar x_{i1} + ... y_k \bar x_{k1} + (r_i + \mu_{it})
+y_{it} = (\beta_0 + \alpha) + \beta_1 x_{it1} + ... + \beta_k x_{itk} + \gamma_1 \bar x_{i1} + ... + \gamma_k \bar x_{ik} + (r_i + \mu_{it})
 $$
 
-_Note that in this case the $\beta$-vector is identical to the one of the fixed effect estimator.
+_Note that in this case the $\beta$-vector is identical to the one of the fixed effect estimator._
 
-We can also test the ordinary FE with the Corrrelated Random Effect approach, testing for the relevance of the $y$-parameters (<b>Mundlak Test</b>)
+We can also test the ordinary FE with the Correlated Random Effect approach, testing for the relevance of the $\gamma$-parameters (<b>Mundlak Test</b>)
 
 ---
 
 ## <a id="9"><b>9 Instrumental Variables</b> </a>
 
-One of the most problematic assumption of OLS is the <b>zero conditional meanassuption</b> _(the explanatory variables are assumed <b>exogenous</b>)_ $\implies$ it this doesn't hold, the parameter estimates are biaed and inconsistent.
+One of the most problematic assumptions of OLS is the <b>zero conditional mean assumption</b> _(the explanatory variables are assumed <b>exogenous</b>)_ $\implies$ if this doesn't hold, the parameter estimates are biased and inconsistent.
 
 So if the error term contains variables _(i.e. if the error term is correlated with them)_ that are correlated with one of the explanatory variables we can:
 - pull the variable out of the error term including more relevant regressors 
-- _in case of panel data,_ assume that the variable is costant over time.
+- _in case of panel data,_ assume that the variable is constant over time.
 
 We consider then an example of regression with endogeneity problems: i.e. $\operatorname{Cov}(x, \mu) \neq 0$:
 
 $$
-\log{\text{wage}_i} = \beta_0 + \beta_\ \text{educ}_i + \mu_i 
+\log(\text{wage}_i) = \beta_0 + \beta_1 \text{educ}_i + \mu_i 
 $$
 
-and we know that $\mu$ contains <b>abilitiy</b>, so $\operatorname{Cov}(\text{educ}_i, \mu) \neq 0$, so we if we use OLS, $\beta_1$ is biased and inconsistent due to omission of ability.
+and we know that $\mu$ contains <b>ability</b>, so $\operatorname{Cov}(\text{educ}_i, \mu) \neq 0$, so if we use OLS, $\beta_1$ is biased and inconsistent due to omission of ability.
 
-To solve this <b>endogenity problem</b> we use an <b>instrumental variable (IV)</b> denotes as $Z$ that:
+To solve this <b>endogeneity problem</b> we use an <b>instrumental variable (IV)</b> denoted as $Z$ that:
 - is <b>correlated with the endogenous variable</b> 
 - is <b>uncorrelated with the error term</b> $\mu$
 - affects the dependent variable <b>only through the endogenous variable</b> _(only by changing $X$)_
 
 In the previous example:
-- $Z$ affects the number of years of education, so wehave $X = \text{educ}$ 
+- $Z$ affects the number of years of education, so we have $X = \text{educ}$ 
 - $Z$ indirectly affects wages $Y$ through its effect on education.
 
 <b>Conditions for valid instruments</b>:
 
 1. <b>First Stage</b>: $\operatorname{Cov}(Z,X) \neq 0$ _($Z$ must be correlated with $X$)_ 
-2. <b>Independence</b>: $\operatorname{Cov}(Z,\mu) = 0$ _(the instrument must be endogenous)_ 
+2. <b>Independence</b>: $\operatorname{Cov}(Z,\mu) = 0$ _(the instrument must be exogenous)_ 
 3. <b>Exclusion restriction</b>: Z can affect the outcome only by changing $X$
 
 <div align="center">
@@ -1897,18 +1976,18 @@ In the previous example:
 
 <b>The Angrist and Krueger (1991) natural experiment <a href="https://www.nobelprize.org/prizes/economic-sciences/2021/popular-information/" target="_blank">(Nobel Prize 2021)</a></b>
 
-Angrist and Krueer studied which factors drive out of the full control of individuals _(uncorrelated wth $\mu$)_ drive education, finding an interesting variation created by US schooling laws in the early 1930:
+Angrist and Krueger studied which factors out of the full control of individuals _(uncorrelated with $\mu$)_ drive education, finding an interesting variation created by US schooling laws in the early 1930:
 - <b>Law 1</b>: students enter school in calendar year in which they turn 6 $\implies$ 
 
 $$
 \text{School Starting Age} = f(\text{Date of birth})
 $$
 
-- <b>Law 2</b>: Compulsory schooling require students to remain in school until became $16$ so, since school starts for everyone in the same day of the month, depending on the birth date students can stay in school morel/less time.
+- <b>Law 2</b>: Compulsory schooling requires students to remain in school until they turn $16$, so, since school starts for everyone on the same day of the month, depending on the birth date students can stay in school more or less time.
 
-So these laws can create a <b>natural experiment</b> that incluences the number of years of education.
+So these laws can create a <b>natural experiment</b> that influences the number of years of education.
 
-In particular, they observed that, _on average_, people with born in the 4th quarter showed an _higher average_ level of education.
+In particular, they observed that, _on average_, people born in the 4th quarter showed a _higher average_ level of education.
 
 $$
 \text{Education} = \pi_{10} + \pi_{11} \text{Q4} + v_1
@@ -1927,7 +2006,7 @@ $$
 <br/>
 ---
 <br/>
-<b>Instrumental Variable Estiation in the Simple Regressoin Case</b>
+<b>Instrumental Variable Estimation in the Simple Regression Case</b>
 
 We consider the model with $x$ explanatory variable <b>correlated with the error</b> and $z$ instrumental variable _(uncorrelated with $\mu$, correlated with $x$)_: 
 
@@ -1935,12 +2014,12 @@ $$
 y = \beta_0 + \beta_1 x + \mu
 $$
 
-We firstly write the covariance of $x, y$:
+We firstly write the covariance of $z, y$:
 
 $$
 \operatorname{Cov}(z, y) = \operatorname{Cov}(z, \beta_0 + \beta_1 x + \mu)
 $$
-using the linerarity of covariance and that $\operatorname{Cov}(z,\mu) = 0$, we then get:
+using the linearity of covariance and that $\operatorname{Cov}(z,\mu) = 0$, we then get:
 $$
 \operatorname{Cov}(z, y) = \beta_1 \operatorname{Cov}(z, x) + \operatorname{Cov}(z, \mu) \implies
 \beta_1 = \frac{\operatorname{Cov}(z, y)}{\operatorname{Cov}(z, x)} \implies
@@ -1949,7 +2028,7 @@ $$
 $$
 
 
-Them the <b>IV estimator</b> for $\beta_1$ is:
+Then the <b>IV estimator</b> for $\beta_1$ is:
 
 $$
 \beta_1 = \frac{\sum(z_i - z^{avg})(y_i - y^{avg})}{\sum (z_i - z^{avg})(x_i - x^{avg})}
@@ -1968,30 +2047,30 @@ $$
 \log(\text{wage}) = b_0 + b_1 \cdot \text{educ} + b_2 \cdot X + u
 $$
 
-The goal is to estimate $b_1$ _(the causal effect of educatoin on wages)_ while controlling for $X$.
+The goal is to estimate $b_1$ _(the causal effect of education on wages)_ while controlling for $X$.
 
-We are now assuming that both $z_1,z_2$ are <b>valid instruments</b> _(correlated with $\text{educ}$ and uncorrelated with the error)_.<br/>Note that $\text{educ}$ is the endogenous variable and $X$ are again exogenous regressors.
+We are now assuming that both $Q3,Q4$ are <b>valid instruments</b> _(correlated with $\text{educ}$ and uncorrelated with the error)_.<br/>Note that $\text{educ}$ is the endogenous variable and $X$ are again exogenous regressors.
 
-- <b>Stage 1</b>: the best instrument is a <b>linear combination of all the exogenous variables</b>: so we regress the endogenous variable $\text{educ}$ on the instruments ($Q3, Q4$)and $X$.
+- <b>Stage 1</b>: the best instrument is a <b>linear combination of all the exogenous variables</b>: so we regress the endogenous variable $\text{educ}$ on the instruments ($Q3, Q4$) and $X$.
 
 $$
 \text{educ} = \pi_{10} + \pi_{11} \cdot \text{Q3} + \pi_{12} \cdot \text{Q4} + \pi_{13} \cdot X + v_1
 $$
 
-From this regression with obtain the <b>predicted values</b>, denote as $\widehat{\text{educ}}$.
+From this regression we obtain the <b>predicted values</b>, denoted as $\widehat{\text{educ}}$.
 
 $$
-\widehat{\text{educ}} = \hat{\pi}_{10} + \hat{\pi}_{11} \cdot \text{Quarter3} + \hat{\pi}_{12} \cdot \text{Quarter4} + \hat{\pi}_{13} \cdot X
+\widehat{\text{educ}} = \hat{\pi}_{10} + \hat{\pi}_{11} \cdot \text{Q3} + \hat{\pi}_{12} \cdot \text{Q4} + \hat{\pi}_{13} \cdot X
 
 $$
 
-The predited $\widehat{\text{educ}}$ is then a <b>Linear cobination of the instruments and the exogenous variable</b>. <br/>Furthermore, the instruments must be <b>jointly significant</b> in explaining $\text{educ}$ and this can be tested using a $F-$statistic _(usually we set $F > 10$ to ensure strong instruments)_.
+The predicted $\widehat{\text{educ}}$ is then a <b>linear combination of the instruments and the exogenous variable</b>. <br/>Furthermore, the instruments must be <b>jointly significant</b> in explaining $\text{educ}$ and this can be tested using a $F$-statistic _(usually we set $F > 10$ to ensure strong instruments)_.
 
 $$
 H_0: \pi_{11} = 0, \quad \pi_{12} = 0
 $$
 
-_Intuition: the first stage isolates the part of $\text{educ}$ explained by the 9instruments and the exogenous variable_.
+_Intuition: the first stage isolates the part of $\text{educ}$ explained by the instruments and the exogenous variable_.
 
 - <b>Stage 2</b>: we use the predicted $\widehat{\text{educ}}$ as a regressor:
 
@@ -2003,7 +2082,7 @@ Note that this regressor uses $\widehat{\text{educ}}$ _(exogenous)_ instead of t
 
 Then the coefficient $b_1$ is the <b>IV estimate</b> of the causal effect of education on wages. _Note that in this second stage, the standard errors of the estimates need to be corrected to account for the two-stage procedure. This is typically done automatically in statistical software like STATA._
 
-_Intuition: the second stage uses this predicted $\widehat{\text{educ}}$ to estimate the causal effect of education on wages ensuring exogeinity_.
+_Intuition: the second stage uses this predicted $\widehat{\text{educ}}$ to estimate the causal effect of education on wages ensuring exogeneity_.
 
 
 <div align="center">
@@ -2021,11 +2100,11 @@ We consider again the case $y = \beta_0 + \beta_1 x + \mu$ with one endogenous r
 The homoskedasticity assumption in this case is:
 
 $$
-\mathbb{E}[\mu^2 | z] = \sigma^2 = \operatorname{Var}(\mu) = \text{costant}
+\mathbb{E}[\mu^2 | z] = \sigma^2 = \operatorname{Var}(\mu) = \text{constant}
 $$
 
 Also, as in the OLS case the <b>asymptotic variance </b> is $\operatorname{Var}(\beta_1) = \frac{\sigma^2}{n \sigma_x^2 \rho_{x,z}^2}$.<br/>
-It can be estaimted using the sample counterparts:
+It can be estimated using the sample counterparts:
 
 $$
 \operatorname{Var}(b_1) = \frac{s^2}{SST_x R_{x,z}^2} 
@@ -2034,7 +2113,7 @@ $$
 where:
 - $s^2 = (n-2)^{-1}\sum_i \hat \mu_i^2$ are taken from the residuals $\hat u_i = y - b_0 - b_1 x$
 - $\sigma_x^2$ is the sample variance of $x$
-- $R_{z,x}^2$ is the R-squared of the regresson of $x$ on $z$
+- $R_{z,x}^2$ is the R-squared of the regression of $x$ on $z$
 
 $\implies$ The standard error is just the square root of this.
 
@@ -2047,20 +2126,20 @@ So the IV case differs from the OLS only in the $R^2$ from regressing $x$ on $z$
 <br/>
 <b>The Effect of poor instruments</b>
 
-If the assumption $\operatorname{Cov}(z, x) \neq 0$ <b>is false</b> _($z,x$ are only weakly correlated )_ the IV estimator will be <b>inconsistent too</b>. This happens because the the numerator of the IV estimator depends on the correlation between $z,x$. 
+If the assumption $\operatorname{Cov}(z, x) \neq 0$ <b>is false</b> _($z,x$ are only weakly correlated )_ the IV estimator will be <b>unreliable or undefined</b>. This happens because the denominator of the IV estimator depends on the correlation between $z,x$. 
 
 We can indeed compare the <b>asymptotic bias</b> in OLS, IV as:
-- <b>IV</b>: $\lim b_1 = \beta_1 + \frac{\text{Corr}(z, \mu \sigma_{\mu})}{\text{Corr}(x, z)\sigma_x}$
-- <b>OLS</b>: $\lim b_1 = \beta_1 + \text{Corr}(x, \mu) \sigma_{\mu}$
+- <b>IV</b>: $\operatorname{plim} b_1 = \beta_1 + \frac{\text{Corr}(z, \mu)\sigma_{\mu}}{\text{Corr}(x, z)\sigma_x}$
+- <b>OLS</b>: $\operatorname{plim} b_1 = \beta_1 + \frac{\text{Corr}(x, \mu)\sigma_{\mu}}{\sigma_x}$
 
 This shows that even small correlation of $z, \mu$ can lead to large biases particularly if the correlation between $x,z$ is _also small_.
 
 
-
+---
 <br/>
 <b>The Charter School Experiment</b>
 
-The main question is: _"do better charter schools prosuce better pupils?"_ (But wait, <a href="https://charterschoolcenter.ed.gov/what-charter-school#:~:text=A%20Brief%20History%20of%20Charter,charter%20to%20operate%20a%20school." target="_blank">what is a charter school?</a>)
+The main question is: _"do better charter schools produce better pupils?"_ (But wait, <a href="https://charterschoolcenter.ed.gov/what-charter-school#:~:text=A%20Brief%20History%20of%20Charter,charter%20to%20operate%20a%20school." target="_blank">what is a charter school?</a>)
 
 Characteristics of charter schools:
 - public schools operating with more autonomy than public schools 
@@ -2076,14 +2155,14 @@ $$
 
 where $\text{KIPP}$ <b>(knowledge is power program)</b> is a binary variable indicating where a student attends a KIPP charter school.
 
-The problem is that $\operatorname{Cov}(\text{KIPP}, \mu) \neq 0$ since more motivade kigs might go to charter school.
+The problem is that $\operatorname{Cov}(\text{KIPP}, \mu) \neq 0$ since more motivated kids might go to charter school.
 
-The solution is a <b>random assignment of schools through lotteries</b> (due too many applicants and capacity constraints):
+The solution is a <b>random assignment of schools through lotteries</b> (due to too many applicants and capacity constraints):
 - participants were _randomly_ selected to get an offer $Z$ to attend KIPP however:
   - not all applicants with an offer enrolled in KIPP and attended ($Z = 1, \text{KIPP} = 0$)
   - some applicants without an offer managed to get into ($Z = 0, \text{KIPP} = 1$)
 
-We can still exploit the randomization of the offer $Z$ to extract the causal variation in attedance.
+We can still exploit the randomization of the offer $Z$ to extract the causal variation in attendance.
 
 <div align="center">
 ![Instrumental Variable](/images/notes/econometrics/kipp.png)
@@ -2091,14 +2170,14 @@ We can still exploit the randomization of the offer $Z$ to extract the causal va
 
 <b>Local average treatment effect (LATE)</b>
 
-Not all students who win the lottery attend KIPP schools _(only 74%)_. These individuals whose treatment status is determined by the instrument _(the lotter)_ are called <b>"compliers"</b>:
+Not all students who win the lottery attend KIPP schools _(only 74%)_. These individuals whose treatment status is determined by the instrument _(the lottery)_ are called <b>"compliers"</b>:
 - offer $= 0 \implies$ KIPP $=0$
 - offer $= 1 \implies$ KIPP $=1$
 
 There are individuals that do not care about the lottery outcomes: 
-- <b>Always takers</b>: attend KIPP wheter they win the lottery or not (4.6%)
+- <b>Always takers</b>: attend KIPP whether they win the lottery or not (4.6%)
 - <b>Never-takers</b>: never attend KIPP irrespective of the lottery (21.3%)
-- <b>Defiers</b>: who attent KIPP only if they lose the lottery (0%).
+- <b>Defiers</b>: who attend KIPP only if they lose the lottery (0%).
 
 The IV estimate measures the Local Average Treatment Effect (LATE), which is the <b>average causal effect of the treatment (attending KIPP) for the compliers.</b>
 - the IV estimate does not provide information about the treatment effect for the <b>always takers, never takers, defiers</b> $\implies$ this because the IV method relies on the variation in the treatment caused by the instrument _(and the treatment status of always takers, never takers and defiers is not influenced by the instrument)_
