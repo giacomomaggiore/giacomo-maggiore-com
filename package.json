@@ -6,13 +6,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "index": "tsx scripts/build-wiki-index.ts",
+    "prebuild": "tsx scripts/build-wiki-index.ts && tsx scripts/assert-no-private-pages.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0"
   },
   "resolutions": {
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "dependencies": {
+    "@google/genai": "^2.8.0",
     "@next/third-parties": "^15.3.5",
     "@tailwindcss/postcss": "4.0.0-alpha.13",
     "@types/node": "20.11.17",

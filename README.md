@@ -24,11 +24,30 @@ This repo also doubles as a personal knowledge base. Published notes and blog po
 
 ### Prerequisites
 
+Install the dependencies for your chosen LLM provider:
+
 ```bash
+# Gemini (default)
 pip install google-genai python-frontmatter python-dotenv
+
+# OpenAI
+pip install openai python-frontmatter python-dotenv
 ```
 
-Make sure `GOOGLE_API_KEY` is set in `.env.local` (it already is if you cloned this repo with your secrets).
+Set the following in `.env.local`:
+
+```dotenv
+# Choose provider: gemini (default) or openai
+LLM_PROVIDER=gemini
+
+# Key for the chosen provider:
+GOOGLE_API_KEY=...    # for LLM_PROVIDER=gemini
+# OPENAI_API_KEY=...  # for LLM_PROVIDER=openai
+
+# Optional: override the default model
+# LLM_MODEL=gemini-2.0-flash-lite   # default for gemini
+# LLM_MODEL=gpt-4o-mini             # default for openai
+```
 
 ### Ingest PDFs
 
@@ -38,20 +57,21 @@ Drop one or more PDF files into `wiki/source/`, then run from the `tools/` direc
 cd tools
 
 # Process all PDFs in wiki/source/
-python -m ingest run
+python3 -m ingest run
 
 # Process a single file
-python -m ingest run ../wiki/source/mypaper.pdf
+python3 -m ingest run ../wiki/source/mypaper.pdf
 
 # Process a single file and specify the topic folder
-python -m ingest run ../wiki/source/mypaper.pdf --topic finance
+python3 -m ingest run ../wiki/source/mypaper.pdf --topic finance
 ```
 
 Each PDF goes through:
-1. **MinerU** (fully local) — extracts text, tables, and formulas to Markdown
-2. **Gemini** — infers the topic (if not provided) and inserts `[[wikilinks]]` to existing notes
-3. Output is written to `wiki/private/<topic>/<filename>.md` with frontmatter
-4. `wiki/private/log.md` and `wiki/private/index.md` are updated automatically
+1. **MinerU** (fully local) — extracts text, tables, formulas, and images to Markdown
+2. **LLM — topic inference** — suggests a folder name from the filename + content (skipped if `--topic` is given)
+3. **LLM — cleanup** — fixes OCR artifacts, grammar, markdown formatting, and strips non-content noise (ads, disclaimers, page headers/footers)
+4. **LLM — wikilinks** — inserts `[[links]]` to existing notes; all links validated against the vault allowlist
+5. Output written to `wiki/private/<topic>/<title>.md` with frontmatter; `log.md` and `index.md` updated
 
 ### Lint the vault
 
@@ -59,10 +79,10 @@ Each PDF goes through:
 cd tools
 
 # Deterministic checks: broken links, orphans, duplicate titles, missing frontmatter
-python -m ingest lint
+python3 -m ingest lint
 
-# + Gemini suggestions: contradictions, missing concept pages, cross-reference ideas
-python -m ingest lint --llm
+# + LLM suggestions: contradictions, missing concept pages, cross-reference ideas
+python3 -m ingest lint --llm
 ```
 
 Report is written to `wiki/private/_lint-report.md`.
@@ -71,3 +91,4 @@ Report is written to `wiki/private/_lint-report.md`.
 
 Open `wiki/private/` as an Obsidian vault to browse and write private notes.
 The `[[wikilinks]]` inserted by the pipeline are native Obsidian syntax.
+Note filenames use the document title (spaces, not underscores) so wikilinks resolve correctly in the graph view.

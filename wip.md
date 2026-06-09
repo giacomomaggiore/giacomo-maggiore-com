@@ -56,6 +56,53 @@ identical URLs).
 
 ---
 
+## Phase 3 — Full index (public + private) + BM25 retrieval
+
+**Goal:** build a JSON index of all wiki content at build time so the LLM Query (Phase 4) can
+do keyword retrieval over public and private notes without hitting disk at request time.
+
+**Status:** ✅ Done. `pnpm index` generates the index; `pnpm build` runs both scripts automatically
+via the `prebuild` hook and passes (44/44 pages, all checks green).
+
+### New files
+
+| File | Purpose |
+|------|---------|
+| `lib/wiki/retrieve.ts` | Shared `tokenize()` + `WikiNote`/`WikiIndex` types + `retrieve()` BM25 scorer (k1=1.5, b=0.75). Single source of truth for tokenization — imported by both the indexer and the future `/api/ask` route. |
+| `scripts/build-wiki-index.ts` | Reads `wiki/public/notes/` (16 notes), `wiki/public/blog/` (10 `.en.mdx` posts, `.it.mdx` skipped), and `wiki/private/` (recursive, skips `index`, `log`, `_lint-report`, `images/`). Cleans text, tokenizes, builds `termFreq` per note and global `df` + `avgNoteLen`. Writes `lib/wiki-index.generated.json`. |
+| `scripts/assert-no-private-pages.ts` | Two build-time guards: (1) no `.ts`/`.tsx` under `app/` references `WIKI_PRIVATE_DIR`; (2) every note with `visibility:'private'` in the generated index has `url===null`. Exits 1 on violation. |
+
+### Files edited
+
+| File | Change |
+|------|--------|
+| `package.json` | Added `"index": "tsx scripts/build-wiki-index.ts"` and `"prebuild": "tsx scripts/build-wiki-index.ts && tsx scripts/assert-no-private-pages.ts"` scripts; added `tsx ^4.0.0` to `devDependencies`. |
+| `.gitignore` | Added `/lib/wiki-index.generated.json` and `/tools/ingest/**/__pycache__`. |
+
+### Generated file (not committed)
+
+`lib/wiki-index.generated.json` — 29 notes (16 notes, 10 blog, 3 private); ~9 400 unique tokens in
+the global `df`; average note length ~2 078 tokens.
+
+### Key design decisions
+
+- **English-only blog indexing**: `.it.mdx` files are skipped. BM25 covers English content only;
+  avoids duplicate scoring between language variants.
+- **Private slugs include topic subdir** (e.g. `switzerland/Italian Diaspora Nicola Protasoni`) to
+  avoid collisions across topics.
+- **Tokenizer**: lowercase → strip non-alphanumeric → ≥3 chars → ~80 EN+IT stopwords removed.
+  Lives in `lib/wiki/retrieve.ts` so indexer and retriever are always in sync.
+- **BM25** implemented in `retrieve()` in `lib/wiki/retrieve.ts`. Used by Phase 4's `/api/ask` route.
+
+### Local workflow
+
+```
+pnpm index       # regenerate after adding/editing notes
+pnpm build       # prebuild runs indexer + assert automatically
+```
+
+---
+
 ## Phase 5 — Local ingestion pipeline
 
 **Goal:** on-demand PDF → Markdown → `[[wikilinks]]` conversion, plus a vault health-check command.
@@ -140,3 +187,42 @@ GOOGLE_API_KEY=...    # LLM_PROVIDER=gemini
 |----------|---------|-------|
 | `gemini` | `gemini-2.0-flash-lite` | Cheapest/fastest Gemini tier |
 | `openai` | `gpt-4o-mini` | Cheapest capable OpenAI model |
+
+---
+
+## Phase 5 — Markdown cleanup step + Obsidian filename fix (refactor)
+
+**Goal:** improve the quality of ingested notes with an LLM cleanup pass, and fix a bug where Obsidian showed ghost nodes in the graph view due to filename/wikilink mismatch.
+
+**Status:** ✅ Done.
+
+### New file
+
+| File | Purpose |
+|------|---------|
+| `tools/ingest/cleanup.py` | `clean_markdown(content) -> str` — sends raw MinerU output through the LLM to fix OCR artifacts, grammar, markdown formatting, and strip non-content noise (ads, disclaimers, page headers/footers, repeated lines). Prompt is conservative: no summarizing, no rephrasing, no touching formulas or technical terms. |
+
+### Files edited
+
+| File | Change |
+|------|--------|
+| `tools/ingest/mineru_run.py` | Added `from cleanup import clean_markdown`. After reading MinerU output, calls `clean_markdown(raw_content)` before writing to disk. The cleaned content is what gets frontmatter, wikilinks, and is saved as the final note. Also: output filename now uses the human-readable title (spaces) instead of the raw PDF stem (underscores). |
+
+### Pipeline order (per PDF)
+
+```
+MinerU (local)
+  → topic inference (LLM)
+  → markdown cleanup (LLM)   ← new
+  → write to wiki/private/<topic>/<Title>.md
+  → wikilink insertion (LLM)
+  → log + index update
+```
+
+### Obsidian filename fix
+
+**Bug:** Obsidian graph showed duplicate ghost nodes — e.g. `Italian_Diaspora_Nicola_Protasoni` (real file, underscores) and `Italian Diaspora Nicola Protasoni` (ghost, from `[[...]]` in `index.md`). Obsidian matches wikilinks to filenames, not frontmatter titles, so the underscore/space mismatch caused unresolved links.
+
+**Fix:** `mineru_run.py` now derives the output filename from the same title string used in frontmatter (`pdf_path.stem.replace("_"," ").replace("-"," ").title()`), so `[[Italian Diaspora Nicola Protasoni]]` resolves to `Italian Diaspora Nicola Protasoni.md` in Obsidian with no ghost node.
+
+**Existing files:** rename manually in Finder or Obsidian — new ingestions are correct automatically.
