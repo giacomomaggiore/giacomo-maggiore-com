@@ -45,12 +45,33 @@ export function tokenize(text: string): string[] {
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, ' ')
     .split(/\s+/)
+    // filter out short words and stopwords
     .filter(t => t.length >= 3 && !STOPWORDS.has(t))
 }
-
+// BM25 parameters
+// K! controls how much frequency impacts scoring
+// if K1=0: score does not rise with repeated words 
 const K1 = 1.5
+
+// B Adjusts how much to normalize for document length.
+// Large B penalizes longer docs
 const B = 0.75
 
+// BM25 is a ranking function used by search engines to
+//  estimate how relevant a document is to a given query. 
+// 
+//It rewards documents that:
+// - Contain the search terms multiple times,
+// - Are of typical document length (not too short or too long).
+// - Have those terms appear in less common contexts (across the whole corpus),
+
+
+//BM25 is based on the idea that a term appearing in a document is more important 
+// if it appears less frequently across all documents (inverse document frequency) 
+// and if it appears more times in that document (term frequency), but with diminishing returns. 
+
+// It also considers the length of the document to avoid biasing towards longer
+//  documents that may contain more terms by chance.
 export function retrieve(query: string, index: WikiIndex, topK = 4): WikiNote[] {
   const qTerms = tokenize(query)
   if (qTerms.length === 0) return []

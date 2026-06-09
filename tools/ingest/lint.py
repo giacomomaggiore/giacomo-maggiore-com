@@ -38,11 +38,11 @@ def run_lint(repo_root: Path, use_llm: bool = False) -> None:
         try:
             post = frontmatter.load(str(path))
         except Exception as e:
-            issues.append(f"❌  Cannot parse `{path.name}`: {e}")
+            issues.append(f"Cannot parse `{path.name}`: {e}")
             continue
 
         if not str(post.get("title", "")).strip():
-            issues.append(f"❌  Missing `title` in frontmatter: `{path.name}`")
+            issues.append(f"Missing `title` in frontmatter: `{path.name}`")
 
         for link_target in WIKILINK_RE.findall(post.content):
             link_target = link_target.strip()
@@ -58,14 +58,14 @@ def run_lint(repo_root: Path, use_llm: bool = False) -> None:
         if path.stem in _SKIP_STEMS:
             continue
         if not inbound.get(title):
-            issues.append(f"ℹ️   Orphan (no inbound links): **{title}** (`{path.name}`)")
+            issues.append(f"Orphan (no inbound links): **{title}** (`{path.name}`)")
 
     # Duplicate titles (shouldn't happen — vault.py last-write wins — but check anyway)
     seen: dict[str, Path] = {}
     for title, path in title_map.items():
         if title in seen:
             issues.append(
-                f"❌  Duplicate title **{title}**: `{path.name}` vs `{seen[title].name}`"
+                f"Duplicate title **{title}**: `{path.name}` vs `{seen[title].name}`"
             )
         seen[title] = path
 
@@ -80,7 +80,7 @@ def run_lint(repo_root: Path, use_llm: bool = False) -> None:
         lines.append("\n## Issues\n")
         lines.extend(f"{issue}\n" for issue in issues)
     else:
-        lines.append("\n✅ No issues found.\n")
+        lines.append("\nNo issues found.\n")
 
     if use_llm:
         lines.append("\n## Gemini Suggestions\n")

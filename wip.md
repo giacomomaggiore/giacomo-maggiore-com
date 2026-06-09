@@ -56,6 +56,54 @@ identical URLs).
 
 ---
 
+## Phase 4 — Query API + chat UI
+
+**Status:** ✅ Done. `/ask` page live in dev; requires `GOOGLE_API_KEY` (or `OPENAI_API_KEY`) in `.env.local`.
+
+### New files
+
+| File | Purpose |
+|------|---------|
+| `lib/wiki/llm.ts` | Provider-agnostic streaming wrapper. Reads `LLM_PROVIDER` / `LLM_MODEL` from env; dispatches to `_streamGemini()` or `_streamOpenAI()`. Exports `streamAnswer(question, context)` (async generator) and `buildCitations(notes)`. |
+| `app/api/ask/route.ts` | POST endpoint. Lazy-loads the JSON index, runs BM25 retrieval, streams the response: first line is `{"citations":[…]}\n`, then raw text chunks. Question-length cap at 500 chars. |
+| `app/components/AskChat.tsx` | Client component. Reads the stream: parses the first `\n`-delimited line as citation JSON, appends the rest to the answer. Renders answer as markdown via `react-markdown`. AbortController stop button. |
+| `app/ask/page.tsx` | Simple server page hosting `<AskChat />`. |
+
+### Packages added
+
+- `openai ^6.42.0` — wired up in `lib/wiki/llm.ts` for the OpenAI provider path
+
+### LLM provider abstraction
+
+Mirrors the Python `tools/ingest/providers.py` pattern exactly. `lib/wiki/llm.ts` is
+provider-agnostic — the provider is chosen via `.env.local`, no code changes required to switch.
+
+**Env vars (to add to `.env.local` before Phase 4):**
+```dotenv
+# Choose provider: gemini (default) or openai
+LLM_PROVIDER=gemini
+
+# Optional model override
+# LLM_MODEL=gemini-2.0-flash-lite   # default for gemini
+# LLM_MODEL=gpt-4o-mini             # default for openai
+
+# Key for chosen provider (server-only — no NEXT_PUBLIC_ prefix)
+GOOGLE_API_KEY=...    # LLM_PROVIDER=gemini
+# OPENAI_API_KEY=...  # LLM_PROVIDER=openai
+```
+
+**`lib/wiki/llm.ts` contract:**
+- Reads `LLM_PROVIDER` (default `gemini`), `LLM_MODEL`, and the relevant API key from `process.env`
+- Exports `async function* streamAnswer(question: string, context: WikiNote[]): AsyncGenerator<string>`
+- Internally dispatches to `_streamGemini()` or `_streamOpenAI()` based on provider
+- `openai` npm package added as dependency when OpenAI support is wired up
+
+### Phase 2 — permanently skipped
+Wikilinks rendering (`[[Title]]` in MDX) is not needed: public notes will never use `[[...]]`
+syntax. The syntax exists only in private vault notes, which are never rendered as pages.
+
+---
+
 ## Phase 3 — Full index (public + private) + BM25 retrieval
 
 **Goal:** build a JSON index of all wiki content at build time so the LLM Query (Phase 4) can

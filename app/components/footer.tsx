@@ -1,6 +1,14 @@
+'use client'
+
+import { usePathname } from 'next/navigation'
 import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaStrava, FaRss } from "react-icons/fa";
 
+// hide footer from /ask page
+const HIDDEN_ON = ['/ask']
+
 export default function Footer() {
+  const pathname = usePathname()
+  if (HIDDEN_ON.includes(pathname)) return null
   return (
     <footer className="mb-4 mt-2">
     <form action="/api/newsletter" method="POST" className="mb-2 rounded-lg border border-neutral-200 dark:border-neutral-800 p-4">

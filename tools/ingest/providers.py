@@ -20,10 +20,9 @@ _DEFAULTS = {
     "openai": "gpt-4o-mini",
 }
 
-
 def generate(prompt: str) -> str:
     """Send a prompt to the configured provider and return the text response."""
-    provider = os.environ.get("LLM_PROVIDER", "gemini").lower().strip()
+    provider = os.environ.get("LLM_PROVIDER", "openai").lower().strip()
 
     if provider == "gemini":
         return _gemini(prompt)

@@ -8,4 +8,3 @@
 
 ## Personal Finance
 - [[Alternative Thinking Why Do Most Investors Choose Concentration Over Leverage]]
-- 
