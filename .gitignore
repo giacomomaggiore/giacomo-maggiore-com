@@ -27,9 +27,6 @@ r
 # wiki source drop folder
 wiki/source/
 
-# wiki build artifacts
-/lib/wiki-index.generated.json
-/tools/ingest/**/__pycache__
 
 # debug
 npm-debug.log*
