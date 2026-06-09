@@ -83,8 +83,8 @@ export function AskChat() {
         value={question}
         onChange={e => setQuestion(e.target.value)}
         onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submit() }}
-        placeholder="Anything about my notes..."
-        rows={3}
+        placeholder="Ask anything in the knowledge system..."
+        rows={2}
         className="w-full p-3 rounded border border-neutral-200 dark:border-neutral-700 bg-transparent text-sm resize-none focus:outline-none"
       />
 
@@ -94,7 +94,7 @@ export function AskChat() {
           disabled={status === 'loading' || !question.trim()}
           className="px-4 py-1.5 text-sm rounded bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 disabled:opacity-40"
         >
-          {status === 'loading' ? 'Thinking…' : 'Ask'}
+          {status === 'loading' ? 'Thinking…' : '↑'}
         </button>
         {status === 'loading' && (
           <button
@@ -123,6 +123,8 @@ export function AskChat() {
                 : <span>{c.title}</span>
               }
             </span>
+            
+
           ))}
         </div>
       )}

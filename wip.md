@@ -73,6 +73,18 @@ identical URLs).
 
 - `openai ^6.42.0` — wired up in `lib/wiki/llm.ts` for the OpenAI provider path
 
+### Retrieval accuracy improvements
+
+Three improvements to `lib/wiki/retrieve.ts` (index regenerated after each change):
+
+| Change | Detail |
+|--------|--------|
+| **Stemming** | `stem()` function added before `tokenize()` output. Single-pass, longest-suffix-first. Collapses inflected forms: `economics`/`economic`/`economical` → `econom`, `statistics`/`statistical` → `statist`, `regression` → `regress`, `investment` → `invest`. No extra dependency. |
+| **Title boost** | Query terms that match a word in the note's title get a 2× score multiplier. A note titled "Econometrics" will heavily outrank a note that merely mentions econometrics once in a footnote. |
+| **topK 4 → 5** | Default number of notes sent to the LLM as context increased from 4 to 5. |
+
+---
+
 ### LLM provider abstraction
 
 Mirrors the Python `tools/ingest/providers.py` pattern exactly. `lib/wiki/llm.ts` is
