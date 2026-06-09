@@ -3,7 +3,7 @@ Runs MinerU on one or more PDFs and writes the resulting markdown (with
 frontmatter) into wiki/private/<topic>/<stem>.md.
 
 MinerU runs fully locally — no cloud call for parsing.
-Only the optional topic-inference step calls Gemini.
+LLM is called twice per PDF: once to infer the topic, once to clean up the markdown.
 """
 
 import datetime
@@ -13,6 +13,7 @@ import tempfile
 from pathlib import Path
 
 import frontmatter
+from cleanup import clean_markdown
 from providers import generate
 
 MINERU_BIN = "/opt/anaconda3/bin/mineru"
@@ -69,10 +70,17 @@ def run_pdf(
             print(f"    Inferring topic via LLM ...")
             topic = _infer_topic(pdf_path.stem, raw_content)
 
-        # Prepare destination
+        # Clean up OCR artifacts, formatting, grammar, and non-content noise
+        print(f"    Cleaning markdown via LLM ...")
+        content = clean_markdown(raw_content)
+
+        # Build a clean title from the filename
+        title = pdf_path.stem.replace("-", " ").replace("_", " ").title()
+
+        # Prepare destination — use the title as the filename so [[wikilinks]] resolve in Obsidian
         dest_dir = private_dir / topic
         dest_dir.mkdir(parents=True, exist_ok=True)
-        dest = dest_dir / (pdf_path.stem + ".md")
+        dest = dest_dir / (title + ".md")
 
         # Copy images to <topic>/images/ (MinerU already uses this name)
         img_dir = md_file.parent / "images"
@@ -82,12 +90,9 @@ def run_pdf(
                 shutil.rmtree(dest_img_dir)
             shutil.copytree(img_dir, dest_img_dir)
 
-        # Build a clean title from the filename (can be improved later)
-        title = pdf_path.stem.replace("-", " ").replace("_", " ").title()
-
         # Write with frontmatter
         post = frontmatter.Post(
-            raw_content,
+            content,
             title=title,
             date=datetime.date.today().isoformat(),
             source=str(pdf_path.relative_to(repo_root)),

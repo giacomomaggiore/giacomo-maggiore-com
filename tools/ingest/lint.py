@@ -50,7 +50,7 @@ def run_lint(repo_root: Path, use_llm: bool = False) -> None:
                 inbound[link_target].append(title)
             else:
                 issues.append(
-                    f"⚠️   Broken `[[{link_target}]]` in **{title}** (`{path.name}`)"
+                    f"Broken `[[{link_target}]]` in **{title}** (`{path.name}`)"
                 )
 
     # Orphans
