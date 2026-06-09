@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
@@ -15,6 +15,15 @@ export function AskChat() {
   const [citations, setCitations] = useState<Citation[]>([])
   const [status, setStatus] = useState<Status>('idle')
   const abortRef = useRef<AbortController | null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  // grow the textarea to fit content, shrink back when cleared
+  useEffect(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = el.scrollHeight + 'px'
+  }, [question])
 
   async function submit() {
     if (!question.trim() || status === 'loading') return
@@ -79,27 +88,27 @@ export function AskChat() {
 
   return (
     <div className="flex flex-col gap-4">
-      <textarea
-        value={question}
-        onChange={e => setQuestion(e.target.value)}
-        onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submit() }}
-        placeholder="Ask anything in the knowledge system..."
-        rows={2}
-        className="w-full p-3 rounded border border-neutral-200 dark:border-neutral-700 bg-transparent text-sm resize-none focus:outline-none"
-      />
-
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-end">
+        <textarea
+          ref={textareaRef}
+          value={question}
+          onChange={e => setQuestion(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submit() }}
+          placeholder="Ask anything in the knowledge system…"
+          rows={1}
+          className="flex-1 p-2 rounded border border-neutral-200 dark:border-neutral-700 bg-transparent text-sm resize-none overflow-hidden focus:outline-none"
+        />
         <button
           onClick={submit}
           disabled={status === 'loading' || !question.trim()}
-          className="px-4 py-1.5 text-sm rounded bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 disabled:opacity-40"
+          className="px-4 py-2 text-sm rounded bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 disabled:opacity-40 shrink-0"
         >
           {status === 'loading' ? 'Thinking…' : '↑'}
         </button>
         {status === 'loading' && (
           <button
             onClick={stop}
-            className="px-4 py-1.5 text-sm rounded border border-neutral-300 dark:border-neutral-700"
+            className="px-4 py-2 text-sm rounded border border-neutral-300 dark:border-neutral-700 shrink-0"
           >
             Stop
           </button>

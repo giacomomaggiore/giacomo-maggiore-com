@@ -90,7 +90,7 @@ def cmd_run(args: argparse.Namespace) -> None:
             sys.exit(f"Error: file not found: {pdf}")
         pdfs = [pdf]
     else:
-        pdfs = sorted(source_dir.glob("*.pdf"))
+        pdfs = sorted(source_dir.rglob("*.pdf"))
 
     if not pdfs:
         print("No PDFs found in wiki/source/. Drop some PDFs there and try again.")
