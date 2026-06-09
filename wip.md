@@ -285,4 +285,7 @@ MinerU (local)
 
 **Fix:** `mineru_run.py` now derives the output filename from the same title string used in frontmatter (`pdf_path.stem.replace("_"," ").replace("-"," ").title()`), so `[[Italian Diaspora Nicola Protasoni]]` resolves to `Italian Diaspora Nicola Protasoni.md` in Obsidian with no ghost node.
 
+
+..
+
 **Existing files:** rename manually in Finder or Obsidian — new ingestions are correct automatically.
