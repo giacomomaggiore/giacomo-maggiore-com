@@ -1,5 +1,17 @@
 # Plan: Integrate an Obsidian-vault PKM + LLM Query into the website
 
+> **Implementation note (this is the original plan; the shipped code diverged):**
+> - **Env var is `LLM_MODEL`, not `GEMINI_MODEL`.** The provider is chosen via `LLM_PROVIDER`
+>   (`gemini` default, or `openai`); see `lib/wiki/llm.ts` and the README.
+> - **Phase 2 (wikilink rendering in MDX) was permanently skipped** — public notes never use
+>   `[[...]]` syntax. `lib/wiki/chunk.ts` and `lib/wiki/wikilinks.ts` were never created;
+>   `remark-wiki-link` was never added.
+> - **No rate limiting / Upstash KV cost protection** was implemented. The only guard on `/ask`
+>   is the 500-char question cap.
+> - **There is no file watcher.** The ingestion pipeline is run manually on demand.
+>
+> See `wip.md` for the authoritative phase-by-phase record of what was actually built.
+
 ## Context
 
 The repo `giacomo-maggiore-com` (Next.js 14 App Router, Vercel) currently serves file-based MDX
@@ -27,7 +39,7 @@ Everything else is relaxed to keep it simple:
 - **Full migration**: `app/notes/posts` → `wiki/public/notes`, `app/blog/posts` → `wiki/public/blog`.
   Site URLs (`/notes/[slug]`, `/blog/[slug]`) stay identical.
 - **LLM provider = Google Gemini** for the Query and the local linking/lint steps.
-  TS web side: `@google/genai`; Python pipeline: `google-genai`. Model ID in env (`GEMINI_MODEL`).
+  TS web side: `@google/genai`; Python pipeline: `google-genai`. Model ID in env (`LLM_MODEL`).
 - **PDF parsing = MinerU, fully local** (its own local models on your machine; no cloud call for
   parsing). Only linking, lint, and the Query call Gemini.
 - **Query accesses ALL content (public + private).** Public pages stay browsable at `/notes|blog/<slug>`;
@@ -137,7 +149,7 @@ Vercel redeploys with updated knowledge.
    - `import wikiIndex from 'lib/wiki-index.generated.json'` (read-only, bundled).
    - `lib/wiki/retrieve.ts`: BM25 (`k1=1.5,b=0.75`) over all notes; top 3–4 by score; return their
      `fullText` concatenated as context + `citations` list `{title, url|null}`.
-   - `lib/wiki/llm.ts`: Gemini via `@google/genai`, model from `GEMINI_MODEL`, streaming.
+   - `lib/wiki/llm.ts`: Gemini via `@google/genai`, model from `LLM_MODEL`, streaming.
      System prompt: answer **only** from provided pages, cite each claim by title (`[Title]`); public
      pages get a URL, private pages cite title only (no link); refuse if not covered.
    - Stream text deltas via a `ReadableStream`; emit citations as a first JSON meta line.
@@ -188,7 +200,7 @@ tools/ingest/  pyproject.toml(google-genai, python-frontmatter) cli.py mineru_ru
 ## Libraries / env to add
 - npm: `@google/genai`, `remark-wiki-link`, devDep `tsx`; optional `@upstash/redis`.
 - Python (local only): `google-genai`, `python-frontmatter`, MinerU (`magic-pdf`/`mineru`).
-- env: `GOOGLE_API_KEY` (server-only), `GEMINI_MODEL`; KV creds if used.
+- env: `GOOGLE_API_KEY` (server-only), `LLM_PROVIDER`, `LLM_MODEL`; KV creds if used.
 
 ## Risks / trade-offs
 - **Private knowledge is reachable via the Query** (and the index may deploy to Vercel) — accepted; the
@@ -211,5 +223,5 @@ tools/ingest/  pyproject.toml(google-genai, python-frontmatter) cli.py mineru_ru
   by `/ask`.
 - `/ask`: question answerable from a public note → streamed answer + clickable citation; from a private
   note → answer cites the private title (no link); off-topic → declines; hammering → 429.
-- Local: drop a PDF in `wiki/source` with `watch` running → markdown in `wiki/private`, only allowlisted
-  `[[links]]` inserted, `index.md` updated. `python -m ingest lint` produces a report.
+- Local: drop a PDF in `wiki/source` and run `python -m ingest run` → markdown in `wiki/private`, only
+  allowlisted `[[links]]` inserted, `index.md` updated. `python -m ingest lint` produces a report.

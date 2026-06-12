@@ -53,7 +53,6 @@ export async function POST(req: Request) {
   })
 
   const data = await response.json()
-  console.log("PostHog response data:", data)
 
   if (!response.ok) {
     return NextResponse.json({ error: 'PostHog request failed', details: data }, { status: response.status, headers: { 'Cache-Control': 'no-store' } })

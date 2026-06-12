@@ -1,5 +1,5 @@
 import { getBlogPosts } from './blog/utils'
-import { getBlogPosts as getNotes } from './notes/utils'
+import { getNotes } from './notes/utils'
 
 export const baseUrl =
   process.env.NODE_ENV === "production"

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { parseFrontmatter } from 'lib/wiki/frontmatter'
+import { getMDXData, readMDXFile } from 'lib/wiki/mdx-files'
 import { WIKI_PUBLIC_BLOG_DIR } from 'lib/wiki/paths'
 
 
@@ -8,45 +8,19 @@ import { WIKI_PUBLIC_BLOG_DIR } from 'lib/wiki/paths'
 
  typical flow (short):
 
-Site list page → calls getBlogPosts() 
+Site list page → calls getBlogPosts()
 → render list (filter by language / strip .en/.it from slug).
 
 User opens /blog/:slug
- → page loader calls getPost(slug, lang) 
+ → page loader calls getPost(slug, lang)
  → returns single post content →
  render full post.
 
+ The MDX-reading helpers (getMDXFiles/readMDXFile/getMDXData) live in
+ lib/wiki/mdx-files.ts (shared with app/notes/utils.ts).
  */
 
 export type Lang = 'it' | 'en'
-
-// returns list of .mdx files in a directory
-function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
-}
-
-// Helper per leggere un singolo file MDX
-// e restituire un oggetto con metadata e content
-function readMDXFile(filePath: string) {
-  let rawContent = fs.readFileSync(filePath, 'utf-8')
-  return parseFrontmatter(rawContent)
-}
-
-// Helper per leggere tutti i file MDX in una directory e
-//  restituire un array di oggetti con metadata, slug e content
-function getMDXData(dir: string) {
-  let mdxFiles = getMDXFiles(dir)
-  return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file))
-    let slug = path.basename(file, path.extname(file))
-
-    return {
-      metadata,
-      slug,
-      content,
-    }
-  })
-}
 
 export function getBlogPosts() {
   return getMDXData(WIKI_PUBLIC_BLOG_DIR)
@@ -75,7 +49,6 @@ export function getPost(slug: string, lang?: string) {
   // Normalizza la lingua: solo se inizia per "it" → it, in tutti gli altri casi → en
   const normalizedLang: Lang = (typeof lang === 'string' && lang.toLowerCase().startsWith('it')) ? 'it' : 'en'
 
-  console.log(`Looking for file: ${slug}.${normalizedLang}.mdx`)
   const filePath = path.join(postsDirectory, `${slug}.${normalizedLang}.mdx`)
   if (fs.existsSync(filePath)) {
     return readMDXFile(filePath)

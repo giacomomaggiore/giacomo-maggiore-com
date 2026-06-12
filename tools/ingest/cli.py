@@ -17,6 +17,7 @@ Requirements:
 
 import argparse
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -64,6 +65,28 @@ def _require_api_key() -> None:
         sys.exit(f"Error: Unknown LLM_PROVIDER '{provider}'. Use 'gemini' or 'openai'.")
 
 
+def _unique_path(path: Path) -> Path:
+    """Return a non-existing path by adding -2, -3, ... before the suffix if needed."""
+    if not path.exists():
+        return path
+
+    counter = 2
+    while True:
+        candidate = path.with_name(f"{path.stem}-{counter}{path.suffix}")
+        if not candidate.exists():
+            return candidate
+        counter += 1
+
+
+def _archive_pdf(pdf: Path, source_dir: Path, archive_dir: Path) -> Path:
+    """Move a processed PDF from wiki/source/ to wiki/archive/, preserving subfolders."""
+    rel = pdf.relative_to(source_dir)
+    archived_pdf = _unique_path(archive_dir / rel)
+    archived_pdf.parent.mkdir(parents=True, exist_ok=True)
+    shutil.move(str(pdf), str(archived_pdf))
+    return archived_pdf
+
+
 # ---------------------------------------------------------------------------
 # Commands
 # ---------------------------------------------------------------------------
@@ -78,6 +101,7 @@ def cmd_run(args: argparse.Namespace) -> None:
     import frontmatter
 
     source_dir = repo_root / "wiki/source"
+    archive_dir = repo_root / "wiki/archive"
     private_dir = repo_root / "wiki/private"
     private_dir.mkdir(parents=True, exist_ok=True)
     log_path   = private_dir / "log.md"
@@ -112,7 +136,10 @@ def cmd_run(args: argparse.Namespace) -> None:
 
             update_log(log_path, note_path, topic, pdf, repo_root)
             update_index(index_path, note_path, topic, title, repo_root)
-            print(f"  Log + index updated ✓\n")
+            print(f"  Log + index updated ✓")
+
+            archived_pdf = _archive_pdf(pdf, source_dir, archive_dir)
+            print(f"  Archived → {archived_pdf.relative_to(repo_root)}\n")
 
         except Exception as e:
             print(f"  ERROR: {e}\n")

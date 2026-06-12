@@ -23,9 +23,12 @@
 
 # obsidian
 **/.obsidian/
-r
+
 # wiki source drop folder
 wiki/source/
+
+# python ingestion pipeline caches
+/tools/ingest/**/__pycache__
 
 
 # debug
