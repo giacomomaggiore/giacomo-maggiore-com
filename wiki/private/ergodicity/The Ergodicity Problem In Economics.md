@@ -69,25 +69,24 @@ Pascal and Fermat were not looking for gambling advice; they were solving a mora
 
 St. Petersburg paradox. But is this model realistic? Would you accept the gamble and risk losing at the toss of a coin 40% of your house, car and life savings?
 
-A similar objection was raised in 1713 by Nicolas Bernoulli<sup>3</sup>. He proposed a hypothetical gamble whose expectation value was divergent: x was power-law distributed with a non-existent first moment. But this terminology hadn’t been developed yet, and N. Bernoulli said laconically we would find something “curious” if we tried to compute the expectation value $\langle \Delta x \rangle$.
+A similar objection was raised in 1713 by Nicolas Bernoulli. He proposed a hypothetical gamble whose expectation value was divergent: x was power-law distributed with a non-existent first moment. But this terminology hadn’t been developed yet, and N. Bernoulli said laconically we would find something “curious” if we tried to compute the expectation value $\langle \Delta x \rangle$.
 
-What people eventually deemed indeed curious was the following: if we had to pay a fee, $F$, to play this gamble, what should it be? The expected wealth model tells us that we would pay any finite fee, but that went against intuition. Even though $\Delta x$ had a heavy right tail, the probabilities of very large gains were still vanishing, and no one was willing (hypothetically) to pay much for a negligible chance to win a large amount. The failure of the expected wealth model to describe actual human behaviour is known as the [[Legacy Of Daniel Kahneman|St. Petersburg paradox]], and is treated in many textbooks on economics and probability theory. It is one of the puzzles that go away when we switch to the new formalism<sup>4</sup>.
+What people eventually deemed indeed curious was the following: if we had to pay a fee, $F$, to play this gamble, what should it be? The expected wealth model tells us that we would pay any finite fee, but that went against intuition. Even though $\Delta x$ had a heavy right tail, the probabilities of very large gains were still vanishing, and no one was willing (hypothetically) to pay much for a negligible chance to win a large amount. **The failure of the expected wealth model to describe actual human behaviour is known as the [[The St. Peterbourg Paradox|St. Petersburg paradox]], and is treated in many textbooks on economics and probability theory**. It is one of the puzzles that go away when we switch to the new formalism<sup>4</sup>.
 
-Utility theory. By 1713, it was clear that there’s more than expected wealth changes to financial decisions under uncertainty, and in 1738 Daniel Bernoulli updated the prevailing theory<sup>5</sup>: when people decide whether to take part in a gamble, they don’t consider the expected changes in wealth, x, but the expected changes in the usefulness of wealth, u(x).
+Utility theory. By 1713, it was clear that there’s more than expected wealth changes to financial decisions under uncertainty, and in 1738 Daniel Bernoulli updated the prevailing theory<sup>5</sup>: **when people decide whether to take part in a gamble, they don’t consider the expected changes in wealth, x, but the expected changes in the usefulness of wealth, u(x).**
 
-Specifically, D. Bernoulli surmised that the usefulness, or utility, of an extra dollar is roughly inversely proportional to how many dollars one already has. This leads to the differential equation $du = \frac{1}{x} dx$ with solution $u(x) = \ln x$ (calculus had just been invented). But he mentioned that the square-root function would also work. In general, a monotonically increasing $u(x)$ reflects a preference for more wealth over less, and concave $u(x)$ reflects a dislike for risk. Thus, the utility function encodes the psychology of a particular individual. We might write $u_{\mathrm{brave}}(x) = x$ and $u_{\mathrm{scared}}(x) = \ln x$.
+**Specifically, D. Bernoulli surmised that the usefulness, or utility, of an extra dollar is roughly inversely proportional to how many dollars one already has. This leads to the differential equation $du = \frac{1}{x} dx$ with solution $u(x) = \ln x$** (calculus had just been invented). But he mentioned that the square-root function would also work. In general, a monotonically increasing $u(x)$ reflects a preference for more wealth over less, and concave $u(x)$ reflects a dislike for risk. Thus, the utility function encodes the psychology of a particular individual. We might write $u_{\mathrm{brave}}(x) = x$ and $u_{\mathrm{scared}}(x) = \ln x$.
 
-D. Bernoulli’s model became known as ‘expected utility theory’. It produces different preferences than the expected wealth model if the utility function is nonlinear, as shown in Fig. 1c.
+D. Bernoulli’s model became known as ‘expected utility theory.
 
-Intriguingly, D. Bernoulli’s paper contains an error (see ref. <sup>4</sup>) that continues to haunt the formalism today: in one place his computations actually only work for linear $u(x)$, which would defeat the purpose of introducing $u(x)$ in the first place. But we will not take D. Bernoulli literally and instead interpret his writings as Laplace<sup>6</sup> and von Neumann and Morgenstern<sup>7</sup> did: each person $i$ has an idiosyncratic utility function $\bar{u_i(\boldsymbol{x})}$ and intuitively computes $\langle \Delta u_i(\boldsymbol{x})\rangle$. If that’s positive we accept the gamble, if it’s negative we reject it (assuming rejection results in no wealth change).
+Intriguingly, D. Bernoulli’s paper contains an error that continues to haunt the formalism today: in one place his computations actually only work for linear $u(x)$, which would defeat the purpose of introducing $u(x)$ in the first place. But we will not take D. Bernoulli literally and instead interpret his writings as Laplace<sup>6</sup> and von Neumann and Morgenstern<sup>7</sup> did: each person $i$ has an idiosyncratic utility function $\bar{u_i(\boldsymbol{x})}$ and intuitively computes $\langle \Delta u_i(\boldsymbol{x})\rangle$. If that’s positive we accept the gamble, if it’s negative we reject it (assuming rejection results in no wealth change).
 
 In the coin-toss example described by equation (2), the expected change in D. Bernoulli’s logarithmic utility is $\langle \Delta \ln x\rangle \approx -0.05$. A person whose psychology is well described by $u_{\mathrm{scared}}$ therefore won’t accept the gamble.
 
-Discounting. Utility theory considers a static probability space, without an explicit treatment of time. For instance, D. Bernoulli and his followers did not discuss the rate of change of utilities but only magnitudes of changes.
+**However, utility theory considers a static probability space, without an explicit treatment of time.** 
+- For instance, D. Bernoulli and his followers did not discuss the rate of change of utilities but only magnitudes of changes.
 
 Time is dealt with quite separately, namely through a process referred to as discounting. Originally, discounting assigned a present value to payments to be received in the future. It is often justified with a no-arbitrage argument: a payment received sooner, at a time $t$, is worth more than the same payment received later, at $t + \Delta t$, if it can be profitably invested for the duration $\Delta t$.
-
-With references to interest in the Bible (for example, Deuteronomy 23:19), the practice of temporal discounting is thus much older than the notion of utility. Today the two concepts coexist but without much clarity regarding their respective domains: based on the no-arbitrage argument one would discount cash, but since 1937 it has been common to discount utility instead — not even utility of cash but of consumption of cash or even more general resources<sup>8</sup>.
 
 The no-arbitrage argument ties discounting to available investment options. But in an ambitious attempt at generality, discounting nowadays is often phrased in terms of another subjective function, $d(t)$: some of us are impatient and discount strongly with a fast-decaying $d(\Delta t)$; others are more patient. The functional form of $d(\Delta t)$, supposedly, is another part of our psychology — it can be hyperbolic or exponential or whatever else fits the data<sup>9</sup>.
 
@@ -99,7 +98,7 @@ First, we consider financial decisions without uncertainty, which is very simila
 
 Financial decisions without uncertainty. A gamble without uncertainty is just a payment. A trivial model would be: we accept positive payments and reject negative ones. But what if we have to choose between two payments, or payment streams, at different times?
 
-In this case, one consideration must be some form of a growth rate. For instance, I may choose between a job that offers $\$12,000 per year, and another that offers $\$2,000 per month. Let’s say the jobs are identical in all other respects: I would then choose the one that pays $\$2,000 per month — not because $\$2,000 is the greater payment (it isn’t), but because the payments correspond to a higher (additive) growth rate of my wealth. I would maximize
+In this case, one consideration must be some form of a growth rate. For instance, I may choose between a job that offers $12,000 per year, and another that offers $2,000 per month. Let’s say the jobs are identical in all other respects: I would then choose the one that pays $2,000 per month — not because $2,000 is the greater payment (it isn’t), but because the payments correspond to a higher (additive) growth rate of my wealth. I would maximize
 
 $$
 g_{\mathrm{a}} = \frac{\Delta x}{\Delta t} \quad\text{(3)}
@@ -127,7 +126,7 @@ $$
 
 For financial processes, fitting more general functions often results in an interpolation between linear and logarithmic, maybe in a square-root function, or a similar small tweak.
 
-Ergodic observables. Real-life financial decisions usually come with a degree of uncertainty. We let the model reflect this by introducing noise. But how?
+**Ergodic observables.** Real-life financial decisions usually come with a degree of uncertainty. We let the model reflect this by introducing noise. But how?
 
 To perturb the process in a consistent way, we remind ourselves that what’s constant about the process in the absence of noise is the growth rate. If we perturb that with a constant-amplitude noise, the scale of the perturbation will be time independent in $v$-space, and in that sense adapted to the dynamics. That’s easily done by writing equation (5) in differential form, replacing the function $g$ by its (constant) value, $\gamma$, say, rearranging and adding the noise (here represented by a Wiener term $dW$ with amplitude $\sigma$)
 
@@ -137,19 +136,26 @@ $$
 
 The process itself is found by integrating equation (7) and solving for $x$. For our two key examples, this produces Brownian motion (with $v_{\mathrm{a}} = x$) and geometric Brownian motion (with $v_{\mathrm{e}} = \ln x$).
 
-The growth rates for these processes are no longer constant because they are noisy. But the lack of constancy is due to nothing other than the noise. Using the nomenclature introduced in equation (1), the relevant growth rates are ergodic observables of their respective processes. By design, their (time or ensemble) averages tell us what tends to happen over time.
+**The growth rates for these processes are no longer constant because they are noisy. But the lack of constancy is due to nothing other than the noise**. Using the nomenclature introduced in equation (1), **the relevant growth rates are ergodic observables of their respective processes. By design, their (time or ensemble) averages tell us what tends to happen over time.**
 
 This is not the case for wealth itself, and it exposes the expected wealth model as physically naive. The expected wealth change simply does not reflect what happens over time (unless the wealth dynamic is additive; Fig. 2). The initial correction — expected utility theory — overlooked the physical problem and jumped to psychological arguments, which are hard to constrain and often circular.
 
-Growth rate optimization is now sometimes called ‘ergodicity economics’. This doesn’t mean that ergodicity is assumed — quite the opposite: it refers to doing economics by asking explicitly whether something is ergodic, which is often not the case. As we have seen, ergodicity economics is a perspective that arises from constructing ergodic observables for non-ergodic (growth) processes.
+**Growth rate optimization is now sometimes called ‘ergodicity economics’.** This doesn’t mean that ergodicity is assumed — quite the opposite: **it refers to doing economics by asking explicitly whether something is ergodic, which is often not the case.** 
+- As we have seen, ergodicity economics is a perspective that arises from constructing ergodic observables for non-ergodic (growth) processes.
 
-Mapping. Both expected utility theory and ergodicity economics introduce nonlinear transformations of wealth, and the equations that appear in the two frameworks can be very similar. More precisely, the mapping is this: the appropriate growth rate for a given process is formally identical to the rate of change of a specific utility function
+**Mapping**: Both expected utility theory and ergodicity economics introduce nonlinear transformations of wealth, and the equations that appear in the two frameworks can be very similar. More precisely, the mapping is this: the appropriate growth rate for a given process is formally identical to the rate of change of a specific utility function
 
 $$
 g = \frac{\Delta \nu(x)}{\Delta t} = \frac{\Delta u(x)}{\Delta t} \quad\text{(8)}
 $$
 
-The time average of this growth rate is identical to the rate of change of the specific expected utility function — because of ergodicity.
+- The left side $g$ is called the **Ergodic Growth Rate** that applies a nonlinear transformation to wealth to accurately measure how it compounds over time.
+	- **The ergodic growth rate is the expected value of the log-return**:
+$$g = \frac{E[\ln(W_{t+\Delta t})] - \ln(W_t)}{\Delta t} = \frac{E[\ln(r)]}{\Delta t}$$
+- *Note that in this case $\Delta v(x) = \ln (x)$ and it is the linear transformation that linearizes the dynamics of growth.*
+- The right side is the  rate of change of your _expected utility_.
+
+**The time average of this growth rate is identical to the rate of change of the specific expected utility functio**n — because of ergodicity.
 
 Despite the mapping, conceptually the two approaches couldn’t be more different, and ergodicity economics stays closer to physical reality.
 
@@ -159,11 +165,11 @@ This mapping is fascinating: careful thinking leads to almost identical mathemat
 
 I was skeptical about this possibility, but a group of neuroscientists from Copenhagen, led by Oliver Hulme, appears to have made very promising progress in this regard.
 
-They followed very closely the discussion put forward in ref. <sup>4</sup>, where we had worked out in detail the correspondences between linear utility and additive dynamics; and between logarithmic utility and multiplicative dynamics. These correspondences provide the basis for the experiment: what if the dynamics of wealth could be controlled? With two artificial environments — one additive, the other one multiplicative — do people adjust their behaviour to be growth optimal in each?
+They followed very closely the discussion put forward in ref. <sup>4</sup>, where we had worked out in detail the correspondences between linear utility and additive dynamics; and between logarithmic utility and multiplicative dynamics. These correspondences provide the basis for the experiment: **what if the dynamics of wealth could be controlled? With two artificial environments — one additive, the other one multiplicative — do people adjust their behaviour to be growth optimal in each**?
 
 A positive result — people changing behaviour in response to the dynamics — would corroborate ergodicity economics and falsify expected utility theory (insofar as experiments falsify models). If people don’t change behaviour, one would conclude that dynamic effects (at least in this experiment) are not important, and personality differences may dominate.
 
-The experiment is described in detail in ref. <sup>11</sup>. Here I will only outline the setup. In the additive environment people were given a starting wealth of about \$150 and then each made 312 choices between additive gambles, with fixed dollar amounts at stake, for example between tossing a coin for winning \$40 or losing \$30; and tossing a coin for winning \$30 or losing \$20. In contrast, in the multiplicative environment, the same people were also given about \$150, and then made 312 choices between multiplicative gambles, with fixed proportions of wealth at stake, for example between tossing a coin for a 100% gain in wealth or a 70% loss; and tossing a coin for a 30% gain or a 20% loss.
+Here I will only outline the setup. In the additive environment people were given a starting wealth of about \$150 and then each made 312 choices between additive gambles, with fixed dollar amounts at stake, for example between tossing a coin for winning \$40 or losing \$30; and tossing a coin for winning \$30 or losing \$20. In contrast, in the multiplicative environment, the same people were also given about \$150, and then made 312 choices between multiplicative gambles, with fixed proportions of wealth at stake, for example between tossing a coin for a 100% gain in wealth or a 70% loss; and tossing a coin for a 30% gain or a 20% loss.
 
 The choices of the participants were consequential: a single decision could lead to winning or losing several hundred real dollars.
 
@@ -175,21 +181,20 @@ $$
 
 The parameter $\eta$ interpolates between linear, $\eta = 0$, and logarithmic, $\eta = 1$, functions, and it controls the concavity of $u(x; \eta)$ — larger values correspond to stronger concavity.
 
-The Copenhagen group fed the observations into a Bayesian hierarchical model<sup>12</sup>, the output of which is a posterior distribution for $\eta$. Roughly, for each person in each environment this tells us how likely it is that the subject was optimizing expected changes in equation (9) with different values for $\eta$, a result shown in Fig. 3.
+The Copenhagen group fed the observations into a Bayesian hierarchical model, the output of which is a posterior distribution for $\eta$. Roughly, for each person in each environment this tells us how likely it is that the subject was optimizing expected changes in equation (9) with different values for $\eta$, a result shown in Fig. 3.
 
-Expected utility theory predicts that people are insensitive to changes in the dynamics. People may have wildly different utility functions, which would be reflected in wildly different best-fit values of $\eta$, but the dynamic setting should make no difference. Utility functions are supposedly psychological or even neurological properties. They indicate personality types — risk seekers and scaredy cats.
+- **Expected utility theory predicts that people are insensitive to changes in the dynamics**. People may have wildly different utility functions, which would be reflected in wildly different best-fit values of $\eta$, but the dynamic setting should make no difference. Utility functions are supposedly psychological or even neurological properties. They indicate personality types — risk seekers and scaredy cats.
 
-Ergodicity economics predicts something quite different. First, it predicts that the dynamic setting significantly changes the best-fit ‘utility function’, which is really the ergodicity mapping in the relevant ergodic growth rate. The effective utility function will be different for one and the same individual under additive dynamics and under multiplicative dynamics.
+- Ergodicity economics predicts something quite different. **First, it predicts that the dynamic setting significantly changes the best-fit ‘utility function’, which is really the ergodicity mapping in the relevant ergodic growth rate**. The effective utility function will be different for one and the same individual under additive dynamics and under multiplicative dynamics.
 
-The direction of the change should go towards greater ‘risk aversion’ for multiplicative dynamics — the ergodicity mapping is more concave there. The magnitude of the change in $\eta$ should be about 1. And finally, if we take seriously the absolute null models of additive and multiplicative dynamics, the distributions should be centred near 0 for the additive setting and near 1 for the multiplicative setting.
+**The direction of the change should go towards greater ‘risk aversion’ for multiplicative dynamics — the ergodicity mapping is more concave there.** The magnitude of the change in $\eta$ should be about 1. And finally, if we take seriously the absolute null models of additive and multiplicative dynamics, the distributions should be centred near 0 for the additive setting and near 1 for the multiplicative setting.
 
-Subject-specific risk aversion  
 ![](images/63c3d958b1a37e2fbd3600f83842e5d8e396eb83894e73ca02fd408375f076fa.jpg)  
-Fig. 3 | Posterior probability density functions for the parameter $\eta$ in the Copenhagen experiment. Each set of axes represents one individual, blue for the additive environment, red for multiplicative. Dashed lines are the null-model predictions of 0 and 1. All tested individuals changed behaviour noticeably in response to the wealth dynamic, in all cases the multiplicative environment led to the shift to the right predicted by ergodicity economics. Not all individuals are the same, but an overall pattern is clearly seen. Data reproduced from ref. <sup>11</sup>.
+*Posterior probability density functions for the parameter $\eta$ in the Copenhagen experiment*. 
+- *Each set of axes represents one individual, blue for the additive environment, red for multiplicative.* 
+- *Dashed lines are the null-model predictions of 0 and 1. All tested individuals changed behaviour noticeably in response to the wealth dynamic, in all cases the multiplicative environment led to the shift to the right predicted by ergodicity economics.* 
 
 Given the limitations of the experiment — for instance, people only had a one-hour training phase to get used to a given environment — these predictions don’t look so bad. Of course, the 11,232 individual choices summarized in Fig. 3 may be happenstance, or the experiment may be flawed in a way we don’t yet understand. So we might put it this way: the strong focus on psychology and lack of consideration for dynamics, prevalent in expected utility theory, corresponds to the belief that the difference between the red and blue curves is spurious.
-
-This may be a good place to acknowledge further heroes of the story. That the geometric mean $\exp\langle\ln x\rangle$ is less than the arithmetic mean $\langle x\rangle$ was known to Euclid (Elements, Book V, Proposition 25), and it is a special case of Jensen’s inequality<sup>13</sup> of 1906. Its connection to gambling and investment problems was noted by Whitworth<sup>14</sup> in 1870, is implied by Itô’s work<sup>15</sup> of 1944, and is well known among gamblers as Kelly’s criterion<sup>16</sup> of 1956. Our modest contribution is to frame these observations as a question of ergodicity, which we have found to be a fruitful perspective. It enforces physical realism by precluding interactions among members of a statistical ensemble, it enables us to consider dynamics other than additive and multiplicative (corresponding to linear and logarithmic utility functions), and it naturally leads to treatments of problems whose solutions are less readily visible in previous framings of the issue.
 
 ## Outlook
 
@@ -197,14 +202,13 @@ The present situation is both dispiriting and uplifting. It is dispiriting becau
 
 However, it is also uplifting and scientifically exciting because of the many opportunities that have just opened up. The situation is similar to pre-standard model particle physics (except, with a copy of ref. <sup>17</sup> in the back pocket): each behavioural pattern that follows from growth rate maximization has its own narrative and vocabulary. Take discounting as an example: thousands of studies investigate subjective perceptions of the value of a dollar in the future. When expressed mathematically, the heart of this narrative becomes a story about growth rates. One has to relabel and rearrange some terms in the relevant equation, but eventually the ergodic growth rate is recovered as the fundamental concept that explains the phenomenon<sup>18</sup>. The same is true for expected utility theory<sup>19</sup>.
 
-Similarly, we’ve learned a lot about market stability and have found a natural resolution of the equity premium puzzle<sup>20</sup> or — as Ken Arrow used to call it — the volatility puzzle. Growth rate optimization predicts a relationship between how fast something grows and how volatile it is. This relationship holds not only for the stock market indexes we have checked but even for bitcoin. It can be used for fraud detection: the relationship doesn’t hold for Bernie Madoff’s fraudulent fund, for example. It also suggests a protocol for setting central-bank interest rates<sup>21</sup>.
+Similarly, we’ve learned a lot about market stability and have found a natural resolution of the equity premium puzzle<sup>20</sup> or — as Ken Arrow used to call it — the volatility puzzle. **Growth rate optimization predicts a relationship between how fast something grows and how volatile it is.** This relationship holds not only for the stock market indexes we have checked but even for bitcoin. It can be used for fraud detection: the relationship doesn’t hold for Bernie Madoff’s fraudulent fund, for example. It also suggests a protocol for setting central-bank interest rates<sup>21</sup>.
 
 Perhaps the most significant change lies in the nature of the model human that arises from our conceptual reframing. Homo economicus has been criticized, perhaps most succinctly for being short-termist. Given that time is so poorly represented in mainstream economics, this should come as no surprise. Our Homo economicus, or Homo ergodicus? — the new guy — is really rather nice. He cares about others, understands that cooperation leads to better results, and is patient and kind<sup>22</sup>. Nor do we have to assume huge individual differences in psychology or skill to explain the huge observed differences in wealth: a trivial null model — though one that doesn’t blindly assume ergodicity — predicts the robust features of the wealth distribution<sup>23–25</sup>. A well-known measure of inequality<sup>26</sup> turned out to be the time-integrated difference between ensemble and time-average growth rates in geometric Brownian motion<sup>27</sup>.
 
 The model I have presented here — optimizing time-average growth rates — is a null model, and it has all the shortcomings that null models have. The improvement is clear when we compare ours to the prevailing null model of optimizing expected time-integrated discounted utility. Rather than adding correcting components to that conceptually flawed null model, we remove the conceptual flaw. The use of a null model of any kind, in my view, is a form of caution: of this complex system I only know a few simple aspects with the degree of certainty that makes it promising to incorporate them in a formal model. Adding further details would require careful checks against overfitting.
 
 We have reason to hope for a future economic science that is more parsimonious, conceptually clearer and less subjective. It will resemble reality more closely and be better aligned with our moral intuitions.
-
 
 ## Related notes
 
