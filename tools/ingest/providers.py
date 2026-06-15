@@ -2,8 +2,8 @@
 LLM provider abstraction for the ingest pipeline.
 
 Switch provider via .env.local:
-    LLM_PROVIDER=gemini    # default — uses GOOGLE_API_KEY
-    LLM_PROVIDER=openai    # uses OPENAI_API_KEY
+    LLM_PROVIDER=openai    # default — uses OPENAI_API_KEY
+    LLM_PROVIDER=gemini    # uses GOOGLE_API_KEY
 
 Override the model (optional):
     LLM_MODEL=gemini-2.0-flash-lite   # default for gemini
@@ -17,7 +17,7 @@ import os
 
 _DEFAULTS = {
     "gemini": "gemini-2.0-flash-lite",
-    "openai": "gpt-4o-mini",
+    "openai": "gpt-5.4-mini-2026-03-17",
 }
 
 def generate(prompt: str) -> str:

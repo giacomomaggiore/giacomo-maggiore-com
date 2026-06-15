@@ -30,11 +30,16 @@ def _load_env(repo_root: Path) -> None:
     """Load .env.local from the repo root so GOOGLE_API_KEY etc. are available."""
     try:
         from dotenv import load_dotenv
-        env_file = repo_root / ".env.local"
-        if env_file.exists():
-            load_dotenv(env_file)
     except ImportError:
-        pass  # python-dotenv not installed — rely on the shell environment
+        print(
+            "Warning: python-dotenv is not installed, so .env.local will NOT be "
+            "loaded.\n         Install it with: pip install -r tools/requirements.txt",
+            file=sys.stderr,
+        )
+        return  # rely on the shell environment
+    env_file = repo_root / ".env.local"
+    if env_file.exists():
+        load_dotenv(env_file)
 
 
 def _find_repo_root() -> Path:
@@ -48,7 +53,7 @@ def _find_repo_root() -> Path:
 
 def _require_api_key() -> None:
     """Check that the API key for the configured provider is present."""
-    provider = os.environ.get("LLM_PROVIDER", "gemini").lower().strip()
+    provider = os.environ.get("LLM_PROVIDER", "openai").lower().strip()
     if provider == "gemini":
         if not os.environ.get("GOOGLE_API_KEY", "").strip():
             sys.exit(

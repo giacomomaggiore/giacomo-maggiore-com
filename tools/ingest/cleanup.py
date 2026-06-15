@@ -19,6 +19,7 @@ Your task: return the same document with ONLY the following changes applied:
 2. **Fix markdown formatting** — repair broken headings (e.g. `#Title` missing space, inconsistent heading levels), fix malformed lists, tables, code blocks, and LaTeX math blocks. Do not change the content, only the markup.
 
 3. **Remove non-content noise** — delete the following if present:
+   - Info about the authors, journal, publication date, DOI, source URL, or other metadata that is not part of the main content
    - Repeated page headers / footers / page numbers
    - Copyright lines, disclaimers, legal notices, cookie banners
    - Ads, navigation menus, "click here" links, subscription prompts

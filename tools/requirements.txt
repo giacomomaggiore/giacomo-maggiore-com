@@ -1,0 +1,10 @@
+# Dependencies for the local ingestion pipeline (python -m ingest ...).
+# Install into your venv with:  pip install -r tools/requirements.txt
+#
+# Note: MinerU itself is invoked as an external CLI (see MINERU_BIN in
+# ingest/mineru_run.py) and is NOT installed from here.
+
+python-dotenv          # loads .env.local (GOOGLE_API_KEY / OPENAI_API_KEY etc.)
+python-frontmatter     # read/write YAML frontmatter in the generated markdown
+openai                 # LLM_PROVIDER=openai
+google-genai           # LLM_PROVIDER=gemini
