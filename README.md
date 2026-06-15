@@ -44,9 +44,13 @@ LLM_PROVIDER=gemini
 GOOGLE_API_KEY=...    # for LLM_PROVIDER=gemini
 # OPENAI_API_KEY=...  # for LLM_PROVIDER=openai
 
-# Optional: override the default model
+# Optional: override the cheap/fast model used for per-note cleanup
 # LLM_MODEL=gemini-2.0-flash-lite   # default for gemini
 # LLM_MODEL=gpt-4o-mini             # default for openai
+
+# Optional: override the reasoning tier used by `ingest refresh`
+# LLM_REASONING_MODEL=gemini-2.5-pro       # default for gemini
+# LLM_REASONING_MODEL=gpt-5.4-2026-03-17   # default for openai
 ```
 
 ### Ingest PDFs
@@ -73,19 +77,32 @@ Each PDF goes through:
 4. **LLM — wikilinks** — inserts `[[links]]` to existing notes; all links validated against the vault allowlist
 5. Output written to `wiki/private/<topic>/<title>.md` with frontmatter; `log.md` and `index.md` updated
 
-### Lint the vault
+### Refresh the vault
+
+Re-process every existing note with a reasoning model: re-clean the body,
+unwrap broken self-links, regenerate each note's `## Related notes` section
+(content-aware, not title-matching), and rebuild `index.md`.
 
 ```bash
 cd tools
 
-# Deterministic checks: broken links, orphans, duplicate titles, missing frontmatter
-python3 -m ingest lint
+# Re-clean + re-link the whole vault
+python3 -m ingest refresh
 
-# + LLM suggestions: contradictions, missing concept pages, cross-reference ideas
-python3 -m ingest lint --llm
+# Preview everything without writing any files
+python3 -m ingest refresh --dry-run
+
+# Only one note (matched by filename substring)
+python3 -m ingest refresh --only "Why Not 100% Equity"
+
+# Re-curate links + index only (skip the cleanup phase)
+python3 -m ingest refresh --skip-clean
 ```
 
-Report is written to `wiki/private/_lint-report.md`.
+Uses the reasoning tier from `LLM_REASONING_MODEL` (defaults:
+`gpt-5.4-2026-03-17` for OpenAI, `gemini-2.5-pro` for Gemini). Frontmatter is
+never sent to the model and never altered; every inserted `[[link]]` is
+validated against the vault allowlist and unwrapped if it doesn't resolve.
 
 ### Obsidian
 

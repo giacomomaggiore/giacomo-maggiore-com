@@ -5,20 +5,6 @@ title: La Matematica Del Benessere Toia
 topic: personal-growth
 ---
 
-La matematica del benessere  
-  
-## Derivata del benessere  
-
-## Processi con memoria  
-
-## Il trucco della mente  
-
-## La trappola della stabilità  
-
-## Il paradosso dell'ambizione  
-
-## Epilogo  
-
 C'è stato un momento della mia vita in cui mi sono accorto di non essere né felice né infelice.  
 
 Semplicemente… ero.  
@@ -63,7 +49,7 @@ Iniziamo a sentirci vuoti, impazienti, come se mancasse qualcosa.
 
 Anche quando, razionalmente, sappiamo di stare bene.  
 
-È questo il cuore dell'adattamento edonico: ci si abitua a tutto, anche alla serenità.  
+È questo il cuore dell'[[Legacy Of Daniel Kahneman|adattamento edonico]]: ci si abitua a tutto, anche alla serenità.  
 
 ## Processi con memoria  
 
@@ -237,3 +223,8 @@ Lì capisci che non dovrai mai risolvere il paradosso dell'adattamento edonico. 
 Forse l'unica vera libertà è sapere che non saremo mai liberi del tutto.  
 
 Ma che possiamo, ogni tanto, spostarci di lato, e vedere il flusso scorrere senza giudicarlo.
+
+## Note correlate
+
+- [[Legacy Of Daniel Kahneman]] — adattamento edonico e psicologia della felicità
+- [[How Convenience Kills Curiosity]] — sforzo, attrito e benessere

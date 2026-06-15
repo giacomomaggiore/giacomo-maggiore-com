@@ -18,15 +18,18 @@ Your task: return the same document with ONLY the following changes applied:
 
 2. **Fix markdown formatting** — repair broken headings (e.g. `#Title` missing space, inconsistent heading levels), fix malformed lists, tables, code blocks, and LaTeX math blocks. Do not change the content, only the markup.
 
-3. **Remove non-content noise** — delete the following if present:
-   - Info about the authors, journal, publication date, DOI, source URL, or other metadata that is not part of the main content
+3. If you can spot the document's author/issuer, please report it at the end of the cleaned markdown in a line like this:
+   `---\nAuthor: [name or organization, if identifiable]\n---`
+   If you cannot identify the author, omit this section entirely.
+
+4. **Remove non-content noise** — delete the following if present:
    - Repeated page headers / footers / page numbers
    - Copyright lines, disclaimers, legal notices, cookie banners
    - Ads, navigation menus, "click here" links, subscription prompts
    - Boilerplate not part of the actual document (e.g. "Downloaded from...", "This article is protected by...")
    - Duplicate lines or paragraphs caused by OCR (same sentence appearing twice in a row)
 
-4. **Do NOT**:
+5. **Do NOT**:
    - Summarize, shorten, or restructure sections
    - Change technical terms, proper nouns, numbers, or formulas
    - Add any new content or commentary

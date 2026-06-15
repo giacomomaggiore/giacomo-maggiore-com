@@ -93,7 +93,7 @@ export function AskChat() {
           ref={textareaRef}
           value={question}
           onChange={e => setQuestion(e.target.value)}
-          onKeyDown={e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) submit() }}
+          onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit() } }}
           placeholder="Ask anything in the knowledge system…"
           rows={1}
           className="flex-1 p-2 rounded border border-neutral-200 dark:border-neutral-700 bg-transparent text-sm resize-none overflow-hidden focus:outline-none"

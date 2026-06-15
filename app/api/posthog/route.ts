@@ -19,7 +19,19 @@ export async function POST(req: Request) {
 
   const escapeSingle = (s: string) => String(s ?? '').replace(/'/g, "\\'")
   let payload: any
-  if (body?.type === 'avg') {
+  if (body?.type === 'totalTime') {
+    payload = {
+      query: {
+        kind: 'HogQLQuery',
+        query: `
+          SELECT sum(session.duration) AS total_time_seconds
+          FROM events
+          WHERE session.duration IS NOT NULL
+        `
+      },
+      name: 'total time spent'
+    }
+  } else if (body?.type === 'avg') {
     payload = {
       query: {
         kind: 'HogQLQuery',
@@ -56,6 +68,14 @@ export async function POST(req: Request) {
 
   if (!response.ok) {
     return NextResponse.json({ error: 'PostHog request failed', details: data }, { status: response.status, headers: { 'Cache-Control': 'no-store' } })
+  }
+
+  if (body?.type === 'totalTime') {
+    const row = data?.results?.[0] ?? null
+    const result = row
+      ? { total_time_seconds: Number(row[0]) }
+      : null
+    return NextResponse.json({ raw: data, result }, { headers: { 'Cache-Control': 'no-store' } })
   }
 
   if (body?.type === 'avg') {

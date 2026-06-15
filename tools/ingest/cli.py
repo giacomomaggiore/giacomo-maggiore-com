@@ -7,8 +7,8 @@ by looking for a wiki/ directory):
     python -m ingest run                        # process all PDFs in wiki/source/
     python -m ingest run paper.pdf              # process one specific PDF
     python -m ingest run paper.pdf --topic finance
-    python -m ingest lint                       # deterministic health checks
-    python -m ingest lint --llm                 # + Gemini suggestions
+    python -m ingest refresh                    # re-clean + re-link the whole vault
+    python -m ingest refresh --dry-run          # preview without writing
 
 Requirements:
     pip install google-genai python-frontmatter python-dotenv
@@ -152,14 +152,20 @@ def cmd_run(args: argparse.Namespace) -> None:
     print("Done.")
 
 
-def cmd_lint(args: argparse.Namespace) -> None:
+def cmd_refresh(args: argparse.Namespace) -> None:
     repo_root = _find_repo_root()
     _load_env(repo_root)
-    if args.llm:
-        _require_api_key()
+    _require_api_key()
 
-    from lint import run_lint
-    run_lint(repo_root, use_llm=args.llm)
+    from refresh_vault import refresh
+    refresh(
+        repo_root,
+        dry_run=args.dry_run,
+        only=args.only,
+        skip_clean=args.skip_clean,
+        skip_links=args.skip_links,
+        no_index=args.no_index,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -186,14 +192,22 @@ def main() -> None:
     )
     p_run.set_defaults(func=cmd_run)
 
-    # --- lint ---
-    p_lint = sub.add_parser("lint", help="Health-check the wiki vault")
-    p_lint.add_argument(
-        "--llm",
-        action="store_true",
-        help="Also run Gemini-powered suggestions (slower, costs tokens)",
+    # --- refresh ---
+    p_refresh = sub.add_parser(
+        "refresh",
+        help="Re-clean and re-link the whole vault with a reasoning model",
     )
-    p_lint.set_defaults(func=cmd_lint)
+    p_refresh.add_argument("--dry-run", action="store_true",
+                           help="Preview changes without writing any files")
+    p_refresh.add_argument("--only", metavar="SUBSTR",
+                           help="Only process notes whose filename contains SUBSTR")
+    p_refresh.add_argument("--skip-clean", action="store_true",
+                           help="Skip the cleanup phase; only re-curate links + index")
+    p_refresh.add_argument("--skip-links", action="store_true",
+                           help="Skip the link-curation phase")
+    p_refresh.add_argument("--no-index", action="store_true",
+                           help="Do not rebuild index.md")
+    p_refresh.set_defaults(func=cmd_refresh)
 
     args = parser.parse_args()
     args.func(args)
