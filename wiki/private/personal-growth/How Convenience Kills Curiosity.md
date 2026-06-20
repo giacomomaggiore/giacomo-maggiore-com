@@ -5,6 +5,8 @@ title: How Convenience Kills Curiosity
 topic: convenience-curiosity
 ---
 
+https://medium.com/westenberg/how-convenience-kills-curiosity-33a53ce69486
+
 # How Convenience Kills Curiosity
 
 I’ve been thinking about the death of curiosity.

@@ -19,7 +19,6 @@ A map of the notes in this vault, grouped by topic. Each note also carries its o
 - [[Optimal Bond Allocation Lifetime]]
 - [[The Big Market Delusion  Valuation And Investment Implications]]
 - [[The Self Driving Portfolio Agentic Architecture For Institutional Am]]
-- [[La Regola Del 2X Duration   Dedalo Invest]] _(stub — no OCR text recovered)_
 
 ## Ergodicity economics
 - [[The Ergodicity Problem In Economics]]
@@ -34,8 +33,6 @@ A map of the notes in this vault, grouped by topic. Each note also carries its o
 - [[14 More Lessons From 14 Years At Google   By Addy Osmani]]
 - [[Why Do Good People Write Bad Software    By Jos Visser]]
 - [[All Communication Is Strategic  By Jos Visser - Input & Output filters|All Communication Is Strategic (big-tech-coding)]]
-- [[personal-growth/All Communication Is Strategic   By Jos Visser|All Communication Is Strategic (personal-growth)]] _(duplicate copy)_
-
 ## Great work, curiosity & well-being
 - [[The Bus Ticket Theory Of Genius]]
 - [[How To Lose Time And Money]]
@@ -48,4 +45,3 @@ A map of the notes in this vault, grouped by topic. Each note also carries its o
 
 ## AI
 - [[The Self Driving Portfolio Agentic Architecture For Institutional Am]]
-- [[Ai 2027 Slowdown]] _(stub — no OCR text recovered)_
