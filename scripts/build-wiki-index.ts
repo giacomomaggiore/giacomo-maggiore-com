@@ -10,6 +10,8 @@ import { tokenize, WikiNote, WikiIndex } from 'lib/wiki/retrieve'
 
 const OUTPUT_PATH = path.join(process.cwd(), 'lib', 'wiki-index.generated.json')
 const MAX_FULL_TEXT = 50_000
+// OpenAI recommends staying well under the 8192-token limit per input
+const MAX_EMBED_CHARS = 20_000
 
 function cleanText(raw: string): string {
   return raw
@@ -91,35 +93,68 @@ function collectPrivate(): WikiNote[] {
   return walkPrivate(WIKI_PRIVATE_DIR, WIKI_PRIVATE_DIR)
 }
 
-const notesNotes = collectNotes()
-const blogNotes = collectBlog()
-const privateNotes = collectPrivate()
-const notes = [...notesNotes, ...blogNotes, ...privateNotes]
-
-const df: Record<string, number> = {}
-for (const note of notes) {
-  for (const t of Object.keys(note.termFreq)) {
-    df[t] = (df[t] ?? 0) + 1
+// Batch-embed all notes in a single OpenAI request (supports up to 2048 inputs).
+// Attaches the embedding array directly onto each WikiNote in-place.
+// Silently skips if OPENAI_API_KEY is not set — retrieve() falls back to BM25-only.
+async function embedNotes(notes: WikiNote[]): Promise<void> {
+  const apiKey = process.env.OPENAI_API_KEY
+  if (!apiKey) {
+    console.log('  OPENAI_API_KEY not set — skipping embeddings (BM25-only mode)')
+    return
   }
+
+  const { default: OpenAI } = await import('openai')
+  const client = new OpenAI({ apiKey })
+
+  const inputs = notes.map(n => n.fullText.slice(0, MAX_EMBED_CHARS))
+
+  const res = await client.embeddings.create({
+    model: 'text-embedding-3-small',
+    input: inputs,
+  })
+
+  for (const { index, embedding } of res.data) {
+    notes[index].embedding = embedding
+  }
+
+  console.log(`  embedded ${notes.length} notes (text-embedding-3-small)`)
 }
 
-const totalTokens = notes.reduce(
-  (acc, n) => acc + Object.values(n.termFreq).reduce((a, b) => a + b, 0),
-  0,
-)
-const avgNoteLen = notes.length > 0 ? totalTokens / notes.length : 1
+async function main() {
+  const notesNotes = collectNotes()
+  const blogNotes = collectBlog()
+  const privateNotes = collectPrivate()
+  const notes = [...notesNotes, ...blogNotes, ...privateNotes]
 
-const index: WikiIndex = {
-  generatedAt: new Date().toISOString(),
-  noteCount: notes.length,
-  avgNoteLen,
-  df,
-  notes,
+  await embedNotes(notes)
+
+  const df: Record<string, number> = {}
+  for (const note of notes) {
+    for (const t of Object.keys(note.termFreq)) {
+      df[t] = (df[t] ?? 0) + 1
+    }
+  }
+
+  const totalTokens = notes.reduce(
+    (acc, n) => acc + Object.values(n.termFreq).reduce((a, b) => a + b, 0),
+    0,
+  )
+  const avgNoteLen = notes.length > 0 ? totalTokens / notes.length : 1
+
+  const index: WikiIndex = {
+    generatedAt: new Date().toISOString(),
+    noteCount: notes.length,
+    avgNoteLen,
+    df,
+    notes,
+  }
+
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(index))
+  console.log(
+    `wiki index: ${notes.length} notes` +
+    ` (${notesNotes.length} notes, ${blogNotes.length} blog, ${privateNotes.length} private)` +
+    ` → lib/wiki-index.generated.json`,
+  )
 }
 
-fs.writeFileSync(OUTPUT_PATH, JSON.stringify(index))
-console.log(
-  `wiki index: ${notes.length} notes` +
-  ` (${notesNotes.length} notes, ${blogNotes.length} blog, ${privateNotes.length} private)` +
-  ` → lib/wiki-index.generated.json`,
-)
+main().catch(err => { console.error(err); process.exit(1) })

@@ -40,9 +40,15 @@ Set the following in `.env.local`:
 # Choose provider: gemini (default) or openai
 LLM_PROVIDER=gemini
 
-# Key for the chosen provider:
+# Key for the chosen provider (answer generation):
 GOOGLE_API_KEY=...    # for LLM_PROVIDER=gemini
 # OPENAI_API_KEY=...  # for LLM_PROVIDER=openai
+
+# OpenAI key for embeddings — required for hybrid BM25 + semantic search.
+# This is independent of LLM_PROVIDER: even if you answer with Gemini you
+# still need this so the index builder and /api/ask can call text-embedding-3-small.
+# If unset, retrieval falls back to BM25-only (keyword search).
+OPENAI_API_KEY=...
 
 # Optional: override the cheap/fast model used for per-note cleanup
 # LLM_MODEL=gemini-2.0-flash-lite   # default for gemini

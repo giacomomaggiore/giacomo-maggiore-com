@@ -163,6 +163,56 @@ pnpm build       # prebuild runs indexer + assert automatically
 
 ---
 
+## Phase 4b — Hybrid BM25 + embedding retrieval
+
+**Goal:** replace keyword-only BM25 retrieval with hybrid search: BM25 for exact-term recall fused
+with OpenAI embedding cosine similarity for semantic recall, combined via Reciprocal Rank Fusion.
+
+**Status:** ✅ Done.
+
+### Problem with pure BM25
+
+`retrieve()` scored notes using only exact token overlap. A question like *"how do central banks
+affect inflation"* returned zero score for a note titled *"Monetary Transmission Mechanisms"* because
+no stemmed token matched. Semantically close content was systematically missed.
+
+### Changes
+
+| File | Change |
+|------|--------|
+| `lib/wiki/retrieve.ts` | Added `embedding?: number[]` to `WikiNote`. Extracted `bm25Scores()` private helper. Added `cosineSim()` (dot product; unit-normalised vectors). Added `retrieveHybrid(query, queryEmbedding, index, topK)` which runs both methods and fuses ranks with RRF (k=60). `retrieve()` is unchanged for backwards compatibility. |
+| `scripts/build-wiki-index.ts` | Wrapped top-level code in `async main()`. Added `embedNotes()`: calls `client.embeddings.create()` in a single batch request for all notes (`text-embedding-3-small`). Attaches `embedding: number[]` to each `WikiNote` before writing the JSON. Gracefully skips if `OPENAI_API_KEY` is not set. |
+| `app/api/ask/route.ts` | Added `embedQuery()`: embeds the user question with `text-embedding-3-small`. Runs `embedQuery` and `getIndex()` concurrently with `Promise.all`. Passes the query embedding to `retrieveHybrid()` instead of `retrieve()`. Falls back to BM25-only if `OPENAI_API_KEY` is absent. |
+
+### How RRF fusion works
+
+Both BM25 and embedding search produce a ranked list of notes. RRF ignores raw scores and works
+on positions only:
+
+```
+final_score_i = 1/(60 + rank_BM25_i) + 1/(60 + rank_embedding_i)
+```
+
+A note ranked highly by both methods scores double; a note found by only one still ranks normally.
+The constant 60 smooths the top-rank advantage so ranks 1–10 remain meaningfully differentiated.
+
+### Env var
+
+`OPENAI_API_KEY` is now used for embeddings regardless of `LLM_PROVIDER`. Both answer generation
+and embedding generation can use different providers independently.
+
+### Rebuild required
+
+After pulling this change, run:
+
+```bash
+npm run index   # regenerates lib/wiki-index.generated.json with embedding vectors
+```
+
+`pnpm build` does this automatically via the `prebuild` hook.
+
+---
+
 ## Phase 5 — Local ingestion pipeline
 
 **Goal:** on-demand PDF → Markdown → `[[wikilinks]]` conversion, plus a vault health-check command.

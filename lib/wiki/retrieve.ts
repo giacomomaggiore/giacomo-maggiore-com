@@ -6,6 +6,7 @@ export type WikiNote = {
   url: string | null
   fullText: string
   termFreq: Record<string, number>
+  embedding?: number[]
 }
 
 export type WikiIndex = {
@@ -88,14 +89,12 @@ const B = 0.75
 // and if it appears more times in that document (term frequency), but with diminishing returns.
 // It also considers the length of the document to avoid biasing towards longer
 // documents that may contain more terms by chance.
-export function retrieve(query: string, index: WikiIndex, topK = 5): WikiNote[] {
-  const qTerms = tokenize(query)
-  if (qTerms.length === 0) return []
-
+// Returns a raw BM25 score for every note (index matches index.notes order).
+// Scores are in [0, ∞); notes with no query-term overlap score 0.
+function bm25Scores(qTerms: string[], index: WikiIndex): number[] {
   const { notes, df, noteCount, avgNoteLen } = index
-  const scores = notes.map(note => {
+  return notes.map(note => {
     const docLen = Object.values(note.termFreq).reduce((a, b) => a + b, 0)
-    // pre-compute stemmed title tokens for the title boost check below
     const titleTokens = new Set(tokenize(note.title))
     let score = 0
     for (const t of qTerms) {
@@ -104,17 +103,77 @@ export function retrieve(query: string, index: WikiIndex, topK = 5): WikiNote[] 
       const docFreq = df[t] ?? 0
       const idf = Math.log((noteCount - docFreq + 0.5) / (docFreq + 0.5) + 1)
       const norm = (tf * (K1 + 1)) / (tf + K1 * (1 - B + B * docLen / avgNoteLen))
-      // notes whose title directly matches the query term get a 2× boost
       const titleBoost = titleTokens.has(t) ? 2.0 : 1.0
       score += idf * norm * titleBoost
     }
     return score
   })
+}
 
+export function retrieve(query: string, index: WikiIndex, topK = 8): WikiNote[] {
+  const qTerms = tokenize(query)
+  if (qTerms.length === 0) return []
+  const scores = bm25Scores(qTerms, index)
   return scores
     .map((s, i) => ({ s, i }))
     .filter(({ s }) => s > 0)
     .sort((a, b) => b.s - a.s)
     .slice(0, topK)
-    .map(({ i }) => notes[i])
+    .map(({ i }) => index.notes[i])
+}
+
+// Dot product == cosine similarity when both vectors are unit-normalised,
+// which OpenAI's text-embedding-3-small guarantees.
+function cosineSim(a: number[], b: number[]): number {
+  let dot = 0
+  for (let i = 0; i < a.length; i++) dot += a[i] * b[i]
+  return dot
+}
+
+// Hybrid retrieval: BM25 + embedding cosine similarity fused with
+// Reciprocal Rank Fusion (RRF, k=60).  Falls back to pure BM25 when
+// queryEmbedding is null (e.g. OPENAI_API_KEY not set).
+export function retrieveHybrid(
+  query: string,
+  queryEmbedding: number[] | null,
+  index: WikiIndex,
+  topK = 8,
+): WikiNote[] {
+  const K_RRF = 60
+
+  // --- BM25 ranks (all notes, zeros sort to the bottom) ---
+  const qTerms = tokenize(query)
+  const bm25 = bm25Scores(qTerms.length ? qTerms : [], index)
+  const bm25Rank = new Map(
+    bm25
+      .map((s, i) => ({ s, i }))
+      .sort((a, b) => b.s - a.s)
+      .map(({ i }, rank) => [i, rank]),
+  )
+
+  // --- Embedding ranks (skipped when no embedding available) ---
+  const embRank = new Map<number, number>()
+  if (queryEmbedding) {
+    index.notes
+      .map((note, i) => ({
+        i,
+        score: note.embedding ? cosineSim(queryEmbedding, note.embedding) : -2,
+      }))
+      .sort((a, b) => b.score - a.score)
+      .forEach(({ i }, rank) => embRank.set(i, rank))
+  }
+
+  // --- RRF fusion ---
+  return index.notes
+    .map((note, i) => {
+      const rBM25 = bm25Rank.get(i) ?? index.noteCount
+      const rEmb  = embRank.get(i)  ?? index.noteCount
+      const score =
+        1 / (K_RRF + rBM25) +
+        (queryEmbedding ? 1 / (K_RRF + rEmb) : 0)
+      return { note, score }
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, topK)
+    .map(({ note }) => note)
 }

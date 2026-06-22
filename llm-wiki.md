@@ -9,6 +9,9 @@
 > - **No rate limiting / Upstash KV cost protection** was implemented. The only guard on `/ask`
 >   is the 500-char question cap.
 > - **There is no file watcher.** The ingestion pipeline is run manually on demand.
+> - **Retrieval is now hybrid BM25 + embeddings (Phase 4b), not pure BM25.** `OPENAI_API_KEY` is
+>   required at index build time and query time for `text-embedding-3-small`. Falls back to BM25-only
+>   if the key is absent. See `wip.md § Phase 4b` for the full implementation log.
 >
 > See `wip.md` for the authoritative phase-by-phase record of what was actually built.
 
@@ -44,7 +47,7 @@ Everything else is relaxed to keep it simple:
   parsing). Only linking, lint, and the Query call Gemini.
 - **Query accesses ALL content (public + private).** Public pages stay browsable at `/notes|blog/<slug>`;
   private notes are queryable but never browsable.
-- **Retrieval = build-time keyword index** (BM25 over a generated JSON, no vector DB).
+- **Retrieval = hybrid BM25 + OpenAI embeddings** (build-time JSON index; `text-embedding-3-small` for semantic search fused with BM25 via Reciprocal Rank Fusion; no vector DB needed at this corpus size).
 
 ---
 
@@ -111,8 +114,9 @@ the whole econometrics note, not just one section.
      visibility: 'public' | 'private'
      title: string                       // from frontmatter
      url: string | null                  // /notes/<slug> or /blog/<slug>; null for private
-     fullText: string                    // full cleaned note body (sent to Gemini)
+     fullText: string                    // full cleaned note body (sent to LLM)
      termFreq: Record<string, number>    // token -> count, for BM25 scoring
+     embedding?: number[]                // text-embedding-3-small vector (1536-d); absent if OPENAI_API_KEY not set
    }
    type WikiIndex = {
      generatedAt: string
@@ -124,8 +128,9 @@ the whole econometrics note, not just one section.
    ```
    Tokenizer: lowercase, strip punctuation, EN+IT stopword list, tokens ≥ 3 chars.
 
-2. **Retrieval at query time** (`lib/wiki/retrieve.ts`): BM25 (`k1=1.5, b=0.75`) over all notes,
-   return top 3–4 by score. Send their `fullText` (not excerpts) as context to Gemini.
+2. **Retrieval at query time** (`lib/wiki/retrieve.ts`): hybrid BM25 + embedding search over all
+   notes, fused with Reciprocal Rank Fusion (k=60), return top 8 by combined score. Send their
+   `fullText` as context to the LLM. Falls back to pure BM25 when `OPENAI_API_KEY` is absent.
    If a note's `fullText` is very long (> ~50K chars), trim to that limit to stay within the model's
    practical context budget while still covering the full note structure.
 
@@ -198,16 +203,20 @@ tools/ingest/  pyproject.toml(google-genai, python-frontmatter) cli.py mineru_ru
 ---
 
 ## Libraries / env to add
-- npm: `@google/genai`, `remark-wiki-link`, devDep `tsx`; optional `@upstash/redis`.
+- npm: `@google/genai`, `openai`, devDep `tsx`; optional `@upstash/redis`.
 - Python (local only): `google-genai`, `python-frontmatter`, MinerU (`magic-pdf`/`mineru`).
-- env: `GOOGLE_API_KEY` (server-only), `LLM_PROVIDER`, `LLM_MODEL`; KV creds if used.
+- env: `GOOGLE_API_KEY` (server-only, for Gemini answer generation), `OPENAI_API_KEY` (server-only,
+  for `text-embedding-3-small` embeddings — independent of `LLM_PROVIDER`), `LLM_PROVIDER`,
+  `LLM_MODEL`; KV creds if used.
 
 ## Risks / trade-offs
 - **Private knowledge is reachable via the Query** (and the index may deploy to Vercel) — accepted; the
   only protected boundary is that private notes are never *browsable pages*. If the `/ask` endpoint is
   public, anyone can extract private-note text by asking; gate `/ask` behind auth if that's not wanted.
-- **Keyword/BM25 misses paraphrases** (no embeddings): weight title+heading heavily; optional cheap
-  Gemini keyword-expansion; clean upgrade path to embeddings without changing the `/ask` contract.
+- **Retrieval is hybrid BM25 + embeddings** (`text-embedding-3-small` via OpenAI, fused with RRF).
+  Semantic paraphrases and synonyms are covered. Pure BM25 fallback still works if `OPENAI_API_KEY`
+  is absent. Chunking (sending paragraph-level context instead of full notes) is the natural next
+  upgrade if answer quality needs further improvement.
 - **Bilingual (it/en)**: stopword list + tokenizer must cover both.
 - **Public endpoint cost**: rate limit + daily cap + token caps before go-live.
 - **Migration churn**: moving content touches `notes/utils.ts`, `blog/utils.ts`, `sitemap.ts`,
