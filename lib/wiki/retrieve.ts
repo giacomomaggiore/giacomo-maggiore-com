@@ -154,13 +154,18 @@ export function retrieveHybrid(
   // --- Embedding ranks (skipped when no embedding available) ---
   const embRank = new Map<number, number>()
   if (queryEmbedding) {
-    index.notes
+    const scored = index.notes
       .map((note, i) => ({
         i,
+        title: note.title,
         score: note.embedding ? cosineSim(queryEmbedding, note.embedding) : -2,
       }))
       .sort((a, b) => b.score - a.score)
-      .forEach(({ i }, rank) => embRank.set(i, rank))
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[retrieve] cosine similarities:')
+      scored.forEach(({ title, score }) => console.log(`  ${score.toFixed(4)}  ${title}`))
+    }
+    scored.forEach(({ i }, rank) => embRank.set(i, rank))
   }
 
   // --- RRF fusion ---

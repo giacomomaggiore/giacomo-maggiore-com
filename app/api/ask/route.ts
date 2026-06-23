@@ -66,8 +66,10 @@ export async function POST(req: Request) {
         for await (const chunk of streamAnswer(question, notes)) {
           controller.enqueue(encoder.encode(chunk))
         }
-      } catch {
-        controller.enqueue(encoder.encode('\n[Error generating answer — check your API key and LLM_PROVIDER]'))
+      } catch (err) {
+        console.error('[ask] streamAnswer error:', err)
+        const msg = err instanceof Error ? err.message : String(err)
+        controller.enqueue(encoder.encode(`\n[Error generating answer: ${msg}]`))
       } finally {
         controller.close()
       }

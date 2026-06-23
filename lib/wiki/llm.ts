@@ -53,7 +53,7 @@ async function* streamOpenAI(question: string, contextText: string): AsyncGenera
   const stream = await client.chat.completions.create({
     model,
     stream: true,
-    max_tokens: 1500,
+    max_completion_tokens: 1500,
     messages: [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: `${contextText}\n\nQuestion: ${question}` },

@@ -1,5 +1,15 @@
 import fs from 'fs'
 import path from 'path'
+
+// Load .env.local so OPENAI_API_KEY etc. are available when running via `npm run index`
+const envLocalPath = path.join(process.cwd(), '.env.local')
+if (fs.existsSync(envLocalPath)) {
+  for (const line of fs.readFileSync(envLocalPath, 'utf-8').split('\n')) {
+    const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)$/)
+    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim()
+  }
+}
+
 import { parseFrontmatter } from 'lib/wiki/frontmatter'
 import {
   WIKI_PUBLIC_NOTES_DIR,
@@ -99,7 +109,7 @@ function collectPrivate(): WikiNote[] {
 async function embedNotes(notes: WikiNote[]): Promise<void> {
   const apiKey = process.env.OPENAI_API_KEY
   if (!apiKey) {
-    console.log('  OPENAI_API_KEY not set — skipping embeddings (BM25-only mode)')
+    console.log('  OPENAI_API_KEY not set, skipping embeddings (BM25-only mode)')
     return
   }
 
