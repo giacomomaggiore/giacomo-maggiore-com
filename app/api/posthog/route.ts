@@ -24,9 +24,12 @@ export async function POST(req: Request) {
       query: {
         kind: 'HogQLQuery',
         query: `
-          SELECT sum(session.duration) AS total_time_seconds
-          FROM events
-          WHERE session.duration IS NOT NULL
+          SELECT sum(duration) AS total_time_seconds
+          FROM (
+            SELECT DISTINCT $session_id, session.duration AS duration
+            FROM events
+            WHERE session.duration IS NOT NULL
+          )
         `
       },
       name: 'total time spent'

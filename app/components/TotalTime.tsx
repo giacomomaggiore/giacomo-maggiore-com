@@ -57,7 +57,7 @@ export default function TotalTime() {
 
   return (
     <div>
-      total time: {totalHours !== null ? totalHours.toLocaleString(undefined, { maximumFractionDigits: 0}) : '...'} hours
+      total time: {totalHours !== null ? totalHours.toLocaleString(undefined, { maximumFractionDigits: 2}) : '...'} hours
     </div>
   )
 }
