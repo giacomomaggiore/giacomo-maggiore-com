@@ -1,62 +1,36 @@
 import fs from 'fs'
 import path from 'path'
+import { getMDXData, readMDXFile } from 'lib/wiki/mdx-files'
+import { WIKI_PUBLIC_BLOG_DIR } from 'lib/wiki/paths'
+
+
+/**
+
+ typical flow (short):
+
+Site list page → calls getBlogPosts()
+→ render list (filter by language / strip .en/.it from slug).
+
+User opens /blog/:slug
+ → page loader calls getPost(slug, lang)
+ → returns single post content →
+ render full post.
+
+ The MDX-reading helpers (getMDXFiles/readMDXFile/getMDXData) live in
+ lib/wiki/mdx-files.ts (shared with app/notes/utils.ts).
+ */
 
 export type Lang = 'it' | 'en'
 
-type Metadata = {
-  title: string
-  publishedAt: string
-  summary: string
-  image?: string
-}
-
-function parseFrontmatter(fileContent: string) {
-  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/
-  let match = frontmatterRegex.exec(fileContent)
-  let frontMatterBlock = match![1]
-  let content = fileContent.replace(frontmatterRegex, '').trim()
-  let frontMatterLines = frontMatterBlock.trim().split('\n')
-  let metadata: Partial<Metadata> = {}
-
-  frontMatterLines.forEach((line) => {
-    let [key, ...valueArr] = line.split(': ')
-    let value = valueArr.join(': ').trim()
-    value = value.replace(/^['"](.*)['"]$/, '$1')
-    metadata[key.trim() as keyof Metadata] = value
-  })
-
-  return { metadata: metadata as Metadata, content }
-}
-
-function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
-}
-
-function readMDXFile(filePath: string) {
-  let rawContent = fs.readFileSync(filePath, 'utf-8')
-  return parseFrontmatter(rawContent)
-}
-
-function getMDXData(dir: string) {
-  let mdxFiles = getMDXFiles(dir)
-  return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file))
-    let slug = path.basename(file, path.extname(file))
-
-    return {
-      metadata,
-      slug,
-      content,
-    }
-  })
-}
-
 export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'app', 'blog', 'posts'))
+  return getMDXData(WIKI_PUBLIC_BLOG_DIR)
 }
 
+// Estrae tutti gli slug unici dai file MDX nella directory del blog
+// Considera che i file possono essere del tipo "slug.en.mdx" 
+// o "slug.it.mdx", ma vogliamo solo "slug"
 export function getAllSlugs(): string[] {
-  const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'posts')
+  const postsDirectory = WIKI_PUBLIC_BLOG_DIR
   const filenames = fs.readdirSync(postsDirectory)
   
   // Rimuovi duplicati e estensioni lingua
@@ -70,12 +44,11 @@ export function getAllSlugs(): string[] {
 }
 
 export function getPost(slug: string, lang?: string) {
-  const postsDirectory = path.join(process.cwd(), 'app', 'blog', 'posts')
+  const postsDirectory = WIKI_PUBLIC_BLOG_DIR
 
   // Normalizza la lingua: solo se inizia per "it" → it, in tutti gli altri casi → en
   const normalizedLang: Lang = (typeof lang === 'string' && lang.toLowerCase().startsWith('it')) ? 'it' : 'en'
 
-  console.log(`Looking for file: ${slug}.${normalizedLang}.mdx`)
   const filePath = path.join(postsDirectory, `${slug}.${normalizedLang}.mdx`)
   if (fs.existsSync(filePath)) {
     return readMDXFile(filePath)

@@ -1,0 +1,16 @@
+[project]
+name = "ingest"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "python-frontmatter>=1.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+gemini = ["google-genai>=1.0.0"]
+openai = ["openai>=1.0.0"]
+
+# Run with: python -m ingest <command>
+# Install for Gemini: pip install google-genai python-frontmatter python-dotenv
+# Install for OpenAI: pip install openai python-frontmatter python-dotenv

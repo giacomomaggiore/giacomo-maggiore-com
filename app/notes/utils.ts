@@ -1,57 +1,22 @@
-import fs from 'fs'
-import path from 'path'
+import { getMDXData } from 'lib/wiki/mdx-files'
+import { WIKI_PUBLIC_NOTES_DIR } from 'lib/wiki/paths'
 
+/**
+WORKFLOW:
 
-type Metadata = {
-  title: string
-  publishedAt: string
-  summary: string
-  image?: string
-}
+- getNotes is called by the website
+- getNotes calls getMDXData with the notes directory
+- getMDXData retrieves all .mdx files in the directory
+  - reads each file and parses the content with readMDXFile
+  - readMDXFile uses parseFrontmatter to separate metadata and content
+- getMDXData returns an array of { metadata, slug, content } objects, one per file
 
-function parseFrontmatter(fileContent: string) {
-  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/
-  let match = frontmatterRegex.exec(fileContent)
-  let frontMatterBlock = match![1]
-  let content = fileContent.replace(frontmatterRegex, '').trim()
-  let frontMatterLines = frontMatterBlock.trim().split('\n')
-  let metadata: Partial<Metadata> = {}
+The MDX-reading helpers live in lib/wiki/mdx-files.ts (shared with app/blog/utils.ts).
+**/
 
-  frontMatterLines.forEach((line) => {
-    let [key, ...valueArr] = line.split(': ')
-    let value = valueArr.join(': ').trim()
-    value = value.replace(/^['"](.*)['"]$/, '$1') // Remove quotes
-    metadata[key.trim() as keyof Metadata] = value
-  })
-
-  return { metadata: metadata as Metadata, content }
-}
-
-function getMDXFiles(dir) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === '.mdx')
-}
-
-function readMDXFile(filePath) {
-  let rawContent = fs.readFileSync(filePath, 'utf-8')
-  return parseFrontmatter(rawContent)
-}
-
-function getMDXData(dir) {
-  let mdxFiles = getMDXFiles(dir)
-  return mdxFiles.map((file) => {
-    let { metadata, content } = readMDXFile(path.join(dir, file))
-    let slug = path.basename(file, path.extname(file))
-
-    return {
-      metadata,
-      slug,
-      content,
-    }
-  })
-}
-
-export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), 'app', 'notes', 'posts'))
+// returns every published note as { metadata, slug, content }
+export function getNotes() {
+  return getMDXData(WIKI_PUBLIC_NOTES_DIR)
 }
 
 export function formatDate(date: string, includeRelative = false) {

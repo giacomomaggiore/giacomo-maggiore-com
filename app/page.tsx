@@ -1,4 +1,5 @@
 import TotViewsClientOnly  from './components/ToTViewsClientOnly'
+import TotalTime from './components/TotalTime'
 
 export default function Page() {
   return (
@@ -27,6 +28,7 @@ export default function Page() {
 
       <p className="text-xs text-neutral-600 dark:text-neutral-400">
         <TotViewsClientOnly />
+        <TotalTime />
       </p>
     </section>
   )

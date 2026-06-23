@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
 import { CustomMDX } from 'app/components/mdx'
-import { formatDate, getBlogPosts } from 'app/notes/utils'
+import { formatDate, getNotes } from 'app/notes/utils'
 import { baseUrl } from 'app/sitemap'
 import 'katex/dist/katex.min.css';
 
 export async function generateStaticParams() {
-  let posts = getBlogPosts()
+  let posts = getNotes()
 
   return posts.map((post) => ({
     slug: post.slug,
@@ -15,7 +15,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const { slug } = await params       //  stesso discorso
 
-  const post  = getBlogPosts().find(p => p.slug === slug)
+  const post  = getNotes().find(p => p.slug === slug)
   if (!post) {
     return
   }
@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 export default async function Blog({ params }: { params: { slug: string } }) {
   const { slug } = await params
 
-  const posts = getBlogPosts()                // o `await getBlogPosts()`
+  const posts = getNotes()
   const post  = posts.find(p => p.slug === slug)
 
   if (!post) {

@@ -162,7 +162,7 @@ table {
 
 /* styles.css */
 .semi-title {
-  @apply font-bold mb-4 mt-4 tracking-tighter text-gray-400;
+  @apply font-bold mb-4 mt-4 tracking-tighter;
 }
 
 .no-scrollbar::-webkit-scrollbar {

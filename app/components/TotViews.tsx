@@ -57,8 +57,7 @@ export default function CumulativeViews() {
 
   return (
     <div>
-      
-      {totalViews !== null ? totalViews.toLocaleString() : '...'}
+      page views: {totalViews !== null ? totalViews.toLocaleString() : '...'}
     </div>
   )
 }
