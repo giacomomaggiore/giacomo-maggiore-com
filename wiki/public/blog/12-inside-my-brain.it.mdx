@@ -1,0 +1,45 @@
+---
+title: "Dentro il mio cervello"
+publishedAt: '2026-06-26"
+summary: ''
+---
+
+Mi e' sempre piaciuto prendere appunti, tenere traccia di cio che studio e archiviare tutto cio' che leggo. Fino a qualche anno fa, tutto cio' si rifletteva in quaderni degli appunti pulito e preciso e una libreria ordinata. Crescendo, ho gradualmente abbandonato  carta e penna e, da quando ho comprato un iPad, mi sono convertito totalmente al digitale.
+
+Questo grande cambiamento, oltre a farmi risparmiare tempo e denaro in cartoleria, mi ha permeso di ripensare completamete il modo in cui gestisco la mia conoscenza. Per un periodo sono stato un grande utilizzatore di Notion, integrando tutto cio' che potessi (budgeting, calendario, appunti, diario etc etc) in un'unica soluzione. Solo secondariamente, rendendomi conto dei limiti tecnici di cio', ho opdato per soluzioni ad hoc molto piu flessibili, in modo da avere pieno controllo di ogni cosa. Di conseguenza, se tutto cio' che riguarda I solid e' gestito indipendentmenete in Google Sheet, tutti I miei appunti sono attualmente archiaviati e gestiti in un'unica repository che, curiosamente, contiene anche il codice sorgente di questo sito.
+
+Esattamente come mi piaceva l'idea di avere tutto in Notion, ho cercato infatti di replicare questa centralizzazione, in modo molto piu' flessibile, con una struttura che mi permettesse, allo stesso tempo di:
+- Mantenere il mio blog/sito personale
+- Archiviare gli appunti universitari disponibili in /notes
+- Mantenere I miei appunti privati, non direttamente consultabili online
+- Fungere da vault per Obsidian
+- Interagire con un  LLM (che chiamerermo JackGPT!), sia in locale da vs code che online su /ask che risponda sulla base di tutta la mia conoscenza e sempre aggirnato con il contesto.
+
+
+Nelle successivi righe, cerchero di dare una visione ad alto livello della struttura del progetto e delle motivazioni dietro ogni scelta. I dettagli tecnici di implementazione sono failmente consultabili nella pagina github del progetto o interpellando direttamente JackGPT nella sezione /ask.
+
+---
+L'IMPORTANZA DI DELEGARE
+Come ampaimente discusso in un recente blog post, vogllio ancora mantenere il pi$ possibile controllo di questo sito e, in maniera molto piu generale, della mia conoscenza, motivo per cui il supporto dell'AI e' circorscirtto esclusivamente a task operative che non interferiscono troppo tutto cio che riguarda la lettura, la rielaborazione e lo studio di un contenuto.
+Sono infatti convinto che alcune fatiche, alcuni sforzi e alucni attriti durante il processo di apprendimento siano propedeuci e formativi mentre, al contrario, alcune attivita' puramente operative (correzione gramamtica, sintassi, formattazione, organizzazione delle cartelle etc etc) sono una pura perdita di tempo. Come disse il saggio, "spendere del tempo per consultare un libro in biblioteca puo' essere formativo, ma doversi fare 100km a piedi per raggiungerla no".
+
+---
+
+Il punto di partenza di tutto è stata la directory del codice sorgente di questo sito, nulla di troppo complicato: un app in Next js in cui, nella cartella public, sono solito a scrivere gli articoli del mio blog e i miei appunti universitari, entrambi in formato .md e rigorosamente non trattati dall'AI.
+
+Il primo passo fondamentale è stato modificare la struttura del progetto in modo da aggiungere anche tutte le note "private", ossia tutto ciò che leggo, appunto o trascrivo che non voglio finiscano online, tra cui rientrano gli articoli e i paper che leggo. Fino a qualche tempo fa, ogni qualvolta leggevo contenuti di mio interesse, scaricavo in locale un pdf, per non esssere dipendente da un link su google o correre il rischio che il contenuto venga modificato o, peggio, eliminato.
+
+Il primo grosso cambiamento è stato quindi integrare questa funzione di archivio all'interno del progetto. Attualmente, dopo aver salvato tutto ciò che è di mio interesse nella cartella ./source, tramite terminale, lancio esecuzione di un LLM in locale (MinerU) che, a partire dal pdf in questione, trasforma il contenuto in markdown, includendo eventuali foto e formule. Successivamente, tramite chiamata API, un secondo modello AI trova il topic dell'articoo per infereza, corregge eventuali typo o problemi di formattazione causati da MinerU e, in ultimo, crea i wiki link con gli altri articoli, utili per la rappresentazione e la visualizzazione degli appiunti in Obsidian.
+Similmente, ogni qualvolta che prendo appunti io di mia sponte creo, direttamente da terminale o da Obsidian, un file .md e, in caso di necessità, eseguo un LLM per performare alcune delle task menzionate.
+
+Nonostante possa sembrare poco conveniente, mi trovo comodo a gestire tutto il folder principalmente da Vs code, nonostant la maggior parte delle vole non debba scrivere codice, avendo accesso ai file raw e soprattutto, tramite Copilot o Claude code, potendo interagire con un'AI che abbia sempre il contesto adeguato, in modo da potergli chiedere sia azioni operative/correttive di pura formattazione, sia per interrogarlo sul contenuto degli appunti.
+
+In questo mood, inoltre, nonostante ci sia un AI di mezzo, mi sembra di poter mantenere molto facilmente il controllo "della mia conoscenza" senza delegare tutto ma, allo stesso templ, sfruttare i vantaggi e le potezialità di questi strumenti.
+
+---
+
+On top of that, più per diveterimento e con l'unico scopo di rendere, almeno in via indiretta, tutti i miei appunti accessibili online, ho costruito JackGPT (crediti per il nomme: i mie amici di Milano), un chatbot AI minimale che rispodne sulla base degli appunti più rilevanti rispetto alla query del sistema.
+
+E' strutturato in modo molto semplice: a build time, per ogni articolo/file di appunti (pubblico o privato) tramite chiamata API creo degli embedding e, data la query dell'utente, performo una Reciprocal Rank Fusion basata su mb25 e cosine similatirtz tra l'input dell'utente e tutti gli articoli, in modo da tiroanre i top k file più rilevanti (attualmemte 8) e passarli all LLM, in modo da non dover allegare tutto troppo contesto e mantenere una struttura tutto sommato snella ed economica!
+(Per quanto riguarda l'API: mi sto attualente affidando a dei crediti di OpenAI, ma non mi dispiacerebbe in futuro provre DeepSeek, qualche altro moello open o, never say never, hostare qualcosa in locale).
+
