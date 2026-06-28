@@ -4,62 +4,103 @@ publishedAt: '2026-06-26'
 summary: ''
 ---
  
-Mi è sempre piaciuto prendere appunti, tenere traccia di ciò che studio e archiviare tutto quello che leggo. Fino a qualche anno fa, tutto questo si rifletteva in quaderni per appunti puliti e precisi e in una libreria ordinata. Crescendo, ho gradualmente abbandonato carta e penna e, da quando ho comprato un iPad, mi sono convertito totalmente al digitale.
+Mi è sempre piaciuto prendere appunti, tenere traccia di ciò che studio e archiviare tutto quello che leggo. Fino a qualche anno fa, tutto questo si riduceva a <b>quaderni di appunti puliti</b>, precisi e in una libreria ordinata. Crescendo, ho gradualmente abbandonato carta e penna e, da quando ho comprato un iPad,<b>mi sono convertito totalmente al digitale.</b>
 
-Questo grande cambiamento, oltre a farmi risparmiare tempo e denaro in cartoleria, mi ha permesso di ripensare completamente il modo in cui gestisco la mia conoscenza. Per un periodo sono stato un grande utilizzatore di Notion, integrando tutto ciò che potevo (budgeting, calendario, appunti, diario ecc.) in un'unica soluzione. Solo in seguito, rendendomi conto dei limiti tecnici di quella piattaforma, ho optato per soluzioni ad hoc molto più flessibili, in modo da avere pieno controllo di ogni cosa. Di conseguenza, se tutto ciò che riguarda i soldi è gestito indipendentemente in Google Sheet, tutti i miei appunti sono attualmente archiviati e gestiti in un'unica repository che, curiosamente, contiene anche il codice sorgente di questo sito.
+Questo grande cambiamento, _oltre a farmi risparmiare tempo e denaro in cartoleria,_ mi ha forzato a ripensare completamente il modo in cui gestisco la mia conoscenza. Per un periodo di transizione sono stato grande utilizzatore di <a href="https://www.notion.com/" target="_blank">Notion</a>, integrando tutto ciò che potevo _(budgeting, calendario, appunti, diario ecc...)_ in un'unica soluzione. 
 
-Esattamente come mi piaceva l'idea di avere tutto in Notion, ho cercato di replicare questa centralizzazione in modo molto più flessibile, con una struttura che mi permettesse, allo stesso tempo, di:
+Solo in seguito, rendendomi conto dei limiti tecnici di quella piattaforma, ho optato per soluzioni ad hoc molto più flessibili, <b>in modo da avere pieno controllo di ogni cosa.</b> Di conseguenza, se tutto ciò che riguarda i soldi è gestito indipendentemente in Google Sheet, tutti i miei appunti sono attualmente archiviati e gestiti in un'unica repository che, _curiosamente,_ <b>contiene anche il codice sorgente di questo sito.</b>
+
+Esattamente come mi piaceva l'idea di avere tutto in Notion, ho cercato di replicare questa <b>centralizzazione in modo molto più custom</b>, con una struttura modulare che mi permettesse, _allo stesso tempo,_ di:
 - mantenere il mio blog/sito personale
-- archiviare gli appunti universitari disponibili in /notes
-- mantenere i miei appunti privati, non direttamente consultabili online
-- fungere da vault per Obsidian
-- interagire con un LLM (che chiameremo JackGPT!), sia in locale da VS Code che online su /ask, che risponda sulla base di tutta la mia conoscenza e sia sempre aggiornato con il contesto.
+- archiviare gli appunti universitari disponibili in <a href="https://giacomomaggiore.com/notes" target="_blank"> `/notes` </a>
+- archiviare e modificare i miei appunti privati, non direttamente consultabili online
+- fungere da vault per <a href="https://obsidian.md/" target="_blank">Obsidian</a>, per una migliore visualizzazione nel quotidiano
+- interagire con un LLM (che chiameremo <b>JackGPT</b>!), sia in locale da VS Code che online su <a href="https://giacomomaggiore.com/ask" target="_blank"> `/ask`</a>, che risponda sulla base di tutta la mia conoscenza e sia sempre aggiornato con il contesto.
 
-Nelle righe successive cercherò di dare una visione ad alto livello della struttura del progetto e delle motivazioni dietro ogni scelta. I dettagli tecnici di implementazione sono facilmente consultabili nella pagina GitHub del progetto o interpellando direttamente JackGPT nella sezione /ask.
+Nelle righe successive cercherò di dare una visione ad alto livello della struttura del progetto e delle motivazioni dietro ogni scelta. I dettagli tecnici di implementazione sono facilmente consultabili <a href="https://github.com/giacomomaggiore/giacomo-maggiore-com" target="_blank">alla pagina GitHub del progetto</a> o interpellando direttamente <a href="https://giacomomaggiore.com/ask" target="_blank"> JackGPT</a>.
 
----
+<div align = "center">
+![Obsidian](/images/blog/obsidian.png)
+</div>
+<small><i>Una prima versione del graph di Obsidian (Jun 2027): ancora da sistemare e pronto per essere arricchito</i></small>
 
-**L'importanza di delegare**
+## <b>Quanto sei disposto a faticare per aprire un libro?</b>
 
-Come ampiamente discusso in un recente blog post, voglio ancora mantenere il più possibile il controllo di questo sito e, in maniera più generale, della mia conoscenza, motivo per cui il supporto dell'AI è circoscritto esclusivamente a task operative che non interferiscono troppo con tutto ciò che riguarda la lettura, la rielaborazione e lo studio di un contenuto.
-Sono infatti convinto che alcune fatiche, alcuni sforzi e alcuni attriti durante il processo di apprendimento siano propedeutici e formativi mentre, al contrario, alcune attività puramente operative (correzione grammatica, sintassi, formattazione, organizzazione delle cartelle ecc.) sono una pura perdita di tempo. Come disse il saggio, "spendere del tempo per consultare un libro in biblioteca può essere formativo, ma doversi fare 100 km a piedi per raggiungerla no".
+Come ampiamente discusso in un recente blog post, <b>voglio ancora mantenere il più possibile il controllo </b>di questo sito e, _in maniera più ampia,_ della mia conoscenza, motivo per cui il supporto dell'AI è circoscritto esclusivamente a task operative che non interferiscono troppo con tutto ciò che riguarda la lettura, la rielaborazione e lo studio di un contenuto.
 
-Secondariamente, data la flessibilità e la presenza di LLM "onniscenti", questa struttura mi permette di approfondire e studiare argomenti che difficilmente avrei affrontato in "solitaria". 
+Sono infatti convinto che alcune fatiche e alcuni attriti durante il processo di apprendimento <b>siano propedeutici e formativi </b>mentre, _al contrario,_ alcune attività puramente operative _(correzione grammatica, sintassi, formattazione, organizzazione delle cartelle ecc.)_ siano una pura perdita di tempo ed energia. 
 
-Negli ultimi mesi, mi sono infatti reso conto di star leggendo (e studiando) tantissimi argomenti tramite articoli, deep dive con Gemini, papers, libri etc..., in maniera più o meno approfondita, senza però tenere traccia in maniera utile di questo lavoro. Di conseguenza, costruire una struttura e delle procedure attorno a ciò, nonostante richieda un minimo di fatica in più nel quotidiano, penso che, nel lungo termine, sia in grado di ritornare utile e soprattutto permettermi, nel caso ce ne sia bisogno, di ripassare, integrare o collegare più facilmente gli argomenti.
+<a href="https://www.youtube.com/@enkk" target="_blank">Come disse il saggio,</a> _"spendere del tempo per sfogliare e consultare un libro in biblioteca può essere formativo, ma doversi fare 100 km a piedi per raggiungerla no"._
 
-Nonostante l'ampio utilizzo dell'ai in questa repo (sia per lo sviluppo che per il mantenimento degli articoli), ogni appunto nasce "AI-free", i.e. da un interesse personale, da un articolo originale scritto da terzi o da qualche riga sceritta "manualemtne", l'intervento dell'AI resta infatti di puro supporto e avviene in un secondo momento, quando la direzione del deep dive è già tracciata nella mia testa. 
+Secondariamente, _date capacità di LLM "onniscenti",_ questa struttura mi permette di approfondire e studiare argomenti che difficilmente avrei affrontato in "solitaria". 
 
----
+<div align = "center">
+![Chinese Restaurant](/images/blog/100.jpg)
+</div>
+<small><i>L'unica volta che ho corso 100km ero circondato da amici e mi sono divertito un casino!</i></small>
 
-Il punto di partenza di tutto è stata la directory del codice sorgente di questo sito, nulla di troppo complicato: un'app in Next.js in cui, nella cartella `wiki/public`, sono solito scrivere gli articoli del mio blog e i miei appunti universitari, entrambi in formato .md/.mdx e rigorosamente non trattati dall'AI.
+### <b>L’informazione non è conoscenza (Albert Einstein)</b>
 
-Il primo passo fondamentale è stato modificare la struttura del progetto in modo da aggiungere anche tutte le note "private", ossia tutto ciò che leggo, appunto o trascrivo e che non voglio finisca online, tra cui rientrano gli articoli e i paper che leggo. Fino a qualche tempo fa, ogni volta che leggevo contenuti di mio interesse, scaricavo in locale un PDF, per non essere dipendente da un link su Google o correre il rischio che il contenuto venga modificato o, peggio, eliminato.
+Negli ultimi mesi, mi sono infatti reso conto di star "processando" tanta informazione, tramite articoli, incontri, deep dive con Gemini, papers, libri etc... _in maniera più o meno approfondita,_ senza però tenere traccia in maniera utile di tutta la conoscenza a cui esposto. Di conseguenza, costruire una struttura e delle procedure attorno a ciò, _nonostante richieda un minimo di fatica in più nel quotidiano,_ penso che, _nel lungo termine,_ sia in grado di ritornare utile e soprattutto permettermi, nel caso ce ne sia bisogno, di <b>ripassare, integrare o collegare</b> più facilmente gli argomenti.
 
-Il primo grosso cambiamento è stato quindi integrare questa funzione di archivio all'interno del progetto. Attualmente, dopo aver salvato tutto ciò che è di mio interesse nella cartella `wiki/source` (o `./source`), avvio da terminale una pipeline che esegue MinerU in locale: MinerU converte il PDF in Markdown, estrae eventuali immagini e le salva nella directory di output. La pipeline scrive il file risultante sotto `wiki/private/<topic>/Titolo.md` (e copia le immagini in `wiki/private/<topic>/images`).
+Nonostante l'ampio utilizzo dell'ai in questa repo _(sia per lo sviluppo che per il mantenimento degli articoli),_ <b>ogni appunto nasce "AI-free",</b> i.e. da un interesse personale, da un articolo originale scritto da terzi o da qualche riga scritta "manualmente". L'intervento dell'AI resta infatti di puro supporto e avviene in un secondo momento, quando <b>la direzione del deep dive è già tracciata</b> nella mia testa. 
 
-Dopo l'estrazione, la stessa pipeline usa un LLM in due passaggi: prima per inferire un topic breve (la funzione `_infer_topic` in `tools/ingest/mineru_run.py` chiama `providers.generate`), poi per pulire e normalizzare il Markdown (tramite `clean_markdown`). Questi passaggi sono eseguiti localmente per mantenere i contenuti in-house.
+In sintesi, non nego che utlizzare <b>l'intelligenza artificiale a disposizione è stato fondamentale</b>: nonostante non abbia una formazione informatica, poter lavorare con con Claude mi ha permesso, _dopo una fase di progettazione ad alto livello,_ di scrivere e revisionare tutto il codice in poco tempo.
 
-I file privati non vengono pubblicati: a build time lo script `scripts/build-wiki-index.ts` scansiona `wiki/public` e `wiki/private`, pulisce il testo e, se presente una chiave API, crea anche gli embeddings per ogni nota. 
+<div align = "center">
+![Chinese Restaurant](/images/blog/momenti-felicita.jpg)
+</div>
+<small><i>Momenti di trascurabile felicità con l'AI </i></small>
 
-Similmente, ogni volta che prendo appunti io stesso creo, direttamente da terminale o da Obsidian, un file .md e, in caso di necessità, eseguo un LLM per svolgere alcune delle task menzionate.
 
-Nonostante possa sembrare poco conveniente, mi trovo comodo a gestire tutto il folder principalmente da VS Code, nonostante la maggior parte delle volte non debba scrivere codice, avendo accesso ai file raw e soprattutto, tramite Copilot o Claude Code, potendo interagire con un'AI che abbia sempre il contesto adeguato, in modo da potergli chiedere sia azioni operative/correttive di pura formattazione, sia per interrogarlo sul contenuto degli appunti.
+Il punto di partenza di tutto è stata la <b>directory del codice sorgente di questo sito</b>, nulla di troppo complicato: un'app in `Next.js` in cui, nella cartella `wiki/public`, sono solito scrivere gli articoli del mio blog e i miei appunti universitari, entrambi in formato `.md/.mdx` e il cui contenuto resta <b>AI-free.</b>
 
-In questo mood, inoltre, nonostante ci sia un'AI di mezzo, mi sembra di poter mantenere molto facilmente il controllo della mia conoscenza senza delegare tutto ma, allo stesso tempo, sfruttare i vantaggi e le potenzialità di questi strumenti.
+Il primo passo fondamentale è stato modificare la struttura del progetto in modo da aggiungere anche tutte le note "private", _ossia tutto ciò che leggo, appunto o trascrivo e che non voglio finisca online,_ tra cui rientrano gli articoli e i paper che leggo per interesse personale. Fino a qualche tempo fa, _ogni volta che leggevo contenuti di mio interesse,_ scaricavo in locale un PDF, per non essere dipendente da un link su Google o correre il rischio che il contenuto venga modificato o, _peggio,_ eliminato. 
 
----
+Attualmente, _al contrario,_ questa funzione di archivio <b>è pienamente integrata nel progetto.</b> Dopo aver salvato tutto ciò che è di mio interesse nella cartella `wiki/source`, avvio da terminale una pipeline che esegue in locale <a href="https://github.com/opendatalab/mineru" target="_blank">MinerU</a>, il quale converte il documento di input in Markdown, estrae eventuali immagini e le salva nella directory di output. La pipeline scrive successivamente il file risultante sotto `wiki/private/<topic>/title.md` e copia le immagini in `wiki/private/<topic>/images`.
 
-On top of that, più per divertimento e con l'unico scopo di rendere, almeno in via indiretta, tutti i miei appunti accessibili online, ho costruito JackGPT (crediti per il nome: i miei amici di Milano), un chatbot AI minimale che risponde sulla base degli appunti più rilevanti rispetto alla query dell'utente.
+Dopo l'estrazione, la stessa pipeline, _tramite chiamata API,_ si affida un LLM in due passaggi: prima per inferire un topic breve, poi per pulire e normalizzare il Markdown.
 
-Data una query dell'utente, la ricerca combina infatti BM25 e gli embedding sopra citati tramite cosinew similarity e una successiva Reciprocal Rank Fusion;  per trovare i file più rilevanti che sono successivamente inseriti nel contesto senza saturarlo subito.
+Nonostante i file privati non vengano pubblicati online, a build time uno script scansiona `wiki/public` e `wiki/private`, pulisce il testo e, sempre tramite chiamata API, <b>crea anche gli embeddings per ogni file. </b>
 
-(Per quanto riguarda l'API: mi sto attualmente affidando a dei crediti di OpenAI, ma non mi dispiacerebbe in futuro provare DeepSeek, qualche altro modello open o, never say never, hostare qualcosa in locale).
+<div align = "center">
+![Github](/images/blog/github-screen.png)
+</div>
+<small><i>E' molto meno complesso di quanto sembra...</i></small>
 
-Attualmente (Jun 27) JackGPT è ancora in fase primordiale e mi rendo conto non sia all'altezza dei modelli di frontiera ma, per questioni di tempo e non spendere troppo in API, questa soluzione iniziale mi permette sperimentare e capire come muovermi.
+Similmente, ogni volta che prendo appunti io stesso creo, _direttamente da VS Code o Obsidian,_ un file `.md` e, _in caso di necessità,_ mi faccio aiutare da un LLM per svolgere alcune delle task menzionate.
 
-Non nego infatti che ho in testa molteplici aggiornamenti e potenziali espansioni del progetto. In primis, non mi dispiacerebbe creare una progetto più "standardizzato" e indipendente dal mio sito, in modo da permettere a chiunque di clonare la repo e poter "hostare" questo knowledge management system sul proprio computer. 
+Il risultato di tutto ciò è che, _invece di avere le fonti in formati diversi e senza una struttura,_ tale architettura basata su file `.md` mi permette di modificare, integrare o pulire più facilmente tutto, <b>integrando anche una parte più "attiva"</b> e interattiva nel processo intellettuale.
 
-Secondariamente, vorrei capire come rendere JackGPT maggiormente integrato con le mie note e più utile nel quotidiano, costruendo skill utili pur mantenendo il pieno controllo "intellettuale" degli argomenti.
+Nonostante possa sembrare poco conveniente, mi trovo molto bene a gestire tutto il folder principalmente da VS Code, nonostante la maggior parte delle volte non debba scrivere codice, avendo accesso ai file raw e soprattutto, tramite Copilot o Claude Code, potendo interagire con un'AI che abbia sempre il contesto adeguato invece di affidarmi a un generico LLM online in cui, _per quanto si possa essere precisi con un system prompt,_ risulterà spesso<b> troppo generico e non adeguato </b>alle proprie necessità.
 
-In extremis, sono convinto che il "successo" di questo progetto, inteso come il livello in cui riesco a sfruttarlo per gestire meglio la mia "conoscenza", emerge nel lungo termine, quando gli appunti si accumulano, i file si intrecciano e ho più necessità di consultare o aggiornare vecchi file. 
+In questo modo, _inoltre,_ nonostante ci sia un'AI di mezzo, mi sembra di poter mantenere molto facilmente il <b>controllo della mia conoscenza</b> senza delegare tutto ma, _allo stesso tempo,_ sfruttare i vantaggi e le potenzialità di questi strumenti.
+
+<div align = "center">
+![Chinese Restaurant](/images/blog/stradina.jpg)
+</div>
+<small><i>Una delle domande più frequenti con i miei amici: "preferiresti niente sesso fino a dicembre o niente AI fino a dicembre?</i></small>
+
+### <b>Come vive JackGPT</b>
+
+On top of that, _più per divertimento_ e con l'unico scopo di rendere, _almeno in via indiretta,_ tutti i miei appunti accessibili online, ho costruito <b>JackGPT</b> _(crediti per il nome: i miei amici di Milano che mi prendono per il culo),_ un minimale chatbot che risponde sulla base degli appunti più rilevanti rispetto alla query dell'utente.
+
+Data infatti una domanda in input, il backend combina <a href="https://en.wikipedia.org/wiki/Okapi_BM25" target="_blank">BM25</a> e gli embedding precedentemente creati tramite cosine similarity e una successiva <a href="https://medium.com/@devalshah1619/mathematical-intuition-behind-reciprocal-rank-fusion-rrf-explained-in-2-mins-002df0cc5e2a" target="_blank">Reciprocal Rank Fusion</a> per trovare gli $x$ file più rilevanti. Questi sono successivamente allegati alla query dell'utente che, _assieme al system prompt da me definito,_ costituiscono l'input finale per JackGPT.
+
+_(Per quanto riguarda l'API: mi sto attualmente affidando a dei crediti di OpenAI, ma non mi dispiacerebbe in futuro provare DeepSeek, qualche altro modello open o, never say never, hostare qualcosa in locale)._
+
+### <b>Come crescerà JackGPT?</b>
+
+
+Attualmente _(Jun 27)_ JackGPT <b>è ancora in fase primordiale</b> e mi rendo conto non sia all'altezza dei modelli di frontiera ma, _per questioni di tempo e economie di API,_ questa soluzione iniziale mi permette sperimentare e capire come muovermi in futuro.
+
+Non nego infatti che ho in testa molteplici aggiornamenti e potenziali espansioni del progetto. <br/>_In primis,_ non mi dispiacerebbe creare una<b> repository più "standardizzato" </b>e indipendente dal mio sito, in modo da permettere a chiunque di clonare la repo e poter "hostare" questo knowledge management system sulla propria macchina. 
+
+_Secondariamente,_ vorrei capire come rendere JackGPT maggiormente integrato con le mie note e più utile nel quotidiano, costruendo skill utili pur mantenendo il pieno controllo "intellettuale" degli argomenti.
+
+In extremis, sono convinto che il "successo" di questo progetto, _inteso come il livello in cui riesco a sfruttarlo per gestire meglio la mia "conoscenza",_ <b>emerga nel lungo termine</b>, quando gli appunti si accumulano, i file si intrecciano e le necessità di consultarli aumentano.
+
+<div align = "center">
+![Chinese Restaurant](/images/blog/evoluzione.jpg)
+</div>
+<small><i>Io mi sono evoluto così... mi auguro che JackGPT crescerà meglio! </i></small>
