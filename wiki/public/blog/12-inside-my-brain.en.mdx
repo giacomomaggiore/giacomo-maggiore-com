@@ -4,11 +4,11 @@ publishedAt: '2026-06-26'
 summary: ''
 ---
  
-I've always enjoyed taking notes, keeping track of what I study and archiving everything I read. Until a few years ago, all of this came down to <b>clean, precise notebooks</b> stored in an orderly bookshelf. As I grew up, I gradually abandoned pen and paper and, since I bought an iPad,<b>I've fully converted to digital.</b>
+I've always enjoyed taking notes, keeping track of what I study and archiving everything I read. Until a few years ago, all of this came down to <b>clean notebooks</b> stored in an orderly bookshelf. As I grew up, I gradually dropped pen and paper and, since I bought an iPad,<b>I've fully converted to digital.</b>
 
-This big change, _besides saving me time and money on stationery,_ forced me to completely rethink the way I manage my knowledge. During a transition period I was a heavy user of <a href="https://www.notion.com/" target="_blank">Notion</a>, integrating everything I could _(budgeting, calendar, notes, diary, etc.)_ into a single solution. 
+This big change, _besides saving me time and money at the supermarket,_ forced me to completely rethink the way I manage my knowledge. During a transition period I was a heavy user of <a href="https://www.notion.com/" target="_blank">Notion</a>, integrating everything I could _(budgeting, calendar, notes, journal, etc.)_ into a single solution. 
 
-Only later, realizing the technical limitations of that platform, did I opt for much more flexible ad hoc solutions, <b>so as to have full control over everything.</b> As a result, while everything money-related is managed independently in Google Sheets, all my notes are currently stored and managed in a single repository which, _curiously,_ <b>also contains the source code of this very site.</b>
+Only later, realizing the technical limitations of that platform,  I opted for much more flexible ad hoc solutions <b> to have full control over everything.</b> As a result, while everything money-related is managed independently in Google Sheets, all my notes are currently stored and managed in a single repository which, _curiously,_ <b>also contains the source code of this very site.</b>
 
 Just as I liked the idea of having everything in Notion, I tried to replicate this <b>centralization in a much more custom way</b>, with a modular structure that would allow me, _at the same time,_ to:
 - maintain my personal blog/website
@@ -28,7 +28,7 @@ In the following lines I'll try to give a high-level overview of the project str
 
 As discussed at length in a recent blog post, <b>I still want to maintain as much control as possible</b> over this site and, _more broadly,_ over my knowledge, which is why AI support is strictly limited to operational tasks that don't interfere too much with anything related to reading, reworking and studying content.
 
-I'm indeed convinced that some effort and friction during the learning process <b>is preparatory and formative</b>, while, _on the contrary,_ some purely operational activities _(grammar correction, syntax, formatting, folder organization, etc.)_ are a pure waste of time and energy. 
+I'm indeed convinced that some effort and friction during the learning process <b>can be formative</b>, while, _on the other hand,_ some purely operational activities _(grammar checks, syntax, formatting, folder organization, etc.)_ are a pure waste of time and energy. 
 
 <a href="https://www.youtube.com/@enkk" target="_blank">As the wise man said,</a> _"spending time browsing through a book in a library can be formative, but having to walk 100km to get there is not"._
 
@@ -37,15 +37,15 @@ Secondly, _given the "omniscient" capabilities of LLMs,_ this structure allows m
 <div align = "center">
 ![Chinese Restaurant](/images/blog/100.jpg)
 </div>
-<small><i>The only time I ran 100km I was surrounded by friends and had a blast!</i></small>
+<small><i>The only time I ran 100km I was surrounded by friends and I had a lot of fun!</i></small>
 
 ### <b>Information is not knowledge (Albert Einstein)</b>
 
-In recent months, I realized I was "processing" a lot of information — through articles, meetings, deep dives with Gemini, papers, books, etc. — _in more or less depth,_ without keeping track in any useful way of all the knowledge I was being exposed to. As a result, building a structure and procedures around this, _though it requires a bit of extra daily effort,_ I think can, _in the long term,_ prove useful and above all allow me, when needed, to <b>review, integrate, or connect</b> topics more easily.
+In recent months, I realized I was "processing" a lot of information, through articles, meetings, deep dives with Gemini, papers, books, etc.  _in more or less depth,_ without keeping track in any useful way of all the knowledge I was being exposed to. As a result, building a structure and procedures around this, _though it requires a bit of extra daily effort,_ I think can, _in the long term,_ prove useful and above all allow me, when needed, to <b>review, integrate, or connect</b> topics more easily.
 
 Despite the extensive use of AI in this repo _(both for development and for maintaining articles),_ <b>every note starts "AI-free",</b> i.e. from a personal interest, an original article written by someone else, or a few lines written "manually." The AI's contribution remains purely supportive and comes at a later stage, when <b>the direction of the deep dive is already mapped out</b> in my head. 
 
-In short, I won't deny that using <b>AI has been fundamental</b>: despite having no computer science background, being able to work with Claude has allowed me, _after a high-level design phase,_ to write and review all the code in a short time.
+In short, I won't deny that using <b>AI has been fundamental</b>: despite having no computer science background, being able to work with Claude has allowed me, _after a high-level design,_ to write and review all the code in a short time.
 
 <div align = "center">
 ![Chinese Restaurant](/images/blog/momenti-felicita.jpg)
@@ -55,7 +55,7 @@ In short, I won't deny that using <b>AI has been fundamental</b>: despite having
 
 The starting point for everything was the <b>source code directory of this site</b>, nothing too complicated: a `Next.js` app where, in the `wiki/public` folder, I usually write my blog articles and university notes, both in `.md/.mdx` format, with content that remains <b>AI-free.</b>
 
-The first fundamental step was to modify the project structure to also include all "private" notes, _i.e. everything I read, take note of or transcribe and don't want to end up online,_ including articles and papers I read out of personal interest. Until some time ago, _every time I read content of interest,_ I would download a PDF locally, so as not to be dependent on a Google link or risk the content being modified or, _worse,_ deleted. 
+The first fundamental step was to modify the project structure to also include all "private" notes, _i.e. everything I read, take note of or transcribe and don't want to publish online,_ including articles and papers I read for personal interest. Until some time ago, _every time I read content of interest,_ I would download a PDF locally, so as not to be dependent on a Google link or risk the content being modified or, _worse,_ deleted. 
 
 Currently, _on the contrary,_ this archiving function <b>is fully integrated into the project.</b> After saving everything of interest in the `wiki/source` folder, I run a pipeline from the terminal that executes <a href="https://github.com/opendatalab/mineru" target="_blank">MinerU</a> locally, which converts the input document to Markdown, extracts any images and saves them to the output directory. The pipeline then writes the resulting file under `wiki/private/<topic>/title.md` and copies the images to `wiki/private/<topic>/images`.
 
@@ -68,11 +68,11 @@ Although private files are not published online, at build time a script scans `w
 </div>
 <small><i>It's much less complex than it looks...</i></small>
 
-Similarly, every time I take notes myself I create, _directly from VS Code or Obsidian,_ a `.md` file and, _if necessary,_ I get help from an LLM to carry out some of the tasks mentioned.
+Similarly, every time I take notes myself I create, _directly from VS Code or Obsidian,_ a `.md` file and, _if necessary,_ I get help from an LLM to accomplish some of the tasks mentioned.
 
 The result of all this is that, _instead of having sources in different formats and without a structure,_ this `.md`-file-based architecture allows me to more easily edit, integrate or clean everything, <b>also incorporating a more "active"</b> and interactive part in the intellectual process.
 
-Although it might seem inconvenient, I find it very comfortable to manage the entire folder mainly from VS Code — even though most of the time I don't need to write code — having access to the raw files and especially, through Copilot or Claude Code, being able to interact with an AI that always has the right context, instead of relying on a generic online LLM where, _however precise one may be with a system prompt,_ it will often be<b> too generic and inadequate</b> for one's needs.
+Although it might seem inconvenient, I find it very comfortable to manage the entire folder mainly from VS Code, even though most of the time I don't need to write code, having access to the raw files and especially, through Copilot or Claude Code, being able to interact with an AI that always has the right context, instead of relying on a generic online LLM where, _however precise one may be with a system prompt,_ it will often be<b> too generic and inadequate</b> for one's needs.
 
 In this way, _moreover,_ despite the AI being involved, I feel I can very easily maintain <b>control over my knowledge</b> without delegating everything but, _at the same time,_ taking advantage of the benefits and potential of these tools.
 
