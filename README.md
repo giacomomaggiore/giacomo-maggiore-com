@@ -1,5 +1,7 @@
 # giacomo-maggiore-com
 
+> Please note that this file is 100% AI-generate. Thanks Claude.
+
 Personal website at [giacomomaggiore.com](https://giacomomaggiore.com) — built with Next.js 14 (App Router), deployed on Vercel. It also doubles as an Obsidian vault and a local knowledge-management system with LLM-powered Q&A.
 
 ---
