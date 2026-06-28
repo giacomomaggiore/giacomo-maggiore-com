@@ -1,0 +1,106 @@
+---
+title: "Inside my brain"
+publishedAt: '2026-06-26'
+summary: ''
+---
+ 
+I've always enjoyed taking notes, keeping track of what I study and archiving everything I read. Until a few years ago, all of this came down to <b>clean, precise notebooks</b> stored in an orderly bookshelf. As I grew up, I gradually abandoned pen and paper and, since I bought an iPad,<b>I've fully converted to digital.</b>
+
+This big change, _besides saving me time and money on stationery,_ forced me to completely rethink the way I manage my knowledge. During a transition period I was a heavy user of <a href="https://www.notion.com/" target="_blank">Notion</a>, integrating everything I could _(budgeting, calendar, notes, diary, etc.)_ into a single solution. 
+
+Only later, realizing the technical limitations of that platform, did I opt for much more flexible ad hoc solutions, <b>so as to have full control over everything.</b> As a result, while everything money-related is managed independently in Google Sheets, all my notes are currently stored and managed in a single repository which, _curiously,_ <b>also contains the source code of this very site.</b>
+
+Just as I liked the idea of having everything in Notion, I tried to replicate this <b>centralization in a much more custom way</b>, with a modular structure that would allow me, _at the same time,_ to:
+- maintain my personal blog/website
+- archive university notes available at <a href="https://giacomomaggiore.com/notes" target="_blank"> `/notes` </a>
+- archive and edit my private notes, not directly accessible online
+- serve as a vault for <a href="https://obsidian.md/" target="_blank">Obsidian</a>, for better day-to-day visualization
+- interact with an LLM (which we'll call <b>JackGPT</b>!), both locally from VS Code and online at <a href="https://giacomomaggiore.com/ask" target="_blank"> `/ask`</a>, which responds based on all my knowledge and is always up to date with context.
+
+In the following lines I'll try to give a high-level overview of the project structure and the motivations behind each choice. The technical implementation details are easily accessible <a href="https://github.com/giacomomaggiore/giacomo-maggiore-com" target="_blank">on the project's GitHub page</a> or by asking <a href="https://giacomomaggiore.com/ask" target="_blank"> JackGPT</a> directly.
+
+<div align = "center">
+![Obsidian](/images/blog/obsidian.png)
+</div>
+<small><i>A first version of the Obsidian graph (Jun 2027): still needs work and ready to be enriched</i></small>
+
+## <b>How much effort are you willing to put in to open a book?</b>
+
+As discussed at length in a recent blog post, <b>I still want to maintain as much control as possible</b> over this site and, _more broadly,_ over my knowledge, which is why AI support is strictly limited to operational tasks that don't interfere too much with anything related to reading, reworking and studying content.
+
+I'm indeed convinced that some effort and friction during the learning process <b>is preparatory and formative</b>, while, _on the contrary,_ some purely operational activities _(grammar correction, syntax, formatting, folder organization, etc.)_ are a pure waste of time and energy. 
+
+<a href="https://www.youtube.com/@enkk" target="_blank">As the wise man said,</a> _"spending time browsing through a book in a library can be formative, but having to walk 100km to get there is not"._
+
+Secondly, _given the "omniscient" capabilities of LLMs,_ this structure allows me to explore and study topics I would have rarely tackled on my own. 
+
+<div align = "center">
+![Chinese Restaurant](/images/blog/100.jpg)
+</div>
+<small><i>The only time I ran 100km I was surrounded by friends and had a blast!</i></small>
+
+### <b>Information is not knowledge (Albert Einstein)</b>
+
+In recent months, I realized I was "processing" a lot of information — through articles, meetings, deep dives with Gemini, papers, books, etc. — _in more or less depth,_ without keeping track in any useful way of all the knowledge I was being exposed to. As a result, building a structure and procedures around this, _though it requires a bit of extra daily effort,_ I think can, _in the long term,_ prove useful and above all allow me, when needed, to <b>review, integrate, or connect</b> topics more easily.
+
+Despite the extensive use of AI in this repo _(both for development and for maintaining articles),_ <b>every note starts "AI-free",</b> i.e. from a personal interest, an original article written by someone else, or a few lines written "manually." The AI's contribution remains purely supportive and comes at a later stage, when <b>the direction of the deep dive is already mapped out</b> in my head. 
+
+In short, I won't deny that using <b>AI has been fundamental</b>: despite having no computer science background, being able to work with Claude has allowed me, _after a high-level design phase,_ to write and review all the code in a short time.
+
+<div align = "center">
+![Chinese Restaurant](/images/blog/momenti-felicita.jpg)
+</div>
+<small><i>Moments of negligible happiness with AI </i></small>
+
+
+The starting point for everything was the <b>source code directory of this site</b>, nothing too complicated: a `Next.js` app where, in the `wiki/public` folder, I usually write my blog articles and university notes, both in `.md/.mdx` format, with content that remains <b>AI-free.</b>
+
+The first fundamental step was to modify the project structure to also include all "private" notes, _i.e. everything I read, take note of or transcribe and don't want to end up online,_ including articles and papers I read out of personal interest. Until some time ago, _every time I read content of interest,_ I would download a PDF locally, so as not to be dependent on a Google link or risk the content being modified or, _worse,_ deleted. 
+
+Currently, _on the contrary,_ this archiving function <b>is fully integrated into the project.</b> After saving everything of interest in the `wiki/source` folder, I run a pipeline from the terminal that executes <a href="https://github.com/opendatalab/mineru" target="_blank">MinerU</a> locally, which converts the input document to Markdown, extracts any images and saves them to the output directory. The pipeline then writes the resulting file under `wiki/private/<topic>/title.md` and copies the images to `wiki/private/<topic>/images`.
+
+After extraction, the same pipeline, _via API call,_ relies on an LLM in two steps: first to infer a short topic, then to clean and normalize the Markdown.
+
+Although private files are not published online, at build time a script scans `wiki/public` and `wiki/private`, cleans the text and, again via API call, <b>creates embeddings for every file. </b>
+
+<div align = "center">
+![Github](/images/blog/github-screen.png)
+</div>
+<small><i>It's much less complex than it looks...</i></small>
+
+Similarly, every time I take notes myself I create, _directly from VS Code or Obsidian,_ a `.md` file and, _if necessary,_ I get help from an LLM to carry out some of the tasks mentioned.
+
+The result of all this is that, _instead of having sources in different formats and without a structure,_ this `.md`-file-based architecture allows me to more easily edit, integrate or clean everything, <b>also incorporating a more "active"</b> and interactive part in the intellectual process.
+
+Although it might seem inconvenient, I find it very comfortable to manage the entire folder mainly from VS Code — even though most of the time I don't need to write code — having access to the raw files and especially, through Copilot or Claude Code, being able to interact with an AI that always has the right context, instead of relying on a generic online LLM where, _however precise one may be with a system prompt,_ it will often be<b> too generic and inadequate</b> for one's needs.
+
+In this way, _moreover,_ despite the AI being involved, I feel I can very easily maintain <b>control over my knowledge</b> without delegating everything but, _at the same time,_ taking advantage of the benefits and potential of these tools.
+
+<div align = "center">
+![Chinese Restaurant](/images/blog/stradina.jpg)
+</div>
+<small><i>One of the most frequent questions with my friends: "would you rather have no sex until December or no AI until December?"</i></small>
+
+### <b>How JackGPT lives</b>
+
+On top of that, _more for fun_ and with the sole purpose of making, _at least indirectly,_ all my notes accessible online, I built <b>JackGPT</b> _(credits for the name: my friends from Milan who make fun of me),_ a minimal chatbot that responds based on the notes most relevant to the user's query.
+
+Given a question as input, the backend combines <a href="https://en.wikipedia.org/wiki/Okapi_BM25" target="_blank">BM25</a> and the previously created embeddings via cosine similarity and a subsequent <a href="https://medium.com/@devalshah1619/mathematical-intuition-behind-reciprocal-rank-fusion-rrf-explained-in-2-mins-002df0cc5e2a" target="_blank">Reciprocal Rank Fusion</a> to find the $x$ most relevant files. These are then attached to the user's query which, _together with the system prompt I defined,_ constitute the final input for JackGPT.
+
+_(As for the API: I'm currently relying on some OpenAI credits, but I wouldn't mind trying DeepSeek in the future, some other open model, or, never say never, hosting something locally)._
+
+### <b>How will JackGPT grow?</b>
+
+
+Currently _(Jun 27)_ JackGPT <b>is still in its early stages</b> and I realize it's not up to par with frontier models, but, _for reasons of time and API economics,_ this initial solution allows me to experiment and understand how to move forward.
+
+I won't deny that I have multiple updates and potential expansions of the project in mind. <br/>_First of all,_ I wouldn't mind creating a<b> more "standardized" and independent repository </b>from my site, so as to allow anyone to clone the repo and "host" this knowledge management system on their own machine. 
+
+_Secondly,_ I'd like to figure out how to make JackGPT more integrated with my notes and more useful on a daily basis, building useful skills while maintaining full "intellectual" control over the topics.
+
+In the end, I'm convinced that the "success" of this project, _understood as the level to which I manage to leverage it to better manage my "knowledge",_ <b>will emerge in the long term</b>, when notes accumulate, files intertwine and the need to consult them increases.
+
+<div align = "center">
+![Chinese Restaurant](/images/blog/evoluzione.jpg)
+</div>
+<small><i>This is how I evolved... I hope JackGPT will grow better! </i></small>
