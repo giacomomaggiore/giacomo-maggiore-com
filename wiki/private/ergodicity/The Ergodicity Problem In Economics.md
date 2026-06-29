@@ -214,4 +214,3 @@ We have reason to hope for a future economic science that is more parsimonious, 
 
 - [[The Copenhagen Experiment – Ergodicity Economics]] — empirical test of this theory
 - [[Ergodicity Economics   Italian Leather Sofa]] — real-world application
-- [[Legacy Of Daniel Kahneman]] — expected utility, Bernoulli, and the St. Petersburg paradox
