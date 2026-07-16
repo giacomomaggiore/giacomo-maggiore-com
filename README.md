@@ -103,6 +103,24 @@ pnpm build    # runs the indexer + guard automatically via the prebuild hook, th
 
 ---
 
+## Copilot skills
+
+The workspace includes three VS Code Copilot skills in `.github/skills/`. Type `/` in Copilot Chat and select one, or use its slash command directly:
+
+```text
+/update-links [optional note title]
+/update-embeddings
+/clean-markdown "Note Title"
+```
+
+- `update-links` previews an LLM-powered wikilink and Related-notes curation pass for `wiki/private/`. It validates link targets against the vault allowlist and requires confirmation before writing changes.
+- `update-embeddings` runs `pnpm index`, rebuilding the retrieval index for every public and private note. It creates OpenAI embeddings when `OPENAI_API_KEY` is set; otherwise it produces a BM25-only index.
+- `clean-markdown` previews conservative grammar, OCR, Markdown, and LaTex cleanup for one note in `wiki/private/`, then requires confirmation before applying it.
+
+The note-maintenance skills deliberately do not operate on published blog posts. None of the skills commits or pushes changes unless explicitly requested.
+
+---
+
 ## /ask — LLM query interface
 
 Live at `/ask`. You type a question; the server retrieves the most relevant notes and streams a cited answer.
