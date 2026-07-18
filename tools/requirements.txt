@@ -4,7 +4,6 @@
 # Note: MinerU itself is invoked as an external CLI (see MINERU_BIN in
 # ingest/mineru_run.py) and is NOT installed from here.
 
-python-dotenv          # loads .env.local (GOOGLE_API_KEY / OPENAI_API_KEY etc.)
+python-dotenv          # loads .env.local
 python-frontmatter     # read/write YAML frontmatter in the generated markdown
-openai                 # LLM_PROVIDER=openai
-google-genai           # LLM_PROVIDER=gemini
+openai                 # generation and reasoning models

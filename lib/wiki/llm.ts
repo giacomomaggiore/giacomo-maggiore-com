@@ -30,21 +30,6 @@ export function buildCitations(notes: WikiNote[]): Citation[] {
   return notes.map(n => ({ title: n.title, url: n.url }))
 }
 
-async function* streamGemini(question: string, contextText: string): AsyncGenerator<string> {
-  const { GoogleGenAI } = await import('@google/genai')
-  const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY! })
-  const model = process.env.LLM_MODEL ?? 'gemini-2.0-flash-lite'
-
-  const stream = await ai.models.generateContentStream({
-    model,
-    contents: [{ role: 'user', parts: [{ text: `${contextText}\n\nQuestion: ${question}` }] }],
-    config: { systemInstruction: SYSTEM_PROMPT, maxOutputTokens: 1500 },
-  })
-  for await (const chunk of stream) {
-    if (chunk.text) yield chunk.text
-  }
-}
-
 async function* streamOpenAI(question: string, contextText: string): AsyncGenerator<string> {
   const { default: OpenAI } = await import('openai')
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! })
@@ -65,16 +50,10 @@ async function* streamOpenAI(question: string, contextText: string): AsyncGenera
   }
 }
 
-// Main export — dispatches to the right provider based on LLM_PROVIDER env var
 export async function* streamAnswer(
   question: string,
   context: WikiNote[],
 ): AsyncGenerator<string> {
   const contextText = buildContextText(context)
-  const provider = process.env.LLM_PROVIDER ?? 'gemini'
-  if (provider === 'openai') {
-    yield* streamOpenAI(question, contextText)
-  } else {
-    yield* streamGemini(question, contextText)
-  }
+  yield* streamOpenAI(question, contextText)
 }

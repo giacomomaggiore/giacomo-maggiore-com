@@ -1,5 +1,5 @@
 """
-Inserts [[wikilinks]] into a newly converted note via Gemini, then:
+Inserts [[wikilinks]] into a newly converted note via OpenAI, then:
   - validates every link against the vault allowlist (anti-hallucination guard)
   - updates wiki/private/index.md
   - appends a row to wiki/private/log.md

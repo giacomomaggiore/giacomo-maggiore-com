@@ -57,7 +57,7 @@ lib/wiki/
   paths.ts         # directory constants (PUBLIC / PRIVATE) — single source of truth
   frontmatter.ts   # shared frontmatter parser
   retrieve.ts      # BM25 scorer + hybrid retrieval types
-  llm.ts           # provider-agnostic streaming wrapper (Gemini or OpenAI)
+  llm.ts           # OpenAI streaming wrapper
   mdx-files.ts     # MDX file utilities
 
 scripts/
@@ -69,9 +69,10 @@ tools/ingest/               # local Python pipeline
   mineru_run.py     # PDF -> Markdown via MinerU (fully local)
   cleanup.py        # LLM pass to fix OCR artifacts and formatting
   link.py           # LLM pass to insert [[wikilinks]]; validates against vault allowlist
-  providers.py      # provider-agnostic generate() — dispatches to Gemini or OpenAI
+  providers.py      # OpenAI generation + embedding helpers
   vault.py          # scans wiki/ -> {title: filepath} allowlist
-  refresh_vault.py  # re-processes existing notes with a reasoning model
+  refresh_vault.py  # re-processes existing notes: embeddings shortlist link
+                     # candidates, then a reasoning model curates + writes them
   lint.py           # health checks (orphans, broken links, missing frontmatter...)
 
 app/
@@ -113,7 +114,7 @@ The workspace includes three VS Code Copilot skills in `.github/skills/`. Type `
 /clean-markdown "Note Title"
 ```
 
-- `update-links` previews an LLM-powered wikilink and Related-notes curation pass for `wiki/private/`. It validates link targets against the vault allowlist and requires confirmation before writing changes.
+- `update-links` previews a wikilink and Related-notes curation pass for `wiki/private/`. Embeddings shortlist each note's nearest neighbours by similarity, then a reasoning model picks the genuinely related ones from that shortlist and writes the reasons. It validates link targets against the vault allowlist and requires confirmation before writing changes.
 - `update-embeddings` runs `pnpm index`, rebuilding the retrieval index for every public and private note. It creates OpenAI embeddings when `OPENAI_API_KEY` is set; otherwise it produces a BM25-only index.
 - `clean-markdown` previews conservative grammar, OCR, Markdown, and LaTex cleanup for one note in `wiki/private/`, then requires confirmation before applying it.
 
@@ -134,7 +135,7 @@ Live at `/ask`. You type a question; the server retrieves the most relevant note
 
 **Answer generation:**
 
-- `lib/wiki/llm.ts` is provider-agnostic — dispatches to Gemini or OpenAI based on `LLM_PROVIDER`.
+- `lib/wiki/llm.ts` streams answers from OpenAI using `LLM_MODEL`.
 - The model is instructed to answer only from the provided notes and cite every claim by note title.
 - Public notes get a clickable link; private notes are cited by title only (no link).
 - Response is streamed: first newline-delimited JSON with citations, then raw text chunks.
@@ -191,22 +192,23 @@ python3 -m ingest lint
 All go in `.env.local` (never committed).
 
 ```dotenv
-# LLM provider for answer generation and ingestion pipeline
-LLM_PROVIDER=gemini          # or: openai
-GOOGLE_API_KEY=...           # required when LLM_PROVIDER=gemini
-# OPENAI_API_KEY=...         # required when LLM_PROVIDER=openai
+# OpenAI configuration for answer generation and ingestion
+LLM_PROVIDER=openai
+OPENAI_API_KEY=...
 
 # OpenAI key for embeddings — independent of LLM_PROVIDER.
 # Required for hybrid retrieval (BM25 + semantic). Falls back to BM25-only if unset.
 OPENAI_API_KEY=...
 
-# Optional: override the fast model used for per-note cleanup and wikilinks
-# LLM_MODEL=gemini-2.0-flash-lite     # default for gemini
-# LLM_MODEL=gpt-4o-mini               # default for openai
+# Optional: override the model used for answers, per-note cleanup, and wikilinks
+# LLM_MODEL=gpt-5.6-luna
 
 # Optional: override the reasoning model used by `ingest refresh`
-# LLM_REASONING_MODEL=gemini-2.5-pro
-# LLM_REASONING_MODEL=gpt-5.4-2026-03-17
+# LLM_REASONING_MODEL=gpt-5.6-terra
+
+# Optional: override the embedding model used to shortlist link candidates
+# during `ingest refresh` (default: text-embedding-3-small)
+# LLM_EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ---
@@ -214,10 +216,6 @@ OPENAI_API_KEY=...
 ## Python setup (ingestion pipeline only)
 
 ```bash
-# Gemini (default)
-pip install google-genai python-frontmatter python-dotenv
-
-# OpenAI
 pip install openai python-frontmatter python-dotenv
 ```
 

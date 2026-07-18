@@ -11,8 +11,8 @@ by looking for a wiki/ directory):
     python -m ingest refresh --dry-run          # preview without writing
 
 Requirements:
-    pip install google-genai python-frontmatter python-dotenv
-    Set GOOGLE_API_KEY (and optionally GEMINI_MODEL) in .env.local or your shell.
+    pip install openai python-frontmatter python-dotenv
+    Set OPENAI_API_KEY (and optionally LLM_MODEL) in .env.local or your shell.
 """
 
 import argparse
@@ -27,7 +27,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 def _load_env(repo_root: Path) -> None:
-    """Load .env.local from the repo root so GOOGLE_API_KEY etc. are available."""
+    """Load .env.local from the repo root so OPENAI_API_KEY is available."""
     try:
         from dotenv import load_dotenv
     except ImportError:
@@ -52,22 +52,15 @@ def _find_repo_root() -> Path:
 
 
 def _require_api_key() -> None:
-    """Check that the API key for the configured provider is present."""
+    """Check that the OpenAI provider and API key are configured."""
     provider = os.environ.get("LLM_PROVIDER", "openai").lower().strip()
-    if provider == "gemini":
-        if not os.environ.get("GOOGLE_API_KEY", "").strip():
-            sys.exit(
-                "Error: GOOGLE_API_KEY is not set (LLM_PROVIDER=gemini).\n"
-                "Add it to .env.local or export it in your shell."
-            )
-    elif provider == "openai":
-        if not os.environ.get("OPENAI_API_KEY", "").strip():
-            sys.exit(
-                "Error: OPENAI_API_KEY is not set (LLM_PROVIDER=openai).\n"
-                "Add it to .env.local or export it in your shell."
-            )
-    else:
-        sys.exit(f"Error: Unknown LLM_PROVIDER '{provider}'. Use 'gemini' or 'openai'.")
+    if provider != "openai":
+        sys.exit("Error: LLM_PROVIDER must be 'openai'.")
+    if not os.environ.get("OPENAI_API_KEY", "").strip():
+        sys.exit(
+            "Error: OPENAI_API_KEY is not set (LLM_PROVIDER=openai).\n"
+            "Add it to .env.local or export it in your shell."
+        )
 
 
 def _unique_path(path: Path) -> Path:
@@ -188,7 +181,7 @@ def main() -> None:
     )
     p_run.add_argument(
         "--topic", "-t",
-        help="Topic folder name, e.g. 'finance' (default: inferred by Gemini)",
+        help="Topic folder name, e.g. 'finance' (default: inferred by OpenAI)",
     )
     p_run.set_defaults(func=cmd_run)
 

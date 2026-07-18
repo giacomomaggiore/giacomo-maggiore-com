@@ -15,8 +15,13 @@ human editor would do:
       * also emit a 2-3 sentence summary + key concepts, used in Phase 2
 
   Phase 2 — Curate cross-note links (content-aware, not title-matching):
-      * append a "## Related notes" ("## Note correlate" for Italian notes)
-        section listing the 2-5 most genuinely related OTHER notes
+      * every note is embedded (title + summary + key concepts) and compared
+        by cosine similarity to shortlist its top candidate neighbours —
+        this keeps the per-note prompt small and scales past a full O(N^2)
+        catalog as the vault grows
+      * a reasoning model then picks, from that shortlist only, the 2-5
+        genuinely related notes and appends a "## Related notes" ("## Note
+        correlate" for Italian notes) section
       * add a few high-value inline [[Title|phrase]] links
       * every link target is validated against the vault allowlist; anything
         not found is unwrapped to plain text (anti-hallucination guard)
@@ -38,23 +43,29 @@ Standalone (without the CLI):
 
 Requirements: same as the rest of the pipeline (python-frontmatter,
 python-dotenv, and the SDK for your provider). Set LLM_REASONING_MODEL in
-.env.local to pick the reasoning model (defaults: gpt-5.4-2026-03-17 /
-gemini-2.5-pro).
+.env.local to pick the OpenAI reasoning model (default: gpt-5.6-terra) and
+LLM_EMBEDDING_MODEL to pick the embedding model used for candidate retrieval
+(default: text-embedding-3-small).
 """
 
 import argparse
 import json
+import math
 import re
 import sys
 from pathlib import Path
 
 import frontmatter
 
-from providers import generate, reasoning_model
+from providers import embed, generate, reasoning_model
 from vault import build_title_map, _SKIP_STEMS
 
 WIKILINK_RE = re.compile(r"\[\[([^\[\]\n]+)\]\]")
 _SUMMARY_SENTINEL = "===SUMMARY-JSON==="
+
+# How many nearest neighbours (by embedding similarity) to shortlist as link
+# candidates for each note, before the reasoning model picks the real ones.
+_CANDIDATE_COUNT = 8
 
 
 # ===========================================================================
@@ -136,7 +147,8 @@ ideas of the notes, not just on title similarity.
 
 The note you are editing is titled: "{title}"
 
-CATALOG OF ALL OTHER NOTES (use these titles verbatim as link targets):
+CATALOG OF CANDIDATE NOTES (pre-shortlisted by embedding similarity; use these
+titles verbatim as link targets — do not link to any note outside this list):
 {catalog}
 
 TASK:
@@ -210,6 +222,18 @@ def _iter_notes(repo_root: Path, only: str | None):
 
 def _is_empty_body(body: str) -> bool:
     return len(body.strip()) < 40
+
+
+def _lightweight_entry(path: Path, post) -> dict:
+    """A catalog entry built without calling the LLM (used for notes outside
+    --only, and as the skip-clean fallback)."""
+    return {
+        "title": str(post.get("title", path.stem)).strip(),
+        "topic": str(post.get("topic", "")).strip(),
+        "folder": path.parent.name,
+        "summary": post.content[:300].replace("\n", " ").strip(),
+        "key_concepts": [],
+    }
 
 
 def _split_clean_output(raw: str) -> tuple[str, dict]:
@@ -302,14 +326,53 @@ def clean_note(path: Path, post, model: str, dry_run: bool) -> dict:
 
 
 # ===========================================================================
+# Candidate retrieval — embeddings narrow the catalog before the LLM reasons
+# over it, so the per-note prompt stays small regardless of vault size.
+# ===========================================================================
+
+def _embed_text(entry: dict) -> str:
+    parts = [entry["title"]]
+    if entry["summary"]:
+        parts.append(entry["summary"])
+    if entry["key_concepts"]:
+        parts.append("Key concepts: " + ", ".join(entry["key_concepts"]))
+    return "\n".join(parts)
+
+
+def _embed_entries(entries: list[dict]) -> list[list[float]]:
+    """One embedding vector per entry, same order as `entries`."""
+    return embed([_embed_text(e) for e in entries])
+
+
+def _cosine(a: list[float], b: list[float]) -> float:
+    dot = sum(x * y for x, y in zip(a, b))
+    norm_a = math.sqrt(sum(x * x for x in a))
+    norm_b = math.sqrt(sum(y * y for y in b))
+    if norm_a == 0 or norm_b == 0:
+        return 0.0
+    return dot / (norm_a * norm_b)
+
+
+def _top_k_candidates(entries: list[dict], embeddings: list[list[float]],
+                       index: int, k: int) -> list[dict]:
+    """The k entries most similar to entries[index], excluding itself."""
+    target = embeddings[index]
+    scored = [
+        (_cosine(target, emb), entry)
+        for i, (emb, entry) in enumerate(zip(embeddings, entries))
+        if i != index
+    ]
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    return [entry for _, entry in scored[:k]]
+
+
+# ===========================================================================
 # Phase 2 — curate links
 # ===========================================================================
 
-def _format_catalog(entries: list[dict], exclude_title: str) -> str:
+def _format_catalog(entries: list[dict]) -> str:
     lines = []
     for e in entries:
-        if e["title"] == exclude_title:
-            continue
         concepts = ", ".join(e["key_concepts"][:8])
         summary = e["summary"] or "(no summary)"
         lines.append(f"- {e['title']} [{e['topic'] or e['folder']}] — {summary}"
@@ -317,7 +380,7 @@ def _format_catalog(entries: list[dict], exclude_title: str) -> str:
     return "\n".join(lines)
 
 
-def link_note(path: Path, post, entries: list[dict], allowed: set[str],
+def link_note(path: Path, post, candidates: list[dict], allowed: set[str],
               model: str, dry_run: bool) -> None:
     body = post.content
     title = str(post.get("title", path.stem)).strip()
@@ -326,8 +389,9 @@ def link_note(path: Path, post, entries: list[dict], allowed: set[str],
         print(f"  · empty body, skipping links: {title}")
         return
 
-    catalog = _format_catalog(entries, exclude_title=title)
+    catalog = _format_catalog(candidates)
     if not catalog:
+        print(f"  · no candidate notes, skipping links: {title}")
         return
 
     prompt = LINK_PROMPT.format(title=title, catalog=catalog, body=body)
@@ -340,7 +404,8 @@ def link_note(path: Path, post, entries: list[dict], allowed: set[str],
     linked, kept, dropped = _validate_links(linked, allowed)
 
     if dry_run:
-        print(f"  ✎ would link: {title}  ({kept} valid, {dropped} unwrapped)")
+        print(f"  ✎ would link: {title}  ({kept} valid, {dropped} unwrapped, "
+              f"{len(candidates)} candidates)")
         return
     post.content = linked
     path.write_text(frontmatter.dumps(post), encoding="utf-8")
@@ -391,33 +456,45 @@ def refresh(repo_root: Path, *, dry_run: bool = False, only: str | None = None,
     model = reasoning_model()
     print(f"Using reasoning model: {model}\n")
 
-    notes = list(_iter_notes(repo_root, only))
+    all_notes = list(_iter_notes(repo_root, None))
+    if not all_notes:
+        print("No notes matched.")
+        return
+    notes = all_notes if only is None else [
+        item for item in all_notes if only.lower() in item[0].stem.lower()
+    ]
     if not notes:
         print("No notes matched.")
         return
 
-    # Phase 1: clean + collect catalog
-    entries: list[dict] = []
+    # Catalog entries cover the WHOLE vault, even on an --only run, so link
+    # candidates for the note(s) being processed can be drawn from every
+    # other note. Only the notes in `notes` get an LLM-generated summary;
+    # the rest fall back to a cheap content-head entry.
+    entries_by_path: dict[Path, dict] = {
+        path: _lightweight_entry(path, post) for path, post in all_notes
+    }
+
+    # Phase 1: clean + refresh catalog entries for the processed notes
     if skip_clean:
         print("Phase 1: clean — SKIPPED (building catalog from current notes)")
-        for path, post in notes:
-            entries.append({
-                "title": str(post.get("title", path.stem)).strip(),
-                "topic": str(post.get("topic", "")).strip(),
-                "folder": path.parent.name,
-                "summary": (post.content[:300].replace("\n", " ").strip()),
-                "key_concepts": [],
-            })
     else:
         print(f"Phase 1: cleaning {len(notes)} note(s) …")
         for path, post in notes:
             try:
-                entries.append(clean_note(path, post, model, dry_run))
+                entries_by_path[path] = clean_note(path, post, model, dry_run)
             except Exception as e:
                 print(f"  ERROR cleaning {path.name}: {e}")
 
     # Reload posts so Phase 2 sees the cleaned bodies (when not dry-run).
     if not skip_links:
+        catalog_paths = list(entries_by_path.keys())
+        catalog_entries = [entries_by_path[p] for p in catalog_paths]
+        print(f"\nPhase 2: embedding {len(catalog_entries)} note(s) for "
+              f"candidate retrieval …")
+        embeddings = _embed_entries(catalog_entries)
+        path_index = {p: i for i, p in enumerate(catalog_paths)}
+
         print(f"\nPhase 2: curating links across {len(notes)} note(s) …")
         # Allowlist = every title currently in the vault (anti-hallucination).
         allowed = set(build_title_map(repo_root).keys())
@@ -428,14 +505,17 @@ def refresh(repo_root: Path, *, dry_run: bool = False, only: str | None = None,
                 print(f"  ! skipping (bad frontmatter): {path.name} — {e}")
                 continue
             try:
-                link_note(path, post, entries, allowed, model, dry_run)
+                candidates = _top_k_candidates(
+                    catalog_entries, embeddings, path_index[path], _CANDIDATE_COUNT
+                )
+                link_note(path, post, candidates, allowed, model, dry_run)
             except Exception as e:
                 print(f"  ERROR linking {path.name}: {e}")
 
     # Phase 3: index (only meaningful for a full run)
     if not no_index and not only:
         print("\nPhase 3: rebuilding index …")
-        rebuild_index(repo_root, entries, dry_run)
+        rebuild_index(repo_root, list(entries_by_path.values()), dry_run)
     elif only:
         print("\nPhase 3: index rebuild skipped (--only run).")
 
