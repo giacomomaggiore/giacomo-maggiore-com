@@ -1,244 +1,129 @@
 # giacomo-maggiore-com
 
-> Please note that this file (except for this line) is 100% AI-generated. Thanks Claude.
+> This file (except this line) is 100% AI-generated. Thanks Claude.
 
-Personal website at [giacomomaggiore.com](https://giacomomaggiore.com) — built with Next.js 14 (App Router), deployed on Vercel. It also doubles as an Obsidian vault and a local knowledge-management system with LLM-powered Q&A.
+My personal website — [giacomomaggiore.com](https://giacomomaggiore.com). Built with Next.js, deployed on Vercel.
+
+It's actually three things in one:
+
+- **A website** — public blog posts and notes.
+- **A private notebook** — an Obsidian vault of reading notes, stored as files, never published.
+- **A personal AI assistant** — ask it a question, it answers using only my own notes.
 
 ---
 
 ## Why this exists
 
-I've always liked keeping track of what I study and read. For years that meant notebooks; then an iPad; then Notion; then the realisation that no off-the-shelf tool gave me full control over my own knowledge.
+- I like keeping track of what I read and study. First notebooks, then an iPad, then Notion — now this.
+- The goal: one place for everything (website, public notes, private notes, AI assistant) that I fully own.
+- The belief behind it: reading something isn't the same as knowing it. Notes only pay off if they're organized and connected to each other.
 
-The goal of this project is to centralise everything in one place — website, public notes, private reading archive, Obsidian graph, AI assistant — without giving up ownership of any of it.
+**What AI does here:** cleans up OCR text, fixes formatting, links related notes together, sorts files into folders. It never writes the notes themselves — I do that. AI only handles the boring, mechanical parts.
 
-The underlying conviction is simple: **information is not knowledge.** Consuming articles, papers, and books without a structure to review, connect, and revisit them produces little lasting value. Building that structure requires some daily effort, but pays off long-term as notes accumulate and topics interweave.
-
-### What AI does (and doesn't do) here
-
-AI is used **only for operational tasks** — OCR cleanup, wikilink insertion, Markdown formatting, folder organisation. It never writes the notes themselves. Every note starts from a personal interest or something read manually; the AI enters later, once the direction of the topic is already clear.
-
-The friction of learning is intentional and kept. The friction of formatting a PDF or organising a folder is a waste of time and is automated away.
-
-### JackGPT
-
-On top of the private knowledge base, there is a public chatbot at [/ask](https://giacomomaggiore.com/ask) — nicknamed **JackGPT** — that answers questions grounded in the actual notes. It uses hybrid retrieval (BM25 + embeddings) to find the most relevant files, then passes them as context to an LLM. Public notes get a clickable citation; private notes are cited by title only. It's a way to make the knowledge base indirectly accessible without exposing the raw files.
+**JackGPT** is the chatbot at [/ask](https://giacomomaggiore.com/ask). Ask it a question and it searches my notes, then answers using only what's actually in them — with sources.
 
 ---
 
-## What this repo is
+## The three parts of this repo
 
-Three things at once:
+1. **Website** — blog posts and notes, rendered as pages (`/blog/...`, `/notes/...`).
+2. **Private vault** — `wiki/private/`. My personal notes, stored as files, never shown on the website.
+3. **Ask feature** — the `/ask` page. Search everything (public + private) and get an answer with sources.
 
-1. **Website** — blog posts and notes rendered as public pages (`/blog/[slug]`, `/notes/[slug]`).
-2. **Obsidian vault** — `wiki/private/` holds private notes on disk, never exposed as pages.
-3. **PKM system** — a local pipeline converts PDFs to linked Markdown notes, plus the `/ask` page where you can query the whole knowledge base (public + private) and get cited answers.
-
-### Hard rule
-
-Private notes (`wiki/private/`) are **never** rendered as website pages and never appear in the sitemap. They can only surface through the `/ask` query interface.
+**Rule that never changes:** private notes are never turned into web pages. The only way to see them is by asking a question through `/ask`.
 
 ---
 
-## Repo layout
+## Folder structure
 
 ```
 wiki/
-  source/          # drop PDFs here before running ingest  (gitignored)
+  source/          # drop PDFs here before processing (not saved in git)
   public/
     notes/         # published notes  ->  /notes/[slug]
-    blog/          # published blog posts (.en.mdx / .it.mdx)  ->  /blog/[slug]
-  private/         # local Obsidian vault — queryable, never a page  (gitignored)
-    index.md       # auto-maintained list of all ingested notes
-    log.md         # append-only ingestion log
-    _lint-report.md
+    blog/          # published blog posts  ->  /blog/[slug]
+  private/         # private vault — searchable, never a web page (not saved in git)
 
-lib/wiki/
-  paths.ts         # directory constants (PUBLIC / PRIVATE) — single source of truth
-  frontmatter.ts   # shared frontmatter parser
-  retrieve.ts      # BM25 scorer + hybrid retrieval types
-  llm.ts           # OpenAI streaming wrapper
-  mdx-files.ts     # MDX file utilities
-
-scripts/
-  build-wiki-index.ts         # reads all notes -> lib/wiki-index.generated.json
-  assert-no-private-pages.ts  # build guard: exits 1 if any private note leaks as a page
-
-tools/ingest/               # local Python pipeline
-  cli.py            # entry point: run, refresh, lint commands
-  mineru_run.py     # PDF -> Markdown via MinerU (fully local)
-  cleanup.py        # LLM pass to fix OCR artifacts and formatting
-  link.py           # LLM pass to insert [[wikilinks]]; validates against vault allowlist
-  providers.py      # OpenAI generation + embedding helpers
-  vault.py          # scans wiki/ -> {title: filepath} allowlist
-  refresh_vault.py  # re-processes existing notes: embeddings shortlist link
-                     # candidates, then a reasoning model curates + writes them
-  lint.py           # health checks (orphans, broken links, missing frontmatter...)
-
-app/
-  ask/page.tsx              # /ask page
-  api/ask/route.ts          # POST endpoint — retrieval + streaming LLM answer
-  components/AskChat.tsx    # client component — textarea, streamed markdown, citations
+lib/wiki/          # shared code: reading notes, search, AI answers
+scripts/           # build-time scripts (search index builder, safety checks)
+tools/ingest/      # the Python pipeline that turns PDFs into notes
+app/               # the /ask page and its API
 ```
 
 ---
 
-## Index build pipeline
+## Skills (automated helpers)
 
-The knowledge index is built at compile time and never committed to git.
+Three helpers live in `.github/skills/`. In your AI coding tool, type `/` and pick one, or use its slash command directly:
 
-**How it works:**
+- **`/update-links`** — finds notes that are genuinely related and links them together. First, AI similarity search shortlists likely matches (fast, cheap); then a smarter AI double-checks that shortlist and writes a short reason for each link it keeps.
+- **`/update-embeddings`** — rebuilds the search index, so new or edited notes become findable through `/ask`.
+- **`/clean-markdown`** — fixes grammar, OCR mistakes, and formatting in one note.
 
-1. `scripts/build-wiki-index.ts` reads every `.md`/`.mdx` file in `wiki/public/` and `wiki/private/`.
-2. For each note it strips frontmatter, JSX tags, and HTML, then tokenizes the clean text (lowercase, no punctuation, ≥3 chars, EN+IT stopwords removed, light stemming).
-3. If `OPENAI_API_KEY` is set, each note is also embedded with `text-embedding-3-small`.
-4. Output: `lib/wiki-index.generated.json` — one entry per note with slug, visibility, title, URL (null for private), full text, token frequencies, and optional embedding vector.
-5. `scripts/assert-no-private-pages.ts` then checks that no `app/` file imports `WIKI_PRIVATE_DIR` and that every private note has `url: null`. Build fails otherwise.
+None of them touch published blog posts. None of them commits or pushes changes without asking first.
 
-**Commands:**
+---
+
+## How `/ask` works
+
+1. You type a question.
+2. The system searches all notes two ways at once — by keyword, and by meaning (AI similarity) — then combines the results.
+3. The 5 best-matching notes are handed to an AI, which answers using only those notes.
+4. Public notes appear as clickable links; private notes are mentioned by title only.
+5. If no `OPENAI_API_KEY` is set, search still works by keyword alone — just without the AI matching.
+
+---
+
+## Turning PDFs into notes
+
+Drop a PDF into `wiki/source/`, then run the pipeline. It will:
+
+- extract the text (fully local, no cloud)
+- figure out which topic folder it belongs to
+- clean up OCR mess and formatting
+- link it to related existing notes
+- save it into `wiki/private/`
 
 ```bash
-pnpm index    # regenerate the index manually (after adding/editing notes)
-pnpm build    # runs the indexer + guard automatically via the prebuild hook, then builds
+cd tools
+python3 -m ingest run                 # process every PDF in wiki/source/
+python3 -m ingest run file.pdf        # process just one file
+python3 -m ingest refresh             # re-clean and re-link every existing note
+python3 -m ingest refresh --dry-run   # preview only — changes nothing
+python3 -m ingest lint                # check for broken links, missing info, etc.
 ```
 
 ---
 
-## Copilot skills
+## Setup
 
-The workspace includes three VS Code Copilot skills in `.github/skills/`. Type `/` in Copilot Chat and select one, or use its slash command directly:
-
-```text
-/update-links [optional note title]
-/update-embeddings
-/clean-markdown "Note Title"
-```
-
-- `update-links` previews a wikilink and Related-notes curation pass for `wiki/private/`. Embeddings shortlist each note's nearest neighbours by similarity, then a reasoning model picks the genuinely related ones from that shortlist and writes the reasons. It validates link targets against the vault allowlist and requires confirmation before writing changes.
-- `update-embeddings` runs `pnpm index`, rebuilding the retrieval index for every public and private note. It creates OpenAI embeddings when `OPENAI_API_KEY` is set; otherwise it produces a BM25-only index.
-- `clean-markdown` previews conservative grammar, OCR, Markdown, and LaTex cleanup for one note in `wiki/private/`, then requires confirmation before applying it.
-
-The note-maintenance skills deliberately do not operate on published blog posts. None of the skills commits or pushes changes unless explicitly requested.
-
----
-
-## /ask — LLM query interface
-
-Live at `/ask`. You type a question; the server retrieves the most relevant notes and streams a cited answer.
-
-**Retrieval — hybrid BM25 + semantic search:**
-
-- BM25 (keyword) and embedding cosine similarity (semantic) each produce a ranked list.
-- The two lists are fused with Reciprocal Rank Fusion (RRF, k=60): `score = 1/(60 + rank_BM25) + 1/(60 + rank_embedding)`.
-- Top 5 notes by combined score are sent to the LLM as context.
-- Falls back to BM25-only if `OPENAI_API_KEY` is not set.
-
-**Answer generation:**
-
-- `lib/wiki/llm.ts` streams answers from OpenAI using `LLM_MODEL`.
-- The model is instructed to answer only from the provided notes and cite every claim by note title.
-- Public notes get a clickable link; private notes are cited by title only (no link).
-- Response is streamed: first newline-delimited JSON with citations, then raw text chunks.
-- Questions are capped at 500 characters.
-
----
-
-## Local ingestion pipeline (PDF -> private notes)
-
-Converts PDFs into linked Markdown notes in `wiki/private/`. Runs locally only — no file watcher, always on-demand.
-
-**Pipeline per PDF:**
-
-1. **MinerU** (fully local, no cloud) — extracts text, tables, formulas, images to Markdown.
-2. **LLM — topic inference** — picks a folder name from the content (skipped if `--topic` is given).
-3. **LLM — cleanup** — fixes OCR artifacts, strips page headers/footers, ads, repeated lines. Conservative: no summarizing, no rephrasing.
-4. **LLM — wikilinks** — inserts `[[links]]` to existing notes. Every link is validated against the vault allowlist; hallucinated links are silently dropped.
-5. Written to `wiki/private/<topic>/<Title>.md`; `index.md` and `log.md` updated.
-
-**Commands (run from the `tools/` directory):**
-
-```bash
-# Process all PDFs in wiki/source/
-python3 -m ingest run
-
-# Process a single file
-python3 -m ingest run ../wiki/source/mypaper.pdf
-
-# Process a single file with an explicit topic folder
-python3 -m ingest run ../wiki/source/mypaper.pdf --topic finance
-
-# Re-process the whole vault with a reasoning model (re-clean + re-link + rebuild index.md)
-python3 -m ingest refresh
-
-# Dry run — preview without writing
-python3 -m ingest refresh --dry-run
-
-# Only one note (matched by filename substring)
-python3 -m ingest refresh --only "Note Title"
-
-# Skip the cleanup pass, only redo links and index
-python3 -m ingest refresh --skip-clean
-
-# Health check — orphans, broken links, missing frontmatter
-python3 -m ingest lint
-```
-
-**Obsidian:** open `wiki/private/` as a vault. Note filenames use spaces (matching frontmatter title) so `[[wikilinks]]` resolve correctly in the graph view.
-
----
-
-## Environment variables
-
-All go in `.env.local` (never committed).
+**Environment variables** — put these in `.env.local` (never committed to git):
 
 ```dotenv
-# OpenAI configuration for answer generation and ingestion
+OPENAI_API_KEY=...     # required for every AI feature: answers, cleanup, linking, search
 LLM_PROVIDER=openai
-OPENAI_API_KEY=...
 
-# OpenAI key for embeddings — independent of LLM_PROVIDER.
-# Required for hybrid retrieval (BM25 + semantic). Falls back to BM25-only if unset.
-OPENAI_API_KEY=...
-
-# Optional: override the model used for answers, per-note cleanup, and wikilinks
-# LLM_MODEL=gpt-5.6-luna
-
-# Optional: override the reasoning model used by `ingest refresh`
-# LLM_REASONING_MODEL=gpt-5.6-terra
-
-# Optional: override the embedding model used to shortlist link candidates
-# during `ingest refresh` (default: text-embedding-3-small)
-# LLM_EMBEDDING_MODEL=text-embedding-3-small
+# Optional overrides — leave commented out to use the defaults
+# LLM_MODEL=...              # model used for answers, note cleanup, and linking
+# LLM_REASONING_MODEL=...    # smarter model used for the vault-wide re-link pass
+# LLM_EMBEDDING_MODEL=...    # model used for search and link similarity (default: text-embedding-3-small)
 ```
 
----
-
-## Python setup (ingestion pipeline only)
+**Python setup** (only needed for the PDF pipeline):
 
 ```bash
 pip install openai python-frontmatter python-dotenv
 ```
 
-MinerU must be installed separately and available at `/opt/anaconda3/bin/mineru` (update `tools/ingest/mineru_run.py:MINERU_BIN` if the path differs).
+MinerU (the PDF-to-text tool) must be installed separately.
 
 ---
 
-## Typical workflow
+## Everyday commands
 
 ```bash
-# 1. Add or edit notes in wiki/public/ or wiki/private/
-# 2. Regenerate the index
-pnpm index
-
-# 3. Build and deploy
-pnpm build
-git push
+pnpm index    # rebuild the search index after adding/editing notes
+pnpm build    # build the website (also rebuilds the index automatically)
 ```
 
-For private note ingestion:
-```bash
-# Drop PDFs into wiki/source/, then:
-cd tools
-python3 -m ingest run
-pnpm index   # rebuild index to include new notes
-```
+Typical flow: edit or add a note → `pnpm index` → `pnpm build` → `git push`.
