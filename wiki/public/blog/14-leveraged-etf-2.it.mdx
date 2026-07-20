@@ -4,22 +4,22 @@ publishedAt: '2026-07-19'
 summary: ''
 ---
 
-###
+Sono sempre stato attratto dal concetto di <b>“andare in leva”</b>, inteso come amplificazione del proprio tempo, delle proprie risorse e capacità, tanto che, _solo qualche settimana fa,_ ho approfondito <a href="https://giacomomaggiore.com/blog/10-leveraged-etf" target="_blank"> l’utilizzo di ETF leveraged</a> per migliorare il profilo di rischio/rendimento del portafoglio o per esporsi maggiormente a rischi “ricompensati” dal mercato, cercando di “demistificare” tutti luoghi comuni associati.
 
-Sono sempre stato attratto dal concetto di <b>“andare in leva”</b>, inteso come amplificazione delle proprie risorse o capacità, tanto che, _solo qualche settimana fa,_ ho investigato l’utilizzo di ETF leveraged per migliorare il profilo di rischio/rendimento del portafoglio o per esporsi maggiormente a rischi “ricompensati” dal mercato, cercando di “demistificare” tutte le paure e i luoghi comuni associati.
-
-Qualche mese dopo, _pur soddisfatto del mio MSCI World x2 Daily,_ mi ritrovo a studiare la leva finanziaria da un altro punto di vista: l’investimento a margine, cercando di adottare un approccio il più pratico e implementabile possibile. Per fare ciò ho modellato _(in maniera semplificata)_ le dinamiche di un conto a margine su Interactive Brokers, concentrandomi su ETF scambiati in USD e simulando diverse asset allocation tramite simulazioni Monte Carlo.
+Qualche mese dopo, _pur soddisfatto del mio MSCI World x2 Daily,_ mi ritrovo a studiare l'argomento da un altro punto di vista: <b>l’investimento a margine</b> _(margin trading)_, cercando di adottare un approccio il più pratico e implementabile possibile. Per fare ciò ho modellato _(con le dovute semplificazioni)_ le dinamiche di un conto a margine su Interactive Brokers _(broker di riferimento da quando sono residente in Svizzera),_ concentrandomi su ETF scambiati in USD e simulando diverse asset allocation tramite simulazioni Monte Carlo.
 
 Doverose premesse prima di iniziare:
 
-- dettagli tecnici nella repository GitHub del progetto
-- this is not financial advice.
+- dettagli tecnici nella <a href="https://github.com/giacomomaggiore/leverage-ib-api"  target="_blank"> repository GitHub del progetto</a>.
+- <b>this is not financial advice.</b>
+<br/>
+---
 
-Nello specifico, ho adottato fin dall’inizio un approccio il più possibile agnostico nei confronti del mercato e della teoria classica. Dato un set iniziale di una sessantina di ETF, rappresentanti quasi la totalità del mercato investibile per un investitore retail, ho effettuato un primo <b>clustering</b> _(hierarchical clustering basato sui daily total return degli ultimi 20 anni)_ e individuato i 5 ticker con maggiore AUM, _uno per ogni cluster,_ da cui sono partito per la costruzione del portafoglio.
+### <b>Un setup (quasi) unbiased </b>
 
-### <b>De-americanizziamoci</b>
+Nello specifico, ho adottato fin dall’inizio un approccio il più possibile "agnostico" nei confronti del mercato e della teoria classica.<br/> Dato un set iniziale di una sessantina di ETF, rappresentanti quasi la totalità del mercato investibile per un investitore retail, invece di scegliere arbitrariamente gli $n$ ETF, ho effettuato un primo <b>clustering</b> _(hierarchical clustering basato sui daily total return degli ultimi 20 anni)_ e individuato i 5 ticker con maggiore AUM, _uno per ogni cluster,_ da cui sono partito per la costruzione del portafoglio.
 
-Inizialmente, mi sono ritrovato con:
+Inizialmente, mi sono quindi ritrovato con:
 
 - <b>VOO</b> (Vanguard S&P 500, azioni USA)
 - <b>BND</b> (Vanguard Total Bond Market, obbligazioni investment grade USA)
@@ -27,27 +27,32 @@ Inizialmente, mi sono ritrovato con:
 - <b>GLD</b> (SPDR Gold Shares, oro)
 - <b>GSG</b> (iShares S&P GSCI Commodity-Indexed Trust, materie prime diversificate)
 
-Ho tuttavia arbitrariamente sostituito VOO con <b>VT</b> (Vanguard Total World Stock ETF, azioni globali), per ridurre l’esposizione US e rendere l’analisi più in linea con i miei principi di investimento.
+<div align = "center">
+![Corporate AI investments](/images/blog/clustering.png)
+</div>
+<small><i></i></small>
 
-A partire da questi 5 ETF, ho costruito, per ogni scenario, 4 portafogli diversi:
+
+Solo successivamente, ho arbitrariamente sostituito VOO con <b>VT</b> (Vanguard Total World Stock ETF, azioni globali), per ridurre l’esposizione US e rendere l’analisi più in linea con i miei principi di investimento.
+
+A partire da questi 5 ETF, ho costruito, _per ogni scenario,_ 4 portafogli diversi:
 
 - <b>min variance</b>, i cui pesi sono ottenuti risolvendo il seguente problema di ottimizzazione:
 $$
 \min_w \quad w^\top \Sigma w
 \qquad \text{s.t.} \quad \mathbf{1}^\top w = 1, \quad w \geq 0
 $$
-    
+   
 - <b>max Sharpe</b>, in cui i pesi sono ottenuti risolvendo il seguente problema di ottimizzazione:
 $$
 \max_w \quad \frac{w^\top \mu - r_f}{\sqrt{w^\top \Sigma w}}
 \qquad \text{s.t.} \quad \mathbf{1}^\top w = 1, \quad w \geq 0
 $$
-    
+   
 - <b>equal weight</b>, ogni ETF pesato al 20%
 - <b>market cap</b> (100% VT)
 
-*$w$ = vector of weights, $\mu$ = expected returns, $r_f$ = risk-free rate, $\Sigma$ = covariance matrix.*
-
+*$w$ = vettore dei pesi, $\mu$ = rendimenti attesi, $r_f$ = risk-free rate, $\Sigma$ = matrice di covarianza.*
 
 
 I portafogli sono stati successivamente valutati seguendo 5 strategie di leva e ribilanciamento diverse sullo stesso orizzonte di 10 anni tramite <b>3.000 simulazioni Monte Carlo</b> _(metodo bootstrap con estrazione a blocchi di 10 giorni):_
@@ -60,19 +65,29 @@ I portafogli sono stati successivamente valutati seguendo 5 strategie di leva e 
 
 _*Tutte le simulazioni sono state effettuate ignorando i costi di transazione e applicando il costo della leva offerto da IB, approssimabile con uno spread (+1%) sul tasso della Fed (EFFR)._
 
-Più nello specifico, siano $E$ _(equity, capitale iniziale)_, $D$ _(debt)_ e $G$ _(esposizione totale del portafoglio)._ In base ai rendimenti del portafoglio $r_t$, segue:
+---
+
+### <b>Un modello semplificato</b>
+
+
+Più nello specifico, siano $E$ _(equity, capitale iniziale)_, $D$ _(debt)_ e $G$ _(esposizione totale del portafoglio)._ In base ai rendimenti del portafoglio $r_t$, segue che:
 $$
 G_t = G_{t-1} (1 + r_t)
 $$
-Gli interessi sono pagati _(e si sommano quotidianamente al debito)_ come
+
+con interessi che si sommano quotidianamente al debito seguendo:
+
 $$
 D_{t+1} = D_t \left(1 + \left(\frac{EFFR_t}{100} + 0.01\right)\frac{d_t}{360}\right)
 $$
-e l’equity residua è:
+
+da cui si deriva l’equity residua:
 $$
 E_t = G_t - D_t
 $$
-da cui si ricava il rapporto di leva come
+
+e il conseguente rapporto di leva
+
 $$
 L_t = G_t / E_t
 $$
@@ -82,31 +97,66 @@ _*In questo caso: $L = 2$, $\delta = 0,25$._
 
 ---
 
-Breve premessa tecnica necessaria a parte, riporto, _prima di commentarli,_ i risultati rilevanti delle simulazioni:
+### <b>CAGR, volatilità e sequenze di ritorni sfortunate</b>
 
-La prima cosa che salta all’occhio è che la <b>reset frequency influenza</b> poco i risultati delle simulazioni: le strategie daily, weekly e monthly reset producono infatti metriche quasi identiche. Per l’equal-weight portfolio, _ad esempio,_ la volatilità annualizzata mediana è fissa al 15,3%, mentre il CAGR varia da un minimo di 27,66% a un 27,75%, differenza poco significativa dal punto di vista statistico.
+Breve premessa tecnica necessaria a parte, riporto, _prima di commentarli,_ i risultati rilevanti delle simulazioni _(il testo continua in seguito):_
 
-Secondariamente, come è ovvio pensare, la leva aumenta generalmente sia il rischio _(inteso come max drawdown e volatilità)_ che il ritorno:
+<b>Unleveraged</b>
+<div align = "center">
+![Corporate AI investments](/images/blog/unlevered.png)
+</div>
 
-- per il market cap, la volatilità mediana aumenta dal 14,4% plain fino al 28,8% nel caso leveraged, aumento che rispecchia linearmente il rapporto di leva
-- analogamente, _per l’equal weight,_ la volatilità raddoppia dal 7,6% al 15,3%.
+<b>Leveraged x2, daily reset</b>
+<div align = "center">
+![Corporate AI investments](/images/blog/daily.png)
+</div>
 
-Si noti tuttavia che la leva <B>NON migliora sempre il profilo di rischio/rendimento:</b> per il min-variance il CAGR diminuisce _(dal 4,9% al 4,09%),_ dato che i costi della leva sovrastano i benefici di una maggiore esposizione.
 
-A beneficiare maggiormente dell’utilizzo della leva, _al contrario,_ sono le <b>strategie growth oriented</b>, tenendo conto però che il reset della leva basato su soglie critiche _(utilizzando un +/- 25% come trigger)_ dimostra un minor rischio e un minor CAGR dato che, con l’ampia banda di tolleranza per la leva, in caso di bull market i gains riducono la leva e, di conseguenza, l’esposizione _(restringendo però la tolerance band, i risultati convergerebbero  al caso daily, weekly e monthly)._
+<b>Leveraged x2, weekly reset</b>
+<div align = "center">
+![Corporate AI investments](/images/blog/weekly.png)
+</div>
 
-Il risultato più interessante delle simulazioni emerge tuttavia paragonando il <b>market cap unleveraged</b> _(i.e. una delle asset allocation più popolari e implementate da investitori retail con alta tolleranza al rischio e orizzonte lungo)_ e l’<b>equal-weight portfolio in leva x2.</b>
 
-Entrambe le strategie hanno una volatilità abbastanza simile _(15,3% vs 14,4%),_ ma l’equal weight, oltre a dimostrare un <b>CAGR maggiore</b> _(27,7% vs 18,4%)_,_ mostra anche un rendimento nel caso peggiore _(1st-percentile)_ ben maggiore rispetto al market cap _(+339% vs +87%)._
+<b>Leveraged x2, monthly reset</b>
+<div align = "center">
+![Corporate AI investments](/images/blog/monthly.png)
+</div>
 
-Allo stesso modo, il max drawdown gioca a favore del 2x equal weight: il caso peggiore tra tutte le simulazioni è meno violento e il valore mediano è circa -17,1% per l’equal weight, comparato con il -20% del market cap _(anche se l’esatto worst drawdown dipende dalla strategia di reset della leva)._
 
-Resta comunque da ricordare che, almeno in queste situazioni, il portafoglio <b>equal weight NON rappresenta un portafoglio di mercato</b> in cui tutti gli asset hanno lo stesso peso, bensì un portafoglio che pesa in maniera uguale 5 <b>asset diversificati</b>, ottenuti tramite il clustering iniziale basato sugli historical returns.
+<b>Leveraged x2, tolerance band reset</b>
+<div align = "center">
+![Corporate AI investments](/images/blog/band.png)
+</div>
+
+La prima cosa che salta all’occhio è che la <b>reset frequency influenza poco</b> i risultati: le strategie daily, weekly e monthly reset producono infatti metriche quasi identiche. Per l’equal-weight portfolio, _ad esempio,_ la volatilità annualizzata mediana è fissa al 15,3%, mentre il CAGR varia da un minimo di 27.66% a un 27.75%, differenza poco significativa dal punto di vista statistico.
+
+Secondariamente, _come è ovvio pensare,_ la leva aumenta generalmente sia il rischio _(inteso come max drawdown e volatilità)_ che il ritorno:
+
+- per il market cap, la volatilità mediana aumenta dal 14.4% plain fino al 28.8% nel caso leveraged (aumento che rispecchia linearmente il rapporto di leva)
+- analogamente, _per l’equal weight,_ la volatilità raddoppia dal 7.6% al 15.3%.
+
+Si noti tuttavia che la leva <b>NON migliora sempre il profilo di rischio/rendimento:</b> per il min-variance il CAGR diminuisce _(dal 4.9% al 4.09%),_ dato che i costi della leva sovrastano i benefici di una maggiore esposizione.
+
+A beneficiare maggiormente dell’utilizzo della leva, _al contrario,_ sono le <b>strategie growth oriented</b>, tenendo conto però che il reset della leva basato su soglie critiche _(utilizzando un +/- 25% come trigger)_ dimostra un minor rischio e un minor CAGR dato che, con l’ampia banda di tolleranza per la leva, in caso di bull market i gains riducono  l’esposizione totale _(restringendo però la tolerance band, i risultati convergerebbero  al caso daily, weekly e monthly)._
+
+Il risultato più interessante delle simulazioni emerge tuttavia paragonando il <b>market cap unleveraged</b> _(i.e. una delle asset allocation più popolari e implementate da investitori retail con alta tolleranza al rischio e orizzonte lungo)_ e l’<b>equal-weight in leva x2.</b>
+
+Entrambe le strategie hanno una volatilità abbastanza simile _(15.3% vs 14.4%),_ ma l’equal weight, oltre ad avere un <b>CAGR maggiore</b> _(27.7% vs 18.4%)_, mostra anche un rendimento nel caso peggiore _(1st-percentile)_ ben maggiore rispetto al market cap _(+339% vs +87%),_ a dimostrazione del fatto che un portafoglio diversificato, _seppure in leva,_ regge meglio seguenze di ritorni disastrose rispetto a un _"semplice"_ market-cap.
+
+Allo stesso modo, il max drawdown gioca a favore del 2x equal weight: il caso peggiore tra tutte le simulazioni è meno violento e il valore mediano è circa -17% per l’equal weight, rispetto a un -20% per il market cap.
+
+Resta comunque da ricordare che, _almeno in queste situazioni,_ il portafoglio <b>equal weight NON rappresenta un portafoglio di mercato</b> in cui tutti gli asset hanno lo stesso peso, bensì un portafoglio che pesa in maniera uguale 5 <b>asset diversificati</b>, ottenuti tramite il clustering iniziale basato sugli historical returns.
+
+
+<div align = "center">
+![Corporate AI investments](/images/blog/daily_montecarlo.png)
+</div>
 
 ---
 
-<b>Stocks for the long run...? NO</b>
+### <b>Stocks for the long run...? No!</b>
 
-In generale quindi, l’equal weight x2 presenta metriche tendenzialmente migliori rispetto a un _“banale 100% azioni”_: oltre a un <b>maggiore CAGR</b> e a una <b>minore volatilità</b> _(che dovrebbe interessare poco a un investitore long term),_ una delle conclusioni più rilevanti rimane il maggiore rendimento nei casi peggiori _(q1),_ a dimostrazione che,  _in presenza di una sequenza di ritorni sfigata,_ un portafoglio maggiormente diversificato, _anche in presenza di leva,_ regge meglio di un market cap gli eventi disastrosi.
+L’equal weight x2 presenta quindi metriche tendenzialmente migliori rispetto a un _“banale 100% azioni”_: oltre a un <b>maggiore CAGR</b> e a una <b>minore volatilità</b> _(che dovrebbe interessare poco a un investitore long term),_ una delle conclusioni più rilevanti rimane il maggiore rendimento nei casi peggiori _(q1),_ a dimostrazione che,  _in presenza di una sequenza di ritorni sfigata,_ un portafoglio maggiormente diversificato, _anche in presenza di leva,_ regge meglio di un market cap gli eventi disastrosi.
 
 In sintesi, lungi da me concludere che esista un portafoglio Pareto-superior implementabile da tutti, bensì che, prima di concludere _"VT (VWCE) & chill"_ e condannare la leva a priori, avrebbe senso spingersi un po’ più in là!
