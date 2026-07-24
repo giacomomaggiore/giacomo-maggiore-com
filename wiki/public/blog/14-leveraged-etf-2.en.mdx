@@ -1,0 +1,169 @@
+---
+title: "Should you go leveraged? #2 "
+publishedAt: '2026-07-19'
+summary: ''
+---
+
+I have always been attracted to the concept of <b>"using leverage"</b>, meaning amplifying one's time, resources, and abilities. In fact, _only a few weeks ago,_ I explored <a href="https://giacomomaggiore.com/blog/10-leveraged-etf" target="_blank"> the use of leveraged ETFs</a> to improve a portfolio's risk/return profile and gain more exposure to risks "rewarded" by the market, trying to "demystify" all the common beliefs around them.
+
+Now (July 2026), _while still happy with my MSCI World x2 Daily,_ I am looking at the topic from another perspective: <b>margin investing</b> _(margin trading)_, trying to use an approach that is as practical and implementable as possible. To do this, I modelled _(with some necessary simplifications)_ the dynamics of a margin account on Interactive Brokers _(my reference platform since moving to Switzerland),_ focusing on ETFs traded in USD and testing different asset allocations through Monte Carlo simulations.
+
+A few necessary notes before starting:
+
+- technical details are in the <a href="https://github.com/giacomomaggiore/leverage-ib-api"  target="_blank"> project's GitHub repository</a>.
+- <b>this is not financial advice.</b>
+<br/>
+---
+
+### <b>A (mostly) rule-based setup </b>
+
+From the beginning, I adopted an approach that was as "agnostic" as possible toward the market and classical portfolio-theory.<br/> From an initial universe of 76 ETFs, 39 of which had at least 20 years of direct history or history extended through proxies, instead of arbitrarily choosing the $n$ ETFs, I first performed <b>clustering</b> _(hierarchical clustering based on daily total returns)_ and identified the ticker with the highest AUM in each of the 5 clusters, which I used as the starting point for building the portfolio.
+
+
+Initially, I ended up with:
+
+- <b>VOO</b> (Vanguard S&P 500, US equities)
+- <b>BND</b> (Vanguard Total Bond Market, US investment-grade bonds)
+- <b>SGOV</b> (iShares 0-3 Month Treasury Bond, very short-term government bonds)
+- <b>GLD</b> (SPDR Gold Shares, gold)
+- <b>GSG</b> (iShares S&P GSCI Commodity-Indexed Trust, diversified commodities)
+
+<div align = "center">
+![ETF clustering](/images/blog/clustering.png)
+</div>
+
+Only later, I arbitrarily replaced VOO with <b>VT</b> (Vanguard Total World Stock ETF, global equities), to reduce US exposure _(especially now with the current <s>government</s> geopolitical situation)_ and make the analysis more in line with my investment principles.
+
+Starting from these 5 ETFs, I built, _for each scenario,_ 4 different portfolios:
+
+- <b>min variance</b>, whose weights are obtained by solving the following optimisation problem:
+$$
+\min_w \quad w^\top \Sigma w
+\qquad \text{s.t.} \quad \mathbf{1}^\top w = 1, \quad 0.10 \leq w_i \leq 0.40
+$$
+   
+- <b>max Sharpe</b>, whose weights are obtained by solving the following optimisation problem:
+$$
+\max_w \quad \frac{w^\top \mu - r_f}{\sqrt{w^\top \Sigma w}}
+\qquad \text{s.t.} \quad \mathbf{1}^\top w = 1, \quad 0.10 \leq w_i \leq 0.40
+$$
+   
+- <b>equal weight</b>, each ETF weighted at 20%
+- <b>market cap</b> (100% VT)
+
+*$w$ = weight vector, $\mu$ = expected returns, $r_f$ = risk-free rate, $\Sigma$ = covariance matrix.*
+
+
+The portfolios were then evaluated using the following 5 leverage and rebalancing configurations over the same 10-year horizon through <b>2,000 Monte Carlo simulations</b> _(bootstrap method with 60-day moving block sampling)_. 
+- <b>unleveraged</b>, with monthly weight reallocation and monthly re-optimisation for min-variance and max-Sharpe
+- <b>leveraged x2 with daily reset</b>, resetting the leverage ratio to the target every day
+- <b>leveraged x2 with weekly reset</b>
+- <b>leveraged x2 with monthly reset</b>
+- <b>leveraged 2x</b> resetting to the target leverage value when it leaves the range (1.5-2.5)
+
+_<small>All simulations were run ignoring transaction costs, bid-ask spreads, taxes, and slippage. <br/>The cost of leverage is approximated as EFFR +1% (a proxy for IB margin). <br/>Weights are optimised over a 3-year rolling window and with an OAS covariance matrix.<br/>ETF returns and EFFR were sampled together, in order to preserve the observed relationship between markets and rates.</small>_
+
+---
+
+### <b>A simplified model</b>
+
+
+More specifically, let $E$ _(equity, the net value of the account)_, $D$ _(debt)_, and $G$ _(total portfolio exposure)_ be defined, with $E_0$ equal to the initial capital. Based on portfolio returns $r_t$, we have:
+$$
+G_t = G_{t-1} (1 + r_t)
+$$
+
+with interest added to the debt every day as follows:
+
+$$
+D_t = D_{t-1}\left(1 + \left(\frac{EFFR_t}{100} + 0.01\right)\frac{d_t}{360}\right)
+$$
+
+where $d_t$ is the number of calendar days since the previous observation.
+
+From this, we obtain the remaining equity:
+$$
+E_t = G_t - D_t
+$$
+
+and the resulting leverage ratio:
+
+$$
+L_t = G_t / E_t
+$$
+which is reset _(by buying or selling assets to increase/decrease debt)_ to the target value $L^*$ periodically or _"systematically"_ when it leaves the range $(L^*(1 - \delta), L^*(1 + \delta))$.
+
+_*In this case: $L^* = 2$, $\delta = 0,25$._
+
+---
+
+### <b>CAGR, volatility, and unlucky return sequences</b>
+
+With that necessary technical premise out of the way, here are, _before commenting on them,_ the relevant results from the simulations _(the discussion follows below):_
+
+<b>Aggregate results</b>
+<div align = "center">
+![Monte Carlo simulation results](/images/blog/result-montecarlo.png)
+</div>
+
+
+
+The first thing that stands out is that, for diversified portfolios, the <b>reset frequency has little effect</b> on the results: daily, weekly, and monthly reset strategies produce very similar metrics. For the equal-weight portfolio, _for example,_ median annualised volatility stays around 18%, while median CAGR remains at 6.9%: economically minor differences.
+
+Second, _as one would expect,_ leverage generally increases both risk _(meaning max drawdown and volatility)_ and return:
+
+- for market cap, median volatility rises from 20% unleveraged to almost 40% in the leveraged daily case, an increase proportional to the leverage ratio;
+- similarly, _for equal weight,_ volatility rises from 8.8% to 17.7% in the leveraged daily case.
+
+However, note that leverage does <b>NOT automatically improve the risk/return profile:</b> for min-variance, median CAGR rises from 3.8% to 4.6%, but median volatility and max drawdown almost double, from 4.7% to 9.4% and from -10.6% to -21.9%, respectively.
+
+On the other hand, the portfolios that benefit most from leverage are those with higher unleveraged CAGR (<b>growth-oriented</b>), but the benefit depends on the return path and the cost of financing. 
+
+The threshold-based reset _(using +/- 25% as a trigger)_ reduces exposure only when losses push leverage above 2.5x and increases exposure again when leverage falls below 1.5x: in this simulation, it reduces median volatility, while CAGR remains close to the calendar-based cases. By narrowing the tolerance band, the results would gradually converge toward the daily case.
+
+<div align = "center">
+![Comparison of paths with median terminal value](/images/blog/monthly-montecarlo-median.png)
+</div>
+
+<div align = "center">
+![Comparison of paths at the first percentile of terminal value](/images/blog/monthly-montecarlo-q01.png)
+</div>
+
+However, the most interesting result from the simulations comes from comparing the <b>unleveraged market cap</b> _(100% VT, one of the most common asset allocations among retail investors with high risk tolerance and a long horizon)_ with the <b>equal weight</b> and <b>max-Sharpe</b> strategies leveraged x2 with monthly reset.
+
+Both leveraged strategies show <b>lower median annualised volatility</b> than unleveraged market cap: 17.9% for equal weight x2 and 16.3% for max-Sharpe x2, compared with 20% for market cap. 
+
+However, equal weight x2 has a <b>lower median CAGR</b> _(6.9% versus 7.9%)_ and a worse CAGR at the first percentile _(-8.3% versus -6.1%)._ <br/>Max-Sharpe x2, _on the other hand,_ <b>"holds up better"</b> against unleveraged market cap, showing a median CAGR of 8.0% and a CAGR at the first percentile of -5.5%. 
+
+Consistently, the median terminal values for equal weight x2, max-Sharpe x2, and full VT are, _respectively,_ 196k, 216k, and 215k; at the first percentile, they are 42k, 57k, and 53k _(always assuming capital is reinvested for 10 years with monthly rebalancing)._
+
+<div align = "center">
+![Comparison of paths at the first percentile of terminal value](/images/blog/vt-vs-x2.png)
+</div>
+
+<div align = "center">
+![Comparison of paths at the first percentile of terminal value](/images/blog/vt-vs-x2-q01.png)
+</div>
+
+
+The periods of underperformance are also comparable: equal weight x2 has a median max drawdown of -40% and -75% at the first percentile, compared with -40% and -73% for unleveraged market cap. Max-Sharpe x2 remains more favourable from this point of view, with -34% median and -63% at the first percentile.
+
+Still, note that the advantage of max-Sharpe x2 <b>does not come from higher equity exposure</b>: the monthly targets assign VT an average weight of 18%, compared with 20% for equal weight, and reduce investment in commodities to 12%, moderately increasing BND (24%), GLD (22%), and SGOV (24%). This offers a more favourable risk/return ratio, especially relevant with leverage because of the effect of <b>volatility drag</b>.
+
+However, the use of the names equal weight and max-Sharpe should <b>be understood within this project</b>: the former does NOT generally represent a market portfolio where every asset has the same weight, but rather a portfolio that equally weights the 5 diversified assets obtained through the initial clustering. The weights of the latter depend heavily on expected returns estimated over a rolling window and on the covariance matrix used.
+
+
+
+
+
+---
+
+### <b>Stocks for the long run...? No!</b>
+
+In summary, equal weight x2 has different exposure from a _"simple 100% equity portfolio"_ (lower volatility, lower CAGR). However, using leverage <b>does not guarantee </b>higher returns and does not necessarily make a portfolio "superior" _(an adjective to be used carefully!)._
+
+Max-Sharpe x2, _on the other hand,_ is a more interesting result than a classic VT, offering, _at least in these simulations,_ a more favourable risk/return ratio <b>despite using debt.</b>
+
+The purpose of this blog remains purely exploratory and theoretical. I am far from concluding that there is a Pareto-superior portfolio that everyone can implement. Instead, before settling on _"VT (VWCE) & chill"_ and rejecting leverage a priori, it may make sense to go a little further, with realistic expectations about costs, drawdowns, and the limits of any Monte Carlo simulation.
+
+Cheers!
