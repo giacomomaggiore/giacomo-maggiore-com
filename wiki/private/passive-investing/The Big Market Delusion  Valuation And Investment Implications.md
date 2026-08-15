@@ -5,7 +5,6 @@ source: wiki/source/papers/The Big Market Delusion- Valuation and Investment Imp
 title: 'The Big Market Delusion  Valuation And Investment Implications '
 topic: market-valuation
 ---
-
 # The Big Market Delusion: Valuation and Investment Implications
 
 ## Abstract

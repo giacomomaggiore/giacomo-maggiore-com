@@ -4,7 +4,6 @@ source: wiki/source/papers/prior_selection_for_bvar.pdf
 title: Prior Selection For Bvar
 topic: prior_selection
 ---
-
 # PRIOR SELECTION FOR VECTOR AUTOREGRESSIONS
 
 Abstract—Vector autoregressions (VARs) are flexible time series models that can capture complex dynamic interrelationships among macroeconomic variables. However, their dense parameterization leads to unstable inference and inaccurate out-of-sample forecasts, particularly for models with many variables. A solution to this problem is to use informative priors in order to shrink the richly parameterized unrestricted model toward a parsimonious naive benchmark, and thus reduce estimation uncertainty. This paper studies the optimal choice of the informativeness of these priors, which we treat as additional parameters, in the spirit of hierarchical modeling. This approach, theoretically grounded and easy to implement, greatly reduces the number and importance of subjective choices in the setting of the prior. Moreover, it performs very well in terms of both out-of-sample forecasting—as well as factor models—and accuracy in the estimation of impulse response functions.

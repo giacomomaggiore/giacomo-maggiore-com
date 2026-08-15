@@ -277,48 +277,7 @@ Taken together, these results suggest that the virtue of complexity is a structu
 
 We present an empirical resurrection of Modern Portfolio Theory (MPT) when the number of assets is large. We show in a variety of settings that the performance of MPT increases with the number of assets once enough assets are included. We analyze the role of complexity, shrinkage, constraints, and the length of the estimation window. We show that performance gains come through implicit bias in the covariance matrix and not mean estimates. These results are consistent with theory showing that the virtue of complexity exists in high dimensional portfolio optimization.
 
-## References
 
-Andersen, Torben G, Tim Bollerslev, Francis X Diebold, and Ginger Wu, “Realized Beta: Persistence and Predictability,” Advances in Econometrics, 2006, pp. 1–39.  
-Andreou, Elena and Eric Ghysels, “Structural breaks in financial time series,” Handbook of financial time series, 2009, pp. 839–870.  
-Bai, Zhidong and Wang Zhou, “Large sample covariance matrices without independence structures in columns,” Statistica Sinica, 2008, pp. 425–442.  
-Barndorff-Nielsen, Ole E and Neil Shephard, “Econometric analysis of realized covariation: High frequency based covariance, regression, and correlation in financial economics,” Econometrica, 2004, 72 (3), 885–925.  
-Bauwens, Luc, S´ebastien Laurent, and Jeroen VK Rombouts, “Multivariate GARCH models: a survey,” Journal of applied econometrics, 2006, 21 (1), 79–109.  
-Bollerslev, Tim, Andrew J Patton, and Rogier Quaedvlieg, “Modeling and forecasting (un) reliable realized covariances for more reliable financial decisions,” Journal of Econometrics, 2018, 207 (1), 71–91.  
-Brandt, Michael W, “Portfolio choice problems,” in “Handbook of financial econometrics: Tools and techniques,” Elsevier, 2010, pp. 269–336.  
-Britten-Jones, Mark, “The Sampling Error in Estimates of Mean-Variance Efficient Portfolio Weights,” Journal of Finance, 1999, 54 (2), 655–670.  
-Chen, Zhimin, Bryan Kelly, and Semyon Malamud, “Limits To (Machine) Learning,” arXiv preprint arXiv:2512.12735, 2025.  
-Chernov, Mikhail, Bryan T Kelly, Semyon Malamud, and Johannes Schwab, “A test of the efficiency of a given portfolio in high dimensions,” Technical Report, National Bureau of Economic Research 2025.  
-Chopra, Vijay K, Chris R Hensel, and Andrew L Turner, “Massaging mean-variance inputs: returns from alternative global investment strategies in the 1980s,” Management Science, 1993, 39 (7), 845–855.  
-Cohen, Kalman J and Jerry A Pogue, “An empirical evaluation of alternative portfolio selection models,” The Journal of Business, 1967, 40 (2), 166–193.  
-DeMiguel, Victor, Lorenzo Garlappi, and Raman Uppal, “Optimal versus naive diversification: How inefficient is the 1/N portfolio strategy?,” The review of Financial studies, 2009, 22 (5), 1915–1953.  
-, , Francisco J Nogales, and Raman Uppal, “A generalized approach to portfolio optimization: Improving performance by constraining portfolio norms,” Management science, 2009, 55 (5), 798–812.  
-Didisheim, Antoine, Shikun Barry Ke, Bryan T Kelly, and Semyon Malamud, “APT or AIPT: The Surprising Dominance of Large Factor Models,” Technical Report, National Bureau of Economic Research 2024.  
-Elton, Edwin J and Martin J Gruber, “Estimating the dependence structure of share prices–implications for portfolio selection,” The Journal of Finance, 1973, 28 (5), 1203–1232.  
-Engle, Robert F, Olivier Ledoit, and Michael Wolf, “Large dynamic covariance matrices,” Journal of Business & Economic Statistics, 2019, 37 (2), 363–375.  
-Garlappi, Lorenzo, Raman Uppal, and Tan Wang, “Portfolio selection with parameter and model uncertainty: A multi-prior approach,” The Review of Financial Studies, 2007, 20 (1), 41–81.  
-Hautsch, Nikolaus, Lada M Kyj, and Roel CA Oomen, “A blocking and regularization approach to high-dimensional realized covariance estimation,” Journal of Applied Econometrics, 2012, 27 (4), 625–645.  
-Jagannathan, Ravi and Tongshu Ma, “Risk reduction in large portfolios: Why imposing the wrong constraints helps,” The journal of finance, 2003, 58 (4), 1651–1683.  
-Jensen, Theis Ingerslev, Bryan Kelly, and Lasse Heje Pedersen, “Is there a replication crisis in finance?,” The Journal of Finance, 2023, 78 (5), 2465–2518.  
-Jobson, J David and Bob Korkie, “Estimation for Markowitz efficient portfolios,” Journal of the American Statistical Association, 1980, 75 (371), 544–554.  
-Jorion, Philippe, “Bayes-Stein estimation for portfolio analysis,” Journal of Financial and Quantitative analysis, 1986, 21 (3), 279–292.  
-, “Portfolio optimization with tracking-error constraints,” Financial Analysts Journal, 2003, 59 (5), 70–82.  
-Kan, Raymond and Guofu Zhou, “Optimal portfolio choice with parameter uncertainty,” Journal of Financial and Quantitative Analysis, 2007, 42 (3), 621–656.  
-Kelly, Bryan, Semyon Malamud, and Kangying Zhou, “The virtue of complexity in return prediction,” The Journal of Finance, 2024, 79 (1), 459–503.  
-, , and , “The virtue of complexity in return prediction,” The Journal of Finance, 2024, 79 (1), 459–503.  
-Kelly, Bryan T and Semyon Malamud, “Understanding The Virtue of Complexity,” Available at SSRN 5346842, 2025.  
-Knowles, Antti and Jun Yin, “Anisotropic local laws for random matrices,” Probability Theory and Related Fields, 2017, 169 (1), 257–352.  
-Ledoit, O and M Wolf, “Honey, I shrunk the sample covariance matrix,” 2004, J. Portf. Management, 31, 110.  
-Ledoit, Olivier and Michael Wolf, “Honey, I shrunk the sample covariance matrix,” UPF economics and business working paper, 2003, (691).  
-and , “A well-conditioned estimator for large-dimensional covariance matrices,” Journal of multivariate analysis, 2004, 88 (2), 365–411.  
-and , “Nonlinear shrinkage of the covariance matrix for portfolio selection: Markowitz meets Goldilocks,” The Review of Financial Studies, 2017, 30 (12), 4349–4388.  
-Markowitz, Harry, “Portfolio Selection,” The Journal of Finance, 1952, 7 (1), 77–91.  
-Michaud, Richard O, “The Markowitz optimization enigma: Is ‘optimized’ optimal?,” Financial analysts journal, 1989, 45 (1), 31–42.  
-and Robert Michaud, “Estimation error and portfolio optimization: a resampling solution,” Available at SSRN 2658657, 2007.  
-P´astor, L’uboˇs, “Portfolio selection and asset pricing models,” The Journal of Finance, 2000, 55 (1), 179–223.  
-and Robert F Stambaugh, “Comparing asset pricing models: an investment perspective,” Journal of Financial Economics, 2000, 56 (3), 335–381.  
-Pedersen, Lasse Heje, Abhilash Babu, and Ari Levine, “Enhanced portfolio optimization,” Financial Analysts Journal, 2021, 77 (2), 124–151.  
-St˘aric˘a, C˘at˘alin and Clive Granger, “Nonstationarities in stock returns,” Review of economics and statistics, 2005, 87 (3), 503–522.
 
 ## Internet Appendix
 
