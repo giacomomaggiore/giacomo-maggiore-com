@@ -17,7 +17,7 @@ export default function Page() {
     I previously worked as a Research Assistant at <a href="https://kof.ethz.ch/en/" target="_blank"><u><i>KOF Swiss Economic Institute</i></u></a>, now as a working student in the <b>financial risk </b> team at <a href="https://www.zurich.com/" target="_blank"><u><i>Zurich Insurance Group.</i></u></a>
     
     <br></br><br></br>
-    Deeply interested in how <b>numbers model money</b>: economic dynamics, time-series analysis, and both quantitative and personal finance.
+    Deeply interested in how <b><a href="https://github.com/giacomomaggiore">numbers model money</a></b>: economic dynamics, time-series analysis, and both quantitative and personal finance.
     <br></br><br></br>
 
     Running, cycling and exploring unconventional travel destinations the rest of the time.
