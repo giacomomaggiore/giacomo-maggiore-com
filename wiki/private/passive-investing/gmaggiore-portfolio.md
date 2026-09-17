@@ -59,6 +59,16 @@ Therefore, some alternatives:
 - RSSB => higher ter but also higher aum compared to NTSG (510 vs 94 millions)
 - Ideally => we want a combination of both but... for the moment I think that I'll stick to NTSG only
 
+
+---
+
+ok maybe i changed by mind, i don't mind the idea of having a higher stock allocation:
+so the idea is to keep the 35% fixed to:
+- 20% trend (via DBMF)
+- 10% commodities trend (via COM)
+- 4% Tail risk (via TAIL)
+and then using the remaining 65% to allocate stock and bonds => eventually: i can also go leveraged with that part. 
+
 Resources (that i have actually used!)
 https://theitalianleathersofa.com/tail-risk-a-quick-guide/
 https://theitalianleathersofa.com/model-portfolio-enhancements/
