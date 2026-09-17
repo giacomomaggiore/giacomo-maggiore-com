@@ -4,9 +4,9 @@ publishedAt: '2026-09-17'
 summary: ''
 ---
 
-The following notes come from the course <b><a href="" target="_blank">Time Series Analysis</a></b>, taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://www.linkedin.com/in/fadoua-balabdaoui-9863794/" target="_blank"> Professor Fadoua Balabdaou</a>.
+The following notes come from the course <b><a href="" target="_blank">Time Series Analysis</a></b>, taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://www.linkedin.com/in/fadoua-balabdaoui-9863794/" target="_blank">Professor Fadoua Balabdaoui</a>.
 
-Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"> me</a> for any comment, clarification or mistake.
+Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">me</a> with any comments, clarifications, or corrections.
 
 ---
 
@@ -17,45 +17,45 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 A time series is a <b>stochastic process </b> indexed by time $t \in T \subseteq \R$.
 
 Examples _(they are all continuous!):_
-- $T = [0,1]$: Brownian Bridge from $(0,0)$ to $(1,0)$, where the pair notation denominates $(\text{time}, \text{value}) = (t, X_t)$
-- $T = [0, + \infty]$: Brownian Motion starting at $t = (0,0)$
-- $T = \R$: two sided Brownian Motion
-- $T = \N_0$, or $T = \Z$: Discrete Random Walk.
+- $T = [0,1]$: Brownian bridge from $(0,0)$ to $(1,0)$, where the pair notation denotes $(\text{time}, \text{value}) = (t, X_t)$
+- $T = [0, + \infty]$: Brownian motion starting at $(0,0)$
+- $T = \R$: two-sided Brownian motion
+- $T = \N_0$, or $T = \Z$: discrete random walk.
 
-We use the notation $\{X\}_{t \in T}$ to denote a random variable and the notation $\{x\}_{t \in T}$ to denote realizations of that variable.
+We use the notation $\{X_t\}_{t \in T}$ to denote a random variable and the notation $\{x_t\}_{t \in T}$ to denote realizations of that variable.
 
-A <b>time series model</b> is tiher the specification of:
--  all joint distributions $f(\{X\}_{t \in T})$ (i.e. the model provides $\Pr (X_{t1} \le x_{t1} ... X_{tk} \le x_{tk})$ for all $k \in \N$, $t_1...t_k$ and $x_1...x_k \in \R$
-- all their means and covariances $(\mathbb{E}(X_t), \text{Cov}(X_t, X_p)) \forall t, p \in T$ 
+A <b>time series model</b> is either the specification of:
+- all joint distributions $f(\{X_t\}_{t \in T})$ (i.e., the model provides $\Pr(X_{t_1} \le x_{t_1}, \ldots, X_{t_k} \le x_{t_k})$ for all $k \in \N$, $t_1, \ldots, t_k$, and $x_1, \ldots, x_k \in \R$)
+- all their means and covariances $(\mathbb{E}(X_t), \text{Cov}(X_t, X_p))$ for all $t, p \in T$
 
 <br/>
 <b>White noise</b>
 
-The i.i.d. noise ${X}_{t \in T}$ is a sequence of independent and identically distributed random variables such that $\mathbb{E}(X_t) = 0 \forall t$. <br/>In general, we also assume that $\mathbb{E}[(X_t2)^2] = \text{Var}[X_t] < \infty \forall t$. _Note that in this case $\mathbb{E}[(X_t2)^2]$ does NOT depend on $t$._
+The i.i.d. noise $\{X_t\}_{t \in T}$ is a sequence of independent and identically distributed random variables such that $\mathbb{E}(X_t) = 0$ for all $t$. <br/>In general, we also assume that $\mathbb{E}[X_t^2] = \text{Var}(X_t) < \infty$ for all $t$. _Note that in this case $\mathbb{E}[X_t^2]$ does not depend on $t$._
 
 <b>Rademacher Process</b>
 
-Consider ${X}_{t \in T}$ such that $\Pr(X_t = - 1) = \Pr(X_t = 1) = 1/2 \forall t$.
+Consider $\{X_t\}_{t \in T}$ such that $\Pr(X_t = -1) = \Pr(X_t = 1) = 1/2$ for all $t$.
 
-If ${B_t}_t \sim_{iid} \text{Bernoulli}(1/2)$, then:
-- ${X_t}_t = 2 {B_t}_t - 1$
-- $\text{Var}(X_t) = 4 \text{Var}(B_t) = 1$ _(note that $X_t^2 = 1$ as $\mathbb{E}(X_t)^2 0 \text{Var}(X_t) = 1$)_ 
+If $\{B_t\}_t \sim_{\mathrm{iid}} \text{Bernoulli}(1/2)$, then:
+- $\{X_t\}_t = 2\{B_t\}_t - 1$
+- $\text{Var}(X_t) = 4\text{Var}(B_t) = 1$ _(note that $X_t^2 = 1$ and $\mathbb{E}(X_t) = 0$)_
 
 <b>White noise</b>
 
-${X_t}_t$ is a sequence of centered and uncorrelated random variables. More specifically, $\mathbb{E}(X_t) = 0$, $\mathbb{E}(X_t^2) < \infty$ and $\text{Cov})(X_t, X_s) = 0 \forall t \neq s$.
+${X_t}_t$ is a sequence of centered and uncorrelated random variables. More specifically, $\mathbb{E}(X_t) = 0$, $\mathbb{E}(X_t^2) < \infty$, and $\text{Cov}(X_t, X_s) = 0$ for all $t \neq s$.
 
-- Note that i.i.i. noise such that $\mathbb{E}(X_t^2) < \infty$ is also a white noise.
-- The term "white" is used by analogy to white light. Indeed, a white nnoise with costance variance $v^2$ admits a flat spectral density given by $f(\lambda) = v^2 / 2 \pi$, with $\lambda \in [-\pi, \pi] _(this means that all time-series frequencies are present)_.
+- Note that i.i.d. noise such that $\mathbb{E}(X_t^2) < \infty$ is also white noise.
+- The term "white" is used by analogy with white light. Indeed, white noise with constant variance $v^2$ has a flat spectral density given by $f(\lambda) = v^2 / 2\pi$, with $\lambda \in [-\pi, \pi]$ (this means that all time-series frequencies are present).
 
 <b>Random walk</b>
 
-Let ${X_t}_t$ be a i.i.d. noise such that $\mathbb{E}(X_t^2) < \infty  \forall t \in \N$.
+Let ${X_t}_t$ be i.i.d. noise such that $\mathbb{E}(X_t^2) < \infty$ for all $t \in \N$.
 
-${S_t}_{t \in \N_0}$ is a random walkf if $S_0 = 0$ and $S_t = \sum_i^t X_i \forall t \ge 1$.
+${S_t}_{t \in \N_0}$ is a random walk if $S_0 = 0$ and $S_t = \sum_{i=1}^t X_i$ for all $t \ge 1$.
 
 
-Id ${X_t}_{t \in \N_0}$ is a Rademacher process, then ${S_t}_{t \in \N_0}$ is called <b>symmetric random walk</b> with $\mathbb{E}(S_t) =\sum_i^t \mathbb{E}(X_i) = 0$.
+If ${X_t}_{t \in \N_0}$ is a Rademacher process, then ${S_t}_{t \in \N_0}$ is called a <b>symmetric random walk</b>, with $\mathbb{E}(S_t) = \sum_{i=1}^t \mathbb{E}(X_i) = 0$.
 
 ---
 
@@ -63,29 +63,29 @@ Id ${X_t}_{t \in \N_0}$ is a Rademacher process, then ${S_t}_{t \in \N_0}$ is ca
 
 <b>Time Series with trend</b>
 
-Let ${Y_t}_t$ be a zero-mean time series and ${m_t}_t$ be a deterministic (non-random) sequence. \br Consider $X_t = Y_t + x_t, \forall t \in T$.
+Let ${Y_t}_t$ be a zero-mean time series and ${m_t}_t$ be a deterministic (non-random) sequence. <br/>Consider $X_t = Y_t + m_t$ for all $t \in T$.
 
-Them $\mathbb{E}[X_t] = m_T$ is called the <b>trend</b> of ${X_t}_t$.
+Then $\mathbb{E}[X_t] = m_t$ is called the <b>trend</b> of ${X_t}_t$.
 
 <b>Time Series with seasonality</b>
 
-Given a zero-mean time series $\{Y_t\}_t$ and $t \to p_t$ such that $p_t$ is periodic function with period $d$ known (i.e. $p_(t + d) = p_t$).
+Given a zero-mean time series $\{Y_t\}_t$ and a function $t \mapsto p_t$ such that $p_t$ is periodic with known period $d$ (i.e., $p_{t+d} = p_t$).
 
-Consider the time series $X_t = Y_t + p_t \forall t \in T$. Then ${p_t}_t$ is called the <b>seasonal component</b> of ${Y_t}_t$.
+Consider the time series $X_t = Y_t + p_t$ for all $t \in T$. Then ${p_t}_t$ is called the <b>seasonal component</b> of ${Y_t}_t$.
 
 For example, we could have the seasonal component in the following forms:
 
 $$
-p_t = a_0 + \sum_i^k (a_j \cos(\frac{2 \pi \alpha_j t}{d}) + b_j \sin(\frac{2 \pi \beta_j t }{d}))
+p_t = a_0 + \sum_{j=1}^k \left(a_j \cos\left(\frac{2 \pi \alpha_j t}{d}\right) + b_j \sin\left(\frac{2 \pi \beta_j t}{d}\right)\right)
 $$
 
-with known integers $k \ge 1, \alpha_j, \beta_j \ge > 0 $ and unkwown $a_0, a_j, b_j$, \forall 1 \le j \le k$.
+with known integers $k \ge 1$, $\alpha_j, \beta_j > 0$, and unknown $a_0, a_j, b_j$ for all $1 \le j \le k$.
 
-<b>Time series with both trend and seasonakl component</b>
+<b>Time series with both trend and seasonal component</b>
 
 $$X_t = m_t + p_t + Y_t, \forall t \in T$$
 
-with ${m_t}_t$ trend, ${p_t}_t$ the seasonal component with and ${Y_t}_t$ a zero-mean time series.
+with ${m_t}_t$ the trend, ${p_t}_t$ the seasonal component, and ${Y_t}_t$ a zero-mean time series.
 
 
 ---
@@ -94,33 +94,33 @@ with ${m_t}_t$ trend, ${p_t}_t$ the seasonal component with and ${Y_t}_t$ a zero
 
 <b>Stationarity</b>
 
-A time series $\{X_t\}_t$ is sait do strictly (strongly) stationy if $\forall n \ge 1, h \in \Z$ it holds that:
+A time series $\{X_t\}_t$ is said to be strictly (strongly) stationary if, for all $n \ge 1$ and $h \in \Z$, it holds that:
 
 $$
-(X_1, ... X_n) =^d (X_{1+h},...X_{n+h})
+(X_1, \ldots, X_n) \overset{d}{=} (X_{1+h}, \ldots, X_{n+h})
 $$
 
-i.e. it means that th stochatic behavior of $\{X_t\}_t$ remains unchaged for _ANY_ time shift.
+i.e., the stochastic behavior of $\{X_t\}_t$ remains unchanged for _any_ time shift.
 
 Let $\{X_t\}_t$ be a time series.
 
 - The mean function of $\{X_t\}_t$ is defined as:
 
 $$
-\mu_x(t) \mathbb{E}(X_t), \forall t \in T
+\mu_x(t) = \mathbb{E}(X_t), \forall t \in T
 $$
 
-- the covariance function of $\{X_t\}_t$ is defined as:
+- The covariance function of $\{X_t\}_t$ is defined as:
 $$
 \begin{align*}
-\gamma_x (r,p) &= \text{Cov}(X_r, X_p) = \\
+\gamma_x(r,p) &= \text{Cov}(X_r, X_p) = \\
 &= \mathbb{E}[(X_r - \mu_x(r))(X_p - \mu_x(p))] \\
-&= \mathbb{E}[X_r X_p] - \mu_x(p) - \mu_x (r)
+&= \mathbb{E}[X_r X_p] - \mu_x(r)\mu_x(p)
 \end{align*}
 $$ 
 
-provided that $\mathbb{E[| X_r X_p|]} < \infty$ and $\mathbb{E}[X_r] < \infty \forall r,p$.
+provided that $\mathbb{E}[|X_r X_p|] < \infty$ and $\mathbb{E}[X_r] < \infty$ for all $r,p$.
 
-On the other handm, $\{X_t\}_t$ is said to be (weakly) stationary if $\mathbb{E}[X_t^2] < \infty \forall t and:
+On the other hand, $\{X_t\}_t$ is said to be (weakly) stationary if $\mathbb{E}[X_t^2] < \infty$ for all $t$, and:
 - $\mu_x(t)$ is costant in $t$
 - $\gamma_x (t, t+h)$ depends only on $h$
