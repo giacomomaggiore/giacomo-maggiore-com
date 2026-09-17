@@ -1,0 +1,70 @@
+---
+title: 'Asset Management: Advanced Investments'
+publishedAt: '2026-09-14'
+summary: ''
+---
+
+The following notes come from the course <b><a href="https://studentservices.uzh.ch/uzh/anonym/vvz/index.html#/details/2026/003/E/51328700" target="_blank">Asset Management: Advanced Investments</a></b>, taught at <a href="https://www.uzh.ch/de.html" target="_blank">University of Zurich (UZH)</a> by <a href="https://www.linkedin.com/in/thorsten-hens-6a031431/" target="_blank"> Professors Thorsten Hens</a> and <a href="https://www.df.uzh.ch/en/people/academic-staff/alexandre-ziegler.html" target="_blank">
+Alexandre Ziegler</a>.
+
+Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"> me</a> for any comment, clarification or mistake.
+
+---
+
+### <b>Index</b>
+
+- [Introduction](#introduction)
+- [Economic Foundations](#1)
+
+## <b><a id="introduction"><b>Introduction</b> </a></b>
+
+Asset management is about investing into assets in order to achieve certain goals given some restrictions.
+
+Wealth management determines the goals and restrictions.
+
+Risk management makes sure the restrictions are satisfied.
+
+## <b><a id="1"><b>Practical Procedures</b> </a></b>
+
+- SAA (Strategic Asset Allocation): allocation to asset classes that should be followed in the long term. Different approaches possible:
+    - Mean-Variance analysis 
+    - Mean-downside Risk analysis (Ortec), focusing on investment's expected return (the mean) relative to its potential losses, ignoring positive gains entirely.
+- TAA (Tactical Asset Allocation): tactical deviations from SAA on short-period (monthly) basis. Different approaches possible:
+    - Passive rebalancing on event-driven or time frequency basis
+    - Quantitative Analysis (fundamental monetary macro (FMM) view)
+    - Quantative Analysis based on regression
+    - Rank-based
+- IAA (Is Asset Allocation): implementation of TAA with investments 
+- Hedging: overlay of SAA to satisfy restrictions and risk constraints. 
+    - FX-hedging: the standarda rule says:
+        - hedge nominal assets 
+        - partially hedge real assets.
+        - example: tipically, FX-hedging for CHF investor reduces volatility by keeping mean 
+    - Tail-Risk Hedging: when you have asymetiric payoff function 
+
+However, note that different *AA have different explanatory powers in expected and observed returns:
+- SAA explains 75% of oberved returns 
+- TAA 20% 
+- IAA 5%
+
+Furthermore, note that they have different quantiative/qualitative approach: from SAA (the most qualitative), we have TAA, IAA and then pure trading (more quantitative).
+
+Performance Measures 
+
+We define the arithmetic average of returns as:
+
+in contrast, geometric average is:
+
+---
+
+TWR (time weighted return) measures the average return in the case of a fixed amount X over $t = 1,2...T$:
+
+$$
+\text{TWR} = ( \prod_1^T R_t)^{1/T}
+$$
+
+MWR (money weighted return, also defined as IRR, internal rate of return) in contrast measures the average return ain the case of variable amounts $X_t% invested in $t = 1,2...T$. It is computed by solving for the rate  that solves:
+
+$$
+\sum_1^T \frac{CF_{\text{in,t}}}{(\text{MWR}^t)} = \sum_1^T \frac{CF_{\text{out,t}}}{(\text{MWR}^t)}
+$$
