@@ -30,7 +30,7 @@
 
 # wiki source drop folder
 wiki/source/
-wiki/archive
+wiki/archive/
 
 # python ingestion pipeline caches
 /tools/ingest/**/__pycache__
