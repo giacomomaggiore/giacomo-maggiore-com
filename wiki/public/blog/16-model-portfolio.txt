@@ -1,0 +1,65 @@
+---
+title: "The evolution of my portfolio"
+publishedAt: '2026-09-15'
+summary: ''
+---
+
+Quando ero in quarta liceo, ho comprato le mie prime azioni: qualche centinaio di dollari divisi tra Alibaba e Intel, senza saperne molto di passive investing e con la spensieratezza di un neo-maggiorenne che cerca di far fruttare i suoi pochissimi risparmi di una vita.
+
+Nei primi anni di Ingegneria, iniziai ad appassionarmi ai mercati e scoprii l'esistenza degli ETF. Come naturale conseguenza, iniziai a riporre i risparmi, che lentissimamente iniziavano a crescere, nell'ETF più famoso di tutti: VWCE.
+
+Dopo poco più di un anno, nel pieno del romanticismo per "stocks for the long run", cresciuto in una decade in cui le azioni avevano sovraperformato qualsiasi altra cosa e convinto di avere un orizzonte temporale lunghissimo, iniziai ad allocare parte del mio portafoglio in ETF daily leveraged: prima nell'Amundi MSCI USA Daily (2x) Leveraged UCITS ETF Acc (essendo l'unico ragionevole disponibile su Scalable Capital) e, solo dopo aver aperto un conto su IB in Svizzera, nell'Amundi MSCI World (2x) Leveraged UCITS ETF Acc, portando la mia quota in leva fino al 50% del portafoglio.
+
+Sebbene questa strategia possa essere sensata per un orizzonte di tempo mooooolto lungo, due incertezze mi hanno fatto cambiare idea:
+- sono socuro di aver un orizzonte temporale così lungo? nonostante infatti abbuia mamma e papà pronti a (sopportarmi) supportarmi finanzariamente, non so bene che lavoro farò, dove e con chi vivrò tra 2 anni, figurati nel lungo periodo...
+- quanto la mia propensione per le stocks provenga dalle scorsi decadi di ritorni positivi e non abbia mai, nemmeno lontanamente, vissuto una sequenza di anni (per jon dire decenni) perduto?
+
+Di conseguenza, in maniera abbastanza temporanea e affrettta, ho aggiunto, pur mantenendo l'ETF in leva, un etf obblifazionario a durartion corta per eventuali spese nel breve termine (aderendo alla filosofia dei 4 pilastri del Prof Coletti).
+
+Qualche mese fa quindi iniziai a studiare asset class, correlazioni e model portfolio (tutte le risorse in coda all'articolo) cercando di sfruttare la leva finanziaria per espormi maggiormente a rischi remunerati dal mercato, ho modellato e implementato un portafoglio basato sul return stacking, eventuamente in leva anche su Interactive brokers tramite l'utilizzo di un margin account.
+
+L'idea alla base è che qasset class diverse rispondo bene a regmi di mercato differenti. Proiettando e semplificando tutto in 4 quadrati dati da momenti di inflazione/stagdlazione e crescita/recessione, in base a dati storici, notiamo rendimenti diversi in base al quadrante in corso.
+
+(iimg)
+
+Conn queste assunzioni, è evidente come il 60/40 non basti più, motivo per cui, almeno in un mondo ideale, ha senso includere nel portafoglio altri diversificatori.
+Non volendo sacrificare però un esposizione 60/40 per non ridurre troppo il rendimento nelle fasi in cui stocks e bond corrono, entra in gioco il return stacking, concetto che permette di "impilare" fonti di rendimento aggiuntive a un'esposizione classica, senza doversi spartire lo spazio in un allocazione che somma a 100.
+
+In particolare, il mio portafoglio si concentra su queste asset class:
+- Global equities
+- Global bonds
+- Managed futures
+- Commodity trend
+- Gold
+- Tail risk (deep OTM options)
+
+La leva finanzairai è inanzitutto ottenuta tramite contratti futures (e non prendendo direttamente in prestito del cash!) mediante "stacked ETF", strumenti di investimento che, per ogni dollaro investito, allocano x in un'asset class "core", utilizzano 1 - x come cash collaterale per contratti futures e ottengono un'esposizione totale al sottostante dei futures pari a Lx, dove L è il rapporto di leva implicito nei futures.
+
+Prendiamo, per esempio, NTSG, il principale ETF del mio portafoglio:
+- l'ETF alloca il 90% alle global equities in modo tradizionale;
+- l'ETF alloca il restante 10% in cash come collaterale per contratti futures sui bond, ottenendo un'esposizione alle obbligazioni del 60%.
+
+Di conseguenza, l'ETF rappresenta un 90/60 in azioni e obbligazioni.
+
+Allo stesso modo, l'ETF GDE:
+- alloca il 90% alle US large-cap equities;
+- usa il restante 10% in cash come collaterale per ottenere un'esposizione del 90% all'oro.
+
+Il mio portafoglio si compone quindi di questi etf:
+
+
+
+che, nella versione vanilla, risultano nelle seguenti esposizioni:
+
+
+On top of that - come ulteriore parametro con cui aumentare o dimiuire il profilo di rischio del portafogio, vi è la possibilit di prendere a margine (in pressito) cash da interactive broker, in modo da moltiplicare tutte le esposizioni di un fattore L, dato da (E + D)/E, in cui D è il cash in prestito da interactive broker such that (E + D)/E < maintenance_margin. (si noti come in realtà L, E e D non siano costanti ma funzioni del tempo)
+
+Di conseguenza, la mia esposizzione risulta in:
+
+- STocks: (0.9 * Share NTSG   + 0.9 * Share GDE) * L 
+- bonds: (0.6 * share ntsg) * L 
+- commodities 
+- trend 
+- tail etc etc
+
+

@@ -82,10 +82,10 @@ In Sections 2.8 and 2.9, we extend our analysis to other asset cross-sections an
 We first analyze the performance of MPT when the number of assets N is less than or equal to the number of observations T, reported in Panel A of Figure 1. The left plot shows the out-of-sample Sharpe ratio of the Markowitz portfolio, and the right plot shows the out-of-sample volatility of the MVP. When c is close to zero, the performance of both portfolios improves from increasing the number of assets in the cross-section. Increasing the number of assets allows the Markowitz portfolio to allocate more weight to assets with higher average returns, and it allows both Markowitz and MVP to reduce risk by finding more diversification opportunities. These gains max out when c is around 0.5. Beyond this, there are not enough observations to precisely estimate the increasing number of parameters. As a result, portfolio estimates are dominated by noise. When $c = 1$, the Sharpe ratio of the Markowitz portfolio
 
 Panel A: c ≤ 1  
-![](images/d8290d8da1c265fe54539ba97582c8fbb645eee0d04c9fe87cb2695145b946a7.jpg)
+![](d8290d8da1c265fe54539ba97582c8fbb645eee0d04c9fe87cb2695145b946a7.jpg)
 
 Panel B: c > 1  
-![](images/2ec711753c215e6401bf56b09b12a5d62bfbfc2c2f9036147a1f19a09645b80c.jpg)  
+![](2ec711753c215e6401bf56b09b12a5d62bfbfc2c2f9036147a1f19a09645b80c.jpg)  
 Figure 1: Out-of-sample MPT Performance.
 
 The figure shows the performance of the Markowitz and minimum variance portfolio based on a varying number of equity factors. Specifically, we randomly select N factors and, each month, create the portfolios based on their sample mean and variance-covariance matrix estimated over the past T = 12 months. For every N, we repeat the random selection process 100 times and average the performance statistics across permutations. The x-axis shows complexity defined as $c = N / ( T - 1)$. <sup>a</sup> The y-axis for figures on the left shows the annualized out-of-sample Sharpe ratio of the Markowitz portfolio. The y-axis on the right shows the annualized out-of-sample volatility of the minimum variance portfolio. Performance is calculated on data from 1972 to 2023.
@@ -104,7 +104,7 @@ Panel B of Figure 1 extends the portfolio analysis to allow the number of assets
 
 ## 2.4 The Role of Shrinkage
 
-![](images/cb06ce2fca7dca7359fa4173d0a35f32e4ebac230aea829484fa10a68bd6450b.jpg)  
+![](cb06ce2fca7dca7359fa4173d0a35f32e4ebac230aea829484fa10a68bd6450b.jpg)  
 Figure 2: MPT Performance with Shrinkage.
 
 Panel A reports MPT Sharpe ratios. The left panel shows the Markowitz portfolio with various degrees of ridge shrinkage, the center panel shows the Markowitz portfolio with a no-shorting constraint, and the right panel shows the (ridgeless) Markowitz portfolio, the (ridgeless) minimum variance portfolio, and the 1/N portfolio. Panel B shows portfolio volatility. The left panel shows the minimum variance portfolio with various degrees of ridge shrinkage, the center panel shows the minimum variance portfolio with a no-shorting constraint, and the right panel shows the (ridgeless) minimum variance portfolio and the 1/N portfolio.
@@ -148,11 +148,11 @@ Panel C of Figure 2 compares the performance of the $1/N$ with MPT portfolios in
 ## 2.8 The Role of T
 
 Panel A: Markowitz Sharpe Ratio  
-![](images/280603c6f3e499abdceb171cb84b81c66d1c98907d145d3de5cd15a12e9195d5.jpg)  
+![](280603c6f3e499abdceb171cb84b81c66d1c98907d145d3de5cd15a12e9195d5.jpg)  
 $z = 1 0 ^ { - 3 }$ z = 10<sup>−3</sup>
 
 Panel B: MVP Volatility  
-![](images/2753e27bacb4283901ff4fc33ba04ed3604e901f7eb2528e5b37b1c37acd6321.jpg)  
+![](2753e27bacb4283901ff4fc33ba04ed3604e901f7eb2528e5b37b1c37acd6321.jpg)  
 z = 10<sup>−3</sup> $z = 1 0 ^ { - 3 }$
 
 Figure 3: MPT Effects of Sample Size (T).
@@ -169,7 +169,7 @@ Panel A illustrates four main findings. First, there are portfolio benefits to i
 
 Our analysis to this point has focused on 153 factor portfolios as base assets. In this section, we examine the behavior of large-N MPT using individual stocks. Figure 8 in the Internet Appendix shows how the MPT portfolios perform as a function of complexity. As shown in DeMiguel et al. (2009a), the $1 / N$ portfolio performs well out-of-sample, achieving a higher Sharpe ratio than both the Markowitz portfolio and MVP when $T = 12$. However, when the estimation window is large enough—for example, at $T = 60$—the MVP outperforms $1 / N$ in the high-complexity setting $N \gg T$. The Markowitz portfolio still struggles even with this longer estimation window, in contrast to the results that used factor portfolios. This is consistent with individual stock returns being less stationary than factor returns—the historic average factor returns are informative about the expected factor returns, while the average stock returns are bad estimates of expected stock returns going forward. The MVP sidesteps this issue by dogmatically shrinking the means to a constant.
 
-![](images/642aa18a409b1d67418329ea4f161f63faa09249da3d5e2d806e68d641116983.jpg)  
+![](642aa18a409b1d67418329ea4f161f63faa09249da3d5e2d806e68d641116983.jpg)  
 Figure 4: Correlations of Hedging Portfolios.
 
 The figure shows correlations of different macro variables and their hedging portfolios. Specifically, we randomly select N JKP factors and, each month, create the portfolio with the highest correlation to the macro variable in question over the past $T = 12$ months. For every $N$, we repeat the random selection process 100 times, and the performance statistics are averaged across these permutations. The x-coordinate shows the complexity, defined as $c = N / T$. The correlations are calculated using data from 1977 to 2023.
@@ -210,7 +210,7 @@ Our results and discussion thus far highlight that the gains from complexity com
 
 While a detailed analysis of complex MPT for higher frequency problems is beyond the scope of this paper, in this section we provide a brief demonstration of the beneficial effects of complexity in short calendar time windows with higher frequency of return observations. While our analysis up to now uses monthly observations to estimate portfolios, we now
 
-![](images/6297bbad4d90ec15e5d1cfcda97b63f477175e0a0cfa1c8963fe6012a7a824da.jpg)  
+![](6297bbad4d90ec15e5d1cfcda97b63f477175e0a0cfa1c8963fe6012a7a824da.jpg)  
 Figure 5: MPT and Daily Data.
 
 explore the effects of using daily data to construct MPT portfolios. With the exception of the data frequency, our analysis is otherwise unchanged $( \mathrm { i . e . }$ , we continue to rebalance portfolios monthly, maintain the same sample horizons and assets, and so on).
@@ -283,17 +283,17 @@ We present an empirical resurrection of Modern Portfolio Theory (MPT) when the n
 
 ## A Additional Results
 
-![](images/5d08f3241dc3c04ef6026862b79236af607b1f17a72349e3d4c40c958fd97227.jpg)  
+![](5d08f3241dc3c04ef6026862b79236af607b1f17a72349e3d4c40c958fd97227.jpg)  
 Figure 6: Sharpe Ratio Comparison of Markowitz and Minimum Variance Portfolios.
 
 The figure shows the Sharpe ratio of Markowitz and minimum variance as a function of shrinkage and complexity.
 
-![](images/8ba20444a2215e1a4d0f03ec7de866bcbf44652b1713d889c8368af9509ba0fa.jpg)  
+![](8ba20444a2215e1a4d0f03ec7de866bcbf44652b1713d889c8368af9509ba0fa.jpg)  
 Figure 7: Complex MPT and 1/N With Ridge Shrinkage.
 
 The figure shows the performance of Markowitz, MVP, and 1/N for MPT with ridge shrinkage of $z = 1 0 ^ { - 3}$.
 
-![](images/20b5dd3f79716429100b1a22ef87046414b8fa64461f3def6d39533d8c162817.jpg)  
+![](20b5dd3f79716429100b1a22ef87046414b8fa64461f3def6d39533d8c162817.jpg)  
 Figure 8: MPT and Individual Stocks.
 
 The figure shows the performance of Markowitz and MVP based on a varying number of individual stocks. Specifically, we randomly select N stocks and, each month, create the portfolios based on their sample mean and variance-covariance matrix estimated over the past T = 12 or T = 60 months. For every N, we repeat the random selection process 100 times, and the performance statistics are averaged across these permutations. The x-coordinate shows the complexity, defined as $c = N / ( T - 1)$ . The y-coordinate in the left panel shows the annualized Sharpe ratio of the Markowitz portfolio, and the y-coordinate in the right panel shows the annualized volatility of the minimum variance portfolio. The performance statistics are based on data from 1977 to 2023.

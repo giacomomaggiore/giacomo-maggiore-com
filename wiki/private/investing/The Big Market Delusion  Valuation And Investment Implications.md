@@ -26,7 +26,7 @@ Increasing the potential market for products and services, holding all else cons
 To see how (almost) rational and (mostly) smart individuals can be fooled by big market potential into being collectively irrational, consider a hypothetical entrepreneur who has developed a product that he sees as having a large potential market and that, based on that assessment, was able to convince venture capitalists to fund the business. In Figure 1, we depict this process.
 
 Figure 1: Entrepreneur sees Big Market  
-![](images/6f3846c317c28ab20e196074551b0db760639679b205331e9c86f315544ed2f1.jpg)
+![](6f3846c317c28ab20e196074551b0db760639679b205331e9c86f315544ed2f1.jpg)
 
 <details>
 <summary>flowchart</summary>
@@ -46,7 +46,7 @@ Note that everyone in this picture is behaving sensibly. The entrepreneur has cr
 Now assume that six other entrepreneurs see the same big market potential at about the same time and create their own products to fulfill that market need, and that each finds venture capitalists to back his or her product and vision.
 
 Figure 2: Many Entrepreneurs see Big Market  
-![](images/da2e09f5b3a3d7aefd768782f2e09bb8ea6bd4c05db4120460ca74933d3fc59e.jpg)
+![](da2e09f5b3a3d7aefd768782f2e09bb8ea6bd4c05db4120460ca74933d3fc59e.jpg)
 
 <details>
 <summary>flowchart</summary>
@@ -106,7 +106,7 @@ In the last section, we repeatedly used the word “pricing” to describe how o
 While the words price and value are often used as if they are interchangeable, they represent different processes, are determined by different variables, and can yield different numbers:
 
 Figure 3: Value versus Price  
-![](images/c204a85489c62020c1638635216c9b4b212bdd01e4199f1a249662a858df1030.jpg)
+![](c204a85489c62020c1638635216c9b4b212bdd01e4199f1a249662a858df1030.jpg)
 
 <details>
 <summary>flowchart</summary>
@@ -132,7 +132,7 @@ The potential gap between price and value is at the core of almost all investmen
 We believe that there is some truth in both camps, but that which view prevails depends partly upon where a company falls in the corporate life cycle. Early in the life cycle, it is the traders who dominate, and the game is primarily a pricing game, with value investors often left frustrated. As companies age, and their financial realities start to take form, value begins to become more tangible and more visible, making it more likely that the gap, if it exists, will be noticed. Figure 4 provides a corporate life cycle view of price and value.
 
 Figure 4: Price versus Value - A Corporate Life Cycle Perspective  
-![](images/cf26eecf15d977b3c8fb57e85879c122d367b386bf25d0be019a2d9d101c6a34.jpg)
+![](cf26eecf15d977b3c8fb57e85879c122d367b386bf25d0be019a2d9d101c6a34.jpg)
 
 <details>
 <summary>line</summary>
@@ -226,7 +226,7 @@ One measure of the success of these dot-com stocks is that data services created
 The rise of internet stocks was dizzying, in terms of the speed of ascent, but its descent was even more precipitous. The date the bubble burst can be debated, but the NASDAQ, dominated in 2000 by young internet companies, peaked on March 10, 2000, and in the months after, the pricing unraveled as shown in Figure 5.
 
 Figure 5: The Bloomberg Internet Index – Rise and Fall  
-![](images/c27df9a8beb35d8f67971614da65ce3ba33350b921b51195a4160daa7710b720.jpg)
+![](c27df9a8beb35d8f67971614da65ce3ba33350b921b51195a4160daa7710b720.jpg)
 
 <details>
 <summary>line</summary>
@@ -271,7 +271,7 @@ The advent of social media altered the game even more, as businesses realized th
 
 Figure 6: The Growth of Online Advertising through 2015  
 Annual Revenue 2005-2015 (\$ billions)  
-![](images/ff9bf8b9dfa43bff8b24c0912c7f7d0b3ee6650c74faeef818717d33fd91b757.jpg)
+![](ff9bf8b9dfa43bff8b24c0912c7f7d0b3ee6650c74faeef818717d33fd91b757.jpg)
 
 <details>
 <summary>bar_stacked</summary>
@@ -298,7 +298,7 @@ Source: IAB/PwC Internet Ad Revenue Report, FY 2015
 To examine how the perception of a big online advertising market affected business formation and pricing, we looked at online advertising companies in 2015. Rather than just point to the obvious, which is how much the market capitalization of these companies had risen over time, we ran an experiment with each one. We started with the market capitalization of each company in the online advertising space as of 2015 and calculated the expected revenues ten years in the future (2025) required to justify the market price. To do this, we had to make assumptions about the rest of the variables required to conduct a DCF valuation (the cost of capital, target operating margin, and sales to capital ratio) and held them fixed while we varied the revenue growth rate until we arrived at the current market capitalization. The figure below illustrates this process using Facebook with the enterprise value of $245,662 million on August 25, 2015, base revenues of $14,640 million (trailing 12 months), and a cost of capital of 9%. Holding the existing margins unchanged at 32.42%, the details of the calculation of the imputed revenue in year 10 are presented in Figure 7.
 
 Figure 7: Facebook Breakeven Revenues  
-![](images/763a1359781c36ec1ac53ec6d8318f70b74def95e5a96f9f8749c68f2b7ad6f6.jpg)
+![](763a1359781c36ec1ac53ec6d8318f70b74def95e5a96f9f8749c68f2b7ad6f6.jpg)
 
 <details>
 <summary>flowchart</summary>
@@ -391,7 +391,7 @@ For each company, the high market capitalization relative to any measure of fund
 In the case of the cannabis market, the overreach on the part of both businesses and their investors caught up with them. By October 2019, the assumptions regarding growth and profitability were being universally scaled back, business models were being questioned, and investors were reassessing the pricing of these companies. The best way to see the adjustment is to look at the performance of the major cannabis exchange-traded fund, ETFMG, over the period depicted in Figure 8.
 
 Figure 8: ETFMG Alternative Harvest ETF (MJ): Prices from 11/21/16 - 11/21/19  
-![](images/f373b495b1080f7a37366ceefeeaeccca79eba919a2280b5318449a96e09998b.jpg)
+![](f373b495b1080f7a37366ceefeeaeccca79eba919a2280b5318449a96e09998b.jpg)
 
 <details>
 <summary>line</summary>

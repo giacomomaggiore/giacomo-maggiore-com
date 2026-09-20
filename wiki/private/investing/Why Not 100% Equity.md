@@ -19,7 +19,7 @@ I argue that an investor willing to bear the risk of 100% equities can do even b
 
 EXHIBIT 1  
 STOCKS VERSUS BONDS VERSUS 60/40  
-![](images/f5bfb5379a52bb34f6823096b2358e4247910f9fbe886c5b0e79ae836de6ff2e.jpg)
+![](f5bfb5379a52bb34f6823096b2358e4247910f9fbe886c5b0e79ae836de6ff2e.jpg)
 
 <details>
 <summary>line</summary>
@@ -86,7 +86,7 @@ Stocks are represented by the S&P 500. Bonds are represented by the Ibbotson tot
 
 EXHIBIT 4  
 STOCKS VERSUS BONDS VERSUS 60/40 VERSUS LEVERED 60/40  
-![](images/890fc97f92a3c05c554ed12cff61d474c1b8f577780f74d78411f82e46edde25.jpg)
+![](890fc97f92a3c05c554ed12cff61d474c1b8f577780f74d78411f82e46edde25.jpg)
 
 <details>
 <summary>line</summary>

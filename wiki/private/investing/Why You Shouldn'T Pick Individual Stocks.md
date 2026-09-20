@@ -21,7 +21,7 @@ It’s just like this XKCD comic:
 
 ## SITTING DOWN WITH GRAD STUDENTS AND TIMING HOW LONG IT TAKES THEM TO FIGURE OUT THAT
 
-![](images/56beae18bfc59d6a44b7d4fa6175c141d987338c9f4ed302939d5b5b0f97feca.jpg)
+![](56beae18bfc59d6a44b7d4fa6175c141d987338c9f4ed302939d5b5b0f97feca.jpg)
 
 <details>
 <summary>text_image</summary>

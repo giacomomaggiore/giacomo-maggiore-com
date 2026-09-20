@@ -12,6 +12,8 @@
 /.next/
 /out/
 
+
+
 # production
 /build
 
@@ -24,8 +26,11 @@
 # obsidian
 **/.obsidian/
 
+
+
 # wiki source drop folder
 wiki/source/
+wiki/archive
 
 # python ingestion pipeline caches
 /tools/ingest/**/__pycache__

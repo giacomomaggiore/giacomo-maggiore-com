@@ -55,7 +55,7 @@ The pipeline proceeds in six steps:
 5. A multi-agent strategy review subjects all PC proposals to peer review, risk assessment, and voting.
 6. A CIO agent scores, combines, and selects from the surviving proposals using an ensemble of seven combination methods. The CIO agent produces a board memo summarizing the recommendation, the reasoning, and the dissenting views.
 
-![](images/c45bcfaf3bef810922d364b0ebd37705881358e988bf449c04c42fba0d0a75f3.jpg)
+![](c45bcfaf3bef810922d364b0ebd37705881358e988bf449c04c42fba0d0a75f3.jpg)
 
 <details>
 <summary>flowchart</summary>
@@ -239,7 +239,7 @@ The PC strategy review is a process in which the 21 portfolio construction agent
 
 The review proceeds in stages, summarized in Exhibit 6. First, a Chief Risk Officer (CRO) agent produces a standardized risk report for each candidate portfolio, which covers standard risk metrics like ex-ante and back-test volatility, value-at-risk, maximum drawdown, concentration metrics, factor tilts, and IPS compliance. The CRO agent is a neutral assessor: it scores risk and produces commentary, but does not vote.
 
-![](images/7e8e3655d0e305f3f6b1da2073ac203b1e7e974610efd8e19841a890f8c44c70.jpg)  
+![](7e8e3655d0e305f3f6b1da2073ac203b1e7e974610efd8e19841a890f8c44c70.jpg)  
 Exhibit 6: Portfolio Construction (PC) Strategy Review
 
 Each PC agent reviews exactly two peers—one from its own category (intra-category review, which is more likely to identify technical errors within a shared framework) and one from a different category (inter-category review, which can challenge foundational assumptions from a contrasting worldview). Assignments are randomized with a recorded seed, producing 42 reviews across the 21 candidates. All reviews are released simultaneously so that every agent can read every review before voting.
@@ -252,7 +252,7 @@ Finally, the top five ranking PC agents then revise their proposals, taking into
 
 The CIO agent receives the strategy review output—the 21 candidate portfolios, their peer reviews, CRO risk reports, vote tallies, and metric scores—and constructs the final recommended allocation operating as a LLM-as-judge. In addition to being able to choose a given portfolio method, it has access to several ensemble techniques: simple average, inverse tracking-error weighting, backtest-Sharpe weighting, meta-optimization that treats PC portfolios as “assets” in a second-level optimization, regime-conditional weighting (which varies method weights by macro regime), composite-score weighting, and a trimmed mean that excludes statistical outliers. The CIO agent evaluates each ensemble on the same diagnostic suite used for individual portfolios—performance statistics and checking IPS compliance (which is non-negotiable)—and selects the ensemble method best suited to the current regime with a written rationale.
 
-![](images/0281b5ca165fcae0b88ad7ca25b55a3f9f46cf34719c9db24d4f18aed3fdcba6.jpg)
+![](0281b5ca165fcae0b88ad7ca25b55a3f9f46cf34719c9db24d4f18aed3fdcba6.jpg)
 
 <details>
 <summary>flowchart</summary>

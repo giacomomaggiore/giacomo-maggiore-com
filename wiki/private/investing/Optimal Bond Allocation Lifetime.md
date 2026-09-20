@@ -153,7 +153,7 @@ Allocation decreases monotonically with age
 ## Visualization of Lifecycle Allocation
 
 Optimal Equity Allocation by Risk Aversion  
-![](images/e680c9d9b791ef154d4cc816d059e08abb6af3417c6767bec08a859bcf92ff4b.jpg)
+![](e680c9d9b791ef154d4cc816d059e08abb6af3417c6767bec08a859bcf92ff4b.jpg)
 
 <details>
 <summary>line</summary>
@@ -170,7 +170,7 @@ Optimal Equity Allocation by Risk Aversion
 Age
 
 Human vs Financial Capital Over Lifetime  
-![](images/e38e86335fc9a9706bb8cd0862adbebf59ce949e31a989cd4ec819cdb66cbc99.jpg)
+![](e38e86335fc9a9706bb8cd0862adbebf59ce949e31a989cd4ec819cdb66cbc99.jpg)
 
 <details>
 <summary>area</summary>
