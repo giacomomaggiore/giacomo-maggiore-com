@@ -3,10 +3,36 @@ import { CustomMDX } from '../../components/mdx'
 import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import ViewsClientOnly from '../../components/ViewsClientOnly'
-import { headers } from 'next/headers'
+import type { Metadata } from 'next'
+import { baseUrl } from '../../sitemap'
 
 export async function generateStaticParams() {
   return getAllSlugs().map(slug => ({ slug }))
+}
+
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const post = getPost(params.slug, 'en')
+
+  if (!post) {
+    return {}
+  }
+
+  const url = `${baseUrl}/blog/${params.slug}`
+  const image = new URL(`/og?title=${encodeURIComponent(post.metadata.title)}`, baseUrl).toString()
+
+  return {
+    title: post.metadata.title,
+    description: post.metadata.summary,
+    alternates: { canonical: url },
+    openGraph: {
+      title: post.metadata.title,
+      description: post.metadata.summary,
+      url,
+      type: 'article',
+      publishedTime: post.metadata.publishedAt,
+      images: [{ url: image, width: 1200, height: 630 }],
+    },
+  }
 }
 
 export default async function BlogPage({ params }: { params: { slug: string } }) {

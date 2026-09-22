@@ -90,6 +90,10 @@ https://www.ch.vanguard/en/professional/vanguard-365/understanding-stock-bond-co
 
 https://www.returnstacked.com/what-is-return-stacking-for-diversification/
 
+https://www.youtube.com/watch?v=zVefLIOAyAk&list=WL&index=63
+
+https://www.youtube.com/watch?v=Db4tPo3d1ew&list=WL&index=65
+
 ![[Pasted image 20260918112653.png]]
 
 
