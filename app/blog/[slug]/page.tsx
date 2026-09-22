@@ -18,7 +18,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 
   const url = `${baseUrl}/blog/${params.slug}`
-  const image = new URL(`/og?title=${encodeURIComponent(post.metadata.title)}`, baseUrl).toString()
+  const firstImage = post.content.match(/!\[[^\]]*\]\(([^)\s]+)/)?.[1]
+  const image = new URL(
+    firstImage || `/og?title=${encodeURIComponent(post.metadata.title)}`,
+    baseUrl
+  ).toString()
 
   return {
     title: post.metadata.title,
@@ -30,7 +34,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       url,
       type: 'article',
       publishedTime: post.metadata.publishedAt,
-      images: [{ url: image, width: 1200, height: 630 }],
+      images: [{ url: image }],
     },
   }
 }
