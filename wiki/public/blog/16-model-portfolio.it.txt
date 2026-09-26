@@ -48,7 +48,7 @@ Tramite il return stacking, si investe sempre una somma $X$ in azioni e si aggiu
 
 Il margine non corrisponde necessariamente a una quota di cash separata e assegnata a una singola gamba del portafoglio: nell'ETF, il portafoglio nel suo complesso funge da collaterale. Inoltre, il margine richiesto varia in base al contratto, al broker e alle condizioni di mercato.
 
-Ad esempio, un portafoglio con esposizione azionaria del $90\%$ e obbligazionaria del $60\%$ guadagna o perde circa lo $0{,}6\%$ per una variazione dell'1% dei bond, a parità di altre condizioni. Il rapporto tra margine e valore nozionale non è fisso: un fattore come $z=6$ sarebbe soltanto un'illustrazione della leva implicita, non il moltiplicatore contrattuale del future.
+_Ad esempio,_ un portafoglio con esposizione azionaria del $90\%$ e obbligazionaria del $60\%$ guadagna o perde circa lo $0{,}6\%$ per una variazione dell'1% dei bond, a parità di altre condizioni. 
 
 Pur non essendoci quindi un finanziamento esplicito per acquistare bond, la differenza tra margine e valore nozionale rappresenta la leva implicita nei futures.
 
