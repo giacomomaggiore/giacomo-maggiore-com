@@ -119,7 +119,7 @@ function Table({ data }) {
                     border: '1px solid black',
                     padding: '8px 10px',
                     verticalAlign: 'top',
-                    whiteSpace: 'normal',
+                    whiteSpace: 'pre-line',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                   }}
@@ -266,9 +266,14 @@ interface CustomMDXProps {
 }
 
 function toMarkdownTable(data: { headers: any[]; rows: any[][] }) {
-  const headers = (data.headers || []).map((h) => String(h ?? '').replace(/\|/g, '\\|'))
+  const formatCell = (value: unknown) =>
+    String(value ?? '')
+      .replace(/\|/g, '\\|')
+      .replace(/\r?\n/g, '<br />')
+
+  const headers = (data.headers || []).map(formatCell)
   const rows = (data.rows || []).map((row) =>
-    (row || []).map((cell) => String(cell ?? '').replace(/\|/g, '\\|'))
+    (row || []).map(formatCell)
   )
 
   if (!headers.length) return ''
