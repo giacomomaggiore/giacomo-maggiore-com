@@ -1,0 +1,155 @@
+---
+title: "The evolution of my portfolio"
+publishedAt: '2026-09-30'
+summary: ''
+---
+
+Quando ero in quarta liceo, <b>comprai le mie prime azioni</b>: qualche centinaio di dollari divisi tra Alibaba e Intel, senza sapere nulla di passive investing e con la spensieratezza di un neo-maggiorenne che cerca di far fruttare i pochissimi risparmi di qualche anno di lavoretti.
+
+Nei primi anni di Ingegneria, iniziai ad appassionarmi ai mercati e scoprii l'esistenza degli ETF. Come naturale conseguenza, iniziai a spostare il salvadaio, che lentissimamente iniziava a crescere, nell'ETF più famoso di tutti: <b>VWCE.</b>
+
+Dopo poco più di un anno, nel pieno del romanticismo per _"stocks for the long run",_ cresciuto in una decade in cui le azioni avevano sovraperformato qualsiasi altra cosa e convinto di avere un orizzonte temporale lunghissimo, iniziai ad allocare parte del mio portafoglio in ETF daily leveraged: prima nell'Amundi MSCI USA Daily (2x) Leveraged UCITS ETF Acc (essendo l'unico ragionevole disponibile su Scalable Capital) e, solo dopo aver aperto un conto su IB in Svizzera, nell'Amundi MSCI World (2x) Leveraged UCITS ETF Acc, portando la mia quota in leva fino al $50\%$ del portafoglio.
+
+_(Nota a margine: sebbene la parola "leva" faccia pensare a rischio estremo o speculazione: studi dimostrano che, per orizzonti di tempo lunghi e mercati "direzionali", esista un livello "ottimale" di leva $> 1$ se disposti a tollerare maggori oscillazioni del patrimonio nel breve periodo.)_
+
+Sebbene questa strategia possa essere sensata per un <b>orizzonte temporale mooooolto lungo</b>, due incertezze mi hanno fatto cambiare idea:
+- <b>sono sicuro di avere un orizzonte temporale così lungo?</b> Nonostante abbia mamma e papà pronti a _(sopportarmi e)_ supportarmi finanziariamente, non so bene che lavoro farò, dove e con chi vivrò tra due anni, _figuriamoci nel lungo periodo..._ motivo per cui ha senso considerare la possibilità in cui io debba _(ottimisticamente per meno tempo possibile)_  dover prelevare dal mio conto, anche solo per investire su me stesso o mantenere questo stile di vita _(per quanto si possa essere frugali... l'affitto a Zurigo picchia!)_
+- non avendo mai vissuto, _nemmeno lontanamente,_ una sequenza di anni (per non dire decenni) in perdita, quanto questa mia propensione per le azioni <b>deriva dai rendimenti positivi degli scorsi decenni?</b>
+
+
+Di conseguenza, _in maniera abbastanza temporanea e affrettata,_ ho aggiunto, pur mantenendo l'ETF in leva, un <b>ETF obbligazionario a durata corta</b> per eventuali spese nel breve termine, aderendo _(mooolto parzialmente)_ alla filosofia dei quattro pilastri del <a href="https://www.paolocoletti.com/" target="_blank">Prof Coletti</a> _(liquidità, fondo di emergenza, obbligazioni per spese previste, azioni per il lungo termine)._
+
+Tuttavia, da quando qualche mese fa iniziai quindi a studiare asset class, correlazioni e portafogli modello _(tutte le risorse sono in coda all'articolo),_  ho sempre di più apprezzato l'idea di adottare una <b>visione più olistica del portafgoglio</b> _(qualcuno direbbe <a href="https://rpc.cfainstitute.org/research/reports/2026/total-portfolio-approach" target="_blank">Total Portfolio Approach</a>),_ ragionando più per fattori di rischio che per esposizione azionaria/geografica. 
+
+L'idea alla base è che <b>fattori di rischio (asset class) diversi rispondano bene a regimi di mercato differenti.</b> Proiettando e semplificando tutto in quattro quadranti, dati dalle combinazioni di inflazione alta/bassa e crescita/recessione, dati storici mostrano rendimenti diversi in base al quadrante di riferimento:
+
+<div align = "center">
+![Bao](/images/blog/quadranti-economia.jpg)
+</div>
+<small><i>Fonte: <a href="https://www.returnstacked.com/what-is-return-stacking-for-diversification/" target="_blank">Return Stacked Portfolio Solutions </a></i></small>
+
+Con queste assunzioni, il classico $60/40$ non basta più: almeno in un mondo ideale, è infatti ragionevole includere nel portafoglio <b> altri diversificatori</b>, motivo per cui ho deciso di far gravitare il mio portafoglio attorno alle seguenti asset class:
+
+- Global equities
+- Global bonds
+- Managed futures
+- Commodity trend
+- Gold
+- Tail risk (deep OTM options)
+
+Non volendo quindi sacrificare un'esposizione $60/40$, per ridurre i rimpianti quando azioni e obbligazioni corrono, entra in gioco il <b>return stacking</b>, concetto che permette di _"impilare"_ fonti di rendimento aggiuntive a un'esposizione classica, senza doversi spartire lo spazio in un'allocazione che somma necessariamente a $100$.
+
+Secondo questa logica e ramite l'uso di <b>contratti futures</b>, è dunque possibile avere un'esposizione <b>maggiore di 1 per ogni EUR/USD/CHF investito. </b>
+
+Supponiamo di dover investire $1$ e dover allocare tra bond e azioni.<br/> 
+L'approccio classico prevede di investire $X \in [0,1]$ in azioni e $(1-X)$ in bond.
+
+Tramite il return stacking, si investe sempre una somma $X$ in azioni e si aggiunge un'esposizione ai bond _(o una qualsiasi altra asset class)_ tramite contratti futures e il mantenimento di un collaterale.<br/>
+Solitamente, il collaterale è costituito dalla restante quota $1-X$ sotto forma di cash ma, in alcune soluzioni, il portafoglio nel suo complesso può fungere da collaterale. 
+
+
+Pur non essendoci quindi un finanziamento esplicito per acquistare bond, la differenza tra margine e valore nozionale rappresenta <b>la leva implicita nei futures.</b><br/>
+_Ad esempio,_ un portafoglio con esposizione azionaria pari a $X$ e obbligazionaria pari a $(1-X)z$, con $z$ moltiplicatore implicito del futures, la componente obbligazionaria guadagna/perde circa lo $0{.}1z\%$ per una variazione dell'$0{.}1\%$ del sottostante, ceteris paribus. 
+
+_(Nota semi-tecnica: per mantenere l'esposizione costante, l'ETF prima che ogni contratto futures scada, chiude la posizione e ne apre una equivalente con una scadenza successiva per mantenere l'esposizione costante (roll): in questo modo il rendimento dipende quindi sia dalla variazione del sottostante che dal costo/beneficio del roll.)_
+
+<a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a>, _ad esempio_, il principale ETF del mio portafoglio, per ogni dollaro investito:
+
+- alloca il $ X = 0.9$ in <b>global equities</b> in modo tradizionale (applicando, ahimè, un filtro ESG...)
+- utilizza  il rimanente cash, $1 - X = 0.1$, come collaterale per contratti <b>futures su obbligazioni globali</b>, ottenendo un'esposizione obbligazionaria pari a circa 0.6 per ogni unità investità nell'ETF.
+
+Di conseguenza, l'ETF rappresenta un $90/60$ in azioni e obbligazioni.
+
+Allo stesso modo, <a href="https://www.wisdomtree.com/us/products/capital-efficient/gde" target="_blank">l'ETF GDE</a>:
+
+- alloca il $ x = 0.9$ in <b>US large-cap equities</b>
+- utilizza il rimanente $1 - X = 0.1$ come collaterale cash per <b>futures sull'oro</b>, ottenendo un'esposizione del $90\%$ al sottostante.
+
+Per decidere i pesi del portafoglio sono partito da un classico 60/40 e, incrociando backtest e altri <a href="https://theitalianleathersofa.com/model-portfolio/" target="_blank">Model Portfolio</a>, ho pesato asset class e strumenti alternative
+L'allocazione target del mio portafoglio è quindi: 
+
+| ETF | Esposizione | Allocazione |
+| --- | --- | --- |
+| NTSG | Global Equities + US Treasury | $60\%$ |
+| COM | Commodities with trend following | $10\%$ |
+| DBMF | Managed Features | $15\%$ |
+| GDE | US Equities + Gold | $10\%$ |
+| TAIL | Deep OTM options | $5\%$ |
+
+che, nella versione vanilla _(senza ulteriore leva/prestiti)_, produce le seguenti esposizioni:
+
+| Asset Class | Esposizione nominale |
+| --- | --- |
+| Azioni | $63\%$ |
+| Obbligazioni | $36\%$ |
+| Materie prime | $10\%$ |
+| Trend | $15\%$ |
+| Oro | $9\%$ |
+| Tail risk | $5\%$ |
+| Totale | $138\%$ |
+
+
+In aggiunta, come ulteriore parametro con cui aumentare/diminuire per modificare il profilo di rischio/rendimento del portafoglio, è possibile prendere <b>liquidità a margine</b> _(in prestito)_, nel mio caso abbastanza facilmente tramite Interactive Brokers. 
+
+Facendo ciò, si modificano l'allocazione moltiplicando tutte le esposizioni per un fattore $L$, dato da $L = (E+D)/E$, in cui $E$ è l'equity e $D$ è la liquidità presa in prestito, sotto il vincolo è che $E > \text{maintenance requirement}$, calcolato dal broker sulle posizioni. In una semplificazione con maintenance margine uniforme $m$ e gross exposure $G$, deve valere $G/E < 1/m$.<br/>
+_($L$, $E$ e $D$ non sono costanti, ma funzioni del rendimento del portafoglio e quindi varino nel tempo)._
+
+Di conseguenza, la mia esposizione risulta in:
+
+| Asset Class | Formula |
+| --- | --- |
+| Azioni (Global + US Equities) | $(0{.}9 \times \%_{NTSG} + 0{.}9 \times \%_{GDE}) \times L$ |
+| Obbligazioni (US Treasury)| $(0{.}6 \times \%_{NTSG}) \times L$ |
+| Materie prime | $\%_{COM} \times L$ |
+| Trend following | $\%_{DBMF} \times L$ |
+| Oro | $(0{.}9 \times \%_{GDE}) \times L$ |
+| Tail risk | $\%_{TAIL} \times L$ |
+
+Impostando, ad esempioo, $L=1{.}3$, il portafoglio risulta:
+
+| Asset Class | Senza leva IB | Effettiva con $L=1{.}3$ |
+| --- | --- | --- |
+| Azioni (Global + US Equities) | $63\%$ | $81{.}9\%$ |
+| Obbligazioni (US Treasury) | $36\%$ | $46{.}8\%$ |
+| Materie prime | $10\%$ | $13{.}0\%$ |
+| Trend following | $15\%$ | $19{.}5\%$ |
+| Oro | $9\%$ | $11{.}7\%$ |
+| Tail risk | $5\%$ | $6{.}5\%$ |
+| <b>Totale</b> | $138\%$ | $179{.}4\%$ |
+<br/>
+---
+
+Nonostante negli ultimi anni il mio portafoglio sia cambiato tanto, causa la mia maggiore consapevolezza e conoscenza a riguardo, non nego che ci sono ancora molti aspetti che _NON_ mi convincono e che necessitano ulteriore studio _(in primis: 'sto maledetto filtro ESG e l'esposizione ai treasury americani),_ ma questa è un'altra storia!
+
+To sum up... mi rendo conto che queste formulazioni e complicazioni siano ben lontane dalla filosofia _"VWCE and chill..."_ e non siano adatte alla maggior parte dell'invesitore retail ma:
+1. si tratta perlopiù di un esercizio di stile con un "utile" risvolto pratico 
+2. mi diverto parecchio
+3. this is not financial advice.
+
+Cheers
+
+---
+<br/>
+<b>Per saperne di più</b>
+
+<br/>
+<a href="https://www.returnstacked.com/what-is-return-stacking-for-diversification/" target="_blank">What is Return Stacking? (Return Stacked)</a>
+<br/>
+
+<a href="https://theitalianleathersofa.com/model-portfolio/" target="_blank">Model Portfolio (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/model-portfolio-enhancements/" target="_blank">Model Portfolio Enhancements (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/model-portfolio-enhancements-update/" target="_blank">Model Portfolio Enhancements Update (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/tail-risk-a-quick-guide/" target="_blank">Tail Risk: A Quick Guide (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/ntsg-wisdomtree-global-efficient-core-etf/" target="_blank">NTSG: WisdomTree Global Efficient Core ETF (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://youtu.be/MjmT7RleJUI?si=v7-e3ykq_s3KUebl" target="_blank">Come integrare NTSG nel tuo portafoglio di ETF (Dani &amp; Dati)</a>
+<br/>
+<a href="https://www.ch.vanguard/en/professional/vanguard-365/understanding-stock-bond-correlations" target="_blank">Understanding the dynamics of stock/bond correlations (Vanguard)</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=zVefLIOAyAk&amp;list=WL&amp;index=63" target="_blank">Ti stanno convincendo che azioni e bond non bastano più (The Bull Podcast)</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=Db4tPo3d1ew&amp;list=WL&amp;index=65" target="_blank">Come usare DBMFE per costruire un portafoglio perfetto (Dani &amp; Dati)</a>

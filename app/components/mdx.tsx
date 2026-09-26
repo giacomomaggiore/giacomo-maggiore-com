@@ -3,11 +3,7 @@ import Image from 'next/image'
 import { highlight } from 'sugar-high'
 import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-
-
-
-// katex will be imported dynamically inside CustomMDX to avoid ESM/CJS interop issues
-let katexImpl: any = null
+import katex from 'katex'
 
 function Table({ data }) {
   // Safety check for undefined data
@@ -37,17 +33,7 @@ function Table({ data }) {
       const content = isDisplay ? mathRaw.slice(2, -2) : mathRaw.slice(1, -1)
 
       try {
-        // try multiple access patterns to be robust vs CJS/ESM packaging
-        const k = katexImpl
-        const renderFn =
-          (k && (k.renderToString || k.default?.renderToString)) ?? null
-
-        if (!renderFn) {
-          // if katex not available, show raw math as fallback
-          throw new Error('katex render function not available')
-        }
-
-        const html = renderFn.call(k, content, {
+        const html = katex.renderToString(content, {
           throwOnError: false,
           displayMode: isDisplay,
         })
@@ -313,15 +299,6 @@ export async function CustomMDX({ source }: CustomMDXProps) {
     import('remark-gfm'),
     import('rehype-katex')
   ])
-  // importa dinamicamente katex e salvalo in variabile di modulo
-  try {
-    const mod = await import('katex')
-    katexImpl = mod
-  } catch (err) {
-    // mantiene katexImpl = null se import fallisce; Table userà fallback
-    katexImpl = null
-  }
-
   return (
     <MDXRemote
       source={replaceTableBlocks(source)}
