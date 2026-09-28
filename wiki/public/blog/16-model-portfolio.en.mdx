@@ -1,0 +1,177 @@
+---
+title: "Rethinking "stocks for the long run""
+publishedAt: '2026-09-30'
+summary: ''
+---
+
+
+
+When I was in my fourth year of high school, <b>I bought my first shares</b>: a few hundred dollars split between Alibaba and Intel, knowing nothing about passive investing and with the  attitude of a teenager trying to make the very little savings from a few years of random casual jobs.
+
+During my first years of Engineering, I started getting interested in markets and discovered the existence of ETFs. As a natural consequence, I began moving the piggy bank, which was starting to grow very slowly, into the most famous ETF of all: <a href="https://www.it.vanguard/investitori-privati/prodotti/etf/azionario/9679/ftse-all-world-ucits-etf-usd-accumulating" target="_blank">VWCE.</a>
+
+After just over a year, in the middle of my romanticism for _"stocks for the long run",_ having grown up in a decade in which stocks had outperformed everything else and convinced that I had an incredibly long time horizon, I began allocating part of my portfolio to <b>daily leveraged ETFs</b>: first to the <a href="https://www.amundietf.it/it/professionali/products/equity/amundi-msci-usa-daily-2x-leveraged-ucits-etf-acc/fr0010755611" target="_blank">Amundi MSCI USA Daily (2x) Leveraged UCITS ETF Acc</a> _(being the only reasonable one available on Scalable Capital)_ and, _only after opening an IB account in Switzerland,_ to the <a href="https://www.amundietf.it/it/professionali/products/equity/amundi-msci-world-2x-leveraged-ucits-etf-acc/fr0014010hv4" target="_blank">Amundi MSCI World (2x) Leveraged UCITS ETF Acc</a>, bringing my leveraged allocation up to $50\%$ of the portfolio.
+
+_(Quick note: although the word "leverage" may bring to mind extreme risk or speculation: <a href="https://giacomomaggiore.com/blog/10-leveraged-etf" target="_blank">studies show that, for long time horizons and "directional" markets, an "optimal" level of leverage exists</a> $> 1$ if you are willing to tolerate greater volatility in wealth in the short term.)_
+
+---
+
+### <b>You cannot pay rent with the long term</b>
+
+Although this strategy may make sense for a <b>veeeery long time horizon</b>, two uncertainties changed my mind:
+- <b>am I sure I have such a long time horizon?</b> Despite having a mum and dad ready to  support me financially, I do not really know what job I will do, where, or with whom I will be living in two years, _let alone in the long term..._ which is why it makes sense to consider the possibility that I may _(hopefully for as little time as possible)_ need to withdraw from my account, even just to invest in myself or maintain this lifestyle _(as frugal as you can be... rent in Zurich hits hard!)_
+- having never experienced, _not even remotely,_ a sequence of years (let alone decades) of losses, how much does my preference for stocks <b>comes from the positive returns of the past decades?</b>
+
+
+As a result, _rather temporarily and hastily,_ while keeping the leveraged ETF, I added a <b>short-duration bond ETF</b> for possible short-term expenses, following _(veeeery partially)_  the four-pillars philosophy of <a href="https://www.paolocoletti.com/" target="_blank">Prof Coletti</a> _(liquidity, emergency fund, bonds for expected expenses, stocks for the long term)._
+
+However, since I started studying asset classes, correlations, and model portfolios a few months ago _(some nice resources are at the end of the article),_ I have increasingly appreciated the idea of taking a <b>more holistic view of the portfolio</b> _(some would call it the <a href="https://rpc.cfainstitute.org/research/reports/2026/total-portfolio-approach" target="_blank">Total Portfolio Approach</a>),_ thinking more in terms of risk factors than equity/geographic exposure.
+
+The idea is that <b>different risk factors (asset classes) respond well to different market regimes.</b> Projecting and simplifying everything into four quadrants, defined by the combinations of high/low inflation and growth/recession, historical data show different returns depending on the relevant quadrant:
+
+<div align = "center">
+![Bao](/images/blog/quadranti-economia.jpg)
+</div>
+<small><i>Source: <a href="https://www.returnstacked.com/what-is-return-stacking-for-diversification/" target="_blank">Return Stacked Portfolio Solutions </a></i></small>
+
+---
+
+### <b>Filling the plate as much as possible</b>
+
+
+With these assumptions, the classic $60/40$ is no longer enough: at least in an ideal world, it makes sense to include <b>other diversifiers</b> in the portfolio, which is why I decided to build my portfolio around the following asset classes:
+
+- Global equities
+- Global bonds
+- Managed futures
+- Commodity trend
+- Gold
+- Tail risk (deep OTM options)
+
+Not wanting to sacrifice a $60/40$ exposure, to reduce my regrets when stocks and bonds take off, <b>return stacking</b> comes into play: a concept that lets you _"stack"_ additional sources of returns onto a traditional exposure, without having to divide up the space in an allocation that necessarily adds up to $100$.
+
+According to this logic and through the use of <b>futures contracts</b>, it is therefore possible to have an exposure <b>greater than 1 for every EUR/USD/CHF invested.</b>
+
+Suppose we have to invest $1$ and allocate it between bonds and stocks.<br/>
+The classic approach involves investing $X \in [0,1]$ in stocks and $(1-X)$ in bonds.
+
+With return stacking, you still invest an amount $X$ in stocks and add exposure to bonds _(or any other asset class)_ through futures contracts and the maintenance of collateral.<br/>
+Usually, the collateral consists of the remaining $1-X$ as cash but, in some solutions, the portfolio as a whole can serve as collateral.
+
+
+Although there is no explicit financing to buy bonds, the difference between margin and notional value represents <b>the implicit leverage in futures.</b><br/>
+_For example,_ in a portfolio with stock exposure equal to $X$ and bond exposure equal to $(1-X)z$, with $z$ as the futures' implicit multiplier, the bond component gains/loses about $0{.}1z\%$ for a $0{.}1\%$ move in the underlying, ceteris paribus.
+
+
+
+
+_(A semi-technical note: to maintain constant exposure, before each futures contract expires this strategy closes the position and opens an equivalent one with a later maturity (roll): in this way, returns depend both on changes in the underlying and on the cost/benefit of the roll.)_
+
+Luckily, this logic does not need to be implemented manually: nowadays, multiple ETF providers offer financial instruments following this mechanism.
+
+
+<a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a>, _for example_, the main ETF in my portfolio, for every dollar invested:
+
+- allocates $X = 0.9$ to <b>global equities</b> in the traditional way _(applying, alas, an ESG filter...)_
+- uses the remaining cash, $1 - X = 0.1$, as collateral for <b>global bond futures</b>, obtaining bond exposure of about 0.6 for each unit invested in the ETF.
+
+As a result, the ETF represents a $90/60$ allocation to stocks and bonds.
+
+Similarly, <a href="https://www.wisdomtree.com/us/products/capital-efficient/gde" target="_blank">the GDE ETF</a>:
+
+- allocates $x = 0.9$ to <b>US large-cap equities</b>
+- uses the remaining $1 - X = 0.1$ as cash collateral for <b>gold futures</b>, obtaining $90\%$ exposure to the underlying.
+<br/>
+---
+
+### <b>Ingredients, doses, and a pinch of <s>pepper</s> leverage</b>
+
+
+To decide the portfolio weights, I started with a classic 60/40 and, by cross-referencing backtests and other <a href="https://theitalianleathersofa.com/model-portfolio/" target="_blank">Model Portfolio</a>, I weighted asset classes and alternative instruments as follows:
+
+| ETF | Exposure | Allocation |
+| --- | --- | --- |
+| NTSG | Global Equities + Global Bonds  | $60\%$ |
+| COM | Commodities with trend following | $10\%$ |
+| DBMF | Managed Features | $15\%$ |
+| GDE | US Equities + Gold | $10\%$ |
+| TAIL | Deep OTM options | $5\%$ |
+
+which, in its vanilla version _(without further leverage/borrowing)_, produces the following exposures:
+
+| Asset Class | Nominal exposure |
+| --- | --- |
+| Stocks | $63\%$ |
+| Bonds | $36\%$ |
+| Commodities | $10\%$ |
+| Trend | $15\%$ |
+| Gold | $9\%$ |
+| Tail risk | $5\%$ |
+| Total | $138\%$ |
+
+_(Note that the total sum up to $> 100$ due to the use of implicit leverage)_
+
+In addition, as a further parameter to turn up/down and modify the portfolio's risk/return profile, it is possible to take <b>cash on margin</b> _(borrow it)_, in my case rather easily through Interactive Brokers.
+
+By doing so, the allocation changes by multiplying all exposures by a factor $L$, given by $L = (E+D)/E$, where $E$ is equity and $D$ is borrowed cash, subject to the constraint that $E > \text{maintenance requirement}$, calculated by the broker on the positions. In a simplification with a uniform maintenance margin $m$ and gross exposure $G$, $G/E < 1/m$ must therefore hold.<br/>
+_($L$, $E$, and $D$ are not constants, but functions of the portfolio's returns and therefore vary over time.)_
+
+Consequently, my exposure is:
+
+| Asset Class | Formula |
+| --- | --- |
+| Stocks (Global + US Equities) | $(0{.}9 \times \%_{NTSG} + 0{.}9 \times \%_{GDE}) \times L$ |
+| Bonds (US Treasury)| $(0{.}6 \times \%_{NTSG}) \times L$ |
+| Commodities | $\%_{COM} \times L$ |
+| Trend following | $\%_{DBMF} \times L$ |
+| Gold | $(0{.}9 \times \%_{GDE}) \times L$ |
+| Tail risk | $\%_{TAIL} \times L$ |
+
+Setting, for example, $L=1{.}3$, the portfolio becomes:
+
+| Asset Class | Without IB leverage | Effective with $L=1{.}3$ |
+| --- | --- | --- |
+| Stocks (Global + US Equities) | $63\%$ | $81{.}9\%$ |
+| Bonds (US Treasury) | $36\%$ | $46{.}8\%$ |
+| Commodities | $10\%$ | $13{.}0\%$ |
+| Trend following | $15\%$ | $19{.}5\%$ |
+| Gold | $9\%$ | $11{.}7\%$ |
+| Tail risk | $5\%$ | $6{.}5\%$ |
+| <b>Total</b> | $138\%$ | $179{.}4\%$ |
+<br/>
+---
+
+Although my portfolio has changed a lot in recent years, because of my greater awareness and knowledge of the matter, I will not deny that there are still many aspects that do _NOT_ convince me and that require further study _(first and foremost: that damn ESG filter and exposure to US Treasuries),_ but <b>that is another story!</b>
+
+To sum up... I realize that these formulations and complications are far from the _"VWCE and chill..."_ philosophy and are not suited to most retail investors, but:
+1. this is mostly an exercise in style with a "useful" practical upside
+2. I enjoy it quite a lot
+3. this is not financial advice.
+
+Cheers
+
+---
+<br/>
+<b>Learn more</b>
+
+<br/>
+<a href="https://www.returnstacked.com/what-is-return-stacking-for-diversification/" target="_blank">What is Return Stacking? (Return Stacked)</a>
+<br/>
+
+<a href="https://theitalianleathersofa.com/model-portfolio/" target="_blank">Model Portfolio (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/model-portfolio-enhancements/" target="_blank">Model Portfolio Enhancements (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/model-portfolio-enhancements-update/" target="_blank">Model Portfolio Enhancements Update (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/tail-risk-a-quick-guide/" target="_blank">Tail Risk: A Quick Guide (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/ntsg-wisdomtree-global-efficient-core-etf/" target="_blank">NTSG: WisdomTree Global Efficient Core ETF (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://youtu.be/MjmT7RleJUI?si=v7-e3ykq_s3KUebl" target="_blank">How to integrate NTSG into your ETF portfolio (Dani &amp; Dati)</a>
+<br/>
+<a href="https://www.ch.vanguard/en/professional/vanguard-365/understanding-stock-bond-correlations" target="_blank">Understanding the dynamics of stock/bond correlations (Vanguard)</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=zVefLIOAyAk&amp;list=WL&amp;index=63" target="_blank">They are convincing you that stocks and bonds are no longer enough (The Bull Podcast)</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=Db4tPo3d1ew&amp;list=WL&amp;index=65" target="_blank">How to use DBMFE to build a perfect portfolio (Dani &amp; Dati)</a>

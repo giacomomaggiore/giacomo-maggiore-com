@@ -22,8 +22,13 @@ export const metadata: Metadata = {
     description: "Giacomo Maggiore's Insights",
     url: baseUrl,
     siteName: 'Giacomo Maggiore',
+    images: ['/icon.png'],
     locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    images: ['/icon.png'],
   },
   robots: {
     index: true,

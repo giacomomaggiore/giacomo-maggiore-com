@@ -18,11 +18,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 
   const url = `${baseUrl}/blog/${params.slug}`
-  const firstImage = post.content.match(/!\[[^\]]*\]\(([^)\s]+)/)?.[1]
-  const image = new URL(
-    firstImage || `/og?title=${encodeURIComponent(post.metadata.title)}`,
-    baseUrl
-  ).toString()
+  const image = new URL('/icon.png', baseUrl).toString()
 
   return {
     title: post.metadata.title,
