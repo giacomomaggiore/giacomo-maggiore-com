@@ -175,3 +175,207 @@ Cheers
 <a href="https://www.youtube.com/watch?v=zVefLIOAyAk&amp;list=WL&amp;index=63" target="_blank">They are convincing you that stocks and bonds are no longer enough (The Bull Podcast)</a>
 <br/>
 <a href="https://www.youtube.com/watch?v=Db4tPo3d1ew&amp;list=WL&amp;index=65" target="_blank">How to use DBMFE to build a perfect portfolio (Dani &amp; Dati)</a>
+
+<br/>
+<br/>
+---
+
+### <b>Technical Appendix </b>
+
+### <b>A.1 - Questions and limits of private wealth management</b>
+
+A few hours after publishing this article _(28 September 2026, 18:00),_ a close friend raised the following question:
+
+<Quote>
+Where does the portfolio described here stand with respect to the distinction between <b>private wealth management</b> and <b>professional securities trading</b>?
+</Quote>
+
+_For those unfamiliar with Swiss taxation:_ this classification has an important practical consequence:
+- under private wealth management, capital gains from selling securities held as private assets <b>are exempt from income tax</b> _(in short: NO capital gains tax!)_
+- if the activity is classified as professional securities trading, the gains are income from self-employment and are therefore included in taxable income _(in short: they are added to the annual income on which taxes are calculated)_
+
+The <a href="https://www.estv.admin.ch/dam/de/sd-web/oOz28af293pZ/dbst-ks-2012-1-036-d-de.pdf" target="_blank">Circolare ESTV n. 36</a> sets out an initial assessment and <b>rules out professional securities trading</b> when <b>all</b> of the following conditions are met:
+1. the securities sold have been held for at least six months;
+2. the annual transaction volume _(the sum of purchase prices and sale proceeds)_ does not exceed five times the value of securities and cash at the beginning of the tax period;
+3. realized capital gains are not needed to replace missing income for living expenses _(as a rule, this condition is met if the gains are lower than $50\%$ of the net income for the tax period)_;
+4. investments are not financed with third-party capital, or the taxable income from securities _(interest and dividends)_ exceeds the interest expense proportionally attributable to the debt;
+5. the purchase and sale of derivatives are limited to hedging the investor's own securities positions.
+
+Failing to meet one of these conditions removes the initial exclusion, but <b>does not automatically</b> make the investor a professional trader _(in that case, the authority assesses the situation individually)._
+
+In particular, for the portfolio described here:
+- the futures held within NTSG and GDE do not represent personal debt or derivatives transactions made directly by the investor, as they are fund holdings.
+- margin borrowing, _on the other hand,_ represents third-party capital and makes it necessary to check condition 4. For this purpose, I suggest the following <b>simplified model</b>.
+
+Let:
+
+- $E_0$ be the initial equity
+- $D_0$ be the margin debt
+- $L = (E_0 + D_0)/E_0 \ge 1$ be the portfolio's explicit leverage
+- $V_0 = L E_0$ be the invested capital
+- $y_p$ be the ratio between the annual gross taxable income from securities and $V_0$;
+- $i$ be the effective annual cost of debt, including the broker's spread ($\approx \text{Benchmark} + \text{Spread}$).
+
+Since $D_0 = (L-1)E_0$, _under the simplifying assumptions that leverage, taxable return, and interest rate stay constant,_ condition 4 is met when:
+
+$$
+V_0 y_p \ge D_0 i
+\quad\Longleftrightarrow\quad
+L E_0 y_p \ge (L-1)E_0 i.
+$$
+
+After simplifying $E_0$, if $i>y_p$, we obtain the <b>maximum leverage level compatible</b> with the condition:
+
+$$
+L \le L^*(i)=\frac{i}{i-y_p}.
+$$
+
+_On the other hand,_ if $i\le y_p$, the condition is met $\forall L\ge1$.
+
+Equivalently, for $L>1$, the maximum rate is:
+
+$$
+i \le i^*(L)=\frac{L}{L-1}y_p.
+$$
+
+<div align="center">
+![ESTV criterion 4 frontier between explicit leverage and borrowing cost](/images/blog/frontiera-leva-tasse.png)
+</div>
+<small><i>Criterion 4 Frontier max explicit leverage compatible with taxable investment income exceeding attributable interest expense. The black line assumes $y_p=1{.}35\%$; the yellow band shows the hypothetical range $y_p\in[1{.}2\%,1{.}5\%]$.</i></small>
+
+---
+<br/>
+### <b>A.2 - Time horizons and optimal leverage ratios </b>
+
+Still responding to my friend's message, I naturally asked myself:
+
+<Quote>
+Assuming classification as a professional investor _(trader)_ and a non-zero capital gains tax, for which combinations of leverage $L$, horizon $T$, cost of debt $i$, and effective tax rate $t$ does the net wealth of the leveraged strategy exceed that of private wealth management _(without leverage)_ with no capital gains tax?
+</Quote>
+
+The comparison therefore combines two different cases:
+- Scenario A: the same portfolio with explicit leverage $L > 1$ and capital gains tax $t$
+- Scenario B: a portfolio with explicit leverage $L = 1$ _(i.e. no margin debt)_ and no capital gains tax
+
+Let:
+
+- $E_0$ be the initial equity
+- $T$ be the time horizon, expressed in years
+- $r_p$ be the annual compound return of the portfolio without explicit leverage
+- $L=(E+D)/E>1$ be explicit leverage _(kept constant throughout $T$)_
+- $i$ be the annual cost of margin financing
+- $t$ be the total effective tax rate _(applied only to the capital gain in the professional scenario)_
+- $V_t^s$ be the portfolio value at time $t$ before taxes, in scenario $s=A,B$
+- $E_t^s$ be the equity at time $t$ _(after taxes)_, in scenario $s=A,B$
+
+
+In Scenario A, the investor uses leverage $L>1$ and their annual return on equity is, _before taxes:_
+
+$$
+r_e(L)=Lr_p-(L-1)i
+=r_p+(L-1)(r_p-i).
+$$
+
+Wealth at $T$ is, _before capital gains tax_:
+
+$$
+V_T^A=E_0\left[1+r_e(L)\right]^T.
+$$
+
+Assuming that the entire capital gain is realized and taxed only at $T$, we get:
+
+$$
+E_T^A=V_T^A-t\max\left(0,V_T^A-E_0\right).
+$$
+
+Which, when $V_T^A>E_0$, becomes
+
+$$
+E_T^A=E_0\left\{(1-t)
+\left[1+r_p+(L-1)(r_p-i)\right]^T+t\right\}.
+$$
+
+In Scenario B, the investor does not use margin ($L=1$) and pays no capital gains tax:
+
+$$
+E_T^B=E_0(1+r_p)^T.
+$$
+
+_Therefore,_ the leveraged strategy is beneficial if and only if:
+
+$$
+E_T^A>E_T^B
+$$
+
+which, _after substitution,_ becomes:
+
+$$
+(1-t)\left[1+r_p+(L-1)(r_p-i)\right]^T+t
+>(1+r_p)^T.
+$$
+
+Solving the equation for $i$ gives the <b>maximum cost of debt</b> for which the leveraged strategy is beneficial:
+
+$$
+i^*
+=r_p-\frac{1}{L-1}
+\left[
+\left(\frac{(1+r_p)^T-t}{1-t}\right)^{1/T}
+-(1+r_p)
+\right].
+$$
+
+The model is deliberately <b><s>over</s> simplified</b>: it assumes <b>constant</b> returns, borrowing costs, leverage, and tax rates; it <b>does not consider</b> volatility, margin calls, currency changes, taxes paid in the intervening years, and many other real-world complexities. <b>CAGR cannot be leveraged linearly when volatility is present.</b>
+
+---
+
+_For illustration only,_ consider the following numerical examples:
+
+| Variable | Value |
+| --- | ---: |
+| Initial equity $E_0$ | $100'000$ |
+| Annual portfolio return $r_p$ | $8{.}0\%$ |
+| Annual margin cost $i$ | $5{.}5\%$ |
+| Explicit leverage $L$ | $1{.}3$, $1{.}5$, $2{.}0$ |
+| Horizon $T$ | $10$, $20$, $30$ years |
+| Effective tax rate $t$ | $20\%$, $28\%$, $35\%$ |
+
+The final wealth values, _rounded to the nearest unit,_ are:
+
+| $L$ | $T$ | scenario B | scenario A, $t=20\%$ | scenario A, $t=28\%$ | scenario A, $t=35\%$ |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| $1{.}3$ | $10$ | $215'892$ | $205'090$ | $194'581$ | $185'386$ |
+| $1{.}3$ | $20$ | $466'096$ | $448'228$ | $413'405$ | $382'935$ |
+| $1{.}3$ | $30$ | $1'006'266$ | $1'010'759$ | $919'683$ | $839'992$ |
+| $1{.}5$ | $10$ | $215'892$ | $213'778$ | $202'400$ | $192'445$ |
+| $1{.}5$ | $20$ | $466'096$ | $489'374$ | $450'436$ | $416'366$ |
+| $1{.}5$ | $30$ | $1'006'266$ | $1'156'929$ | $1'051'236$ | $958'755$ |
+| $2{.}0$ | $10$ | $215'892$ | $237'126$ | $223'414$ | $211'415$ |
+| $2{.}0$ | $20$ | $466'096$ | $609'299$ | $558'369$ | $513'805$ |
+| $2{.}0$ | $30$ | $1'006'266$ | $1'619'405$ | $1'467'464$ | $1'334'516$ |
+
+and, _as a percentage relative to Scenario B:_
+
+| $L$ | $T$ | $t=20\%$ | $t=28\%$ | $t=35\%$ |
+| ---: | ---: | ---: | ---: | ---: |
+| $1{.}3$ | $10$ | $-5{.}00\%$ | $-9{.}87\%$ | $-14{.}13\%$ |
+| $1{.}3$ | $20$ | $-3{.}83\%$ | $-11{.}30\%$ | $-17{.}84\%$ |
+| $1{.}3$ | $30$ | $+0{.}45\%$ | $-8{.}60\%$ | $-16{.}52\%$ |
+| $1{.}5$ | $10$ | $-0{.}98\%$ | $-6{.}25\%$ | $-10{.}86\%$ |
+| $1{.}5$ | $20$ | $+4{.}99\%$ | $-3{.}36\%$ | $-10{.}67\%$ |
+| $1{.}5$ | $30$ | $+14{.}97\%$ | $+4{.}47\%$ | $-4{.}72\%$ |
+| $2{.}0$ | $10$ | $+9{.}84\%$ | $+3{.}48\%$ | $-2{.}07\%$ |
+| $2{.}0$ | $20$ | $+30{.}72\%$ | $+19{.}80\%$ | $+10{.}24\%$ |
+| $2{.}0$ | $30$ | $+60{.}93\%$ | $+45{.}83\%$ | $+32{.}62\%$ |
+
+_Under these assumptions,_ the benefit of moderate leverage depends heavily on the tax rate and $T$:
+- with $L=1{.}3$, it only appears at $T = 30$ and $t=20\%$
+- increasing leverage to $L=1{.}5$ makes it appear sooner and across more combinations.
+- the benefit increases as $L$ rises but, _precisely in these cases,_ <b>the risks excluded from the model become more relevant!</b>
+<br/>
+---
+
+### <b>A.3 - Backtesting the strategy </b>
+
+Coming soon... _probably in a dedicated article!_
+
