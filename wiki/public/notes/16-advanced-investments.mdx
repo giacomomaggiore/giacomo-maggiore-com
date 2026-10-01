@@ -156,24 +156,34 @@ For expected returns (assuming independent returns):
     - over a single period, on average, you make money;
     - the same applies over multiple periods.
 
-Consider now a swries of monthly returns with m periods in a year. The average annual retrurn solves
+Consider now a series of monthly returns with $m$ periods in a year. The average annual return solves
 
-(1 + \bar R_0,T ^{\text{annual}}) = \prof_i^T (1 + R_T)
+$$
+1 + \bar{R}_{0,T}^{\text{annual}} = \left(\prod_{t=1}^{T}(1 + R_t)\right)^{m/T}
+$$
 
-\implies \bar R_0,T^{annual} = (\prod_i^T (1 + R__t))^m/T  - 1 = (1 + \bar R_O,T)^m  - 1
+$$
+\implies \bar{R}_{0,T}^{\text{annual}} = \left(\prod_{t=1}^{T}(1 + R_t)\right)^{m/T} - 1 = (1 + \bar{R}_{0,T})^m - 1
+$$
 
-The average annual log return is instead 
+The average annual log return is instead:
 
-\bar r_0,T ^annual = \frac{m}{t}\sum__i^T rt = m \bar r_0mT
+$$
+\bar{r}_{0,T}^{\text{annual}} = \frac{m}{T}\sum_{t=1}^{T} r_t = m\bar{r}_{0,T}
+$$
 
-Suppose now that we want to decopose the overal return of the portfolio in the return of N assets, n = 1...N with weight w_n,t in the portfolio.
+Suppose now that we want to decompose the overall return of the portfolio into the returns of $N$ assets, $n = 1, \ldots, N$, with weight $w_{n,t}$ in the portfolio.
 
-The portatoglio retuens in period t + 1 are then:
+The portfolio returns in period $t + 1$ are then:
 
-R_p, t+ 1 = \sum_1 ^N w_n,t R_n t + 1 = w' R_t + 1 
+$$
+R_{p,t+1} = \sum_{n=1}^{N} w_{n,t}R_{n,t+1} = w_t^{\mathsf{T}}R_{t+1}
+$$
 
-r_p, t+ 1 = ln(1 + R_p t+1)
+$$
+r_{p,t+1} = \ln(1 + R_{p,t+1})
+$$
 
-_(note that ordinary returns aggregate in the cross section, but log returns no, therefore):
-- ig you want to compute one period return of a portfolio of assts $\implies$ easier to work with ordinary returns 
-- if you want to comute total retruns or aerage return over multiple perdios $\implies$ log returns
+_(Note that ordinary returns aggregate in the cross section, but log returns do not; therefore):_
+- if you want to compute the one-period return of a portfolio of assets, $\implies$ it is easier to work with ordinary returns;
+- if you want to compute total returns or average returns over multiple periods, $\implies$ use log returns.
