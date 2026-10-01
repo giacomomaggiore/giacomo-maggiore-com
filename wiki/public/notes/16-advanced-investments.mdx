@@ -11,12 +11,12 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 ---
 
-### <b>Index</b>
+### Index
 
 - [Introduction](#introduction)
 - [Strategy Development](#1)
 
-## <b><a id="introduction"><b>Introduction</b> </a></b>
+## <a id="introduction"></a>Introduction
 
 Asset management is about investing in assets to achieve certain goals subject to restrictions.
 
@@ -47,7 +47,7 @@ Different types of asset allocation have different explanatory power for observe
 
 Furthermore, they differ in their quantitative/qualitative approaches: from SAA (the most qualitative), we move through TAA and IAA to pure trading (the most quantitative).
 
-### <b>Performance Measures</b>
+### Performance Measures
 
 We define the arithmetic average of returns as:
 
@@ -66,7 +66,7 @@ $$
 The time-weighted return (TWR) measures the average return for a fixed amount $X$ over $t = 1, 2, \ldots, T$:
 
 $$
-	ext{TWR} = \left(\prod_{t=1}^{T}(1 + R_t)\right)^{1/T} - 1
+\mathrm{TWR} = \left(\prod_{t=1}^{T}(1 + R_t)\right)^{1/T} - 1
 $$
 
 In contrast, the money-weighted return (MWR), also known as the internal rate of return (IRR), measures the average return when variable amounts $X_t$ are invested over $t = 1, 2, \ldots, T$. It is computed by solving for the rate that satisfies:
@@ -78,5 +78,102 @@ $$
 
 ---
 
-## <b><a id="1"><b>Strategy Development</b> </a></b>
+## <a id="1"></a>Strategy Development
 
+Finding ideas is the hard part of strategy development. Conceptually, one can see returns as coming from three sources:
+- <b>asset classes</b>
+- <b>strategy styles</b> (carry, value, trend, volatility)
+- <b>underlying risk factors</b>
+
+For example, here are three sources of returns for some common strategies:
+- <b>constant-allocation strategies</b>: earn risk premia on asset classes over time. The allocation depends on the (unconditional) risk premium, the level of risk, and the timing of losses.
+- <b>timing strategies</b>: rotate among asset classes, with position sizes depending on conditional risk premia and estimates.
+- <b>selection strategies</b>: take long and short positions within an asset class. They usually _do not target_ risk premia, but returns provided by strategy styles.
+
+Testing the strategy is an essential part of the process. Ideally, you should know what to test before downloading the data. Common sources of data are:
+- <b>general data sources</b> (Bloomberg, Datastream, Yahoo Finance)
+- <b>specialized sources</b> (CRSP, Compustat, OptionMetrics)
+
+It is important to be aware of biases and to make sure that dividends and interest are accounted for.
+
+---
+
+### Returns
+
+We distinguish ordinary returns $R_{n,t}$ and log returns $r_{n,t}$. If an asset $n$ has price $P_{n,t}$ at time $t$ and pays interest or dividends (net of tax, for simplicity) $D_{n,t}$, the <b>ordinary return</b> is:
+$$
+R_{n,t} = \frac{P_{n,t} + D_{n,t}}{P_{n,t-1}} - 1
+$$
+
+<b>Log returns</b> are instead given by:
+
+$$
+r_{n,t} = \ln\left(\frac{P_{n,t} + D_{n,t}}{P_{n,t-1}}\right) = \ln(1 + R_{n,t})
+$$
+
+Suppose we invest an amount $V_0$ at $t = 0$ and earn $R_t$ or $r_t$ each period. After $T$ periods, we have:
+
+$$
+V_T = V_0 \prod_{t=1}^{T}(1 + R_t) = V_0 \exp\left(\sum_{t=1}^{T} r_t\right)
+$$
+
+We can also write <b>cumulative returns</b> $R_{0,T}$ and $r_{0,T}$:
+
+$$
+R_{0,T} = \frac{V_T}{V_0} - 1 = \prod_{t=1}^{T}(1 + R_t) - 1 \neq \sum_{t=1}^{T} R_t
+$$
+
+$$
+r_{0,T} = \ln\left(\frac{V_T}{V_0}\right) = \sum_{t=1}^{T} r_t
+$$
+
+_(Note that log returns are time-additive, whereas ordinary returns are not.)_
+
+Furthermore, for ordinary returns, the average return per period is the <b>geometric mean</b>:
+
+$$
+\bar{R}_{0,T} = \left(\frac{V_T}{V_0}\right)^{1/T} - 1 = \left(\prod_{t=1}^{T}(1 + R_t)\right)^{1/T} - 1
+$$
+
+For log returns, the average return per period is the <b>arithmetic mean</b>:
+
+$$
+\bar{r}_{0,T} = \frac{1}{T} \ln\left(\frac{V_T}{V_0}\right)
+$$
+
+But when should we consider ordinary versus log returns?
+
+- <b>For realized returns</b>:
+    - If the <b>arithmetic average ordinary return</b> is zero, you lose money unless every return is zero.
+    - If the <b>geometric average ordinary return</b> is zero, you break even.
+    - If the <b>arithmetic average log return</b> is zero, you break even.
+
+For expected returns (assuming independent returns):
+- For <b>ordinary returns</b>, if the expected one-period return is zero, then:
+    - over a single period, on average, you break even;
+    - over multiple periods, on average, you break even.
+- For <b>log returns</b>, if the expected one-period log return is zero, then:
+    - over a single period, on average, you make money;
+    - the same applies over multiple periods.
+
+Consider now a swries of monthly returns with m periods in a year. The average annual retrurn solves
+
+(1 + \bar R_0,T ^{\text{annual}}) = \prof_i^T (1 + R_T)
+
+\implies \bar R_0,T^{annual} = (\prod_i^T (1 + R__t))^m/T  - 1 = (1 + \bar R_O,T)^m  - 1
+
+The average annual log return is instead 
+
+\bar r_0,T ^annual = \frac{m}{t}\sum__i^T rt = m \bar r_0mT
+
+Suppose now that we want to decopose the overal return of the portfolio in the return of N assets, n = 1...N with weight w_n,t in the portfolio.
+
+The portatoglio retuens in period t + 1 are then:
+
+R_p, t+ 1 = \sum_1 ^N w_n,t R_n t + 1 = w' R_t + 1 
+
+r_p, t+ 1 = ln(1 + R_p t+1)
+
+_(note that ordinary returns aggregate in the cross section, but log returns no, therefore):
+- ig you want to compute one period return of a portfolio of assts $\implies$ easier to work with ordinary returns 
+- if you want to comute total retruns or aerage return over multiple perdios $\implies$ log returns
