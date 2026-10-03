@@ -1,18 +1,25 @@
-import { BlogPosts } from 'app/components/notes'
-import 'katex/dist/katex.min.css';
+import { NotesList } from './NotesList'
+import { formatDate, getNotes } from './utils'
 
 export const metadata = {
   title: 'Notes',
-  description: 'Read my blog.',
+  description: 'Read my notes.',
 }
 
 export default function Page() {
+  const notes = getNotes()
+    .map((note) => ({
+      ...note,
+      formattedDate: formatDate(note.metadata.publishedAt),
+    }))
+    .sort(
+      (a, b) =>
+        +new Date(b.metadata.publishedAt) - +new Date(a.metadata.publishedAt)
+    )
+
   return (
     <section>
-      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Notes</h1>
-      <BlogPosts />
-
-      
+      <NotesList notes={notes} />
     </section>
   )
 }

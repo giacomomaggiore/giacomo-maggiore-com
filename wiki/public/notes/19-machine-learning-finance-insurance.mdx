@@ -224,7 +224,7 @@ $$
 In this formula, $\alpha$ is the <b>quantile</b> we want to predict and it determines the asymmetry of the loss. Indeed, in the pinball loss function, the penalty is proportional to $1- \alpha$, therefore:
 - for $\alpha > 1/2$: _underprediction_ is penalized more
 - for $\alpha < 1/2$: _overprediction_ is penalized more
-- for $\alpha = 1/2$: _both directional_ errors have the same cost
+- for $\alpha = 1/2$: _errors in both directions_ have the same cost
 
 We firstly note that:
 - $\partial_+ \ell_{\alpha}(\mu) = \alpha - \mathbf{1}_{\{\mu < 0\}}$
@@ -260,7 +260,7 @@ $$
 \end{aligned}
 $$
 
-and we can call this <b>weak law of large numbers</b>.
+and we can call this the <b>weak law of large numbers</b>.
 
 _Intuition: with the training data growing, variance approaches zero_.
 
@@ -373,11 +373,13 @@ If the empirical loss minimization problem, i.e. $\min \frac{1}{m} \sum_{i=1}^m 
 If $\hat f_m^{\mathcal{H}}$ exists, it is random because it depends on the random training sample. In this case, its <b>sampling error (estimation error)</b> is the difference between its true loss and the population loss available in $\mathcal{H}$ _(it results from minimizing the empirical loss instead of the expected loss; it typically decreases with increasing sample size $m$)_, i.e.:
 
 $$
-    \text{Sampling Error}
-= \mathbb{E}[\ell(\hat f_m^{\mathcal{H}}(X),Y)]
+\begin{aligned}
+\text{Sampling Error}
+&= \mathbb{E}[\ell(\hat f_m^{\mathcal{H}}(X),Y)]
 - \inf_{f \in \mathcal{H}} \mathbb{E}[\ell(f(X),Y)] \\
-= \int_{\mathcal{X} \times \mathcal{Y}} \ell(\hat f_m^{\mathcal{H}}(x),y) \, \rho(dx,dy)
+&= \int_{\mathcal{X} \times \mathcal{Y}} \ell(\hat f_m^{\mathcal{H}}(x),y) \, \rho(dx,dy)
 - \inf_{f \in \mathcal{H}} \int_{\mathcal{X} \times \mathcal{Y}} \ell(f(x),y) \, \rho(dx,dy) \geq 0
+\end{aligned}
 $$
 
 ---
@@ -398,7 +400,7 @@ $$
 Note that the first term is the empirical loss achieved by the numerical solution, the second is the lowest empirical loss achievable by any function in $\mathcal{H}$. Note also that this error is different _from the sampling error_:
 - the optimization error measures failure to solve the training problem
 - the sampling error measures the gap between training performance and test data performance
-
+<br/>
 ---
 <br/>
 <b>Decomposition of the Generalization Error</b>
@@ -461,7 +463,7 @@ For a given $m$ and an increasing $\mathcal{H}$ _(i.e. the set of models we can 
 - sampling error tends to increase
 - there's a tradeoff between approximation error and sampling error _(similar to the bias-variance tradeoff)_
 - for small data $\mathcal{H}$ should be simple _(and for big data, it can be complex!)_
-
+<br/>
 ---
 <br/>
 <b>Training Error and Test Error</b>
@@ -535,11 +537,796 @@ Ridge regression can be useful when features are correlated. In this situation, 
 
 When both penalties are present the method is called <b>elastic net</b>, since it combines LASSO's ability to set coefficients to zero and ridge regression's shrinkage of correlated features.
 
-
-
+---
+<br/>
 ## <a id="2"><b>2 Linear Regression</b></a>
 
+
+<b>Ordinary Least Squares (OLS)</b>
+
+We consider the model $Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_d X_d + \epsilon$, where $\epsilon \sim \mathcal{N}(0, \sigma^2)$ is independent of $(X_1, \ldots, X_d)$.
+
+
+Let $(x_{i1}, \ldots, x_{id}, y_i, \epsilon_i)$, for $i = 1, \ldots, m$, be independent and identically distributed realizations of $(X_1, \ldots, X_d, Y, \epsilon)$. In this case, we can write the model in matrix form:
+
+$$
+\begin{aligned}
+y &= A\beta + \epsilon, \\
+y &= \begin{pmatrix} y_1 \\ \vdots \\ y_m \end{pmatrix}, \qquad
+A = \begin{pmatrix}
+1 & x_{11} & \cdots & x_{1d} \\
+\vdots & \vdots & & \vdots \\
+1 & x_{m1} & \cdots & x_{md}
+\end{pmatrix}, \\
+\beta &= \begin{pmatrix} \beta_0 \\ \vdots \\ \beta_d \end{pmatrix}, \qquad
+\epsilon = \begin{pmatrix} \epsilon_1 \\ \vdots \\ \epsilon_m \end{pmatrix}.
+\end{aligned}
+$$
+
+Here, $A$ is the design matrix and $\beta$ is the vector of coefficients. Typically, we have $m \geq d + 1$ (i.e. we have more observations than parameters).
+
+In this scenario, we define the <b>empirical loss minimization under the square loss function</b> _(OLS, ordinary least squares)_ as:
+
+$$
+\min_{b \in \mathbb{R}^{d+1}} \lVert Ab - y \rVert_2^2
+= \min_{b \in \mathbb{R}^{d+1}} \sum_{i=1}^m \left(\sum_{j=0}^d x_{ij} b_j - y_i\right)^2,
+$$
+
+where $x_{i0} = 1$ for all $i$.
+
+Since the function is convex in $b \in \mathbb{R}^{d+1}$, we can minimize it using partial derivatives. A minimizer $b$ satisfies
+
+$$
+\nabla_b \lVert Ab - y \rVert_2^2 = 2A^T(Ab-y)=0,
+$$
+
+which gives the following _normal equation_:
+
+$$
+A^T A b = A^T y.
+$$
+
+To solve the normal equation, we note that if the columns are <b>linearly independent</b>, $A^T A$ is invertible, and the unique solution of $A^T A b = A^T y$ is defined by:
+
+$$
+\hat \beta = (A^T A)^{-1} A^T y.
+$$
+
+If we condition $\hat{\beta}$ on $X_{ij}$ (i.e. if we rewrite $y=A\beta+\epsilon$), we obtain:
+
+$$
+\hat{\beta} = (A^T A)^{-1}A^T(A\beta+\epsilon)
+= \beta + (A^T A)^{-1}A^T\epsilon
+\sim \mathcal{N}_{d+1}\left(\beta,\sigma^2(A^T A)^{-1}\right).
+$$
+
+Thus, $\hat{\beta}$ has a multivariate normal distribution with mean $\beta$ and covariance matrix $\sigma^2(A^T A)^{-1}$; in other words, $\hat{\beta}$ is <b>unbiased</b>.
+
+We also note that $A^T A$ is always a <b>symmetric positive semidefinite</b> $l \times l$ matrix, for $l=d+1$ (the number of columns of $A$). In this case, we consider the spectral decomposition of $A^T A$:
+
+$$
+A^T A = V\Lambda V^T,
+$$
+
+for an orthogonal $V \in \mathbb{R}^{l\times l}$ and a diagonal $\Lambda \in \mathbb{R}^{l\times l}$ with diagonal entries $\lambda_1 \geq \cdots \geq \lambda_l \geq 0$.
+
+In this case, we define the <b>pseudoinverse</b> of $A$ as:
+
+$$
+(A^T A)^\dagger := V\Lambda^\dagger V^T,
+\qquad
+\Lambda^\dagger
+=
+\operatorname{diag}\left(
+\mathbf{1}_{\{\lambda_j>0\}}\lambda_j^{-1}
+\right)_{j=1}^{l}.
+$$
+
+
+<b>Lemma (columns of $A$ linearly dependent)</b>
+
+If the columns of $A$ are linearly dependent, the normal equation $A^T A b = A^T y$ has several solutions, and
+
+$$
+\hat \beta = (A^T A)^\dagger A^T y \in \mathbb{R}^l
+$$
+
+is the solution with the smallest $\lVert\cdot\rVert_2$-norm.
+
+_Recall that the $\lVert\cdot\rVert_2$-norm is defined as:
+
+$$
+\lVert b \rVert_2 = \sqrt{\sum_{j=1}^{l} b_j^2}.
+$$
+
+_Recall: if the columns are linearly dependent, $\operatorname{rank}(A) < l = d + 1$ and $A^T A$ is singular, so its determinant is zero.<br/>In practical terms, this means that the coefficients are _not uniquely determined_ by the data, so the pseudoinverse then selects the coefficient vector with the smallest Euclidean norm._
+<br/>_Consider, as a real-world example, that we want to predict house prices and use a model that considers both:_
+- house area in square meters $X_1$
+- house area in square meters $X_2$
+
+In this case, the variables contain the same information, i.e. $X_2 \approx 10.7 X_1$, therefore the corresponding columns in the design matrix are linearly dependent and the model cannot uniquely determine separate coefficients _(in practice: one variable should be removed)_.
+
+<b>Proof of the Lemma</b>
+
+We want to prove that $\hat\beta = (A^T A)^\dagger A^T y$ satisfies the normal equation defined above.
+
+Let
+
+$$
+r = \operatorname{rank}(A) = \operatorname{rank}(A^T) < \min\{m,l\}.
+$$
+
+If $A^TAv=0$, then
+
+$$
+\|Av\|_2^2 = v^T A^TAv = 0.
+$$
+
+Therefore, $Av=0$. Conversely, if $Av=0$, then $A^TAv=0$. Hence,
+
+$$
+\ker(A^TA)=\ker(A)=\{x:Ax=0\}.
+$$
+
+It follows from the rank-nullity theorem that
+
+$$
+\begin{aligned}
+\dim(\operatorname{Im}(A^TA))
+&= l-\dim(\ker(A^TA)) \\
+&= l-\dim(\ker(A)) \\
+&= r \\
+&= \dim(\operatorname{Im}(A^T)).
+\end{aligned}
+$$
+
+Since $\operatorname{Im}(A^TA)\subseteq\operatorname{Im}(A^T)$ and the two spaces have the same dimension,
+
+$$
+\operatorname{Im}(A^TA)=\operatorname{Im}(A^T).
+$$
+
+Recall that $\operatorname{Im}(A)$ is the image of a linear map, also called its range or column space:
+
+$$
+\operatorname{Im}(A)=\{Ax:x\in\mathbb{R}^l\}.
+$$
+
+Moreover, _by the spectral decomposition:_
+
+$$
+A^TA=V\Lambda V^T,
+$$
+
+where $V$ is orthogonal and
+
+$$
+\lambda_1,\ldots,\lambda_r>0,
+\qquad
+\lambda_{r+1}=\cdots=\lambda_l=0.
+$$
+
+Therefore we have:
+
+$$
+\operatorname{Im}(A^T)=\operatorname{Im}(A^TA)
+=\operatorname{span}(v_1,\ldots,v_r),
+$$
+
+where $v_1,\ldots,v_r$ are the first $r$ columns of $V$, corresponding to the positive eigenvalues. In particular, for some coefficients $a_i$, we have:
+$$
+A^Ty=\sum_{i=1}^r a_i v_i
+$$
+
+
+Denote now by $ Q_r=V\Lambda\Lambda^\dagger V^T$ the <b>orthogonal projection</b> onto $\operatorname{span}(v_1,\ldots,v_r)$. Consequently,
+
+$$
+\begin{aligned}
+A^TA\hat\beta
+&=A^TA(A^TA)^\dagger A^Ty \\
+&=V\Lambda\Lambda^\dagger V^T A^Ty \\
+&=Q_rA^Ty \\
+&=A^Ty,
+\end{aligned}
+$$
+
+because $A^Ty$ already belongs to $\operatorname{span}(v_1,\ldots,v_r)$. Thus, $\hat\beta$ satisfies the normal equation.
+
+We now prove that $\hat\beta$ is the solution with the smallest $\|\cdot\|_2$-norm.
+<br/>Since $ \hat\beta=(A^TA)^\dagger A^Ty=V\Lambda^\dagger V^T A^Ty, $ we have the following:
+
+$$
+\hat\beta\in\operatorname{span}(v_1,\ldots,v_r).
+$$
+
+Since $A^T A$ is singular, there are other solutions, and any other solution can be written as $\hat\beta+b$. Since both $\hat\beta+b$ and $\hat\beta$ satisfy the normal equation,
+
+$$
+A^TA(\hat\beta+b)=A^Ty=A^TA\hat\beta.
+$$
+
+Subtracting gives $ A^TAb=0 $, so we have:
+
+$$
+b\in\ker(A^TA)=\operatorname{span}(v_{r+1},\ldots,v_l).
+$$
+
+So $b$ is orthogonal to $\hat\beta$, by the Pythagorean theorem,
+
+$$
+\|\hat\beta+b\|_2^2
+=\|\hat\beta\|_2^2+\|b\|_2^2
+\geq \|\hat\beta\|_2^2.
+$$
+
+Therefore, $\hat\beta$ is the solution of the normal equation with the smallest Euclidean norm.
+
+---
+<br/>
+<b>Singular Value Decomposition (SVD)</b>
+
+<b>Theorem</b>
+
+Let $A$ be an $m \times l$ matrix of rank $r \leq \min\{m,l\}$. Then all the following hold:
+- there exists an <b>orthonormal basis</b> $v_1,\ldots,v_l$ of $\mathbb{R}^l$ consisting of eigenvectors of $A^T A$ with eigenvalues $\lambda_1 \geq \cdots \geq \lambda_r > 0$ and $\lambda_{r+1}=\cdots=\lambda_l=0$ _(the eigenvalues corresponding to the independent directions are positive, while the others are zero)_;
+- for $i=1,\ldots,r$, $Av_i$ is an eigenvector of $AA^T$ with eigenvalue $\lambda_i$;
+- $\mu_i=\lambda_i^{-1/2}Av_i$ are <b>orthonormal eigenvectors</b> of $AA^T$ with eigenvalues $\lambda_i$;
+- $A=\sum_{i=1}^r\sigma_i\mu_i v_i^T$ with $\sigma_i=\sqrt{\lambda_i}$ _(this is the SVD of $A$)_;
+- the pseudoinverse of $A$ is given by $A^\dagger=\sum_{i=1}^r\sigma_i^{-1}v_i\mu_i^T$;
+- in particular, for all $y\in\mathbb{R}^m$, $\hat\beta=A^\dagger y\in\mathbb{R}^l$ is the minimizer of $\|Ab-y\|_2$ with the minimal $\|\cdot\|_2$ norm.
+
+_The proof is left to the reader... or to the Giacomo of the future with some more time!_
+
+<b>Corollary</b>
+
+Let $A$ be an $m \times l$ matrix of rank $r \leq \min(m,l)$. <br/>Then $A$ has a <b>singular value decomposition</b> of the form
+
+$$
+A=U\Sigma V^T, \qquad A^\dagger=V\Sigma^\dagger U^T.
+$$
+
+- $U$ is an orthogonal $m \times m$ matrix;
+- $V$ is an orthogonal $l \times l$ matrix;
+- $\Sigma$ and $\Sigma^\dagger$ are diagonal $m \times l$ and $l \times m$ matrices, respectively, of the forms:
+
+$$
+\Sigma =
+\begin{pmatrix}
+\sigma_1 & 0 & \cdots & \cdots & 0 \\
+0 & \sigma_2 & \cdots & \cdots & \vdots \\
+\vdots & \vdots & \ddots & & \vdots \\
+\vdots & \vdots & & \sigma_r & \vdots \\
+0 & \cdots & \cdots & \cdots & 0
+\end{pmatrix},
+\qquad
+\Sigma^\dagger =
+\begin{pmatrix}
+\sigma_1^{-1} & 0 & \cdots & \cdots & 0 \\
+0 & \sigma_2^{-1} & \cdots & \cdots & \vdots \\
+\vdots & \vdots & \ddots & & \vdots \\
+\vdots & \vdots & & \sigma_r^{-1} & \vdots \\
+0 & \cdots & \cdots & \cdots & 0
+\end{pmatrix}.
+$$
+
+for $\sigma_i = \sqrt{\lambda_i}$, where $\lambda_i$ are the positive eigenvalues of $A^T A$.
+
+---
+<br/>
+<b>Regularization by Truncating the Pseudoinverse</b>
+
+If the design matrix $A$ _(recall: composed of $1, x_{11}, \ldots, x_{1d}, \ldots, x_{m1}, \ldots, x_{md}$, with $m$ observations and $d$ features)_ has <b>small positive singular values</b>:
+
+- $\hat{\beta} = A^\dagger y = A^\dagger(A\beta + \epsilon)$ is <b>sensitive to the noise</b> $\epsilon = (\epsilon_1, \ldots, \epsilon_m)$
+- the numerical computation of $A^\dagger = \sum_{i=1}^r \sigma_i^{-1}v_i u_i^T$ becomes unstable (the pseudoinverse contains the term $\sigma_i^{-1}$, so if the singular value $\sigma_i$ is small, the noise component in that direction is multiplied by the large factor $1/\sigma_i$).
+
+In this case, we can define a <b>threshold</b> $c > 0$ and define the <b>truncated SVD</b> $A_c$ and the <b>truncated pseudoinverse</b> $A_c^\dagger$ as:
+
+$$
+A_c = \sum_{i=1}^r \sigma_i \mathbf{1}_{\{\sigma_i > c\}}u_i v_i^T = \sum_{i=1}^k \sigma_i u_i v_i^T, \qquad k = \#\{i : \sigma_i > c\}.
+$$
+
+$$
+A_c^\dagger = \sum_{i=1}^k \sigma_i^{-1}v_i u_i^T.
+$$
+
+Conditioned on $X_{ij}=x_{ij}$, we can also define $\hat{\beta}_c$ as:
+
+$$
+\hat{\beta}_c = A_c^\dagger y = A_c^\dagger A\beta + A_c^\dagger\epsilon
+= Q_k\beta + \sum_{i=1}^k \sigma_i^{-1}v_i u_i^T\epsilon.
+$$
+
+_Intuition: $Q_k\beta$ is the signal that survives the truncation, and $A_c^\dagger$ is the amplified noise._
+
+We can consider $c$ as a <b>threshold hyperparameter</b> that balances bias and variance. Indeed, for an increasing $c$:
+- the bias of $\hat{\beta}_c$, $Q_k\beta-\beta$, increases because $Q_k\beta$ contains less information
+- the Frobenius norm of the covariance matrix decreases because more $\sigma_i^{-1}$ terms are removed _(recall that the Frobenius norm is defined as $
+\|M\|_F = \sqrt{\sum_{i=1}^{p}\sum_{j=1}^{q} m_{ij}^2} = \sqrt{\operatorname{tr}(M^T M)}$)._
+<br/>
+---
+<br/>
+<b>Ridge Regression</b>
+
+As briefly mentioned in the introduction chapter, we can introduce a penalty term to force the estimate $\hat\beta$ to have a small Euclidean norm. That is, we can solve the following optimization problem for a hyperparameter $\lambda > 0$:
+
+$$
+\min_{b \in \mathbb{R}^{d+1}} \left(\|Ab-y\|_2^2 + \lambda\|b\|_2^2\right).
+$$
+
+_As always_, $b$ is a minimizer if and only if:
+
+$$
+\nabla_b\left(\|Ab-y\|_2^2 + \lambda\|b\|_2^2\right)=0
+\iff A^T A b - A^T y + \lambda b = 0
+\iff (A^T A + \lambda I_l)b = A^T y.
+$$
+
+If we solve for $b$, we obtain the following solution $\hat\beta_\lambda$:
+
+$$
+\hat\beta_\lambda = (A^T A + \lambda I_l)^{-1}A^T y
+= \sum_{i=1}^r \frac{\sigma_i}{\lambda_i+\lambda}v_i u_i^T y,
+$$
+where $\lambda_i=\sigma_i^2$ are the positive eigenvalues of $A^T A$.
+
+Conditioned on $X_{ij}=x_{ij}$, we obtain:
+
+$$
+\hat\beta_\lambda
+= \sum_{i=1}^r \frac{\lambda_i}{\lambda_i+\lambda}v_i v_i^T\beta
++ \sum_{i=1}^r \frac{\sigma_i}{\lambda_i+\lambda}v_i u_i^T\epsilon
+\sim \mathcal{N}_{d+1}\left(
+\sum_{i=1}^r \frac{\lambda_i}{\lambda_i+\lambda}v_i v_i^T\beta,
+\sigma^2\sum_{i=1}^r \frac{\lambda_i}{(\lambda_i+\lambda)^2}v_i v_i^T
+\right).
+$$
+
+We clearly see that, _for an increasing $\lambda$:_
+- the bias of $\hat\beta_\lambda$, $\sum_{i=1}^r \frac{\lambda_i}{\lambda_i+\lambda}v_i v_i^T\beta - \beta$, increases;
+- the Frobenius norm of the covariance matrix decreases.
+
+_Generally speaking_, we do not penalize the intercept in ridge regression, since it represents the baseline of the response, so we exclude it from the penalty. The optimization problem therefore becomes, for a hyperparameter $\lambda > 0$:
+
+$$
+\min_{b \in \mathbb{R}^{d+1}} \left\{\|Ab-y\|_2^2 + \lambda \sum_{j=1}^d b_j^2\right\}.
+$$
+
+
+---
+<br/>
+<b>LASSO (Least Absolute Shrinkage and Selection Operator)</b>
+
+_Again,_ as mentioned in the introductory chapter, we can introduce a penalty term to force $\hat\beta$ to have a small $\ell^1$-norm; i.e., we can solve the following optimization problem for a hyperparameter $\lambda > 0$:
+
+$$
+\min_{b \in \mathbb{R}^{d+1}} \left\{\|Ab-y\|_2^2 + \lambda \sum_{j=1}^d |b_j|\right\}.
+$$
+
+Note that this is a <b>non-smooth convex</b> optimization problem, _i.e. the absolute-value function has a kink _(the derivative does not exist)_ at zero and is convex but not differentiable there._
+
+For this reason, the $\ell^1$-penalty tends to shrink coefficients to zero and, _therefore,_ leads to a sparse solution $\hat\beta_\lambda$ (intuition: minimizing the sum of absolute values makes exact zeros attractive, so some coefficients can vanish entirely).
+
+---
+<br/>
+<b>Variable Standardization</b>
+
+Consider now a solution $b = (b_0, \ldots, b_d)^T$ that solves $A^T A b = A^T y$. The first line of the vector equation gives:
+
+$$
+ m b_0 + \sum_{i=1}^m \sum_{j=1}^d x_{ij} b_j = \sum_{i=1}^m y_i
+ \implies b_0 = \bar y - \sum_{j=1}^d \bar x_j b_j.
+$$
+
+Here, $\bar y$ and $\bar x_j$ denote the sample averages.
+
+If we consider the case $\bar x_1 = \cdots = \bar x_d = \bar y = 0$, then $b_0 = 0$, so the first column of 1s in $A$ _(recall that the design matrix has a first column full of 1s)_ is <b>redundant!</b>
+
+To avoid this, we can standardize the variables $x$ and $y$; _i.e. we can transform them as follows:_
+
+$$
+\tilde x_{ij} = \frac{x_{ij} - \bar x_j}{s_j},
+\qquad
+\tilde y_i = \frac{y_i - \bar y}{s_y}.
+$$
+
+Here,
+$$
+s_j^2 = \frac{1}{m} \sum_{i=1}^m (x_{ij} - \bar x_j)^2,
+\qquad
+s_y^2 = \frac{1}{m} \sum_{i=1}^m (y_i - \bar y)^2.
+$$
+
+Therefore, we can proceed with <b>standardized linear regression</b>, i.e. solving the following optimization problem:
+
+$$
+\min_{b \in \mathbb{R}^d} \lVert \tilde A b - \tilde y \rVert_2^2.
+$$
+
+Once we find a minimizer $\hat\beta$ for this problem, the prediction for a new data point $x = (x_1, \ldots, x_d)$ is
+
+$$
+\frac{\hat y - \bar y}{s_y}
+= \sum_{j=1}^d \frac{x_j - \bar x_j}{s_j} \hat\beta_j
+\implies
+\hat y = s_y \sum_{j=1}^d \frac{x_j - \bar x_j}{s_j} \hat\beta_j + \bar y.
+$$
+
+_Generally speaking,_ <b>standardization is unnecessary</b>
+- for OLS without regularization
+- when the original units are meaningful and we want interpretable coefficients
+
+Furthermore, <b>standardizing the input variables</b> is useful:
+- in regularized regression _(e.g. truncated SVD, ridge, LASSO, and elastic net) because penalties depend on the magnitude of the coefficients
+- for comparing coefficient sizes, since standardization makes them easier to compare across different scenarios/input variables
+
+Secondly, <b>standardizing both the input and the target variables</b> is useful:
+- if we want standardized regression coefficients
+- if we are comparing models across targets with different scales
+- in this case, the intercept is not optimized _(since it is zero from standardization of $x,y$)_, so the regularization does not penalize the intercept _(since it estimates only the coefficients)_.
+
+<br/>
+---
+<br/>
+<b>Cross validation</b>
+
+Cross-validation refers to a family of <b>model validation methods</b> for assessing how a trained model generalizes to unseen data. One particular cross-validation method is called <b>k-fold cross-validation</b>, and it consists of:
+- randomly partitioning the data into $k$ subgroups
+- retaining a single subgroup as <b>validation data</b> and using the remaining $k-1$ subgroups to train the model
+- repeating the process $k$ times and calculating the empirical loss each time
+- using the <b>average validation loss</b> over $k$ groups as an estimate of the <b>generalization error</b>
+
+Note that this method can be used to find the <b>optimal regularization parameters</b> _(e.g. the threshold $c$ or the hyperparameters in LASSO and ridge regression)_ by picking the regularization parameters that yield the <b>smallest average validation loss</b>.
+<br/>In this case, if cross-validation is used to find hyperparameters, the resulting prediction function should be tested and evaluated on an _independent test dataset_.
+
+---
+
+<br/>
+<b>Numerical and Categorical Data</b>
+
+We now spend some time understanding the different types of data common in ML.
+
+- <b>Numerical data</b>: data in $\mathbb{N}$ or $\mathbb{R}$ for which the natural order has meaning; they can be both _discrete_ and _continuous_
+- <b>Categorical data</b>: discrete data without a natural order _(e.g. "married"/"unmarried", postal codes, etc.)_
+- <b>Unclear cases</b>: some data do not fit into one category _(e.g. $\{\text{low}, \text{medium}, \text{high}\}$ could be treated as either categorical or numerical data)_
+<br/>
+---
+<br/>
+<b>One-hot and Dummy Encoding</b>
+
+Suppose categorical data take values in $\{1,\ldots,k\}$, but the natural order does _not_ have any meaning. <br/>If there are only two categories, such as A and B, they can be encoded with 0 and 1 easily. <br/>However, things get a bit more complicated when $k \geq 3$, i.e. when we have more values available. In this case, we have the following alternatives:
+- <b>One-hot encoding</b>: if $k \geq 3$, it can be embedded in $\mathbb{R}^k$ via:
+
+$1 \mapsto (1,0,\ldots,0), \quad 2 \mapsto (0,1,\ldots,0), \quad k \mapsto (0,0,\ldots,1)$
+
+- <b>Dummy encoding</b>: if $k \geq 3$, it can be embedded alternatively in $\mathbb{R}^{k-1}$ via:
+
+$1 \mapsto (0,\ldots,0), \quad 2 \mapsto (1,0,\ldots,0), \quad k \mapsto (0,0,\ldots,1)$
+
+_(note the position of the 1s in the vector!)_
+
+- <b>Random embeddings</b>: sometimes $\{1,\ldots,k\}$ can be embedded in $\mathbb{R}^q$ for $q \leq k$ with alternative approaches.
+<br/>
+---
+<br/>
+<b>Feature Engineering</b>
+
+Sometimes the performance of a linear regression can be improved significantly by transforming and combining features.<br/>Suppose we have the original features $x_1,\ldots,x_d \in \mathbb{R}$.
+
+Given this initial data set, there are operations we can perform, i.e. many $f(x)$ we can apply to the original $x_1,\ldots,x_d$ _(e.g. $e^{\lambda x}$, $x_1x_2$, $|x_2-m|$, $(x_2-m)^2$), but note that these operations often require <b>expert knowledge</b>.
+
+---
+<br/>
+<b>Data cleaning, missing data, and imputation</b>
+
+Data cleaning refers to the practice of removing duplicates or irrelevant observations or, more complexly, identifying extreme values that could skew the statistics. <br/>
+Furthermore, in the presence of missing data, i.e. given a row vector $(x_{i1},\ldots,x_{id})$, if it has a missing component $x_{ij}$, we can:
+- remove the whole row _(but in this case we are reducing the amount of data we have!)_
+- impute the missing data by:
+    - using the average of $x_{i'j}$
+    - using the most frequent category
+    - predicting the missing data point from existing data
+    - drawing the missing data point from the learned conditional distribution
+
+<br/>
+---
+<br/>
 ## <a id="3"><b>3 Gradient Descent</b></a>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/gradient-descent.png)
+</div>
+
+_Imagine you are lost on a foggy mountain and you have to reach the lowest valley point _(i.e. you have to come back to the parking lot after your hike)_. Since you cannot see anything, by carefully analyzing and feeling the slope of the terrain under your feet, you find the direction that goes downhill more steeply... this could be a nice starting point to understand gradient descent, but now, let's deep dive into the technicalities!
+
+<b>The Grid Method</b>
+
+Suppose we have a function h we want to minimize and suppose $h : [0,1]^d \to \mathbb{R} $ is a <b>L-Lipschitz</b> function, i.e. for some constants $L \geq 0$:
+
+$$
+| h(x) - h(y) | \leq L \| x - y \|_2
+$$
+
+We try now to minimize h with the Grid Method:
+- we evaluate h at the $(n + 1)^d$ grid points $(i_1/n, \ldots, i_d/n)$
+- we solve $\min_{0 \leq i_1,\ldots,i_d \leq n} h(i_1/n,\ldots,i_d/n)$, i.e. we choose the smallest value
+- we now want to compare $\bar x$ with the true minimizer $x^*$; to do that, denote by $\bar x$ the grid point closest to $x^* \in [0,1]^d$ for h
+- so we have: $\| \bar x - x^* \|_2 \leq \sqrt{d}/2n$
+- if we apply the Lipschitz condition, because h is L-Lipschitz, we have
+
+$$
+\min_{0 \leq i_1,\ldots,i_d \leq n} h(i_1/n,\ldots,i_d/n) \leq h(\bar x) \leq h(x^*) + \frac{L\sqrt{d}}{2n}
+$$
+
+This tells us how much the grid solution is at most worse compared to the optimum solution $x^*$.
+
+Note that, if we want an <b>accuracy</b> of $\epsilon > 0$, we need:
+
+$$
+\frac{L \sqrt{d}}{2n} \leq \epsilon \implies n \geq \frac{L \sqrt{d}}{2\epsilon}
+$$
+
+so we set
+$(\lceil\frac{L \sqrt{d}}{2 \epsilon}\rceil + 1)^d$ function evaluations... and this, _of course_, is <b>infeasible</b> in high dimension $d$ _(we call this problem the curse of dimensionality!)_
+
+---
+<br/>
+
+<b>Convex Function</b>
+
+We now consider much nicer functions... i.e. <b>convex functions!</b>.<br/>
+Recall that a function $h : \mathbb{R}^d \to \mathbb{R}$ is <b>convex</b> if, for all $x,y \in \mathbb{R}^d$ and $\lambda \in (0,1)$:
+
+$$
+h(\lambda x + (1 - \lambda)y ) \leq \lambda h(x) + (1 - \lambda)h(y)
+$$
+
+_Classical 2D intuition: if you take two points $x,y$, the point $\lambda x + (1 - \lambda)y$ lies on the segment between them. The convexity condition says that the function value at this intermediate point is $\leq$ the straight line joining $h(x)$ and $h(y)$._
+
+Recall also that every norm $\|\cdot\|$ is a <b>convex function</b>.
+
+We define now the <b>subgradient</b> of h at $x \in \mathbb{R}^d$ as the vector $g \in \mathbb{R}^d$ such that:
+
+$$
+h(x + y) \geq h(x) + \langle y, g\rangle
+$$
+
+
+_Note that the symbol $\langle y, g\rangle$ represents the dot product. Recall also that, from a geometric point of view, $h(x) + \langle g, y\rangle$ represents the plane touching the graph of $h$ at $x$. The inequality says that the plane always lies before the graph of $h$._
+
+We now define the <b>subdifferential</b> $\partial h(x)$ as the set of all subgradients of h at x.
+
+If h is convex, $\partial h(x)$ is, for all $x \in \mathbb{R}^d$, a <b>non-empty</b> subset of $\mathbb{R}^d$.
+
+Furthermore _(and most importantly)_, if a convex function $h : \mathbb{R}^d \to \mathbb{R}$ is <b>differentiable</b> at x, then $\partial h(x)$ is a singleton and we have $\partial h(x) = \nabla h(x)$.
+
+Furthermore, $x^* \in \mathbb{R}^d$ is a <b>minimizer for a convex function</b> $h: \mathbb{R}^d \to \mathbb{R}$ if and only if $0 \in \partial h(x^*)$.
+
+_Recall that, given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase _(therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)_.
+
+---
+<br/>
+<b>Gradient Descent</b>
+
+Consider now $h: \mathbb{R}^d \to \mathbb{R}$, a convex function with a minimizer $x^*$. We apply the gradient descent method.
+
+- Firstly, we start with $x_0 \in \mathbb{R}^d$ (which can be deterministic, i.e. chosen with a heuristic, or random)
+- we apply the gradient steps. For all $k \geq 0$ and learning rate $\eta_k$:
+
+$$
+x_{k+1} = x_k - \eta_k \nabla h(x_k)
+$$
+
+- Then, from the definition of the gradient with vector $g$ and the dot product given above, we have the following:
+
+$$
+h(x^*) - h(x_k) \geq \langle x^* - x_k, \nabla h(x_k)\rangle
+$$
+
+- that translates into:
+
+$$
+\begin{aligned}
+2\eta_k (h(x_k) - h(x^*)) &\leq 2\langle x_k - x^*, \eta_k \nabla h(x_k)\rangle \\
+&= \|x_k - x^*\|_2^2 - \|x_k - x^* - \eta_k \nabla h(x_k)\|_2^2 + \eta_k^2 \|\nabla h(x_k)\|_2^2 \\
+&= \|x_k - x^*\|_2^2 - \|x_{k+1} - x^*\|_2^2 + \eta_k^2 \|\nabla h(x_k)\|_2^2.
+\end{aligned}
+$$
+
+- therefore we obtain the following:
+
+$$
+\sum_{k=0}^K 2\eta_k (h(x_k)- h(x^*)) \leq \|x_0 - x^*\|_2^2 - \|x_{K+1} - x^*\|_2^2 + \sum_{k=0}^K \eta_k^2 \|\nabla h(x_k)\|_2^2
+$$
+
+Furthermore, if $\|\nabla h(x_k)\|_2 \leq L$ for all $k$, then:
+
+$$
+\min_{0 \leq k \leq K} \bigl(h(x_k) - h(x^*)\bigr) \leq \frac{\sum_{k=0}^K \eta_k (h(x_k)- h(x^*))}{\sum_{k=0}^K \eta_k} \leq \frac{\|x_0 - x^*\|_2^2 + L^2 \sum_{k=0}^K \eta_k^2}{2 \sum_{k=0}^K \eta_k}
+$$
+
+So if $\sum_{k=0}^\infty \eta_k^2 < \infty$ and $\sum_{k=0}^\infty \eta_k = \infty$, then $\min_{0 \leq k \leq K} h(x_k) \to h(x^*)$ for $K \to \infty$ _(or, in other words, the minimum found with gradient descent converges to the true minimizer)_. <br/>_(Note that the required condition for $\eta_k$ can be easily satisfied, for example by setting $\eta_k = 1/(k+1)$: we have $\sum_{k=0}^\infty \frac{1}{(k+1)^2} < \infty$ and $\sum_{k=0}^\infty \frac{1}{k+1} = \infty$.)_
+
+However, in practice, computers do not allow $K \to \infty$... so if the number of gradient steps $K$ is fixed, we choose $\eta_k$ to minimize:
+
+$$
+\frac{\|x_0 - x^*\|_2^2 + L^2 K\eta^2}{2K\eta}
+$$
+
+In this case, for an accuracy $\epsilon > 0$, we need _(and note that this does not depend on the dimension):_
+
+$$
+K \geq \left(\frac{L\|x_0 - x^*\|_2}{\epsilon}\right)^2
+$$
+
+_(Note that doubling the desired precision requires approximately four times as many gradient steps.)_
+
+---
+<br/>
+<b>Stochastic Gradient Descent</b>
+
+_Let's jump back to the foggy mountain: we are still at the top and we still need to find the parking lot. Instead of carefully testing the incline across the entire terrain before taking a step, we quickly feel the slope under one foot and immediately take a step._
+
+Now let's introduce some technicalities: consider a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ and a loss function $H$ for a <b>random observation</b> $\omega$ using the model parameters $\theta$:
+
+$$
+H : \Omega \times \mathbb{R}^d \to \mathbb{R}, \qquad (\omega, \theta) \mapsto H(\omega, \theta),
+$$
+
+where $H$ is convex in $\theta$, measurable in $\omega$, and $\mathbb{E}[|H(\omega,\theta)|] < \infty$ for all $\theta \in \mathbb{R}^d$.
+
+The overall objective function is $h(\theta) = \mathbb{E}[H(\omega, \theta)]$, which is the <b>expected loss over all possible observations</b>.
+
+We first state that $h(\theta) = \mathbb{E}[H(\omega,\theta)]$ is convex and that, for every measurable subgradient $\nabla H(\theta) = \nabla_\theta H(\omega, \theta)$,
+
+$$
+\nabla h(\theta) = \mathbb{E}[\nabla H(\theta)]
+$$
+
+is also a subgradient of $h$ at $\theta$.
+
+However, $\nabla h(\theta)$ might be difficult _(or sometimes impossible)_ to compute. So we can use independent samples $H_1, H_2, \ldots$ and approximate the gradient. Technically, let $H_i$, with $i \geq 1$, be independent copies of $H$.<br/>Then fix $I \in \mathbb{N}$ and set:
+
+$$
+g_k(\theta) = \frac{1}{I} \sum_{i = kI + 1}^{(k+1)I} \nabla H_i(\theta) \approx \nabla h(\theta).
+$$
+
+For $I = 1$, we call it standard stochastic gradient descent (SGD); for $I \geq 2$, we call it SGD with mini-batches, which can reduce the variance of the gradient estimates.
+
+_(Intuition: instead of calculating the exact gradient using all data, we estimate it from one or more randomly selected samples and use that estimate to update the parameters.)_
+
+_Formally_, we follow these steps:
+- we start at $\theta_0 \in \mathbb{R}^d$ _(that, again, can be deterministic or random, independent of $H_1, H_2, \ldots$)_
+- we take the <b>stochastic gradient steps</b>, for all $k \geq 0$, with $\theta_0, \theta_1, \ldots$ random:
+
+$$
+\theta_{k+1} = \theta_k - \eta_k g_k(\theta_k)
+$$
+
+- we denote by $\mathcal{F}_k = \sigma(\theta_0, \ldots, \theta_k)$ the sigma-algebra generated by $\theta_k$ _(i.e. all the information known from the algorithm up to iteration $k$)_. Note that $\theta_k$ is $\mathcal{F}_k$-measurable; therefore, once the current parameters and past history are fixed, the stochastic gradient is an <b>unbiased estimator</b> of the true gradient. Formally, we write:
+
+$$
+\mathbb{E}[g_k(\theta_k) \mid \mathcal{F}_k] = \nabla h(\theta_k).
+$$
+
+_Intuition: SGD may take a wrong step because its gradient estimate is noisy, but, thanks to independent copies of the random loss function $H_i$ that are independent of the past, on average its direction is the same as the exact direction of non-stochastic gradient descent._
+
+- we now assume $h$ has a minimizer $\theta^* \in \mathbb{R}^d$. Then we have:
+
+$$
+h(\theta^*) - h(\theta_k) \geq \mathbb{E}[\langle \theta^* - \theta_k, g_k(\theta_k) \rangle \mid \mathcal{F}_k],
+$$
+
+which implies
+
+$$
+\begin{aligned}
+2\eta_k\bigl(h(\theta_k) - h(\theta^*)\bigr)
+&\leq 2\mathbb{E}\!\left[
+\left\langle \theta_k - \theta^*, \eta_k g_k(\theta_k) \right\rangle
+\,\middle|\, \mathcal{F}_k
+\right] \\
+&= \|\theta_k-\theta^*\|_2^2
+- \mathbb{E}\!\left[
+\left\|
+\theta_k-\theta^*-\eta_k g_k(\theta_k)
+\right\|_2^2
+\,\middle|\,\mathcal{F}_k
+\right] \\
+&\quad+ \eta_k^2\,
+\mathbb{E}\!\left[
+\|g_k(\theta_k)\|_2^2
+\,\middle|\,\mathcal{F}_k
+\right] \\
+&= \|\theta_k-\theta^*\|_2^2
+- \mathbb{E}\!\left[
+\|\theta_{k+1}-\theta^*\|_2^2
+\,\middle|\,\mathcal{F}_k
+\right] \\
+&\quad+ \eta_k^2\,
+\mathbb{E}\!\left[
+\|g_k(\theta_k)\|_2^2
+\,\middle|\,\mathcal{F}_k
+\right].
+\end{aligned}
+$$
+
+- Again, if $\mathbb{E}[\|g_k(\theta_k)\|_2^2 \mid \mathcal{F}_k] \leq L^2$, we can write:
+
+$$
+\sum_{k=0}^{K} 2\eta_k
+\mathbb{E}\!\left[h(\theta_k)-h(\theta^*)\right]
+\leq
+\mathbb{E}\!\left[\|\theta_0-\theta^*\|_2^2\right]
+-
+\mathbb{E}\!\left[\|\theta_{K+1}-\theta^*\|_2^2\right]
++
+L^2\sum_{k=0}^{K}\eta_k^2.
+$$
+
+$$
+\mathbb{E}\!\left[
+\min_{0\leq k\leq K} h(\theta_k)
+\right]
+-
+h(\theta^*)
+\leq
+\frac{
+\displaystyle\sum_{k=0}^{K}
+\eta_k\,
+\mathbb{E}\!\left[h(\theta_k)-h(\theta^*)\right]
+}{
+\displaystyle\sum_{k=0}^{K}\eta_k
+}
+\leq
+\frac{
+\mathbb{E}\!\left[\|\theta_0-\theta^*\|_2^2\right]
++
+L^2\displaystyle\sum_{k=0}^{K}\eta_k^2
+}{
+2\displaystyle\sum_{k=0}^{K}\eta_k
+}.
+$$
+
+Again, if $\sum_{k=0}^\infty \eta_k^2 < \infty$ and $\sum_{k=0}^\infty \eta_k = \infty$, then $\mathbb{E}[\min_k h(\theta_k)] \to h(\theta^*)$ for $K \to \infty$.
+
+One can also show a <b>stronger claim</b>: for a convex $h$, $\min_k h(\theta_k) \to h(\theta^*)$ almost surely as $K \to \infty$ _(and not only for its expected performance $\mathbb{E}[\cdots]$, as done before)_.
+
+Note that SGD is also used for non-convex problems, e.g. to train neural networks, even if it is not guaranteed to converge to the global minimum.
+
+Indeed, a convex loss function has no _"bad"_ local minima: every local minimum is also global; therefore, if SGD converges, it can reach the best possible loss $h(\theta^*)$.
+
+Neural networks often contain flat regions, local minima, and saddle points _(critical points where the slopes in orthogonal directions are zero, but the point is not a local maximum or a local minimum)_. However, SGD is still used because it is computationally practical and often finds parameters with good predictive performance, but in theory it cannot guarantee a global minimizer _(it only reaches a stationary point)_.
+
+<b>Validation</b>
+
+Let $\tilde H_i$, with $i = 1, \ldots, v$, be independent copies of $H$, independent of $H_i$, and call them the <b>validation data set</b>, i.e. they have the same distribution as the training loss $H_i$ but are independent.
+
+To validate the model, we monitor the empirical loss, defined as $\frac{1}{v}\sum_{i=1}^v \tilde H_i(\theta_k)$, on the validation dataset.
+
+- if the validation loss stops decreasing, we <b>decrease the learning rate</b> $\eta_k$
+- if the validation loss starts to increase, we stop the SGD
+- if a validation dataset is used in training, the resulting $\theta_k$ must still be evaluated on an independent (out-of-sample) test dataset.
+
+_Generally speaking_, we can say that with training data we fit parameters, with validation data we choose the training settings, and with testing data we perform a final unbiased evaluation.
+
+_Example:_ suppose we have data $(x_i, y_i)$ and we want to predict $\hat y_i = f_\theta(x_i)$.<br/>We start using the squared error loss, defined as $H_i(\theta) = (y_i - f_\theta(x_i))^2$.
+
+We then split the data into training and validation data:
+- we train on training data only, by repeatedly choosing a random mini-batch of training pairs $(x_i,y_i)$ and calculating its average loss and gradient; then we recursively update:
+
+$$
+\theta_{k+1} = \theta_k - \eta_k \frac{1}{I} \sum_{i \in \text{mini-batch}} \nabla_{\theta} (y_i - f_\theta(x_i))^2
+$$
+
+- after each epoch (i.e. a complete iteration through the entire training dataset; if we have $N$ training observations and a mini-batch contains $B$ observations, the epoch contains approximately $N/B$ gradient updates), we evaluate the current model on all the validation data and obtain:
+
+$$
+\hat h_{\mathrm{val}}(\theta_k) = \frac{1}{v} \sum_{i \in \text{validation}} (y_i - f_{\theta_k}(x_i))^2
+$$
+
+- we then store the parameter $\theta_k$ (chosen from all the epochs) that achieves the lowest validation loss.
 
 ## <a id="4"><b>4 Logistic Regression</b></a>
 
