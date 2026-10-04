@@ -8,7 +8,7 @@ summary: ''
 _"The aim of this course is to equip students with the skills to conduct simulations and perform mathematical convergence analysis for stochastic models, with applications in fields such as mathematical finance. 
 <br/>The course provides a comprehensive understanding of various numerical methods, covering their foundational principles, convergence properties, and practical implementation considerations." (from the official course's page)_
 
-The course has been taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Professor Josef TeichmannJosef Teichmann</a> and <a href="https://www.lse.ac.uk/people/christoph-czichowsky" target="_blank">Dr Christoph Czichowsky</a>
+The course has been taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Professor Josef Teichmann</a> and <a href="https://www.lse.ac.uk/people/christoph-czichowsky" target="_blank">Dr Christoph Czichowsky</a>
 
 Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">me</a> with any comments, clarifications, or corrections.
 
@@ -30,7 +30,90 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 ## <a id="1"><b>Mathematical Formulation of Random Number Generation</b></a>
 
+<b>Definition of pseudo random numbers</b>
+
+Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $U_n : \Omega \to \mathbb{R}$, for $n \in \mathbb{N}$, be a sequence of $P$-independent $\mathcal{U}_{[0,1]}$-distributed random variables.
+<br/>$\mathcal{U}_{(0,1)}$-pseudo-random numbers are sequences of real numbers calculated by a deterministic algorithm that have similar statistical properties to $(U_n)_{n \in \mathbb{N}}$.
+
+Even if this is a very generic definition, the importance and advantage of $\mathcal{U}_{(0,1)}$-pseudo-random numbers are that they can be reproduced many times _(with the same output)_ with the same pseudo-random input.
+
+<b>Method for General Distributions</b>
+
+<b>Inversion Method</b>
+
+We now spend some time presenting the inversion method, useful to transform _uniformly distributed random numbers_ to arbitrary distributions using a suitable generalized inverse distribution function.
+
+<b>Definition (Generalized inverse distribution function associated to a distribution function)</b>
+
+Let $F: \mathbb{R} \to [0,1]$ be a distribution function. We define the generalized inverse distribution function associated with $F$, denoted as $I_F: (0,1) \to \mathbb{R}$, as the function which satisfies, for all $y \in (0,1)$, the following:
+
+$$
+I_F(y) = \inf \{x \in \mathbb{R} : F(x) \ge y\} = \inf(F^{-1}([y,1]))
+$$
+
+From the definition, we can draw some nice properties:
+- For all $y \in (0,1)$, the set $\{x \in \mathbb{R}: F(x) \ge y\}$ is not empty and bounded from below.
+    - _(This comes from the fact that, given $\lim_{x \to \infty} F(x) = 1$, for all $y$ the set is not empty.)_
+    - The fact that $\lim_{x \to -\infty} F(x) = 0$ ensures that the set is bounded from below.
+- $I_F$ is also sometimes referred to as the <b>quantile function associated with $F$</b>.
+- Consider a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ and $X: \Omega \to \mathbb{R}$, an $\mathcal{F}/\mathcal{B}(\mathbb{R})$-measurable function _(imagine $X$ as a model for the change in value of a financial portfolio)._<br/>
+Consider $F$, the distribution of $-X$, and let $\alpha \in (0,1)$ be a confidence level, typically a number close to 1 (95%, 99.999%): Then the real number
+$$
+I_F(\alpha) = \min \{x \in \mathbb{R}: F(x) \ge \alpha\} = \min \{x \in \mathbb{R}: \mathbb{P}(-X \le x) \ge \alpha\} = \\
+\min \{x \in \mathbb{R}: \mathbb{P}(-X > x) \le 1 - \alpha\}
+$$
+
+is called the <b>Value at Risk with confidence level $\alpha$ associated with $-X$</b> _(i.e. it holds with probability of at least $\alpha$ that the loss $-X$ does not exceed $I_F(\alpha)$)._
+
+<b>Definition (Generalized Inverse Distribution Function for the Bernoulli Distribution)</b>
+
+Let $p \in [0,1]$ be a real number and let $F: \mathbb{R} \to [0,1]$ be the distribution function of $\operatorname{Ber}(p)$. Assume also that, for all $x \in \mathbb{R}$, it holds:
+
+$$
+F(x) = \operatorname{Ber}_p((-\infty, x])
+= (1-p)\cdot \delta_0^{\mathbb{R}}((-\infty, x])
++ p\cdot \delta_1^{\mathbb{R}}((-\infty, x])
+=
+\begin{cases}
+0 & \text{if } x < 0,\\
+1-p & \text{if } 0 \le x < 1,\\
+1 & \text{if } x \ge 1.
+\end{cases}
+$$
+
+Then the generalized inverse distribution function $I_F$ is defined as:
+
+$$
+I_F(y) = \inf\{x \in \mathbb{R} : F(x) \ge y\}
+=
+\begin{cases}
+0, & 0 < y \le 1-p,\\
+1, & 1-p < y \le 1.
+\end{cases}
+$$
+
+
+<b>Lemma (Properties of generalized inverse distribution functions)</b>
+
+Let $F: \mathbb{R} \to [0,1]$ be a distribution function and $I_F : (0,1) \to \mathbb{R}$ the generalized inverse distribution function associated with $F$. Then $I_F$ fulfils the following:
+1. $I_F$ is non-decreasing.
+2. For all $y \in (0,1)$:
+    - $F(I_F(y)) \ge y$.
+    - $F^{-1}([y,1]) = [I_F(y), \infty]$.
+    - $I_F(y) = \min(F^{-1}([y,1]))$.
+3. For all $x \in F^{-1}((0,1)) = \{z \in \mathbb{R} : F(z) \in (0,1)\}$: $I_F(F(x)) \le x$.
+4. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) < x$ if and only if $y \le F(x)$ _(switching formula)_.
+5. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) > x$ if and only if $y > F(x)$ _(switching formula)_.
+6. For all open sets $D \subseteq \mathbb{R}$ with the property that $F|_D : D \to [0,1]$ is <b>injective</b> and all $y \in F(D)$, we have that $(F|_D)^{-1}(y) = I_F(y)$.
+
+_(Recall: a function $f$ is injective if $f(x_1) = f(x_2)$ implies $x_1 = x_2$; equivalently, distinct inputs have distinct outputs.)_
+
+Note that distribution functions are càdlàg (right-continuous with left limits), while generalized inverse distribution functions are, in contrast, <b>càglàd</b> (left-continuous with right limits).
+
+<b>Lemma (Continuous properties of generalized inverse distribution functions)</b>
+
 ---
+
 ## <a id="2"><b>Brownian Motion and Lévy Processes</b></a>
 
 ---

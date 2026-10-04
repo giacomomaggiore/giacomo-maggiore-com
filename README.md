@@ -38,7 +38,8 @@ It's actually three things in one:
 
 ```
 wiki/
-  source/          # drop PDFs here before processing (not saved in git)
+  source/          # reserved local source workspace (not used by this project)
+  archive/         # reserved local archive workspace (not used by this project)
   public/
     notes/         # published notes  ->  /notes/[slug]
     blog/          # published blog posts  ->  /blog/[slug]
@@ -46,7 +47,6 @@ wiki/
 
 lib/wiki/          # shared code: reading notes, search, AI answers
 scripts/           # build-time scripts (search index builder, safety checks)
-tools/ingest/      # the Python pipeline that turns PDFs into notes
 app/               # the /ask page and its API
 ```
 
@@ -54,13 +54,12 @@ app/               # the /ask page and its API
 
 ## Skills (automated helpers)
 
-Three helpers live in `.github/skills/`. In your AI coding tool, type `/` and pick one, or use its slash command directly:
+Two helpers live in `.github/skills/`. In your AI coding tool, type `/` and pick one, or use its slash command directly:
 
-- **`/update-links`** — finds notes that are genuinely related and links them together. First, AI similarity search shortlists likely matches (fast, cheap); then a smarter AI double-checks that shortlist and writes a short reason for each link it keeps.
-- **`/update-embeddings`** — rebuilds the search index, so new or edited notes become findable through `/ask`.
-- **`/clean-markdown`** — fixes grammar, OCR mistakes, and formatting in one note.
+- **`/update-links`** — reviews requested private notes for meaningful Obsidian links and previews every proposed edit before asking for approval.
+- **`/clean-markdown`** — previews conservative grammar, OCR, and Markdown repairs for one private note, then applies them only after approval.
 
-None of them touch published blog posts. None of them commits or pushes changes without asking first.
+They never touch published blog posts or notes. Neither helper commits or pushes changes without asking first.
 
 ---
 
@@ -74,48 +73,16 @@ None of them touch published blog posts. None of them commits or pushes changes 
 
 ---
 
-## Turning PDFs into notes
-
-Drop a PDF into `wiki/source/`, then run the pipeline. It will:
-
-- extract the text (fully local, no cloud)
-- figure out which topic folder it belongs to
-- clean up OCR mess and formatting
-- link it to related existing notes
-- save it into `wiki/private/`
-
-```bash
-cd tools
-python3 -m ingest run                 # process every PDF in wiki/source/
-python3 -m ingest run file.pdf        # process just one file
-python3 -m ingest refresh             # re-clean and re-link every existing note
-python3 -m ingest refresh --dry-run   # preview only — changes nothing
-python3 -m ingest lint                # check for broken links, missing info, etc.
-```
-
----
-
 ## Setup
 
 **Environment variables** — put these in `.env.local` (never committed to git):
 
 ```dotenv
-OPENAI_API_KEY=...     # required for every AI feature: answers, cleanup, linking, search
-LLM_PROVIDER=openai
+OPENAI_API_KEY=...     # required for AI answers and semantic search
 
-# Optional overrides — leave commented out to use the defaults
-# LLM_MODEL=...              # model used for answers, note cleanup, and linking
-# LLM_REASONING_MODEL=...    # smarter model used for the vault-wide re-link pass
-# LLM_EMBEDDING_MODEL=...    # model used for search and link similarity (default: text-embedding-3-small)
+# Optional override — leave commented out to use the default
+# LLM_MODEL=...        # model used for answers
 ```
-
-**Python setup** (only needed for the PDF pipeline):
-
-```bash
-pip install openai python-frontmatter python-dotenv
-```
-
-MinerU (the PDF-to-text tool) must be installed separately.
 
 ---
 

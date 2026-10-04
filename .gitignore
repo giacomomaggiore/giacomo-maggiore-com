@@ -32,9 +32,7 @@
 wiki/source/
 wiki/archive/
 
-# python ingestion pipeline caches
-/tools/ingest/**/__pycache__
-
+CLAUDE.MD
 
 # debug
 npm-debug.log*

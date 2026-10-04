@@ -8,7 +8,7 @@ import path from 'path'
  *   - wiki/private -> local-only notes; queryable by the LLM, but NEVER a website page
  *
  * INVARIANT: website page routes import ONLY the PUBLIC constants below.
- * WIKI_PRIVATE_DIR is read solely by the build-time indexer and the local ingestion pipeline.
+ * WIKI_PRIVATE_DIR is read solely by the build-time indexer and the /ask API.
  */
 
 export const WIKI_DIR = path.join(process.cwd(), 'wiki')
