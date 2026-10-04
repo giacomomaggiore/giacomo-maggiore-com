@@ -1,0 +1,201 @@
+---
+title: "Rethinking "stocks for the long run" #2"
+publishedAt: '2026-10-05'
+summary: ''
+---
+
+## <b>Retrospectives</b>
+
+Questioning <b>"stocks for the long run" </b> means proposing, _even for the retail investor with a long time horizon and low risk aversion,_ an alternative that goes beyond the <s>(simple)</s> _"100% equities"_ approach. This is why, <a href="https://giacomomaggiore.com/blog/16-model-portfolio" target="_blank"> in the last blog post</a>, I presented a model portfolio that I have been studying for several months, the result of many comparisons and considerations about my current financial situation.
+
+<b>TL;DR:</b> the portfolio consists of the following ETFs
+
+| ETF | Exposure | Weight |
+| --- | --- | ---: |
+| <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> | Global Equities + Global Bonds | 60% |
+| <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> | Commodities with trend following | 10% |
+| <a href="https://www.imgpfunds.com/funds/dbmf/" target="_blank">DBMF</a> | Managed Futures | 15% |
+| <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a> | US Equities + Gold | 10% |
+| <a href="https://www.cambriafunds.com/tail" target="_blank">TAIL</a> | Deep OTM options | 5% |
+
+and the resulting exposure to asset classes/risk factors:
+
+| Asset Class | Nominal exposure |
+| --- | ---: |
+| Stocks | 63% |
+| Bonds | 36% |
+| Commodities | 10% |
+| Trend | 15% |
+| Gold | 9% |
+| Tail risk | 5% |
+| <b>Total</b> | <b>138% </b>|
+
+_(Note that the total is $ > 100$ because of the implicit leverage of the futures contracts held by <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> and <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a>, <a href="https://giacomomaggiore.com/blog/16-model-portfolio#riempire-il-piatto-il-pi-possibile" target="_blank">briefly explained here</a>)_
+
+Since I published the blog post , I have _(luckily)_ received some comments, questions and challenges, including one very basic <s>(but expected)</s> question: <b>"yes, okay, but do you have backtests"?</b>
+
+_(Again)_ <b>TL;DR: no... </b>for the simple reason that the instruments in the portfolio are fairly young and, _even replacing them with products with similar strategies or philosophies,_ there is not enough historical data to provide an overview of the portfolio's performance across all market regimes _(unless you have a Bloomberg terminal or specific data from private funds...)_
+
+_Nevertheless,_ the question pushed me to retrieve and analyze much more data than I had already processed... trying to write down a few thoughts in the following lines.
+
+<b></b>
+
+Before discussing correlations, historical series and performance metrics, I'd like to say that I give <b>little importance to backtests</b>, for the following reasons:
+- most of them focus on <b>limited time windows</b> _(I challenge most portfolios to be tested on 30+ year rolling returns with  periods of stagflation, equity rallies or black swans)_
+- I am convinced that seeing a $-35\% $ in an online backtest alongside a positive overall result is different from <b>losing a year's salary</b> _(and that is said from someone has never seen their portfolio lose five-digit amounts)_
+- I like the idea of relying on <b>economic theory</b>, supported by data, to gain exposure to risk factors that, _again according to hypotheses tested over the years,_ have different performance and correlations in different market regimes
+- backtests remain valid until _[politician's name ]_ does _[something stupid]_ or a new frontier AI model leaves the labs of _[AI company]_ and kills us all.
+<br/>
+---
+
+## <b>A series of good approximations... (Taylor would say)</b>
+
+Returning to the need to see numbers, I studied the <b>52-week rolling correlation</b> of the portfolio instruments' weekly returns with the <a href=" https://www.msci.com/indexes/index/990100/msci-world-index" target="_blank">MSCI World Standard Price Index </a> in USD _(yes, I know, the index is NOT investable, excludes dividends, emerging markets and small caps but, for measuring co-movements with equities, it seems like a valid approximation to me)_
+
+Keeping the option to slightly change the weight of equities within the portfolio _(based on my financial situation, less on market conditions)_ and still being in the optimization phase, I focused on the individual asset classes as <b>potentially complementary instruments </b>to each other, rather than on the performance or correlation of the overall portfolio.
+<br/>Nevertheless, even in assessing the individual components, there's still a strong <b>selection bias</b>: the choice is in fact strongly influenced by recent history and there is no out-of-sample evidence of their diversification properties.
+
+<div align = "center">
+![Correlations](/images/blog/corr-real-etf.png)
+</div>
+
+As you can notice, the data points, _especially for <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a>, <a href="https://www.imgpfunds.com/funds/dbmf/" target="_blank">DBMF</a>, and <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a>,_ are <b>insignificant</b>, so no conclusions can be drawn from them.
+Extending the correlation study to asset classes or synthetic indices _(rather than specific ETFs)_ partially solves the problem:
+<div align = "center">
+![Correlations](/images/blog/corr-synthetic-etf.png)
+</div>
+
+Beyond the precise numbers themselves, here are some general considerations:
+- <a href="https://www.cmegroup.com/education/courses/managed-futures/what-are-managed-futures" target="_blank">Managed Futures</a> (<a href="https://www.wisdomtree.com/investments/etfs/alternatives/wtmf" target="_blank">WTMF</a>), at least until 2022, <b>did not exhibit a stable correlation</b> with MSCI World. From the first available data in 2012 to the end of 2021, the mean and median correlations were -0.04 and -0.09, respectively; they were positive in only 31% of observations, fluctuating between -0.38 and 0.59 and rising to 0.45 at the end of 2021.
+
+- Gold's correlation (<a href="https://www.ssga.com/us/en/intermediary/etfs/spdr-gold-shares-gld" target="_blank">GLD</a>) has a median close to 0, from -0.41 in February 2015 to 0.63 in April 2020. It was also negative during part of 2013-2018, rises to around 0.6 during the Covid shock, stands at 0.25 at the end of 2022 and returns slightly negative at the end of 2025. The precious metal is therefore not a permanent equity hedge: the dollar, real rates, inflation, demand for liquidity and defensive purchases influence its price at different times... but, _nevertheless,_ <a href="https://am.jpmorgan.com/ch/en/asset-management/per/insights/market-insights/market-updates/on-the-minds-of-investors/understanding-gold-in-portfolio/" target="_blank">lot of studies still classify it</a> as a <b>good diversifier in an equity portfolio.</b>
+
+- The <a href="https://www.cambriafunds.com/tail" target="_blank">TAIL</a> ETF has, _as expected,_ a <b>negative correlation</b> with MSCI World: in the available sample it is negative, a sign consistent with SPX puts and the negative carry consisting of the premium paid and option decay.
+
+- Commodities show moderate correlations, depending on strategy and period: the synthetic proxy <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> goes from -0.34 to 0.75, while <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=DBC" target="_blank">DBC</a> and <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=PDBC" target="_blank">PDBC</a> move in a wider range (-0.35, 0.85). In 2022, following the equity market decline, <b>inflation and the energy shock supported commodities</b>: correlation fell from 0.41 to -0.13 for <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> and from about 0.48 to 0.11 for <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=DBC" target="_blank">DBC</a>/<a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=PDBC" target="_blank">PDBC</a>. <br/>Likewise, in 2008 _(when MSCI World lost about 42%),_ <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> was close to zero and <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=DBC" target="_blank">DBC</a> went from -0.07 in mid-year to 0.47 at year-end. <br/>However, after their peak, collapsing demand and simultaneous liquidations set equities and commodities in red at the same time: diversification was therefore <b>stronger in the initial phase</b> and<b> in the later recovery,</b> _not in the entire crisis._ It should also be remembered that <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> can be long or flat _(depending on trend strategy),_ while <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=DBC" target="_blank">DBC</a> and <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=PDBC" target="_blank">PDBC</a> are long-only commodity exposures with different roll rules.
+
+Not satisfied with studying correlations with MSCI World and further interested by risk factors, I analyzed their behavior based on current inflation but... _for the sake of brevity_ and to avoid adding noise, I will limit myself to presenting total-return performance _(with or without TER depending on the instrument)_ against US CPI.
+
+<div align = "center">
+![Correlations](/images/blog/asset-returns-vs-inflation.png)
+</div>
+
+---
+
+## <b>One fewer pizza for a little more peace of mind</b>
+
+Returning _(finally)_ to the <b>hot topic of backtesting</b>, this can be a good starting point:
+
+
+<div align = "center">
+![Correlations](/images/blog/model-portfolio-performance-real.png)
+</div>
+
+As you can see, even in this case, the data _(although clear)_ are <b>statistically insignificant:</b> the backtest with actual ETFs only starts on November 13, 2024: 23 months that say absolutely nothing and are as far as possible from the theory of the presented model portfolio, failing to demonstrate different behaviors across different market regimes.
+
+
+Even extending the backtest to 2019 with reconstructed indices _(i.e. synthetic, details in the appendix)_ the data still say little:
+
+<div align = "center">
+![Correlations](/images/blog/model-portfolio-performance.png)
+</div>
+
+| Strategy | Cumulative return | CAGR | Volatility | Max drawdown | Sharpe |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Model portfolio | 1.25 | 0.12 | 0.13 | -0.22 | 0.70 |
+| 60/40 <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a>/<a href="https://investor.vanguard.com/investment-products/etfs/profile/bndw" target="_blank">BNDW</a> | 0.81 | 0.08 | 0.12 | -0.22 | 0.50 |
+| <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a> | 1.49 | 0.13 | 0.19 | -0.34 | 0.60 |
+
+The model portfolio, _even when slightly changing the weights or reference currencies,_ shows  similar patterns:
+- <b>slightly lower CAGR</b> than 100% stocks, much better than a 60/40
+- <b>volatility of 12.74%, slightly higher</b> than the 11.68% of the 60/40, but much lower than the 18.70% of <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a>
+- a maximum drawdown of -22.42%, almost the same as that of the 60/40 during Covid and less catastrophic than the -34.24% of <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a>
+- consequently, a <b>better Sharpe ratio than both</b> _(but, again: you cannot pay rent with the Sharpe ratio!)_
+
+Even relying on third-party backtests <a href="https://www.backtes.to/" target="_blank">(Backtesto, one of the best tools for EU investors, thanks Dani!),</a> while slightly changing the composition of the Model Portfolio to adapt to index availability, the numbers say more or less the same thing.
+
+<div align = "center">
+![Correlations](/images/blog/3-portfolios-historical-performance.png)
+</div>
+
+
+<div align = "center">
+![Correlations](/images/blog/backtesto-3-portfolios.png)
+</div>
+
+<div align = "center">
+![Correlations](/images/blog/3-portfolios-value-drawdowns.png)
+</div>
+
+Given the redundancy of metrics and historical series, I will take the opportunity to focus on the periods in the red: besides showing a more limited maximum drawdown, its average drawdown and duration are also more favorable than 100% stocks and 60/40, reinforcing the idea that the diversifiers presented <b>hold up better during regime changes or crashes.</b>
+
+Using Backtesto, the comparison between <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG (90 equities + 60 bonds)</a> and <a href="https://www.it.vanguard/investitori-privati/prodotti/etf/azionario/9679/ftse-all-world-ucits-etf-usd-accumulating" target="_blank">VWCE</a> is also interesting, in case you want to tilt the portfolio more toward equity exposure while maintaining an allocation > 100% with capital efficiency:
+
+<div align = "center">
+![Correlations](/images/blog/ntsg-vs-all-world.png)
+</div>
+
+<div align = "center">
+![Correlations](/images/blog/ntsg-vwce-drawdowns.png)
+</div>
+
+Based on historical data, sacrificing a few percentage points of CAGR _(70 USD per year on assets of 100k, one pizza in Zurich)_ produces a <b>better risk profile:</b> lower volatility and maximum drawdown, and a higher <s>useless</s> Sharpe ratio!
+
+In conclusion, I realize that the proposed approach, both because of the <b>limited availability</b> of historical data on which to run backtests and simulations and because of the <b>greater complexity</b> of daily portfolio management _(rebalancing and investing periodically with a single ETF is much easier),_ is not suitable for most retail investors... so <b>"<a href="https://www.it.vanguard/investitori-privati/prodotti/etf/azionario/9679/ftse-all-world-ucits-etf-usd-accumulating" target="_blank">VWCE</a> & chill"</b> remains an _almost_ optimal starting point but, as stated in the previous article:
+- it is mostly an exercise in style with a "useful" practical implication;
+- I have a lot of fun;
+- this is not financial advice.
+
+Cheers!
+
+<br/>
+---
+<br/>
+
+<b>Learn more</b>
+<br/>
+<a href="https://www.justetf.com/en/academy/should-you-own-gold.html" target="_blank">Should you own gold? (justETF)</a>
+<br/>
+<a href="https://am.jpmorgan.com/ch/en/asset-management/per/insights/market-insights/market-updates/on-the-minds-of-investors/understanding-gold-in-portfolio/" target="_blank">Understanding gold in a portfolio (J.P. Morgan Asset Management)</a>
+<br/>
+<a href="https://www.ch.vanguard/en/professional/vanguard-365/understanding-stock-bond-correlations" target="_blank">Understanding the dynamics of stock/bond correlations (Vanguard)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/ntsg-wisdomtree-global-efficient-core-etf/" target="_blank">NTSG: WisdomTree Global Efficient Core ETF (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://theitalianleathersofa.com/ntsx-is-available-in-europe/" target="_blank">NTSX is available in Europe (The Italian Leather Sofa)</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=MjmT7RleJUI" target="_blank">Come integrare NTSG nel tuo portafoglio di ETF</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=7s-0WnsIM20" target="_blank">ETF con leva su obbligazionario: Wisdom Efficient Core NTSX e NTSG</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=zVefLIOAyAk" target="_blank">Ti stanno convincendo che azioni e bond non bastano più (The Bull Podcast)</a>
+<br/>
+<br/>
+---
+
+## <b>Technical appendix</b>
+
+
+## <b>A.1 Source code</b>
+
+The code used for the analyses was freely developed with the help of Gpt-5.6 and is available <a href="https://github.com/giacomomaggiore/model-portfolio-analytics" target="_blank">alla repository Github del progetto</a>.
+
+
+Synthetic indices, _where possible,_ were reconstructed by relying as closely as possible on public methodologies and existing historical series. They do not represent certainty and introduce high model risk.
+<br/><b>Handle with care!</b>
+
+| Instrument or benchmark | Exposure | Info |
+| --- | --- | --- |
+| <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> | 90% developed global equities + 60% global bond futures | Actual NTSG; <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a> and <a href="https://investor.vanguard.com/investment-products/etfs/profile/bndw" target="_blank">BNDW</a> to describe the exposures; extended proxy with <a href="https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy" target="_blank">SPY</a>, <a href="https://www.ishares.com/us/products/239623/ishares-msci-eafe-etf" target="_blank">EFA</a>, and <a href="https://www.ishares.com/us/products/239617/ishares-msci-canada-etf" target="_blank">EWC</a> for the 90% equity allocation, <a href="https://www.ishares.com/us/products/239456/ishares-7-10-year-treasury-bond-etf" target="_blank">IEF</a> and <a href="https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-bloomberg-international-treasury-bond-etf-bwx" target="_blank">BWX</a> for the 60% notional bond allocation, and cash for the financed 10%. The NTSG proxy does not fully reproduce ESG filters, currency weights, eight government futures, roll, multi-currency collateral, and actual rebalancing triggers. |
+| <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> | Commodity long/flat with trend following | Actual COM; <a href="https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=PDBC" target="_blank">PDBC</a> as a descriptive proxy; Auspice Broad Commodity Total Return Index net of TER for the long history. The issuer simulates index history before September 30, 2010. |
+| <a href="https://www.imgpfunds.com/funds/dbmf/" target="_blank">DBMF</a> | Managed futures | Actual DBMF; <a href="https://www.wisdomtree.com/investments/etfs/alternatives/wtmf" target="_blank">WTMF</a> as a descriptive peer. WTMF is not used to backfill DBMF in the backtest. |
+| <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a> | 90% US large-cap equities + 90% gold futures | Actual GDE; <a href="https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy" target="_blank">SPY</a> and <a href="https://www.ssga.com/us/en/intermediary/etfs/spdr-gold-shares-gld" target="_blank">GLD</a> to describe the exposures; 90/90 synthetic proxy. The GDE proxy does not replicate active decisions and gold-futures roll. |
+| <a href="https://www.cambriafunds.com/tail" target="_blank">TAIL</a> | US Treasuries + out-of-the-money SPX puts | Actual TAIL; PPUT only as a separate benchmark. PPUT contains an S&P 500 portfolio plus monthly 5% OTM puts; TAIL mainly contains Treasuries and a dynamic put ladder. |
+| MSCI World | Equity benchmark for correlations | MSCI World Standard Price Index in USD. Non-investable, price-return index: excludes dividends, emerging markets, and small caps; it is used only as a reference to measure equity co-movement. |
+| 60/40 and <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a> | Backtest benchmark | 60% <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a> / 40% <a href="https://investor.vanguard.com/investment-products/etfs/profile/bndw" target="_blank">BNDW</a> and 100% <a href="https://investor.vanguard.com/investment-products/etfs/profile/vt" target="_blank">VT</a>. Actual total-return ETFs, rebalanced monthly in the 60/40. |
+
+_Post Scriptum: next deep dives_:
+- things that still do not convince me about the proposed model portfolio
+- quantitative analysis and replication of managed futures
+- how do the stacked ETFs proposed by <a href="https://www.returnstacked.com/" target="_blank">Return Stacked Portfolio Solutions</a> actually work? Do they also make sense for the European retail investor?
+- AOB
