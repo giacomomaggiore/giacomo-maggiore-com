@@ -48,7 +48,7 @@ export function BlogList({ posts }: BlogListProps) {
         type="search"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
-        placeholder="Search journal entries..."
+        placeholder="Search sblog posts..."
         className="mb-12 w-full rounded border border-neutral-200 bg-transparent p-2 text-sm text-black placeholder:text-neutral-400 focus:outline-none dark:border-neutral-700 dark:text-white"
       />
 
