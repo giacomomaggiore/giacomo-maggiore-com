@@ -95,7 +95,7 @@ Then, _in machine learning_, it is common to solve the <b>empirical loss minimiz
 
 ---
 <br/>
-<b> Regression Functions and Irreducible Error </b>
+<b>Regression Functions and Irreducible Error</b>
 <br/>
 <b>Lemma (theoretically best predictor with respect to a given loss function $\ell: \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}_+$)</b>
 
@@ -1352,7 +1352,7 @@ $$
 
 ## <b>Projects </b>
 
-All the projects were assigned during the course and self made in groups. The code is fully available and reproducible on <a href="https://github.com/giacomomaggiore/ml-finance-insurance" target="_blanK">GitHub here.</a>
+All the projects were assigned during the course and self-made in groups. The code is fully available and reproducible on <a href="https://github.com/giacomomaggiore/ml-finance-insurance" target="_blank">GitHub here.</a>
 <br/>Below you find a brief description and comment on the project, _for the technical implementation please refer to the codebase._
 
 _Credits to Giacomo Maggiore, Ugo Buzzacchino, Kostas Zisis, Konstantin Krstevski._
@@ -1361,6 +1361,214 @@ _Credits to Giacomo Maggiore, Ugo Buzzacchino, Kostas Zisis, Konstantin Krstevsk
 
 
 ## <a id="p1"><b>P1 Linear Regression with housing price data</b></a>
+
+<b>P.1.1 Data preparation</b>
+
+The project is built around a dataset of house price data, which consists of a dependent target variable Y, "SalePrice", and 79 features, 35 of which are numerical and 44 categorical.
+
+The first step was determining whether the target variable followed a Gaussian distribution. To do that, we plotted a frequency histogram, a Q-Q plot, and calculated moments, resulting in:
+
+```python
+
+Skewness: 1.883
+Excess kurtosis: 6.536
+Mean: $180,921
+Median: $163,000
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p1-plots.png)
+</div>
+
+It can be immediately observed that:
+- Skewness > 0 and mean > median: the distribution has a long tail to the right _(right-skewed)_
+- Excess kurtosis > 0: there are <b>more extreme values</b> than in a normal distribution
+- In the <b>Q-Q plot</b> _(which represents theoretical vs. sample quantiles):_ the data points form a curve, not a straight line
+
+Therefore, we standardized the data and applied a log transformation to <b>reduce skewness</b> and heavy tails, resulting in the distribution that can be seen in the following plots:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p1-plots-2.png)
+</div>
+
+Secondly, we split the dataset into training and testing sets. We then filled numerical values with the sample mean of the remaining series and categorical data with the most frequent value.
+
+<b>P.1.2 Linear Regression on Numerical Features</b>
+
+We first fit an OLS regression using _only_ numerical predictors with the <b>scikit-learn</b> library and then saved the coefficients by running:
+
+```python
+# The numerical predictors were imputed and standardized using training-set statistics in 1.d.
+ols_numerical = LinearRegression(fit_intercept=True)
+ols_numerical.fit(X_train_num, y_train)
+
+ols_numerical_coefficients = pd.DataFrame({
+    "feature": ["Intercept", *NUMERICAL],
+    "coefficient": [ols_numerical.intercept_, *ols_numerical.coef_],
+})
+```
+
+Recall that in this first run the target variable is log(SalePrice) and the features were standardized.
+<br/>_Intuition: given a coefficient b, the price is about 100*b higher when the corresponding feature increases by one standard deviation, ceteris paribus._
+
+We then calculated MSE and $R^2$ for both training and testing data, on both log(SalePrice) and SalePrice scales, resulting in the following:
+
+| Sample | Target scale | MSE | R² |
+| --- | --- | ---: | ---: |
+| In-sample | log1p(SalePrice) | 0.02200 | 0.85810 |
+| Out-of-sample | log1p(SalePrice) | 0.02187 | 0.87109 |
+| In-sample | SalePrice (USD) | 1,433,790,871 | 0.76177 |
+| Out-of-sample | SalePrice (USD) | 829,116,180 | 0.88118 |
+
+We immediately notice that, on the log scale, the MSE for training and testing is almost equal, so the model _DOES NOT_ overfit.
+<br/>On the other hand, on the dollar scale, the training $R^2$/MSE are lower/higher compared to the testing set, but the reason comes from two extreme-value training houses (outliers).
+
+_Generally speaking_, we can say that the <b>log metrics</b> show typical relative accuracy and the dollar-scale performance may be influenced by a few large errors _(either in the training or in the testing set, depending on luck!)_
+
+We then estimate the coefficients "manually", using NumPy and a numerically stable linear system _(not relying explicitly on the inverse matrix to solve the normal equation)_.
+
+We first define the design matrix and y vector as:
+
+```python
+A = np.column_stack([np.ones(len(X_train_num)), X_train_num.to_numpy()])
+y_vec = y_train.to_numpy()
+```
+
+_Secondly_, we get the number of observations and coefficients, then compute $A^T A$ for the normal equation:
+
+```python
+# Get the number of observations and coefficients.
+m, p = A.shape  # p = number of features + 1 intercept
+
+# Compute AᵀA for the normal equation.
+AtA = A.T @ A
+```
+
+We can now solve the normal equation and compare the coefficients with those from the previous scikit-learn model:
+
+```python
+# Solve the normal equation for the regression coefficients.
+beta_solve = np.linalg.solve(AtA, A.T @ y_vec)
+
+# Extract the intercept and coefficients from the scikit-learn model.
+beta_sklearn = np.r_[ols_numerical.intercept_, ols_numerical.coef_]
+
+# Compare the coefficients obtained by both methods.
+q2b_coefficients = pd.DataFrame({
+    "feature": feature_names,
+    "beta_numpy_solve": beta_solve,
+    "beta_sklearn": beta_sklearn,
+    "abs_difference": np.abs(beta_solve - beta_sklearn),
+})
+```
+
+By plotting the result, we could see that most of the coefficients are approximately equal in the two models, but 8 are very different.
+
+This happens because these columns are <b>linearly dependent</b>; therefore, $A^T A$ is a <b>singular matrix</b> and the normal equation has <b>infinite solutions</b>. However, the "manual" method using the NumPy solver does not return an error because rounding errors make $A^T A$ invertible, and it then returns an arbitrary solution _(dependent on rounding errors)_.
+<br/>In contrast, scikit-learn uses an OLS solver that returns the unique solution with the smallest norm.
+
+Therefore, we conclude that the system is <b>NOT</b> numerically well behaved and we should not consider the coefficients from the 8 dependent columns.
+
+For the same reason, when looking at the standard errors (SE), we should only consider the finite and small SEs and ignore the huge or NaN SEs, as they come from the (redundant) linearly dependent variables.
+
+Given the results, we spent some time investigating the numerical structure of A.
+
+```python
+rank_A = np.linalg.matrix_rank(A)
+_, singular_values, Vt = np.linalg.svd(A, full_matrices=False)
+```
+
+<b>P.1.3 Regularization Techniques</b>
+
+We now try to implement and tune four different methods:
+- <b>Truncated Pseudoinverse</b>
+- <b>Ridge</b>
+- <b>Lasso</b>
+- <b>Elastic Net</b>
+
+For each method, we use an 8-fold CV, MSE as the model-selection criterion, and the same CV folds.
+
+Firstly, we build one <b>reusable preprocessing component</b> that applies numerical imputation _(i.e. fills missing data)_, numerical standardization, categorical imputation, one-hot encoding, and correct treatment of NA/None where the values are allowed categories.
+
+```python
+preprocessor = ColumnTransformer([
+    ("num", Pipeline([("imputer", SimpleImputer(strategy="mean")), ("scaler", StandardScaler())]), NUMERICAL),
+    ("cat", Pipeline([("imputer", SimpleImputer(strategy="most_frequent")),
+                      ("onehot", OneHotEncoder(handle_unknown="ignore"))]), CATEGORICAL),
+], sparse_threshold=0)
+cv = KFold(n_splits=8, shuffle=True, random_state=42)
+```
+
+We then construct one pipeline for each method using the SAME preprocessor.
+- _For Ridge, Lasso, and Elastic Net,_ we start from the raw data, apply the preprocessor, and then fit the model.
+- _For Truncated Pseudoinverse,_ we start from the raw data, apply the preprocessor, compute the truncated SVD, and then fit a linear regression.
+
+_(Note that all methods include the intercept and it is not regularized.)_
+
+We then set the <b>hyperparameter</b> grids and tune the following with GridSearch:
+- <b>regularization strength</b> for Ridge;
+- <b>regularization strength</b> for Lasso;
+- <b>regularization strength and mixing parameter</b> for Elastic Net;
+- <b>number of retained singular directions</b> for Truncated Pseudoinverse _(with scikit-learn's TruncatedSVD, this is n_components: the number of retained singular components, not a singular-value cutoff)_.
+
+```python
+models = {
+    "Truncated pseudoinverse": (
+        Pipeline([("preprocessor", preprocessor), ("svd", TruncatedSVD(random_state=42)), ("model", LinearRegression())]),
+        {"svd__n_components": list(range(10, 251, 10))},
+    ),
+    "Ridge": (
+        Pipeline([("preprocessor", preprocessor), ("model", Ridge())]),
+        {"model__alpha": np.logspace(-4, 5, 37)},
+    ),
+    "Lasso": (
+        Pipeline([("preprocessor", preprocessor), ("model", Lasso(max_iter=100_000))]),
+        {"model__alpha": np.logspace(-4, 0, 17)},
+    ),
+    "Elastic Net": (
+        Pipeline([("preprocessor", preprocessor), ("model", ElasticNet(max_iter=100_000))]),
+        {"model__alpha": np.logspace(-4, 0, 17), "model__l1_ratio": [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 0.75, 0.95]},
+    ),
+}
+```
+
+To find the best parameter, we apply the following logic:
+- run an initial broad grid
+- once a grid is done, inspect that grid and the selected parameter
+- if the parameter is at or near the border, expand that side and re-run
+- stop only when the selected values are inside the final grid _(we do not automatically stop at the first grid if the optimum parameter looks constrained by the chosen grid, in order to not introduce selection/prior bias)_
+
+```python
+searches, rows = {}, []
+for name, (pipeline, grid) in models.items():
+    search = GridSearchCV(pipeline, grid, scoring="neg_mean_squared_error", cv=cv, refit=True, n_jobs=1)
+    search.fit(X_train_raw, y_train)
+    searches[name] = search
+    i = search.best_index_
+    train_mse, train_r2, test_mse, test_r2 = evaluate(search.best_estimator_, X_train_raw, X_test_raw)
+    rows.append([name, search.best_params_, -search.cv_results_["mean_test_score"][i], search.cv_results_["std_test_score"][i],
+                 train_mse, train_r2, test_mse, test_r2])
+    # At or near the boundary = one of the two lowest or two highest grid values.
+    boundary = [key for key, values in grid.items() if search.best_params_[key] in [*sorted(values)[:2], *sorted(values)[-2:]]]
+    print(f"{name}: {'extend and rerun ' + str(boundary) if boundary else 'selected values are not at or near the edge of the final grid.'}")
+```
+
+After some time (if I had a MacBook Pro M5, it would have taken 15 seconds), we end up with results and the following representative plots:
+
+| Model | Train MSE | Train R² | Test MSE | Test R² |
+| --- | ---: | ---: | ---: | ---: |
+| OLS: numerical only | 1,433,790,871 | 0.7618 | 829,116,180 | 0.8812 |
+| OLS: all features | 291,430,340 | 0.9516 | 880,885,573 | 0.8738 |
+| Truncated pseudoinverse | 565,788,140 | 0.9060 | 691,717,575 | 0.9009 |
+| Ridge | 601,558,822 | 0.9000 | 632,575,164 | 0.9093 |
+| Lasso | 444,200,698 | 0.9262 | 483,227,109 | 0.9308 |
+| Elastic Net | 676,880,511 | 0.8875 | 614,607,818 | 0.9119 |
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p1-tuning.png)
+</div>
+
+
 
 ## <a id="p2"><b>P2 </b></a>
 
