@@ -23,10 +23,14 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 - [Dimensionality Reduction and Autoencoders](#10)
 - [Generative Models](#11)
 
-The following notes come from the course <b><a href="" target="_blank">Machine Learning in Finance and Insurance</a></b>, taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~patrickc/" target="_blank">Patrick Cheridito</a>, Professor of Mathematics at ETH Zurich and Director of <a href="https://risklab.ethz.ch/" target="_blank">RiskLab Switzerland</a>.
+## <b>Projects</b>
 
-Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">me</a> with any comments, clarifications, or corrections.
+1. [Linear Regression with housing price data](#p1)
+1. [Project name](#p2)
+1. [Project name](#p3)
+1. [Project name](#p4)
 
+<br/>
 ---
 
 ## <a id="1"><b>1 Basic Notions of Statistical Learning</b></a>
@@ -53,7 +57,7 @@ $$
 _Intuition: if the preimage of every Borel set in $Y$ is a Borel set in $X$._
 
 ---
-
+<br/>
 <b>The prediction problem</b>
 <br/>
 Consider the following:
@@ -90,9 +94,9 @@ for a measurable loss function $\ell: \mathcal{Y} \times \mathcal{Y} \to \mathbb
 Then, _in machine learning_, it is common to solve the <b>empirical loss minimization problem</b>!
 
 ---
-
+<br/>
 <b> Regression Functions and Irreducible Error </b>
-
+<br/>
 <b>Lemma (theoretically best predictor with respect to a given loss function $\ell: \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}_+$)</b>
 
 Let $\bar f: \mathcal{X} \to \mathcal{Y}$ be a measurable function such that, for $\rho_X$-almost every $x \in \mathcal{X}$, $\bar f(x)$ minimizes
@@ -130,7 +134,7 @@ _From now on_, we suppose these assumptions from the lemma hold and we call:
 - $\mathbb{E}[\ell(\bar f(X),Y)]$ <b>irreducible error</b> _(even with the exact conditional distribution, randomness in $Y$ given $X$ can prevent perfect prediction)_
 
 ---
-
+<br/>
 <b>Example: Square loss </b>
 
 We consider now the following example with $\mathcal{Y} \subseteq \mathbb{R}$, $\ell(w,y) = (w - y)^2$ and a random variable $Z$ with $\mathbb{E}[Z^2] < \infty$.
@@ -244,7 +248,7 @@ For the special case $\alpha = 1/2$, $q_{1/2}(Z)$ is a median of $Z$, and
 $\mathbb{E}[\ell_{1/2}(Y - q_{1/2}(X))] = \frac{1}{2}\mathbb{E}[|Y - q_{1/2}(X)|]$ is the <b>minimal MAE</b>.
 
 ---
-
+<br/>
 <b>Empirical loss (empirical risk)</b>
 
 Let $(X_i, Y_i)$ with $i = 1,\ldots,m$ be _independent copies_ of $(X,Y)$, called training data.
@@ -265,7 +269,7 @@ and we can call this the <b>weak law of large numbers</b>.
 _Intuition: with the training data growing, variance approaches zero_.
 
 ---
-
+<br/>
 <b>Hypothesis Classes</b>
 
 A hypothesis class is a family $\mathcal{H}$ of measurable functions $f: \mathcal{X} \to \mathcal{Y}$, e.g.:
@@ -633,7 +637,7 @@ $$
 
 is the solution with the smallest $\lVert\cdot\rVert_2$-norm.
 
-_Recall that the $\lVert\cdot\rVert_2$-norm is defined as:
+_Recall that the $\lVert\cdot\rVert_2$-norm is defined as:_
 
 $$
 \lVert b \rVert_2 = \sqrt{\sum_{j=1}^{l} b_j^2}.
@@ -1038,7 +1042,7 @@ Furthermore, in the presence of missing data, i.e. given a row vector $(x_{i1},\
 ![Bias variance tradeoff](/images/notes/third-semester/gradient-descent.png)
 </div>
 
-_Imagine you are lost on a foggy mountain and you have to reach the lowest valley point _(i.e. you have to come back to the parking lot after your hike)_. Since you cannot see anything, by carefully analyzing and feeling the slope of the terrain under your feet, you find the direction that goes downhill more steeply... this could be a nice starting point to understand gradient descent, but now, let's deep dive into the technicalities!
+Imagine you are lost on a foggy mountain and you have to reach the lowest valley point _(i.e. you have to come back to the parking lot after your hike)_.<br/>Since you cannot see anything, by carefully analyzing and feeling the slope of the terrain under your feet, you find the direction that goes downhill more steeply... this could be a nice starting point to understand gradient descent, but now, let's deep dive into the technicalities!
 
 <b>The Grid Method</b>
 
@@ -1103,7 +1107,7 @@ Furthermore _(and most importantly)_, if a convex function $h : \mathbb{R}^d \to
 
 Furthermore, $x^* \in \mathbb{R}^d$ is a <b>minimizer for a convex function</b> $h: \mathbb{R}^d \to \mathbb{R}$ if and only if $0 \in \partial h(x^*)$.
 
-_Recall that, given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase _(therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)_.
+_Recall that,- given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase _(therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)_.
 
 ---
 <br/>
@@ -1343,3 +1347,23 @@ $$
 ## <a id="10"><b>10 Dimensionality Reduction and Autoencoders</b></a>
 
 ## <a id="11"><b>11 Generative Models</b></a>
+
+---
+
+## <b>Projects </b>
+
+All the projects were assigned during the course and self made in groups. The code is fully available and reproducible on <a href="https://github.com/giacomomaggiore/ml-finance-insurance" target="_blanK">GitHub here.</a>
+<br/>Below you find a brief description and comment on the project, _for the technical implementation please refer to the codebase._
+
+_Credits to Giacomo Maggiore, Ugo Buzzacchino, Kostas Zisis, Konstantin Krstevski._
+
+
+
+
+## <a id="p1"><b>P1 Linear Regression with housing price data</b></a>
+
+## <a id="p2"><b>P2 </b></a>
+
+## <a id="p3"><b>P3 </b></a>
+
+## <a id="p4"><b>P4 </b></a>

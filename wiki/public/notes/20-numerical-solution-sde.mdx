@@ -10,6 +10,10 @@ summary: ''
 
 The course has been taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Professor Josef Teichmann</a> and <a href="https://www.lse.ac.uk/people/christoph-czichowsky" target="_blank">Dr Christoph Czichowsky</a>
 
+Additional notes and notebooks can be found <a href="https://people.math.ethz.ch/~jteichma/index.php?content=teach_nasode_hs26" target="_blank">here</a>.
+
+_Important remark:_ I do not take any credit for the content of the notes, <b>all credit goes to the professor and their team!</b>
+
 Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">me</a> with any comments, clarifications, or corrections.
 
 ---
@@ -26,7 +30,394 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 - [Stochastic Simulation and Monte Carlo Methods](#8)
 - [Euler–Maruyama for Lévy-Driven SDEs](#9)
 - [Multilevel Monte Carlo and Efficient Increment Simulation](#10)
+<br/>
+---
 
+## <a id = "0"><b>Basics of probability theory</b></a>
+
+<b>Probability spaces</b>
+
+A probability space is a mathematical concept that provides a formal model for a random experiment. It is composed of:
+- <b>sample space</b> $\Omega$: the set of all possible outcomes.
+- <b>event space</b> $\mathcal{F}$: the $\sigma$-algebra of subsets of $\Omega$. These subsets are called events, and they are the collections of outcomes to which we can assign probabilities.
+- <b>probability measure</b> $P$: a function $P: \mathcal{F} \to [0,1]$ that assigns a probability to each event. Note that $P$ satisfies the following:
+    - $P(A) \ge 0$ for all $A \in \mathcal{F}$.
+    - $P(\Omega) = 1$.
+    - For any countable sequence of events $(A_i)_{i \in \mathbb{N}} \subseteq \mathcal{F}$, $P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)$.
+<br/>
+<b>Expectation, Variance and Covariance</b>
+
+For a random variable $X$, the expectation $\mathbb{E}[X]$ is the average value over a large number of trials. <br/>If $X$ is discrete with probability mass function $p(x)$, we have:
+
+$$
+\mathbb{E}[X] = \sum_x p(x)x
+$$
+
+If $X$ is continuous with probability density function $f(x)$:
+
+$$
+\mathbb{E}[X] = \int_{-\infty}^{\infty} x f(x)\,dx
+$$
+
+For the same random variable $X$, the variance $\operatorname{Var}(X)$ measures the dispersion of $X$ values around the expected value, if it exists.
+
+$$
+\operatorname{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
+$$
+
+For two random variables $X, Y$, the covariance $\operatorname{Cov}(X, Y)$ measures how they change together.
+
+$$
+\operatorname{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])] = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]
+$$
+
+Note that variance and covariance have the following important properties:
+- $\operatorname{Var}(X) = \operatorname{Cov}(X, X) \ge 0$.
+- $\operatorname{Cov}(X, Y) = \operatorname{Cov}(Y, X)$.
+- $\operatorname{Cov}(aX + bZ, Y) = a\operatorname{Cov}(X, Y) + b\operatorname{Cov}(Z, Y)$ for constants $a, b$.
+- $\operatorname{Var}(aX + b) = a^2\operatorname{Var}(X)$ for constants $a, b$.
+- If $X$ and $Y$ are independent, then $\operatorname{Cov}(X, Y) = 0$; the converse does not generally hold.
+
+Furthermore, we can define the law $\mu$ of a random variable $X$ as the probability measure that satisfies $\mu(B) = P[X \in B]$, also called the pushforward measure.
+
+Lastly, a fundamental concept in probability theory is independence: a family of random variables is called independent if the joint law of the family is the product of the marginal laws. In formulas:
+
+$$
+f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i)
+$$
+
+<b>The Law of Large Numbers (LLN)</b>
+
+The Law of Large Numbers states that, as the number of trials tends to infinity, the sample mean converges to the expected true value of the underlying distribution. Formally, we write:
+
+$$
+\frac{1}{n}\sum_{i=1}^n X_i \xrightarrow{n \to \infty} \mathbb{E}[X_1]
+$$
+
+<b>Central Limit Theorem</b>
+
+It states that the distribution of sample means of a large number of independent and identically distributed random variables will be approximately normal, regardless of the original distribution of the random variables.
+
+---
+
+## <a id = "0.1"><b>Introduction to Stochastic Differential Equations</b></a>
+
+We first show three important examples of stochastic differential equations, largely discussed in the sector and for which numerical approximations will be useful.
+
+<b>The Black–Scholes Model</b>
+
+Before starting: quick history recap: The <a href="" target="_blank">Black–Scholes Model</a> was initially published in 1973 by the economists Black and Scholes, based on a previous mathematical formulation by Merton. The model revolutionized modern finance by providing the first framework for pricing options. Curiously, the publication date (1973) coincided with the opening of the <a href="" target="_blank">Chicago Board Options Exchange (CBOE, which is still active and covers approximately 30% of total option trading volume per year)</a>, which provided the first centralized marketplace for trading options.
+
+From the model, we can deduce the Black–Scholes formula, which returns the theoretical value of the price of a European option (recall that a European option can be exercised only at maturity, while an American option can be exercised anytime).
+<br/>The model assumes that the price of the underlying asset follows a <b>geometric Brownian motion</b> (GBM, one of the most important stochastic models in financial economics) and [... place other assumptions]
+
+We begin by drawing the trajectory of a Brownian motion in Python.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters for Brownian Motion
+T = 1.0  # Total time
+N = 1000 # Number of steps
+dt = T / N # Time step size
+
+# Generate a Brownian Motion trajectory
+np.random.seed(42) # for reproducibility
+
+# Generate N independent increments
+dW = np.random.normal(loc=0.0, scale=np.sqrt(dt), size=N)
+W = np.cumsum(dW)
+
+t = np.linspace(0, T, N)
+```
+
+In the code: we first generate $N = 1000$ independent increments with $0$ mean and $\sqrt{dt}$ standard deviation. Secondly, we build the Brownian motion by cumulative sums.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/standard-bm.png)
+</div>
+
+Formally, we can write:
+
+$$
+dS_t = \mu S_t \, dt + \sigma S_t \, dW_t
+$$
+
+where
+- $S_t$ is the stock price at time $t$.
+- $\mu$ is the drift coefficient (the expected log return).
+- $\sigma$ is the volatility (standard deviation of log returns).
+- $W_t$ is a Wiener process (Brownian motion).
+
+Recall that $W_t$ is a stochastic process $(W_t)_{t \ge 0}$ that satisfies:
+- $W_0 = 0$ almost surely.
+- It has independent increments for $0 \le s < t$: $W_t - W_s \sim N(0, t-s)$.
+- Its paths are almost surely continuous.
+
+Therefore we have:
+
+$$
+W_t \sim N(0, t), \quad \mathbb{E}[W_t] = 0, \quad \operatorname{Var}[W_t] = t.
+$$
+
+The equation should be understood as a (stochastic) integral equation.
+
+_Intuition: the equation says that the infinitesimal increment $S_{t+\Delta t} - S_t$ at time $t$ is approximately normally distributed with variance $\sigma^2 S_t^2 \Delta t$ and mean $\mu S_t \Delta t$._
+
+In Python, we can write:
+```python
+
+# Parameters for Black-Scholes simulation
+S0 = 100   # Initial stock price
+mu = 0.05  # Drift (expected return)
+sigma = 0.20 # Volatility
+T = 1.0    # Total time
+N = 1000    # Number of steps
+dt = T / N # Time step size
+
+# Generate a single trajectory of stock prices
+np.random.seed(42) # for reproducibility
+
+S = np.zeros(N)
+S[0] = S0
+
+for i in range(1, N):
+    dW = np.random.normal(loc=0.0, scale=np.sqrt(dt))
+    S[i] = S[i-1] * np.exp((mu - 0.5 * sigma**2) * dt + sigma * dW)
+
+t = np.linspace(0, T, N)
+
+```
+
+<br/>
+---
+<br/>
+<b>Langevin Equation (Simplified SDE)</b>
+
+The Langevin equation was inspired by the dynamics of a particle in a potential, where the gradient of the potential determines the force acting on the particle. It is the theoretical foundation of highly influential algorithms like Markov chain Monte Carlo or stochastic gradient descent. The goal of the equation is to sample from $\exp(-U/\epsilon)$.
+
+Recall, a potential function $U(x)$ is a scalar function that defines a force/drift $b(x)$ through its negative gradient:
+
+$$
+b(x) = -\nabla U(x)
+$$
+
+where $b(x)$ is the drift function, i.e. the deterministic instantaneous tendency of the process in its state $x$.
+
+In general, for a $U(x)$ in one dimension, the stochastic differential equation is given by:
+
+$$
+dX_t = -\frac{1}{2} \nabla U(X_t) \, dt + \sqrt{\epsilon} \, dW_t
+$$
+
+where
+- $X_t$ is the position of the particle at time $t$.
+- $U(X_t)$ is the potential energy function.
+- $\nabla U(X_t)$ is the derivative of the potential with respect to $X_t$.
+- $\epsilon$ is a parameter related to noise.
+- $W_t$ is Brownian motion.
+
+Note that the process converges in distribution to an invariant measure given by the density with respect to Lebesgue measure, i.e. solving the differential equation for large times brings samples of the invariant measure:
+
+$$
+p(x) \propto \exp\left(-\frac{U(x)}{\epsilon}\right)
+$$
+
+Recall that the invariant measure is a probability distribution that remains unchanged under the evolution of a stochastic process. <b>Formally</b>, if $X_0 \sim \pi$, then $X_t \sim \pi$ for all $t \ge 0$ and, intuitively, it is the process's stationary theoretical distribution _(long-run distribution)_.
+
+In Python, we write the following:
+
+```python
+
+# Parameters for Langevin SDE
+dt = 0.01  # Time step
+T = 500    # Total simulation time
+N = int(T / dt) # Number of steps
+
+epsilon = 1.0 # Noise intensity parameter
+
+# Define a potential function (e.g., a double well potential)
+def potential(x):
+    return 0.5 * (x**2 - 1)**2
+
+def grad_potential(x):
+    return 2 * x * (x**2 - 1) # dU/dx
+
+# Initialize position
+x = np.zeros(N)
+x[0] = 0.0
+
+# Simulate Langevin dynamics using Euler-Maruyama
+for i in range(N - 1):
+    dW = np.random.normal(loc=0.0, scale=np.sqrt(dt))
+    x[i+1] = x[i] - 0.5 * grad_potential(x[i]) * dt + np.sqrt(epsilon) * dW
+
+
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/langevin-trajectory.png)
+</div>
+
+Furthermore, in the following plot we can see the convergence of the simulated distribution to the theoretical invariant measure.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/langevin-convergence.png)
+</div>
+
+
+---
+<br/>
+<b>The Kalman Filter (Continuous Time for OU Process)</b>
+
+The <b>Kalman filter</b> provides an optimal estimate of the state of a linear system observed with additive Gaussian noise. <br/>_Intuition_: the filter repeats two steps:
+1. use the dynamics to predict the following state
+2. compare the prediction with the new observation and combine them, giving more weight to whichever is more reliable.
+
+We now illustrate the filter with an <b>Ornstein–Uhlenbeck process</b>, which describes a mean-reverting particle with white noise, with the following SDE:
+
+$$
+dX_t = \theta(\mu_{\mathrm{ou}} - X_t)\,dt + \sigma_{\mathrm{ou}}\,dW_t
+$$
+
+where $\mu_{\mathrm{ou}}$ is the <b>mean of the process</b> and $\theta$ is the <b>reversion speed</b>
+
+We now consider a <b>noisy observation </b>of this OU process.<br/>In this case, we observe $(Z_k)_{k \ge 0}$ such that $Z_k = H X_{t_k} + \varepsilon_k$, where $(\varepsilon_k)_{k \ge 0}$ are independent random variables with $\varepsilon_k \sim \mathcal{N}(0, R_{\mathrm{measurement}})$ representing the measurement noise.
+
+_Intuition:_ in an OU process, $X_t$ is hidden and we only see the noisy signal, with $X_t$ as the unobserved OU state, $Z_k$ as the observation, and $\varepsilon_k$ as the noise.
+
+Over a short interval $\Delta t$, we can say:
+
+$$
+Z_{k+1} = H X_{t_{k+1}} + \sqrt{R_{\mathrm{measurement}}}\,\varepsilon_{k+1}
+$$
+
+where $\varepsilon_{k+1} \sim \mathcal{N}(0,1)$ represents the random measurement noise in the discretized observation.
+
+```python
+
+dt_sim = 0.01  # Simulation time step
+T_sim = 100    # Total simulation time
+N_sim = int(T_sim / dt_sim)
+
+theta = 0.1    # Reversion speed
+mu_ou = 0.5    # Mean
+sigma_ou = 0.2 # Volatility
+
+np.random.seed(43) # for reproducibility
+
+X_true = np.zeros(N_sim)
+X_true[0] = 0.0 #initialize at zero
+
+for i in range(N_sim - 1):
+
+    # wiener process
+    dW = np.random.normal(loc=0.0, scale=np.sqrt(dt_sim))
+    # sde
+    X_true[i+1] = X_true[i] + theta * (mu_ou - X_true[i]) * dt_sim + sigma_ou * dW
+
+t_sim = np.linspace(0, T_sim, N_sim)
+
+# we now generate noisy observations
+
+obs_noise_std = 0.5 # std of observation noise
+R_obs = obs_noise_std**2 # variance of noise variance
+
+# we sum up the simulated x_t and the noise
+Z_obs = X_true + np.random.normal(0, obs_noise_std, N_sim)
+
+```
+
+We now spend some time explaining the Kalman filter. <br/>
+Given $dX_t = \theta(\mu_{\mathrm{ou}} - X_t)\,dt + \sigma_{\mathrm{ou}}\,dW_t$ and $Z_k = H X_{t_k} + \varepsilon_k$, we can introduce the Kalman filter with the following parameters:
+- $F = -\theta$: mean-reversion coefficient
+- $L = \sigma_{\mathrm{ou}}$: intensity of the process noise
+- $Q_{\mathrm{process}} = 1$: variance of the Brownian noise $dW_t$
+- $H = 1$: observation coefficient
+- $R_{\mathrm{measurement}}$: variance of the observation noise
+Formally, we write:
+
+$$
+P^-_{k+1} \approx (1 + F\Delta t)^2 P_k + L^2 Q_{\mathrm{process}}\Delta t
+$$
+
+that, for this scalar OU model, translates to
+
+$$
+P^-_{k+1} \approx (1 - \theta\Delta t)^2 P_k + \sigma_{\mathrm{ou}}^2\Delta t
+$$
+
+Then, using Euler's method, we can approximate:
+
+$$
+P^-_{k+1} \approx (1 - \theta\Delta t)^2 P_k + \sigma_{\mathrm{ou}}^2\Delta t
+$$
+
+where $P^-_{k+1}$ is the uncertainty before using the following observation.
+
+Then, we can still use the Euler approximation with $F = -\theta$ for the following expression:
+
+$$
+\hat X^-_{k+1} = \hat X_k + \theta(\mu_{\mathrm{ou}} - \hat X_k)\Delta t
+$$
+
+The Kalman gain determines how much we can trust the new observation _(large gain: we can trust it more)_ and is defined as:
+
+$$
+K_{k+1} = \frac{P^-_{k+1} H}{H^2 P^-_{k+1} + R_{\mathrm{measurement}}}
+$$
+
+Lastly, we update the state with:
+
+$$
+\hat X_{k+1} = \hat X^-_{k+1} + K_{k+1}(Z_{k+1} - H \hat X^-_{k+1})
+$$
+
+(the term in parentheses represents the <b>innovation</b> or prediction error, _i.e. the difference between the observation and the value predicted by the model)_
+
+Starting from the previous code block, we can implement the Kalman filter as:
+
+```python
+# we now apply the Kalman Filter
+
+# System parameters for Kalman Filter
+F = -theta
+L = sigma_ou
+Q_process = 1.0     # Covariance of dW (in the case of unit variance)
+
+H = 1.0
+R_measurement = R_obs
+
+dt_filter = dt_sim # Use the same time step for filter discretization
+
+# initial conditions for Kalman filter
+x_hat = np.zeros(N_sim)
+P = np.zeros(N_sim)
+
+x_hat[0] = Z_obs[0] # Initialize estimate with first observation
+P[0] = 1.0           # Initial covariance (high uncertainty)
+
+for k in range(N_sim - 1):
+
+    # Prediction step (using discretized Riccati equation for P)
+    P_dot = F * P[k] + P[k] * F + L * Q_process * L - P[k] * H * (1/R_measurement) * H * P[k]
+    P_minus = P[k] + P_dot * dt_filter
+
+    x_hat_minus = x_hat[k] + F * x_hat[k] * dt_filter
+
+    # Kalman Gain (discrete-time equivalent for this observation model)
+    K_k = P_minus * H / (H * P_minus * H + R_measurement / dt_filter) # Adjust R for discrete observation
+
+    # Update step
+    x_hat[k+1] = x_hat_minus + K_k * (Z_obs[k+1] - H * x_hat_minus)
+    P[k+1] = (1 - K_k * H) * P_minus
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/kalman.png)
+</div>
 
 ## <a id="1"><b>Mathematical Formulation of Random Number Generation</b></a>
 
@@ -41,7 +432,7 @@ Even if this is a very generic definition, the importance and advantage of $\mat
 
 <b>Inversion Method</b>
 
-We now spend some time presenting the inversion method, useful to transform _uniformly distributed random numbers_ to arbitrary distributions using a suitable generalized inverse distribution function.
+We now spend some time presenting the inversion method, useful for transforming _uniformly distributed random numbers_ into arbitrary distributions using a suitable generalized inverse distribution function.
 
 <b>Definition (Generalized inverse distribution function associated to a distribution function)</b>
 
@@ -99,7 +490,7 @@ Let $F: \mathbb{R} \to [0,1]$ be a distribution function and $I_F : (0,1) \to \m
 1. $I_F$ is non-decreasing.
 2. For all $y \in (0,1)$:
     - $F(I_F(y)) \ge y$.
-    - $F^{-1}([y,1]) = [I_F(y), \infty]$.
+    - $F^{-1}([y,1]) = [I_F(y), \infty)$.
     - $I_F(y) = \min(F^{-1}([y,1]))$.
 3. For all $x \in F^{-1}((0,1)) = \{z \in \mathbb{R} : F(z) \in (0,1)\}$: $I_F(F(x)) \le x$.
 4. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) < x$ if and only if $y \le F(x)$ _(switching formula)_.
