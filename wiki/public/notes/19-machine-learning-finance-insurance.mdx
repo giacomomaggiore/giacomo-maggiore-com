@@ -846,8 +846,7 @@ _Intuition: $Q_k\beta$ is the signal that survives the truncation, and $A_c^\dag
 
 We can consider $c$ as a <b>threshold hyperparameter</b> that balances bias and variance. Indeed, for an increasing $c$:
 - the bias of $\hat{\beta}_c$, $Q_k\beta-\beta$, increases because $Q_k\beta$ contains less information
-- the Frobenius norm of the covariance matrix decreases because more $\sigma_i^{-1}$ terms are removed _(recall that the Frobenius norm is defined as $
-\|M\|_F = \sqrt{\sum_{i=1}^{p}\sum_{j=1}^{q} m_{ij}^2} = \sqrt{\operatorname{tr}(M^T M)}$)._
+- the Frobenius norm of the covariance matrix decreases because more $\sigma_i^{-1}$ terms are removed _(recall that the Frobenius norm is defined as $\|M\|_F = \sqrt{\sum_{i=1}^{p}\sum_{j=1}^{q} m_{ij}^2} = \sqrt{\operatorname{tr}(M^T M)}$)._
 <br/>
 ---
 <br/>
@@ -1103,11 +1102,31 @@ We now define the <b>subdifferential</b> $\partial h(x)$ as the set of all subgr
 
 If h is convex, $\partial h(x)$ is, for all $x \in \mathbb{R}^d$, a <b>non-empty</b> subset of $\mathbb{R}^d$.
 
+To prove that, we fix $x \in \mathbb{R}^d$. Its epigraph is then convex:
+
+$$
+\operatorname{epi}(h) = \{(z,t) \in \mathbb{R}^{d+1} : t \geq h(z)\}.
+$$
+
+Furthermore, the point $(x, h(x))$ lies on the boundary, so the supporting hyperplane theorem says that there are $(a,b) \neq 0$ such that:
+
+$$
+a^T(z-x) + b(t-h(x)) \geq 0 \qquad \forall (z,t) \in \operatorname{epi}(h).
+$$
+
+Since the epigraph extends upward, $b > 0$, so we can set $g = -a/b$ and, taking $t = h(z)$, we get:
+
+$$
+h(z) \geq h(x) + g^T(z-x) \qquad \forall z.
+$$
+
+Therefore, $g \in \partial h(x)$ and so we can conclude that $\partial h(x) \neq \emptyset$.
+
 Furthermore _(and most importantly)_, if a convex function $h : \mathbb{R}^d \to \mathbb{R}$ is <b>differentiable</b> at x, then $\partial h(x)$ is a singleton and we have $\partial h(x) = \nabla h(x)$.
 
 Furthermore, $x^* \in \mathbb{R}^d$ is a <b>minimizer for a convex function</b> $h: \mathbb{R}^d \to \mathbb{R}$ if and only if $0 \in \partial h(x^*)$.
 
-_Recall that,- given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase _(therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)_.
+_Recall that, given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase _(therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)_.
 
 ---
 <br/>
@@ -1334,6 +1353,172 @@ $$
 
 ## <a id="4"><b>4 Logistic Regression</b></a>
 
+We firstly recall some basics of probability.
+
+A random variable $Y$ is <b>Bernoulli distributed</b> with parameter $p \in [0,1]$ _(and in this case we write $Y \sim \operatorname{Ber}(p)$)_ if:
+
+$$
+\begin{cases}
+\mathbb{P}[Y = 1] = p, \\
+\mathbb{P}[Y = 0] = 1 - p.
+\end{cases}
+$$
+
+Now we consider $Y \mid X \sim \operatorname{Ber}(p(X))$, where:
+- $X = (X_1, \ldots, X_d)$
+- $p(X) = \psi(\beta_0 + \beta_1 X_1 + \cdots + \beta_d X_d)$
+- $\psi(x) = \frac{e^x}{e^x + 1} = \frac{1}{1 + e^{-x}}$ _(<b>logistic function</b>)_
+
+In other words, we have:
+
+$$
+\begin{cases}
+\mathbb{P}[Y = 1] = p(x), \\
+\mathbb{P}[Y = 0] = 1 - p(x).
+\end{cases}
+$$
+
+<div align="center">
+![Logistic function](/images/notes/third-semester/logistic-function.png)
+</div>
+
+Therefore, the <b>probability mass function</b> of $Y \sim \operatorname{Ber}(p)$ is:
+
+$$
+f_p(y) =
+\begin{cases}
+p, & \text{if } y = 1, \\
+1 - p, & \text{if } y = 0
+\end{cases}
+= p^y (1 - p)^{1-y}, \qquad y \in \{0,1\}.
+$$
+
+And, _following the same reasoning,_ the <b>probability mass function</b> of $m$ independent $Y_i \sim \operatorname{Ber}(p)$ _(note that they all have the same parameter $p$)_ is:
+
+$$
+\prod_{i=1}^{m} f_p(y_i) = \prod_{i=1}^{m} p^{y_i} (1 - p)^{1-y_i}.
+$$
+
+_Recall also_ that the sum of Bernoulli random variables follows a <b>binomial distribution</b>, formally:
+
+$$
+S = \sum_{i=1}^m Y_i \sim \operatorname{Binomial}(m, p).
+$$
+
+_Going further_, the <b>likelihood function</b> of $Y_1, \ldots, Y_m$ is:
+
+$$
+L(p \mid y_1, \ldots, y_m) = \prod_{i=1}^m f_p(y_i) = \prod_{i=1}^m p^{y_i}(1-p)^{1-y_i}.
+$$
+
+The <b>log-likelihood function</b> of $Y_1, \ldots, Y_m$ is:
+
+$$
+\ell(p \mid y_1, \ldots, y_m) = \log L(p \mid y_1, \ldots, y_m) = \sum_{i=1}^m \left[y_i\log(p) + (1-y_i)\log(1-p)\right].
+$$
+
+_Recall that_ the likelihood measures <b>how plausible a parameter value is</b> given the observed data, so $p$ is treated as unknown and the observations $y_1, \ldots, y_m$ are fixed. _Remember also that a larger $L(p \mid y_1, \ldots, y_m)$ implies that the proposed $p$ makes the observed sequence more likely _(maximum likelihood chooses the value of $p$ that best explains the data)_._
+
+<b>Training and Estimation with Logistic Function</b>
+
+We now suppose that we want to regress $Y_i \in \{0,1\}$, a <b>binary outcome</b> that follows:
+
+$$
+Y_i \mid X_i \sim \operatorname{Bernoulli}(p_i),
+$$
+
+where
+
+$$
+p_i = \psi(X_i^T b) = \frac{1}{1 + e^{-X_i^T b}}.
+$$
+
+We consider training data $(x_{i1}, \ldots, x_{id}, y_i)$, independent and identically distributed realizations of $(X_1, \ldots, X_d, Y)$.
+
+We initially set, for $b \in \mathbb{R}^{d+1}$ and $i = 1, \ldots, m$:
+
+$$
+x_{i0} = 1, \qquad x_i^T b = \sum_{j=0}^d x_{ij}b_j, \qquad p_i(b) = \psi(x_i^T b).
+$$
+
+We define the <b>empirical loss minimization problem</b> (conditional on negative log-likelihood minimization):
+
+$$
+\begin{aligned}
+&\min_{b \in \mathbb{R}^{d+1}} \sum_{i=1}^m \left\{-y_i\log(p_i(b)) + (y_i-1)\log(1-p_i(b))\right\}\\
+&= \min_{b \in \mathbb{R}^{d+1}} \sum_{i=1}^m \left\{-y_i\log\bigl(\psi(x_i^T b)\bigr) + (y_i-1)\log\bigl(1-\psi(x_i^T b)\bigr)\right\} \\
+&= \min_{b \in \mathbb{R}^{d+1}} \sum_{i=1}^m \left\{y_i\log\frac{1-\psi(x_i^T b)}{\psi(x_i^T b)} - \log\bigl(1-\psi(x_i^T b)\bigr)\right\} \\
+&= \min_{b \in \mathbb{R}^{d+1}} \sum_{i=1}^m \left\{\log(1+e^{x_i^T b}) - y_i x_i^T b\right\}.
+\end{aligned}
+$$
+
+We immediately notice that this is a <b>convex minimization problem</b> for $b \in \mathbb{R}^{d+1}$ that can be solved with (stochastic) gradient descent.
+
+We then obtain the solution of the empirical loss minimization problem, $\hat\beta = (\hat\beta_0, \ldots, \hat\beta_d)$, and the predicted probability of $Y = 1$ given $X = (x_1, \ldots, x_d)$:
+
+$$
+\hat p(x) = \psi\left(\hat\beta_0 + \sum_{j=1}^d x_j\hat\beta_j\right).
+$$
+
+_Note that the prediction does not give the value of $Y$, but just the probability $\mathbb{P}[Y = 1]$, so we must choose a <b>decision threshold</b> $c \in (0,1)$ such that we predict $\hat y(x) = 1$ if $\hat p(x) \geq c$, and $0$ otherwise._
+
+We now consider <b>test data</b> $(x_{i1}, \ldots, x_{id}, y_i)$, with $i = m+1, \ldots, m+n$, independent and identically distributed realizations of $(X_1, \ldots, X_d, Y)$ independent from the training data.
+
+Then, for each case $i$, we can give the following classification:
+- $P$ (positive) if $y_i = 1$
+- $N$ (negative) if $y_i = 0$
+- $TP$ (true positive) if $\hat y_i = 1$ and $y_i = 1$
+- $FP$ (false positive) if $\hat y_i = 1$ and $y_i = 0$
+- $TN$ (true negative) if $\hat y_i = 0$ and $y_i = 0$
+- $FN$ (false negative) if $\hat y_i = 0$ and $y_i = 1$
+
+We can then define <b>accuracy</b> _(i.e. the percentage of correctly predicted cases)_ as:
+
+$$
+\text{Accuracy} = \frac{TP + TN}{N + P}.
+$$
+
+However, note that when dealing with <b>imbalanced data</b>, the accuracy metric can be misleading. Indeed, if one of the two classes $P, N$ is much smaller/bigger than the other, the accuracy ratio might not be the right measure since we may have very high accuracy just because we are always predicting the biggest class _(and never predict the smallest class)_ .
+
+Therefore, we can define other <b>performance measures</b>:
+
+- <b>True positive rate</b> (recall, sensitivity):
+
+$$
+\text{TPR} = \frac{TP}{P}.
+$$
+
+- <b>False Positive Rate</b>
+
+$$
+\text{FPR} = \frac{FP}{N}
+$$
+- <b>ROC (Receiver Operating Characteristic)</b>: it shows the profile $(\text{TPR}, \text{FPR})$ for $c \in (0,1)$
+- <b>AUC (Area under the curve)</b>: _larger is better_; randomly guessing produces the diagonal with AUC $= 1/2$, therefore AUC $< 1/2$ is worse than random guessing
+- <b>Positive predictive value</b> (precision)
+
+$$
+\text{PPV} = \frac{TP}{TP + FP}
+$$
+
+- <b>F1 Score</b>
+
+$$
+F1 = 2 \frac{TPR \times PPV}{TPR + PPV} = \frac{2 TP }{2 TP + FP + FN}
+$$
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/f1.jpg)
+</div>
+
+<b>Practical Example: credit analytics</b>
+
+Suppose that we want to classify a good (P) and a bad borrower (N).
+
+In this case, we may aim to minimize the FDR (the false discovery rate) or, _similarly,_ maximize the true positive rate.
+<br/>Furthermore, note that in this case a small AUC is desirable, since predictions should be independent of a protected attribute.
+
+
 ## <a id="5"><b>5 Kernel Methods</b></a>
 
 ## <a id="6"><b>6 Neural Networks</b></a>
@@ -1349,6 +1534,46 @@ $$
 ## <a id="11"><b>11 Generative Models</b></a>
 
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## <b>Projects </b>
 
@@ -1510,7 +1735,7 @@ We then set the <b>hyperparameter</b> grids and tune the following with GridSear
 - <b>regularization strength</b> for Lasso;
 - <b>regularization strength and mixing parameter</b> for Elastic Net;
 - <b>number of retained singular directions</b> for Truncated Pseudoinverse _(with scikit-learn's TruncatedSVD, this is n_components: the number of retained singular components, not a singular-value cutoff)_.
-
+<br/>
 ```python
 models = {
     "Truncated pseudoinverse": (
@@ -1537,7 +1762,7 @@ To find the best parameter, we apply the following logic:
 - once a grid is done, inspect that grid and the selected parameter
 - if the parameter is at or near the border, expand that side and re-run
 - stop only when the selected values are inside the final grid _(we do not automatically stop at the first grid if the optimum parameter looks constrained by the chosen grid, in order to not introduce selection/prior bias)_
-
+<br/>
 ```python
 searches, rows = {}, []
 for name, (pipeline, grid) in models.items():
@@ -1553,7 +1778,7 @@ for name, (pipeline, grid) in models.items():
     print(f"{name}: {'extend and rerun ' + str(boundary) if boundary else 'selected values are not at or near the edge of the final grid.'}")
 ```
 
-After some time (if I had a MacBook Pro M5, it would have taken 15 seconds), we end up with results and the following representative plots:
+After some time _(if I had a MacBook Pro M5, it would have taken 15 seconds),_ we end up with results and the following representative plots:
 
 | Model | Train MSE | Train R² | Test MSE | Test R² |
 | --- | ---: | ---: | ---: | ---: |

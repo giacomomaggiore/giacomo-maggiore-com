@@ -265,14 +265,26 @@ This can be particularly useful when a portfolio has short positions because:
 Suppose the case when your long positions pay $x$ subject to tax $t\%$, and the short positions have dividends of $y$ (so you have to pay $y$). Without capital gains or losses, the return profile is:
 
 $$
-\text{Profit} = x - y - tx
+\text{Profit} = x - y - t x
 $$
 
 _Shortcut: to assess the impact of withholding taxes, simply subtract the dividend yield of long positions and withholding tax from your returns._
 
 Furthermore, <b>cross-border investments</b> can create an additional complexity, since part of the foreign withholding tax can be refunded and part can be credited.
 
-[Mini deep dive on US withholding tax for the Swiss investor]
+Example: US withholding tax on dividends.
+
+If you are a non-US investor and own US stocks, the IRS generally imposes a 30% withholding tax on dividends paid by US companies.
+
+However, most EU countries and Switzerland have tax treaties with the US: with a valid Form W-8BEN completed through your broker, the withholding tax is typically reduced from 30% to 15%.
+
+For a <b>European investor</b> that wants to invest in US equities through ETFs, there are two alternatives:
+- Holding a US ETF directly, with a reduced withholding tax of 15%
+- Holding an Irish-domiciled ETF with the same withholding tax paid internally by the ETF.
+
+While the solutions may look identical, the second way is much <b>more tax efficient</b>: there is no additional tax on the investor side, while with the first option, there may be additional tax-filing, estate-tax, or withholding-tax complications depending on the country.
+
+On the other hand, _for the Swiss investor,_ the situation is different, since they can claim the 15% treaty withholding tax through the Swiss tax system and recover some or all of it, which is why a US-domiciled ETF can be more efficient, also because they sometimes come at lower costs and spreads.
 
 We now illustrate the case where the domestic country <b>taxes income but not capital gains</b> (i.e., Switzerland).
 
@@ -297,6 +309,9 @@ Formally, let $V_t$ be the value of the portfolio before any taxes, $D_t$ the ag
 | Domestic dividend income tax | $\tau_d D_t$ |
 | Tax credit | $-\min(\tau_f, \tau_d) D_t$ |
 | Total tax cost | $\max(\tau_f, \tau_d) D_t$ |
+
+_Intuition: you pay the higher of the two taxes, because the lower one can usually be credited against the higher one._
+
 
 In terms of returns, the tax is:
 
