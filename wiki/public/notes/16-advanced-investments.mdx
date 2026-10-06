@@ -187,3 +187,125 @@ $$
 _(Note that ordinary returns aggregate in the cross section, but log returns do not; therefore):_
 - if you want to compute the one-period return of a portfolio of assets, $\implies$ it is easier to work with ordinary returns;
 - if you want to compute total returns or average returns over multiple periods, $\implies$ use log returns.
+
+Furthermore, many strategies involve <b>long-short portfolios</b>; e.g., a momentum strategy will buy assets that performed well in the past and short assets that performed poorly.
+
+Recall that, when we short a security:
+- you borrow the security;
+- you sell the security on the market, so you are credited for that sale;
+- you have a liability to return the security and pay the lender a lending fee, as well as the interest and dividends;
+- at some $t$, you buy back the security.
+
+So, if you initially have $100$ in cash and then short a stock for $50$ and buy one for $80$, the result is the following:
+
+| Assets | Liabilities |
+| --- | --- |
+| Stocks long $80$ | Short stock $50$ |
+| Cash $70$ | Equity $100$ |
+| Total $150$ | Total $150$ |
+
+Therefore, the total return on the portfolio will be:
+
+$$
+\text{return on the long stock} + \text{interest on cash} - \text{return on the short stock} - \text{stock lending fees}
+$$
+
+If we denote by $w_t$ the share positions of assets _(positive for long, negative for short)_ and consider the riskless asset to be asset $0$, then we have:
+
+$$
+R_{p,t+1} = w_t^{\mathsf{T}} R_{t+1} + (1 - w_t^{\mathsf{T}} \mathbf{1}) R_{f,t+1} + \sum_{n=1}^{N} \min[w_{n,t}, 0] L_{n,t+1}
+$$
+
+where $L_{n,t+1}$ is the percentage lending fee from $t$ to $t+1$.
+
+_Intuition: we apply the usual return formula but also take into account the <b>adjustment</b> for stock lending fees._
+
+Note also that the adjustment may be hard to estimate precisely, so we can take a better approach and subtract an estimate of the average lending fee $\bar{L}$ multiplied by the overall fraction held short of the portfolio, that is:
+
+$$
+R_{p,t+1} = w_t^{\mathsf{T}} R_{t+1} + (1 - w_t^{\mathsf{T}} \mathbf{1}) R_{f,t+1} + \bar{L} \sum_{n=1}^{N} \min[w_{n,t}, 0]
+$$
+
+We could also keep track of the long and short legs separately with the constraint that weights sum to $1$; in this case, we think of the portfolio as a <b>zero-cost long-short portfolio</b>.
+
+Consider $w_L \ge 0$ (long portfolio) and $w_S \ge 0$ (short portfolio); we then calculate:
+
+$$
+R_{p,t+1}^{L} = w_{L,t}^{\mathsf{T}} R_{t+1}
+$$
+
+$$
+R_{p,t+1}^{S} = w_{S,t}^{\mathsf{T}} (R_{t+1} + L_{t+1})
+$$
+
+Then the net return on the zero-cost long-short portfolio is the difference:
+
+$$
+R_{p,t+1} = R_{p,t+1}^{L} - R_{p,t+1}^{S} = w_{L,t}^{\mathsf{T}} R_{t+1} - w_{S,t}^{\mathsf{T}} (R_{t+1} + L_{t+1})
+$$
+
+<b>Accounting for Dividends</b>
+
+Recall that the return of asset $n$ with price $P_{n,t}$ at time $t$ that pays dividend $D_{n,t}$ is:
+
+$$
+R_{n,t} = \frac{P_{n,t} + D_{n,t}}{P_{n,t-1}} - 1
+$$
+
+_(When using Bloomberg to get data, you can use the `DPDF` function to make the necessary adjustments.)_
+
+_Note also that <a href="https://www.unisg.ch/en/university/library/search-and-use/databases/crsp-center-for-research-in-security-prices-/-wrds/">CRSP</a> also provides returns that are adjusted for splits and dividends._
+
+Additional adjustments are required if you are subject to withholding taxes on dividends or interest that are not creditable/refundable.
+
+This can be particularly useful when a portfolio has short positions because:
+- on long positions, you receive <b>dividends net of withholding tax</b>;
+- on short positions, you have to pay <b>full dividends to the lender</b>.
+
+Suppose the case when your long positions pay $x$ subject to tax $t\%$, and the short positions have dividends of $y$ (so you have to pay $y$). Without capital gains or losses, the return profile is:
+
+$$
+\text{Profit} = x - y - tx
+$$
+
+_Shortcut: to assess the impact of withholding taxes, simply subtract the dividend yield of long positions and withholding tax from your returns._
+
+Furthermore, <b>cross-border investments</b> can create an additional complexity, since part of the foreign withholding tax can be refunded and part can be credited.
+
+[Mini deep dive on US withholding tax for the Swiss investor]
+
+We now illustrate the case where the domestic country <b>taxes income but not capital gains</b> (i.e., Switzerland).
+
+Assume that capital gains $x = 900$, dividend income $y = 200$, dividends paid on shorts $z = -100$, and the domestic tax rate $t = 0.2$. Then we have the following:
+
+| Case | Full crediting | Credit limitation |
+| --- | --- | --- |
+| Dividend income | 200 | 200 |
+| Dividends paid on shorts | -100 | -100 |
+| Capital gains | 900 | 900 |
+| Pre-tax profit | 1000 | 1000 |
+| Foreign withholding tax | -60 | -60 |
+| Domestic income taxes | 20 | 0 |
+| Profit after tax | 960 | 940 |
+
+Note that domestic income taxes = $t \times (y + z)$.
+
+Formally, let $V_t$ be the value of the portfolio before any taxes, $D_t$ the aggregate dividends, $\tau_d$ the domestic tax rate, and $\tau_f$ the non-refundable part of the foreign withholding tax. We have the following:
+
+| Withholding tax on long dividends | $\tau_f D_t$ |
+| --- | --- |
+| Domestic dividend income tax | $\tau_d D_t$ |
+| Tax credit | $-\min(\tau_f, \tau_d) D_t$ |
+| Total tax cost | $\max(\tau_f, \tau_d) D_t$ |
+
+In terms of returns, the tax is:
+
+$$
+\max(\tau_f, \tau_d) \frac{D_t}{V_{t-1}}
+$$
+
+and so the <b>after-tax return</b> is:
+
+$$
+R_{p,t}^{\mathrm{net}} = R_{p,t} - \max(\tau_d, \tau_f) \frac{D_t}{V_{t-1}}
+$$
