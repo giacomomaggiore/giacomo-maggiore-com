@@ -324,3 +324,59 @@ and so the <b>after-tax return</b> is:
 $$
 R_{p,t}^{\mathrm{net}} = R_{p,t} - \max(\tau_d, \tau_f) \frac{D_t}{V_{t-1}}
 $$
+
+Suppose now that the profits _(including capital gains)_ are subject to a domestic tax $\tau_d$, that is:
+
+$$
+R_{p,t}^{\mathrm{net}} = R_{p,t}(1 - \tau_d) - \max(\tau_f - \tau_d, 0) \frac{D_t}{V_{t-1}}
+$$
+
+Therefore, the drag on returns from taxation is the sum of:
+- the product of the pre-tax return and the domestic tax rate $\tau_d$;
+- the product of the dividend yield on long positions and the part of the tax that is not refundable.
+
+<b>Portfolios with Futures Contracts</b>
+
+We now consider the presence of <b>futures contracts</b>. Since they are <b>unfunded positions</b> (i.e., they do not require paying the full asset value upfront), the change in the futures price is settled in cash at the end of each trading day, so the value of the asset is zero and we _cannot really compute a return_.
+
+Consider $R_{p,t+1}$, the portfolio return _excluding futures_, $F_t$, the futures price, and $N_f$, the <b>futures exposure</b> _(number of contracts times multiplier)_.<br/>In this case, the change in the total value of the portfolio is:
+
+$$
+V_{t+1} - V_t = V_t R_{p,t+1} + N_f(F_{t+1} - F_t)
+$$
+
+Therefore, the return with futures $R_{p,t+1}^{F}$ is:
+
+$$
+R_{p,t+1}^{F} = \frac{V_{t+1}}{V_t} - 1 = R_{p,t+1} + \frac{N_f F_t}{V_t}\frac{F_{t+1} - F_t}{F_t} = R_{p,t+1} + w_{F,t}R_{F,t+1}
+$$
+
+_(Note that the formula is similar to the previous one, but always remember that weights do NOT need to sum to 1.)_
+
+However, when <b>futures positions are rolled</b> _(i.e., closing the current position before expiry and opening a new one with later expiry),_ we make sure to use one given futures contract and _not mix contracts_ with different maturities.
+
+_Consider, for example, E-Mini S&P 500 Futures around the September 2026 expiry:_
+- On September 17, we would use the September contract to compute returns.
+- Starting from September 18, we would use the December contract.
+
+One way to do this easily is to configure your code to determine which contract to use. With the _generic futures_ in Bloomberg, the contract is rolled automatically and, using the function <b>GDUT</b>, prices are adjusted automatically for rollover _(needed because futures prices differ across maturities and the price spread between maturities reflects the difference between the risk-free rate and the dividend yield)._
+
+Formally, for an equity future, the <b>no-arbitrage</b> price is:
+
+$$
+F(T) = S_0 e^{(r-q)T}
+$$
+
+where $S_0$ is the stock's current price, $r$ is the continuously compounded risk-free rate, and $q$ is the dividend yield. The price difference between two maturities $T_1$ and $T_2$ is then:
+
+$$
+F(T_2) - F(T_1) = S_0\left(e^{(r-q)T_2} - e^{(r-q)T_1}\right)
+$$
+
+_However,_ note that futures returns will generally differ from the returns on price and total-return indices. In general, in the _absence of market frictions_, futures returns equal index returns _(including dividends)_ minus the risk-free rate:
+
+$$
+R_{\mathrm{futures}} \approx R_{\mathrm{total\ return\ index}} - r_f
+$$
+
+We now give a quick proof of this:
