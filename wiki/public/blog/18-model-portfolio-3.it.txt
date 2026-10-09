@@ -1,0 +1,129 @@
+---
+title: "Cose che non mi piacciono del mio portafoglio"
+publishedAt: '2026-09-28'
+summary: ''
+---
+
+Mettere in discussione <b>"stocks for the long run" </b> significa proporre, _anche per l'investitore retail con ampio orizzonte temporale e bassa avversione al rischio,_ un'alternativa che vada oltre il <s>(semplice)</s> approccio _"100% azioni",_ motivo per cui, <a href="https://giacomomaggiore.com/blog/16-model-portfolio" target="_blank"> negli ultimi blog post</a>, ho presentato la mia asset allocation attuale _(i.e. il imo model portfolio):,
+
+| ETF | Exposure | Weight |
+| --- | --- | ---: |
+| <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> | Global Equities + Global Bonds | 60% |
+| <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> | Commodities with trend following | 10% |
+| <a href="https://www.imgpfunds.com/funds/dbmf/" target="_blank">DBMF</a> | Managed Futures | 15% |
+| <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a> | US Equities + Gold | 10% |
+| <a href="https://www.cambriafunds.com/tail" target="_blank">TAIL</a> | Deep OTM options | 5% |
+
+e la conseguente esposizione ad asset class/fattori di rischio:
+
+| Asset Class | Nominal exposure |
+| --- | ---: |
+| Stocks | 63% |
+| Bonds | 36% |
+| Commodities | 10% |
+| Trend | 15% |
+| Gold | 9% |
+| Tail risk | 5% |
+| <b>Total</b> | <b>138% </b>|
+
+_(Si noti che il totale è $ > 100$ a causa della leva implicita dei contratti futures presenti in <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> e in <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a>, <a href="https://giacomomaggiore.com/blog/16-model-portfolio#riempire-il-piatto-il-pi-possibile" target="_blank">di cui ho spiegato brevemente il meccanismo alla base qui</a>)_
+
+Non nego tuttavia che, pur sposando la teoria del total portfolio approach, ci sono ancora cose di questo portafoglio che non mi convincono: alcue sono potenzialmente risolvibili e provengono della traduzione della teoria alla pratica, altre sono strutturali e inevitabili per le strztegie sottostati.
+
+## <b>Assenza di Trasparenza</b>
+
+La prima caratteristicia a farmi storcere il naso è la presenza del filtro ESG in NTSG, lo strumento core del portafoflio e driver di crescira nel luno periodo.
+
+Nella documentazione dell'indice di riferimento, si legge infatti:
+
+The top 1500 companies by market capitalization that meet the above criteria are selected. Companies that do not meet the GSS or are involved in certain business activities
+such as Controversial Weapons, or are significantly involved in Thermal Coal, Tobacco,
+Small Arms, and unconventional Oil & Gas are excluded from the eligible investment
+universe 
+
+Pur abbracciando dal pinto di vista ideologico i criteri ESG, ci sono numrosi motivi per cui reputo questo approccio limitato:
+- le aziende sono valutate sui parametri ESG da agenzie di rating terze con metodolgie spesso diverse e, di conseguenaza, <a href="https://academic.oup.com/rof/article/26/6/1315/6590670" target="_blank">i ranking da diversi providers divergono molto  </a>(correlation = 0.54, per fare un confronto: la stessa correlazione per i rating del credito è \approx 0.99. Questa discrepanza è spiegata da diversi criteri di misurazione, diversa definiion degli indivi valutati e diverso peso attribuito a pesi diversi). Di conseguenza, in base al metodo scelto, il portafoglio di azioni può variare notevolmente. 
+- non vi è una differenza di performance statisticamente valida tra fondi ESG e convenzionali
+- il razoinale dietro l'investimento di ESG è spesso di voler "fare del bene", i.e. investendo in aziende "buone" e  non investendo in aziende "cattive" (ossia alzando il costo del denaro per queste ultime) si fa del bene al pianeta. In primis, non vi evidenza diffusa che questa riduzione di capitali abbia impatto sul management e, secondariamente, <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4359282" target="_blank">alcuni studi suggeriscono che, contro intuitivamente, che la riduzione del osto del capitale per aziende "gree" porta benefici marginalmente molto bassi sulla societè ma, allo stesso tempo, rendere più difficile il finanziamento per aziende "non-green" peggiora ancora di più il loro impatto sul mondo.
+- di conseguemza, il modo migliorare per "boicottare" un'azienda non green è non comprare i propri prodotti, non basare i propri investimenti su indicatori di tere parti e, in senso lato, il modo migliore per avere un impatto sul mondo positivo è adeguare le proprie abitudini nel quotidiano, non tiltare il portafoglio in questa direzione 
+
+## 
+
+Il model portfolio presentato è tutt'altro che trasparente. VWCE and chill implica che, con un po' di fatica, si può conoscere in che aziende (o settore, country, rating etc etc) è investito ogni singolo euro del proprio portafoglio.
+
+Al contrario, adottando strumenti che 1) operano tramite i futres ma, soprattutto, 2) adottando strategie sistematiche (principalente basate su trend) "private", risulta molto più difficile avere un istantanea delle partecipazioni del proprio portafoglio. 
+
+DBMF promette ad esempio di adottare un processo sistematico per replicare le performance dei maggiori Edge fund di managed futures senza complessità, lock-ups e costi elevanti, identificando le maggiori esposizioni, applicandole tramite un modello proprietario e l'esposizione a futures liquidi tramite ribilanciamento settimanale.
+Sebbene sul <a href="https://www.imgp.com/us/fund/US53700T8273-imgp-dbi-managed-futures-strategy-etf/#overview" target="_blank">sito del prodotto</a> siano presenti i cambiamenti recenti delle holding del fondo, la metodologia e gli algoritmi specifici sono ovviamente proprietari e, di conseguenza, privati. 
+
+Inoltre, in strategie simili, vi è una forte componente di model risk: in primis, non si hanno certezze sul "funzionamento" di strategie basate sui managed futures ma, più rilevante, non si ha garanzia che l'ETF in portafoglio sia in grado di replicare in futuro queste strategie.
+
+Al contrario, la metodologia di COM risulta molto più chiara e soprattutto semplie, dalla metodologia si legge infatti:
+
+The Index will either be long or in cash for each indivdual commodity based on a breakout in its price trend. It will be long
+an individual commodity showing an upward price trend and flat (in cash) when a commodity is exhibiting a downward price
+trend. The Index can be long anywhere ranging from 0-12 commodities based on each individual commodity’s price trend.
+
+e anche, in questo caso, è possibile avere la holding list giorno per giorno in maniera trasparente.
+
+Aggiungendo anche TAIL e GDE e consierando l'ampio uso di strumenti derivati nel portafoglio, risulta difficile avere una visione completa delle singole componenti del portagoglio motio per cui, almeno in maniera approssimativa, si potrebbe optare per  delle regressioni lineari porterebbe quache informazione in più
+
+| Coefficient | Estimate | HAC p-value |
+|---|---:|---:|
+| Alpha | 0.0006 | 0.4691 |
+| VT excess | 0.5964 | <0.0001 |
+| BNDW excess | 0.3085 | 0.0001 |
+| PDBC excess | 0.0130 | 0.4954 |
+| WTMF excess | 0.1518 | 0.0002 |
+| GLD excess | 0.1182 | <0.0001 |
+
+The portfolio has statistically significant global-equity, bond, managed-futures, and gold exposure. Its commodity exposure is near zero and not significant—consistent with COM being a trend-following commodity strategy rather than static long-only commodity beta. Alpha is not statistically different from zero. $R^2=0.960$ means these five economic factors explain most monthly return variation.
+
+### Fama–French 5 + momentum
+
+| Coefficient | Estimate | HAC p-value |
+|---|---:|---:|
+| Alpha | -0.0000 | 0.9983 |
+| Market excess return | 0.6663 | <0.0001 |
+| SMB | -0.0629 | 0.2255 |
+| HML | -0.0134 | 0.7897 |
+| RMW | 0.0543 | 0.3106 |
+| CMA | 0.0930 | 0.2415 |
+| UMD | -0.0172 | 0.6610 |
+
+**Interpretation:** The only statistically reliable equity-style exposure is market beta: a $1\%$ monthly US market-factor return is associated with approximately a $0.67\%$ portfolio excess return, holding other Fama–French factors constant. There is no evidence of persistent size, value, profitability, investment, or cross-sectional momentum tilts. Alpha is effectively zero. $R^2=0.864$ is high, but lower than the economic model because Fama–French does not directly model bonds, gold, commodities, managed futures, or tail protection.
+
+## 
+
+La terza coa che non mi convinge del moel portfolio è che costa tanto. Numerosi studi dimostrano che il TER di unportafoglio è uno dei migliori predittori del ritorno del portafoglio, ma non è questo il punto. I ter degli ETF considerati sono: 
+
+| ETF | TER | Impatto del TER in 10 anni su 100.000 USD (rendimento lordo 7%) |
+| --- | ---: | ---: |
+| NTSG | 0,25% | 2.728,87 USD |
+| COM | 0,72% | 1.284,32 USD |
+| DBMF | 0,85% | 2.261,99 USD |
+| GDE | 0,20% | 364,61 USD |
+| TAIL | 0,60% | 537,83 USD |
+
+che, nell'aggregato, formano un portagoglio con 0,40% di TER totale e con un tracking error molto maggiore rispetto a un classico VWCE and chill.
+
+Aldilà dei numeri in se, non mi convince la discrepanza tra portafoglio ideale e portafoglio "reale" investibile. Nella teoria, tutto sembra funzionare bene:
+- correlazioni ponderate e ritorni distribuiti in base al regime di mercato 
+- capital efficoiency grazie all'utilizzo dei futures 
+- protezione del rischio di coda tramite opzioni OTM 
+- diversificazione in base a fattori di rischio e non ad asset class 
+
+etc etc... eppure, quando si tratta di andare sul proprio broker e fare clic, il model portfolio si scontra contro gli attriti della realtà _(o la seconda legge della termodinamica):
+- etf con costi alti, basso AUM e bassa liquidità (IB ha impiegato una decina di secondi a matchare il mio ordine su NTSG...e vi assicuro che non sposto i milioni)
+- disponibilità limitata di prodotti per diversificare rischio emittente e il rischio di modello 
+- prodotti relativamente nuovi che non permettono analisi, paragoni e sinulazioni dettagliate 
+
+Se infatti, per un VWCE chill la differenza tra fisica ideale e reale è minima... uno spread bassissimo e un TER (quasi) trascurabile, questa perdita in attrito non può essere certo trascurata per il model portgolio e, in generale, per tutti i portafogli che fanno affidamento a prodotti più complessi e derivati.
+
+
+fonti e per saperne di più 
+
+https://academic.oup.com/rof/article/26/6/1315/6590670
+https://www.youtube.com/watch?v=c4AMFicXXqg
+https://www.direxion.com/product/auspice-broad-commodity-strategy-etf
+https://www.thebull.it/podcast/linvestimento-che-ti-salva-dalle-crisi-ma-ti-serve-davvero/
