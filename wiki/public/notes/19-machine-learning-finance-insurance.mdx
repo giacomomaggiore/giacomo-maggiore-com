@@ -215,10 +215,10 @@ $$
 <br/>
 <b>Example: pinball loss</b>
 
-We now consider $\mathcal{Y} \subseteq \mathbb{R}$ and a loss function $l(w, y) = l_\alpha(y - w)$, with $\alpha \in (0,1)$ and the <b>pinball loss function</b> defined as:
+We now consider $\mathcal{Y} \subseteq \mathbb{R}$ and a loss function $\ell(w, y) = \ell_\alpha(y - w)$, with $\alpha \in (0,1)$ and the <b>pinball loss function</b> defined as:
 
 $$
-l_\alpha(u) = \bigl(\alpha - \mathbf{1}_{\{u < 0\}}\bigr)u =
+\ell_\alpha(u) = \bigl(\alpha - \mathbf{1}_{\{u < 0\}}\bigr)u =
 \begin{cases}
 \alpha u, & \text{if } u \geq 0, \\
 (\alpha - 1)u, & \text{if } u < 0.
@@ -1793,26 +1793,26 @@ After some time _(if I had a MacBook Pro M5, it would have taken 15 seconds),_ w
 ![Bias variance tradeoff](/images/notes/third-semester/p1-tuning.png)
 </div>
 
-We immediately notice that all the four _tuned_ models beat the previous OLS on the test set, obtaining an higher test R^2 and a smaller RMSE.
+We immediately notice that all four _tuned_ models beat the previous OLS on the test set, obtaining a higher test $R^2$ and a lower RMSE.
 
-Notice that the incercept is _never_ penzalized, since it sets the general price level, while the penalty only should limit the effect of the features _(sklearn's Ridge, Lasso and ElasticNet center the data and fit the intercept separately, so they never penalize it. In the truncated pseudoinverse, the LinearRegression after TruncatedSVD has no penalty at all.)_
+Notice that the intercept is _never_ penalized, since it sets the general price level, while the penalty should only limit the effect of the features _(scikit-learn's Ridge, Lasso, and ElasticNet center the data and fit the intercept separately, so they never penalize it. In the truncated pseudoinverse, the LinearRegression after TruncatedSVD has no penalty at all.)_
 
-Recall also that, in the python pipeline, pipeline parameters have the name _<step name>__<parameter>.
-    - for example, _model_alpha_ is the parameter alpha of the step "model", that is Lasso, Ridge or Elastic Net 
-    - _svd__n_components is the parameter n_components for the step "svd" _(singular value decomposition)_ 
-    - the names are "automatically" revoeld by <b>GridSearchCV</b> to set the values 
+Recall also that, in the Python pipeline, pipeline parameters have the name _<step name>__<parameter>_.
+    - for example, _model__alpha_ is the parameter alpha of the step "model", which is Lasso, Ridge, or Elastic Net
+    - _svd__n_components_ is the parameter n_components for the step "svd" _(singular value decomposition)_
+    - the names are "automatically" resolved by <b>GridSearchCV</b> to set the values
 
-Also, when GreadSrhich has chonse the best hyperparameters, he fits again the whole pipeline on the entire training data, since each model is usally tested on only 7/8 of the training row, while the refit use all of them
+Also, when GridSearchCV has chosen the best hyperparameters, it fits the whole pipeline again on the entire training data, since each model is usually tested on only 7/8 of the training rows, while the refit uses all of them.
 
-Briefly, we can also understand how each model deals with sparisty and truncation in each direction in presence of singular values.
-- We firstly notice that each model has diferen nymbers of non-zero features coefficient _(excluding the intercept)_: out of 311 columns, Lasso has 122, Elastic Net 111 and Ridge 311 <br/>_(Recall that we have initially 79 features [36 numerical + 43 categorical], but after hod-encoding each cateforical features becomes one column per observed value [e.g. if category "town" has 4 different values \to 4 different columns])_
-- Indeed, the L1 penalty sets the coefficients of weak/redundant columns to zero depending on the strength-
-- On the other hand, Ridge onlyshrinks coefficients, so none of them are exactly zero, but they are much saller (lower L2 nnorm) compared to the pseudoinverse.
-- The Truncade pseudoinverse keeps all the 150 singular direction, reason why, out of the initial 311 coefficients, all of them are non-zero.
+Briefly, we can also understand how each model deals with sparsity and truncation in the presence of singular values.
+- We first notice that each model has different numbers of non-zero feature coefficients _(excluding the intercept)_: out of 311 columns, Lasso has 122, Elastic Net has 111, and Ridge has 311.<br/>_(Recall that we initially have 79 features [36 numerical + 43 categorical], but after one-hot encoding, each categorical feature becomes one column per observed value [e.g. if category "town" has 4 different values $\to$ 4 different columns])_
+- Indeed, the L1 penalty sets the coefficients of weak/redundant columns to zero depending on the strength.
+- On the other hand, Ridge only shrinks coefficients, so none of them are exactly zero, but they are much smaller (lower L2 norm) compared to the pseudoinverse.
+- The truncated pseudoinverse keeps all 150 singular directions; for this reason, out of the initial 311 coefficients, all are non-zero.
 
-TO sum, we deciding a final model for reccomendation, we eneded up with <b>Elastic Net</b> (alpha = 0.003162 and l1_ratio = 0.25) for the following reasons:
-- it has the lwoest mean CV RMSE _(this is the same criterion used to tune and compare each model)_ 
-- with som many features(311), Elastic net can reduce the non-zero coefficients and therefore reduce variants and makes the m,odel easier to interpret
+To sum up, when deciding on a final model for recommendation, we ended up with <b>Elastic Net</b> (alpha = 0.003162 and l1_ratio = 0.25) for the following reasons:
+- it has the lowest mean CV RMSE _(this is the same criterion used to tune and compare each model)_
+- with so many features (311), Elastic Net can reduce the number of non-zero coefficients and therefore reduce variance and make the model easier to interpret
 
 ## <a id="p2"><b>P2 </b></a>
 
