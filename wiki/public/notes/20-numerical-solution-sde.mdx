@@ -100,6 +100,115 @@ It states that the distribution of sample means of a large number of independent
 
 ---
 
+<b>Conditional Probabilities and Laws</b>
+
+The conditional probability of $A$ given that event $B$ has occurred is:
+
+$$
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}, \quad P(B) > 0
+$$
+
+For random variables, we can define <b>conditional probability mass functions (PMFs)</b> _(for discrete variables)_ as:
+
+$$
+P(X = x \mid Y = y) = \frac{P(X = x, Y = y)}{P(Y = y)}
+$$
+
+and <b>probability density functions (PDFs)</b> for continuous variables as:
+
+$$
+f(x \mid y) = \frac{f(x,y)}{f(y)}
+$$
+
+where $f(x,y)$ is the joint PDF. If $x$ and $y$ are independent, $f(x \mid y) = f(x)$.
+
+<b>Bayes' Formula</b>
+
+$$
+P(A \mid B) = \frac{P(B \mid A)P(A)}{P(B)}
+$$
+
+- $P(A \mid B)$ is the <b>posterior probability</b>.
+- $P(B \mid A)$ is the <b>likelihood</b>, i.e. the probability of observing $B$ given that hypothesis $A$ is true.
+- $P(A)$ is the <b>prior probability</b>, i.e. the initial hypothesis of $A$ before any evidence.
+- $P(B)$ is the <b>evidence (marginal likelihood)</b>, i.e. the total probability of observing $B$.
+    - $P(B) = \sum P(B \mid A_i)P(A_i)$ over all possible hypotheses $A_i$.
+
+<br/>
+<b>Acceptance-Rejection Algorithm as Bayesian Reasoning</b>
+
+The Acceptance-Rejection (A-R) algorithm is a method for generating random samples from a target probability distribution $R(dx) = f(x)dx$ using samples from a proposal distribution $Q(dx) = g(x)dx$, _especially when $R$ is difficult to sample directly_.<br/>
+This method can be viewed through a Bayesian lens, where the <b>decision to accept or reject</b> is observed data that updates our belief about whether the sample comes from the target distribution.
+
+We then consider:
+- <b>prior-proposal</b>: the samples drawn from the proposal distribution $Q$ as realizations of $Y$ _(we are proposing that $Y$ might also be a sample from $Q$ after accepting/rejecting)_
+- <b>likelihood/acceptance criterion</b>: generate an independent uniform random variable $U \sim U(0,1)$, and accept if:
+
+$$
+U \le \frac{f(Y)}{cg(Y)}
+$$
+
+where $c$ is a constant such that $f(y) \le cg(y)$. Note that the acceptance criterion is our data that helps us decide whether we accept samples from $Y$ as samples from law $R$.
+
+- <b>posterior</b>: if a sample $Y$ is accepted, it means that we have updated our belief such that this $Y$ is a valid sample from $R$. Iterating the process ensures that we accept only samples distributed according to $R$.
+
+Then, assume random variables $Y, U$ live on a probability space with measure $P$.<br/>
+We first calculate the relevant quantities:
+- $B$ is the set of accepted sample events, i.e. $B = \left\{U \le \frac{f(Y)}{cg(Y)}\right\}$, with
+    - $P(B \mid Y = y) = \frac{f(y)}{cg(y)}$
+    - $P(B) = \int_{-\infty}^{+\infty} P(B \mid Y = z)g(z)dz = 1 / c$
+- this allows us to calculate the law of posterior $Y$ under acceptance, that is:
+
+$$
+f(y)dy = \frac{\frac{f(y)}{cg(y)}g(y)dy}{\frac{1}{c}}
+$$
+
+That means that, conditional on $B$, the random variable $Y$, _unconditionally $Q$-distributed_, is actually $R$-distributed.
+
+---
+
+<b>Monte Carlo Integration (Corollary of LLN and CLT)</b>
+
+Monte Carlo integration is a numerical method for approximating the value of a definite integral, _especially in the multidimensional case or over complex domains_, by using the Law of Large Numbers.
+
+We first consider the integral $\int_a^b f(x)dx$, which can be rewritten as:
+
+$$
+I = (b - a)\mathbb{E}[f(X)]
+$$
+
+where $X \sim U[a,b]$ (uniformly distributed on $[a,b]$). Thanks to the LLN, we can approximate $\mathbb{E}[f(X)]$ by averaging many samples of $f(X_i)$, so the integral becomes:
+
+$$
+\int_a^b f(x)dx \approx \frac{b-a}{N} \sum_{i=1}^N f(X_i)
+$$
+
+In this case, the CLT states that the error scales as $1/\sqrt{N}$.
+
+<b>Pseudo-Random Number Generators (PRNGs) vs True Random Number Generators (TRNGs)</b>
+
+Whenever we use Monte Carlo integration, we need a sequence of samples of random variables. To generate them, we can consider:
+
+- <b>Pseudo-Random Number Generators (PRNGs)</b>:
+    - deterministic algorithms that produce sequences of apparently random numbers but are determined by an initial value called a _"seed"_ _(given the same seed, a PRNG gives the same sequence)_
+    - they are fast, efficient and, _most importantly_, reproducible
+    - however, their deterministic nature makes them unsuitable for applications that require true randomness _(e.g. cryptography)_
+
+- <b>True Random Number Generators (TRNGs)</b>
+    - they extract randomness from physical phenomena _(e.g. atmospheric noise, thermal noise in resistors, etc.)_
+    - they are slower and often require specialized hardware
+
+Formally, we can say:
+
+Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $U_n : \Omega \to \mathbb{R}$, for $n \in \mathbb{N}$, be a sequence of $P$-independent $\mathcal{U}_{[0,1]}$-distributed random variables.
+<br/>$\mathcal{U}_{(0,1)}$-pseudo-random numbers are sequences of real numbers calculated by a deterministic algorithm that have similar statistical properties to $(U_n)_{n \in \mathbb{N}}$.
+
+Even if this is a very generic definition, the importance and advantage of $\mathcal{U}_{(0,1)}$-pseudo-random numbers are that they can be reproduced many times _(with the same output)_ with the same pseudo-random input.
+
+
+
+---
+
 ## <a id = "0.1"><b>Introduction to Stochastic Differential Equations</b></a>
 
 We first show three important examples of stochastic differential equations, largely discussed in the sector and for which numerical approximations will be useful.
@@ -419,14 +528,10 @@ for k in range(N_sim - 1):
 ![Bias variance tradeoff](/images/notes/numerical-sol-sde/kalman.png)
 </div>
 
-## <a id="1"><b>Mathematical Formulation of Random Number Generation</b></a>
 
-<b>Definition of pseudo random numbers</b>
+---
 
-Let $(\Omega, \mathcal{A}, P)$ be a probability space and let $U_n : \Omega \to \mathbb{R}$, for $n \in \mathbb{N}$, be a sequence of $P$-independent $\mathcal{U}_{[0,1]}$-distributed random variables.
-<br/>$\mathcal{U}_{(0,1)}$-pseudo-random numbers are sequences of real numbers calculated by a deterministic algorithm that have similar statistical properties to $(U_n)_{n \in \mathbb{N}}$.
-
-Even if this is a very generic definition, the importance and advantage of $\mathcal{U}_{(0,1)}$-pseudo-random numbers are that they can be reproduced many times _(with the same output)_ with the same pseudo-random input.
+## <a id="2"><b>The Inversion Method</b></a>
 
 <b>Method for General Distributions</b>
 
@@ -440,6 +545,12 @@ Let $F: \mathbb{R} \to [0,1]$ be a distribution function. We define the generali
 
 $$
 I_F(y) = \inf \{x \in \mathbb{R} : F(x) \ge y\} = \inf(F^{-1}([y,1]))
+$$
+
+The <b>crucial switching formula</b> is:
+
+$$
+I_F(u) \le x \iff u \le F(x)
 $$
 
 From the definition, we can draw some nice properties:
@@ -456,6 +567,40 @@ $$
 
 is called the <b>Value at Risk with confidence level $\alpha$ associated with $-X$</b> _(i.e. it holds with probability of at least $\alpha$ that the loss $-X$ does not exceed $I_F(\alpha)$)._
 
+<b>Theorem - The Inversion Method</b>
+
+Let $U \sim U(0,1)$ and assume $U \in (0,1)$ almost surely. Then $X = I_F(U)$ has distribution function $F$.
+
+<b>Proof</b>
+
+For every $x \in \mathbb{R}$, the switching formula gives:
+
+$$
+P(X \le x) = P(I_F(U) \le x) = P(U \le F(x)) = F(x)
+$$
+
+because $U$ is uniform on $(0,1)$. _Intuition: to sample from an arbitrary one-dimensional distribution, we can simply sample one uniform random variable and apply the quantile function to the sample._
+
+---
+<br/>
+<b>Lemma (Properties of generalized inverse distribution functions)</b>
+
+Let $F: \mathbb{R} \to [0,1]$ be a distribution function and $I_F : (0,1) \to \mathbb{R}$ the generalized inverse distribution function associated with $F$. Then $I_F$ fulfils the following:
+1. $I_F$ is non-decreasing.
+2. For all $y \in (0,1)$:
+    - $F(I_F(y)) \ge y$.
+    - $F^{-1}([y,1]) = [I_F(y), \infty)$.
+    - $I_F(y) = \min(F^{-1}([y,1]))$.
+3. For all $x \in F^{-1}((0,1)) = \{z \in \mathbb{R} : F(z) \in (0,1)\}$: $I_F(F(x)) \le x$.
+4. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) < x$ if and only if $y \le F(x)$ _(switching formula)_.
+5. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) > x$ if and only if $y > F(x)$ _(switching formula)_.
+6. For all open sets $D \subseteq \mathbb{R}$ with the property that $F|_D : D \to [0,1]$ is <b>injective</b> and all $y \in F(D)$, we have that $(F|_D)^{-1}(y) = I_F(y)$.
+
+_(Recall: a function $f$ is injective if $f(x_1) = f(x_2)$ implies $x_1 = x_2$; equivalently, distinct inputs have distinct outputs.)_
+
+Note that distribution functions are càdlàg (right-continuous with left limits), while generalized inverse distribution functions are, in contrast, <b>càglàd</b> (left-continuous with right limits).
+
+<br/>
 <b>Definition (Generalized Inverse Distribution Function for the Bernoulli Distribution)</b>
 
 Let $p \in [0,1]$ be a real number and let $F: \mathbb{R} \to [0,1]$ be the distribution function of $\operatorname{Ber}(p)$. Assume also that, for all $x \in \mathbb{R}$, it holds:
@@ -484,28 +629,8 @@ I_F(y) = \inf\{x \in \mathbb{R} : F(x) \ge y\}
 $$
 
 
-<b>Lemma (Properties of generalized inverse distribution functions)</b>
 
-Let $F: \mathbb{R} \to [0,1]$ be a distribution function and $I_F : (0,1) \to \mathbb{R}$ the generalized inverse distribution function associated with $F$. Then $I_F$ fulfils the following:
-1. $I_F$ is non-decreasing.
-2. For all $y \in (0,1)$:
-    - $F(I_F(y)) \ge y$.
-    - $F^{-1}([y,1]) = [I_F(y), \infty)$.
-    - $I_F(y) = \min(F^{-1}([y,1]))$.
-3. For all $x \in F^{-1}((0,1)) = \{z \in \mathbb{R} : F(z) \in (0,1)\}$: $I_F(F(x)) \le x$.
-4. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) < x$ if and only if $y \le F(x)$ _(switching formula)_.
-5. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) > x$ if and only if $y > F(x)$ _(switching formula)_.
-6. For all open sets $D \subseteq \mathbb{R}$ with the property that $F|_D : D \to [0,1]$ is <b>injective</b> and all $y \in F(D)$, we have that $(F|_D)^{-1}(y) = I_F(y)$.
 
-_(Recall: a function $f$ is injective if $f(x_1) = f(x_2)$ implies $x_1 = x_2$; equivalently, distinct inputs have distinct outputs.)_
-
-Note that distribution functions are càdlàg (right-continuous with left limits), while generalized inverse distribution functions are, in contrast, <b>càglàd</b> (left-continuous with right limits).
-
-<b>Lemma (Continuous properties of generalized inverse distribution functions)</b>
-
----
-
-## <a id="2"><b>Brownian Motion and Lévy Processes</b></a>
 
 ---
 ## <a id="3"><b>Stochastic Integration and Itô Calculus</b></a>
