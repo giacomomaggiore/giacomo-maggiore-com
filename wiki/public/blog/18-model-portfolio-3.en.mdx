@@ -1,0 +1,152 @@
+---
+title: 'Rethinking "stocks for the long run" #3'
+publishedAt: '2026-10-12'
+summary: ''
+---
+
+Challenging <b>"stocks for the long run"</b> means proposing an alternative, _even for retail investors with a long time horizon and low risk aversion,_ that goes beyond the <s>(simple)</s> _"100% stocks"_ approach. This is why, in <a href="https://giacomomaggiore.com/blog/16-model-portfolio" target="_blank">my latest blog posts</a>, I presented <b>my ideal asset allocation</b> as of October 2026 _(i.e. my model portfolio):_
+
+<b>TL;DR:</b> the portfolio consists of the following ETFs
+
+| ETF | Exposure | Weight |
+| --- | --- | ---: |
+| <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> | Global Equities + Global Bonds | 60% |
+| <a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">COM</a> | Commodities with trend following | 10% |
+| <a href="https://www.imgpfunds.com/funds/dbmf/" target="_blank">DBMF</a> | Managed Futures | 15% |
+| <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a> | US Equities + Gold | 10% |
+| <a href="https://www.cambriafunds.com/tail" target="_blank">TAIL</a> | Deep OTM options | 5% |
+
+and the resulting exposure to asset classes/risk factors:
+
+| Asset Class | Nominal exposure |
+| --- | ---: |
+| Stocks | 63% |
+| Bonds | 36% |
+| Commodities | 10% |
+| Trend | 15% |
+| Gold | 9% |
+| Tail risk | 5% |
+| <b>Total</b> | <b>138%</b>|
+
+_(Note that the total is $> 100$ because of the implicit leverage from the futures contracts in <a href="https://www.wisdomtree.com/it/products/equities/wisdomtree-global-efficient-core-ucits-etf---usd-acc" target="_blank">NTSG</a> and <a href="https://www.wisdomtree.com/investments/etfs/capital-efficient/gde" target="_blank">GDE</a>. <a href="https://giacomomaggiore.com/blog/16-model-portfolio#riempire-il-piatto-il-pi-possibile" target="_blank">I briefly explained the underlying mechanism here</a>.)_
+
+However, even though I agree with the total portfolio approach theory, there are still some aspects of this portfolio that do not convince me. Some can potentially be solved and come from translating theory $\to$ practice; others are <b>structural and unavoidable</b> for the underlying strategies.
+
+---
+
+## <b><s>Investing</s> to save pandas</b>
+
+The first feature that bothers me is the <b>ESG filter</b> in NTSG, the core instrument of the portfolio and its long-term growth driver.
+
+<a href="https://www.wisdomtree.com/api/product-documents/54028991-it-eu.product/SvYQ1JIhodwPcoEl3F3k8/download?locale=it-IT" target="_blank">The documentation says:</a>
+<Quote>
+The top 1500 companies by market capitalization that meet the above criteria are selected. Companies that do not meet the GSS [<b>Global Standards Screening (GSS)</b> WisdomTree will exclude companies that are “noncompliant” based on the ESG data providers _"GSS assessment"_] or are involved in certain business activities
+such as Controversial Weapons, or are significantly involved in Thermal Coal, Tobacco,
+Small Arms, and unconventional Oil & Gas are excluded from the eligible investment
+universe
+</Quote>
+
+_Even though I support ESG criteria from an ideological and values-based perspective,_ there are many reasons why I see this approach as limited:
+- companies are assessed on ESG parameters by third-party rating agencies that often use different methodologies and, _as a result,_ <a href="https://academic.oup.com/rof/article/26/6/1315/6590670" target="_blank">ratings from different providers diverge greatly</a> (correlation $\approx 0.54$; _for comparison:_ the same correlation for credit ratings is $\approx 0.99$). <br/>This gap is explained by different measurement criteria, definitions of sustainability and weights given to different aspects.
+- <a href="https://onlinelibrary.wiley.com/doi/10.1111/eufm.12439" target="_blank">studies show</a> that there is <b>no</b> <b>statistically valid performance difference</b> between ESG and conventional funds.
+- the rationale behind ESG investing is often to <b>"do good"</b>: that _by investing in "good" companies and not investing in "bad" ones (in other words, by raising the cost of money for the latter),_ one does good for the planet.<br/>However, first of all, <a href="https://doi.org/10.2139/ssrn.4359282" target="_blank">there is no broad evidence</a> that this reduction in capital affects management.<br/>Also, <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4359282" target="_blank">studies suggest</a> that, _counterintuitively,_ reducing the cost of capital for _"green"_ companies brings very small marginal benefits to society while, _at the same time,_ making financing harder for _"non-green"_ companies <b>makes their impact on the world even worse.</b>
+
+_As a result,_ the best way to <b>"boycott"</b> a non-green company is <b>not to buy its products</b>, not to base investments on third-party indicators. More broadly, the best way to make a positive impact on the world is to <b>change daily habits,</b> not tilt a portfolio in this direction.
+
+<br/>
+---
+
+## <b>Black Box</b>
+
+The model portfolio presented is <b>far from transparent.</b><br/>For most stock/bond portfolios, _with some effort,_ it is possible to know which companies _(or sectors, countries, ratings, etc.)_ every euro of the portfolio is invested in.
+
+_On the other hand,_ using instruments that 1) operate through futures and, _above all,_ 2) use <b>private systematic strategies</b> _(mainly based on trends)_ makes it much harder to get a snapshot of a portfolio's holdings.
+
+For example, DBMF promises to use a systematic process to replicate the <b>performance of the main managed futures hedge funds</b> _without complexity, lock-ups and high costs,_ by identifying the main exposures, applying them through a proprietary model and taking exposure to liquid futures through weekly rebalancing.
+<br/>Although the <a href="https://www.imgp.com/us/fund/US53700T8273-imgp-dbi-managed-futures-strategy-etf/#overview" target="_blank">product website</a> shows recent changes in the fund's holdings, the specific underlying quantitative strategies are clearly proprietary and, _as a result,_ not accessible to retail investors.
+
+There is also a strong <b>model risk</b> component. First, there is no certainty about how managed-futures-based strategies "work" but, _more importantly,_ there is no guarantee that the ETF in the portfolio will be able to replicate these strategies in the future.
+
+By contrast, COM's strategy is much clearer and, above all, simpler; the <a href="https://www.direxion.com/uploads/COM-Methodology.pdf" target="_blank">methodology</a> says:
+
+<Quote>
+The Index will either be long or in cash for each indivdual commodity based on a breakout in its price trend. It will be long
+an individual commodity showing an upward price trend and flat (in cash) when a commodity is exhibiting a downward price
+trend. The Index can be long anywhere ranging from 0-12 commodities based on each individual commodity’s price trend.
+</Quote>
+
+And, _in this case too,_ it is possible to see the holdings list transparently on a daily basis.
+
+By also adding TAIL and GDE, it is still possible to run a <b>regression</b> to get an approximate estimate of exposure to the most common risk factors.
+
+| Coefficient | Estimate | HAC p-value |
+|---|---:|---:|
+| Alpha | 0.0006 | 0.4691 |
+| VT excess | 0.5964 | &lt;0.0001 |
+| BNDW excess | 0.3085 | 0.0001 |
+| PDBC excess | 0.0130 | 0.4954 |
+| WTMF excess | 0.1518 | 0.0002 |
+| GLD excess | 0.1182 | &lt;0.0001 |
+
+
+_Unsurprisingly,_ the model portfolio has statistically significant exposure to global bonds and equities, managed futures and gold. Commodity exposure is close to zero and <b>not significant</b>, _consistent_ with COM's trend-following strategy (and not a static long-only _beta_).
+
+Running the same analysis on the famous Fama and French factors gives the following result.
+
+| Coefficient | Estimate | HAC p-value |
+|---|---:|---:|
+| Alpha | -0.0000 | 0.9983 |
+| Market excess return | 0.6663 | &lt;0.0001 |
+| SMB | -0.0629 | 0.2255 |
+| HML | -0.0134 | 0.7897 |
+| RMW | 0.0543 | 0.3106 |
+| CMA | 0.0930 | 0.2415 |
+| UMD | -0.0172 | 0.6610 |
+
+<small><i>SMB: size factor, HML: value factor, RMW: profitability factor, CMA: investment factor, UMD: momentum</i></small>
+
+The only statistically significant exposure is, _again,_ market beta. There are no persistent tilts towards size, value, profitability, investment or momentum.
+
+---
+
+## <b>The Second Law of Thermodynamics</b>
+
+The third thing that does not convince me about the model portfolio is that <b>it is expensive.</b> The TERs of the instruments are:
+
+| ETF | TER | 10-year TER impact on USD 100,000*|
+| --- | ---: | ---: |
+| NTSG | 0.25% | 2,728.87 USD |
+| COM | 0.72% | 1,284.32 USD |
+| DBMF | 0.85% | 2,261.99 USD |
+| GDE | 0.20% | 364.61 USD |
+| TAIL | 0.60% | 537.83 USD |
+
+<small><i>*assuming a 7% gross annual return.</i></small>.
+
+Together, these make up a portfolio with a <b>0.40% total TER</b> and much higher tracking error than a classic _"VT and chill."_
+
+_Beyond the numbers themselves,_ I am not convinced by the <b>gap</b> between the ideal portfolio and the "real/investable" one. _At least in theory,_ everything seems to work well:
+- weighted correlations and returns distributed according to the market regime
+- capital efficiency thanks to the use of futures
+- tail-risk protection through OTM options
+- diversification based on risk factors rather than asset classes
+
+_Etc. etc..._ yet, when it comes to opening the broker and clicking buy, the model portfolio runs into the <b>friction of reality</b> _(or the second law of thermodynamics of personal finance)_:
+- ETFs with <b>high costs, low AUM, and low liquidity</b> _(Interactive Brokers took about ten seconds to execute my NTSG buy order... and I assure you I do not move millions)_
+- <b>limited availability</b> of products to diversify issuer and model risk _(model risk)_
+- relatively new products that do not allow statistically valid analysis, comparisons, and simulations
+
+While the difference between the ideal and real version of a VT and chill portfolio is minimal _(a very low spread and an almost negligible TER),_ friction cannot be ignored for the model portfolio and, _in general,_ for all portfolios using more complex products and derivatives.
+<br/>
+---
+<br/>
+<b>Further reading</b>
+<br/>
+<a href="https://academic.oup.com/rof/article/26/6/1315/6590670" target="_blank">Aggregate Confusion: The Divergence of ESG Ratings (Florian Berg, Julian F. Kölbel e Roberto Rigobon)</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=c4AMFicXXqg" target="_blank">Why ESG Investing May Be Doing More Harm Than Good</a>
+<br/>
+<a href="https://www.direxion.com/product/auspice-broad-commodity-strategy-etf" target="_blank">Auspice Broad Commodity Strategy ETF (Direxion)</a>
+<br/>
+<a href="https://www.thebull.it/podcast/linvestimento-che-ti-salva-dalle-crisi-ma-ti-serve-davvero/" target="_blank">L'investimento che ti salva dalle crisi: ma ti serve davvero? (The Bull)</a>
+<br/>
