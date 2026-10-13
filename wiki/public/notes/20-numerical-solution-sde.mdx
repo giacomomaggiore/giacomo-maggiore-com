@@ -1068,7 +1068,8 @@ $$
 The exact value is
 
 $$
-I = 2 \int_0^1 e^{\sqrt{x}}\,dx = 4 \int_0^1 u e^u\,du = 4.$$
+I = 2 \int_0^1 e^{\sqrt{x}}\,dx = 4 \int_0^1 u e^u\,du = 4.
+$$
 
 ---
 <br/>
@@ -1397,7 +1398,7 @@ def run_portfolio_var_mc(d, N_list, alpha=0.95, rng=None):
     A = rng.normal(size=(d, d))
 
     # Covariance matrix \Sigma = 0.02 * AA^T + 0.05 I_d
-    # (the added identity improves stability and prevents \Sigma to being singular)
+    # (the added identity improves stability and prevents \Sigma from being singular)
 
     Sigma = np.dot(A, A.T) * 0.02 + np.eye(d) * 0.05
 
@@ -1422,7 +1423,7 @@ def run_portfolio_var_mc(d, N_list, alpha=0.95, rng=None):
         L_mat = np.linalg.cholesky(Sigma)
         Z = rng.normal(size=(N, d))
 
-        # R = \mu + Z L^T has approx. desiderd distribution
+        # R = \mu + Z L^T has approx. desired distribution
         R = mu + np.dot(Z, L_mat.T)
 
         # Portfolio losses
@@ -1483,7 +1484,7 @@ $$
 $$
 
 $$
-\overline{X}_N + z_{1-\alpha/2}\frac{S_N}{\sqrt{N}}
+\overline{X}_N \pm z_{1-\alpha/2}\frac{S_N}{\sqrt{N}}
 \qquad \text{(asymptotically a }1-\alpha\text{ confidence interval)}
 $$
 
