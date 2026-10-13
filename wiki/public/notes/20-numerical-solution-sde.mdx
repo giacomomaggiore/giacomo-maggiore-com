@@ -5,7 +5,7 @@ summary: ''
 ---
 
 
-"The aim of this course is to equip students with the skills to conduct simulations and perform mathematical convergence analysis for stochastic models, with applications in fields such as mathematical finance. 
+"The aim of this course is to equip students with the skills to conduct simulations and perform mathematical convergence analysis for stochastic models, with applications in fields such as mathematical finance.
 <br/>The course provides a comprehensive understanding of various numerical methods, covering their foundational principles, convergence properties, and practical implementation considerations." _(from the official course's page)_
 
 The course has been taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Professor Josef Teichmann</a> and <a href="https://www.lse.ac.uk/people/christoph-czichowsky" target="_blank">Dr Christoph Czichowsky</a>
@@ -601,7 +601,7 @@ _(Recall: a function $f$ is injective if $f(x_1) = f(x_2)$ implies $x_1 = x_2$; 
 Note that distribution functions are càdlàg (right-continuous with left limits), while generalized inverse distribution functions are, in contrast, <b>càglàd</b> (left-continuous with right limits).
 
 <br/>
-<b>Definition (Generalized Inverse Distribution Function for the Bernoulli Distribution)</b>
+<b>Generalized Inverse Distribution Function for the Bernoulli Distribution</b>
 
 Let $p \in [0,1]$ be a real number and let $F: \mathbb{R} \to [0,1]$ be the distribution function of $\operatorname{Ber}(p)$. Assume also that, for all $x \in \mathbb{R}$, it holds:
 
@@ -628,11 +628,874 @@ I_F(y) = \inf\{x \in \mathbb{R} : F(x) \ge y\}
 \end{cases}
 $$
 
+Equivalently, since $1 - U \stackrel{d}{=} U$, we can write:
+
+$$
+X = \mathbf{1}_{\{U < p\}}
+$$
+
+In Python, we can simulate by doing:
+
+```python
+rng = np.random.default_rng(12345)
+
+p = 0.3
+N = 20_000
+U = rng.random(N)
+X = (U < p).astype(int)
+
+print("sample mean =", X.mean(), "   theoretical mean =", p)
+```
+<br/>
+<b>Generalized Inverse Distribution Function for the Exponential Distribution</b>
+
+For $X \sim \operatorname{Exp}(\lambda)$, recall that $F(x) = 1 - e^{-\lambda x}$ for all $x \ge 0$.<br/>
+
+We set $u = F(x)$ and solve for $x$.
+
+$$
+u = 1 - e^{-\lambda x} \implies e^{-\lambda x} = 1 - u \implies x = -\frac{\log(1-u)}{\lambda}
+$$
+
+Therefore, if $U \sim \operatorname{Uniform}(0,1)$:
+
+$$
+X = -\frac{\log(1-U)}{\lambda}
+$$
+
+has an $\operatorname{Exp}(\lambda)$ distribution.
+
+Since $1 - U$ is still uniformly distributed on $(0,1)$, we have:
+
+$$
+X = -\frac{\log U}{\lambda}
+$$
+
+So the inverse distribution function is given by:
+
+$$
+I_F(u) = -\frac{\log(1-u)}{\lambda}
+$$
+
+<b>Generalized Inverse Distribution Function for the Cauchy Distribution</b>
+
+For $X \sim \operatorname{Cauchy}(\mu, \lambda)$:
+
+$$
+F(x) = \frac{1}{2} + \frac{1}{\pi} \arctan\left(\frac{x-\mu}{\lambda}\right)
+$$
+
+With a similar substitution, we get:
+
+$$
+I_F(u) = \mu + \lambda \tan\left(\pi\left(u - \frac{1}{2}\right)\right)
+$$
+
+<b>Reduction to the standard normal</b>
+
+Let $Z \sim \mathcal{N}(0, I_d)$ and $A \in \mathbb{R}^{d \times d}$. Then $X = AZ + m$ is still Gaussian, with $\mathbb{E}[X] = m$ and $\operatorname{Cov}(X) = A I_d A^T = AA^T$, so we can write:
+
+$$
+AZ + m \sim \mathcal{N}(m, AA^T)
+$$
+
+Therefore, to sample from $\mathcal{N}(m, Q)$, we can find a Cholesky factor $A$ such that:
+
+$$
+Q = AA^T
+$$
+
+Then we can sample $Z_1, \ldots, Z_d \sim \mathcal{N}(0,1)$ and form $Z = (Z_1, \ldots, Z_d)^T$.
+
+We can then compute $AZ + m$, which has the mean $m$ and covariance $AA^T = Q$ of the desired distribution.
+
+----
+
+<b>Box–Muller</b>
+
+Consider $U_1, U_2$ to be independent uniformly distributed random variables on $(0,1)$. Then define:
+
+$$
+R = \sqrt{-2\log(U_1)}, \qquad \Theta = 2\pi U_2
+$$
+
+$$
+X_1 = R\cos(\Theta), \qquad X_2 = R\sin(\Theta)
+$$
+
+Then we have:
+
+$$
+(X_1, X_2) \sim \mathcal{N}(0, I_2)
+$$
+
+In Python, this can be coded as:
+
+```python
+def box_muller(n, rng=np.random.default_rng()):
+    m = (n + 1)//2
+    u1 = rng.random(m)
+    u2 = rng.random(m)
+    r = np.sqrt(-2*np.log(u1))
+    theta = 2*np.pi*u2
+    z = np.empty(2*m)
+    z[0::2] = r*np.cos(theta)
+    z[1::2] = r*np.sin(theta)
+    return z[:n]
+
+z = box_muller(100_000, rng)
+print("mean ≈", z.mean())
+print("variance ≈", z.var())
+
+#mean ≈ -0.0024074937397393107
+# variance ≈ 1.0033222307341456
+
+```
+<br/>
+<b>Marsaglia Polar Method</b>
+
+The Box–Muller method evaluates sine and cosine. Marsaglia replaces the angle by rejection sampling in the unit disk.
+
+We first generate $V_1, V_2 \sim U(0,1)$ independently and set:
+
+$$
+Y_1 = 2V_1 - 1, \qquad Y_2 = 2V_2 - 1, \qquad S = Y_1^2 + Y_2^2
+$$
+
+We reject until $0 < S < 1$, then set:
+
+$$
+X_i = Y_i \sqrt{\frac{-2\log S}{S}}, \qquad \text{for } i = 1,2
+$$
+
+Then:
+
+$$
+(X_1, X_2) \sim \mathcal{N}(0, I_2)
+$$
+
+```python
+
+def marsaglia(n, rng=np.random.default_rng()):
+    out = []
+    while len(out) < n:
+        y = 2*rng.random(2) - 1
+        s = y @ y
+        if 0 < s < 1:
+            factor = np.sqrt(-2*np.log(s)/s)
+            out.extend((y*factor).tolist())
+    return np.array(out[:n])
+
+z = marsaglia(100_000, rng)
+print("mean ≈", z.mean())
+print("variance ≈", z.var())
+
+# mean ≈ -0.0017264779658840894
+# variance ≈ 1.001218327148807
+```
+<br/>
+
+<b>From $\mathcal{N}(0,1)$ to $d$-dimensional $\mathcal{N}(m,Q)$</b>
+
+To sample from a $d$-dimensional distribution $\mathcal{N}(m, Q)$, we first generate $d$ independent standard normals:
+
+$$
+Z = (Z_1, \ldots, Z_d) \sim \mathcal{N}(0, I_d)
+$$
+
+Then we factor the target covariance $Q$ as $Q = AA^T$ (Cholesky decomposition) and return $X = m + AZ$, which has the mean and covariance of the target $d$-dimensional Gaussian distribution.
+
+```python
+
+def gaussian_d(mean, cov, rng=np.random.default_rng()):
+    mean = np.asarray(mean)
+    cov = np.asarray(cov)
+    # eigen-factorization also permits positive semidefinite covariance matrices
+    lam, V = np.linalg.eigh(cov)
+    lam = np.maximum(lam, 0.0)
+    A = V @ np.diag(np.sqrt(lam))
+    z = box_muller(len(mean), rng)
+    return mean + A @ z
+
+m = np.array([1.0, -1.0])
+Q = np.array([[2.0, 1.2],
+              [1.2, 1.0]])
+
+samples = np.array([gaussian_d(m, Q, rng) for _ in range(30_000)])
+print("empirical mean:\n", samples.mean(axis=0))
+print("empirical covariance:\n", np.cov(samples.T))
 
 
+# empirical mean: [ 0.99112792 -1.005388  ]
+# empirical covariance:
+# [[2.00303886 1.1975438 ] [1.1975438  0.99806283]]
+```
+<br/>
 
+<b>Approximation of a Multidimensional Integral by Quadrature: Left Rectangle Rule in Dimension $d$</b>
+
+We now try to approximate $\int_{[a,b]^d} f(x)\,dx$ by quadrature, _i.e. on a $d$-dimensional hypercube $[a,b]^d$ using numerical integration methods that approximate integrals by calculating a weighted sum of function values at specific points_.
+
+We first recall that, _for a function $f$ on a metric space_, its <b>modulus of continuity</b> is defined as:
+
+$$
+\omega_f(h) = \sup_{\lVert x-y\rVert \le h} |f(x) - f(y)|
+$$
+
+and it measures the maximum possible change in $|f(x) - f(y)|$ when the distance between $x$ and $y$ is at most $h$ _(intuition: it represents how smoothly or rapidly $f$ can change across small steps of size $h$)_.
+
+Also, recall that if $f$ is an $\alpha$-Hölder function, we have:
+
+$$
+\omega_f(h) \le |f|_{C^\alpha} h^\alpha
+$$
+
+which means that, for a specific class of smooth functions, its maximum change over distance $h$ is bounded by a constant factor.
+
+We now start by integrating using the <b>left rectangle rule in dimension $d$</b>, by first partitioning $[a,b]^d$ into $n^d$ cubes of side length:
+
+$$
+h = \frac{b-a}{n}
+$$
+
+We then define the <b>lower-left corners</b> (grid points) as:
+
+$$
+x_i = a\mathbf{1} + hi, \qquad i = (i_1, \ldots, i_d) \in \{0, \ldots, n-1\}^d
+$$
+
+where $i$ is a multi-index representing the grid coordinates in $d$ dimensions and $x_i$ gives the exact coordinates for the lower-left vertex of each sub-cube.
+
+We then define the approximation formula as:
+
+$$
+R^n_{[a,b]^d}[f] = h^d \sum_{i \in \{0, \ldots, n-1\}^d} f(x_i)
+$$
+
+_Intuition: we evaluate $f$ at the lower corner $x_i$ of each sub-cube, then multiply $f(x_i)$ by $h^d$, which is the $d$-dimensional volume of a single sub-cube. We finally sum over all $n^d$ sub-cubes to get $R^n_{[a,b]^d}$ (a multidimensional generalization of the classical Riemann left-rectangle sum)._
+
+<b>Proposition: Integration Error with Hölder Continuous Functions (2.2.5)</b>
+
+For $f \in L^1([a,b]^d)$, we have:
+
+$$
+\left|R^n_{[a,b]^d}[f] - \int_{[a,b]^d} f(x)\,dx\right|
+\le (b-a)^d\,\omega_f\!\left(\frac{(b-a)\sqrt{d}}{n}\right).
+$$
+
+_Intuition: the integration error is bounded by the volume $(b-a)^d$, the maximum cell diameter $\frac{(b-a)\sqrt{d}}{n}$, and $\omega_f$._
+
+Furthermore, if $f$ is Hölder continuous with exponent $\alpha$, we also have:
+
+$$
+\left|R^n_{a,b,d}[f] - \int_{[a,b]^d} f(x)\,dx\right|
+\le \frac{(b-a)^{d+\alpha}d^{\alpha/2}}{n^\alpha}\,|f|_{C^\alpha}.
+$$
+
+_Intuition: the error decreases with $n^{-\alpha}$, which means that more regular functions (larger $\alpha$) have faster convergence._
+
+To better see this, we can proceed with an example and set $f(x_1, \ldots, x_d) = x_1$ and $[a,b]^d = [0,1]^d$.
+
+In this case, we obtain exactly:
+
+$$
+\left|R^n[f] - \int f\right| = \frac{1}{2n}.
+$$
+
+Furthermore, we can easily see the following results in Python:
+
+```python
+def left_rectangle_1d(f, a, b, n):
+    h = (b-a)/n
+    x = a + h*np.arange(n)
+    return h*np.sum(f(x))
+
+f = lambda x: x
+exact = 0.5
+
+for n in [10, 20, 40, 80]:
+    err = abs(left_rectangle_1d(f, 0, 1, n)-exact)
+    print(f"n={n:3d}, error={err:.8f}, n*error={n*err:.8f}")
+
+# n= 10, error=0.05000000, n*error=0.50000000
+# n= 20, error=0.02500000, n*error=0.50000000
+# n= 40, error=0.01250000, n*error=0.50000000
+# n= 80, error=0.00625000, n*error=0.50000000
+```
+<br/>
+<b>Trapezoidal Rule</b>
+
+We now proceed with another method for numerical integration _(quadrature)_ in one dimension. We first divide the interval $[a,b]$ into $n$ subintervals of equal width $h = (b-a)/n$, then we can set:
+
+$$
+T_{[a,b]}^n[f] = h \left[ \frac{f(a) + f(b)}{2} + \sum_{i=1}^{n-1} f(a + ih) \right].
+$$
+
+_Said differently,_ on each interval $[x_i, x_{i+1}]$ we integrate the average of the two endpoint values.
 
 ---
+<br/>
+<b>Proposition: Integration Error with the Trapezoidal Rule (2.2.10)</b>
+
+$$
+\left|T^n[f] - \int_a^b f(x)\,dx\right|
+\le (b-a)\,\omega_f\!\left(\frac{b-a}{2n}\right).
+$$
+
+Therefore, if $f$ is an $\alpha$-Hölder function:
+
+$$
+\left|T^n[f] - \int_a^b f(x)\,dx\right|
+\le \frac{(b-a)^{1+\alpha}}{(2n)^\alpha}\,|f|_{C^\alpha}.
+$$
+
+Furthermore, if $f \in C^1([a,b])$, then we have:
+
+$$
+\left|T^n[f] - \int_a^b f(x)\,dx\right|
+\le \frac{(b-a)^2}{n}\,\omega_{f'}\!\left(\frac{b-a}{2n}\right).
+$$
+
+Therefore, if $f'$ is $\alpha$-Hölder:
+
+$$
+\left|T^n[f] - \int_a^b f(x)\,dx\right|
+\le \frac{(b-a)^{2+\alpha}}{2^\alpha n^{1+\alpha}}\,|f'|_{C^\alpha}.
+$$
+
+So, if $f'$ is $\alpha$-Hölder continuous, the total error is $O(n^{-(1+\alpha)})$. Thus, for Lipschitz $f'$ (that is, $\alpha = 1$), this gives the familiar $O(n^{-2})$ <b>quadratic convergence</b>.
+
+In Python, we can nicely see the convergence by coding:
+
+```python
+def trapezoidal(f, a, b, n):
+    x = np.linspace(a, b, n+1)
+    h = (b-a)/n
+    return h*(0.5*f(x[0]) + f(x[1:-1]).sum() + 0.5*f(x[-1]))
+
+# Smooth test: f(x)=exp(x), exact integral e-1
+f = np.exp
+exact = np.e - 1
+
+ns = np.array([10, 20, 40, 80, 160, 320])
+errs_rect = np.array([abs(left_rectangle_1d(f, 0, 1, n)-exact) for n in ns])
+errs_trap = np.array([abs(trapezoidal(f, 0, 1, n)-exact) for n in ns])
+
+print(" n     rectangle error      trapezoidal error")
+for n, er, et in zip(ns, errs_rect, errs_trap):
+    print(f"{n:3d}   {er:14.6e}      {et:14.6e}")
+
+# n     rectangle error      trapezoidal error
+#  10     8.448243e-02        1.431663e-03
+#  20     4.259909e-02        3.579605e-04
+#  40     2.138903e-02        8.949291e-05
+#  80     1.071689e-02        2.237340e-05
+# 160     5.364037e-03        5.593362e-06
+# 320     2.683417e-03        1.398341e-06
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/convergence-integrals.png)
+</div>
+
+---
+<br/>
+
+## <a id="4"><b>Monte Carlo Integration</b></a>
+
+<b>Integration equals expectation</b>
+
+Let $(A, \mathcal{A}, \mu)$ be a finite measure space with $\mu(A) > 0$ and consider $f \in L^1(\mu)$.
+
+First, notice that $\mu$ need not be a probability measure because $\mu(A)$ may not be $1$. We therefore normalize it by defining $P(B) = \mu(B) / \mu(A)$, and then define $Y$ as a random point in $A$ distributed according to the normalized measure $\mu$:
+
+$$
+Y \sim \frac{\mu}{\mu(A)}.
+$$
+
+By the definition of expectation under this distribution, we then have:
+
+$$
+\mathbb{E}[f(Y)] = \frac{1}{\mu(A)} \int_A f(x)\,\mu(dx).
+$$
+
+If we multiply by $\mu(A)$, we obtain:
+
+$$
+\int_A f(x)\,\mu(dx) = \mathbb{E}[\mu(A)f(Y)].
+$$
+
+If we then set $X = \mu(A)f(Y)$, take independent samples $Y_1, Y_2, \ldots$ from the distribution of $Y$, and set
+
+$$
+X_n = \mu(A) f(Y_n),
+$$
+
+then we have
+
+$$
+\mathbb{E}[X_n] = \int_A f(x)\,\mu(dx).
+$$
+
+Thus, the <b>Monte Carlo estimator</b> is
+
+$$
+E_N = \frac{1}{N} \sum_{n=1}^N X_n = \frac{\mu(A)}{N} \sum_{n=1}^N f(Y_n).
+$$
+
+By the LLN, we also know that $E_N \to \int_A f(x)\,\mu(dx)$ as $N \to \infty$.
+
+This is the <b>Monte Carlo estimator</b> of $\mathbb{E}[X_1]$.<br/>Furthermore, _by linearity_, we have
+
+$$
+\mathbb{E}[E_N] = \mathbb{E}[X_1],
+$$
+
+so we can conclude that the Monte Carlo estimator is <b>unbiased</b>.
+
+_For example_, we can consider
+
+$$
+I = \int_{-1}^1 e^{\sqrt{|x|}}\,dx, \qquad Y \sim U(-1,1).
+$$
+
+Then we have
+
+$$
+I = \mathbb{E}[2e^{\sqrt{|Y|}}], \qquad I_N = \frac{2}{N} \sum_{n=1}^N e^{\sqrt{|Y_n|}}.
+$$
+
+The exact value is
+
+$$
+I = 2 \int_0^1 e^{\sqrt{x}}\,dx = 4 \int_0^1 u e^u\,du = 4.$$
+
+---
+<br/>
+<b>Why Monte Carlo is _particularly_ good in high dimensions</b>
+
+Consider $U \sim U([a,b]^d)$. Then:
+
+$$
+\int_{[a,b]^d} f(x)\,dx = (b-a)^d\mathbb{E}[f(U)]
+$$
+
+and
+
+$$
+I_N = \frac{(b-a)^d}{N} \sum_{n=1}^N f(U_n).
+$$
+
+- If we consider the <b>deterministic rectangle rule</b> with $N=n^d$ evaluations and an $\alpha$-Hölder function $f$:
+  $$
+  \text{error} \sim N^{-\alpha/d}.
+  $$
+- If we use Monte Carlo, <b>independently of $d$</b>:
+  $$
+  \text{RMSE} \sim N^{-1/2}.
+  $$
+
+---
+
+<br/>
+<b>Theorem: Strong Law of Large Numbers</b>
+
+Let $X_1, X_2, \ldots \in L^1$ be i.i.d., then:
+
+$$
+\frac{1}{N} \sum_{n=1}^N X_n \to \mathbb{E}[X_1] \quad \text{almost surely}.
+$$
+
+Therefore, the Monte Carlo approximation is <b>strongly consistent</b> _(i.e. it converges)_.
+
+---
+<br/>
+<b>Theorem: Exact Root Mean Square Error</b>
+
+For $X_1, X_2, \ldots \in L^2$ i.i.d., we have:
+
+$$
+\lVert E_N - \mathbb{E}[X_1] \rVert_{L^2} = \frac{\sqrt{\operatorname{Var}(X_1)}}{\sqrt{N}}.
+$$
+
+<b>Proof</b>
+
+Since the estimator is unbiased, we can write:
+
+$$
+\mathbb{E}[(E_N - \mathbb{E}[X_1])^2] = \operatorname{Var}(E_N).
+$$
+
+By independence:
+
+$$
+\operatorname{Var}(E_N) = \frac{1}{N^2} \sum_{n=1}^N \operatorname{Var}(X_n) = \frac{\operatorname{Var}(X_1)}{N}.
+$$
+
+Therefore:
+
+$$
+\lVert E_N - \mathbb{E}[X_1] \rVert_{L^2}
+= \sqrt{\operatorname{Var}(E_N)}
+= \sqrt{\frac{\operatorname{Var}(X_1)}{N}}.
+$$
+
+Thus, RMSE $\sim N^{-1/2}$ _(reducing the error by a factor of 2 costs about 4 times as many samples)_.
+
+---
+<br/>
+<b>Estimating the unknown variance</b>
+
+Consider:
+
+$$
+\overline{X}_N = \frac{1}{N} \sum_{n=1}^N X_n, \qquad \sigma^2 = \operatorname{Var}(X_1).
+$$
+
+Two natural estimators are:
+
+$$
+\widehat{S}_N^2 = \frac{1}{N} \sum_{n=1}^N (X_n - \overline{X}_N)^2
+$$
+
+and the one using <b>Bessel's correction</b>:
+
+$$
+S_N^2 = \frac{1}{N-1} \sum_{n=1}^N (X_n - \overline{X}_N)^2.
+$$
+
+Then:
+
+$$
+\mathbb{E}\left[\sum_{n=1}^N (X_n - \overline{X}_N)^2\right] = (N-1)\sigma^2.
+$$
+
+Therefore:
+
+$$
+\mathbb{E}[\widehat{S}_N^2] = \frac{N-1}{N}\sigma^2,
+\qquad
+\mathbb{E}[S_N^2] = \sigma^2.
+$$
+
+Thus, $\widehat{S}_N^2$ is <b>biased downward</b> by $-\sigma^2/N$, while $S_N^2$ is <b>unbiased</b>. _However, note that both are consistent, so being unbiased does not imply a smaller RMSE._
+
+---
+<br/>
+<b>Theorem: RMSE of the corrected sample variance</b>
+
+Assume $X_n \in L^4$ are i.i.d. and consider:
+
+$$
+\mu = \mathbb{E}[X_1], \qquad \sigma^2 = \operatorname{Var}(X_1), \qquad \mu_4 = \mathbb{E}[(X_1 - \mu)^4].
+$$
+
+Then, for $N \ge 2$:
+
+$$
+\lVert S_N^2 - \sigma^2 \rVert_{L^2}
+= \sqrt{\frac{1}{N}\left(\mu_4 - \frac{N-3}{N-1}\sigma^4\right)}.
+$$
+
+Furthermore, for $N \ge 4$:
+
+$$
+\lVert S_N^2 - \sigma^2 \rVert_{L^2} \le \sqrt{\frac{\mu_4}{N}}.
+$$
+
+<b>Corollary: RMSE of the biased sample variance</b>
+
+For the biased sample variance $\widehat{S}_N^2$ defined above:
+
+$$
+\lVert \widehat{S}_N^2 - \sigma^2 \rVert_{L^2}
+= \frac{\sqrt{(N-1)^2\mu_4 + (5N - N^2 - 3)\sigma^4}}{N^{3/2}}.
+$$
+
+Regardless of $N$:
+
+$$
+\lVert \widehat{S}_N^2 - \sigma^2 \rVert_{L^2} \le \sqrt{\frac{\mu_4}{N}}.
+$$
+
+_Recall_ that $\mu_4$ is the <b>fourth central moment</b>, which measures how strongly observations can deviate from the mean, _especially in the tails_. It is used to calculate the <b>kurtosis</b>:
+
+$$
+\gamma_2 = \frac{\mu_4}{\sigma^4}.
+$$
+
+_Recall also that_, for a Gaussian distribution, $\gamma_2 = 3$. We define the <b>excess kurtosis</b> of a random variable as $\gamma_2 - 3$ _(which is 0 for a Gaussian distribution)_.
+
+---
+<br/>
+<b>Confidence intervals | CLT only</b>
+
+Consider
+
+$$
+E_N = \frac{1}{N}\sum_{n=1}^N X_n, \qquad
+\mu = \mathbb{E}[X_1], \qquad
+\sigma^2 = \operatorname{Var}(X_1) > 0.
+$$
+
+The CLT gives:
+
+$$
+\frac{\sqrt{N}(E_N - \mu)}{\sigma}
+\xrightarrow{d} \mathcal{N}(0,1).
+$$
+
+<b>Theorem: Asymptotically valid CLT confidence intervals</b>
+
+For $\beta, \gamma \ge 0$, which determine the left and right widths of the interval:
+
+$$
+\lim_{N\to\infty}
+\mathbb{P}\left(
+\mu \in
+\left[
+E_N - \frac{\beta\sigma}{\sqrt{N}},
+E_N + \frac{\gamma\sigma}{\sqrt{N}}
+\right]
+\right)
+=
+\frac{1}{\sqrt{2\pi}}
+\int_{-\beta}^{\gamma} e^{-x^2/2}\,dx.
+$$
+
+_Equivalently_, using the standard normal cumulative distribution function $\Phi$:
+
+$$
+\lim_{N\to\infty}
+\mathbb{P}\left(
+\mu \in
+\left[
+E_N - \frac{\beta\sigma}{\sqrt{N}},
+E_N + \frac{\gamma\sigma}{\sqrt{N}}
+\right]
+\right)
+= \Phi(\gamma) - \Phi(-\beta).
+$$
+
+In other words, if
+
+$$
+\frac{\sqrt{N}(E_N - \mu)}{\sigma}
+\xrightarrow{d} Z,
+\qquad Z \sim \mathcal{N}(0,1),
+$$
+
+then the probability that the interval contains $\mu$ converges to $\mathbb{P}(-\beta \le Z \le \gamma)$.
+
+For a symmetric interval, set $\beta = \gamma = z$. The coverage probability is then:
+
+$$
+2\Phi(z) - 1.
+$$
+
+Using a _"practical version"_ of this theorem, we can replace $\sigma$ by
+
+$$
+S_N = \sqrt{\frac{1}{N} \sum_{n=1}^N (X_n - \overline{X}_N)^2}
+$$
+
+and obtain an <b>asymptotically valid</b> $(1-\alpha)$ confidence interval defined as:
+
+$$
+\overline{X}_N \pm z_{1-\alpha/2}\frac{S_N}{\sqrt{N}}.
+$$
+
+---
+<br/>
+<b>Practical Numerical Integration</b>
+
+Consider $A \subset \mathbb{R}^d$ to be bounded and contained in:
+
+$$
+B = [a_1,b_1] \times \cdots \times [a_d,b_d].
+$$
+
+We extend $f$ by zero outside $A$:
+
+$$
+\widetilde f(x) = f(x)\mathbf{1}_A(x).
+$$
+
+Consider independent and uniformly distributed random variables $U_1, U_2, \ldots$ on $B$, i.e. $U_n \sim U(B)$ are i.i.d. Since $U_1$ is uniform on $B$:
+
+$$
+\mathbb{E}[\widetilde f(U_1)] = \frac{1}{|B|} \int_B \widetilde f(x)\,dx.
+$$
+
+Because $\widetilde f$ is zero outside $A$:
+
+$$
+\int_B \widetilde f(x)\,dx = \int_A f(x)\,dx.
+$$
+
+Therefore:
+
+$$
+\int_A f(x)\,dx = |B|\,\mathbb{E}[\widetilde f(U_1)].
+$$
+
+The <b>Monte Carlo estimator</b> is:
+
+$$
+I_N = \frac{|B|}{N} \sum_{n=1}^N f(U_n)\mathbf{1}_A(U_n),
+$$
+
+where $|B|$ is the _volume_ of the enclosing box:
+
+$$
+|B| = \prod_{i=1}^d (b_i-a_i).
+$$
+
+<b>Example: High-dimensional financial integration: Portfolio Value at Risk (VaR)</b>
+
+In quantitative finance, evaluating risk metrics such as VaR for a portfolio of $d$ _correlated assets_ requires computing high-dimensional expectations. We can use the approach proposed above by modelling asset returns as a multivariate Gaussian distribution _(even if asset returns, especially stocks, are not normally distributed and have very fat tails!)_.
+
+$$
+R \sim \mathcal{N}(\mu,\Sigma),
+$$
+
+where $\mu \in \mathbb{R}^d$ is the vector of <b>expected returns</b> and $\Sigma \in \mathbb{R}^{d\times d}$ is the <b>covariance matrix</b>.<br/>Consider also $w \in \mathbb{R}^d$ as the <b>portfolio weight vector</b>, with $\sum_{i=1}^d w_i = 1$. Given this, the <b>total portfolio loss</b> $L$ is defined as:
+
+$$
+L(R) = -w^\top R.
+$$
+
+We can then define the $100(1-\alpha)\%$ Value at Risk, $\operatorname{VaR}_\alpha$, as the $(1-\alpha)$-quantile of the loss distribution:
+
+$$
+\mathbb{P}(L \le \operatorname{VaR}_\alpha) = 1-\alpha.
+$$
+
+In Python, we can estimate the VaR for a $d$-dimensional portfolio _(in the snippet below: $d=10$)_ using Monte Carlo integration and tracking the convergence.
+
+```python
+
+def run_portfolio_var_mc(d, N_list, alpha=0.95, rng=None):
+    if rng is None:
+
+        # Try to retrieve rng from globals, otherwise initialize a new one
+        global_vars = globals()
+        if 'rng' in global_vars:
+            rng = global_vars['rng']
+        else:
+            rng = np.random.default_rng(2026)
+
+    # Setup portfolio parameters (d=10 assets)
+
+    # weights vector
+    weights = np.ones(d) / d
+
+    # expected return (drift)
+    mu = np.linspace(0.01, 0.08, d)
+
+    # Generate a random positive-definite covariance matrix
+    A = rng.normal(size=(d, d))
+
+    # Covariance matrix \Sigma = 0.02 * AA^T + 0.05 I_d
+    # (the added identity improves stability and prevents \Sigma to being singular)
+
+    Sigma = np.dot(A, A.T) * 0.02 + np.eye(d) * 0.05
+
+    # Since this is Gaussian, we can calculate the analytical VaR for comparison
+
+    port_mu = np.dot(weights, mu)
+    port_vol = np.sqrt(np.dot(weights, np.dot(Sigma, weights)))
+    from scipy.stats import norm
+
+    # exact formulation
+    exact_var = -(port_mu + port_vol * norm.ppf(1 - alpha))
+
+    estimates = []
+    ci_lower = []
+    ci_upper = []
+
+    # we now proceed with estimation
+
+    for N in N_list:
+
+        # High-dimensional Gaussian sampling via Cholesky decomposition
+        L_mat = np.linalg.cholesky(Sigma)
+        Z = rng.normal(size=(N, d))
+
+        # R = \mu + Z L^T has approx. desiderd distribution
+        R = mu + np.dot(Z, L_mat.T)
+
+        # Portfolio losses
+        losses = -np.dot(R, weights)
+
+        # Estimate VaR (the empirical alpha-quantile)
+        # alpha-quantile of the simulated losses
+
+        est_var = np.percentile(losses, alpha * 100)
+        estimates.append(est_var)
+
+        # Bootstrap for quantile confidence intervals
+        bootstrap_vars = []
+        for _ in range(200):
+            boot_sample = rng.choice(losses, size=N, replace=True)
+            bootstrap_vars.append(np.percentile(boot_sample, alpha * 100))
+
+        # The interval is an approximate 95% bootstrap confidence interval for VaR.
+        ci_lower.append(np.percentile(bootstrap_vars, 2.5))
+        ci_upper.append(np.percentile(bootstrap_vars, 97.5))
+
+    return N_list, np.array(estimates), np.array(ci_lower), np.array(ci_upper), exact_var
+
+# Fallback initialization in the script level if 'rng' is not defined globally
+if 'rng' not in globals():
+    rng = np.random.default_rng(2026)
+
+d = 10
+N_list = np.logspace(2.5, 5.5, num=10, dtype=int)
+Ns, estimates, ci_lower, ci_upper, exact_var = run_portfolio_var_mc(d, N_list, rng=rng)
+```
+
+<br/>
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/montecarlo-var.png)
+</div>
+
+---
+<br/>
+<b>Monte Carlo: a short summary</b>
+
+The previous chapter can be summarized in <b>5 essential formulas</b>:
+
+$$
+\int f\,d\mu = \mathbb{E}[X] \qquad \text{(expectation)}
+$$
+
+$$
+E_N = \frac{1}{N}\sum_{n=1}^N X_n \qquad \text{(Monte Carlo estimator)}
+$$
+
+$$
+E_N \to \mathbb{E}[X] \quad \text{almost surely (strong law of large numbers)}
+$$
+
+$$
+\lVert E_N - \mathbb{E}[X]\rVert_{L^2} = \frac{\sigma}{\sqrt{N}}
+$$
+
+$$
+\overline{X}_N + z_{1-\alpha/2}\frac{S_N}{\sqrt{N}}
+\qquad \text{(asymptotically a }1-\alpha\text{ confidence interval)}
+$$
+
+Always remember the Monte Carlo rate $N^{-1/2}$, independently of the dimension of the problem.
+
+---
+<br/>
+
+<b>Wiener Process from an Isonormal Gaussian Process</b>
+
+
+
 ## <a id="3"><b>Stochastic Integration and Itô Calculus</b></a>
 
 ---
