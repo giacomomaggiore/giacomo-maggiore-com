@@ -1495,12 +1495,932 @@ Always remember the Monte Carlo rate $N^{-1/2}$, independently of the dimension 
 
 <b>Wiener Process from an Isonormal Gaussian Process</b>
 
+In this section, we want to characterize a one-dimensional Wiener process. To do that, we start with the <b>isonormal Gaussian map</b>.
 
+Let $H = L^2([0,1];\mathbb{R})$ and let $(e_n)_{n\geq 1}$ be an orthonormal basis of $H$. Assume that $\Omega$ carries independent $\mathcal{N}(0,1)$ random variables $(\varepsilon_n)_{n\geq 1}$.
+
+For $f \in H$, define:
+
+$$
+\eta_N(f) = \sum_{n=1}^N \langle f,e_n\rangle_H\,\varepsilon_n.
+$$
+
+Then:
+
+$$
+\mathbb{E}\left[|\eta_N(f)-\eta_M(f)|^2\right]
+= \sum_{n=M+1}^N |\langle f,e_n\rangle_H|^2
+\longrightarrow 0.
+$$
+
+Therefore, we have:
+
+$$
+\eta(f) = \lim_{N\to\infty}\sum_{n=1}^N
+\langle f,e_n\rangle_H\,\varepsilon_n.
+$$
+
+The map $\eta$ is <b>linear</b>, and we also have:
+
+$$
+\mathbb{E}[\eta(f)\eta(g)] = \langle f,g\rangle_H.
+$$
+
+Since every finite vector $(\eta(f_1),\ldots,\eta(f_k))$ is jointly Gaussian, $\eta$ is an <b>isonormal Gaussian process over $H$</b>.
+
+We can now define the Wiener process by
+
+$$
+W_t = \eta(\mathbf{1}_{[0,t]}),
+\qquad 0\leq t\leq 1.
+$$
+
+The process $W$ is centered Gaussian, and
+
+$$
+\mathbb{E}[W_sW_t]
+= \left\langle \mathbf{1}_{[0,s]},\mathbf{1}_{[0,t]}\right\rangle_{L^2}
+= \min(s,t).
+$$
+
+Therefore,
+
+$$
+W_t-W_s = \eta(\mathbf{1}_{(s,t]})
+\sim \mathcal{N}(0,t-s).
+$$
+
+Furthermore, for two disjoint intervals $(s_i,t_i]$ and $(s_j,t_j]$,
+
+$$
+\left\langle \mathbf{1}_{(s_i,t_i]},\mathbf{1}_{(s_j,t_j]}\right\rangle_{L^2}=0.
+$$
+
+Thus, the corresponding Gaussian increments are <b>uncorrelated</b> and therefore independent.
+
+---
+<br/>
+<b>Sobolev–Slobodeckij path regularity</b>
+
+For 0 < r < 1 and p \ge 1 we define:
+
+| f|^p_W^rp(0,1) = \int_0^\ \int_0^1 \frac{ |f(t)- f(s)|^2}{|t-s|^{1+rp}ds dt
+
+By definition, Wiener process increments satisfy W_t - W_s =^d |t-s!^1/2 Z, with Z \sim \matchal N(0,1). <br/>So, if we write c_p = E[|Z|^2], we have that:
+
+E[W_t - W_s|^è] = c_p |t -s |^è/2
+
+and, by Tonelli, we have that:
+
+E[W]^p_Wrè = c_p \int_0^1 \int_0^1 | t -s |^{p / 2 -1 -rp}ds dt
+
+This sincuraliry at t = s is <b>Integrable </b> \iff \frac{p}{2} - rp > 0 \iff r < 1/2.
+
+If we add that E[\int_0^1 |W_t|^p dt < \infty, we have that:
+
+W(., \omega) \in W^{r,p} (0,1) a.s for r < 1/2.
+
+_In Particular, in 1-dimension, we have that W^{r,p}(0,1) \to C^\beta ([0,1])  whemr rp > 1 and \beta < r - 1/p.
+
+If we fix any \beta < 1/2 and we choose p large and then r sych that:
+
+\beta + 1/p < r < 1/p
+
+W has a modification that satisfies
+
+W(., \omega) \in C^\bet([0,1]) a.s for very \beta < 1/2.
+
+---
+<br/>
+<b>Numerical Picture of the Isonormal Construction</b>
+
+To visualize this, we can construct the Brownian motion numerically. First, we choose a <b>real trigonometric orthonormal basis</b> of $L^2([0,1])$:
+
+$$
+e_0(x)=1,
+$$
+
+$$
+e_{2k-1}(x)=\sqrt{2}\cos(2\pi kx),
+\qquad
+ e_{2k}(x)=\sqrt{2}\sin(2\pi kx),
+\qquad k\geq 1.
+$$
+
+We can then construct $W_t$ for every $t$ as
+
+$$
+W_t=\sum_{n=0}^{\infty}\varepsilon_n\int_0^t e_n(s)\,ds.
+$$
+
+_Recall that_ the space is
+
+$$
+L^2([0,1])=\left\{f:[0,1]\to\mathbb{R}:\int_0^1|f(x)|^2\,dx<\infty\right\},
+$$
+
+with inner product
+
+$$
+\langle f,g\rangle=\int_0^1 f(x)g(x)\,dx.
+$$
+
+In Python, we write:
+
+```python
+def isonormal_brownian_trig(t, modes=200, rng=rng):
+    t = np.asarray(t)
+    W = rng.standard_normal() * t
+    for k in range(1, modes + 1):
+        xi_cos = rng.standard_normal()
+        xi_sin = rng.standard_normal()
+        int_cos = np.sqrt(2) * np.sin(2 * np.pi * k * t) / (2 * np.pi * k)
+        int_sin = np.sqrt(2) * (1 - np.cos(2 * np.pi * k * t)) / (2 * np.pi * k)
+        W += xi_cos * int_cos + xi_sin * int_sin
+    return W
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/trigonometric-wiener.png.png)
+</div>
+
+<br/>
+---
 
 ## <a id="3"><b>Stochastic Integration and Itô Calculus</b></a>
 
+<b>Stochastic Process</b>
+
+Fix a complete probability space $(\Omega, \mathcal{F}, \mathbb{P})$. We recall that a random variable $X$ is a mapping $\Omega \to \mathbb{R}$ such that
+
+$$
+X^{-1}(A) := \{\omega \in \Omega : X(\omega) \in A\} \in \mathcal{F} \quad \forall A \in \mathcal{B}(\mathbb{R}).
+$$
+
+We define a <b>real-valued stochastic process</b> as a family of real-valued random variables $(X_t)_{t \in \mathcal{T}}$ indexed by a non-empty set $\mathcal{T}$.
+
+_We often write $(X_t)_{t \in \mathcal{T}}$ instead of $X_t$, $t \in \mathcal{T}$._
+
+Stochastic processes can be defined both in <b>discrete time</b>, where $\mathcal{T} \subset \mathbb{N}_0$, and in continuous time, where $\mathcal{T} \subset [0, \infty)$. In the following notes, we consider $\mathcal{T} = [0,T]$ for a finite $T > 0$.
+
+There are three ways to interpret stochastic processes:
+1. for each time $t \in \mathcal{T}$, as a random variable $X_t: \Omega \to \mathbb{R}$ of the event $\omega \in \Omega$
+2. for each event $\omega \in \Omega$, as a sample path $X(\omega): \mathcal{T} \to \mathbb{R}$
+3. as a joint mapping $X: \Omega \times \mathcal{T} \to \mathbb{R}$ of event and time
+
+In continuous time, we usually require continuity properties for the sample paths $t\mapsto X_t(\omega)$ and joint $\mathcal{F}\otimes\mathcal{B}(\mathcal{T})$-measurability of $(\omega,t)\mapsto X_t(\omega)$.
+
+Furthermore, two real-valued stochastic processes $(X_t)_{t\in\mathcal{T}}$ and $(Y_t)_{t\in\mathcal{T}}$ on the same probability space are called:
+- <b>modifications</b> if, for every $t\in\mathcal{T}$, $\mathbb{P}(X_t=Y_t)=1$;
+- <b>indistinguishable</b> if there is an event $A\in\mathcal{F}$ with $\mathbb{P}(A)=1$ such that $X_t(\omega)=Y_t(\omega)$ for every $t\in\mathcal{T}$ and $\omega\in A$.
+
+_Note that_ indistinguishability implies modification, but not conversely.
+
+<b>Definition: Filtration</b>
+
+A filtration on a probability space $(\Omega,\mathcal{F},\mathbb{P})$ is a family $(\mathcal{F}_t)_{t\in\mathcal{T}}$ of $\sigma$-algebras such that:
+1. $\mathcal{F}_t\subseteq\mathcal{F}$ for all $t\in\mathcal{T}$;
+2. $\mathcal{F}_s\subseteq\mathcal{F}_t$ whenever $s\le t$ ("memory is perfect").
+
+_Intuition: $\sigma$-algebras represent information, while filtrations represent its flow over time._
+
+A probability space equipped with a filtration $(\mathcal{F}_t)_{t\in\mathcal{T}}$ is called a <b>filtered probability space</b>, denoted by $(\Omega,\mathcal{F},(\mathcal{F}_t)_{t\in\mathcal{T}},\mathbb{P})$.
+
+_Intuition: as time passes, $\mathcal{F}_t$ contains everything known at time $t$._ <br/>For example, for a Brownian motion $(W_t)$, we often use:
+
+$$
+\mathcal{F}_t^W=\sigma(W_s:0\le s\le t).
+$$
+
+Thus, $\mathcal{F}_t^W$ contains the history of the Brownian motion up to time $t$, but not its future.
+
+<b>Natural Filtration and Adaptedness</b>
+
+The natural filtration $(\mathcal{F}_t^X)$ of a stochastic process $(X_t)$ is defined by:
+
+$$
+\mathcal{F}_t^X=\sigma(X_s:0\le s\le t),\qquad t\in\mathcal{T}.
+$$
+
+The natural filtration describes the flow of information generated by observing the process over time.
+
+Furthermore, a process $(X_t)$ is <b>adapted</b> to $(\mathcal{F}_t)$ if $X_t$ is $\mathcal{F}_t$-measurable for every $t\in\mathcal{T}$. Equivalently,
+
+$$
+\mathcal{F}_t^X\subseteq\mathcal{F}_t\qquad\forall t\in\mathcal{T}.
+$$
+
+Therefore, adaptedness means that $X_t$ can be determined using only information available at time $t$ and cannot depend on the future.
+
+For example, if $\mathcal{F}_t$ contains the history of a Brownian motion up to time $t$, then $W_t$ is <b>adapted</b>. However, $W_{t+1}$ is generally not $\mathcal{F}_t$-measurable because it depends on <b>future randomness</b>.
+
+<b>Usual Conditions for a Filtration</b>
+
+Consider $\mathcal{T}=[0,T]$ or $\mathcal{T}=[0,\infty)$. A continuous-time filtration $(\mathcal{F}_t)_{t\in\mathcal{T}}$ satisfies the <b>usual conditions</b> if it is:
+1. <b>complete</b>: if $A\subseteq B\in\mathcal{F}$ and $\mathbb{P}(B)=0$, then $A\in\mathcal{F}_0$;
+2. <b>right-continuous</b>: $\mathcal{F}_t=\bigcap_{s>t}\mathcal{F}_s$ for every $t$ before the terminal time.
+
+Let
+
+$$
+\mathcal{N}=\{A\subseteq B:B\in\mathcal{F},\ \mathbb{P}(B)=0\}
+$$
+
+be the collection of null sets. The right-continuous completion is defined by
+
+$$
+\overline{\mathcal{F}}_t=\bigcap_{s>t}\sigma(\mathcal{F}_s\cup\mathcal{N}),
+$$
+
+with $\overline{\mathcal{F}}_T=\sigma(\mathcal{F}_T\cup\mathcal{N})$ when $\mathcal{T}=[0,T]$.
+
+The completeness condition makes null events known at time $0$. Right-continuity means that information available immediately after time $t$ contains nothing genuinely new compared with the information available at time $t$.
+
+_Note that, in the context of stochastic integration, we usually work with filtrations satisfying the usual conditions._
+
+<br/>
+---
+<b>Random Times and Stopping Times</b>
+
+Recall that $\mathcal{T}\subseteq\mathbb{N}_0$ or $\mathcal{T}\subseteq\mathbb{R}_+$.
+
+A <b>random time</b> is a random variable $\tau:\Omega\to\mathcal{T}\cup\{\infty\}$.
+
+_Generally speaking_, a random time represents when a random event occurs.
+
+Given a filtration $(\mathcal{F}_t)$, a random time $\tau$ is an $(\mathcal{F}_t)$-<b>stopping time</b> if
+
+$$
+\{\tau\le t\}\in\mathcal{F}_t
+\qquad\forall t\in\mathcal{T}.
+$$
+
+_Intuition: at any fixed time $t$, we can determine whether the stopping event has already occurred using only the information in $\mathcal{F}_t$._
+
+Suppose that $\mathcal{T}=[0,\infty)$, that $(\mathcal{F}_t)$ satisfies the usual conditions, and that $(X_t)$ is a real-valued, $(\mathcal{F}_t)$-adapted process with almost surely continuous paths. Then, for $a>0$,
+
+$$
+\tau(\omega)=\inf\{t\ge0:|X_t(\omega)|>a\}
+$$
+
+is an $(\mathcal{F}_t)$-stopping time. Indeed, continuity of the paths gives
+
+$$
+\{\tau<t\}=\bigcup_{q\in\mathbb{Q}\cap[0,t)}\{|X_q|>a\}\in\mathcal{F}_t,
+$$
+
+and right-continuity then implies $\{\tau\le t\}\in\mathcal{F}_t$.
+
+---
+<br/>
+<b>Conditional Expectation</b>
+
+First, consider a real-valued random variable $X\in L^1(\mathbb{P})$ and a $\sigma$-algebra $\mathcal{G}\subseteq\mathcal{F}$.
+
+The <b>conditional expectation</b> $\mathbb{E}[X\mid\mathcal{G}]$ is any random variable $Y$ such that:
+- $Y$ is $\mathcal{G}$-measurable;
+- $Y\in L^1(\mathbb{P})$;
+- for every $C\in\mathcal{G}$,
+  $$
+  \mathbb{E}[\mathbf{1}_C Y]=\mathbb{E}[\mathbf{1}_C X].
+  $$
+
+<b>Existence Theorem</b>
+
+Let $X\in L^1(\mathbb{P})$ and let $\mathcal{G}\subseteq\mathcal{F}$ be a $\sigma$-algebra. Then $\mathbb{E}[X\mid\mathcal{G}]$ exists and is unique up to almost-sure equality.
+
+_Furthermore_, conditional expectation defines a positive, continuous, linear operator.
+
+<b>Properties of Conditional Expectations</b>
+
+Assume that all random variables are integrable and that $\mathcal{G}$ and $\mathcal{H}$ are $\sigma$-algebras.
+
+1. If $X$ is $\mathcal{G}$-measurable, then $\mathbb{E}[X\mid\mathcal{G}]=X$.
+2. If $Z$ is $\mathcal{G}$-measurable, then $\mathbb{E}[ZX\mid\mathcal{G}]=Z\mathbb{E}[X\mid\mathcal{G}]$ almost surely.
+3. If $\sigma(X)$ and $\mathcal{H}$ are independent, then $\mathbb{E}[X\mid\mathcal{H}]=\mathbb{E}[X]$ almost surely.
+4. If $\mathcal{H}\subseteq\mathcal{G}$, then
+   $$
+   \mathbb{E}[\mathbb{E}[X\mid\mathcal{G}]\mid\mathcal{H}]=\mathbb{E}[X\mid\mathcal{H}]
+   $$
+   almost surely (the <b>tower property</b>).
+5. For a convex function $g$ such that the expectations exist,
+   $$
+   \mathbb{E}[g(X)\mid\mathcal{G}]\ge g(\mathbb{E}[X\mid\mathcal{G}])
+   $$
+   almost surely (conditional Jensen's inequality).
+
+6. If $(X_n)$ is an increasing sequence of nonnegative random variables converging to $X$, then conditional monotone convergence gives
+   $$
+   \mathbb{E}[X_n\mid\mathcal{G}]\to\mathbb{E}[X\mid\mathcal{G}]
+   \qquad\text{almost surely}.
+   $$
+7. If $X_n\to X$ almost surely and $|X_n|\le Z$ almost surely for an integrable random variable $Z$, then conditional dominated convergence gives
+   $$
+   \mathbb{E}[X_n\mid\mathcal{G}]\to\mathbb{E}[X\mid\mathcal{G}]
+   \qquad\text{almost surely}.
+   $$
+8. If $X_n\ge Z$ almost surely for an integrable random variable $Z$, conditional Fatou's lemma gives
+   $$
+   \mathbb{E}[\liminf_{n\to\infty}X_n\mid\mathcal{G}]
+   \le \liminf_{n\to\infty}\mathbb{E}[X_n\mid\mathcal{G}]
+   \qquad\text{almost surely}.
+   $$
+
+---
+<br/>
+<b>Martingales</b>
+
+A stochastic process $(X_t)$ is an $(\mathcal{F}_t)$-<b>martingale</b> if:
+1. $(X_t)$ is $(\mathcal{F}_t)$-adapted;
+2. $\mathbb{E}[|X_t|]<\infty$ for every $t\in\mathcal{T}$;
+3. $\mathbb{E}[X_t\mid\mathcal{F}_s]=X_s$ almost surely whenever $s\le t$.
+
+A family $\mathcal{A}\subset L^1(\mathbb{P})$ is <b>uniformly integrable</b> if
+
+$$
+\lim_{n\to\infty}\sup_{Z\in\mathcal{A}}\mathbb{E}[|Z|\mathbf{1}_{\{|Z|>n\}}]=0.
+$$
+
+If $Y\in L^1(\mathbb{P})$ and $M_t=\mathbb{E}[Y\mid\mathcal{F}_t]$, then $(M_t)$ is a uniformly integrable martingale.
+
+---
+<br/>
+<b>Brownian Motion</b>
+
+Consider $\mathcal{T}=[0,T]$ or $\mathcal{T}=[0,\infty)$. A standard one-dimensional Brownian motion (Wiener process) $(W_t)$ is a continuous stochastic process such that:
+1. $W_0=0$ almost surely;
+2. the sample paths $t\mapsto W_t(\omega)$ are almost surely continuous;
+3. for every $0=t_0<t_1<\cdots<t_k$, the increments $(W_{t_i}-W_{t_{i-1}})_{i=1}^k$ are independent;
+4. for $s<t$,
+   $$
+   W_t-W_s\sim\mathcal{N}(0,t-s).
+   $$
+
+An $n$-dimensional Brownian motion $(W_t)$ is a column vector $(W_t^1,\ldots,W_t^n)^\mathsf{T}$ whose components are independent standard one-dimensional Brownian motions.
+
+---
+<br/>
+<b>Brownian Motion Relative to a Filtration</b>
+
+We often want a stochastic process to be a Brownian motion with respect to the flow of information modeled by a filtration.
+
+Given a filtration $(\mathcal{F}_t)$, a process $(W_t)$ is called an $(\mathcal{F}_t)$-Brownian motion if:
+- $(W_t)$ is $(\mathcal{F}_t)$-adapted;
+- $(W_t)$ is a Brownian motion;
+- for every $t\ge0$, the future-increment process $(W_{t+s}-W_t)_{s\ge0}$ is independent of $\mathcal{F}_t$.
+
+Every Brownian motion $(W_t)$ is a $(\overline{\mathcal{F}}_t^W)$-Brownian motion, where $(\overline{\mathcal{F}}_t^W)$ is the right-continuous completion of its natural filtration.
+
+Furthermore, the map $(\omega,t)\mapsto W_t(\omega)$ is $\mathcal{F}\otimes\mathcal{B}(\mathcal{T})$-measurable.
+
+---
+<br/>
+<b>$p$-Variation of Brownian Motion</b>
+
+For $p\in(0,\infty)$ and $f:[0,T]\to\mathbb{R}$, define the $p$-variation along the dyadic partitions by:
+
+$$
+V_p(f;t):=\lim_{n\to\infty}\sum_{k=1}^{2^n}
+\left|f\left(\frac{Tk}{2^n}\wedge t\right)-f\left(\frac{T(k-1)}{2^n}\wedge t\right)\right|^p,
+$$
+
+when the limit exists. The $1$-variation is called the <b>total variation</b> _(it adds up all the absolute increments and measures the "total distance" traveled by the path)_, and the $2$-variation is called the <b>quadratic variation</b> _(it adds up the squares of the increments and, for Brownian motion, captures the accumulated randomness)_.
+
+For larger $p$, small increments become much smaller after taking the power, so the sum is less sensitive to fine-scale fluctuations.
+
+For Brownian motion, almost surely:
+
+$$
+[W]_t=V_2(W;t)=t,
+\qquad
+V_1(W;t)=\infty.
+$$
+
+Then, for any $p>2$, we have
+
+$$
+V_p(W;t)=0.
+$$
+
+
+
+---
+<br/>
+
+<b>Martingales for Brownian Motions</b>
+
+Let $(W_t)$ be an $(\mathcal{F}_t)$-Brownian motion. Then:
+1. $(W_t)$ is a square-integrable $(\mathcal{F}_t)$-martingale.
+2. The process
+   $$
+   X_t=W_t^2-t
+   $$
+   is an $(\mathcal{F}_t)$-martingale.
+3. For any $\theta\in\mathbb{R}$, the process
+   $$
+   L_t=\exp\left(-\frac12\theta^2t-\theta W_t\right)
+   $$
+   is an $(\mathcal{F}_t)$-martingale.
+
+<br/>
+---
+<br/>
+<b>Stochastic Itô Integral of Simple Processes</b>
+
+Let $\mathcal{T} = [0,T]$ for some $T > 0$. We fix the same probability space supporting an $(\mathcal{F}_t)$-Brownian motion $(W_t)$.
+
+A stochastic process $(K_t)$ is a <b>simple process</b> if there exist times $0 = t_0 < t_1 < \ldots < t_n = T$ and bounded $\mathcal{F}_{t_j}$-measurable random variables $\bar K_j$ such that:
+
+$$
+K_t(\omega) = \bar K_{-1}(\omega)\mathbf{1}_{\{0\}}(t) + \sum_{j=0}^{n-1} \bar K_j(\omega)\mathbf{1}_{(t_j, t_{j+1}]}(t).
+$$
+
+The <b>stochastic integral of a simple process</b> $(K_t)$ is then defined as:
+
+$$
+\left(\int_0^t K_s\,dW_s\right)(\omega) = \sum_{j=0}^{n-1} \bar K_j(\omega)\left(W_{t_{j+1} \wedge t}(\omega) - W_{t_j \wedge t}(\omega)\right),
+$$
+
+where $t \wedge s = \min\{t, s\}$.
+
+_Intuition (gains/losses of a self-financing trading strategy): in finance, we assume the stock moves as Brownian motion. At time $t_j$, we buy $K_j$ shares at price $W_{t_j}$ and at time $t_{j+1}$ we sell at price $W_{t_{j+1}}$, so the integral between $j$ and $j+1$ is just the P&L in this trade. Note that $K_j$ has to be $\mathcal{F}_{t_j}$-measurable in order to get the number of shares to buy._
+
+Then, <b>Itô's isometry</b> holds for all $t \in [0,T]$:
+
+$$
+\mathbb{E}\left[\left(\int_0^t K_s\,dW_s\right)^2\right] = \mathbb{E}\left[\int_0^t K_s^2\,ds\right] = \int_0^t \mathbb{E}[K_s^2] \,ds.
+$$
+
+_Intuition: Itô's isometry states that the expected squared size of the stochastic integral equals the expected accumulated squared size of the integrand._
+
+
+Then, the process $\left(\int_0^t K_s\,dW_s\right)_{0 \le t \le T}$ is a <b>square-integrable martingale</b>.
+
+Then, _again_, for simple processes $K$ and $H$ and $a,b \in \mathbb{R}$, we have the very nice <b>linearity property</b>:
+
+$$
+\int_0^t (aK_s + bH_s)\,dW_s = a\int_0^t K_s\,dW_s + b\int_0^t H_s\,dW_s.
+$$
+
+The <b>continuity property</b> also holds, since the sample paths $t \mapsto \left(\int_0^t K_s\,dW_s\right)$ are continuous.
+
+<b>Simple Processes: The Martingale Property</b>
+
+Let $I_t := \int_0^t K_u\,dW_u$, which is <b>adapted</b> by definition and square-integrable by Itô's isometry.
+
+We fix $0 \le s \le t \le T$ and refine the partition without changing $K$ or $I$, so that $s = t_l$ and $t = t_k$. Then we have:
+
+$$
+I_t - I_s = \sum_{j=l}^{k-1} \bar K_j\Delta W_j, \qquad \Delta W_j = W_{t_{j+1}} - W_{t_j}.
+$$
+
+For $j \ge l$, we have that $\mathcal{F}_s \subseteq \mathcal{F}_{t_j}$. <br/>The <b>tower property</b>, the independence of the Brownian increments, and their zero mean ($\mathbb{E}[\Delta W_j] = 0$) give:
+
+$$
+\begin{aligned}
+\mathbb{E}[\bar K_j\Delta W_j \mid \mathcal{F}_s]
+&= \mathbb{E}[\mathbb{E}[\bar K_j\Delta W_j \mid \mathcal{F}_{t_j}] \mid \mathcal{F}_s] \\
+&= \mathbb{E}[\bar K_j\mathbb{E}[\Delta W_j \mid \mathcal{F}_{t_j}] \mid \mathcal{F}_s] = 0.
+\end{aligned}
+$$
+
+The first equality holds since $\mathcal{F}_s \subseteq \mathcal{F}_{t_j}$, and the second equality follows because $\Delta W_j$ is independent of $\mathcal{F}_{t_j}$.
+
+If we sum over $j = l, \ldots, k-1$, we obtain:
+
+$$
+\mathbb{E}[I_t \mid \mathcal{F}_s] = I_s + \mathbb{E}[I_t - I_s \mid \mathcal{F}_s] = I_s.
+$$
+
+---
+<br/>
+<b>Stochastic Itô Integral of Square-Integrable Processes</b>
+
+<b>Definition: Predictable $\sigma$-algebra</b>
+
+The predictable $\sigma$-algebra $\mathcal{P}$ on $\Omega \times [0,T]$ is the $\sigma$-algebra generated by all <b>left-continuous</b> and $(\mathcal{F}_t)$-adapted processes $(H_t)$. <br/>Note that the predictable $\sigma$-algebra $\mathcal{P}$ can also be defined as the $\sigma$-algebra generated by all simple processes $(K_t)$.
+
+For a <b>predictable process</b> $(H_t)$, we define the $L^2$ norm as:
+
+$$
+\lVert H \rVert^2_{L^2(\Omega \times [0,T], \mathcal{P}, d\mathbb{P} \times dt)} = \mathbb{E}\left[\int_0^T H_s^2\,ds\right] = \int_0^T \mathbb{E}[H_s^2] \,ds.
+$$
+
+Note that since $H$ is predictable, it is also _progressively measurable_, i.e. $H_s(\omega)\mathbf{1}_{[0,t]}(s)$ is $\mathcal{F}_t \otimes \mathcal{B}([0,t])$-measurable _(intuition: up to time $t$, the whole path of $H$ is determined by information known at $t$)._
+
+For each $H \in L^2(\Omega \times [0,T], \mathcal{P}, d\mathbb{P} \times dt)$, there is a sequence of simple processes $(K^n_t)_{0\le t\le T}$ such that
+
+$$
+\mathbb{E}\left[\int_0^T (H_s-K^n_s)^2\,ds\right]
+=\int_0^T \mathbb{E}[(H_s-K^n_s)^2] \,ds \to 0.
+$$
+
+_Intuition: simple predictable processes are dense in the space of square-integrable predictable processes. Their stochastic integrals therefore approximate the stochastic integrals of those processes in $L^2$, by Itô's isometry._
+
+We now spend some time showing that every square-integrable predictable process $H$ can be approximated in $L^2$ by simple processes.
+
+We first <b>truncate</b> the square-integrable process $H$ by defining:
+
+$$
+H^M := (-M) \vee (H \wedge M).
+$$
+
+_(This bounds $H$ in the interval $[-M,M]$.)_ Since $H^M \to H$ pointwise and $|H^M-H|^2 \le 4|H|^2$, <b>dominated convergence</b> gives:
+
+$$
+\lVert H^M-H\rVert_{L^2} \to 0.
+$$
+
+We then extend $H^M_s=0$ for $s<0$ and define the <b>moving average over the recent past</b> (bounded by $M$, continuous, and adapted in $t$):
+
+$$
+H^{M,m}_t(\omega) := m\int_{t-1/m}^{t} H^M_s(\omega)\,ds, \qquad t\in[0,T].
+$$
+
+Lebesgue differentiation and dominated convergence give $H^{M,m} \to H^M$ in $L^2$ as $m\to\infty$.
+
+We then <b>discretize at left endpoints</b>. For $t_j=jT/N$, we set:
+
+$$
+K^{M,m,N}_t := \sum_{j=0}^{N-1} H^{M,m}_{t_j}\mathbf{1}_{(t_j,t_{j+1}]}(t).
+$$
+
+For fixed $M$ and $m$, uniform continuity and dominated convergence give $K^{M,m,N} \to H^{M,m}$ in $L^2$ as $N\to\infty$. Therefore, a <b>diagonal sequence</b> gives $K^n=K^{M_n,m_n,N_n}\to H$ in $L^2$.
+
+Then, $(K_t^n)_{0\le t\le T}$ is a <b>Cauchy sequence</b>, i.e. for $n,m\to\infty$:
+
+$$
+\mathbb{E}\left[\int_0^T (K_s^m-K_s^n)^2\,ds\right]
+=\int_0^T \mathbb{E}[(K_s^m-K_s^n)^2] \,ds \to 0.
+$$
+
+By Itô's isometry, for every $t\in[0,T]$:
+
+$$
+\begin{aligned}
+\mathbb{E}\left[\left(\int_0^t K_s^n\,dW_s-\int_0^t K_s^m\,dW_s\right)^2\right]
+&=\mathbb{E}\left[\left(\int_0^t (K_s^n-K_s^m)\,dW_s\right)^2\right] \\
+&=\mathbb{E}\left[\int_0^t (K_s^n-K_s^m)^2\,ds\right] \\
+&\le\mathbb{E}\left[\int_0^T (K_s^n-K_s^m)^2\,ds\right]
+\longrightarrow 0.
+\end{aligned}
+$$
+
+Therefore, $(\int_0^t K_s^n\,dW_s)_{n\ge1}$ is a Cauchy sequence in $L^2(\Omega,\mathcal{F}_t,\mathbb{P})$.
+
+Since $L^2(\Omega,\mathcal{F}_t,\mathbb{P})$ is complete, there exists a random variable $I_t(H)\in L^2(\Omega,\mathcal{F}_t,\mathbb{P})$ such that
+
+$$
+I_t(H)=\lim_{n\to\infty}\int_0^t K_s^n\,dW_s
+\qquad\text{in }L^2(\mathbb{P}).
+$$
+
+Therefore, for $H\in L^2(\Omega\times[0,T],\mathcal{P},d\mathbb{P}\times dt)$, we define the <b>stochastic integral</b> by:
+
+$$
+\int_0^t H_s\,dW_s := I_t(H) := \lim_{n\to\infty}\int_0^t K_s^n\,dW_s
+\qquad\text{in }L^2(\mathbb{P}),
+$$
+
+where $(K_t^n)_{n\ge1}$ is a sequence of simple processes satisfying:
+
+$$
+\mathbb{E}\left[\int_0^T (H_s-K_s^n)^2\,ds\right]
+=\int_0^T \mathbb{E}[(H_s-K_s^n)^2] \,ds \to 0.
+$$
+
+_Again_, <b>Itô's isometry</b> holds:
+
+$$
+\mathbb{E}\left[\left(\int_0^t H_s\,dW_s\right)^2\right]
+=\mathbb{E}\left[\int_0^t H_s^2\,ds\right]
+=\int_0^t \mathbb{E}[H_s^2] \,ds.
+$$
+
+The process $(\int_0^t H_s\,dW_s)_{0\le t\le T}$ is a <b>square-integrable martingale</b>; as stated above, linearity and continuity also hold.
+
+---
+<br/>
+<b>Doob's Maximal $L^2$ Inequality</b>
+
+<b>Theorem</b>
+
+If $(M_t)_{0\le t\le T}$ is a right-continuous, square-integrable $(\mathcal{F}_t)$-martingale, then:
+
+$$
+\mathbb{E}\left[\sup_{0\le t\le T}|M_t|^2\right] \le 4\mathbb{E}[|M_T|^2].
+$$
+
+In particular, for a simple process, Doob's inequality and Itô's isometry give:
+
+$$
+\mathbb{E}\left[\sup_{0\le t\le T}|I_t(K)|^2\right]
+\le 4\mathbb{E}[|I_T(K)|^2]
+=4\mathbb{E}\left[\int_0^T K_s^2\,ds\right].
+$$
+
+Furthermore,
+
+$$
+\mathbb{E}\left[\sup_{0\le t\le T}|I_t(K^n)-I_t(K^m)|^2\right]
+\le 4\mathbb{E}\left[\int_0^T (K_s^n-K_s^m)^2\,ds\right].
+$$
+
+<b>Associativity of Stochastic Integrals</b>
+
+For a predictable process $H\in L^2$ and $0\le a<b\le T$, we have:
+
+$$
+\int_a^b H_s\,dW_s
+=\int_0^T H_s\mathbf{1}_{(a,b]}(s)\,dW_s
+=\int_0^b H_s\,dW_s-\int_0^a H_s\,dW_s.
+$$
+
+In general, for predictable processes $H$ and $K$ such that $KH\in L^2$:
+
+$$
+\int_0^t K_s\,d\left(\int_0^s H_r\,dW_r\right)
+=\int_0^t K_sH_s\,dW_s.
+$$
+
+Furthermore, if $K$ is a <b>simple process</b>, then:
+
+$$
+\left(\int_0^t K_s\,d\left(\int_0^s H_r\,dW_r\right)\right)(\omega)
+=\sum_{j=0}^{n-1}\bar K_j(\omega)
+\int_{t_j\wedge t}^{t_{j+1}\wedge t}H_s(\omega)\,dW_s.
+$$
+
+_Intuition: the stochastic integral with respect to the martingale $\int_0^t H_s\,dW_s$ accumulates the values of $K$ against the increments of that martingale._
+
+
+<b>Stochastic Itô Integrals of Predictable Processes</b>
+
+Finally, we can define the stochastic integral for <b>predictable processes</b> $H_t$ satisfying
+
+$$
+\int_0^T H_s(\omega)^2\,ds<\infty
+\qquad\text{almost surely}
+$$
+
+using the <b>localization technique</b>.
+
+For each $n\in\mathbb{N}$, define the <b>stopping time</b>:
+
+$$
+\tau_n(\omega)=\inf\left\{t\in[0,T]:\int_0^t H_s(\omega)^2\,ds>n\right\},
+\qquad \inf\varnothing=\infty.
+$$
+
+_Intuition: $\int_0^t H_s^2\,ds$ represents the size, or energy, of $H$. The stopping time $\tau_n$ is the first time this size exceeds $n$._
+
+The sequence $(\tau_n)_{n\ge1}$ is a <b>localizing sequence</b> of $(\mathcal{F}_t)$-stopping times.
+
+We define the <b>stopped integrand</b> by
+
+$$
+H_s^n := H_s\mathbf{1}_{\{s\le\tau_n\}}.
+$$
+
+Then $H^n$ is <b>square-integrable</b>, and
+
+$$
+N_t^n:=\int_0^t H_s^n\,dW_s
+$$
+
+is well-defined. The family $(N_t^n)$ is <b>consistent</b>, meaning that for $m\ge n$:
+
+$$
+N^m_{t\wedge\tau_n}=N^n_{t\wedge\tau_n}.
+$$
+
+Therefore, for $0\le t\le\tau_n$:
+
+$$
+\left(\int_0^t H_s\,dW_s\right)(\omega)
+=\left(\int_0^t H_s^n\,dW_s\right)(\omega).
+$$
+
+However, note that, since we use the localization technique, the integral is no longer necessarily an $(\mathcal{F}_t)$-martingale, but only an $(\mathcal{F}_t)$-local martingale.
+
+_(Recall that a stochastic process has a property $P$ locally if there exists a localizing sequence such that the stopped process has property $P$.)_
+
+Luckily, we still have the <b>linearity property</b> for two predictable processes $K,H\in L^2$ and $a,b\in\mathbb{R}$:
+
+$$
+\int_0^t (aK_s+bH_s)\,dW_s
+= a\int_0^t K_s\,dW_s+b\int_0^t H_s\,dW_s.
+$$
+
+In particular, the mapping
+$$
+I_t:L^2(\Omega\times[0,T],\mathcal{P},d\mathbb{P}\times dt)\to L^0(\Omega,\mathcal{F}_t,\mathbb{P})
+$$
+is a <b>continuous linear operator</b>, where the metric is defined by
+
+$$
+d_0(H,K):=\mathbb{E}\left[\min\left\{1,\left(\int_0^T (H_s-K_s)^2\,ds\right)^{1/2}\right\}\right].
+$$
+
+<b>Burkholder–Davis–Gundy Inequalities</b>
+
+For $p\in(0,\infty)$, define $\lVert Z\rVert_p:=\mathbb{E}[|Z|^p]^{1/p}$. Then there exists $C_p>0$ such that:
+
+- <b>BDG 1: terminal-time estimate</b>
+
+$$
+\left\lVert\int_0^t H_s\,dW_s\right\rVert_p
+\le C_p\left\lVert\left(\int_0^t H_s^2\,ds\right)^{1/2}\right\rVert_p.
+$$
+
+- <b>BDG 2: maximal estimate</b>
+
+$$
+\mathbb{E}\left[\sup_{0\le t\le T}\left|\int_0^t H_s\,dW_s\right|^p\right]^{1/p}
+\le C_p\left\lVert\left(\int_0^T H_s^2\,ds\right)^{1/2}\right\rVert_p.
+$$
+
+Furthermore, for $p\in[2,\infty]$, Minkowski's inequality gives:
+
+$$
+\left\lVert\left(\int_0^t H_s^2\,ds\right)^{1/2}\right\rVert_p
+\le\left(\int_0^t\lVert H_s\rVert_p^2\,ds\right)^{1/2}.
+$$
+
+---
+<br/>
+<b>Quadratic Variation</b>
+
+For $M_t=\int_0^t H_s\,dW_s$, the quadratic variation satisfies:
+
+$$
+[M]_t=\lim_{n\to\infty}q_t^n(M) = \int_0^t H_s^2\,ds
+\qquad\text{almost surely}.
+$$
+
+For the dyadic partition, define
+
+$$
+q_t^n(M):=\sum_{k=1}^{2^n}
+\left|M_{(Tk/2^n)\wedge t}-M_{(T(k-1)/2^n)\wedge t}\right|^2.
+$$
+
+---
+<br/>
+<b>Itô Calculus</b>
+
+<b>Itô processes</b> are given by:
+
+$$
+dX_t=a_t\,dt+b_t\,dW_t.
+$$
+
+This is shorthand for the integral equation, for $t\ge0$:
+
+$$
+X_t=X_0+\int_0^t a_s\,ds+\int_0^t b_s\,dW_s.
+$$
+
+Here, $(a_t)$ and $(b_t)$ are <b>predictable processes</b> such that
+
+$$
+\int_0^t |a_s|\,ds<\infty,
+\qquad
+\int_0^t |b_s|^2\,ds<\infty
+\quad\text{almost surely}.
+$$
+
+Differentials are a tool for computation using the following rules:
+
+- $d[W]_t=(dW_t)^2=dt$.
+- $dW_t\,dt=0$.
+- $(dt)^2=d[t]=0$.
+
+Therefore,
+
+$$
+\begin{aligned}
+d[X]_t=(dX_t)^2
+&=a_t^2(dt)^2+2a_tb_t\,dt\,dW_t+b_t^2(dW_t)^2 \\
+&=b_t^2\,dt.
+\end{aligned}
+$$
+
+Here, $[W]_t$ denotes the <b>quadratic variation</b> of $W$ up to time $t$, defined as:
+
+$$
+[W]_t=\lim_{\|\Pi\|\to0}\sum_i(W_{t_{i+1}}-W_{t_i})^2.
+$$
+
+Recall also that, for a Brownian motion, $[W]_t=t$, usually written as $(dW_t)^2=dt$.
+
+<b>Itô's Formula</b>
+
+Given a $C^{1,2}$ function $f(t,x)$ and an Itô process
+
+$$
+dX_t=a_t\,dt+b_t\,dW_t,
+$$
+
+the process $F_t=f(t,X_t)$ is also an Itô process satisfying:
+
+$$
+\begin{aligned}
+df(t,X_t)
+&=\frac{\partial f}{\partial t}(t,X_t)\,dt
++\frac{\partial f}{\partial x}(t,X_t)\,dX_t
++\frac{1}{2}\frac{\partial^2 f}{\partial x^2}(t,X_t)(dX_t)^2 \\
+&=\left[
+\frac{\partial f}{\partial t}(t,X_t)
++a_t\frac{\partial f}{\partial x}(t,X_t)
++\frac{1}{2}b_t^2\frac{\partial^2 f}{\partial x^2}(t,X_t)
+\right]dt
++b_t\frac{\partial f}{\partial x}(t,X_t)\,dW_t.
+\end{aligned}
+$$
+
+
+_For example_, if $X_t=W_t$, then $dX_t=0\,dt+1\,dW_t$, so $a_t=0$ and $b_t=1$. According to Itô's formula:
+
+$$
+df(t,W_t)=\left[\frac{\partial f}{\partial t}(t,W_t)+\frac{1}{2}\frac{\partial^2 f}{\partial x^2}(t,W_t)\right]dt+\frac{\partial f}{\partial x}(t,W_t)\,dW_t.
+$$
+<br/>
+---
+<br/>
+
+<b>Multidimensional Itô Processes</b>
+
+Suppose that $(W_t)_{t\ge0}$ is an $n$-dimensional Brownian motion. Consider the $m$-dimensional Itô process $(X_t^1,\ldots,X_t^m)$ given by:
+
+$$
+dX_t^i=a_t^i\,dt+\sum_{\ell=1}^n b_t^{i\ell}\,dW_t^\ell,
+\qquad i=1,\ldots,m.
+$$
+
+Here, $(a_t^i)$ and $(b_t^{i\ell})$ are predictable stochastic processes such that the integrals are well-defined.
+
+Moreover, the Itô multiplication rules are:
+
+- $(dt)^2=0$;
+- $dW_t^i\,dt=0$;
+- $dW_t^i\,dW_t^j=\delta_{ij}\,dt$, where $\delta_{ij}=1$ if $i=j$ and $0$ otherwise.
+
+For a $C^{1,2}$ function $f:[0,T]\times\mathbb{R}^m\to\mathbb{R}$, define
+$F_t=f(t,X_t^1,\ldots,X_t^m)$. The multidimensional Itô formula is:
+
+$$
+\begin{aligned}
+df(t,X_t)
+&=\frac{\partial f}{\partial t}(t,X_t)\,dt
++\sum_{i=1}^m\frac{\partial f}{\partial x_i}(t,X_t)\,dX_t^i \\
+&\quad+\frac12\sum_{i,k=1}^m
+\frac{\partial^2 f}{\partial x_i\partial x_k}(t,X_t)\,dX_t^i\,dX_t^k \\
+&=\left[
+\frac{\partial f}{\partial t}(t,X_t)
++\sum_{i=1}^m a_t^i\frac{\partial f}{\partial x_i}(t,X_t)
++\frac12\sum_{i,k=1}^m\sum_{\ell=1}^n
+b_t^{i\ell}b_t^{k\ell}
+\frac{\partial^2 f}{\partial x_i\partial x_k}(t,X_t)
+\right]dt \\
+&\quad+\sum_{i=1}^m\sum_{\ell=1}^n
+b_t^{i\ell}\frac{\partial f}{\partial x_i}(t,X_t)\,dW_t^\ell.
+\end{aligned}
+$$
+
+
+<b>Integration by Parts</b>
+
+Suppose we have an $n$-dimensional Brownian motion $(W_t)$ and the pair of Itô processes:
+
+$$
+dX_t=a_t\,dt+b_t\,dW_t,
+$$
+
+$$
+dY_t=c_t\,dt+e_t\,dW_t.
+$$
+
+Then the product $(X_tY_t)$ is still an <b>Itô process</b> satisfying:
+
+$$
+\begin{aligned}
+d(X_tY_t)
+&=X_t\,dY_t+Y_t\,dX_t+dX_t\,dY_t \\
+&=(Y_ta_t+X_tc_t+b_te_t^{\mathsf T})\,dt
++(Y_tb_t+X_te_t)\,dW_t.
+\end{aligned}
+$$
+
+
+
 ---
 ## <a id="4"><b>Stochastic Ordinary Differential Equations</b></a>
+
+Let $\mathcal{T}=[0,T]$ for some $T>0$, consider $n,m\in\mathbb{N}$, and let $\mathcal{O}\in\mathcal{B}(\mathbb{R}^m)$ be the state space _(intuition: $\mathcal{O}$ is the set of possible values of the state process $X_t$; it is a measurable subset of $\mathbb{R}^m$)._
+
+_Still to do: stochastic differential equations lecture (till slide 6)_
+
 
 ---
 ## <a id="5"><b>Numerical Approximations of SDEs</b></a>
