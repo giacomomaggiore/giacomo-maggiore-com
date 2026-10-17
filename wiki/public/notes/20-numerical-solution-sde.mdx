@@ -20,16 +20,12 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 ## <b>Index</b>
 
-- [Mathematical Formulation of Random Number Generation](#1)
-- [Brownian Motion and Lévy Processes](#2)
+- [Basics of probability theory](#0)
+- [Introduction to Stochastic Differential Equations](#0.1)
+- [The Inversion Method](#2)
+- [Monte Carlo Integration](#4)
 - [Stochastic Integration and Itô Calculus](#3)
-- [Stochastic Ordinary Differential Equations](#4)
-- [Numerical Approximations of SDEs](#5)
-- [Euler–Maruyama Scheme and Monte Carlo Methods](#6)
-- [Milstein Scheme, Stochastic Runge–Kutta, and Talay–Tubaro Extrapolation](#7)
-- [Stochastic Simulation and Monte Carlo Methods](#8)
-- [Euler–Maruyama for Lévy-Driven SDEs](#9)
-- [Multilevel Monte Carlo and Efficient Increment Simulation](#10)
+- [Stochastic Ordinary Differential Equations](#4-sde)
 <br/>
 ---
 
@@ -44,6 +40,8 @@ A probability space is a mathematical concept that provides a formal model for a
     - $P(A) \ge 0$ for all $A \in \mathcal{F}$.
     - $P(\Omega) = 1$.
     - For any countable sequence of events $(A_i)_{i \in \mathbb{N}} \subseteq \mathcal{F}$, $P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)$.
+<br/>
+---
 <br/>
 <b>Expectation, Variance and Covariance</b>
 
@@ -85,7 +83,8 @@ Lastly, a fundamental concept in probability theory is independence: a family of
 $$
 f(x_1, \ldots, x_n) = \prod_{i=1}^n f(x_i)
 $$
-
+---
+<br/>
 <b>The Law of Large Numbers (LLN)</b>
 
 The Law of Large Numbers states that, as the number of trials tends to infinity, the sample mean converges to the expected true value of the underlying distribution. Formally, we write:
@@ -99,7 +98,7 @@ $$
 It states that the distribution of sample means of a large number of independent and identically distributed random variables will be approximately normal, regardless of the original distribution of the random variables.
 
 ---
-
+<br/>
 <b>Conditional Probabilities and Laws</b>
 
 The conditional probability of $A$ given that event $B$ has occurred is:
@@ -122,6 +121,8 @@ $$
 
 where $f(x,y)$ is the joint PDF. If $x$ and $y$ are independent, $f(x \mid y) = f(x)$.
 
+---
+<br/>
 <b>Bayes' Formula</b>
 
 $$
@@ -134,6 +135,8 @@ $$
 - $P(B)$ is the <b>evidence (marginal likelihood)</b>, i.e. the total probability of observing $B$.
     - $P(B) = \sum P(B \mid A_i)P(A_i)$ over all possible hypotheses $A_i$.
 
+<br/>
+---
 <br/>
 <b>Acceptance-Rejection Algorithm as Bayesian Reasoning</b>
 
@@ -166,7 +169,7 @@ $$
 That means that, conditional on $B$, the random variable $Y$, _unconditionally $Q$-distributed_, is actually $R$-distributed.
 
 ---
-
+<br/>
 <b>Monte Carlo Integration (Corollary of LLN and CLT)</b>
 
 Monte Carlo integration is a numerical method for approximating the value of a definite integral, _especially in the multidimensional case or over complex domains_, by using the Law of Large Numbers.
@@ -184,6 +187,9 @@ $$
 $$
 
 In this case, the CLT states that the error scales as $1/\sqrt{N}$.
+
+---
+<br/>
 
 <b>Pseudo-Random Number Generators (PRNGs) vs True Random Number Generators (TRNGs)</b>
 
@@ -213,6 +219,8 @@ Even if this is a very generic definition, the importance and advantage of $\mat
 
 We first show three important examples of stochastic differential equations, largely discussed in the sector and for which numerical approximations will be useful.
 
+---
+<br/>
 <b>The Black–Scholes Model</b>
 
 Before starting: quick history recap: The <a href="" target="_blank">Black–Scholes Model</a> was initially published in 1973 by the economists Black and Scholes, based on a previous mathematical formulation by Merton. The model revolutionized modern finance by providing the first framework for pricing options. Curiously, the publication date (1973) coincided with the opening of the <a href="" target="_blank">Chicago Board Options Exchange (CBOE, which is still active and covers approximately 30% of total option trading volume per year)</a>, which provided the first centralized marketplace for trading options.
@@ -567,7 +575,9 @@ $$
 
 is called the <b>Value at Risk with confidence level $\alpha$ associated with $-X$</b> _(i.e. it holds with probability of at least $\alpha$ that the loss $-X$ does not exceed $I_F(\alpha)$)._
 
-<b>Theorem - The Inversion Method</b>
+---
+<br/>
+<b>Theorem: The Inversion Method</b>
 
 Let $U \sim U(0,1)$ and assume $U \in (0,1)$ almost surely. Then $X = I_F(U)$ has distribution function $F$.
 
@@ -600,6 +610,8 @@ _(Recall: a function $f$ is injective if $f(x_1) = f(x_2)$ implies $x_1 = x_2$; 
 
 Note that distribution functions are càdlàg (right-continuous with left limits), while generalized inverse distribution functions are, in contrast, <b>càglàd</b> (left-continuous with right limits).
 
+<br/>
+---
 <br/>
 <b>Generalized Inverse Distribution Function for the Bernoulli Distribution</b>
 
@@ -647,6 +659,8 @@ X = (U < p).astype(int)
 print("sample mean =", X.mean(), "   theoretical mean =", p)
 ```
 <br/>
+---
+<br/>
 <b>Generalized Inverse Distribution Function for the Exponential Distribution</b>
 
 For $X \sim \operatorname{Exp}(\lambda)$, recall that $F(x) = 1 - e^{-\lambda x}$ for all $x \ge 0$.<br/>
@@ -676,6 +690,8 @@ So the inverse distribution function is given by:
 $$
 I_F(u) = -\frac{\log(1-u)}{\lambda}
 $$
+---
+<br/>
 
 <b>Generalized Inverse Distribution Function for the Cauchy Distribution</b>
 
@@ -710,7 +726,7 @@ Then we can sample $Z_1, \ldots, Z_d \sim \mathcal{N}(0,1)$ and form $Z = (Z_1, 
 We can then compute $AZ + m$, which has the mean $m$ and covariance $AA^T = Q$ of the desired distribution.
 
 ----
-
+<br/>
 <b>Box–Muller</b>
 
 Consider $U_1, U_2$ to be independent uniformly distributed random variables on $(0,1)$. Then define:
@@ -751,6 +767,8 @@ print("variance ≈", z.var())
 # variance ≈ 1.0033222307341456
 
 ```
+<br/>
+---
 <br/>
 <b>Marsaglia Polar Method</b>
 
@@ -831,6 +849,8 @@ print("empirical covariance:\n", np.cov(samples.T))
 # [[2.00303886 1.1975438 ] [1.1975438  0.99806283]]
 ```
 <br/>
+---
+<br/>
 
 <b>Approximation of a Multidimensional Integral by Quadrature: Left Rectangle Rule in Dimension $d$</b>
 
@@ -874,6 +894,8 @@ $$
 
 _Intuition: we evaluate $f$ at the lower corner $x_i$ of each sub-cube, then multiply $f(x_i)$ by $h^d$, which is the $d$-dimensional volume of a single sub-cube. We finally sum over all $n^d$ sub-cubes to get $R^n_{[a,b]^d}$ (a multidimensional generalization of the classical Riemann left-rectangle sum)._
 
+---
+<br/>
 <b>Proposition: Integration Error with Hölder Continuous Functions (2.2.5)</b>
 
 For $f \in L^1([a,b]^d)$, we have:
@@ -995,7 +1017,7 @@ for n, er, et in zip(ns, errs_rect, errs_trap):
 ```
 
 <div align = "center">
-![Bias variance tradeoff](/images/notes/numerical-sol-sde/convergence-integrals.png)
+![Bias variance tradeoff](/images/notes/third-semester/convergence-integrals.png)
 </div>
 
 ---
@@ -1352,6 +1374,8 @@ $$
 |B| = \prod_{i=1}^d (b_i-a_i).
 $$
 
+---
+<br/>
 <b>Example: High-dimensional financial integration: Portfolio Value at Risk (VaR)</b>
 
 In quantitative finance, evaluating risk metrics such as VaR for a portfolio of $d$ _correlated assets_ requires computing high-dimensional expectations. We can use the approach proposed above by modelling asset returns as a multivariate Gaussian distribution _(even if asset returns, especially stocks, are not normally distributed and have very fat tails!)_.
@@ -1458,7 +1482,7 @@ Ns, estimates, ci_lower, ci_upper, exact_var = run_portfolio_var_mc(d, N_list, r
 
 <br/>
 <div align = "center">
-![Bias variance tradeoff](/images/notes/numerical-sol-sde/montecarlo-var.png)
+![Bias variance tradeoff](/images/notes/third-semester/montecarlo-var.png)
 </div>
 
 ---
@@ -1562,33 +1586,45 @@ Thus, the corresponding Gaussian increments are <b>uncorrelated</b> and therefor
 <br/>
 <b>Sobolev–Slobodeckij path regularity</b>
 
-For 0 < r < 1 and p \ge 1 we define:
+For $0 < r < 1$ and $p \ge 1$, we define:
 
-| f|^p_W^rp(0,1) = \int_0^\ \int_0^1 \frac{ |f(t)- f(s)|^2}{|t-s|^{1+rp}ds dt
+$$
+|f|_{W^{r,p}(0,1)}^p = \int_0^1 \int_0^1 \frac{|f(t)-f(s)|^p}{|t-s|^{1+rp}}\,ds\,dt.
+$$
 
-By definition, Wiener process increments satisfy W_t - W_s =^d |t-s!^1/2 Z, with Z \sim \matchal N(0,1). <br/>So, if we write c_p = E[|Z|^2], we have that:
+By definition, Wiener process increments satisfy $W_t - W_s \stackrel{d}{=} |t-s|^{1/2}Z$, with $Z \sim \mathcal{N}(0,1)$. <br/>So, if we write $c_p = \mathbb{E}[|Z|^p]$, we have that:
 
-E[W_t - W_s|^è] = c_p |t -s |^è/2
+$$
+\mathbb{E}[|W_t - W_s|^p] = c_p |t-s|^{p/2}.
+$$
 
 and, by Tonelli, we have that:
 
-E[W]^p_Wrè = c_p \int_0^1 \int_0^1 | t -s |^{p / 2 -1 -rp}ds dt
+$$
+\mathbb{E}[|W|_{W^{r,p}(0,1)}^p] = c_p \int_0^1 \int_0^1 |t-s|^{p/2-1-rp}\,ds\,dt.
+$$
 
-This sincuraliry at t = s is <b>Integrable </b> \iff \frac{p}{2} - rp > 0 \iff r < 1/2.
+This singularity at $t = s$ is <b>integrable</b> $\iff \frac{p}{2} - rp > 0 \iff r < 1/2$.
 
-If we add that E[\int_0^1 |W_t|^p dt < \infty, we have that:
+If we add that $\mathbb{E}[\int_0^1 |W_t|^p\,dt] < \infty$, we have that:
 
-W(., \omega) \in W^{r,p} (0,1) a.s for r < 1/2.
+$$
+W(\cdot, \omega) \in W^{r,p}(0,1) \quad \text{a.s. for } r < 1/2.
+$$
 
-_In Particular, in 1-dimension, we have that W^{r,p}(0,1) \to C^\beta ([0,1])  whemr rp > 1 and \beta < r - 1/p.
+_In particular, in one dimension, we have that $W^{r,p}(0,1) \to C^\beta([0,1])$ when $rp > 1$ and $\beta < r - 1/p$.
 
-If we fix any \beta < 1/2 and we choose p large and then r sych that:
+If we fix any $\beta < 1/2$ and choose $p$ large and then $r$ such that:
 
-\beta + 1/p < r < 1/p
+$$
+\beta + 1/p < r < 1/2,
+$$
 
-W has a modification that satisfies
+$W$ has a modification that satisfies
 
-W(., \omega) \in C^\bet([0,1]) a.s for very \beta < 1/2.
+$$
+W(\cdot, \omega) \in C^\beta([0,1]) \quad \text{a.s. for every } \beta < 1/2.
+$$
 
 ---
 <br/>
@@ -1676,6 +1712,8 @@ Furthermore, two real-valued stochastic processes $(X_t)_{t\in\mathcal{T}}$ and 
 
 _Note that_ indistinguishability implies modification, but not conversely.
 
+---
+<br/>
 <b>Definition: Filtration</b>
 
 A filtration on a probability space $(\Omega,\mathcal{F},\mathbb{P})$ is a family $(\mathcal{F}_t)_{t\in\mathcal{T}}$ of $\sigma$-algebras such that:
@@ -1740,6 +1778,7 @@ _Note that, in the context of stochastic integration, we usually work with filtr
 
 <br/>
 ---
+<br/>
 <b>Random Times and Stopping Times</b>
 
 Recall that $\mathcal{T}\subseteq\mathbb{N}_0$ or $\mathcal{T}\subseteq\mathbb{R}_+$.
@@ -1964,6 +2003,9 @@ $$
 
 The <b>continuity property</b> also holds, since the sample paths $t \mapsto \left(\int_0^t K_s\,dW_s\right)$ are continuous.
 
+<br/>
+---
+<br/>
 <b>Simple Processes: The Martingale Property</b>
 
 Let $I_t := \int_0^t K_u\,dW_u$, which is <b>adapted</b> by definition and square-integrable by Itô's isometry.
@@ -2126,6 +2168,9 @@ $$
 \le 4\mathbb{E}\left[\int_0^T (K_s^n-K_s^m)^2\,ds\right].
 $$
 
+---
+
+<br/>
 <b>Associativity of Stochastic Integrals</b>
 
 For a predictable process $H\in L^2$ and $0\le a<b\le T$, we have:
@@ -2153,6 +2198,9 @@ $$
 
 _Intuition: the stochastic integral with respect to the martingale $\int_0^t H_s\,dW_s$ accumulates the values of $K$ against the increments of that martingale._
 
+<br/>
+---
+<br/>
 
 <b>Stochastic Itô Integrals of Predictable Processes</b>
 
@@ -2222,6 +2270,8 @@ $$
 d_0(H,K):=\mathbb{E}\left[\min\left\{1,\left(\int_0^T (H_s-K_s)^2\,ds\right)^{1/2}\right\}\right].
 $$
 
+---
+<br/>
 <b>Burkholder–Davis–Gundy Inequalities</b>
 
 For $p\in(0,\infty)$, define $\lVert Z\rVert_p:=\mathbb{E}[|Z|^p]^{1/p}$. Then there exists $C_p>0$ such that:
@@ -2388,6 +2438,9 @@ b_t^{i\ell}\frac{\partial f}{\partial x_i}(t,X_t)\,dW_t^\ell.
 \end{aligned}
 $$
 
+<br/>
+
+
 
 <b>Integration by Parts</b>
 
@@ -2415,27 +2468,369 @@ $$
 
 
 ---
-## <a id="4"><b>Stochastic Ordinary Differential Equations</b></a>
+## <a id="4-sde"><b>Stochastic Ordinary Differential Equations</b></a>
 
 Let $\mathcal{T}=[0,T]$ for some $T>0$, consider $n,m\in\mathbb{N}$, and let $\mathcal{O}\in\mathcal{B}(\mathbb{R}^m)$ be the state space _(intuition: $\mathcal{O}$ is the set of possible values of the state process $X_t$; it is a measurable subset of $\mathbb{R}^m$)._
 
-_Still to do: stochastic differential equations lecture (till slide 6)_
+We fix a filtered probability space satisfying the usual conditions and supporting an $n$-dimensional $(\mathcal{F}_t)$-Brownian motion $(W_t)$.
+
+We then consider Borel-measurable functions
+
+$$
+\mu: \mathcal{O} \to \mathbb{R}^m
+\qquad\text{and}\qquad
+\sigma: \mathcal{O} \to \mathbb{R}^{m\times n},
+$$
+
+called the <b>drift coefficient</b> and <b>diffusion coefficient</b>, respectively. We also consider an $\mathcal{O}$-valued, $\mathcal{F}_0$-measurable random variable $\varepsilon$.
+
+_Intuition:_ $\mu(X_t)\Delta t$ is the <b>drift</b>, i.e. the predictable and deterministic tendency of the process. $\sigma(X_t)\Delta W_t$ is the <b>diffusion</b>, i.e. the random fluctuation of the process. Since $\Delta W_t \sim \mathcal{N}(0,\Delta t)$, its typical size is $\sqrt{\Delta t}$.<br/>We can also call $\sigma$ the <b>noise sensitivity</b>, which determines how strongly each Brownian-motion component affects each coordinate of $X$, and $\varepsilon$ the initial state.
+
+An equation of the form:
+
+$$
+dX_t = \mu(X_t)\,dt + \sigma(X_t)\,dW_t,
+\qquad t \in [0,T],
+\qquad X_0 = \varepsilon
+$$
+
+is called a <b>stochastic differential equation (SDE)</b>.
+
+An $\mathcal{O}$-valued process $(X_t)_{0 \le t \le T}$ is a <b>solution process</b> of the previous SDE on the given filtered space if:
+1. $(X_t)$ is <b>$(\mathcal{F}_t)$-adapted</b> and has <b>continuous sample paths</b>.
+2. The following <b>integrability condition</b> holds:
+
+$$
+\int_0^T \left(\|\mu(X_s)\|_{\mathbb{R}^m} + \|\sigma(X_s)\|_{\mathrm{HS}}^2\right)\,ds < \infty.
+$$
+
+3. For every $t \in [0,T]$, $P$-almost surely:
+
+$$
+X_t = \varepsilon + \int_0^t \mu(X_s)\,ds + \int_0^t \sigma(X_s)\,dW_s.
+$$
+
+_We also recall_ that $\|\cdot\|_{\mathbb{R}^m}$ is the <b>Euclidean norm</b>, and
+
+$$
+\|A\|_{\mathrm{HS}}^2 = \sum_{i=1}^m \sum_{j=1}^n |A_{ij}|^2.
+$$
+
+Note also that the differential notation can be translated into the <b>integral equation</b>. For the $i$th component, $i=1,\ldots,m$:
+
+$$
+X_t^i = \varepsilon^i + \int_0^t \mu^i(X_s)\,ds + \sum_{j=1}^n \int_0^t \sigma^{ij}(X_s)\,dW_s^j.
+$$
+
+Note that $(\mu(X_t))$ and $(\sigma(X_t))$ are predictable. In this case, a solution is an $\mathcal{O}$-valued Itô process with drift $a_t = \mu(X_t)$ and diffusion coefficient $b_t = \sigma(X_t)$.
+
+We now consider $\mathcal{O} = \mathbb{R}^m$, so $W$ is an $n$-dimensional $(\mathcal{F}_t)$-Brownian motion whose components are real-valued.
+<br/>For a random vector or matrix $Z$, we can then set, using the <b>Euclidean norm</b> on $\mathbb{R}^m$ and the <b>Hilbert–Schmidt norm</b> on $\mathbb{R}^{m\times n}$:
+
+$$
+\|Z\|_p = \left(\mathbb{E}[\|Z\|^p]\right)^{1/p}.
+$$
+
+_Recall that_ the <b>Hilbert–Schmidt norm</b> measures the size of a matrix by treating all its entries as _orthogonal components_ (i.e. calculating the norm as if every entry were an independent coordinate in a Euclidean vector: a general matrix is flattened into a vector, and we take the usual Euclidean length, so cross-terms do not appear and we simply sum the squares of the entries).<br/>For a matrix $A \in \mathbb{R}^{m\times n}$, we formally write:
+
+$$
+\|A\|_{\mathrm{HS}} = \left(\sum_{i=1}^m \sum_{j=1}^n |A_{ij}|^2\right)^{1/2}.
+$$
+
+In the case of $\sigma(X_t) \in \mathbb{R}^{m\times n}$, we have:
+
+$$
+\|\sigma(X_t)\|_{\mathrm{HS}}^2 = \sum_{i=1}^m \sum_{j=1}^n |\sigma_{ij}(X_t)|^2.
+$$
+
+This is also called the <b>Frobenius norm</b> for finite matrices (_$\|A\|_{\mathrm{HS}} = \|A\|_{\mathrm{F}}$_).
+
+Given these prerequisites, we can say that the coefficients $\mu: \mathbb{R}^m \to \mathbb{R}^m$ and $\sigma: \mathbb{R}^m \to \mathbb{R}^{m\times n}$ are <b>globally Lipschitz</b> if, for some $C \ge 0$,
+
+$$
+\|\mu(x)-\mu(y)\|+\|\sigma(x)-\sigma(y)\|_{\mathrm{HS}}
+\le C\|x-y\|.
+$$
+
+_(Intuition: changing the input from $x$ to $y$ changes the coefficients by at most a constant multiple of $\|x-y\|$.)_
+
+Note that <b>Lipschitz coefficients</b> imply <b>linear growth</b> (by the triangle inequality) with $K := C + \|\mu(0)\| + \|\sigma(0)\|_{\mathrm{HS}}$:
+
+$$
+\|\mu(x)\|+\|\sigma(x)\|_{\mathrm{HS}}
+\le K(1+\|x\|).
+$$
+
+_Intuition:_ the coefficients may grow as $x$ grows, but not faster than linearly, and this prevents the SDE solution from exploding in finite time.
+
+<b>Theorem: Existence and uniqueness of solutions</b>
+
+Let $p \in [2,\infty)$, let $\varepsilon$ be $\mathcal{F}_0$-measurable with $\|\varepsilon\|_p < \infty$, and let $\mu$ and $\sigma$ be globally Lipschitz coefficients. Then:
+1. On a given filtered probability space, the usual SDE _(defined above)_ <b>has a solution</b> that is <b>unique up to indistinguishability</b>.
+2. This solution has <b>uniformly bounded</b> $p$-th moments:
+
+$$
+M_p := \sup_{t\in[0,T]}\|X_t\|_p < \infty.
+$$
+
+3. There is a constant $A_{p,T}<\infty$ such that
+
+$$
+\|X_t-X_s\|_p \le A_{p,T}|t-s|^{1/2}.
+$$
+
+In particular, $X\in C^\alpha([0,T],L^p(\mathbb{P};\mathbb{R}^m))$ for every $\alpha\in(0,1/2)$.
+
+_Intuition:_ uniqueness up to indistinguishability means that, once the initial state and entire random input are set, the SDE determines a unique trajectory. Note also that this is _stronger_ than saying $\mathbb{P}(X_t=Y_t)=1$ for every $t$, because indistinguishability implies equality of the entire paths simultaneously.
+
+---
+<br/>
+<b>Locally Lipschitz Coefficients</b>
+
+We now allow an _open state space_ $\mathcal{O} \subset \mathbb{R}^m$ and consider
+
+$$
+\mu: \mathcal{O} \to \mathbb{R}^m
+\qquad\text{and}\qquad
+\sigma: \mathcal{O} \to \mathbb{R}^{m\times n}.
+$$
+
+The coefficients $\mu$ and $\sigma$ are <b>locally Lipschitz</b> if, for every compact set $K \subset \mathcal{O}$, there is a constant $C_K < \infty$ such that, for all $x,y \in K$,
+
+$$
+\|\mu(x)-\mu(y)\|+\|\sigma(x)-\sigma(y)\|_{\mathrm{HS}}
+\le C_K\|x-y\|.
+$$
+
+Note that, _in this case_, the constant $C_K$ may depend on $K$, so different regions can have different Lipschitz constants. Of course, every globally Lipschitz function is also locally Lipschitz, but not vice versa.
+
+_For example,_ the function $\mu(x)=x^2$ is <b>locally Lipschitz</b> on $\mathbb{R}$ because its derivative is bounded on every compact interval. However, it is not globally Lipschitz, since the ratio
+
+$$
+\frac{|x^2-y^2|}{|x-y|}=|x+y|
+$$
+
+can become _arbitrarily_ large.
+
+_We also recall_ that a set $\mathcal{O} \subset \mathbb{R}^m$ is <b>open</b> if every point $x \in \mathcal{O}$ has a _"small neighborhood"_ contained in $\mathcal{O}$, i.e. there is _"enough space"_ to move slightly in any direction while remaining in $\mathcal{O}$. For example, $\mathcal{O}=(0,\infty)$ is an open set.<br/>On the other hand, a set is <b>compact</b> if it is closed and bounded.
+
+<br/>
+---
+<br/>
+<b>Theorem: Uniqueness for locally Lipschitz coefficients (pathwise uniqueness)</b>
+
+Let $\mathcal{O} \subset \mathbb{R}^m$ be open, let $\mu$ and $\sigma$ be locally Lipschitz, and let $\varepsilon:\Omega\to\mathcal{O}$ be $\mathcal{F}_0$-measurable. Consider two $\mathcal{O}$-valued solution processes $X$ and $Y$ of the usual SDE defined above, on the same filtered probability space, with the same Brownian motion $W$ and the same initial condition $\varepsilon$. <br/>Then $X$ and $Y$ are <b>indistinguishable</b>, that is:
+
+$$
+\mathbb{P}(X_t=Y_t\text{ for all }t\in[0,T])=1.
+$$
+
+In this case, no additional moment assumptions on $\varepsilon$ are required. This is a <b>uniqueness result</b>; existence on $[0,T]$ is assumed.
+
+---
+<br/>
+<b>Theorem: Existence of maximal solutions</b>
+
+Let $\mathcal{T}=[0,\infty)$ and let $\mathcal{O}\subset\mathbb{R}^m$ be open, with $\mu$ and $\sigma$ locally Lipschitz. <br/>Then there is a <b>local solution</b> $(X,\zeta)$ consisting of a stopping time $\zeta\in(0,\infty]$ and a continuous, adapted, $\mathcal{O}$-valued process on $[0,\zeta)$ such that:
+
+$$
+X_t=\varepsilon+\int_0^t\mu(X_s)\,ds+\int_0^t\sigma(X_s)\,dW_s,
+\qquad t<\zeta.
+$$
+
+_Intuition:_ we can consider $\zeta$ as the stopping time called the <b>explosion time</b>, i.e. the SDE behaves normally until $\zeta$. After $\zeta$, something becomes _"too large"_ or the process reaches the boundary of the state space, so the solution cannot continue while remaining in $\mathcal{O}$.
+
+We also have the following condition (<b>uniqueness and maximality)</b>: any other local solution $(Y,\eta)$ with the same Brownian motion and initial state satisfies $\eta\le\zeta$ and $X_t=Y_t$ for all $t<\eta$.
+
+_Intuition:_ this means that $X$ exists at least as long as any other solution $Y$ is defined, and all solutions agree while both are defined. In this case, we call $(X,\zeta)$ the <b>maximal solution</b>.
+
+Furthermore, on $\{\zeta<\infty\}$, $X_t$ eventually leaves every compact subset of $\mathcal{O}$ as $t\uparrow\zeta$. For $\mathcal{O}=\mathbb{R}^m$, this means that $\|X_t\|\to\infty$ as $t\uparrow\zeta$.
 
 
 ---
-## <a id="5"><b>Numerical Approximations of SDEs</b></a>
+<br/>
+<b>Example: Brownian Motion</b>
+
+We now proceed with a _very illustrative_ example. In particular, we assume that the initial value is <b>deterministic</b> and let $m=n=1$, $\mathcal{O}=\mathbb{R}$, $\alpha,\beta\in\mathbb{R}$, and $\varepsilon>0$.<br/>We then set $\mu(x)=\alpha x$ and $\sigma(x)=\beta x$, so the SDE becomes:
+
+$$
+dX_t=\alpha X_t\,dt+\beta X_t\,dW_t,
+\qquad X_0=\varepsilon.
+$$
+
+Note that in this case both coefficients are <b>globally Lipschitz</b>, since we have:
+
+$$
+\begin{aligned}
+|\mu(x)-\mu(y)|+|\sigma(x)-\sigma(y)|
+&=|\alpha x-\alpha y|+|\beta x-\beta y|\\
+&=(|\alpha|+|\beta|)|x-y|=C|x-y|.
+\end{aligned}
+$$
+
+The bound $C=|\alpha|+|\beta|$ is valid for all $x,y\in\mathbb{R}$, and the coefficients satisfy the linear growth condition.
+
+Therefore, the theorem gives a solution that is <b>unique up to indistinguishability</b>. <br/>We now spend some time solving the equation.
+
+Firstly, we see that the noise and the drift are proportional to $X_t$, so dividing formally by $X_t$ suggests:
+
+$$
+\frac{dX_t}{X_t} \approx \alpha\,dt+\beta\,dW_t.
+$$
+
+We can then apply a similar transformation using Itô's correction, with $f(x)=\log(x)$, since $f'(x)=1/x$ and $f''(x)=-1/x^2$.
+
+Therefore, applying Itô's formula gives:
+
+$$
+\begin{aligned}
+df(X_t)
+&=f'(X_t)\,dX_t+\frac{1}{2}f''(X_t)(dX_t)^2\\
+d\log(X_t)
+&=\frac{1}{X_t}\,dX_t-\frac{1}{2X_t^2}(dX_t)^2.
+\end{aligned}
+$$
+
+We now substitute $dX_t=\alpha X_t\,dt+\beta X_t\,dW_t$ and $(dX_t)^2=\beta^2X_t^2\,dt$, since $(dW_t)^2=dt$, $(dt)^2=0$, and the cross-term $dt\,dW_t=0$ in Itô's formula. We obtain:
+
+$$
+\begin{aligned}
+d\log X_t
+&=\frac{1}{X_t}(\alpha X_t\,dt+\beta X_t\,dW_t)
+-\frac{1}{2X_t^2}\beta^2X_t^2\,dt\\
+&=\left(\alpha-\frac{\beta^2}{2}\right)dt+\beta\,dW_t.
+\end{aligned}
+$$
+
+Integrating this equation from 0 to $t$ and using $X_0=\varepsilon$ gives:
+
+$$
+\log X_t=\log\varepsilon+\left(\alpha-\frac{\beta^2}{2}\right)t+\beta W_t.
+$$
+
+$$
+X_t=\varepsilon\exp\left(\left(\alpha-\frac{\beta^2}{2}\right)t+\beta W_t\right).
+$$
+
+The factor $-\frac{1}{2}\beta^2$ is called the <b>Itô correction</b>.
+
+Moreover, we can calculate the first moment. Because $W_t\sim\mathcal{N}(0,t)$, we have:
+
+$$
+\mathbb{E}[e^{\beta W_t}]=e^{\beta^2t/2}.
+$$
+
+Therefore, for deterministic $\varepsilon$:
+
+$$
+\mathbb{E}[X_t]=\varepsilon e^{\alpha t}.
+$$
+
+_Similarly,_ we can calculate the second moment using
+
+$$
+X_t^2=\varepsilon^2\exp\left((2\alpha-\beta^2)t+2\beta W_t\right),
+$$
+
+and we get:
+
+$$
+\mathbb{E}[|X_t|^2]=\varepsilon^2e^{(2\alpha+\beta^2)t}.
+$$
+
+From the second moment, for $t\in[0,T]$, we have:
+
+$$
+\sup_{0\le t\le T}\mathbb{E}[|X_t|^2]<\infty.
+$$
+
+
 
 ---
-## <a id="6"><b>Euler–Maruyama Scheme and Monte Carlo Methods</b></a>
+<br/>
+<b>Examples: the Black-Scholes model</b>
+
+We now consider another very famous example! Let $m=2$, $n=1$, $\mathcal{O}=(0,\infty)^2$, $r,\alpha\in\mathbb{R}$, $\beta>0$, and $\varepsilon\in\mathcal{O}$. The coefficient functions are:
+
+$$
+\mu(x)=\begin{pmatrix}rx^1\\ \alpha x^2\end{pmatrix},
+\qquad
+\sigma(x)=\begin{pmatrix}0\\ \beta x^2\end{pmatrix}.
+$$
+
+The corresponding system of SDEs is:
+
+$$
+\begin{cases}
+dX_t^1=rX_t^1\,dt,\\
+dX_t^2=\alpha X_t^2\,dt+\beta X_t^2\,dW_t,
+\end{cases}
+\qquad X_0=\varepsilon.
+$$
+
+_Again,_ the coefficients extend to <b>globally Lipschitz functions</b> on $\mathbb{R}^2$, and the unique solution is given by:
+
+$$
+X_t^1=e^{rt}\varepsilon^1,
+\qquad
+X_t^2=\varepsilon^2\exp\left(\left(\alpha-\frac{\beta^2}{2}\right)t+\beta W_t\right).
+$$
+
+Here, _notice that_ $X^1$ represents a <b>bank account</b> with interest rate $r$, and $X^2$ represents a <b>risky asset</b> with expected return $\alpha$ and volatility $\beta$.
+
 
 ---
-## <a id="7"><b>Milstein Scheme, Stochastic Runge–Kutta, and Talay–Tubaro Extrapolation</b></a>
+<br/>
+
+<b>Example: the Cox–Ingersoll–Ross process</b>
+
+Consider $m=n=1$, $\mathcal{O}=(0,\infty)$, $\alpha,\delta>0$, $\beta\ge0$, and $\varepsilon>0$. The <b>Cox–Ingersoll–Ross (CIR)</b> process solves:
+
+$$
+dX_t=(\delta-\alpha X_t)\,dt+\beta\sqrt{X_t}\,dW_t,
+\qquad X_0=\varepsilon.
+$$
+
+Here, $\mu(x)=\delta-\alpha x$ and $\sigma(x)=\beta\sqrt{x}$. For $\beta>0$, the diffusion coefficient is locally Lipschitz but not globally Lipschitz near zero. Furthermore, if $2\delta\ge\beta^2$, there is a unique solution that remains in $(0,\infty)$.
+
+Note that the term $\delta-\alpha X_t$ represents the <b>mean reversion</b>: if the quantity is negative, the process is pushed upward, and vice versa. The equilibrium level is $\delta/\alpha$ _(the deterministic equation $dx_t/dt=\delta-\alpha x_t$ converges to $\delta/\alpha$)_.
+
+Note that this process is used to model <b>instantaneous interest rates</b> ($r_t=X_t$, which are nonnegative and mean-reverting quantities) or the <b>square of the volatility</b> (variance) of asset prices, as in the Heston model. It captures nonnegativity, mean reversion, larger fluctuations when variance is high, and volatility clustering, i.e. large price movements tend to occur near other large price movements and vice versa.
 
 ---
-## <a id="8"><b>Stochastic Simulation and Monte Carlo Methods</b></a>
+<br/>
+<b>Example: the Heston stochastic volatility model</b>
 
----
-## <a id="9"><b>Euler–Maruyama for Lévy-Driven SDEs</b></a>
+Let $m=n=2$, $\alpha,\widehat\alpha,\widehat\delta>0$, $\widehat\beta\ge0$, and $X_0=\varepsilon\in(0,\infty)^2$.
 
+For $\rho\in[-1,1]$, define
+
+$$
+\widehat W_t:=\sqrt{1-\rho^2}\,W_t^1+\rho W_t^2.
+$$
+
+Then $\widehat W$ is a Brownian motion, and it is independent of $W^1$ if and only if $\rho=0$.
+
+The Heston model is the system:
+
+$$
+\begin{cases}
+dX_t^1=\alpha X_t^1\,dt+\sqrt{X_t^2}\,X_t^1\,dW_t^1,\\
+dX_t^2=(\widehat\delta-\widehat\alpha X_t^2)\,dt+\widehat\beta\sqrt{X_t^2}\,d\widehat W_t,
+\end{cases}
+\qquad X_0=\varepsilon.
+$$
+
+Here, $X^1$ models the asset price and $X^2$ is its <b>instantaneous variance</b>; the second equation is a CIR SDE as written above. Note also that if $2\widehat\delta\ge\widehat\beta^2$, there is a unique positive solution. _(However, the coefficients are not globally Lipschitz.)_
+
+Therefore, we can write the model in the more familiar form:
+
+$$
+\begin{aligned}
+dS_t&=\mu S_t\,dt+\sqrt{V_t}\,S_t\,dW_t^1,\\
+dV_t&=\kappa(\theta-V_t)\,dt+\xi\sqrt{V_t}\,dW_t^2,
+\end{aligned}
+$$
+
+where $S_t$ is the asset price, $V_t$ is the instantaneous variance, $\sqrt{V_t}$ is the instantaneous volatility, $\mu$ is the expected return, $\kappa$ is the speed at which the variance returns to its long-run level $\theta$, and $\xi$ controls the randomness of the variance.
 ---
-## <a id="10"><b>Multilevel Monte Carlo and Efficient Increment Simulation</b></a>
