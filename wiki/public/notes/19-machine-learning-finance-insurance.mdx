@@ -1519,7 +1519,136 @@ In this case, we may aim to minimize the FDR (the false discovery rate) or, _sim
 <br/>Furthermore, note that in this case a small AUC is desirable, since predictions should be independent of a protected attribute.
 
 
-## <a id="5"><b>5 Kernel Methods</b></a>
+## <a id="5"><b>5 Kernel Methods: Support Vector Machines and Reproducing Kernel Hilbert Spaces</b></a>
+
+A support vector machine (SVM) is a method for <b>supervised learning</b> that began attracting attention in 1990. The name comes from:
+- machines that turn inputs into outputs
+- vectors that support decisions
+
+We recall that supervised learning uses labeled data _(inputs with known answers)_ to learn to predict an output; it is usually used for classification and regression. _On the other hand,_ unsupervised learning uses unlabeled data _(data without known answers)_ to discover hidden patterns or structures, often for clustering, dimensionality reduction, and anomaly detection _(some common algorithms: K-means, hierarchical clustering, PCA, autoencoders, etc.)_.
+
+In contrast to other ML methods, numerical optimization is well understood for SVMs, so they are reliable and interpretable. Furthermore, the theory behind SVMs is frequently used in the field of ML; _for example_, large neural networks can be viewed through the lens of kernel methods _(neural tangent kernels)_.
+
+<b>SVM for Binary Classification</b>
+
+Suppose we want to classify points in $\mathcal{X} \subset \mathbb{R}^2$ into two categories, $\mathcal{Y} = \{-1,1\}$. That is, suppose we have points $x_1,\ldots,x_m \in \mathbb{R}^2$ with labels $y_1,\ldots,y_m \in \{-1,1\} = \{\text{yellow},\text{red}\}$, and our goal is to find a <b>linear classifier separating</b> yellow and red points.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-1.png)
+</div>
+
+Different classifiers are possible, and each is represented by a black line below.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-2.png)
+</div>
+
+The <b>geometric idea</b> behind SVMs is that each classifier has a <b>safety margin</b>, represented in the picture by a _gray shaded area_. In this context, we want to choose the classifier that <b>maximizes this margin</b>.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-3.png)
+</div>
+
+For our data, we have the following <b>optimal linear classifier</b>, where the dashed lines are <b>parallel shifts</b> of the classifier that touch both point clouds. We call these touching points <b>support vectors</b> of the classifier.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-4.png)
+</div>
+
+However, note that data points are not always that well behaved... _For example,_ see the following:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-5.png)
+</div>
+
+So the idea behind SVMs for <b>nonlinear data</b> is to <b>lift data into a higher-dimensional space</b> where they are <b>linearly separable</b>...
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-6.png)
+</div>
+... so a <b>linear classifier</b> in the high-dimensional space corresponds to a <b>nonlinear classifier</b> in the low-dimensional space.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-7.png)
+</div>
+
+_Technically speaking_, we need to define the <b>decision hyperplane</b>.
+
+Let $x_i = (x_{i1},\ldots,x_{id}) \in \mathbb{R}^d$ and $y_i \in \{-1,1\}$ for $i = 1,\ldots,m$, and assume that <b>linear classification is possible</b>, i.e. there exist $w \in \mathbb{R}^d$ _(weights)_ and $b \in \mathbb{R}$ _(bias)_ such that:
+
+$$
+\operatorname{sign}(\langle w,x_i\rangle + b) = y_i \quad \forall i
+$$
+
+_Intuition: the classifier defines a score $w^T x_i + b$, and the sign of the score gives the predicted class._
+
+So each classifier $(w,b)$ specifies a decision hyperplane, _i.e. the dividing boundary between the two classes,_ where the vector $w$ controls the orientation and $b$ shifts it:
+
+$$
+H(w,b) = \{x \in \mathbb{R}^d : \langle w,x\rangle + b = 0\}
+$$
+
+_In particular,_ we want to choose a valid classifier $(w_D, b_D) \in \mathbb{R}^d \times \mathbb{R}$, normalized such that $\|w_D\|_2 = 1$, that <b>maximizes the distance</b> between the data and the decision plane. For a correctly classified point, this distance is $y_i(\langle w_D,x_i\rangle+b_D)$, so:
+
+$$
+(w_D,b_D) \in \operatorname*{argmax}_{\substack{\|w\|_2=1,\ b\in\mathbb{R}\\ y_i(\langle w,x_i\rangle+b)>0\ \forall i}}\ \min_{1\leq i\leq m} y_i(\langle w,x_i\rangle+b).
+$$
+
+_Equivalently,_ let $(w^*,b^*)$ solve the <b>hard-margin optimization problem</b>:
+
+$$
+\min_{w\in\mathbb{R}^d,\ b\in\mathbb{R}} \frac{1}{2}\|w\|_2^2
+\quad\text{subject to}\quad
+ y_i(\langle w,x_i\rangle+b)\geq 1,\quad i=1,\ldots,m.
+$$
+
+Then $(w_D,b_D)=(w^*/\|w^*\|_2,\ b^*/\|w^*\|_2)$.
+
+<b>Lifting the data and slack variables</b>
+
+With the following optimization problem, we could have two issues:
+- linear separation not possible _(i.e. not all the constraints can be satisfied)_
+- we may not want to satisfy all constraints to avoid overfitting
+
+Therefore, we can do the following:
+- lift $x_i$ to a _possibly infinite-dimensional_ <b>Hilbert space $\mathcal{H}$</b> with a feature map $\Phi: \mathbb{R}^d \to \mathcal{H}$ and use $w \in \mathcal{H}$ as the classifier
+- introduce a slack variable $\xi_i \geq 0$, which allows the margin constraints to be relaxed in exchange for a penalty in the objective function, leading to the <b>adjusted optimization problem</b>:
+
+$$
+\begin{aligned}
+\min_{w\in\mathcal{H},\ b\in\mathbb{R},\ \xi\in\mathbb{R}^m}
+&\quad \frac{1}{2}\|w\|_{\mathcal{H}}^2 + C\sum_{i=1}^{m}\xi_i \\
+\text{subject to}
+&\quad y_i\bigl(\langle w,\Phi(x_i)\rangle_{\mathcal{H}}+b\bigr)\geq 1-\xi_i,\quad i=1,\ldots,m,\\
+&\quad \xi_i\geq 0,\quad i=1,\ldots,m.
+\end{aligned}
+$$
+
+_We recall that_ a <b>Hilbert space</b> is a vector space with an inner product _(i.e. a generalized dot product)_ where limits of converging sequences stay in the space. Ordinary Euclidean space $\mathbb{R}^2$ is an example, but Hilbert spaces can also have infinite dimensions.
+
+_Intuition: the slack variable $\xi_i$ measures how far point $i$ falls short of the required margin. A positive slack can mean that the point is correctly classified but inside the margin, or that it is misclassified._
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-8.png)
+</div>
+
+- Points correctly classified on or beyond the margin have $\xi_i = 0$.
+- Points correctly classified inside the margin have $0 < \xi_i < 1$.
+- Points on the decision boundary have $\xi_i = 1$, and misclassified points have $\xi_i > 1$.
+
+_Note that_ the constraints and the requirements $\xi_i \geq 0$ imply:
+
+$$
+\xi_i \geq \max\left\{0, 1-y_i\bigl(\langle w,\Phi(x_i)\rangle_{\mathcal{H}}+b\bigr)\right\}
+= \ell\bigl(y_i,f_{w,b}(x_i)\bigr),
+$$
+
+where the <b>hinge loss</b> is $\ell(y,y') = \max\{0,1-yy'\}$ and $f_{w,b}(x)=\langle w,\Phi(x)\rangle_{\mathcal{H}}+b$.
+
+At the optimum, the slack variables equal these lower bounds, so we can rewrite the optimization problem as:
+
+$$
+\min_{w\in\mathcal{H},\ b\in\mathbb{R}} \lambda\|w\|_{\mathcal{H}}^2 + \frac{1}{m}\sum_{i=1}^{m}\ell\bigl(y_i,f_{w,b}(x_i)\bigr),
+\qquad \lambda = \frac{1}{2mC}.
+$$
 
 ## <a id="6"><b>6 Neural Networks</b></a>
 

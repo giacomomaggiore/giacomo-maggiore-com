@@ -466,7 +466,7 @@ R_{p,t}-R_{f,t}={}&\alpha_p+\beta_{M,p}(R_{M,t}-R_{f,t})+\beta_{SMB,p}(R_{S,t}-R
 \end{aligned}
 $$
 
-More on this regression can be found here <a href="https://www.trendfollowing.com/whitepaper/hsieh_fung_final_paper.pdf" target="_blank">here in the famous paper "The Risk in Hedge Fund Strategies: Theory and Evidence from Trend Followers" by William Fung and David Hsieh</a>.
+More on this regression can be found <a href="https://www.trendfollowing.com/whitepaper/hsieh_fung_final_paper.pdf" target="_blank">here in the famous paper "The Risk in Hedge Fund Strategies: Theory and Evidence from Trend Followers" by William Fung and David Hsieh</a>.
 
 Furthermore, we can define the <b>information ratio (appraisal ratio)</b>, which gives the average return achieved by a portfolio in excess of a benchmark divided by the tracking error _(i.e. the standard deviation of the return differential)_. In formula, we write:
 
@@ -710,3 +710,45 @@ Common predictors are:
     - GDP
     - inflation
 - <b>news sentiment</b>
+
+<br/>
+
+<b>Selection models</b> try to generate returns by selecting assets from a <b>cross-section based on some criteria</b>, _usually from the same asset class. Some examples are below:_
+- <b>carry</b>: select currencies based on their interest rate
+- <b>value</b>: select stocks based on their _book-to-market ratio_
+- <b>momentum</b>: select stocks based on their past return
+
+_Usually,_ we proceed as follows:
+- <b>sort the assets into groups</b> based on the value of the variable of interest. The number of groups is chosen to find a balance between stronger effects at the extremes and reduced idiosyncratic risk (which requires many assets per group).
+- <b>build portfolios of the assets in the groups</b>
+- <b>investigate return properties of the portfolios</b>
+
+_However,_ note that in many cases we want to incorporate <b>several variables</b>; in this case, the <b>bivariate (or three-way sorts)</b> can be a valid approach by sorting over selected variables either:
+- <b>with an independent sort</b>, where we sort on different variables _independently,_ so the resulting portfolio will be the intersection of portfolios built on individual variables, and the number of assets in each portfolio will _strongly differ_ if the two variables are related;
+- <b>dependent sort</b>, where we first sort on a first variable and then, within each quantile of the first variable, sort based on a second variable. In this case, the number of assets in each group is similar, but the results depend on the order chosen.
+
+Furthermore, we can use the <b>scoring method</b> by attributing scores to each asset for each variable considered and then grouping them by the overall score.
+- For each considered variable, we attribute a score to each asset based on its quantile, _making sure that higher means better for all_.
+- compute an overall score by summing, averaging, or weighting _(be aware of overfitting!)_
+
+The last approach involves <b>regression</b> to estimate the expected returns.
+- we use the <b>Fama–MacBeth method</b> or <b>cross-sectional regression</b> to estimate the exposure of the assets to the factors and their risk premia to estimate $\hat{\gamma}$ and $\hat{\lambda}$, as done before
+- we compute the expected excess return on each asset based on the factor exposure
+
+$$
+\mathbb{E}[R_{n,t} - R_{f,t}] = \hat{\gamma} + \beta_n^{\mathsf{T}}\hat{\lambda}
+$$
+
+Once we selected the selection method, note that these can be implemented in three ways:
+- <b>long-only portfolios</b>
+- <b>long-short portfolio</b>, so the return of the period is equal to:
+    + the return of the long portfolio
+    + the risk-free rate
+    - the cost of the portfolio held short
+    - the lending fees of the portfolio
+- <b>long portfolio with a hedge for market risk</b>, where the hedge is implemented using futures, so the return of each period is given by:
+    + the return of the long portfolio
+    - the hedge ratio times the percentage price change of futures
+
+    <br/>
+    <b>Combining strategies</b>
