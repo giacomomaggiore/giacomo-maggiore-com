@@ -1626,6 +1626,9 @@ $$
 _We recall that_ a <b>Hilbert space</b> is a vector space with an inner product _(i.e. a generalized dot product)_ where limits of converging sequences stay in the space. Ordinary Euclidean space $\mathbb{R}^2$ is an example, but Hilbert spaces can also have infinite dimensions.
 
 _Intuition: the slack variable $\xi_i$ measures how far point $i$ falls short of the required margin. A positive slack can mean that the point is correctly classified but inside the margin, or that it is misclassified._
+
+_Furthermore,_ a large C (<b>bias-variance knob</b>) means violations are expensive, so the fit is tight to the data, _on the other hand,_ a small C implies that the margin is wide, the fit is smoother and more errors are tolerated _(with higher risk of overfitting)_.
+
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/svm-8.png)
 </div>
@@ -1643,12 +1646,180 @@ $$
 
 where the <b>hinge loss</b> is $\ell(y,y') = \max\{0,1-yy'\}$ and $f_{w,b}(x)=\langle w,\Phi(x)\rangle_{\mathcal{H}}+b$.
 
+
 At the optimum, the slack variables equal these lower bounds, so we can rewrite the optimization problem as:
 
 $$
 \min_{w\in\mathcal{H},\ b\in\mathbb{R}} \lambda\|w\|_{\mathcal{H}}^2 + \frac{1}{m}\sum_{i=1}^{m}\ell\bigl(y_i,f_{w,b}(x_i)\bigr),
 \qquad \lambda = \frac{1}{2mC}.
 $$
+
+We now recall that f_w,b = < w, \Psi (x_i)> + b, so we can use the fact that the function space H = {f : R^d \to R such that f = <w, \Phi()> for some w in \mathcal H} is itself a <b>Hilbert space</b> with norm:
+
+|| f||_H = min {|| w |||_\mathcal H : f = <w, \Pshi()>}
+
+so the optimization problem becomes:
+
+\min_f,b \frac{1}{m}\sum_i=1^m \matchal l(f(x_i)+b, y_i) + \lakbda || f||_H^2
+
+_Intuition: we stop optimizing over weights and optimize over functions._ Until now, the unknown was the vector w \in \mathcal H and the classifier was f(x) = <w, \Pshi(x)> + b. But, _in general_, we care about f, not about w, so we parametrize the problem in terms of f by considering that each w gives a function.<br/>Therefore, we can talk in terms of a space of functions that, _in this case,_ is called the <b>reproducing kernel Hilbert space (RKHS)</b> associated with its feature map.
+
+---
+<br/>
+<b>Support Vector Regression (SVR)</b>
+
+_We initially recall that_ in regression we want to find a function f(x) that predicts a continuous y. However, OLS <b>penalizes every error</b>. _In contrast,_ SVR takes a different approach and penalizes only errors bigger than a threshold (later denoted by $\epsilon$) and looks for a function that is as simple (flat) as possible.
+
+In particular, the goal of SVR is to find a hyperplane (w, b) \in \mathcal H \times R that best approximates the relationship between the <b>lifted inputs \Phi(x)</b> \in \mathcal H _(the feature map)_ and the <b>continuous output </b> y \in R.
+
+In this setting, we also notice that the model is not linear in the original space, but this becomes linear in the lifted space, as f(x) + b = <w, \Psi(x)> + b.
+
+<b>Tube-SVR</b> looks for a hyperplane that keeps the predictions in an $\epsilon$-wide tube around the fitted function. Deviations inside the tube (|y_i - < w, \Psi(x_i>-b| \le \epsilon| do not bring any penalty, but deviations outside the tube are penalized in proportion to their distance from the boundary.
+
+The optimization problem for Tube-SVR, assuming \epsilon \ge 0 is fixed and represents the \epsilon-tube in which prediction errors incur no penalty and/or the noise the model tolerates, is:
+
+\min_w,b, \csi_i qin \mathcla H x R x R^m <w, w> + C \sum_i=1^m \csi _i \\
+s.t. | y_i - <w, Psi (x_i)> - b | \le \epsilon + \csi_i, \csi_i \ge 0
+
+where <w,w> = || w||^2 is the <b>regularizer</b>, since small ||w|| implies a flat and smooth function that is less sensitive to input changes and therefore less prone to overfitting _(same role as the margin term in the SVM)_. \csi_i are the <b>slack variables</b> and they measure how far each point falls outside the tube. Then, the term C \sum \csi_i penalizes the total slack _(again: with large C, errors are expensive, so the model fits tightly, increasing the risk of overfitting)_.
+
+_Similarly_ to classification, if we substitute the optimal slack \csi _i = max(0, |y_i - f(x_i)- b |- \epilon|, we can rewrite the optimization problem in H = {f : f = <w, Pshi()>} as:
+
+min_f,b \in \matchal H x R \frac{1}{m}\matchal l_\epsilon (f(x_i) + b, y_i) + \lambda || f ||_H^2
+
+where \matchal l_epsilon is now the \epsilon-insensitive loss function, defined as \matchal l_epsilon (y, y') = \max {0, | y - y'| - \epsilon}, which is "insensitive" since it produces zero loss for errors smaller than \epsilon.
+
+Note that the _user-friendly_ square loss \martchal l(y,y') = (y - y')^2 is a very popular choice for SVR.
+
+_Example: in the following graph, we can nicely see SVR for \Psi(x) = x
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/svm-8.png)
+</div>
+
+---
+<b>Kernel Functions and Reproducing Kernel Hilbert Spaces</b>
+The previous discussion was _veeeeery_ theoretical in the following ways:
+- what is a good feature map \Psi(x)?
+- how should we choose the Hilbert space?
+- what is the resulting function space H?
+
+The <b>kernel trick</b> makes it possible to work directly with a <b>kernel function</b> without explicitly using \Psi, \matchal H, and H.
+
+<b>Definition: Kernel</b>
+
+Let \matchal X be a non-empty set. A function k : \matchal X \times \matchal X \to \R is called a kernel on \matchal X if there exists a Hilbert space \matchal H and a map \Psi : \matchal X \to \matchal H such that:
+
+k(k,k') = <\Psi(x), \Psi(x')> \forall x,x' in \matchal X
+
+_Intuition:_ a kernel is a function that takes two points and returns a number. That number is an inner product taken in some other space. <br/>In particular, the raw inputs from the set 1matchal X can be anything _(vectors, text, graphs, etc.)_; there's a feature map \Psi \matchal X \to \matchal H that maps each input into a Hilbert space \matchal X where an inner product is defined.
+
+_Note that "kernel" terminology is totally unrelated to the kernel in linear algebra!_
+
+<b>Lemma (necessary and sufficient condition to be a kernel)</b>
+
+A function k: \matchal X \times \matchal X \to R is a kernel if and only if it is <b>symmetric and positive semidefinite</b>, i.e.
+
+\sum_i=1^n \um_j=1^n a_i a_j k (x_i, x_j)\ge 0
+
+We now provide some examples of kernel functions on R^d:
+- <b>linear kernel</b> k(x,x') = <x, x'>
+- <b>polynomial kernel</b> k(x,x') = (<z,x'>+c)^è \forall p in N and c \in R+
+- <b>Gaussian kernel</b> k(x,x') = exp(- || x- x'||_2^2 / \gamma^2) \forall \gamma > 0
+- <b>compactly supported radial basis kernel</b> k(x,x') = max{1- ||x - x'||_2, 0}^p for p > d/2
+
+_In general,_ kernels of the form k(x,x') = \Psi(|| x-x'||_2 ) for \Pshi : R_+ \to E are called <b>radial basis function kernels</b>. _Moreover,_ a scaling factor \gamma such that k_gamma (x,x') = \Psi(|| x-x'||_2 / \gamma) is called the <b>bandwidth</b>.
+
+---
+
+<br/>
+<b>Reproducing Kernel Hilbert Spaces</b>
+
+Let $\mathcal{H}$ be a Hilbert space of functions $f: \mathcal{X} \to \mathbb{R}$. Then $\mathcal{H}$ is a <b>reproducing kernel Hilbert space (RKHS)</b> if $\delta_x: \mathcal{H} \to \mathbb{R}$, given by $\delta_x(f) = f(x)$, is <b>continuous</b> for all $x \in \mathcal{X}$.
+
+Furthermore, a function $k: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is a <b>reproducing kernel</b> of $\mathcal{H}$ if:
+- it is a member of the space: $k(x, \cdot) \in \mathcal{H}$ for all $x \in \mathcal{X}$
+- it satisfies the <b>reproducing property</b>: $f(x) = \langle f, k(x, \cdot)\rangle$ for all $f \in \mathcal{H}$ and $x \in \mathcal{X}$
+
+If this function $k$ exists, we call $\Psi: \mathcal{X} \to \mathcal{H}$, given by $\Psi(x) = k(x, \cdot)$, the <b>canonical feature map</b>.
+
+_Intuition: a RKHS is a space of functions wqhere evaluating a function at a point is a <b>well behaved operation</b>, i.e. for each fixed x, f(x) cannot change wile the function norms stays norm.<br/> _As a consequence,_ we have the reproducibilty property: we can reover a function value at x vy raking an inner produt with a special fuction associated with x.
+
+_So,_ an RKHS is a function space with a norm and inner product that make pointwise evaluation possible through a kernel.
+
+<b>Theorem (Reproducing Kernel Hilbert Spaces)</b>
+- If $\mathcal{H}$ has a reproducing kernel $k$, then $\mathcal{H}$ is an RKHS
+- every RKHS has a unique reproducing kernel $k$
+- for every kernel $k$, there exists a unique RKHS having $k$ as its reproducing kernel.
+<br/>
+---
+<br/>
+<b>RKHS Learning: the Kernel Trick</b>
+
+Let $\mathcal{X}$ be a non-empty set. For given data $(x_1, y_1), \ldots, (x_m, y_m) \in \mathcal{X} \times \mathbb{R}$, we want to solve the learning problem over an RKHS $\mathcal{H}$:
+
+$\displaystyle \min_{f \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} \ell(f(x_i), y_i) + \lambda \|f\|_{\mathcal{H}}^2$
+
+<b>Representer Theorem</b>
+
+Let $\ell: \mathbb{R} \times \mathbb{R} \to [0, +\infty]$ be a continuous function in its first argument, and let $\mathcal{H}$ be the RKHS of a kernel $k: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$. Then there is a minimizer $f_m^* \in \mathcal{H}$ of $\inf_{f \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} \ell(f(x_i), y_i) + \lambda \|f\|_{\mathcal{H}}^2$.
+
+This minimizer is of the form, for some $a_1, \ldots, a_m \in \mathbb{R}$:
+
+$f_m^*(x) = \sum_{i=1}^{m} a_i k(x_i, x)$
+
+_Moreover,_ if $\ell$ is convex in its first argument, $f_m^*$ is unique.
+
+_Intuition;_ we can search over every function in a possivbly infnite dimensional space \matchak H, bur the oprimal function can be weitten only using the training examples as defined above. Each function k(x_i, .) is a kernel centered at training input and the coefficients a_i are the weifhts. Therefore, we can solve the learning problem using just kernel evaluations between data point.
+
+Furthermore, we also have the following theorem:
+
+<b>Represent Theorem with Interecpt</b>
+
+Let \matchal l : R \times R \to π[0, \infty] be a continuous function in its first argument and H the RKHS of a kernek k: \matchal X \times \matchal X \to R. Thenm if   $\inf_{f \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} \ell(f(x_i), y_i) + \lambda \|f\|_{\mathcal{H}}^2$ has a solution, it is of the form (f_m^*, b_m^*) where:
+
+f_m^*(x) = \sum_i=1^m a_i k(x_i,x)
+
+<b>Corollary (Kernel Ridge Regression)</b>
+
+Let $\mathcal{H}$ be the RKHS of a kernel $k$. The <b>kernel ridge regression problem</b>
+
+$$
+\inf_{f \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} (f(x_i) - y_i)^2 + \lambda \|f\|_{\mathcal{H}}^2
+$$
+
+has a unique solution given by
+
+$$
+f_m^*(x) = \sum_{i=1}^{m} a_i k(x_i, x),
+\qquad
+a = (K_m + \lambda m I_m)^{-1} y,
+$$
+
+where $K_m \in \mathbb{R}^{m \times m}$ is given by $K_m[i,j] = k(x_i, x_j)$, $I_m$ is the identity matrix, and $y = (y_1, \ldots, y_m)^T$.
+
+<b>Corollary (Kernel Ridge Regression with Intercept)</b>
+
+Let $\mathcal{H}$ be the RKHS of a kernel $k$. The <b>kernel ridge regression problem with an intercept</b>
+
+$$
+\inf_{f \in \mathcal{H},\ b \in \mathbb{R}} \frac{1}{m} \sum_{i=1}^{m} (f(x_i) + b - y_i)^2 + \lambda \|f\|_{\mathcal{H}}^2
+$$
+
+has a unique solution $(f_m^*, b_m^*)$, where
+
+$$
+b_m^* = \frac{\mathbf{1}_m^T (K_m + \lambda m I_m)^{-1} y}{\mathbf{1}_m^T (K_m + \lambda m I_m)^{-1} \mathbf{1}_m},
+\qquad
+f_m^*(x) = \sum_{i=1}^{m} a_i k(x_i, x),
+$$
+
+with
+
+$$
+a = (\lambda m I_m + K_m)^{-1}(y - b_m^* \mathbf{1}_m).
+$$
+
 
 ## <a id="6"><b>6 Neural Networks</b></a>
 
