@@ -1656,13 +1656,17 @@ $$
 
 We now recall that f_w,b = < w, \Psi (x_i)> + b, so we can use the fact that the function space H = {f : R^d \to R such that f = <w, \Phi()> for some w in \mathcal H} is itself a <b>Hilbert space</b> with norm:
 
-|| f||_H = min {|| w |||_\mathcal H : f = <w, \Pshi()>}
+$$
+\|f\|_{\mathcal H}=\min\{\|w\|_{\mathcal H}: f=\langle w,\Phi(\cdot)\rangle_{\mathcal H}\}.
+$$
 
 so the optimization problem becomes:
 
-\min_f,b \frac{1}{m}\sum_i=1^m \matchal l(f(x_i)+b, y_i) + \lakbda || f||_H^2
+$$
+\min_{f,b}\frac{1}{m}\sum_{i=1}^{m}\ell(f(x_i)+b,y_i)+\lambda\|f\|_{\mathcal H}^2.
+$$
 
-_Intuition: we stop optimizing over weights and optimize over functions._ Until now, the unknown was the vector w \in \mathcal H and the classifier was f(x) = <w, \Pshi(x)> + b. But, _in general_, we care about f, not about w, so we parametrize the problem in terms of f by considering that each w gives a function.<br/>Therefore, we can talk in terms of a space of functions that, _in this case,_ is called the <b>reproducing kernel Hilbert space (RKHS)</b> associated with its feature map.
+_Intuition: we stop optimizing over weights and optimize over functions._ Until now, the unknown was the vector $w\in\mathcal H$ and the classifier was $f(x)=\langle w,\Phi(x)\rangle+b$. But, _in general_, we care about $f$, not about $w$, so we parametrize the problem in terms of $f$ by considering that each $w$ gives a function.<br/>Therefore, we can talk in terms of a space of functions that, _in this case,_ is called the <b>reproducing kernel Hilbert space (RKHS)</b> associated with its feature map.
 
 ---
 <br/>
@@ -1678,18 +1682,29 @@ In this setting, we also notice that the model is not linear in the original spa
 
 The optimization problem for Tube-SVR, assuming \epsilon \ge 0 is fixed and represents the \epsilon-tube in which prediction errors incur no penalty and/or the noise the model tolerates, is:
 
-\min_w,b, \csi_i qin \mathcla H x R x R^m <w, w> + C \sum_i=1^m \csi _i \\
-s.t. | y_i - <w, Psi (x_i)> - b | \le \epsilon + \csi_i, \csi_i \ge 0
+$$
+\min_{w,b,\xi\in\mathcal H\times\mathbb R\times\mathbb R^m}
+\|w\|_{\mathcal H}^2+C\sum_{i=1}^{m}\xi_i
+$$
+subject to
+$$
+|y_i-\langle w,\Phi(x_i)\rangle_{\mathcal H}-b|
+\leq\epsilon+\xi_i,\qquad \xi_i\geq 0.
+$$
 
-where <w,w> = || w||^2 is the <b>regularizer</b>, since small ||w|| implies a flat and smooth function that is less sensitive to input changes and therefore less prone to overfitting _(same role as the margin term in the SVM)_. \csi_i are the <b>slack variables</b> and they measure how far each point falls outside the tube. Then, the term C \sum \csi_i penalizes the total slack _(again: with large C, errors are expensive, so the model fits tightly, increasing the risk of overfitting)_.
+where $\langle w,w\rangle_{\mathcal H}=\|w\|_{\mathcal H}^2$ is the <b>regularizer</b>, since small $\|w\|_{\mathcal H}$ implies a flat and smooth function that is less sensitive to input changes and therefore less prone to overfitting _(same role as the margin term in the SVM)_. $\xi_i$ are the <b>slack variables</b> and they measure how far each point falls outside the tube. Then, the term $C\sum_{i=1}^{m}\xi_i$ penalizes the total slack _(again: with large C, errors are expensive, so the model fits tightly, increasing the risk of overfitting)_.
 
-_Similarly_ to classification, if we substitute the optimal slack \csi _i = max(0, |y_i - f(x_i)- b |- \epilon|, we can rewrite the optimization problem in H = {f : f = <w, Pshi()>} as:
+_Similarly_ to classification, if we substitute the optimal slack $\xi_i = \max\{0, |y_i - f(x_i)-b|-\epsilon\}$, we can rewrite the optimization problem in $\mathcal H = \{f : f = \langle w, \Phi(\cdot)\rangle \text{ for some } w\in\mathcal H\}$ as:
 
-min_f,b \in \matchal H x R \frac{1}{m}\matchal l_\epsilon (f(x_i) + b, y_i) + \lambda || f ||_H^2
+$$
+\min_{f,b\in\mathcal H\times\mathbb R}
+\frac{1}{m}\sum_{i=1}^{m}\ell_\epsilon(f(x_i)+b,y_i)
+\lambda\|f\|_{\mathcal H}^2.
+$$
 
-where \matchal l_epsilon is now the \epsilon-insensitive loss function, defined as \matchal l_epsilon (y, y') = \max {0, | y - y'| - \epsilon}, which is "insensitive" since it produces zero loss for errors smaller than \epsilon.
+where $\ell_\epsilon$ is now the $\epsilon$-insensitive loss function, defined as $\ell_\epsilon(y,y')=\max\{0,|y-y'|-\epsilon\}$, which is "insensitive" since it produces zero loss for errors smaller than $\epsilon$.
 
-Note that the _user-friendly_ square loss \martchal l(y,y') = (y - y')^2 is a very popular choice for SVR.
+Note that the _user-friendly_ square loss $\ell(y,y')=(y-y')^2$ is a very popular choice for SVR.
 
 _Example: in the following graph, we can nicely see SVR for \Psi(x) = x
 
@@ -1704,31 +1719,37 @@ The previous discussion was _veeeeery_ theoretical in the following ways:
 - how should we choose the Hilbert space?
 - what is the resulting function space H?
 
-The <b>kernel trick</b> makes it possible to work directly with a <b>kernel function</b> without explicitly using \Psi, \matchal H, and H.
+The <b>kernel trick</b> makes it possible to work directly with a <b>kernel function</b> without explicitly using $\Psi$, $\mathcal H$, and the feature map.
 
 <b>Definition: Kernel</b>
 
-Let \matchal X be a non-empty set. A function k : \matchal X \times \matchal X \to \R is called a kernel on \matchal X if there exists a Hilbert space \matchal H and a map \Psi : \matchal X \to \matchal H such that:
+Let $\mathcal X$ be a non-empty set. A function $k:\mathcal X\times\mathcal X\to\mathbb R$ is called a kernel on $\mathcal X$ if there exists a Hilbert space $\mathcal H$ and a map $\Psi:\mathcal X\to\mathcal H$ such that:
 
-k(k,k') = <\Psi(x), \Psi(x')> \forall x,x' in \matchal X
+$$
+k(x,x')=\langle\Psi(x),\Psi(x')\rangle
+\qquad\forall x,x'\in\mathcal X.
+$$
 
-_Intuition:_ a kernel is a function that takes two points and returns a number. That number is an inner product taken in some other space. <br/>In particular, the raw inputs from the set 1matchal X can be anything _(vectors, text, graphs, etc.)_; there's a feature map \Psi \matchal X \to \matchal H that maps each input into a Hilbert space \matchal X where an inner product is defined.
+_Intuition:_ a kernel is a function that takes two points and returns a number. That number is an inner product taken in some other space. <br/>In particular, the raw inputs from the set $\mathcal X$ can be anything _(vectors, text, graphs, etc.)_; there's a feature map $\Psi:\mathcal X\to\mathcal H$ that maps each input into a Hilbert space $\mathcal H$ where an inner product is defined.
 
 _Note that "kernel" terminology is totally unrelated to the kernel in linear algebra!_
 
 <b>Lemma (necessary and sufficient condition to be a kernel)</b>
 
-A function k: \matchal X \times \matchal X \to R is a kernel if and only if it is <b>symmetric and positive semidefinite</b>, i.e.
+A function $k:\mathcal X\times\mathcal X\to\mathbb R$ is a kernel if and only if it is <b>symmetric and positive semidefinite</b>, i.e.
 
-\sum_i=1^n \um_j=1^n a_i a_j k (x_i, x_j)\ge 0
+$$
+\sum_{i=1}^{n}\sum_{j=1}^{n}a_i a_j k(x_i,x_j)\geq 0
+\qquad\text{for all }n,\ x_1,\ldots,x_n\in\mathcal X,\ a_1,\ldots,a_n\in\mathbb R.
+$$
 
 We now provide some examples of kernel functions on R^d:
-- <b>linear kernel</b> k(x,x') = <x, x'>
-- <b>polynomial kernel</b> k(x,x') = (<z,x'>+c)^è \forall p in N and c \in R+
-- <b>Gaussian kernel</b> k(x,x') = exp(- || x- x'||_2^2 / \gamma^2) \forall \gamma > 0
-- <b>compactly supported radial basis kernel</b> k(x,x') = max{1- ||x - x'||_2, 0}^p for p > d/2
+- <b>linear kernel</b> $k(x,x')=\langle x,x'\rangle$
+- <b>polynomial kernel</b> $k(x,x')=(\langle x,x'\rangle+c)^p$ for all $p\in\mathbb N$ and $c\in\mathbb R_+$
+- <b>Gaussian kernel</b> $k(x,x')=\exp(-\|x-x'\|_2^2/\gamma^2)$ for all $\gamma>0$
+- <b>compactly supported radial basis kernel</b> $k(x,x')=\max\{1-\|x-x'\|_2,0\}^p$ for $p>d/2$
 
-_In general,_ kernels of the form k(x,x') = \Psi(|| x-x'||_2 ) for \Pshi : R_+ \to E are called <b>radial basis function kernels</b>. _Moreover,_ a scaling factor \gamma such that k_gamma (x,x') = \Psi(|| x-x'||_2 / \gamma) is called the <b>bandwidth</b>.
+_In general,_ kernels of the form $k(x,x')=\Psi(\|x-x'\|_2)$ for $\Psi:\mathbb R_+\to\mathbb R$ are called <b>radial basis function kernels</b>. _Moreover,_ a scaling factor $\gamma$ such that $k_\gamma(x,x')=\Psi(\|x-x'\|_2/\gamma)$ is called the <b>bandwidth</b>.
 
 ---
 
@@ -1776,7 +1797,7 @@ Furthermore, we also have the following theorem:
 
 <b>Represent Theorem with Interecpt</b>
 
-Let \matchal l : R \times R \to π[0, \infty] be a continuous function in its first argument and H the RKHS of a kernek k: \matchal X \times \matchal X \to R. Thenm if   $\inf_{f \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} \ell(f(x_i), y_i) + \lambda \|f\|_{\mathcal{H}}^2$ has a solution, it is of the form (f_m^*, b_m^*) where:
+Let $\ell:\mathbb R\times\mathbb R\to[0,\infty]$ be a continuous function in its first argument and $\mathcal H$ the RKHS of a kernel $k:\mathcal X\times\mathcal X\to\mathbb R$. Then, if $\inf_{f\in\mathcal H}\frac{1}{m}\sum_{i=1}^{m}\ell(f(x_i),y_i)+\lambda\|f\|_{\mathcal H}^2$ has a solution, it is of the form $(f_m^*,b_m^*)$ where:
 
 f_m^*(x) = \sum_i=1^m a_i k(x_i,x)
 
@@ -1814,11 +1835,268 @@ b_m^* = \frac{\mathbf{1}_m^T (K_m + \lambda m I_m)^{-1} y}{\mathbf{1}_m^T (K_m +
 f_m^*(x) = \sum_{i=1}^{m} a_i k(x_i, x),
 $$
 
-with
-
 $$
 a = (\lambda m I_m + K_m)^{-1}(y - b_m^* \mathbf{1}_m).
 $$
+
+---
+
+<br/>
+<b>Numerical Methods</b>
+
+We start by noticing that the <b>square loss</b> admits close-form solutions, so common implementation include the <b>sklearn package</b>in opython _(sklearn.kernel_ridge.KernelRidge)_. This is computationally efficient but memory requirements are <b>quadratric in the dataset</b> and usually coefficients are non zero _(no sparsity)_.
+
+'''python
+
+from sklearn.kernel_ridge import KernelRidge
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+
+# A small nonlinear dataset
+rng = np.random.default_rng(42)
+X = np.linspace(-3, 3, 120).reshape(-1, 1)
+y = np.sin(X[:, 0]) + rng.normal(0, 0.1, size=len(X))
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+model = KernelRidge(kernel="rbf", alpha=0.1, gamma=0.5)
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+
+'''
+
+For <b>binary classification with the hinge loss</b>, $\ell(y,y') = \max\{0, 1 - yy'\}$, the <b>Sequential Minimal Optimization (SMO)</b> algorithm is usually used. SMO is a form of coordinate descent, where, at each step, two indices $(i_1, i_2)$ are chosen and we optimize only over $(a_{i_1}, a_{i_2})$. _Generally speaking,_ SMO belongs to a class of algorithms that are based on solving <b>simpler sub-problems</b>, called decomposition methods, chunking, or subset selection.
+Notice that, _for large datasets,_ many $a_i$ may simply be equal to $0$, so we have a sparse solution.
+For implementing SMO, again the scikit-learn package _(sklearn.svm.SVC)_ is very common.
+
+'''python
+from sklearn.datasets import make_moons
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+
+X, y = make_moons(n_samples=500, noise=0.25, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42, stratify=y
+)
+
+model = make_pipeline(
+    StandardScaler(),
+    SVC(kernel="rbf", C=1.0, gamma="scale"),
+)
+model.fit(X_train, y_train)
+
+predictions = model.predict(X_test)
+svc = model[-1]
+'''
+
+For the $\epsilon$-insensitive loss $\ell_\epsilon(y,y') = \max\{0, |y-y'|-\epsilon\}$, we can apply a variant of the SMO algorithm to general regression problems using the same scikit-learn package. In this case, the model treats outliers more robustly and produces a sparse solution.
+
+_However, unlike squared-error kernel ridge regression,_ $\epsilon$-SVR doesn’t have a simple linear solution: its loss function has corners and is <b>not differentiable</b> at the band’s edges, so it uses an optimization algorithm. The problem is still convex and tractable: non-differentiability just means there’s no ordinary smooth-loss formula to solve it directly.
+
+'''python
+import numpy as np
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVR
+
+rng = np.random.default_rng(42)
+X = np.linspace(-3, 3, 160).reshape(-1, 1)
+y = np.sin(1.5 * X[:, 0]) + rng.normal(0, 0.08, size=len(X))
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# Simulate one unusually noisy training observation.
+y_train = y_train.copy()
+y_train[0] += 2.0
+
+model = make_pipeline(
+    StandardScaler(),
+    SVR(kernel="rbf", C=1.0, epsilon=0.15, gamma="scale"),
+)
+model.fit(X_train, y_train)
+predictions = model.predict(X_test)
+
+'''
+
+<br/>
+---
+<br/>
+<b>SMO Algorithm for Binary Classification</b>
+
+
+For $\ell(y,y') = \max\{0, 1 - yy'\}$ the <b>empirical RKHS problem with intercept</b> is:
+
+$$
+\min_{\substack{a \in \mathbb{R}^m,\ \xi \in \mathbb{R}^m,\ b \in \mathbb{R}}}
+\|f_a\|_{\mathcal H}^2 + C\sum_{i=1}^{m}\xi_i
+$$
+
+s.t. $y_i(f_a(x_i) + b) \ge 1 - \xi_i,\qquad \xi_i \ge 0$.
+
+The <b>Lagrangian </b> is:
+
+$$
+\min_{a,\xi,b}\max_{\eta,w \ge 0}
+\mathcal{L}
+= \|f_a\|_{\mathcal H}^2
++ C\sum_{i=1}^{m}\xi_i
+- \sum_{i=1}^{m}\eta_i\xi_i
+- \sum_{i=1}^{m}w_i\bigl(y_i(f_a(x_i)+b)-1+\xi_i\bigr).
+$$
+
+if we apply the _First Order Conditions_ with respect to a, $\xi$ and b, we end up with the <b>dual formulation (quadratic program with box constraint)</b>:
+
+$$
+\max_{w \in [0,C]^m}
+\left\{
+\sum_{i=1}^{m}w_i
+- \frac{1}{4}\sum_{i=1}^{m}\sum_{j=1}^{m}
+w_iw_jy_iy_jk(x_i,x_j)
+\right\}
+\quad\text{subject to}\quad
+\sum_{i=1}^{m}w_iy_i=0.
+$$
+
+_If we go bac to the optimization problem,_ we notice that the objective wans to keep the boundary simple by penzliaing more complex functions ($\|f_a\|_{\mathcal H}^2$ and penalized margin violations ($C\sum_{i=1}^{m}\xi_i$)). In this context, the Lagrangian attaches a weight_i to each margin constraint. In the dual form, the opriization works with the weights and the pairwise kernel similarities ($k(x_i,x_j)=\langle\Phi(x_i),\Phi(x_j)\rangle$) instead of directly with the optrimizing functoin.
+
+
+
+<b>SMO Algorithm from Platt, 1998</b>
+
+Note that the following algorithm comes from the paper <a href="https://www.researchgate.net/publication/2624239_Sequential_Minimal_Optimization_A_Fast_Algorithm_for_Training_Support_Vector_Machines" target="_blank">Sequential Minimal Optimization: A Fast Algorithm for Training Support Vector Machines</a>, written by Platt (Google) in 1998. The idea is that, _instead of optimizing for all coefficients $w_1,\ldots,w_m$,_ the algorithm can repeatedly:
+- selects two coefficients
+- optimizes only over those coefficients while keeping the constraints valid
+- updates the model and repeats until convergence
+
+This comes from the fact that the dual SVM problem has _many variables_, one for each training point, so solving all of them at once can be very expensive.
+
+_Technically speaking_:
+- we initialize $w_1^{(0)} = w_2^{(0)} = \cdots = w_m^{(0)} = 0$
+- we iterate $j = 1,2,\ldots$ until the convergence criterion is satisfied _(for example, if the KKT conditions are approximately satisfied)_:
+    - choose indices $i_1, i_2 \in \{1,\ldots,m\}$ with $i_1 \neq i_2$ according to a given rule or heuristic
+    - set $w_i^{(j)} = w_i^{(j-1)}$ for $i \notin \{i_1, i_2\}$
+    - set the (w_i1^(j), w_i2^(j)) = argmax V((w_j^j))_i \in {1...m}/{i_1,i_2}
+    - update according to the first-order conditions
+- the output is the <b>optimal function</b> f_a = \sum_i=1?m w_i^j y_i k(x_i, .)/2 + b where the term w_i y_i / 2 follows from the FOC.
+
+<br/>
+---
+<br/>
+Numerical Approaches: Large-Scale Methods for Square Loss</b>
+
+_Again,_ we recall that analytical solutions for the square loss are <b>not feasible for large data sets</b>. So we propose some approaches to fix this limitation.
+
+We start with the <b>feature selection / random feature method</b>, whose basic idea is to select a subset $I \subset \{1,\ldots,m\}$, with $|I| < m$, where the selected points are called <b>landmarks (inducing points)</b>, and derive an estimator of the form:
+
+$$
+\hat f(x) = \sum_{i\in I} a_i k(x_i,x).
+$$
+
+_Intuition: many training points can be redundant, and a carefully chosen subset can represent most of the important structure in the full kernel matrix._
+
+_Note that_ methods differ in how they choose the set $I$. For example, using the <a href="https://papers.nips.cc/paper_files/paper/2000/hash/19de10adbaa1b2ee13f77f679fa1483a-Abstract.html" target="_blank">Nyström method</a>, we choose a subset of rows and columns from the full kernel matrix by setting:
+- $I$: selected landmark indices
+- $C = K_{:,I}$: similarities between all points and the landmarks
+- $W = K_{I,I}$: similarities among the landmarks
+
+so we can approximate the full matrix as
+$$
+K \approx C W^\dagger C^T,
+$$
+where $W^\dagger$ is the <b>pseudoinverse</b> of $W$.
+
+
+_Secondly,_ we can opt for <b>preconditioning methods</b>. A popular method is called <b>FALKON</b> and tries to find suitable $B$ and $z$ such that:
+
+BB^T = A^-1, B^TABz = B^T
+
+then a = B is a solution of Aa = y for A = (K_m + \lambda m I_m) is the closed form solution of the above corollary
+
+_However,_ note that constructing B precisely can be constly, so we can indeas look for B such taht BB^T \approx A^-1 _(using againa random feature mtho likd Nystrom approximation)_.
+
+---
+<br/>
+<b>Function approximation with RKHS</b>
+
+<b>Definition: universal kernel</b>
+
+Let $k:\mathcal X\times\mathcal X\to\mathbb R$ be a kernel on a topological space $\mathcal X$. We say that its RKHS $\mathcal H$ _(or, equivalently, $k$)_ is <b>universal</b> if $\mathcal H$ is dense in the set of all continuous functions $f:\mathcal X\to\mathbb R$ with respect to the sup norm, i.e. _for every continuous function_ $f:\mathcal X\to\mathbb R$ and $\epsilon>0$, there exists $h\in\mathcal H$ such that:
+
+$$
+\|f-h\|_\infty\leq\epsilon.
+$$
+
+_Intuition:_ a universal kernel is a kernel whose RKHS $\mathcal H$ is expressive enough to approximate any continuous function on the input space $\mathcal X$, where
+$$
+\|f-h\|_\infty=\sup_{x\in\mathcal X}|f(x)-h(x)|
+$$
+is the largest approximation error and $h\in\mathcal H$ is a function produced by the kernel model.
+
+To better understand it, consider $f$ to be an arbitrary smooth curve and $h$ to be the hidden prediction function learned using the kernel. If the kernel is universal, given enough suitable kernel functions with appropriate coefficients, we can make $h$ _uniformly close_ to $f$. In this case, the RKHS may contain _infinitely many_ functions, but it does not necessarily contain $f$. _(You can think of this as analogous to polynomial approximation: polynomials may not be equal to every continuous function, but on a compact interval they can approximate every continuous function.)_
+
+We then consider $\mathcal X$ a compact subset of $\mathbb R^d$, so we have that the following examples are universal kernels:
+- <b>exponential kernel</b>: $k(x,x')=\exp(\gamma\langle x,x'\rangle)$ for $\gamma>0$
+- <b>Gaussian kernel</b>: $k(x,x')=\exp(-\gamma\|x-x'\|_2^2)$ for $\gamma>0$
+- <b>binomial kernel</b>: $k(x,x')=(1-\langle x,x'\rangle)^{-\alpha}$ for $\alpha>0$
+
+<br/>
+<b>Function approximation with RKHS: Sample efficiency</b>
+
+ Consider a Gaussian kernel _(other smooth universal kernels would also work)_ and $\ell(y,y')=(y-y')^2$.
+
+ <b>Theorem: Worst-Case Learning Rate for Kernel Regression</b>
+
+ Let $\rho$ be "sufficiently smooth" and the optimal regression function $\bar f$ be $s$-times continuously differentiable. <br/>
+ Let $(X_i,Y_i)_{i=1}^{\infty}$ be i.i.d. such that $(X_i,Y_i)\sim\rho$.<br/>
+ Let $\hat f_m$ be the optimal kernel regression function for data $(X_i,Y_i)_{i=1}^{m}$ and $\lambda_m=m^{-d/(2s+d)}$. <br/>
+ Then there exists $C>0$ such that:
+
+ $$
+ \lim_{m\to\infty}
+ \mathbb P\left(
+ \|\hat f_m-\bar f\|_{L^2(\rho_X)}
+ \geq C m^{-s/(2s+d)}
+ \right)=0.
+ $$
+
+ _Intuition:_ the error is roughly of order $m^{-s/(2s+d)}$, so the error decreases polynomially with the amount of data and the exponent determines how quickly this happens. Furthermore, the parameter $s$ describes the regularity of the true regression function _(small $s$: the function can vary sharply; large $s$: the function is smoother and easier to approximate)_, so the rate gets faster as $s$ increases. _On the other hand,_ the rate gets slower as $d$ increases _(curse of dimensionality)_.
+
+ <b>Theorem: Minimax Lower Rates of Convergence</b>
+
+ Let $\{\rho_\theta:\theta\in\Theta\}$ be a sufficiently rich family of smooth measures. <br/>Then, there exists $c>0$ such that:
+
+ $$
+ \lim_{m\to\infty}\inf_{\hat T_m}\sup_{\theta\in\Theta}
+ \mathbb P\left(
+ \|\hat T_m-\bar f_\theta\|_{L^2(\rho_X)}
+ > c m^{-s/(2s+d)}
+ \right)=1.
+ $$
+
+ where $\bar f_\theta$ is the optimal least-squares regression function for $\rho_\theta$.
+
+ _Intuition:_ the previous theorem says kernel regression can achieve the specified rate; the minimax theorem says that no method can generally do better over the whole problem class. Therefore, the rate is called <b>minimax-optimal</b>.
+
+..._To sum up, we have seen that:_
+- kernel functions are <b>analytically</b> and <b>numerically</b> tractable
+- under suitable smoothness and distribution assumptions, kernel regression achieves the best possible worst-case learning rate, up to constants.
+
+
+However, we've also seen some problems:
+- for kernel methods, the number of parameters ($a_1,\ldots,a_m$) grows with the number of data points
+- the kernel must be chosen from the start and affects solution quality
+- even though learning rates of kernel methods are optimal _in general_, in some specific situations other learning methods can adapt to the structure of the data better than kernel methods.
+
 
 
 ## <a id="6"><b>6 Neural Networks</b></a>

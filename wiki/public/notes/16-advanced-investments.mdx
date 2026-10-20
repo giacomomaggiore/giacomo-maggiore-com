@@ -749,6 +749,291 @@ Once we selected the selection method, note that these can be implemented in thr
 - <b>long portfolio with a hedge for market risk</b>, where the hedge is implemented using futures, so the return of each period is given by:
     + the return of the long portfolio
     - the hedge ratio times the percentage price change of futures
+<br/>
 
-    <br/>
-    <b>Combining strategies</b>
+<b>Combining strategies</b>
+
+Individual strategies do not work all the time, so it can be useful to manage assets using multiple strategies. In this case, _instead of running portfolio optimization to allocate funds, it is often more useful to have heuristics since they are usually more robust._
+
+When combining strategies, alpha and the factor exposure for the overall portfolio are the weighted averages of the underlying strategies. However, for the Sharpe ratio, we cannot say the same.
+
+Suppose _for example_ we want to run a <b>mean-variance portfolio optimization</b>; let $\mu$ be the vector of expected returns and $\Sigma$ the covariance matrix. Then the <b>tangency portfolio</b> is:
+
+q = \frac{\Sigma^1 (\mu - R_f \ind)}{\ind' \Sigma'-1 (\mu - R_f \ind)} = \frac{\sigma?-1(\mu - R_f \ind)}{B- AR_f}
+
+with A = \ind' \SIgma-1 and B = \ind ' \sigm^-1 \mu.
+
+In this case, the Sharpe ratio will be:
+
+\bar R = \frac{\mu_p - R_f}{\signa_p} = \sqrt((\mu - R_f \ind)'\Sigma^-1 (\mu - R_f \ind))
+
+_However,_ suppose now that we do NOT trust the estimates of expected returns. Then the candidate portfolio would be the <b>risky-asset-only global minimum variance</b>, defined by:
+
+w = \frac{\Sigma^-1 \ind}[\ind' \sigma^-\ \ind] = \frac{\sigma^1 \ind}{A}
+
+\mu_p = w'\mu = B / A
+\sigma_p^2 = wì \sigma w = 1 / A
+
+\SR_p = \frac{B - AR_f}{\sqrtA}
+
+We also introduce the <b>risk parity</b> portfolio, with weights according to the inverse of their volatility, so we have:
+
+w_i = \frac{1/ \sigma_i}{\sim_n=1^R 1 / \sigma_n}
+
+If we let $\rho_{mn}$ be the <b>pairwise correlation</b> between $m$ and $n$, expected returns and variance are:
+
+\nu_p = \frac{\sum_n=1^N \un / \digma_n}{\sum_n=1^N 1 / \simga_n}
+
+\sigma_p^2 = \frac[N + \sum_n=1^N \sum_m\neq n \rho _mn]{\sum_n=1^N 1 /  \sigma_n)^2} = \frac{ N + N ( N -1)\rho_mn}{\sum_n=1^N 1 / \sigma_n}
+
+that results in the sharpe ratio of:
+
+SR_P = \sqrt (\frac{N}{1 + (N-1)\ \bar rho}) \frac{\sum_n=1^N \fracé\u_n - R_f}{\sigma_n}{N}
+
+_Lastly,_ for the <b>equally weighted portfolio</b>, w = 1 / N and we have the following
+
+\mu_p = \bar u
+
+\sigma_p^2 = \frac{\bar \sigma^p}{N} + \frac{N-1}{N}\bar \sigma,
+
+\bar \sigma_p^2 = \frzc{\sum_n=1^N \sigma_n^2}{N}
+
+SR_p \approx = \sqrt \frac{N}{1 + (N-1)\bar rho} \frac{{\bar u - R_f}{\sqrt (\bar \sigma^2)}}
+
+From these four expressions, we can compute the portfolios and the Sharpe ratio from different approaches:
+- if the Sharpe ratios do _NOT_ differ, it is advisable to go for an <b>equally weighted</b> portfolio;
+- if they do, <b>tilting the portfolio</b> toward weights recommended by other approaches can be justified;
+- _empirically,_ <b>risk-parity</b> portfolios tend to be more robust
+- if the tangency portfolio recommends shorting a strategy, we should <b>drop it</b> _(this typically happens if it is highly correlated with another one but has a lower expected return per unit of risk)._
+
+_(Note that we could also look at skewness and worst return, as the Sharpe ratio does not cover everything.)_
+
+---
+<br/>
+<b>Implementation Issues</b>
+
+Some common aspects to consider for implementation:
+- are the instruments <b>accessible</b>?
+- is there any minimum number of transactions required, what are the trading hours, in which currencies do assets trade, and are they OTC?
+- are the positions subject to counterparty risk?
+- commissions, spreads, taxes
+- are instruments always available or substitutable?
+- when should we buy? at open, close, or during the market session?
+
+_In general,_ with strategies with lower turnover, the exact time of the transaction should not be critical. _On the other hand,_ for high-turnover strategies, it is important to know when you trade, _especially_ because many exchanges have special rules for trading at the open/close time, and prices at these times are usually more volatile.
+
+<b>Leverage Constraints and Problems with Short Positions</b>
+
+If the strategy uses <b>leverage</b>, it is important to make sure that the strategy can obtain it and <b>account for its cost</b> _(there's no free lunch!)_
+
+The amount of leverage is usually driven by regulation, standards, and the broker, but usually we have:
+- for stock/bond positions, you usually get up to 2:1 total
+- for futures positions, it depends on the margin requirements and is usually larger
+- for long option positions, it is generally hard to get leverage on top
+- for short option positions, margin requirements may exceed the contract's value _(especially for OTM options)_
+- for OTC derivatives, each bank/broker has its own rules
+
+Particular issues arise if the strategy uses <b>short positions</b> in securities, since in order to short a security and hold it overnight, we need to borrow it:
+- usually, banks/brokers have inventory that they lend for a fee, which is larger if many people want to short at the same time;
+- whenever you borrow a security, the lender can request it to be returned. In this case, the bank/broker has to borrow it from someone else, but if they cannot, they can also recall your security, and this will force you to close the position;
+- additional risk arises when regulators impose <b>short-selling bans</b> when a security drops sharply in value over a short period. _In this case,_ existing short positions are usually _grandfathered_, but you cannot open new ones.
+
+Because of these problems, when we analyze a long-short strategy, we may:
+- investigate the profitability of the short and long legs separately;
+- consider alternatives to shorting.
+
+_Conceptually,_ the short leg of a strategy can improve performance in two ways:
+- selection of securities that we expect to drop in value;
+- reduction of market risk.
+
+_In particular,_ a well-functioning approach works as follows:
+- we compute the performance statistics of:
+    - the full long-short strategy;
+    - a strategy involving only the long leg;
+    - a strategy involving only the short leg;
+    - a strategy involving the long leg and shorting the index futures.
+- if the long-only strategy has the best performance, $\implies$ we ignore shorting;
+- if the strategy with index futures is close in performance to the full long-only strategy, $\implies$ we use the strategy with futures;
+- if the strategy using index futures is _significantly_ worse than the full long-only strategy, the full long-only strategy is then preferred, as long as it has a realistic implementation:
+    - in this case, you may try to get a sense of whether you could encounter problems borrowing;
+    - if this could be a problem, we can synthesize shorting in different ways:
+        - by using options (long put, short call), but be aware of liquidity and transaction costs;
+        - by selling futures and buying all the index members that we do not want to short;
+        - by shorting ETFs or buying short ETFs in which the stocks we want to short have a large weight.
+
+<b>Use of Levered and Inverse ETF</b>
+
+If you want to know a but more of leveraged ETF and focusing on some technicalities... well, I have written something <a href="https://giacomomaggiore.com/blog/10-leveraged-etf" target="_blank">here con my blog/a>.
+ 
+We now go back to the graph showing the returns on three ETFs around the 2007-2008 financial crisis:
+- IYF (1X long the Dow Jones U.S. Financial Sector Index)
+- UYG (Ultra Financials, 2X long)
+-  SKF (Ultrashort Financials, 2X short)
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/lev-etf.png)
+</div>
+
+We _immediatey notice_ that over the 2-year considered, IYF resultes in a 50% loss, SKF didnt reac 100% again, so still signing a loss. _As we can see then,_ both the leveraged long and the levered short ETFs aere worth <b>less than the underlying</b> at the end of the period. The cause root is the considered ETfs are <b>rebalanced dynamically on a daily basis</b>, so, _at the end of the day when underlying indec price went up;_
+- the levered ETF has to increase its position to keep the leverage ratio costant 
+- the short ETD reduces it short position 
+
+_So,_ levered and inverse ETDs tend to do well in <b>trending markets</b> and do <b>poorly </b> in markets with reversals.
+
+
+Assume for example a 2x-levered ETF _(rebalanced daily)_ investing in a index and assume that the ETFs and the underlyin index are bboth worth 100 at t = 0. Then assume that in t = 1 the index goes upby 10 % and the, in t = 2, it either rises another 10% or reverts to 100.
+
+| Period | $t = 0$ | $t = 1$ | \multicolumn{2}{c}{$t = 2$} |
+| --- | ---: | ---: | ---: | ---: |
+|  |  |  | Continuation | Reversal |
+| **Index** | 100 | 110 | 121 | 100 |
+| **ETF Index Position** | 200 | 220 | 264 | 218.2 |
+| **ETF Value** | 100 | 120 | 144 | 98.2 |
+| **Required ETF Index Position** | 200 | 240 | 288 | 196.4 |
+| **Required ETF Trade** | — | Buy 20 | Buy 24 | Sell 21.8 |
+| **Required ETF Borrowing** | 100 | 120 | 144 | 98.2 |
+
+_More generally,_ the rable summarizes the <b>expected gross return</b> from an 1-ye investments for each ETF, depending on daily return autororrelation \rho.
+
+| Autocorrelation | \multicolumn{3}{c}{Long ETFs} | \multicolumn{3}{c}{Short ETFs} |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+|  | 1X | 2X | 3X | 1X | 2X | 3X |
+| $\rho = -0.25$ | 1.0423 | 1.0692 | 1.0797 | 0.9443 | 0.8777 | 0.8029 |
+| $\rho = 0$ | 1.0510 | 1.1045 | 1.1607 | 0.9515 | 0.9053 | 0.8615 |
+| $\rho = 0.25$ | 1.0647 | 1.1637 | 1.3055 | 0.9643 | 0.9547 | 0.9703 |
+
+In general, leveraged ETFs perform poorly when volatility is high because of <b>volatility drag.</b> We can approximate the annualized continuously compounded return of a leveraged ETF with leverage 
+
+g 
+L
+​
+ ≈Lμ− 
+2
+1
+​
+ L 
+2
+ σ 
+2
+ ,
+ where 
+μ
+μ is the underlying asset's average return and 
+σ
+2
+σ 
+2
+  is the variance of its returns. _Therefore,_ the approximate annualized simple return is:
+
+R
+L
+≈
+exp
+⁡
+(
+L
+μ
+−
+1
+2
+L
+2
+σ
+2
+)
+−
+1.
+R 
+L
+​
+ ≈exp(Lμ− 
+2
+1
+​
+ L 
+2
+ σ 
+2
+ )−1.
+
+ For small returns:
+
+log
+⁡
+(
+1
++
+L
+R
+t
+)
+≈
+L
+R
+t
+−
+1
+2
+L
+2
+R
+t
+2
+.
+log(1+LR 
+t
+​
+ )≈LR 
+t
+​
+ − 
+2
+1
+​
+ L 
+2
+ R 
+t
+2
+​
+ .
+Taking averages gives:
+
+E
+[
+log
+⁡
+(
+1
++
+L
+R
+t
+)
+]
+≈
+L
+μ
+−
+1
+2
+L
+2
+σ
+2
+.
+E[log(1+LR 
+t
+​
+ )]≈Lμ− 
+2
+1
+​
+ L 
+2
+ σ 
+2
+ .
+The second term is the volatility drag. It is negative and increases with the square of the leverage.
+
+_Hence,_ levered or short ETF requires adjusting the size of the ETF positions used to undo the effect of the dyamic rebalancing inside the ETD _(but of course you don't need to reblanace if you backtest the strategy already while sing levered/short ETD._)
