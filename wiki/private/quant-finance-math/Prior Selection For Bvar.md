@@ -309,7 +309,7 @@ To illustrate this point, consider a much simplified version of our model, that 
 Given the good forecasting performance of our inference-based methodology for choosing the hyperparameters (as good as that of factor models), a section discussing the relative performance of alternative methods seems warranted. However, formal alternatives to the marginal likelihood are absent in the literature. For instance, the Bayesian or the Akaike information criteria cannot be adopted because their penalization for model complexity involves only the number of parameters and does not depend on the value of the hyperparameters. As a consequence, both of these criteria would favor models with loose priors that maximize the model in-sample fit.
 
 Figure 1<sub>.—</sub>Posterior Distribution of the Hyperparameter Governing the Standard Deviation of the Minnesota Prior  
-![](images/cc4f71212accdc5414357e83baf829efc8f80880fc80df43e8898ee56afc54cc.jpg)
+![](cc4f71212accdc5414357e83baf829efc8f80880fc80df43e8898ee56afc54cc.jpg)
 
 An informal method to choose the hyperparameters is to maximize the model forecasting performance over a presample, as in Litterman (1980). An alternative possibility is to control for overfitting by targeting a desired in-sample fit, as in Banbura et al. (2010). These heuristic procedures can be interpreted as rough empirical Bayes estimators, and their ad hoc nature might partly explain why Bayesian VARs have encountered a number of opponents, especially among non-Bayesian researchers. These approaches obviously raise a number of questions: What is the right size of the presample and the forecasting horizon? Should we minimize the MSFE or control for the in-sample fit of all the variables or just those of interest? Moreover, these procedures make it hard to conduct inference incorporating hyperparameter uncertainty. Despite these limitations, these are the most popular approaches in the literature, and we have compared them to our methodology.
 
@@ -345,7 +345,7 @@ More specifically, in this section, we perform two exercises. First, we estimate
 <sup>9</sup> The extra-large model is constructed by adding the following thirteen variables to the large VAR: real durable consumption, total housing starts, purchasing managers index (PMI), new orders of consumer goods and materials, real exports, real imports, exports price index, imports price index, unemployment rate, Moody’s AAA corporate bond yields, Moody’s BAA corporate bond yields, business loans, and consumer credit outstanding.
 
 Figure 2.<sub>—</sub>Impulse Responses of Real Variables  
-![](images/737d1156a043db47068ecf4762752689d16752012739e9818c1221af7fba541c.jpg)  
+![](737d1156a043db47068ecf4762752689d16752012739e9818c1221af7fba541c.jpg)  
 The figure reports the 16th, 50th, and 84th percentiles (dashed lines) of the distribution of the impulse response functions of the large BVAR to a 1 standard deviation monetary policy shock. The gray area refers to the corresponding error bands for the flat-prior VAR.
 
 estimated over the entire available sample. The analysis of the effects of monetary policy innovations is widespread in the literature because, among other things, it allows discriminating between competing theoretical models of the economy (Christiano, Eichenbaum, & Evans, 1999). The purpose of this first exercise is to demonstrate that our hierarchical procedure allows us to obtain plausible estimates of impulse response functions even when working with large-scale models, which is not the case for flat-prior VARs. However, we do not have an observable counterpart of these impulse responses in the data that can be used to directly check their accuracy. This motivates our second exercise, a controlled Monte Carlo experiment. In a nutshell, we simulate artificial data sets from a dynamic stochastic general equilibrium (DSGE) model and assess the gains in accuracy for the estimation of impulse responses to monetary policy shocks of our hierarchical procedure over flat-prior VARs.
@@ -353,13 +353,13 @@ estimated over the entire available sample. The analysis of the effects of monet
 Concerning our first exercise, the monetary policy shock is identified using a relatively standard recursive identification scheme, assuming that prices and real activity do not react contemporaneously to the monetary policy shock. The only variables that can react contemporaneously to monetary policy shocks are the financial variables (bond rates and stock prices), the exchange rate, and M2, while the policy rate does not react contemporaneously to financial variables (see Christiano et al., 1999). Figures 2, 3, and 4 report the median and the 16th and 84th percentiles of the posterior distribution of the impulse responses to a monetary policy shock estimated in the large-scale model using the full sample. The distribution of the impulse responses encompasses both uncertainty on the parameters and hyperparameters.
 
 Figure 3.<sub>—</sub>Impulse Responses of Nominal Variables  
-![](images/7242f6631d072c9b352b1a0bb4fc3e64f19a9b94abac81a0e06223b9daa9be35.jpg)  
+![](7242f6631d072c9b352b1a0bb4fc3e64f19a9b94abac81a0e06223b9daa9be35.jpg)  
 The figure reports the 16th, 50th, and 84th percentiles (dashed lines) of the distribution of the impulse response functions of the large BVAR to a 1 standard deviation monetary policy shock. The gray area refers to the corresponding error bands for the flat-prior VAR.
 
 A 1-standard deviation (approximately 60 basis points) exogenous increase in the federal funds rate generates a substantial contraction in GDP, employment, and all other variables related to economic activity. Monetary aggregates also decrease on impact, indicating strong liquidity effects. Moreover, stock prices decline, the exchange rate appreciates, and the yield curve flattens. Prices decrease with a delay. Notice that with the exception of the CPI, the response of prices does not exhibit the so-called price puzzle, that is, a counterintuitive positive response to a monetary contraction, which is instead typical of VARs with small information sets (on this point, see Sims, 1992b; Bernanke, Boivin, & Eliasz, 2005; Banbura et al., 2010).´
 
 Figure 4.<sub>—</sub>Impulse Responses of Financial Variables  
-![](images/acaec02d8325c3479665fc7395073cf520e09ba14b4b969d70c6eca28f4a0140.jpg)  
+![](acaec02d8325c3479665fc7395073cf520e09ba14b4b969d70c6eca28f4a0140.jpg)  
 The figure reports the 16th, 50th, and 84th percentiles (dashed lines) of the distribution of the impulse response functions of the large BVAR to a 1 standard deviation monetary policy shock. The gray area refers to the corresponding error bands for the flat-prior VAR.
 
 For comparison, figures 2, 3, and 4 also report the corresponding quantiles of the distribution of impulse responses of a VAR estimated with flat priors (gray shaded areas). It is evident that these error bands reflect a considerable amount of estimation uncertainty, and their width does not allow any meaningful conclusions about the effects of an exogenous monetary tightening. In addition, even when initially significant, these impulse responses tend to revert to 0 at a very fast pace, a symptom of a possibly severe small-sample bias toward stationarity. These results are all in line with intuition, and hence lend support to our hierarchical procedure. But there is no formal way to assess the accuracy of this estimation since there is no counterpart of these responses directly observable in the data. This is why we now turn to our second exercise.
@@ -367,13 +367,13 @@ For comparison, figures 2, 3, and 4 also report the corresponding quantiles of t
 In our controlled Monte Carlo experiment, we adopt a medium-scale DSGE model to simulate 500 artificial time series of length 200 quarters, for seven macro variables: output (Y), consumption (C), investment (I), hours worked (H), wages (W), prices (P), and the short-term interest rate (R). For each data set, we estimate the impulse responses to a monetary policy shock with our hierarchical BVAR model and a flat-prior VAR and compare these estimates to the true impulse responses of the theoretical model.
 
 Figure 5.<sub>—</sub>Impulse Responses on Simulated Data  
-![](images/316a5d0ee030e8d112eaf9b50fc0e188d34113c42377257015ec2af8fa79eb99.jpg)  
+![](316a5d0ee030e8d112eaf9b50fc0e188d34113c42377257015ec2af8fa79eb99.jpg)  
 The figure reports the impulse responses to a monetary policy shock in the DSGE model used to generate the data and the median across Monte Carlo replications of the BVAR and the VAR impulse responses.
 
 The DSGE that we use to simulate the data is identical to Justiniano, Primiceri, and Tambalotti (2010), with the exception that the behavior of the private sector is predetermined with respect to the monetary policy shock, as in Christiano et al. (2005). This justifies the use of a recursive scheme for the identification of monetary policy shocks in the BVAR and the VAR. Finally, the DSGE is parameterized using the posterior mode of the unknown coefficients, estimated using U.S. data on output growth, consumption growth, investment growth, hours, wage inflation, price inflation, and the federal funds rate, as in Justiniano et al. (2010). This is a good laboratory to study the question at hand since it is well known that this class of medium-scale DSGE models fits the data quite well (Smets & Wouters, 2007).
 
 Figure 6.<sub>—</sub>Ratio of MSE: VAR versus BVAR  
-![](images/9075ebe4e7b312153681a148450bd026daa791748aa720f1f7d49670fdcbbbf8.jpg)
+![](9075ebe4e7b312153681a148450bd026daa791748aa720f1f7d49670fdcbbbf8.jpg)
 
 The figure reports the ratio of the MSE of the VAR over the MSE of the BVAR. Values larger than 1 indicate that the MSE of the VAR is larger than that of the BVAR.
 

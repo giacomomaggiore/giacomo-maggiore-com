@@ -1,0 +1,264 @@
+---
+title: 'Seminar in Computational Finance'
+publishedAt: '2026-10-24'
+summary: ''
+---
+
+The following notes cover the topics discussed at the <b>Seminar of Computational Finance</b> held at ETH Zurich, DMAT by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Josef Teichmann</a>.
+
+_Important remark:_ I do not take any credit for the content of the notes; <b>all credit goes to the professor, the reference papers and so on.</b>
+
+Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">me</a> with any comments, clarifications, or corrections.
+
+_Lastly_, note that the following page reflects my learning journey and not the proper way the seminar was conducted or how people were supposed to follow it: you'll therefore find my deep dives, my interests and how I preferred to study the topic. _Let's go!_
+
+---
+
+## <a id = "0"><b>Introduction: Transportation Marketplace Rate Forecast Using Signature Transform</b></a>
+
+We begin by approaching the paper <a href="https://arxiv.org/pdf/2401.04857" target="_blank">Transportation Marketplace Rate Forecast Using Signature Transform</a>, written by <a href="https://www.math.ucla.edu/people/visiting/haotian.gu" target="_blank">Haotian Gu</a>, <a href="https://ieor.berkeley.edu/people/xin-guo/" target="_blank">Xin Guo</a>, <a href="https://www.informs.org/Recognizing-Excellence/Award-Recipients/Timothy-L.-Jacobs" target="_blank">Timothy L. Jacobs</a>, <a href="https://kaminsky.ieor.berkeley.edu/" target="_blank">Philip Kaminsky</a>, and <a href="https://www.maths.ox.ac.uk/people/xinyu.li" target="_blank">Xinyu Li</a> in December 2024.
+
+In the following section, I try to provide a better understanding and summary of the paper, while still reviewing theoretical foundations.
+
+<b>Introduction: overview of freight marketplace rate and challenges in forecasting</b>
+
+The starting point of the paper is Amazon's key problem in forecasting transportation freight marketplace rates, driven by a lot of factors _(networks of thousands of drivers, shippers of all sizes, seasonal and regular demands, traditional and digital exchanges, local, regional, and national economic factors, etc.)_ and often going through fundamental shifts _(because of wars, pandemics, fuel prices, or shifts in international patterns)_.
+
+In this context, traditional time-series techniques may fail to predict transportation freight rates. <br/><b>Autoregressive Integrated Moving Average (ARIMA)</b> and <b>Exponential Smoothing</b> assume that time series are stationary, but this is not the case. _Furthermore,_ long-term trends and seasonality are not well captured by ARIMA. _Lastly,_ these methods rely only on historical data from the time series and are not able to capture the causal relationship between economic factors and the target prediction variable _(i.e., the transportation freight rates)_.
+
+Indeed, a big challenge in analyzing time-series data is their changing statistical properties caused by changes in the business and economic cycle, shifts in policy, or changes in market conditions, _for example,_ as we have recently seen in terms of volatility, demand, and supply during COVID-19 or the war in Ukraine.
+
+To address these problems, we can approach <b>statistical learning</b>, which relies on finding a feature map that maps the input data _(in our case: samples of time series)_ into a multidimensional feature space, with the following two important requirements:
+- <b>universality</b>: nonlinear functions of the input data are approximated by linear functionals in the feature space, so the forecasting problem is translated into a linear regression;
+- <b>characteristicness</b>: the expected value of the feature map characterizes the law of the random variable.
+
+Therefore, it is shown that the <b>signature transform</b> satisfies these two properties in duality.
+
+Furthermore, the signature kernel allows for computationally efficient comparison of similarities between time-series data, which is particularly useful for identifying different "signature feature maps" _(i.e., the statistical counterpart of identifying different distributions for time-series data in the linearized feature space of the signature transform)_.
+
+We recall that the signature transform _(path signature, signature)_ was introduced and initially studied in algebraic topology by Kuo-Tsai Chen in <a href="https://doi.org/10.1112/plms/s3-4.1.502" target="_blank">Iterated Integrals and Exponential Homomorphisms</a> (Proceedings of the London Mathematical Society) and <a href="https://doi.org/10.2307/1969671" target="_blank">Integration of Paths, Geometric Invariants and a Generalization of the Baker–Hausdorff Formula</a> (Annals of Mathematics), and then applied to the financial markets and machine learning.
+
+_Generally speaking,_ given any continuous or discrete time series, its signature transform produces a vector of <b>real-valued features</b> that extract information such as order and area, and then _explicitly_ consider combinations of different channels to determine the time series in a _computationally efficient way_. _Furthermore,_ every continuous function of a time series can be asymptotically approximated by a linear functional of its signature, so, _in other words,_ the signature transform <b>linearizes the complicated feature space</b> and can be used as a powerful tool for pattern identification and forecasting in machine learning.
+
+_Intuition:_ consider each market period as a path with rates, supply and demand, etc. The signature turns the path into a _"fingerprint"_ that captures the values and how they changed. Then the signature kernel compares fingerprints by $k(a,b) = \langle\Phi(a), \Phi(b)\rangle$ to understand how similar they are. During forecasting, historical periods more similar to the current one get more weight in the regression and vice versa, helping the model to adapt to seasonality and market regimes.
+
+<b>Methodology</b>
+
+The proposed approach starts by collecting data _(market supply and demand factors)_ and running correlation tests between the marketplace rate and the factors in order to remove <b>nonsignificant</b> factors and identify factors that are collinear. <br />Then, the authors use the <b>universal nonlinearity property</b> of the signature transform to build signature features as candidates for the "internal features" using a feature map that transforms time-series inputs into a vector of features. Note that the map $\Phi(x)$ does not capture only the values, but also their order and interactions.
+
+_Recall that_ collinearity means that predictors overlap, and, in regression, this makes it hard to tell which predictor matters and can make the coefficient estimates unstable.
+
+Furthermore, to avoid overfitting and collinearity between signature features and external factors, they adopted the <b>two-step LASSO</b> for the regression _(helping to shrink coefficients and select a small set of features)_, enhanced with adaptive weights using a signature kernel that allows it to capture changes in regimes or seasonality.
+
+## <a id = "0"><b>Technical Background</b></a>
+
+<b>Tensors</b>
+
+A tensor is a mathematical object that generalizes vectors and matrices. <br/>
+_Formally,_ let $V$ be a vector space over a field $\mathbb{F}$. A tensor of type $(r,s)$ on $V$ is an element of $T^r_s(V) = V^{\otimes r} \otimes (V^*)^{\otimes s}$, where $V^*$ is the dual space.
+
+_Equivalently,_ it can be seen as a <b>multilinear map</b>:
+
+$$
+\underbrace{V^* \times \cdots \times V^*}_{r\text{ inputs}} \times \underbrace{V \times \cdots \times V}_{s\text{ inputs}} \longrightarrow \mathbb{F}.
+$$
+
+_As we said,_ tensors can be seen as a generalization of lower-dimensional data structures:
+- rank-0 tensor: scalar
+- rank-1 tensor: vector _(requires 1 index)_
+- rank-2 tensor: matrix _(requires 2 indices)_
+- rank-3 or higher tensor: higher-dimensional "cubes" or "hypercubes" of data _(example: a batch of color images in DL is a 4D structure with shape `[Batch Size, Channels, Height, Width]`)_
+
+
+Furthermore, we recall that the <b>outer product</b> for $u \in \mathbb{R}^m$ and $v \in \mathbb{R}^n$ is the tensor $u \otimes v \in \mathbb{R}^m \otimes \mathbb{R}^n$, with components $(u \otimes v)_{ij} = u_i v_j$. <br/>This translates to the following $m \times n$ matrix, which has all the pairwise component combinations:
+
+$$
+u \otimes v =
+\begin{bmatrix}
+u_1v_1 & \cdots & u_1v_n \\
+\vdots & \ddots & \vdots \\
+u_mv_1 & \cdots & u_mv_n
+\end{bmatrix}
+$$
+
+---
+<br/>
+
+<b>Signatures of Continuous Path</b>
+
+Let $\mathbb{R}^{d_1} \otimes \mathbb{R}^{d_2} \otimes \cdots \otimes \mathbb{R}^{d_n}$ denote the space of all <b>real tensors</b> with shape $(d_1, \ldots, d_n)$. <br/>
+We define a binary operation called <b>tensor product</b>, denoted by $\otimes$, that maps a tensor of shape $(d_1, \ldots, d_n)$ and a tensor of shape $(e_1, \ldots, e_m)$ to a tensor of shape $(d_1, \ldots, d_n, e_1, \ldots, e_m)$ via
+
+$$
+(A \otimes B)_{i_1, \ldots, i_n, j_1, \ldots, j_m} = A_{i_1, \ldots, i_n} B_{j_1, \ldots, j_m}.
+$$
+
+When applied to two vectors, this is the <b>outer product</b>.
+<br/>
+
+Let $(\mathbb{R}^d)^{\otimes k} = \mathbb{R}^d \otimes \cdots \otimes \mathbb{R}^d$ and $v^{\otimes k} = v \otimes \cdots \otimes v$ for $v \in \mathbb{R}^d$, in each case with $k - 1$ tensor product symbols.
+
+_Intuition:_ the tensor product combines two tensors by multiplying their elements _without summing_. _Example:_ multiplying a 2-vector by a 3-vector produces a $2 \times 3$ matrix. If we repeat the operation, we have $v^{\otimes k}$, where each entry is a product of $k$ components, $v_{i_1} \cdots v_{i_k}$.
+
+<b>Definition: signature of $X$ as a collection of iterated integrals</b>
+
+Let $a < b$ and let $X = (X^1, \ldots, X^d): [a,b] \to \mathbb{R}^d$ be a continuous, piecewise-smooth path. <br/>The signature of $X$ is then defined as the <b>collection of iterated integrals</b>:
+
+$$
+\operatorname{Sig}(X) = \left(S^k(X)\right)_{k \ge 0}
+$$
+
+$$
+S^k(X) = \int_{a < t_1 < \cdots < t_k < b} dX_{t_1} \otimes \cdots \otimes dX_{t_k}
+$$
+
+$$
+S^k(X)_{i_1, \ldots, i_k} = \int_{a < t_1 < \cdots < t_k < b} dX_{t_1}^{i_1} \cdots dX_{t_k}^{i_k}, \qquad 1 \le i_1, \ldots, i_k \le d.
+$$
+
+Here, $\otimes$ is the tensor product, $dX_t = \frac{dX_t}{dt}\,dt$, and the $k=0$ term is taken to be $1 \in \mathbb{R}$.
+
+Then, the <b>truncated signature of depth $N$</b> of $X$ is defined as:
+
+$$
+\operatorname{Sig}^N(X) = \left(S^k(X)\right)_{0 \le k \le N}.
+$$
+
+_The idea is that_ we have a continuous, piecewise-smooth path $X$ ($X_t$ denotes its position at time $t$); the signature records a sequence of features called <b>levels</b>, i.e., level $k$ collects all the $k$-fold iterated integrals of the path:
+
+$$
+\operatorname{Sig}(X) = (1, S^1(X), S^2(X), S^3(X), \ldots).
+$$
+
+_Specifically,_ for path $X$, its level $k$ is:
+
+$$
+S^k(X)_{i_1, \ldots, i_k} = \int_{a < t_1 < \cdots < t_k < b} dX_{t_1}^{i_1} \cdots dX_{t_k}^{i_k}.
+$$
+
+_Similarly,_ a 2-fold iterated integral is:
+
+$$
+\int_a^b \left(\int_a^{t_2} dX_{t_1}^i\right) dX_{t_2}^j.
+$$
+
+The inner integral collects changes in coordinate $i$ up to time $t_2$; the outer integral then pairs those with later changes in coordinate $j$ _(intuition: this measures how much change in coordinate $i$ is followed by change in coordinate $j$, and higher levels represent increasingly detailed ordered combinations of changes)_.
+
+<b>Example: linear interpolation</b>
+
+We now provide an illustrative example. Suppose $X:[a,b]\to\mathbb{R}^d$ is the <b>linear interpolation</b> between two points $x,y\in\mathbb{R}^d$ (i.e., the straight line from $x$ to $y$ as time goes from $a$ to $b$), so that:
+
+$$
+X_t = x + \frac{t-a}{b-a}(y-x) = (1-s)x + sy, \qquad s = \frac{t-a}{b-a}.
+$$
+
+Then its signature is the collection of tensor powers of its total increment $y-x$:
+
+$$
+\operatorname{Sig}(X) = \left(1, y-x, \frac{(y-x)^{\otimes 2}}{2!}, \frac{(y-x)^{\otimes 3}}{3!}, \ldots, \frac{(y-x)^{\otimes k}}{k!}, \ldots\right).
+$$
+
+To show this, let $\Delta X=y-x$ and $T=b-a$. Then,
+
+$$
+X_t=x+\frac{t-a}{b-a}\Delta X, \qquad dX_t=\frac{\Delta X}{b-a}\,dt.
+$$
+
+Substituting this into the signature levels gives:
+
+$$
+S^1(X)=\int_a^b dX_t=\frac{\Delta X}{T}\int_a^b dt=\Delta X.
+$$
+
+$$
+\begin{aligned}
+S^2(X)
+&=\int_a^b\left(\int_a^{t_2}dX_{t_1}\right)\otimes dX_{t_2}\\
+&=\frac{\Delta X\otimes\Delta X}{T^2}\int_a^b\int_a^{t_2}dt_1\,dt_2\\
+&=\frac{\Delta X\otimes\Delta X}{T^2}\int_a^b(t_2-a)\,dt_2\\
+&=\frac{\Delta X\otimes\Delta X}{2}.
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+S^3(X)
+&=\frac{(\Delta X)^{\otimes 3}}{T^3}\int_a^b\int_a^{t_3}\int_a^{t_2}dt_1\,dt_2\,dt_3\\
+&=\frac{(\Delta X)^{\otimes 3}}{3!}.
+\end{aligned}
+$$
+
+_In general,_ the ordered region $a<t_1<\cdots<t_k<b$ has volume $T^k/k!$, so we have:
+
+$$
+S^k(X)=\frac{(\Delta X)^{\otimes k}}{k!}
+$$
+
+So the signature is:
+
+$$
+\operatorname{Sig}(X)=\left(1,\,\Delta X,\,\frac{(\Delta X)^{\otimes 2}}{2!},\,\frac{(\Delta X)^{\otimes 3}}{3!},\,\ldots,\,\frac{(\Delta X)^{\otimes k}}{k!},\,\ldots\right).
+$$
+
+<b>Example: one-dimensional smooth path</b>
+
+Suppose $X:[a,b]\to\mathbb{R}$ is a one-dimensional smooth path. Its signature is the <b>collection of powers of its total increment</b>. We can proceed as follows:
+
+$$
+S^k(X)=\int_{a<t_1<\cdots<t_k<b}dX_{t_1}\cdots dX_{t_k}.
+$$
+
+Let $\Delta X=X_b-X_a$. The integral over the full cube factors into a product of integrals:
+
+$$
+\int_{[a,b]^k}dX_{t_1}\cdots dX_{t_k}=\left(\int_a^b dX_t\right)^k=(\Delta X)^k.
+$$
+
+The cube divides into $k!$ regions according to the possible orderings of the times. Since the one-dimensional integrand is symmetric in those times, each region contributes equally. Therefore,
+
+$$
+S^k(X)=\frac{(\Delta X)^k}{k!}.
+$$
+
+This gives:
+
+$$
+\operatorname{Sig}(X)=\left(1,\,X_b-X_a,\,\frac{(X_b-X_a)^2}{2!},\,\ldots,\,\frac{(X_b-X_a)^k}{k!},\,\ldots\right).
+$$
+
+We immediately notice that this is independent of $X(t)$ for $t\in(a,b)$. Furthermore, if $X$ is a random process, its expected signature is:
+
+$$
+\mathbb{E}[\operatorname{Sig}(X)]=\left(1,\,\mathbb{E}[X_b-X_a],\,\frac{1}{2!}\mathbb{E}[(X_b-X_a)^2],\,\ldots,\,\frac{1}{k!}\mathbb{E}[(X_b-X_a)^k],\,\ldots\right).
+$$
+
+If these moments exist, they are the moments of $X_b-X_a$. For a high-dimensional stochastic process $X(t)$, the expected signature is the generalization of the moments of the process (in other words, for a stochastic process, its expected signature characterizes the law of $(X_t)$).
+
+Also, this second example shows that the signature of a one-dimensional path depends only on its increment. This implies that the signature of a path itself may not contain sufficient information to fully characterize the path, but this problem can be solved by considering <b>time-augmented</b> versions of the original path.
+
+Indeed, given a path $X:[a,b]\to\mathbb{R}^d$, we can define the corresponding <b>time-augmented path</b> by $\hat{X}_t=(t,X_t)$, which is a path in $\mathbb{R}^{d+1}$.
+
+---
+<br/>
+<b>Signature of Discrete Data</b>
+
+If we want to compute the signature of discrete data streams, we can simply use <b>linear interpolation</b> and then apply the signature transform.
+
+<b>Definition: linear interpolation and its signature</b>
+
+We then define the <b>space of streams of data</b> as:
+
+$$
+\mathcal{S}(\mathbb{R}^d)=\{x=(x_1,\ldots,x_n):x_i\in\mathbb{R}^d,\ n\in\mathbb{N}\}.
+$$
+
+Given $x=(x_1,\ldots,x_n)\in\mathcal{S}(\mathbb{R}^d)$, the integer $n$ is called the <b>length</b> of $x$. <br/>
+_Furthermore,_ for $a,b\in\mathbb{R}$ such that $a<b$, we can fix:
+
+$$
+a=u_1<u_2<\cdots<u_{n-q}<u_n=b
+$$
+
+Let $X=(X^1,\ldots,X^d):[a,b]\to\mathbb{R}^d$ be continuous such that $X_{u_i}=x_i$ for all $i$ and linear on the intervals in between. Then $X$ is called the <b>linear interpolation</b> of $x$.
+
+Given that $X$ is a linear interpolation of $x$, the signature of $x$ _(the initial stream of data)_ is defined as $\operatorname{Sig}(x)=\operatorname{Sig}(X)$, and the same applies to the truncated signatures, i.e., $\operatorname{Sig}^n(x)=\operatorname{Sig}^n(X)$.

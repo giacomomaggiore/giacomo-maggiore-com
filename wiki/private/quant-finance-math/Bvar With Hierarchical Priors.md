@@ -141,7 +141,7 @@ R> x <- fred_transform(x, codes = c(4, 4, 4, 4, 4, 1))
 
 After preparing the data, we are ready to specify priors and configure our model. Functions related to estimation setup and configuration share the prefix `bv_`. They are grouped in this way to make them easily discernible and their documentations accessible, facilitating their use. This contrasts methods and functions for analysis, which stick closely to idiomatic R.
 
-![](images/dc6615259c1511ed755c14a1a9324be756452b5d9652a7060e076b90d145553c.jpg)  
+![](dc6615259c1511ed755c14a1a9324be756452b5d9652a7060e076b90d145553c.jpg)  
 Figure 1: Transformed time series under consideration.
 
 Priors are set up using `bv_priors()`, which holds arguments for the Minnesota and dummy-observation priors as well as the hierarchical treatment of their hyperparameters. We start by adjusting the Minnesota prior using `bv_minnesota()`. The prior hyperparameter \( \lambda \) has a Gamma hyperprior and is handed upper and lower bounds for its Gaussian proposal distribution in the MH step. For this example, we do not treat \( \alpha \) hierarchically, meaning it can be fixed via the mode argument. The prior variance on the constant term of the model (var) is dealt a large value, for a diffuse prior. We leave \( \Psi \) to be set automatically – i.e., to the square root of the innovations variance, after fitting AR(p) models to each of the variables.
@@ -216,10 +216,10 @@ R> plot(run, type = "dens",
 +    vars_response = "GDPC1", vars_impulse = "GDPC1-lag1")
 ```
 
-![](images/af85a482d1ba33c1a17a57527d7eecefc5972532bc02f2518b2de50e2d70e01f.jpg)
+![](af85a482d1ba33c1a17a57527d7eecefc5972532bc02f2518b2de50e2d70e01f.jpg)
 
 Figure 2: Trace and density plots of all hierarchically treated hyperparameters and the ML.  
-![](images/453bbc4e9c705881de896402762fc07b14b520a23096a136988ea4ca9afd8c2e.jpg)
+![](453bbc4e9c705881de896402762fc07b14b520a23096a136988ea4ca9afd8c2e.jpg)
 
 <details>
 <summary>violin</summary>
@@ -237,7 +237,7 @@ Figure 2: Trace and density plots of all hierarchically treated hyperparameters 
 
 Figure 3: Density plot for the autoregressive coefficient corresponding to the first lag of GDP in the GDP equation.
 
-![](images/6665bd10797357bd24bc0294c546eebddef239028e1e915487a60ef29ca9236b.jpg)  
+![](6665bd10797357bd24bc0294c546eebddef239028e1e915487a60ef29ca9236b.jpg)  
 Figure 4: Residual plots of GDP and private consumption expenditure.
 
 Visual inspection of trace and density plots suggests convergence of the key hyperparameters. The chain appears to be exploring the posterior rather well; no glaring outliers are recognizable. However, as a supplement to this examination, one might want to employ additional convergence diagnostics. The coda package provides, among many other useful functionalities, several such statistics that can be accessed using BVAR’ `as.mcmc()` method. An illustration of the interface, the use of diagnostics, and parallel execution of `bvar()` is provided in Appendix C. Given proper convergence, we may be interested in fitted and residual values (see Figure 4). We set `type = "mean"` to use the mean of posterior draws. Alternatively, credible bands can be computed via the `conf_bands` argument.
@@ -268,7 +268,7 @@ R> plot(residuals(run, type = "mean"), vars = c("GDPC1", "PCECC96"))
 
 Structural analysis with BVAR works in a straightforward fashion. Impulse response functions are handled in a specific object, with the associated generic function `irf()`. The function is used for computing, accessing, and storing IRF in the respective slot of a ‘bvar’ object as well as updating credible bands. Forecast error variance decompositions rely on IRF and are nested in the respective object. They can be accessed directly with the generic function `fevd()`. Configuration options for IRF and FEVD are available via the ellipsis argument of `irf()`, or the helper function `bv_irf()`. They include the horizon to be considered, whether or not FEVD should be computed, and further settings regarding identification. By default, the shocks under scrutiny are identified via short-term zero restrictions. Identification can also be achieved in other ways (see Appendix D for an example of imposing sign restrictions) or skipped entirely. IRF objects feature methods for plotting, printing, and summarizing. The plot() method has options to subset the plots to specific impulses and/or responses via name or position of the variable. Credible bands are visualized as lines or shaded areas with the area argument toggled. In the example below, we customize our IRF using `bv_irf()`, then compute and store them with `irf()`. We plot the IRF of certain shocks and variables by specifying them with `vars_impulse` and `vars_response` in Figure 5.
 
-![](images/a2b005e1272479a536dbe7f2c4a390737e20e8717bcc37df84f28e85da3fe696.jpg)  
+![](a2b005e1272479a536dbe7f2c4a390737e20e8717bcc37df84f28e85da3fe696.jpg)  
 Figure 5: Impulse responses of GDP, private consumption expenditure, and the federal funds rate to an aggregate demand shock (left panels) and a monetary policy shock (right panels). 
 
 ```r
@@ -280,7 +280,7 @@ R> plot(irf(run), area = TRUE,
 
 Forecasting with BVAR is facilitated by a `predict()` method and a specific object for forecasts. The method works similarly to `irf()`, with functionality to compute, access, and store outputs in the respective slot of a ‘bvar’ object and to update credible bands. Settings can also be accessed via the ellipsis argument or the helper function `bv_fcast()`. For unconditional forecasts only the forecasting horizon is required. In order to conduct scenario analyses based on conditional forecasts, further settings have to be passed on (see Appendix E for a demonstration). Forecast objects feature methods for plotting, printing, and summarizing. The `vars` argument of the plot() method can be used to subset plots to certain variables. The visualization can include a number of realized values before the forecast, which is set with the argument `t_back` (see Figure 6).
 
-![](images/b660828cd442715fb240a99e28166221008dd5fef902741c574f104a247b77eb.jpg)  
+![](b660828cd442715fb240a99e28166221008dd5fef902741c574f104a247b77eb.jpg)  
 Figure 6: Unconditional forecasts for GDP, the GDP deflator, and the federal funds rate. Shaded areas refer to the 90% and the 68% credible sets.
 
 ```r
