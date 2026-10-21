@@ -1654,7 +1654,7 @@ $$
 \qquad \lambda = \frac{1}{2mC}.
 $$
 
-We now recall that f_w,b = < w, \Psi (x_i)> + b, so we can use the fact that the function space H = {f : R^d \to R such that f = <w, \Phi()> for some w in \mathcal H} is itself a <b>Hilbert space</b> with norm:
+We now recall that $f_{w,b} = \langle w, \Psi(x_i)\rangle + b$, so we can use the fact that the function space $\mathcal{H} = \{f : \mathbb{R}^d \to \mathbb{R} \text{ such that } f = \langle w, \Phi(\cdot)\rangle \text{ for some } w \in \mathcal{H}\}$ is itself a <b>Hilbert space</b> with norm:
 
 $$
 \|f\|_{\mathcal H}=\min\{\|w\|_{\mathcal H}: f=\langle w,\Phi(\cdot)\rangle_{\mathcal H}\}.
@@ -1676,11 +1676,11 @@ _We initially recall that_ in regression we want to find a function f(x) that pr
 
 In particular, the goal of SVR is to find a hyperplane $(w, b) \in \mathcal{H} \times \mathbb{R}$ that best approximates the relationship between the <b>lifted inputs $\Phi(x)$</b> in $\mathcal{H}$ _(the feature map)_ and the <b>continuous output</b> $y \in \mathbb{R}$.
 
-In this setting, we also notice that the model is not linear in the original space, but this becomes linear in the lifted space, as f(x) + b = <w, \Psi(x)> + b.
+In this setting, we also notice that the model is not linear in the original space, but this becomes linear in the lifted space, as $f(x) + b = \langle w, \Psi(x)\rangle + b$.
 
-<b>Tube-SVR</b> looks for a hyperplane that keeps the predictions in an $\epsilon$-wide tube around the fitted function. Deviations inside the tube (|y_i - < w, \Psi(x_i>-b| \le \epsilon| do not bring any penalty, but deviations outside the tube are penalized in proportion to their distance from the boundary.
+<b>Tube-SVR</b> looks for a hyperplane that keeps the predictions in an $\epsilon$-wide tube around the fitted function. Deviations inside the tube ($|y_i - \langle w, \Psi(x_i)\rangle - b| \leq \epsilon$) do not bring any penalty, but deviations outside the tube are penalized in proportion to their distance from the boundary.
 
-The optimization problem for Tube-SVR, assuming \epsilon \ge 0 is fixed and represents the \epsilon-tube in which prediction errors incur no penalty and/or the noise the model tolerates, is:
+The optimization problem for Tube-SVR, assuming $\epsilon \geq 0$ is fixed and represents the $\epsilon$-tube in which prediction errors incur no penalty and/or the noise the model tolerates, is:
 
 $$
 \min_{w,b,\xi\in\mathcal H\times\mathbb R\times\mathbb R^m}
@@ -1985,7 +1985,7 @@ _Technically speaking_:
 - we iterate $j = 1,2,\ldots$ until the convergence criterion is satisfied _(for example, if the KKT conditions are approximately satisfied)_:
     - choose indices $i_1, i_2 \in \{1,\ldots,m\}$ with $i_1 \neq i_2$ according to a given rule or heuristic
     - set $w_i^{(j)} = w_i^{(j-1)}$ for $i \notin \{i_1, i_2\}$
-    - set the (w_i1^(j), w_i2^(j)) = argmax V((w_j^j))_i \in {1...m}/{i_1,i_2}
+    - set the (w_i1^(j), w_i2^(j)) = argmax V((w_j^j))_i \in &#123;1...m&#125;/&#123;i_1,i_2&#125;
     - update according to the first-order conditions
 - the output is the <b>optimal function</b> f_a = \sum_i=1?m w_i^j y_i k(x_i, .)/2 + b where the term w_i y_i / 2 follows from the FOC.
 
