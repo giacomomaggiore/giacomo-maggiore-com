@@ -1674,7 +1674,7 @@ _Intuition: we stop optimizing over weights and optimize over functions._ Until 
 
 _We initially recall that_ in regression we want to find a function f(x) that predicts a continuous y. However, OLS <b>penalizes every error</b>. _In contrast,_ SVR takes a different approach and penalizes only errors bigger than a threshold (later denoted by $\epsilon$) and looks for a function that is as simple (flat) as possible.
 
-In particular, the goal of SVR is to find a hyperplane (w, b) \in \mathcal H \times R that best approximates the relationship between the <b>lifted inputs \Phi(x)</b> \in \mathcal H _(the feature map)_ and the <b>continuous output </b> y \in R.
+In particular, the goal of SVR is to find a hyperplane $(w, b) \in \mathcal{H} \times \mathbb{R}$ that best approximates the relationship between the <b>lifted inputs $\Phi(x)$</b> in $\mathcal{H}$ _(the feature map)_ and the <b>continuous output</b> $y \in \mathbb{R}$.
 
 In this setting, we also notice that the model is not linear in the original space, but this becomes linear in the lifted space, as f(x) + b = <w, \Psi(x)> + b.
 
@@ -1697,16 +1697,16 @@ where $\langle w,w\rangle_{\mathcal H}=\|w\|_{\mathcal H}^2$ is the <b>regulariz
 _Similarly_ to classification, if we substitute the optimal slack $\xi_i = \max\{0, |y_i - f(x_i)-b|-\epsilon\}$, we can rewrite the optimization problem in $\mathcal H = \{f : f = \langle w, \Phi(\cdot)\rangle \text{ for some } w\in\mathcal H\}$ as:
 
 $$
-\min_{f,b\in\mathcal H\times\mathbb R}
+\min_{f\in\mathcal H,\ b\in\mathbb R}
 \frac{1}{m}\sum_{i=1}^{m}\ell_\epsilon(f(x_i)+b,y_i)
-\lambda\|f\|_{\mathcal H}^2.
++\lambda\|f\|_{\mathcal H}^2.
 $$
 
 where $\ell_\epsilon$ is now the $\epsilon$-insensitive loss function, defined as $\ell_\epsilon(y,y')=\max\{0,|y-y'|-\epsilon\}$, which is "insensitive" since it produces zero loss for errors smaller than $\epsilon$.
 
 Note that the _user-friendly_ square loss $\ell(y,y')=(y-y')^2$ is a very popular choice for SVR.
 
-_Example: in the following graph, we can nicely see SVR for \Psi(x) = x
+_Example: in the following graph, we can nicely see SVR for $\Psi(x) = x$._
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/svm-8.png)
@@ -1764,7 +1764,7 @@ Furthermore, a function $k: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is a 
 
 If this function $k$ exists, we call $\Psi: \mathcal{X} \to \mathcal{H}$, given by $\Psi(x) = k(x, \cdot)$, the <b>canonical feature map</b>.
 
-_Intuition: a RKHS is a space of functions wqhere evaluating a function at a point is a <b>well behaved operation</b>, i.e. for each fixed x, f(x) cannot change wile the function norms stays norm.<br/> _As a consequence,_ we have the reproducibilty property: we can reover a function value at x vy raking an inner produt with a special fuction associated with x.
+_Intuition: an RKHS is a space of functions where evaluating a function at a point is a <b>well behaved operation</b>, i.e. for each fixed x, f(x) cannot change while the function norms stays norm.<br/> _As a consequence,_ we have the reproducibility property: we can recover a function value at x by taking an inner product with a special function associated with x.
 
 _So,_ an RKHS is a function space with a norm and inner product that make pointwise evaluation possible through a kernel.
 
@@ -1791,15 +1791,15 @@ $f_m^*(x) = \sum_{i=1}^{m} a_i k(x_i, x)$
 
 _Moreover,_ if $\ell$ is convex in its first argument, $f_m^*$ is unique.
 
-_Intuition;_ we can search over every function in a possivbly infnite dimensional space \matchak H, bur the oprimal function can be weitten only using the training examples as defined above. Each function k(x_i, .) is a kernel centered at training input and the coefficients a_i are the weifhts. Therefore, we can solve the learning problem using just kernel evaluations between data point.
+_Intuition:_ we can search over every function in a possibly infinite-dimensional space $\mathcal{H}$, but the optimal function can be written only using the training examples as defined above. Each function $k(x_i,\cdot)$ is a kernel centered at a training input, and the coefficients $a_i$ are the weights. Therefore, we can solve the learning problem using just kernel evaluations between data points.
 
 Furthermore, we also have the following theorem:
 
-<b>Represent Theorem with Interecpt</b>
+<b>Representer Theorem with Intercept</b>
 
 Let $\ell:\mathbb R\times\mathbb R\to[0,\infty]$ be a continuous function in its first argument and $\mathcal H$ the RKHS of a kernel $k:\mathcal X\times\mathcal X\to\mathbb R$. Then, if $\inf_{f\in\mathcal H}\frac{1}{m}\sum_{i=1}^{m}\ell(f(x_i),y_i)+\lambda\|f\|_{\mathcal H}^2$ has a solution, it is of the form $(f_m^*,b_m^*)$ where:
 
-f_m^*(x) = \sum_i=1^m a_i k(x_i,x)
+$f_m^*(x) = \sum_{i=1}^{m} a_i k(x_i,x)$
 
 <b>Corollary (Kernel Ridge Regression)</b>
 
@@ -1844,9 +1844,9 @@ $$
 <br/>
 <b>Numerical Methods</b>
 
-We start by noticing that the <b>square loss</b> admits close-form solutions, so common implementation include the <b>sklearn package</b>in opython _(sklearn.kernel_ridge.KernelRidge)_. This is computationally efficient but memory requirements are <b>quadratric in the dataset</b> and usually coefficients are non zero _(no sparsity)_.
+We start by noticing that the <b>square loss</b> admits closed-form solutions, so common implementations include the <b>scikit-learn package</b> in Python _(sklearn.kernel_ridge.KernelRidge)_. This is computationally efficient, but memory requirements are <b>quadratic in the dataset</b>, and usually the coefficients are nonzero _(no sparsity)_.
 
-'''python
+```python
 
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.metrics import mean_squared_error
@@ -1866,13 +1866,13 @@ model.fit(X_train, y_train)
 
 predictions = model.predict(X_test)
 
-'''
+```
 
 For <b>binary classification with the hinge loss</b>, $\ell(y,y') = \max\{0, 1 - yy'\}$, the <b>Sequential Minimal Optimization (SMO)</b> algorithm is usually used. SMO is a form of coordinate descent, where, at each step, two indices $(i_1, i_2)$ are chosen and we optimize only over $(a_{i_1}, a_{i_2})$. _Generally speaking,_ SMO belongs to a class of algorithms that are based on solving <b>simpler sub-problems</b>, called decomposition methods, chunking, or subset selection.
 Notice that, _for large datasets,_ many $a_i$ may simply be equal to $0$, so we have a sparse solution.
 For implementing SMO, again the scikit-learn package _(sklearn.svm.SVC)_ is very common.
 
-'''python
+```python
 from sklearn.datasets import make_moons
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
@@ -1893,13 +1893,13 @@ model.fit(X_train, y_train)
 
 predictions = model.predict(X_test)
 svc = model[-1]
-'''
+```
 
 For the $\epsilon$-insensitive loss $\ell_\epsilon(y,y') = \max\{0, |y-y'|-\epsilon\}$, we can apply a variant of the SMO algorithm to general regression problems using the same scikit-learn package. In this case, the model treats outliers more robustly and produces a sparse solution.
 
 _However, unlike squared-error kernel ridge regression,_ $\epsilon$-SVR doesn’t have a simple linear solution: its loss function has corners and is <b>not differentiable</b> at the band’s edges, so it uses an optimization algorithm. The problem is still convex and tractable: non-differentiability just means there’s no ordinary smooth-loss formula to solve it directly.
 
-'''python
+```python
 import numpy as np
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -1926,7 +1926,7 @@ model = make_pipeline(
 model.fit(X_train, y_train)
 predictions = model.predict(X_test)
 
-'''
+```
 
 <br/>
 ---
@@ -1967,7 +1967,7 @@ w_iw_jy_iy_jk(x_i,x_j)
 \sum_{i=1}^{m}w_iy_i=0.
 $$
 
-_If we go bac to the optimization problem,_ we notice that the objective wans to keep the boundary simple by penzliaing more complex functions ($\|f_a\|_{\mathcal H}^2$ and penalized margin violations ($C\sum_{i=1}^{m}\xi_i$)). In this context, the Lagrangian attaches a weight_i to each margin constraint. In the dual form, the opriization works with the weights and the pairwise kernel similarities ($k(x_i,x_j)=\langle\Phi(x_i),\Phi(x_j)\rangle$) instead of directly with the optrimizing functoin.
+_If we go back to the optimization problem,_ we notice that the objective wants to keep the boundary simple by penalizing more complex functions ($\|f_a\|_{\mathcal H}^2$) and penalizing margin violations ($C\sum_{i=1}^{m}\xi_i$). In this context, the Lagrangian attaches a $w_i$ to each margin constraint. In the dual form, the optimization works with the weights and the pairwise kernel similarities ($k(x_i,x_j)=\langle\Phi(x_i),\Phi(x_j)\rangle$) instead of directly with the optimizing function.
 
 
 
@@ -1992,7 +1992,7 @@ _Technically speaking_:
 <br/>
 ---
 <br/>
-Numerical Approaches: Large-Scale Methods for Square Loss</b>
+<b>Numerical Approaches: Large-Scale Methods for Square Loss</b>
 
 _Again,_ we recall that analytical solutions for the square loss are <b>not feasible for large data sets</b>. So we propose some approaches to fix this limitation.
 
@@ -2022,7 +2022,7 @@ BB^T = A^-1, B^TABz = B^T
 
 then a = B is a solution of Aa = y for A = (K_m + \lambda m I_m) is the closed form solution of the above corollary
 
-_However,_ note that constructing B precisely can be constly, so we can indeas look for B such taht BB^T \approx A^-1 _(using againa random feature mtho likd Nystrom approximation)_.
+_However,_ note that constructing $B$ precisely can be costly, so we can instead look for $B$ such that $BB^T \approx A^{-1}$ _(using again a random feature method like the Nyström approximation)_.
 
 ---
 <br/>
