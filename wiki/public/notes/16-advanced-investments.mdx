@@ -741,7 +741,7 @@ $$
 
 Once we selected the selection method, note that these can be implemented in three ways:
 - <b>long-only portfolios</b>
-- <b>long-short portfolio</b>, so the return of the period is equal to:
+- <b>long-short portfolio</b>, so the return for the period is equal to:
     + the return of the long portfolio
     + the risk-free rate
     - the cost of the portfolio held short
@@ -759,46 +759,85 @@ When combining strategies, alpha and the factor exposure for the overall portfol
 
 Suppose _for example_ we want to run a <b>mean-variance portfolio optimization</b>; let $\mu$ be the vector of expected returns and $\Sigma$ the covariance matrix. Then the <b>tangency portfolio</b> is:
 
-q = \frac{\Sigma^1 (\mu - R_f \ind)}{\ind' \Sigma'-1 (\mu - R_f \ind)} = \frac{\sigma?-1(\mu - R_f \ind)}{B- AR_f}
+$$
+q = \frac{\Sigma^{-1}(\mu - R_f \mathbf{1})}{\mathbf{1}^{\mathsf{T}}\Sigma^{-1}(\mu - R_f \mathbf{1})}
+  = \frac{\Sigma^{-1}(\mu - R_f \mathbf{1})}{B - A R_f}
+$$
 
-with A = \ind' \SIgma-1 and B = \ind ' \sigm^-1 \mu.
+with $A = \mathbf{1}^{\mathsf{T}}\Sigma^{-1}\mathbf{1}$ and $B = \mathbf{1}^{\mathsf{T}}\Sigma^{-1}\mu$.
 
 In this case, the Sharpe ratio will be:
 
-\bar R = \frac{\mu_p - R_f}{\signa_p} = \sqrt((\mu - R_f \ind)'\Sigma^-1 (\mu - R_f \ind))
+$$
+\mathrm{SR} = \frac{\mu_p - R_f}{\sigma_p}
+  = \sqrt{(\mu - R_f \mathbf{1})^{\mathsf{T}}\Sigma^{-1}(\mu - R_f \mathbf{1})}
+$$
 
 _However,_ suppose now that we do NOT trust the estimates of expected returns. Then the candidate portfolio would be the <b>risky-asset-only global minimum variance</b>, defined by:
 
-w = \frac{\Sigma^-1 \ind}[\ind' \sigma^-\ \ind] = \frac{\sigma^1 \ind}{A}
+$$
+w = \frac{\Sigma^{-1}\mathbf{1}}{\mathbf{1}^{\mathsf{T}}\Sigma^{-1}\mathbf{1}}
+  = \frac{\Sigma^{-1}\mathbf{1}}{A}
+$$
 
-\mu_p = w'\mu = B / A
-\sigma_p^2 = wì \sigma w = 1 / A
+$$
+\mu_p = w^{\mathsf{T}}\mu = \frac{B}{A}
+$$
 
-\SR_p = \frac{B - AR_f}{\sqrtA}
+$$
+\sigma_p^2 = w^{\mathsf{T}}\Sigma w = \frac{1}{A}
+$$
+
+$$
+\mathrm{SR}_p = \frac{B - A R_f}{\sqrt{A}}
+$$
 
 We also introduce the <b>risk parity</b> portfolio, with weights according to the inverse of their volatility, so we have:
 
-w_i = \frac{1/ \sigma_i}{\sim_n=1^R 1 / \sigma_n}
+$$
+w_i = \frac{1/\sigma_i}{\sum_{n=1}^{N} 1/\sigma_n}
+$$
 
 If we let $\rho_{mn}$ be the <b>pairwise correlation</b> between $m$ and $n$, expected returns and variance are:
 
-\nu_p = \frac{\sum_n=1^N \un / \digma_n}{\sum_n=1^N 1 / \simga_n}
+$$
+\mu_p = \frac{\sum_{n=1}^{N} \mu_n/\sigma_n}{\sum_{n=1}^{N} 1/\sigma_n}
+$$
 
-\sigma_p^2 = \frac[N + \sum_n=1^N \sum_m\neq n \rho _mn]{\sum_n=1^N 1 /  \sigma_n)^2} = \frac{ N + N ( N -1)\rho_mn}{\sum_n=1^N 1 / \sigma_n}
+$$
+\sigma_p^2
+  = \frac{N + \sum_{n=1}^{N}\sum_{m\ne n}\rho_{mn}}
+  {\left(\sum_{n=1}^{N} 1/\sigma_n\right)^2}
+  = \frac{N + N(N-1)\bar{\rho}}
+  {\left(\sum_{n=1}^{N} 1/\sigma_n\right)^2}
+$$
 
-that results in the sharpe ratio of:
+which results in the Sharpe ratio:
 
-SR_P = \sqrt (\frac{N}{1 + (N-1)\ \bar rho}) \frac{\sum_n=1^N \fracé\u_n - R_f}{\sigma_n}{N}
+$$
+\mathrm{SR}_p
+  = \sqrt{\frac{N}{1 + (N-1)\bar{\rho}}}
+  \frac{1}{N}\sum_{n=1}^{N}\frac{\mu_n - R_f}{\sigma_n}
+$$
 
 _Lastly,_ for the <b>equally weighted portfolio</b>, w = 1 / N and we have the following
 
-\mu_p = \bar u
+$$
+\mu_p = \bar{\mu}
+$$
 
-\sigma_p^2 = \frac{\bar \sigma^p}{N} + \frac{N-1}{N}\bar \sigma,
+$$
+\sigma_p^2 = \frac{\bar{\sigma}^2}{N}
+  + \frac{N-1}{N}\bar{\rho}\,\bar{\sigma}^2
+$$
 
-\bar \sigma_p^2 = \frzc{\sum_n=1^N \sigma_n^2}{N}
+where $\bar{\sigma}^2 = \frac{1}{N}\sum_{n=1}^{N}\sigma_n^2$.
 
-SR_p \approx = \sqrt \frac{N}{1 + (N-1)\bar rho} \frac{{\bar u - R_f}{\sqrt (\bar \sigma^2)}}
+$$
+\mathrm{SR}_p
+  \approx \sqrt{\frac{N}{1 + (N-1)\bar{\rho}}}
+  \frac{\bar{\mu} - R_f}{\bar{\sigma}}
+$$
 
 From these four expressions, we can compute the portfolios and the Sharpe ratio from different approaches:
 - if the Sharpe ratios do _NOT_ differ, it is advisable to go for an <b>equally weighted</b> portfolio;
@@ -904,150 +943,46 @@ _More generally,_ the table summarizes the <b>expected gross return</b> from a 1
 
 In general, leveraged ETFs perform poorly when volatility is high because of <b>volatility drag.</b> We can approximate the annualized continuously compounded return of a leveraged ETF with leverage 
 
-g 
-L
-​
- ≈Lμ− 
-2
-1
-​
- L 
-2
- σ 
-2
- ,
- where 
-μ
-μ is the underlying asset's average return and 
-σ
-2
-σ 
-2
-  is the variance of its returns. _Therefore,_ the approximate annualized simple return is:
+$$
+g_L \approx L\mu - \frac{1}{2}L^2\sigma^2,
+$$
 
-R
-L
-≈
-exp
-⁡
-(
-L
-μ
-−
-1
-2
-L
-2
-σ
-2
-)
-−
-1.
-R 
-L
-​
- ≈exp(Lμ− 
-2
-1
-​
- L 
-2
- σ 
-2
- )−1.
+where $\mu$ is the underlying asset's average return and $\sigma^2$ is the variance of its returns. _Therefore,_ the approximate annualized simple return is:
 
- For small returns:
+$$
+R_L \approx \exp\left(L\mu - \frac{1}{2}L^2\sigma^2\right) - 1.
+$$
 
-log
-⁡
-(
-1
-+
-L
-R
-t
-)
-≈
-L
-R
-t
-−
-1
-2
-L
-2
-R
-t
-2
-.
-log(1+LR 
-t
-​
- )≈LR 
-t
-​
- − 
-2
-1
-​
- L 
-2
- R 
-t
-2
-​
- .
+For small returns:
+
+$$
+\log(1 + L R_t) \approx L R_t - \frac{1}{2}L^2R_t^2.
+$$
+
 Taking averages gives:
 
-E
-[
-log
-⁡
-(
-1
-+
-L
-R
-t
-)
-]
-≈
-L
-μ
-−
-1
-2
-L
-2
-σ
-2
-.
-E[log(1+LR 
-t
-​
- )]≈Lμ− 
-2
-1
-​
- L 
-2
- σ 
-2
- .
+$$
+\mathbb{E}\left[\log(1 + L R_t)\right]
+\approx L\mu - \frac{1}{2}L^2\sigma^2.
+$$
+
 The second term is the volatility drag. It is negative and increases with the square of the leverage.
 
 _Hence,_ a levered or short ETF requires adjusting the size of the ETF positions used to undo the effect of the dynamic rebalancing inside the ETF _(but of course you don't need to rebalance if you backtest the strategy already while using a levered/short ETF.)_
 
 <br/>
 
-## <a id="2"></a>Equities </a>
+## <a id="2"></a>Equities
 
-The<b> equity risk premium (ERP) </b>is the excess return of the equity market over that of a low-risk asset.
+The <b>equity risk premium (ERP)</b> is the excess return of the equity market over that of a low-risk asset.
 It is usually measured against Treasury bill or Treasury bond returns.
 
 We can then distinguish between:
-- <b>historical </b> ERP: the extra return earned in the past
-- <b>expectdd</b>: the aethe average extra return from investing in
+- <b>historical</b> ERP: the extra return earned in the past
+- <b>expected</b>: the average extra return from investing in
 equities rather than in T-Bills over the next h months, quarters, or years:
 
-E_t[ERP_t\to t+h] = E_t[R_M,t,t+h]- R_f,t
+$$
+E_t[\mathrm{ERP}_{t\to t+h}]
+= E_t[R_{M,t,t+h}] - R_{f,t}.
+$$
