@@ -468,7 +468,7 @@ $$
 
 More on this regression can be found <a href="https://www.trendfollowing.com/whitepaper/hsieh_fung_final_paper.pdf" target="_blank">here in the famous paper "The Risk in Hedge Fund Strategies: Theory and Evidence from Trend Followers" by William Fung and David Hsieh</a>.
 
-Furthermore, we can define the <b>information ratio (appraisal ratio)</b>, which gives the average return achieved by a portfolio in excess of a benchmark divided by the tracking error _(i.e. the standard deviation of the return differential)_. In formula, we write:
+Furthermore, we can define the <b>information ratio (appraisal ratio)</b>, which gives the average return achieved by a portfolio in excess of a benchmark divided by the tracking error _(i.e. the standard deviation of the return differential)_. In a formula, we write:
 
 $$
 \mathrm{IR}=\frac{\bar{R}_p-\bar{R}_b}{\sigma_{p-b}}.
@@ -632,7 +632,7 @@ $$
 R_{n,t} - R_{f,t} = a_n + \beta_n^{\mathsf{T}} f_t + \epsilon_{n,t}
 $$
 
-where $f_t$ denotes the factors driving the returns and $a_n$ is an <b>asset-specific constant</b> _(note that we write $a_n$ and not $\alpha_n$ to not confuse it with alpha!)_.
+where $f_t$ denotes the factors driving the returns and $a_n$ is an <b>asset-specific constant</b> _(note that we write $a_n$ and not $\alpha_n$ so as not to confuse it with alpha!)_.
 
 Given this, the method relies on the following steps:
 - run $N$ time-series regressions, one for each asset $n$, and obtain all the $\beta_n$ values _(i.e. we estimate its factor exposures $\beta_n$: how much an asset $n$ moves with each risk factor)_;
@@ -671,7 +671,7 @@ The goal of timing models is to find indicators for which the <b>conditional ret
 
 As a consequence, this goal translates into identifying a set of variables that forecast the future return distribution in order to identify periods in which risky-asset returns are more attractive.
 
-Consider now $x_t$, the predictive variable being considered, and $R_{t+h}$, the future excess return with a forecasting period $h$. To test if $x_t$ has predictive power, we can <b>split the sample</b> based on the value of $x_t$ and compute summary statistics for $R_{t+h}$ for the subsamples, then run a test for identical distributions by estimating the <b>predictive regression</b>:
+Consider now $x_t$, the predictive variable being considered, and $R_{t+h}$, the future excess return with a forecasting period of $h$. To test if $x_t$ has predictive power, we can <b>split the sample</b> based on the value of $x_t$ and compute summary statistics for $R_{t+h}$ for the subsamples, then run a test for identical distributions by estimating the <b>predictive regression</b>:
 
 $$
 R_{t+h} = \alpha_h + \beta_h x_t + \epsilon_{t+h}
@@ -723,7 +723,7 @@ _Usually,_ we proceed as follows:
 - <b>build portfolios of the assets in the groups</b>
 - <b>investigate return properties of the portfolios</b>
 
-_However,_ note that in many cases we want to incorporate <b>several variables</b>; in this case, the <b>bivariate (or three-way sorts)</b> can be a valid approach by sorting over selected variables either:
+_However,_ note that in many cases we want to incorporate <b>several variables</b>; in this case, <b>bivariate (or three-way) sorts</b> can be valid approaches for sorting over selected variables in either of two ways:
 - <b>with an independent sort</b>, where we sort on different variables _independently,_ so the resulting portfolio will be the intersection of portfolios built on individual variables, and the number of assets in each portfolio will _strongly differ_ if the two variables are related;
 - <b>dependent sort</b>, where we first sort on a first variable and then, within each quantile of the first variable, sort based on a second variable. In this case, the number of assets in each group is similar, but the results depend on the order chosen.
 
@@ -739,7 +739,7 @@ $$
 \mathbb{E}[R_{n,t} - R_{f,t}] = \hat{\gamma} + \beta_n^{\mathsf{T}}\hat{\lambda}
 $$
 
-Once we selected the selection method, note that these can be implemented in three ways:
+Once we have selected a selection method, the resulting portfolio can be implemented in three ways:
 - <b>long-only portfolios</b>
 - <b>long-short portfolio</b>, so the return for the period is equal to:
     + the return of the long portfolio
@@ -820,7 +820,7 @@ $$
   \frac{1}{N}\sum_{n=1}^{N}\frac{\mu_n - R_f}{\sigma_n}
 $$
 
-_Lastly,_ for the <b>equally weighted portfolio</b>, w = 1 / N and we have the following
+_Lastly,_ for the <b>equally weighted portfolio</b>, $w = 1/N$, and we have the following:
 
 $$
 \mu_p = \bar{\mu}
@@ -978,11 +978,177 @@ The <b>equity risk premium (ERP)</b> is the excess return of the equity market o
 It is usually measured against Treasury bill or Treasury bond returns.
 
 We can then distinguish between:
-- <b>historical</b> ERP: the extra return earned in the past
-- <b>expected</b>: the average extra return from investing in
+- <b>historical ERP</b>: the extra return earned in the past
+- <b>expected ERP</b>: the average extra return from investing in
 equities rather than in T-Bills over the next h months, quarters, or years:
 
 $$
 E_t[\mathrm{ERP}_{t\to t+h}]
 = E_t[R_{M,t,t+h}] - R_{f,t}.
 $$
+
+_Note_ that if you borrow capital and invest it in the equity market, you earn ERP.
+
+_Note also_ that we can write the optimal portfolio formula for a mean-variance investor with risk aversion $a$ as:
+
+$$
+w = \frac{1}{a}\frac{\mathbb{E}_t[R_{M,t+1}] - R_{f,t+1}}{\operatorname{Var}_t[R_{M,t+1}]} = \frac{1}{a}\frac{\mathbb{E}_t[\mathrm{ERP}_{t+1}]}{\operatorname{Var}_t[R_{M,t+1}]}
+$$
+
+The economic idea is that the _ex ante_ ERP is the compensation required by investors to allocate capital to risky assets rather than to the risk-free asset, and the equilibrium reasoning predicts a <b>positive</b> ex-ante ERP because stocks do poorly in bad times.
+
+To estimate the <b>historical ERP</b>, we can compare historical average returns of the stock market with those of the risk-free asset by adopting a <b>long sample period</b>, since stock returns are volatile _(note that we can distinguish between nominal and real returns)_.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/erp-1.png)
+</div>
+
+_Even if the ERP is positive for all countries,_ it can vary a lot over time:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/erp-2.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/erp-3.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/erp-4.png)
+</div>
+
+_On the other hand,_ estimating the <b>expected ERP</b> is much more difficult. We cannot simply use the historical one because there is a <b>negative relation</b> between changes in future and historical ERPs _(if investors require the future ERP to decrease, realized equity returns are positive, and so the historical ERP increases)_.
+
+To understand this relation, we can decompose stock returns with price $P_t$ and dividend $D_t$ as follows:
+
+$$
+1 + R_t = \frac{P_t + D_t}{P_{t-1}} = \left(1 + \frac{D_t}{P_t}\right) \times \frac{D_t}{D_{t-1}} \times \frac{P_t / D_t}{P_{t-1} / D_{t-1}}
+$$
+
+where the first term includes the <b>dividend yield</b>, the second the <b>dividend growth</b>, and the last one the <b>multiple expansion</b>, which drives the changes in the expected ERP over the short term while, _in the long run,_ it accounts for a smaller part of the ERP.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/erp-5.png)
+</div>
+
+We can then use this decomposition to get an estimate of the ERP by assessing each component of $R_t$ and subtracting the real risk-free rate _(for the risk-free rate, we can consider the return of short-term T-bills in the US)_.
+
+---
+<br/>
+<b>Equity Return Predictability</b>
+
+We first recall that timing models are based on predictability, which studies patterns in the return distribution over time to identify sets of variables that forecast the future return distribution. We previously saw that predictability is about finding indicators for which an asset's conditional return distribution differs from its unconditional distribution.
+
+We also saw that, in order to assess whether a variable $x_t$ has predictive ability, we have to:
+- <b>split the sample</b> based on the value of $x_t$, compute statistics of $R_{t+h}$ for the subsamples, and run a test for identical distributions
+- estimate the <b>predictive regressions</b>:
+
+$$
+R_{t+h} = \alpha_h + \beta_h x_t + \epsilon_{t+h}
+$$
+
+$$
+R_{t+h}^2 = \alpha_h + \beta_h x_t + \epsilon_{t+h}
+$$
+
+We then assess the significance of the betas _(the first tells us about expected returns; the second, about variance)_.
+- run a <b>predictive regression using dummy variables</b> $D_{\{x_t > \tilde{x}\}}$ instead of $x_t$:
+
+$$
+R_{t+h} = \alpha_h + \beta_h D_{\{x_t > \tilde{x}\}} + \epsilon_{t+h}
+$$
+
+$$
+R_{t+h}^2 = \alpha_h + \beta_h D_{\{x_t > \tilde{x}\}} + \epsilon_{t+h}
+$$
+
+---
+<br/>
+<b>Price/Dividend Ratio Predictor</b>
+
+We've seen that dividend yield is a key component of long-term equity returns; its inverse is the price/dividend ratio. However, we can notice that the P/D ratio varies strongly over time.
+
+To understand how we can estimate the ERP from the price/dividend ratio, consider a firm that pays a dividend $D_t$ and is expected to pay a terminal dividend $D_{t+1}$.
+
+Consider $P_t$, the current price. Then the gross return on an investment in the firm is:
+
+$$
+R_{t+1} = \frac{D_{t+1}}{P_t} \implies \mathbb{E}_t[R_{t+1}] = \frac{\mathbb{E}_t[D_{t+1}]}{P_t}
+$$
+
+If we solve for $P_t/D_t$, we get:
+
+$$
+\frac{P_t}{D_t} = \frac{\mathbb{E}_t[D_{t+1}/D_t]}{\mathbb{E}_t[R_{t+1}]}
+$$
+
+Therefore, the P/D ratio moves due to changes in <b>expected dividend growth</b> or changes in <b>expected returns</b>.
+
+There are two views on the information contained in the P/D ratio:
+- <b>traditional view</b>: expected returns are _more or less_ constant, and the P/D ratio is driven by changes in expected dividend growth. Therefore, a high P/D ratio should predict high future dividend growth. For a forecasting horizon $k$, this can be tested with:
+
+$$
+\frac{D_{t+k}}{D_t} = a_k + b_k \frac{D_t}{P_t} + \epsilon_{t+k}
+$$
+
+This view was challenged by Shiller (1981) in the paper <a href="https://www.jstor.org/stable/1802789" target="_blank">Do Stock Prices Move Too Much to be Justified by Subsequent Changes in Dividends?</a> _(American Economic Review)_, which shows that prices move far too much to be explained by subsequent changes in dividends alone.
+
+- <b>modern view</b>: the P/D ratio is driven by changes in expected returns. Therefore, a high P/D ratio should predict <b>low future returns</b>. This can be tested with:
+
+$$
+R_{M,t\to t+k} - R_{f,t\to t+k} = a_k + b_k \frac{D_t}{P_t} + \epsilon_{t+k}
+$$
+
+Fama and French (1988) ran this regression in the paper <a href="https://doi.org/10.1016/0304-405X(88)90020-7" target="_blank">Dividend Yields and Expected Stock Returns</a> _(Journal of Financial Economics)_, finding that the dividend yield predicts returns, especially at long horizons. Cochrane (2008), in <a href="https://doi.org/10.1093/rfs/hhm046" target="_blank">The Dog That Did Not Bark: A Defense of Return Predictability</a> _(Review of Financial Studies)_, adds that dividend growth is <b>not</b> predictable, so the P/D ratio must move because of expected returns. Goyal and Welch (2008) are more skeptical in <a href="https://doi.org/10.1093/rfs/hhm014" target="_blank">A Comprehensive Look at the Empirical Performance of Equity Premium Prediction</a> _(Review of Financial Studies)_, showing that this predictability is weak out of sample. For an overview of the discount-rate view see Cochrane (2011), <a href="https://doi.org/10.1111/j.1540-6261.2011.01671.x" target="_blank">Presidential Address: Discount Rates</a> _(Journal of Finance)_.
+
+We can analyze this view further by rewriting the return definition and taking logs, as Campbell and Shiller (1988) do in the paper <a href="https://doi.org/10.1093/rfs/1.3.195" target="_blank">The Dividend-Price Ratio and Expectations of Future Dividends and Discount Factors</a> _(Review of Financial Studies)_.
+
+$$
+\frac{P_t}{D_t} = R_{t+1}^{-1}\frac{D_{t+1}}{D_t}
+$$
+
+$$
+p_t - d_t = \Delta d_{t+1} - r_{t+1}
+$$
+
+If we take expectations, we obtain:
+
+$$
+p_t - d_t = \mathbb{E}_t[\Delta d_{t+1}] - \mathbb{E}_t[r_{t+1}]
+$$
+
+- If the <b>expected returns are constant</b> at $\bar r$, then this becomes:
+
+$$
+\mathbb{E}_t[\Delta d_{t+1}] = \bar r + p_t - d_t
+$$
+
+If expectations are rational _(unbiased)_, then we have $\Delta d_{t+1} = \mathbb{E}_t[\Delta d_{t+1}] + \epsilon_{t+1}$, with $\mathbb{E}_t[\epsilon_{t+1}] = 0$, so we obtain:
+
+$$
+\Delta d_{t+1} = \bar r + (p_t - d_t) + \epsilon_{t+1}
+$$
+
+- If the <b>expected dividend growth is constant</b> at $\mathbb{E}_t[\Delta d_{t+1}] = \bar d$, then we have:
+
+$$
+\mathbb{E}_t[r_{t+1}] = \bar d - (p_t - d_t)
+$$
+
+Under rational expectations, $r_{t+1} = \mathbb{E}_t[r_{t+1}] + \epsilon_{t+1}$, with $\mathbb{E}_t[\epsilon_{t+1}] = 0$, so we have:
+
+$$
+r_{t+1} = \bar d - (p_t - d_t) + \epsilon_{t+1}
+$$
+
+For example, between 1927 and 2005, the D/P indicator predicted future returns rather than dividend growth.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p-d-ratio.png)
+</div>
+
+However, the out-of-sample predictive power is still poor, making it difficult to use the ratio to improve portfolio performance.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p-d-ratio-2.png)
+</div>
