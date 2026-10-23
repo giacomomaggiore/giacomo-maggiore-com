@@ -32,7 +32,9 @@
 wiki/source/
 wiki/archive/
 
-CLAUDE.MD
+# python virtualenv (chart scripts)
+.venv
+
 
 # debug
 npm-debug.log*

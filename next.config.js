@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // PostHog reverse proxy (EU). Currently unused: the browser calls NEXT_PUBLIC_POSTHOG_HOST (US) directly.
   async rewrites() {
     return [
       {
@@ -16,7 +17,7 @@ const nextConfig = {
       },
     ];
   },
-  // This is required to support PostHog trailing slash API requests
+  // Needed by PostHog trailing-slash requests; also keeps current trailing-slash URL behavior
   skipTrailingSlashRedirect: true,
 };
 

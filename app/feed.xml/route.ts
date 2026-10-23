@@ -1,22 +1,11 @@
-import { getBlogPosts } from '../blog/utils';
+import { PRODUCTION_URL } from 'lib/site'
+import { getBlogPostsByLang } from '../blog/utils'
 
+// RSS feed with the English version of every post, newest first
 export async function GET() {
-  const allPosts = getBlogPosts()
-    .filter(post => !post.slug.endsWith('.it')) // Include solo versioni inglesi
-    .map(post => ({
-      ...post,
-      slug: post.slug.replace(/\.(en|it)$/, '')
-    }));
-  
-  const itemsXml = allPosts
-    .sort((a, b) => {
-      if (new Date(a.metadata.publishedAt) > new Date(b.metadata.publishedAt)) {
-        return -1;
-      }
-      return 1;
-    })
+  const itemsXml = getBlogPostsByLang('en')
     .map((post) => {
-      const url = `https://giacomomaggiore.com/blog/${post.slug}`;
+      const url = `${PRODUCTION_URL}/blog/${post.slug}`;
       return `
         <item>
           <title><![CDATA[${post.metadata.title}]]></title>
@@ -33,11 +22,11 @@ export async function GET() {
   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
       <title>Giacomo Maggiore's Blog</title>
-      <link>https://giacomomaggiore.com</link>
+      <link>${PRODUCTION_URL}</link>
       <description>Thoughts on coding, finance, and life</description>
       <language>en</language>
       <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-      <atom:link href="https://giacomomaggiore.com/feed.xml" rel="self" type="application/rss+xml"/>
+      <atom:link href="${PRODUCTION_URL}/feed.xml" rel="self" type="application/rss+xml"/>
       ${itemsXml}
     </channel>
   </rss>`;

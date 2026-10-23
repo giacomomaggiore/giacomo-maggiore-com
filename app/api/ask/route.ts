@@ -1,44 +1,34 @@
 import fs from 'fs'
 import path from 'path'
 import { NextResponse } from 'next/server'
+import { getClientIp, rateLimit, tooManyRequests } from 'lib/rate-limit'
+import { buildCitations, streamAnswer } from 'lib/wiki/llm'
+import { embedQuery } from 'lib/wiki/openai'
+import { selectContext, type ContextNote } from 'lib/wiki/passages'
 import { retrieveHybrid, type WikiIndex } from 'lib/wiki/retrieve'
-import { streamAnswer, buildCitations } from 'lib/wiki/llm'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const MAX_QUESTION_LEN = 500
+const MAX_QUESTIONS_PER_MINUTE = 15
 
-// Lazy-load the index once per process —
-//  it's large and reading it on every request is wasteful
+// Load the (large) index once per process, not on every request.
+// The path is built inline next to the fs call so Vercel's file tracing bundles the index with this route.
 let _index: WikiIndex | null = null
 function getIndex(): WikiIndex {
   if (!_index) {
-    const p = path.join(process.cwd(), 'lib', 'wiki-index.generated.json')
-    _index = JSON.parse(fs.readFileSync(p, 'utf-8'))
+    const indexPath = path.join(process.cwd(), 'lib', 'wiki-index.generated.json')
+    _index = JSON.parse(fs.readFileSync(indexPath, 'utf-8'))
   }
   return _index!
 }
 
-// Embed the user's question using the same model used at index build time.
-// Returns null if OPENAI_API_KEY is not set — retrieve falls back to BM25-only.
-async function embedQuery(question: string): Promise<number[] | null> {
-  const apiKey = process.env.OPENAI_API_KEY
-  if (!apiKey) return null
-  try {
-    const { default: OpenAI } = await import('openai')
-    const client = new OpenAI({ apiKey })
-    const res = await client.embeddings.create({
-      model: 'text-embedding-3-small',
-      input: question,
-    })
-    return res.data[0].embedding
-  } catch {
-    return null
-  }
-}
-
 export async function POST(req: Request) {
+  // Every question costs OpenAI tokens, so cap requests per client
+  const limit = rateLimit(`ask:${getClientIp(req)}`, MAX_QUESTIONS_PER_MINUTE, 60_000)
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec)
+
   const body = await req.json().catch(() => null)
   const question: unknown = body?.question
 
@@ -49,34 +39,46 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Question too long (max 500 chars)' }, { status: 400 })
   }
 
-  const [queryEmbedding, index] = await Promise.all([
-    embedQuery(question),
-    Promise.resolve(getIndex()),
-  ])
-  const notes = retrieveHybrid(question, queryEmbedding, index)
-  const citations = buildCitations(notes)
+  let context: ContextNote[]
+  try {
+    // Start the embedding request first so it runs while the index loads
+    const embeddingPromise = embedQuery(question)
+    const index = getIndex()
+    const notes = retrieveHybrid(question, await embeddingPromise, index)
+    // Only the relevant passages of those notes go to the model
+    context = selectContext(question, notes)
+  } catch (err) {
+    console.error('[ask] retrieval error:', err)
+    return NextResponse.json({ error: 'Search is temporarily unavailable' }, { status: 500 })
+  }
+  const citations = buildCitations(context)
 
   const encoder = new TextEncoder()
+  const abort = new AbortController()
 
   const stream = new ReadableStream({
     async start(controller) {
       // First line: citation metadata, parsed by the client before rendering text
       controller.enqueue(encoder.encode(JSON.stringify({ citations }) + '\n'))
       try {
-        for await (const chunk of streamAnswer(question, notes)) {
+        for await (const chunk of streamAnswer(question, context, abort.signal)) {
           controller.enqueue(encoder.encode(chunk))
         }
       } catch (err) {
+        // The visitor left or pressed Stop: nobody is listening any more
+        if (abort.signal.aborted) return
         console.error('[ask] streamAnswer error:', err)
-        const msg = err instanceof Error ? err.message : String(err)
-        controller.enqueue(encoder.encode(`\n[Error generating answer: ${msg}]`))
-      } finally {
-        controller.close()
+        // Generic message: upstream error text can contain API key fragments
+        controller.enqueue(encoder.encode('\n[Error generating answer. Please try again.]'))
       }
+      if (!abort.signal.aborted) controller.close()
+    },
+    cancel() {
+      abort.abort()
     },
   })
 
   return new Response(stream, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' },
   })
 }

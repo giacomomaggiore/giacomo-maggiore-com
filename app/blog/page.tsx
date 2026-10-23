@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers'
-import { BlogList } from './BlogList'
-import { formatDate, getBlogPosts, type Lang } from './utils'
+import { ContentList } from 'app/components/ContentList'
+import { formatDate } from 'lib/dates'
+import { getBlogPostsByLang, type Lang } from './utils'
 
 export const metadata = {
   title: 'Blog',
@@ -8,23 +9,23 @@ export const metadata = {
 }
 
 export default async function Page() {
+  // Language comes from the cookie set in middleware.ts (English if missing)
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value || 'en') as Lang
-  const posts = getBlogPosts()
-    .filter((post) => post.slug.endsWith(`.${lang}`))
-    .map((post) => ({
-      ...post,
-      slug: post.slug.replace(/\.(en|it)$/, ''),
-      formattedDate: formatDate(post.metadata.publishedAt),
-    }))
-    .sort(
-      (a, b) =>
-        +new Date(b.metadata.publishedAt) - +new Date(a.metadata.publishedAt)
-    )
+  const posts = getBlogPostsByLang(lang).map((post) => ({
+    ...post,
+    formattedDate: formatDate(post.metadata.publishedAt),
+  }))
 
   return (
     <section>
-      <BlogList posts={posts} />
+      <ContentList
+        items={posts}
+        basePath="/blog"
+        searchId="blog-search"
+        searchLabel="Search journal entries"
+        placeholder="Search blog posts..."
+      />
     </section>
   )
 }

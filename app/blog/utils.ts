@@ -1,73 +1,51 @@
 import fs from 'fs'
 import path from 'path'
-import { getMDXData, readMDXFile } from 'lib/wiki/mdx-files'
+import { byPublishedDesc } from 'lib/dates'
+import { getMDXData, getMDXFiles, isSafeSlug, readMDXFile } from 'lib/wiki/mdx-files'
 import { WIKI_PUBLIC_BLOG_DIR } from 'lib/wiki/paths'
 
-
 /**
-
- typical flow (short):
-
-Site list page → calls getBlogPosts()
-→ render list (filter by language / strip .en/.it from slug).
-
-User opens /blog/:slug
- → page loader calls getPost(slug, lang)
- → returns single post content →
- render full post.
-
- The MDX-reading helpers (getMDXFiles/readMDXFile/getMDXData) live in
- lib/wiki/mdx-files.ts (shared with app/notes/utils.ts).
+ * Blog posts live in wiki/public/blog as "<slug>.en.mdx" and "<slug>.it.mdx".
+ * The reader picks the language from the `lang` cookie (see middleware.ts).
  */
 
 export type Lang = 'it' | 'en'
 
+const LANG_SUFFIX = /\.(en|it)$/
+
+// "01-polimi-recap.en" -> "01-polimi-recap"
+export const stripLangSuffix = (slug: string) => slug.replace(LANG_SUFFIX, '')
+
+// every post file in every language; slugs still carry the ".en"/".it" suffix
 export function getBlogPosts() {
   return getMDXData(WIKI_PUBLIC_BLOG_DIR)
 }
 
-// Estrae tutti gli slug unici dai file MDX nella directory del blog
-// Considera che i file possono essere del tipo "slug.en.mdx" 
-// o "slug.it.mdx", ma vogliamo solo "slug"
+// posts of one language, newest first, with the language suffix removed from the slug
+export function getBlogPostsByLang(lang: Lang) {
+  return getBlogPosts()
+    .filter((post) => post.slug.endsWith(`.${lang}`))
+    .map((post) => ({ ...post, slug: stripLangSuffix(post.slug) }))
+    .sort(byPublishedDesc)
+}
+
+// unique slugs across languages, e.g. "slug.en.mdx" and "slug.it.mdx" count once
 export function getAllSlugs(): string[] {
-  const postsDirectory = WIKI_PUBLIC_BLOG_DIR
-  const filenames = fs.readdirSync(postsDirectory)
-  
-  // Rimuovi duplicati e estensioni lingua
-  const slugs = new Set<string>()
-  filenames.forEach(filename => {
-    const slug = filename.replace(/\.(en|it)\.mdx$/, '')
-    slugs.add(slug)
-  })
-  
-  return Array.from(slugs)
+  const filenames = getMDXFiles(WIKI_PUBLIC_BLOG_DIR)
+  return Array.from(new Set(filenames.map((file) => file.replace(/\.(en|it)\.mdx$/, ''))))
 }
 
 export function getPost(slug: string, lang?: string) {
-  const postsDirectory = WIKI_PUBLIC_BLOG_DIR
+  if (!isSafeSlug(slug)) return null
 
-  // Normalizza la lingua: solo se inizia per "it" → it, in tutti gli altri casi → en
-  const normalizedLang: Lang = (typeof lang === 'string' && lang.toLowerCase().startsWith('it')) ? 'it' : 'en'
+  // Only a language starting with "it" selects Italian, everything else is English
+  const normalizedLang: Lang = lang?.toLowerCase().startsWith('it') ? 'it' : 'en'
 
-  const filePath = path.join(postsDirectory, `${slug}.${normalizedLang}.mdx`)
-  if (fs.existsSync(filePath)) {
-    return readMDXFile(filePath)
-  }
-
-  // Fallback: prova sempre la versione inglese
-  const altFilePath = path.join(postsDirectory, `${slug}.en.mdx`)
-  if (fs.existsSync(altFilePath)) {
-    return readMDXFile(altFilePath)
+  // Fall back to the English version when the requested language is missing
+  for (const candidate of [normalizedLang, 'en']) {
+    const filePath = path.join(WIKI_PUBLIC_BLOG_DIR, `${slug}.${candidate}.mdx`)
+    if (fs.existsSync(filePath)) return readMDXFile(filePath)
   }
 
   return null
-}
-
-export function formatDate(date: string): string {
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }
-  return new Date(date).toLocaleDateString('en-US', options)
 }

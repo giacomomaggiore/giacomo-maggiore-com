@@ -19,3 +19,6 @@ export const WIKI_PRIVATE_DIR = path.join(WIKI_DIR, 'private')
 // Published collections (the website reads these)
 export const WIKI_PUBLIC_NOTES_DIR = path.join(WIKI_PUBLIC_DIR, 'notes')
 export const WIKI_PUBLIC_BLOG_DIR = path.join(WIKI_PUBLIC_DIR, 'blog')
+
+// Generated search index (written by scripts/build-wiki-index.ts, read by /api/ask)
+export const WIKI_INDEX_PATH = path.join(process.cwd(), 'lib', 'wiki-index.generated.json')

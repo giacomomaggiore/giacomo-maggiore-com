@@ -1,97 +1,49 @@
 import { NextResponse } from 'next/server'
+import { getAverageViews, getTotalTime, getUrlViews, PostHogError } from 'lib/posthog'
+import { getClientIp, rateLimit, tooManyRequests } from 'lib/rate-limit'
+import { PRODUCTION_URL, baseUrl } from 'lib/site'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
+const NO_STORE = { 'Cache-Control': 'no-store' }
+const MAX_REQUESTS_PER_MINUTE = 60
+
+// Only our own blog/notes URLs may be queried; the strict pattern also blocks HogQL injection
+const TRACKED_URL = /^(https?:\/\/[^/\s'"\\]+)\/(?:blog|notes)\/[\w.-]{1,120}$/
+const ALLOWED_ORIGINS = new Set([PRODUCTION_URL, baseUrl])
+
+function isTrackedUrl(url: unknown): url is string {
+  const match = typeof url === 'string' ? TRACKED_URL.exec(url) : null
+  return !!match && ALLOWED_ORIGINS.has(match[1])
+}
+
 export async function POST(req: Request) {
-  const body = await req.json()
-  const apiKey = process.env.POST_HOG_API_KEY
-  const projectId = process.env.POST_HOG_PROJECT_ID ?? '197048'
-  if (!apiKey) {
-    return NextResponse.json({ error: 'Missing POST_HOG_API_KEY' }, { status: 500, headers: { 'Cache-Control': 'no-store' } })
+  const limit = rateLimit(`posthog:${getClientIp(req)}`, MAX_REQUESTS_PER_MINUTE, 60_000)
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec)
+
+  const body = await req.json().catch(() => null)
+  if (!body || typeof body !== 'object') {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400, headers: NO_STORE })
   }
 
-  const url = `https://us.posthog.com/api/projects/${projectId}/query/`
-  const headers = {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${apiKey}`,
-  }
-
-  const escapeSingle = (s: string) => String(s ?? '').replace(/'/g, "\\'")
-  let payload: any
-  if (body?.type === 'totalTime') {
-    payload = {
-      query: {
-        kind: 'HogQLQuery',
-        query: `
-          SELECT sum(duration) AS total_time_seconds
-          FROM (
-            SELECT DISTINCT $session_id, session.duration AS duration
-            FROM events
-            WHERE session.duration IS NOT NULL
-          )
-        `
-      },
-      name: 'total time spent'
+  try {
+    // Response shapes are read by app/components/stats.tsx
+    if (body.type === 'totalTime') {
+      return NextResponse.json({ result: await getTotalTime() }, { headers: NO_STORE })
     }
-  } else if (body?.type === 'avg') {
-    payload = {
-      query: {
-        kind: 'HogQLQuery',
-        query: `
-          SELECT
-            count(*) / count(DISTINCT distinct_id) as avg_pageviews_per_visitor,
-            count(DISTINCT distinct_id) as total_visitors,
-            count(*) as total_pageviews
-          FROM events
-          WHERE event = '$pageview'
-        `
-      },
-      name: 'avg pageviews per visitor'
+    if (body.type === 'avg') {
+      return NextResponse.json({ result: await getAverageViews() }, { headers: NO_STORE })
     }
-  } else {
-    const urlToCheck = escapeSingle(body?.urlToCheck)
-    payload = {
-      query: {
-        kind: "HogQLQuery",
-        query: `SELECT properties.$current_url AS url, count() AS views FROM events WHERE properties.$current_url = '${urlToCheck}' GROUP BY url ORDER BY views DESC`
-      },
-      name: "get blog views"
+
+    // Default: views of a single page URL
+    if (!isTrackedUrl(body.urlToCheck)) {
+      return NextResponse.json({ error: 'Invalid urlToCheck' }, { status: 400, headers: NO_STORE })
     }
+    return NextResponse.json({ results: await getUrlViews(body.urlToCheck) }, { headers: NO_STORE })
+  } catch (err) {
+    const status = err instanceof PostHogError ? err.status : 500
+    const message = err instanceof PostHogError ? err.message : 'Unexpected error'
+    return NextResponse.json({ error: message }, { status, headers: NO_STORE })
   }
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(payload),
-    cache: 'no-store',
-  })
-
-  const data = await response.json()
-
-  if (!response.ok) {
-    return NextResponse.json({ error: 'PostHog request failed', details: data }, { status: response.status, headers: { 'Cache-Control': 'no-store' } })
-  }
-
-  if (body?.type === 'totalTime') {
-    const row = data?.results?.[0] ?? null
-    const result = row
-      ? { total_time_seconds: Number(row[0]) }
-      : null
-    return NextResponse.json({ raw: data, result }, { headers: { 'Cache-Control': 'no-store' } })
-  }
-
-  if (body?.type === 'avg') {
-    const row = data?.results?.[0] ?? null
-    const result = row
-      ? {
-          avg_pageviews_per_visitor: Number(row[0]),
-          total_visitors: Number(row[1]),
-          total_pageviews: Number(row[2]),
-        }
-      : null
-    return NextResponse.json({ raw: data, result }, { headers: { 'Cache-Control': 'no-store' } })
-  }
-
-  return NextResponse.json(data, { headers: { 'Cache-Control': 'no-store' } })
 }

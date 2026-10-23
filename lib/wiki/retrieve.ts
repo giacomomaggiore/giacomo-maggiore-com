@@ -89,13 +89,26 @@ const B = 0.75
 // and if it appears more times in that document (term frequency), but with diminishing returns.
 // It also considers the length of the document to avoid biasing towards longer
 // documents that may contain more terms by chance.
+// Per-note values that never change between queries, computed once per process
+const noteStats = new WeakMap<WikiNote, { docLen: number; titleTokens: Set<string> }>()
+function getNoteStats(note: WikiNote) {
+  let stats = noteStats.get(note)
+  if (!stats) {
+    stats = {
+      docLen: Object.values(note.termFreq).reduce((a, b) => a + b, 0),
+      titleTokens: new Set(tokenize(note.title)),
+    }
+    noteStats.set(note, stats)
+  }
+  return stats
+}
+
 // Returns a raw BM25 score for every note (index matches index.notes order).
 // Scores are in [0, ∞); notes with no query-term overlap score 0.
 function bm25Scores(qTerms: string[], index: WikiIndex): number[] {
   const { notes, df, noteCount, avgNoteLen } = index
   return notes.map(note => {
-    const docLen = Object.values(note.termFreq).reduce((a, b) => a + b, 0)
-    const titleTokens = new Set(tokenize(note.title))
+    const { docLen, titleTokens } = getNoteStats(note)
     let score = 0
     for (const t of qTerms) {
       const tf = note.termFreq[t] ?? 0
@@ -108,18 +121,6 @@ function bm25Scores(qTerms: string[], index: WikiIndex): number[] {
     }
     return score
   })
-}
-
-export function retrieve(query: string, index: WikiIndex, topK = 8): WikiNote[] {
-  const qTerms = tokenize(query)
-  if (qTerms.length === 0) return []
-  const scores = bm25Scores(qTerms, index)
-  return scores
-    .map((s, i) => ({ s, i }))
-    .filter(({ s }) => s > 0)
-    .sort((a, b) => b.s - a.s)
-    .slice(0, topK)
-    .map(({ i }) => index.notes[i])
 }
 
 // Dot product == cosine similarity when both vectors are unit-normalised,
@@ -143,7 +144,7 @@ export function retrieveHybrid(
 
   // --- BM25 ranks (all notes, zeros sort to the bottom) ---
   const qTerms = tokenize(query)
-  const bm25 = bm25Scores(qTerms.length ? qTerms : [], index)
+  const bm25 = bm25Scores(qTerms, index)
   const bm25Rank = new Map(
     bm25
       .map((s, i) => ({ s, i }))

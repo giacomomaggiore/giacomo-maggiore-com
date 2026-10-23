@@ -1,131 +1,76 @@
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { createHmac } from "crypto";
+import { NextResponse } from 'next/server'
+import {
+  buildConfirmUrl,
+  getSiteOrigin,
+  isValidEmail,
+  sendConfirmationEmail,
+} from 'lib/newsletter'
+import { getClientIp, rateLimit, tooManyRequests } from 'lib/rate-limit'
+import { PRODUCTION_URL } from 'lib/site'
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const MAX_SIGNUPS_PER_WINDOW = 5
+const SIGNUP_WINDOW_MS = 10 * 60_000
+const MAX_CONFIRMATIONS_PER_EMAIL = 3
+const CONFIRMATION_WINDOW_MS = 60 * 60_000
 
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function normalizeFromAddress(rawFrom: string) {
-  // Accept values with accidental wrapping quotes/spaces from env providers.
-  const from = rawFrom.trim().replace(/^['"]|['"]$/g, "");
-  const bareEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const namedEmail = /^.+\s<[^\s@]+@[^\s@]+\.[^\s@]+>$/;
-
-  if (!bareEmail.test(from) && !namedEmail.test(from)) {
-    return null;
-  }
-
-  return from;
-}
-
-function getUnsubscribeSecret() {
-  return process.env.NEWSLETTER_UNSUBSCRIBE_SECRET || process.env.RESEND_API_KEY || "";
-}
-
-function signUnsubscribeToken(email: string, ts: string) {
-  const secret = getUnsubscribeSecret();
-  return createHmac("sha256", secret).update(`${email}:${ts}`).digest("hex");
-}
-
-function buildUnsubscribeUrl(req: Request, email: string) {
-  const ts = String(Date.now());
-  const sig = signUnsubscribeToken(email, ts);
-  const base = process.env.NEXT_PUBLIC_SITE_URL || new URL(req.url).origin;
-  const url = new URL("/api/newsletter/unsubscribe", base);
-  url.searchParams.set("email", email);
-  url.searchParams.set("ts", ts);
-  url.searchParams.set("sig", sig);
-  return url.toString();
-}
-
-async function sendWelcomeEmail(email: string, unsubscribeUrl: string) {
-  const rawFrom = process.env.NEWSLETTER_FROM_EMAIL;
-  if (!rawFrom) {
-    console.warn("Missing NEWSLETTER_FROM_EMAIL: welcome email skipped");
-    return;
-  }
-
-  const from = normalizeFromAddress(rawFrom);
-  if (!from) {
-    console.error("Invalid NEWSLETTER_FROM_EMAIL format");
-    return;
-  }
-
-  const { error } = await resend.emails.send({
-    from,
-    to: email,
-    subject: "See you in the next one, ciao!",
-    replyTo: "giaco.maggiore@gmail.com",
-    html: `
-      <p>Thanks for subscribing. I promise not to spam you, just the occasional <i>"what's new”</i> message.</p>
-      <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${unsubscribeUrl}">here</a></p>
-      
-      <p>Best,<br/>Giacomo</p>
-    `,
-  });
-
-  if (error) {
-    throw new Error(error.message || "Failed to send welcome email");
-  }
-}
-
-export async function POST(req: Request) {
+// Origin of the page the visitor subscribed from (our own origins only)
+function getBackOrigin(req: Request): string {
+  const trustedOrigins = new Set([new URL(req.url).origin, PRODUCTION_URL, getSiteOrigin(req)])
   try {
-    const form = await req.formData();
+    const referer = new URL(req.headers.get('referer') || '/', req.url)
+    // A forged Referer pointing elsewhere must not turn this into an open redirect
+    if (trustedOrigins.has(referer.origin)) return referer.origin
+  } catch {
+    // malformed Referer: fall through to the request origin
+  }
+  return new URL(req.url).origin
+}
 
-    const email = String(form.get("email") || "").trim().toLowerCase();
-    const consent = String(form.get("newsletter_consent") || "") === "yes";
-    const honeypot = String(form.get("website") || "");
+// Double opt-in: the contact is only created when the link in the confirmation email is
+// opened (see ./confirm), so nobody can subscribe an address they don't control
+export async function POST(req: Request) {
+  const limit = rateLimit(`newsletter:${getClientIp(req)}`, MAX_SIGNUPS_PER_WINDOW, SIGNUP_WINDOW_MS)
+  if (!limit.ok) return tooManyRequests(limit.retryAfterSec)
 
+  try {
+    const form = await req.formData()
+
+    const email = String(form.get('email') || '').trim().toLowerCase()
+    const consent = String(form.get('newsletter_consent') || '') === 'yes'
+    const honeypot = String(form.get('website') || '')
+
+    // Bots fill the hidden field: pretend success without subscribing them
     if (honeypot) {
-      return NextResponse.redirect(new URL("/", req.url), 303);
+      return NextResponse.redirect(new URL('/', req.url), 303)
     }
 
     if (!consent) {
-      return NextResponse.json({ error: "Consent required" }, { status: 400 });
+      return NextResponse.json({ error: 'Consent required' }, { status: 400 })
     }
 
     if (!isValidEmail(email)) {
-      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
     }
 
-    const audienceId = process.env.RESEND_AUDIENCE_ID;
-    if (!audienceId) {
-      return NextResponse.json({ error: "Missing RESEND_AUDIENCE_ID" }, { status: 500 });
+    // Fail now rather than after the visitor clicked a link that can't complete
+    if (!process.env.RESEND_AUDIENCE_ID) {
+      return NextResponse.json({ error: 'Missing RESEND_AUDIENCE_ID' }, { status: 500 })
     }
 
-    const { error } = await resend.contacts.create({
-      audienceId,
-      email,
-      unsubscribed: false,
-    });
-
-    let isDuplicate = false;
-    if (error) {
-      const msg = String(error.message || "").toLowerCase();
-      isDuplicate = msg.includes("already");
-      if (!isDuplicate) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-      }
-    }
-
-    if (!isDuplicate) {
+    // Stops the form from flooding one inbox; it answers as if it worked so it reveals nothing
+    const perEmail = rateLimit(`newsletter-email:${email}`, MAX_CONFIRMATIONS_PER_EMAIL, CONFIRMATION_WINDOW_MS)
+    if (perEmail.ok) {
       try {
-        const unsubscribeUrl = buildUnsubscribeUrl(req, email);
-        await sendWelcomeEmail(email, unsubscribeUrl);
-      } catch (welcomeErr) {
-        console.error("Welcome email error:", welcomeErr);
+        await sendConfirmationEmail(email, buildConfirmUrl(getSiteOrigin(req), email))
+      } catch (sendErr) {
+        console.error('Confirmation email error:', sendErr)
+        return NextResponse.json({ error: 'Subscription failed' }, { status: 500 })
       }
     }
 
-    const referer = req.headers.get("referer");
-    const backUrl = new URL(referer || "/", req.url);
-    backUrl.searchParams.set("subscribed", "1");
-    return NextResponse.redirect(backUrl, 303);
-  } catch {
-    return NextResponse.json({ error: "Unexpected error" }, { status: 500 });
+    return NextResponse.redirect(new URL('/newsletter/check-inbox', getBackOrigin(req)), 303)
+  } catch (err) {
+    console.error('Newsletter error:', err)
+    return NextResponse.json({ error: 'Unexpected error' }, { status: 500 })
   }
 }

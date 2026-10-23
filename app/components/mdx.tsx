@@ -70,7 +70,7 @@ function Table({ data }) {
           borderCollapse: 'collapse',
           width: '100%',
           tableLayout: 'auto',
-          wordWrap: 'break-word', // evita parole troppo lunghe
+          wordWrap: 'break-word', // avoid overly long words overflowing
           fontSize: '0.95rem',
           margin: '1rem 0',
         }}
@@ -121,10 +121,7 @@ function Table({ data }) {
   )
 }
 
-
-
-
-
+// Links open in a new tab; internal and #anchor links keep working
 function CustomLink(props) {
   const { href = '', children, target: propTarget, rel: propRel, ...rest } = props
   const target = propTarget ?? '_blank'
@@ -244,13 +241,11 @@ const components = {
   Quote
 }
 
-
-
-
 interface CustomMDXProps {
   source: string
 }
 
+// Builds a GFM table from { headers, rows }; newlines in cells become <br />
 function toMarkdownTable(data: { headers: any[]; rows: any[][] }) {
   const formatCell = (value: unknown) =>
     String(value ?? '')
@@ -271,6 +266,8 @@ function toMarkdownTable(data: { headers: any[]; rows: any[][] }) {
   return [head, sep, body].filter(Boolean).join('\n')
 }
 
+// Turns <Table data={{ headers, rows }} /> blocks into Markdown tables before MDX compiles.
+// Table data is evaluated as JS, so this only handles our own trusted content files.
 function replaceTableBlocks(source: string) {
   const tableRegex = /<Table\s+data=\{\{([\s\S]*?)\}\}\s*(?:\/>|><\/Table>)/g
 
@@ -293,7 +290,7 @@ function replaceTableBlocks(source: string) {
 }
 
 export async function CustomMDX({ source }: CustomMDXProps) {
-  // Import dinamici per evitare problemi di compatibilità
+  // Dynamic imports avoid ESM/CJS compatibility problems
   const [{ default: remarkMath }, { default: remarkGfm }, { default: rehypeKatex }] = await Promise.all([
     import('remark-math'),
     import('remark-gfm'),

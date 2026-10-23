@@ -1,24 +1,23 @@
 import fs from 'fs'
 import path from 'path'
 
-// Load .env.local so OPENAI_API_KEY etc. are available when running via `npm run index`
+// Load .env.local so OPENAI_API_KEY is available when running via `pnpm index` (existing vars win)
 const envLocalPath = path.join(process.cwd(), '.env.local')
 if (fs.existsSync(envLocalPath)) {
-  for (const line of fs.readFileSync(envLocalPath, 'utf-8').split('\n')) {
-    const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)$/)
-    if (match && !process.env[match[1]]) process.env[match[1]] = match[2].trim()
-  }
+  // loadEnvFile exists since Node 20.12 but is missing from the installed @types/node
+  ;(process as unknown as { loadEnvFile(file: string): void }).loadEnvFile(envLocalPath)
 }
 
 import { parseFrontmatter } from 'lib/wiki/frontmatter'
+import { EMBEDDING_MODEL, getOpenAI } from 'lib/wiki/openai'
 import {
+  WIKI_INDEX_PATH,
   WIKI_PUBLIC_NOTES_DIR,
   WIKI_PUBLIC_BLOG_DIR,
   WIKI_PRIVATE_DIR,
 } from 'lib/wiki/paths'
 import { tokenize, WikiNote, WikiIndex } from 'lib/wiki/retrieve'
 
-const OUTPUT_PATH = path.join(process.cwd(), 'lib', 'wiki-index.generated.json')
 const MAX_FULL_TEXT = 50_000
 // OpenAI recommends staying well under the 8192-token limit per input
 const MAX_EMBED_CHARS = 20_000
@@ -105,21 +104,18 @@ function collectPrivate(): WikiNote[] {
 
 // Batch-embed all notes in a single OpenAI request (supports up to 2048 inputs).
 // Attaches the embedding array directly onto each WikiNote in-place.
-// Silently skips if OPENAI_API_KEY is not set — retrieve() falls back to BM25-only.
+// Silently skips if OPENAI_API_KEY is not set — /api/ask then falls back to BM25-only.
 async function embedNotes(notes: WikiNote[]): Promise<void> {
-  const apiKey = process.env.OPENAI_API_KEY
-  if (!apiKey) {
+  const openai = await getOpenAI()
+  if (!openai) {
     console.log('  OPENAI_API_KEY not set, skipping embeddings (BM25-only mode)')
     return
   }
 
-  const { default: OpenAI } = await import('openai')
-  const client = new OpenAI({ apiKey })
-
   const inputs = notes.map(n => n.fullText.slice(0, MAX_EMBED_CHARS))
 
-  const res = await client.embeddings.create({
-    model: 'text-embedding-3-small',
+  const res = await openai.embeddings.create({
+    model: EMBEDDING_MODEL,
     input: inputs,
   })
 
@@ -127,7 +123,7 @@ async function embedNotes(notes: WikiNote[]): Promise<void> {
     notes[index].embedding = embedding
   }
 
-  console.log(`  embedded ${notes.length} notes (text-embedding-3-small)`)
+  console.log(`  embedded ${notes.length} notes (${EMBEDDING_MODEL})`)
 }
 
 async function main() {
@@ -159,7 +155,7 @@ async function main() {
     notes,
   }
 
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(index))
+  fs.writeFileSync(WIKI_INDEX_PATH, JSON.stringify(index))
   console.log(
     `wiki index: ${notes.length} notes` +
     ` (${notesNotes.length} notes, ${blogNotes.length} blog, ${privateNotes.length} private)` +

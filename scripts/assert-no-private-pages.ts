@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import { WikiIndex } from 'lib/wiki/retrieve'
+import { WIKI_INDEX_PATH } from 'lib/wiki/paths'
+import type { WikiIndex } from 'lib/wiki/retrieve'
 
 let failed = false
 function fail(msg: string) {
@@ -26,11 +27,10 @@ function walkApp(dir: string) {
 walkApp(appDir)
 
 // Check 2: every private note in the index has url === null
-const indexPath = path.join(process.cwd(), 'lib', 'wiki-index.generated.json')
-if (!fs.existsSync(indexPath)) {
+if (!fs.existsSync(WIKI_INDEX_PATH)) {
   fail('lib/wiki-index.generated.json not found — run pnpm index first')
 } else {
-  const index: WikiIndex = JSON.parse(fs.readFileSync(indexPath, 'utf-8'))
+  const index: WikiIndex = JSON.parse(fs.readFileSync(WIKI_INDEX_PATH, 'utf-8'))
   for (const note of index.notes) {
     if (note.visibility === 'private' && note.url !== null) {
       fail(`private note "${note.slug}" has url "${note.url}" (must be null)`)

@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "index": "tsx scripts/build-wiki-index.ts",
+    "check:private": "tsx scripts/assert-no-private-pages.ts",
+    "typecheck": "tsc --noEmit",
     "prebuild": "tsx scripts/build-wiki-index.ts && tsx scripts/assert-no-private-pages.ts"
   },
   "devDependencies": {
@@ -30,7 +32,6 @@
     "openai": "^6.42.0",
     "postcss": "^8.4.35",
     "posthog-js": "^1.257.0",
-    "posthog-node": "^5.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^5.5.0",
