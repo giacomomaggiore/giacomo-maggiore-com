@@ -163,12 +163,15 @@ export async function sendWelcomeEmail(email: string, unsubscribeUrl: string): P
     },
     html: `
       <p>Thanks for confirming, you're on the list. I'll only write when there's something new worth sharing, about one email a month.</p>
+      <p>If this landed in Promotions, drag it to Primary so the next ones don't get lost.</p>
       <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${escapeAttr(unsubscribeUrl)}">here</a>.</p>
 
       <p>Best,<br/>Giacomo</p>
     `,
     text: [
       "Thanks for confirming, you're on the list. I'll only write when there's something new worth sharing, about one email a month.",
+      '',
+      "If this landed in Promotions, drag it to Primary so the next ones don't get lost.",
       '',
       'If you ever change your mind, you can unsubscribe anytime here:',
       unsubscribeUrl,
