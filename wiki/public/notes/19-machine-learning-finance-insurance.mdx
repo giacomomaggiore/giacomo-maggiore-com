@@ -26,7 +26,7 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 ## <b>Projects</b>
 
 1. [Linear Regression with housing price data](#p1)
-1. [Project name](#p2)
+1. [Credit Analytics](#p2)
 1. [Project name](#p3)
 1. [Project name](#p4)
 
@@ -1480,6 +1480,8 @@ $$
 
 However, note that when dealing with <b>imbalanced data</b>, the accuracy metric can be misleading. Indeed, if one of the two classes $P, N$ is much smaller or larger than the other, the accuracy ratio might not be the right measure since we may have very high accuracy just because we are always predicting the larger class _(and never predict the smaller class)_.
 
+<a id="classification-metrics"></a>
+
 Therefore, we can define other <b>performance measures</b>:
 
 - <b>True positive rate</b> (recall, sensitivity):
@@ -2710,8 +2712,55 @@ _Secondly,_ note that <b>training techniques</b> can be regularizers too. _For e
 - <b>dropout</b>: before each gradient step, we set each neuron to zero with probability $q$ _(independently of all others)_, then perform backpropagation as usual. This encourages sparse and redundant representations _(this can be viewed equivalently as training exponentially many neural networks)_.
 
 
+To see this in practice, we now present a dropout method, proposed by Srivastava et al. in 2014, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_1
 
+$$
+a^{(k)} \leftarrow \frac{1}{1-q}\,\xi^{(k)} \odot a^{(k)},
+\qquad
+\xi_j^{(k)} \overset{\mathrm{iid}}{\sim} \operatorname{Ber}(1-q).
+$$
 
+so that the expected activation is unchanged and no dropout is applied at test time. _(Note that $\odot$ is element-wise (Hadamard) multiplication.)_
+
+<b>Choosing Evaluation Metrics</b>
+
+We first recall that the training loss is chosen for optimization such that it is cheap to compute and differentiable. Choosing the <b>evaluation metric</b> is _another story_ and should reflect how the model will be used and, _more importantly,_ it is computed on the test set. We now present some evaluation metrics.
+
+- For <b>regression</b>, we can often use:
+    - MSE: $\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat y_i)^2$
+    - RMSE: $\sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i-\hat y_i)^2}$
+    - MAE: $\frac{1}{n}\sum_{i=1}^{n}|y_i-\hat y_i|$
+    - $R^2_{\mathrm{oos}}=1-\frac{\sum_{t=1}^{T}(r_t-\hat r_t)^2}{\sum_{t=1}^{T}(r_t-\hat r_{t,\mathrm{bench}})^2}$ _(for return forecasts, where $\hat r_{t,\mathrm{bench}}$ is the benchmark forecast)_
+
+- For <b>classification</b>, we prefer methods that look for accuracy and precision (<b>F1, ROC and AUC</b>; <a href="#classification-metrics">click here to review them</a>). For predicted probabilities, we can use the <b>log-loss</b>: $-\frac{1}{n}\sum_{i=1}^{n}\left[y_i\log(\hat p_i)+(1-y_i)\log(1-\hat p_i)\right]$, or the <b>Brier score</b>: $\frac{1}{n}\sum_{i=1}^{n}(\hat p_i-y_i)^2$.
+- For <b>finance-specific topics</b>, we consider pricing errors in implied-volatility points rather than in prices, hedging errors and, _for training signals or strategies,_ we can consider P&L, Sharpe Ratio, turnover and drawdowns of the optimized strategy, _better after transaction costs_.
+
+_Lastly,_ always compare with simple benchmarks (historical mean, linear regression, GARCH, Black–Scholes, etc.) and evaluate over several periods and market regimes.
+
+<b>Little off-topic on implementation: tensors and automatic differentiation in PyTorch</b>
+
+We recall that a tensor is an n-dimensional array on a CPU/GPU.
+
+Operations on tensors with `requires_grad=True` are recorded in a computational graph; `backward()` then runs reverse-mode automatic differentiation (backpropagation):
+
+We can consider the following example, where we try to compute a portfolio's variance and then estimate variance changes depending on weights using `backward()`.
+
+`backward()` starts from the variance, and PyTorch walks the graph backward and applies the chain rule at each node. This is reverse-mode automatic differentiation, and it is the same algorithm as backpropagation in neural networks. The result is exact. It is not a numerical approximation like $(f(w+\varepsilon)-f(w))/\varepsilon$.
+
+```python
+import torch
+Sigma = torch.tensor([[0.04, 0.006],
+                      [0.006, 0.09]])           # covariance matrix of two assets
+w = torch.tensor([0.6, 0.4], requires_grad=True)   # portfolio weights
+variance = w @ Sigma @ w
+variance.backward()
+print(variance.item(), w.grad)
+# portfolio variance w' Sigma w
+# reverse-mode automatic differentiation
+# 0.03168  tensor([0.0528, 0.0792])
+```
+
+Note that automatic differentiation is exact up to floating-point errors _(no finite-difference error)_.
 
 ## <a id="7"><b>7 Classification and Regression Trees</b></a>
 
@@ -2773,6 +2822,7 @@ All the projects were assigned during the course and self-made in groups. The co
 _Credits to Giacomo Maggiore, Ugo Buzzacchino, Kostas Zisis, Konstantin Krstevski._
 
 
+---
 
 
 ## <a id="p1"><b>P1 Linear Regression with housing price data</b></a>
@@ -2781,10 +2831,9 @@ _Credits to Giacomo Maggiore, Ugo Buzzacchino, Kostas Zisis, Konstantin Krstevsk
 
 The project is built around a dataset of house price data, which consists of a dependent target variable Y, "SalePrice", and 79 features, 35 of which are numerical and 44 categorical.
 
-The first step was determining whether the target variable followed a Gaussian distribution. To do that, we plotted a frequency histogram, a Q-Q plot, and calculated moments, resulting in:
+The first step was determining whether the target variable followed a <b>Gaussian distribution.</b> To do that, we plotted a frequency histogram, a Q-Q plot, and calculated moments, resulting in:
 
 ```python
-
 Skewness: 1.883
 Excess kurtosis: 6.536
 Mean: $180,921
@@ -2796,7 +2845,7 @@ Median: $163,000
 </div>
 
 It can be immediately observed that:
-- Skewness > 0 and mean > median: the distribution has a long tail to the right _(right-skewed)_
+- Skewness > 0 and mean > median $\implies$ the distribution has a long tail to the right _(right-skewed)_
 - Excess kurtosis > 0: there are <b>more extreme values</b> than in a normal distribution
 - In the <b>Q-Q plot</b> _(which represents theoretical vs. sample quantiles):_ the data points form a curve, not a straight line
 
@@ -2806,9 +2855,11 @@ Therefore, we standardized the data and applied a log transformation to <b>reduc
 ![Bias variance tradeoff](/images/notes/third-semester/p1-plots-2.png)
 </div>
 
-Secondly, we split the dataset into training and testing sets. We then filled numerical values with the sample mean of the remaining series and categorical data with the most frequent value.
+Secondly, we split the dataset into training and testing sets. We then filled missing numerical values with the sample mean of the remaining series and categorical data with the most frequent value.
 
-<b>P.1.2 Linear Regression on Numerical Features</b>
+---
+<br/>
+<b>P1.3 Linear Regression on Numerical Features</b>
 
 We first fit an OLS regression using _only_ numerical predictors with the <b>scikit-learn</b> library and then saved the coefficients by running:
 
@@ -2823,10 +2874,10 @@ ols_numerical_coefficients = pd.DataFrame({
 })
 ```
 
-Recall that in this first run the target variable is log(SalePrice) and the features were standardized.
+Recall that in this first run the target variable is `log(SalePrice)` and the features were standardized.
 <br/>_Intuition: given a coefficient b, the price is about 100*b higher when the corresponding feature increases by one standard deviation, ceteris paribus._
 
-We then calculated MSE and $R^2$ for both training and testing data, on both log(SalePrice) and SalePrice scales, resulting in the following:
+We then calculated MSE and $R^2$ for both training and testing data, on both `log(SalePrice` and `SalePrice` scales, resulting in the following:
 
 | Sample | Target scale | MSE | R² |
 | --- | --- | ---: | ---: |
@@ -2835,12 +2886,12 @@ We then calculated MSE and $R^2$ for both training and testing data, on both log
 | In-sample | SalePrice (USD) | 1,433,790,871 | 0.76177 |
 | Out-of-sample | SalePrice (USD) | 829,116,180 | 0.88118 |
 
-We immediately notice that, on the log scale, the MSE for training and testing is almost equal, so the model _DOES NOT_ overfit.
+_We immediately notice that,_ on the log scale, the MSE for training and testing is almost equal, so the model _DOES NOT_ overfit.
 <br/>On the other hand, on the dollar scale, the training $R^2$/MSE are lower/higher compared to the testing set, but the reason comes from two extreme-value training houses (outliers).
 
 _Generally speaking_, we can say that the <b>log metrics</b> show typical relative accuracy and the dollar-scale performance may be influenced by a few large errors _(either in the training or in the testing set, depending on luck!)_
 
-We then estimate the coefficients "manually", using NumPy and a numerically stable linear system _(not relying explicitly on the inverse matrix to solve the normal equation)_.
+We then estimate the coefficients _"manually",_ using NumPy and a numerically stable linear system _(not relying explicitly on the inverse matrix to solve the normal equation)_.
 
 We first define the design matrix and y vector as:
 
@@ -2892,8 +2943,10 @@ Given the results, we spent some time investigating the numerical structure of A
 rank_A = np.linalg.matrix_rank(A)
 _, singular_values, Vt = np.linalg.svd(A, full_matrices=False)
 ```
-
-<b>P.1.3 Regularization Techniques</b>
+<br/>
+---
+<br/>
+<b>P.1.2 Regularization Techniques</b>
 
 We now try to implement and tune four different methods:
 - <b>Truncated Pseudoinverse</b>
@@ -2949,7 +3002,7 @@ models = {
 
 To find the best parameter, we apply the following logic:
 - run an initial broad grid
-- once a grid is done, inspect that grid and the selected parameter
+- _once a grid is done,_ inspect that grid and the selected parameter
 - if the parameter is at or near the border, expand that side and re-run
 - stop only when the selected values are inside the final grid _(we do not automatically stop at the first grid if the optimum parameter looks constrained by the chosen grid, in order to not introduce selection/prior bias)_
 <br/>
@@ -3004,7 +3057,327 @@ To sum up, when deciding on a final model for recommendation, we ended up with <
 - it has the lowest mean CV RMSE _(this is the same criterion used to tune and compare each model)_
 - with so many features (311), Elastic Net can reduce the number of non-zero coefficients and therefore reduce variance and make the model easier to interpret
 
-## <a id="p2"><b>P2 </b></a>
+<br/>
+---
+<br/>
+## <a id="p2"><b>P2 Credit Analytics  </b></a>
+
+Before starting with the practical coding project, we give a short introduction of the topic.
+
+In every day language, we often associate risk \approx uncertainty. _However,_ risk management is more precise, since it defines risk as the exposure to the possibility of loss.
+
+For the sake of this project, we define <b>credit risk</b> as the risk coming from losses from borrowers who default. Therefore, _later in the code,_ we will model each borrower $i$ with a default probability $1 - p(x_i)$, where $p(x_i)$ is the probability the borrower repays.
+
+We can then consider three different ways to represent risk, for a random loss $L$:
+- <b>Variance</b>: $\operatorname{Var}(L)=\mathbb{E}\left[(L-\mathbb{E}[L])^2\right]$
+- <b>Value at Risk (VaR)</b> at confidence level $\alpha$ (usually $\alpha=0.95$): $\operatorname{VaR}_{\alpha}(L)=\inf\{\ell\in\mathbb{R}:\mathbb{P}(L\leq\ell)\geq\alpha\}$. At 95%, this is the loss threshold exceeded in the worst 5% of outcomes.
+- <b>Expected Shortfall (ES)</b> at confidence level $\alpha$: $\operatorname{ES}_{\alpha}(L)=\frac{1}{1-\alpha}\int_{\alpha}^{1}\operatorname{VaR}_{u}(L)\,du$. This is the average loss in the worst $1-\alpha$ fraction of outcomes.
+
+VaR is simpler and widely used, but... ES is getting more and more popular because it looks into the tail.
+
+There are two main common methods to assess risk:
+- <b>Monte Carlo scenarios</b>, where we simulate many outcomes _(in this way, we ask the question "who repays?" multiple times)_ and, _for each scenario,_ compute the corresponding P&L so we can understand how bad and how often it happens, _given that the model is right_.
+- <b>Stress scenario</b>, where we choose a specific adverse situation and compute P&L in that specific situation, without knowing how likely this bad scenario is.
+
+_To sum up..._ in the following project, we model each borrower with a repayment probability and, given specified lending decisions, simulate different scenarios to compute the portfolio P&L distribution and then its expected P&L and VaR.
+
+---
+
+<br/>
+
+<b>P2.1 Synthetic Data</b>
+
+For this project, we use _synthetic data_: to do so, we simulate 30'000 borrowers with three features: age and monthly income, both uniformly distributed, and employment status, distributed as a binomial variable with $p = 0.1$.
+
+```python
+# simulate explanatory variables x (the age and monthly income are assumed here to follow a continuous uniform distribution)
+m = 20000
+n = 10000
+
+# age in [18, 80], monthly income in [1, 15] (in CHF 1000), both uniformly distributed
+x_1 = np.random.uniform(18, 80, size=(n+m, 1))  # age
+x_2 = np.random.uniform(1, 15, size=(n+m, 1))  # monthly income
+
+# 0: salaried, 1 = self-employed with probability of being self-employed = 0.1
+x_3 = np.random.binomial(1, 0.1, size=(n+m, 1))  # employment status
+
+```
+
+We then put vectors together and we split the data in training and testing:
+
+
+```python
+# vector in R^3 of explanatory variables using only m training data points (the first m rows of x_1, x_2, and x_3)
+x_ = np.hstack((x_1, x_2, x_3))
+
+x_train = x_[:m, :]
+x_test = x_[m:, :]
+```
+
+---
+<br/>
+<b>P2.2 Dataset and Logistic Regression</b>
+
+_Given the input synthetic data_, we now build the dataset using <b>logistic regression</b> with two different probability models for repayment.
+
+Indeed, given the borrower's tendency to pay, represented by the logistic function $\sigma(x)=\frac{1}{1+e^{-x}}$, we set:
+
+
+
+$$
+p_1=\sigma\left(13.3-0.33x_1+3.5x_2-3x_3\right)
+$$
+
+$$
+p_2=\sigma\left(
+5-10\left(\mathbf{1}_{\{x_1<25\}}+\mathbf{1}_{\{x_1>75\}}\right)
++1.1x_2-x_3
+\right)
+$$
+
+```python
+# logistic sigmoid function
+sigmoid = lambda x: 1. / (1. + np.exp(-x))
+
+# random variables uniformly distributed
+xi = np.random.uniform(0, 1, size=x_1.shape)
+
+# Probability that borrower i is "good" in datasets 1 and 2
+p_1 = sigmoid(13.3 - 0.33 *x_1 + 3.5 * x_2 - 3 * x_3)
+p_2 = sigmoid(5 - 10 * ((x_1 < 25).astype(int) + (x_1 > 75).astype(int)) + 1.1 * x_2- x_3)
+
+
+
+# build first and second datasets (with different underlying probabilities)
+y_1 = (xi <= p_1).astype(int)
+y_2 = (xi <= p_2).astype(int)
+```
+
+
+Then, by considering both $p_1$, $p_2$, and the uniformly distributed random variable $\xi$, we can sample each payment outcome randomly: $y = 1$ when a uniform random draw is below the borrower's probability, and $y = 0$ otherwise.
+
+```python
+y_1 = (xi <= p_1).astype(int)
+y_2 = (xi <= p_2).astype(int)
+```
+
+We now fit the models using the scikit-learn logistic regression library:
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import log_loss
+```
+
+_In particular,_ we initially fit the models on both datasets, then predict on the entire dataset (training and testing):
+
+```python
+# Fit the models on both datasets
+model_1 = LogisticRegression().fit(x_train, y_1_train.ravel())
+model_2 = LogisticRegression().fit(x_train, y_2_train.ravel())
+
+# Predict the probabilities on the entire dataset (both training and test)
+pred_X_1 = model_1.predict_proba(x_)
+pred_X_2 = model_2.predict_proba(x_)
+```
+
+_However,_ we then compute cross-entropy on both datasets _separately_ for training and testing:
+
+```python
+cross_entropy_loss_1_train = log_loss(y_1_train, pred_X_1[:m])  # Use only the training data for y_1
+cross_entropy_loss_2_train = log_loss(y_2_train, pred_X_2[:m])  # Use only the training data for y_2
+
+cross_entropy_loss_1_test = log_loss(y_1_test, pred_X_1[m:])  # Use only the test data for y_1
+cross_entropy_loss_2_test = log_loss(y_2_test, pred_X_2[m:])  # Use only the test data for y_2
+
+# Cross-entropy loss on the training data:
+# Dataset 1: 0.0297
+# Dataset 2: 0.1535
+
+# Cross-entropy loss on the test data:
+# Dataset 1: 0.0349
+# Dataset 2: 0.1486
+```
+
+_Secondly,_ we replicate using <b>normalized data</b>, i.e., we divide by the empirical standard deviation of the training data, for both the test and training sets.
+
+```python
+x_train_std = np.std(x_train, axis=0)
+x_train_normalized = x_train / x_train_std
+x_test_normalized = x_test / x_train_std
+```
+
+We now implement a <b>support vector classifier</b> (SVC) using scikit-learn:
+
+```python
+from sklearn.svm import SVC
+
+# Parameters given
+gamma = 10e-2
+C = 0.2
+
+model_1_normalized = SVC(kernel='rbf', gamma=gamma, C=C, probability=True)
+model_2_normalized = SVC(kernel='rbf', gamma=gamma, C=C, probability=True)
+
+# Fit the models for both datasets (this can take up to 60 seconds with SVC)
+# Note: "model.fit(...)" modifies the model object in place, so use a separate model object
+# for each dataset if you want to keep both fitted models.
+
+model_1_normalized.fit(x_train_normalized, y_1_train.ravel())
+model_2_normalized.fit(x_train_normalized, y_2_train.ravel())
+```
+
+We then predict probabilities on the combined training and testing data, then split at $m$:
+
+```python
+x_normalized = np.vstack((x_train_normalized, x_test_normalized))
+
+model_1_pred_normalized = model_1_normalized.predict_proba(x_normalized)
+model_2_pred_normalized = model_2_normalized.predict_proba(x_normalized)
+
+# Cross-entropy loss on the training data (SVM, normalized):
+# Dataset 1: 0.0319
+# Dataset 2: 0.0711
+```
+
+_Note that_ using standardized data (i.e., $\hat{x} = \frac{x - \mu}{\sigma}$) instead of normalized data would not change the results.
+
+In particular, we can show that, for two observations $i$ and $l$, with $\hat{\mu}_j$ and $\hat{\sigma}_j$, we have:
+
+$$
+\tilde{z}_{ij}-\tilde{z}_{lj}
+=
+\frac{x_{ij}-\hat{\mu}_j}{\hat{\sigma}_j}
+-
+\frac{x_{lj}-\hat{\mu}_j}{\hat{\sigma}_j}
+=
+\frac{x_{ij}}{\hat{\sigma}_j}
+-
+\frac{x_{lj}}{\hat{\sigma}_j}
+=
+\tilde{x}_{ij}-\tilde{x}_{lj}.
+$$
+
+
+So we have that:
+
+
+$$
+k(\tilde{z}_i,\tilde{z}_l)
+=
+\exp\left(
+-\frac{1}{10}\sum_{j=1}^{3}(\tilde{z}_{ij}-\tilde{z}_{lj})^2
+\right)
+=
+\exp\left(
+-\frac{1}{10}\sum_{j=1}^{3}(\tilde{x}_{ij}-\tilde{x}_{lj})^2
+\right)
+=
+k(\tilde{x}_i,\tilde{x}_l).
+$$
+
+Then the SVC fit depends on the data _only through_ these kernels, so the dual coefficients $a^*$ and the intercept $b$ are identical:
+
+
+$$
+\hat{f}^{\mathrm{svm}}_s(\tilde{z})
+=
+\sum_{i=1}^{m}a_i^*y_i\,k(\tilde{z}_i,\tilde{z})+b
+=
+\sum_{i=1}^{m}a_i^*y_i\,k(\tilde{x}_i,\tilde{x})+b
+=
+\hat{f}^{\mathrm{svm}}_s(\tilde{x}).
+$$
+
+
+Once we've done this, we plot the FDR and TPR curves, with the TPR on the horizontal axis, to compute the AUC.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p2.png)
+</div>
+
+```text
+Dataset 1 - Logistic regression: 0.00021
+Dataset 1 - SVM: 0.00025
+Dataset 2 - Logistic regression: 0.00777
+Dataset 2 - SVM: 0.00085
+Dataset 1: Logistic regression has the lower FDR/TPR AUC.
+Dataset 2: SVM has the lower FDR/TPR AUC.
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p2-2.png)
+</div>
+
+Recall that, _given a threshold $c$_, a borrower is "good" if $\hat{p}(x_i) \geq c$, so we interpret:
+- TPR($c$) = true positives / all good borrowers
+- FDR($c$) = false positives / (true positives + false positives)
+
+_Furthermore, recall that_ the AUC is the average FDR across all the TPR levels, i.e., the average share of bad loans in the accepted portfolio. This implies that, _in this case,_ lower is better (the opposite of the usual ROC-AUC). Note that the values are very small because, _luckily,_ most borrowers are good.
+
+---
+<br/>
+<b>P3 Scenario simulation</b>
+
+We now define a scenario matrix D: each row is a borrower, each column a scenario.
+
+```python
+# Define Portfolio and possible outcomes for this portfolio using matrix D
+
+p_good_test = np.asarray(p_2[m:]).reshape(n, 1)
+D = np.empty((n, n_scenarios), dtype=bool)
+
+for start in range(0, n_scenarios, chunk_size):
+    stop = min(start + chunk_size, n_scenarios)
+    uniforms = np.random.random((n, stop - start))
+    D[:, start:stop] = uniforms <= p_good_test
+```
+
+We then consider the following three lending strategies:
+1. _We give out a loan to every person in the test data set in the amount of CHF 1000, charging an interest rate of 5.5%._
+2. _Select applicants with logistic-regression predicted repayment probability $\geq 95\%$._
+3. _Select applicants using normalized-feature SVM probabilities $\geq 95\%$._
+
+For each strategy, we then compute the P&L and the VaR using the same scenario matrix, _i.e., by doing:_
+
+```python
+Portfolio_i = np.ones(n, dtype=bool)
+repaid_count = D.sum(axis=0)
+profit_i = (
+    repaid_count * loan_amount * interest_rate
+    - (Portfolio_i.sum() - repaid_count) * loan_amount)
+
+# Plot histogram of profits and losses
+
+import matplotlib.pyplot as plt
+
+plt.hist(profit_i, bins=50)
+plt.xlabel("Profit & loss (CHF)")
+plt.ylabel("Number of scenarios")
+plt.title("Strategy (i): Profit & loss across scenarios")
+plt.show()
+
+expected_profit_i = profit_i.mean()
+var95_i = -np.quantile(profit_i, 0.05)
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p2-3.png)
+</div>
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p2-4.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p2-5.png)
+</div>
+
+We notice that the <b>highest estimated expected P&L</b> is achieved with Strategy (3) _(Normalized SVM, 1% (CHF 61,960.54))_, the <b>lowest  estimated 95%-VaR: </b> with Strategy (CHF -54,070.00).
+
+_Furthermore,_ we notice that selective strategies issue fewer loans and use the same 1% rate, so their performance depends on how well each model identifies reliable borrowers.
+
+---
+<br/>
 
 ## <a id="p3"><b>P3 </b></a>
 

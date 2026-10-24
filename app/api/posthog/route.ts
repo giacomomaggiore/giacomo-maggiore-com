@@ -5,11 +5,13 @@ import { PRODUCTION_URL, baseUrl } from 'lib/site'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
+// PostHog may queue a query for up to 30 s; the default Vercel limit can be as low as 10 s
+export const maxDuration = 30
 
 const NO_STORE = { 'Cache-Control': 'no-store' }
 const MAX_REQUESTS_PER_MINUTE = 60
 
-// Only our own blog/notes URLs may be queried; the strict pattern also blocks HogQL injection
+// Only our own blog/notes URLs may be queried (the URL is only compared in code, never put in HogQL)
 const TRACKED_URL = /^(https?:\/\/[^/\s'"\\]+)\/(?:blog|notes)\/[\w.-]{1,120}$/
 const ALLOWED_ORIGINS = new Set([PRODUCTION_URL, baseUrl])
 

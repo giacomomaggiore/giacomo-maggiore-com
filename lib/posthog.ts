@@ -1,11 +1,13 @@
 // Server-side PostHog HogQL queries behind /api/posthog (page views, visitor stats).
 // Results are cached in memory so open tabs polling every minute don't each hit PostHog.
+// PostHog runs at most 3 queries at once per project and queues the rest for up to 30 s,
+// so there are only a few fixed queries (never one per page URL).
 
 const DEFAULT_PROJECT_ID = '197048'
 const CACHE_TTL_MS = 60_000
 const ERROR_TTL_MS = 15_000
-const REQUEST_TIMEOUT_MS = 8_000
-const MAX_CACHED_QUERIES = 200
+// Queue wait plus execution time; keep below maxDuration in app/api/posthog/route.ts
+const REQUEST_TIMEOUT_MS = 25_000
 
 export class PostHogError extends Error {
   constructor(
@@ -18,6 +20,8 @@ export class PostHogError extends Error {
 
 type CacheEntry = { expires: number; value: Promise<unknown[][]> }
 const cache = new Map<string, CacheEntry>()
+// Last successful result per query, served if a refresh fails so counters don't drop to 0
+const lastGood = new Map<string, unknown[][]>()
 
 // Sends one HogQL query and returns its result rows
 async function runHogQL(name: string, query: string): Promise<unknown[][]> {
@@ -53,21 +57,25 @@ async function runHogQL(name: string, query: string): Promise<unknown[][]> {
 
 // Memoizes a query for CACHE_TTL_MS; concurrent callers share one in-flight request
 function cachedQuery(key: string, name: string, query: string): Promise<unknown[][]> {
-  const now = Date.now()
   const hit = cache.get(key)
-  if (hit && hit.expires > now) return hit.value
+  if (hit && hit.expires > Date.now()) return hit.value
 
-  // Cap memory: drop expired entries, then refuse to track more distinct keys
-  if (cache.size >= MAX_CACHED_QUERIES) {
-    for (const [k, e] of cache) if (e.expires <= now) cache.delete(k)
-    if (cache.size >= MAX_CACHED_QUERIES) throw new PostHogError(429, 'Too many distinct queries')
+  const entry: CacheEntry = {
+    expires: Date.now() + CACHE_TTL_MS,
+    value: runHogQL(name, query).then(
+      (rows) => {
+        lastGood.set(key, rows)
+        return rows
+      },
+      (err) => {
+        // Failures are only remembered briefly so PostHog is retried soon but not hammered
+        entry.expires = Date.now() + ERROR_TTL_MS
+        const stale = lastGood.get(key)
+        if (stale) return stale
+        throw err
+      },
+    ),
   }
-
-  const entry: CacheEntry = { expires: now + CACHE_TTL_MS, value: runHogQL(name, query) }
-  // Failed queries are only remembered briefly so PostHog is retried soon but not hammered
-  entry.value.catch(() => {
-    entry.expires = Date.now() + ERROR_TTL_MS
-  })
   cache.set(key, entry)
   return entry.value
 }
@@ -108,12 +116,24 @@ export async function getAverageViews() {
     : null
 }
 
-// Page views of one URL (only $pageview events, not clicks or page leaves)
-// `url` must already be validated (no quotes or backslashes) by the caller
-export function getUrlViews(url: string) {
+// Page views (only $pageview events, not clicks or page leaves) of every blog/notes URL in one
+// query, so a burst of different pages costs PostHog one query. Explicit LIMIT: HogQL defaults to 100 rows.
+function getPageViews() {
   return cachedQuery(
-    `views:${url}`,
+    'pageViews',
     'get blog views',
-    `SELECT properties.$current_url AS url, count() AS views FROM events WHERE event = '$pageview' AND properties.$current_url = '${url}' GROUP BY url ORDER BY views DESC`,
+    `SELECT properties.$current_url AS url, count() AS views
+     FROM events
+     WHERE event = '$pageview'
+       AND (properties.$current_url LIKE '%/blog/%' OR properties.$current_url LIKE '%/notes/%')
+     GROUP BY url
+     ORDER BY views DESC
+     LIMIT 5000`,
   )
+}
+
+// Rows `[url, views]` for one exact URL (empty when it has no views)
+export async function getUrlViews(url: string) {
+  const rows = await getPageViews()
+  return rows.filter((row) => row[0] === url)
 }

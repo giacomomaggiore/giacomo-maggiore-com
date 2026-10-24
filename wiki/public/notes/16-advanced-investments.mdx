@@ -581,7 +581,7 @@ _For example,_ suppose that we are trying to predict returns using a regression 
 
 To avoid look-ahead biases, we have to make sure that $x_t$ was _really known_ at time $t$ _(i.e. that $x_t$ is $\mathcal{F}_t$-adapted... but this is another story: if you want to know a bit more about stochastic equations and filtrations, well, prepare to suck... <a href="https://giacomomaggiore.com/notes/20-numerical-solution-sde#1" target="_blank">maybe my notes here can be a starting point!</a>)_. <br/>Note that this problem is particularly relevant in finance since accounting/earnings data are often published with a delay, some financial market data _(interest, mutual fund NAV)_ are published with a lag of one trading day, there are always different time zones in place and, _finally,_ data are often revised after publication!
 
-_On the other hand_, <b>selection bias</b> arises when the sample is not randomly drawn from the underlying population, causing assets with particular features to be <b>over-/under-represented in the sample</b>. The most reliable fix in this case is always the simplest but yet most difficult to implement in practice: _include the full population!_
+_On the other hand_, <b>selection bias</b> arises when the sample is not randomly drawn from the underlying population, causing assets with particular features to be <b>over-/under-represented in the sample</b>. The most reliable fix in this case is always the simplest, yet most difficult to implement in practice: _include the full population!_
 
 <b>Survivorship bias</b>, _in particular,_ is a form of selection bias that arises when the sample used in the analysis only includes assets that are still traded at the end of the sample period. For example, evaluating mutual fund performance using only funds that still exist excludes all the funds that either closed or merged, so the surviving sample appears to have stronger historical performance than the full initial sample. _On the other hand_, almost off-topic in finance, studying only successful startups and concluding that founders who drop out are still very successful... well, this is obvious... you don't see dropout students that are both without money and a degree.
 
@@ -1152,3 +1152,52 @@ However, the out-of-sample predictive power is still poor, making it difficult t
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/p-d-ratio-2.png)
 </div>
+
+_Note that_ the one-period model can be extended to multiple periods, as Campbell and Shiller did in 1988. In this case, we start from the one-period return.
+
+R_tù1 = \frac{P_tè1+D_t+1}{P_t} \\
+
+\frac{P_t}{D_t} ) \frac{1}{R_t+1}\frac{P_t+1 + D_t+1}{D_t} = R_t+1^-1 \frac{Dt+1}{D_t} (1 + \fra{Pt+1}{D_t+1})
+
+If we substitute forward one period, $$\frac{P_{t+1}}{D_{t+1}} = R_{t+2}^{-1}\,\frac{D_{t+2}}{D_{t+1}}\left(1 + \frac{P_{t+2}}{D_{t+2}}\right)$$, we have:
+
+\fra{P_t}{D_t} = R_tè1^-1 \frac{D_t+1}{D_t}+R_t+1^-1 \frac{D_t+1}{Dt}R_t+1^-1 \frac{D_t+2}{D_t+1}(1 + \fgrac{P_t+2}{D_t+1})
+
+If we iterate forward by imposing a limiting condition that P/D does not explode faster than returns, we can take expectations and write:
+
+\frac{P_t}{D_t} = E_t [\sum_i=1^\infty ( prod_i=1^i R_t+1^-1 \frac{D_t+j}{D_tèj-1})]
+
+_Intuition: today's P/D ratio is high if people expect <b>high future dividend growth</b> or <b>low future return</b>.
+
+Note that, due to its complexity, we often use the approximation suggested by, _again,_ Campbell and Shiller using logs, and we obtain:
+
+p_t - d_t = r_t+1 + \Delta d_t+1 + ln(1 + exp(p_t+1 - d_tè1))
+
+that, _if we do a Taylor approximation around the log at a point P/D = e^(p-d),_ i.e.
+
+[formula of taylor]
+
+we get:
+
+p_t - d_t = - r_t+1 + 1Deta d_t+1 + c + \rho(pt+1 - dt+1)
+
+where c = ln(1 + P/D) - \rho ( p -d) and \rho = èP / (P + D) is always less than, but close to, one.
+
+If we iterate forward and impose the limiting condition, we take expectations:
+
+p_t - d_t = const + E_t[\sum_i=1?\finty rho ^(i-1) (\Delta d+i - r_t+1)]
+
+However, Shiller immediately noticed that, _since equity prices are quite volatile, this variation in price was not justified by changes in dividends or cash flow._ It turns out that <b>excess volatility</b> is the same as return predictability, i.e. if prices are _"too high"_, subsequent returns will be low as prices move back to their _"correct_" level (mean reversion).
+
+So from the multi-period price-dividend equation, we can compute the variance of the P/D ratio as:
+
+Var(p_t - d_t ) = Cov(p_t, \sum_i=1^infty \rho ^(i-1) \Delta dt+1) =
+- Cov(p_t - d_t, \sum_i=1^\finty \rho ^(i-1)r_t+1)
+
+We can then see that the dividend yield can only vary if it forecasts changes in future dividend growth or returns. This implies that P/D empirically predicts returns rather than dividend growth, and that variation in the P/D ratio comes from movements in expected returns.
+
+_Note that_ this analysis was conducted at the aggregate level _(focusing on the index)_. Vuolteenaho in 2002 showed that most of the variation in <b>single-stock returns</b> comes from cash-flow news rather than expected return news.
+
+Indeed, at the single-stock level, D/P is driven by changes in cash flows, while at the aggregate level it is driven by changes in expected returns.
+
+This happens because cash flow news about single stocks is highly idiosyncratic and is removed by diversification when stocks are combined into portfolios; movements in the aggregate portfolio/index mostly reflect changes in expected returns, which are driven by macro conditions.
