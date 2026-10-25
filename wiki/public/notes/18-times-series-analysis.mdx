@@ -10,7 +10,7 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 ---
 
-### <b>Introduction to Time Series</b>
+### <a id="" ><b>1. Introduction to Time Series</b></a>
 
 <b>Time Series Definition</b>
 
@@ -43,7 +43,7 @@ If $\{B_t\}_t \sim_{\mathrm{iid}} \text{Bernoulli}(1/2)$, then:
 
 <b>White noise</b>
 
-${X_t}_t$ is a sequence of centered and uncorrelated random variables. More specifically, $\mathbb{E}(X_t) = 0$, $\mathbb{E}(X_t^2) < \infty$, and $\text{Cov}(X_t, X_s) = 0$ for all $t \neq s$.
+$\{X_t\}_t$ is a sequence of centered and uncorrelated random variables. More specifically, $\mathbb{E}(X_t) = 0$, $\mathbb{E}(X_t^2) < \infty$, and $\text{Cov}(X_t, X_s) = 0$ for all $t \neq s$.
 
 
 - Note that i.i.d. noise such that $\mathbb{E}(X_t^2) < \infty$ is also white noise.
@@ -51,28 +51,28 @@ ${X_t}_t$ is a sequence of centered and uncorrelated random variables. More spec
 
 <b>Random walk</b>
 
-Let ${X_t}_t$ be i.i.d. noise such that $\mathbb{E}(X_t^2) < \infty$ for all $t \in \N$.
+Let $\{X_t\}_t$ be i.i.d. noise such that $\mathbb{E}(X_t^2) < \infty$ for all $t \in \N$.
 
-${S_t}_{t \in \N_0}$ is a random walk if $S_0 = 0$ and $S_t = \sum_{i=1}^t X_i$ for all $t \ge 1$.
+$\{S_t\}_{t \in \N_0}$ is a random walk if $S_0 = 0$ and $S_t = \sum_{i=1}^t X_i$ for all $t \ge 1$.
 
 
-If ${X_t}_{t \in \N_0}$ is a Rademacher process, then ${S_t}_{t \in \N_0}$ is called a <b>symmetric random walk</b>, with $\mathbb{E}(S_t) = \sum_{i=1}^t \mathbb{E}(X_i) = 0$.
+If $\{X_t\}_{t \in \N_0}$ is a Rademacher process, then $\{S_t\}_{t \in \N_0}$ is called a <b>symmetric random walk</b>, with $\mathbb{E}(S_t) = \sum_{i=1}^t \mathbb{E}(X_i) = 0$.
 
 ---
 
-
+<br/>
 
 <b>Time Series with trend</b>
 
-Let ${Y_t}_t$ be a zero-mean time series and ${m_t}_t$ be a deterministic (non-random) sequence. <br/>Consider $X_t = Y_t + m_t$ for all $t \in T$.
+Let $\{Y_t\}_t$ be a zero-mean time series and $\{m_t\}_t$ be a deterministic (non-random) sequence. <br/>Consider $X_t = Y_t + m_t$ for all $t \in T$.
 
-Then $\mathbb{E}[X_t] = m_t$ is called the <b>trend</b> of ${X_t}_t$.
+Then $\mathbb{E}[X_t] = m_t$ is called the <b>trend</b> of $\{X_t\}_t$.
 
 <b>Time Series with seasonality</b>
 
 Given a zero-mean time series $\{Y_t\}_t$ and a function $t \mapsto p_t$ such that $p_t$ is periodic with known period $d$ (i.e., $p_{t+d} = p_t$).
 
-Consider the time series $X_t = Y_t + p_t$ for all $t \in T$. Then ${p_t}_t$ is called the <b>seasonal component</b> of ${Y_t}_t$.
+Consider the time series $X_t = Y_t + p_t$ for all $t \in T$. Then $\{p_t\}_t$ is called the <b>seasonal component</b> of $\{Y_t\}_t$.
 
 For example, we could have the seasonal component in the following forms:
 
@@ -86,12 +86,8 @@ with known integers $k \ge 1$, $\alpha_j, \beta_j > 0$, and unknown $a_0, a_j, b
 
 $$X_t = m_t + p_t + Y_t, \forall t \in T$$
 
-with ${m_t}_t$ the trend, ${p_t}_t$ the seasonal component, and ${Y_t}_t$ a zero-mean time series.
+with $\{m_t\}_t$ the trend, $\{p_t\}_t$ the seasonal component, and $\{Y_t\}_t$ a zero-mean time series.
 
-
----
-
-### <b>Stationarity and auto-covariance function (ACVF)</b>
 
 <b>Stationarity</b>
 
@@ -123,5 +119,712 @@ $$
 provided that $\mathbb{E}[|X_r X_p|] < \infty$ and $\mathbb{E}[X_r] < \infty$ for all $r,p$.
 
 On the other hand, $\{X_t\}_t$ is said to be (weakly) stationary if $\mathbb{E}[X_t^2] < \infty$ for all $t$, and:
-- $\mu_x(t)$ is costant in $t$
-- $\gamma_x (t, t+h)$ depends only on $h$
+- $\mu_x(t)$ is constant in $t$
+- $\gamma_x(t, t+h)$ depends only on $h$
+
+### <a id="" ><b>1. Week 2</b></a>
+
+<b>Weak Stationarity</b>
+
+A time series $\{X_t\}_{t \in \mathbb{Z}}$ is said to be <b>weakly stationary</b> if:
+- the mean function is constant over time: $\mu_x(t) = \mathbb{E}(X_t) = \mu \in \mathbb{R}$
+- the covariance $\gamma_X(r,s) = \operatorname{Cov}(X_r, X_s)$ depends only on $h = s - r$
+
+_Intuition:_ Weak stationarity means a series’ average level and dependence pattern stay stable over time.
+
+_Note also that_ the covariance between two time points depends only on their time distance, not on their absolute values _(i.e., not on their calendar dates)_. _On the other hand,_ strict stationarity is a strong concept since the full distribution must be constant over time.
+
+_For example,_ financial prices often show a trend and are not stationary, so we usually work with log returns, such as $r_t = \log P_t - \log P_{t-1}$, which can be closer to weak stationarity and supports tools like ARMA models, autocorrelation analysis, and covariance-based risk estimates.
+
+_However,_ financial returns are not reliable in this sense since volatility clustering, market regimes, and structural breaks can strongly change their distribution.
+
+_Given the definition,_ we can understand why the <b>strict stationarity</b> of $\{X_t\}$ implies that all the $X_t$ have the same marginal distribution.
+
+To show this, set $n = 1$. By the definition of strict stationarity, for any lag $h \in \mathbb{Z}$ we have:
+
+$X_1 \overset{d}{=} X_{1+h}$
+
+Furthermore, since $\{1+h: h \in \mathbb{Z}\} = \mathbb{Z}$, it follows that
+$X_1 \overset{d}{=} X_t$ for all $t \in \mathbb{Z}$.
+
+_On the other hand,_ we can now spend some time understanding what a <b>moment</b> means in this context.
+
+In the table below, you can find a summary comparing the first and second moments for single and paired random variables.
+
+$$
+\begin{aligned}
+W:\quad
+&\text{1st moment: } \mathbb{E}(W),\\
+&\text{2nd moment: } \mathbb{E}(W^2)\ /\ \operatorname{Var}(W).\\[6pt]
+(W_1,W_2):\quad
+&\text{1st moments: } \mathbb{E}(W_1),\ \mathbb{E}(W_2),\\
+&\text{2nd moments: } \mathbb{E}(W_1^2),\ \mathbb{E}(W_2^2),\ \mathbb{E}(W_1W_2)\\
+&\hspace{7.3em}/\ \operatorname{Var}(W_1),\ \operatorname{Var}(W_2),\ \operatorname{Cov}(W_1,W_2).
+\end{aligned}
+$$
+
+We also recall that moments can be generated by the moment-generating function, defined as:
+
+$$M_W(t) = \mathbb{E}\!\left[e^{tW}\right]$$
+
+$$
+M_{W_1,W_2}(s,t)
+= \mathbb{E}\!\left[e^{sW_1+tW_2}\right]
+$$
+
+<b>Autocovariance and autocorrelation functions</b>
+
+Let $\{X_t\}_t$ be a stationary time series. The <b>Autocovariance Function (ACVF)</b> at lag $h \in \mathbb{Z}$ is defined as:
+
+$$\gamma_X(h) = \operatorname{Cov}(X_t, X_{t+h})$$
+
+_Similarly,_ the <b>Autocorrelation Function (ACF)</b> at lag $h$ is defined as:
+
+$$
+\rho_X(h) = \frac{\operatorname{Cov}(X_t, X_{t+h})}{\sqrt{\operatorname{Var}(X_t)\operatorname{Var}(X_{t+h})}} = \frac{\gamma_X(h)}{\gamma_X(0)}
+$$
+
+The second equality holds because, if $\{X_t\}_t$ is stationary, the following hold:
+
+$$\operatorname{Var}(X_t) = \operatorname{Cov}(X_t, X_t) = \gamma_X(0), \quad \forall t \in \mathbb{Z}.$$
+
+$$
+\sqrt{\operatorname{Var}(X_t)}\sqrt{\operatorname{Var}(X_{t+h})}
+= \sqrt{\gamma_X(0)}\sqrt{\gamma_X(0)}
+= \gamma_X(0).
+$$
+
+<b>Key Properties of ACVF and ACF</b>
+- <b>Boundedness</b>: by the _Cauchy–Schwarz inequality,_ we have that:
+
+$$
+|\operatorname{Cov}(X_t, X_{t+h})| \le \sqrt{\operatorname{Var}(X_t)}\sqrt{\operatorname{Var}(X_{t+h})}
+\iff |\gamma_X(h)| \le |\gamma_X(0)|
+\iff |\rho_X(h)| \le 1.
+$$
+
+_Recall that the Cauchy–Schwarz inequality states that, for random variables $X$ and $Y$ with finite second moments:_
+
+$$
+\left|\mathbb{E}[XY]\right|
+\leq
+\sqrt{\mathbb{E}[X^2]\,\mathbb{E}[Y^2]}.
+$$
+
+- <b>Symmetry</b>: since $\gamma_X$ and $\rho_X$ are <b>even functions</b> _(i.e., $f(x) = f(-x)$ for all $x$)_, for any $h \in \mathbb{Z}$ we have:
+
+$$
+\gamma_X(h) = \operatorname{Cov}(X_t, X_{t+h}) = \operatorname{Cov}(X_{t+h}, X_t).
+$$
+
+If we then set $t' = t+h$, we have
+
+$$
+\operatorname{Cov}(X_{t'}, X_{t'-h}) = \gamma_X(-h),
+\quad \text{so } \gamma_X(-h) = \gamma_X(h).
+$$
+
+$$
+\rho_X(-h) = \frac{\gamma_X(-h)}{\gamma_X(0)} = \frac{\gamma_X(h)}{\gamma_X(0)} = \rho_X(h).
+$$
+
+<b>I.I.D. Noise Process</b>
+
+Let $\{X_t\}_t$ be an i.i.d. noise process such that $\mathbb{E}[X_t] = 0$ and $\mathbb{E}[X_t^2] = \operatorname{Var}(X_t) = \sigma^2$. In this case, we use the notation $\{X_t\}_t \sim \operatorname{IID}(0, \sigma^2)$.
+
+For any $h \in \mathbb{Z}$, we also have
+
+$$
+\gamma_X(t, t+h) = \operatorname{Cov}(X_t, X_{t+h}) =
+\begin{cases}
+\operatorname{Var}(X_t) = \sigma^2, & \text{if } h = 0,\\
+0, & \text{if } h \neq 0.
+\end{cases}
+$$
+
+The zero covariance for $h \neq 0$ is implied by independence.
+
+_Furthermore,_ $\mu_X(t) = 0$ for all $t$, so the process $\{X_t\}_t$ is stationary, with ACVF and ACF given by:
+
+$$\gamma_X(h) = \sigma^2 \mathbf{1}_{h=0}, \quad \rho_X(h) = \mathbf{1}_{h=0}.$$
+
+_Also,_ note that an i.i.d. noise process is also <b>strictly stationary</b>.
+
+---
+<br/>
+
+<b>White Noise Process</b>
+
+_On the other hand,_ let $\{X_t\}_t$ be a white noise process with variance $\sigma^2$. In this case, we say $\{X_t\}_t \sim \operatorname{WN}(0, \sigma^2)$ if the process satisfies the following:
+
+$$\mathbb{E}[X_t] = 0, \quad \mathbb{E}[X_t^2] = \sigma^2 < \infty, \quad \operatorname{Cov}(X_t, X_s) = 0 \quad \forall t \neq s.$$
+
+_Note also_ that the process is <b>stationary</b> with ACVF $\gamma_X(h) = \sigma^2 \mathbf{1}_{h=0}$.
+
+Note that in the case of i.i.d. noise, the $X_t$ are independent and identically distributed, while for white noise we just require <b>uncorrelatedness</b>, zero mean, and finite constant variance _(independence is not required!)_
+
+---
+<br/>
+<b>Example: Random Walk Process</b>
+
+We recall that $\{S_t\}_t$ is a random walk if $S_0 = 0$ and $S_t = \sum_{i=1}^t X_i$, where $\{X_t\}_t \sim \operatorname{IID}(0, \sigma^2)$.
+
+_Also, recall_ that a random walk has mean zero, $\operatorname{Var}(S_0) = 0$, and, for all $t \ge 1$, we have:
+
+$$
+\operatorname{Var}(S_t) = \operatorname{Var}\left(\sum_{i=1}^t X_i\right) = \sum_{i=1}^t \operatorname{Var}(X_i) = t\sigma^2.
+$$
+
+_We immediately notice that_, since $\operatorname{Var}(S_t)$ depends on time $t$, the process is <b>not stationary</b>.
+
+We now spend some time computing the autocovariance for a random walk. Consider $t \ge 1$ and $h \ge 1$, so we have:
+
+$$
+\begin{aligned}
+\gamma_S(t, t+h) &= \operatorname{Cov}(S_t, S_{t+h}) \\
+&= \operatorname{Cov}\left(\sum_{i=1}^t X_i, \sum_{i=1}^t X_i + \sum_{i=t+1}^{t+h} X_i\right) \\
+&= \operatorname{Cov}\left(\sum_{i=1}^t X_i, \sum_{i=1}^t X_i\right) + \operatorname{Cov}\left(\sum_{i=1}^t X_i, \sum_{i=t+1}^{t+h} X_i\right) \\
+&= \operatorname{Var}(S_t) + 0 = t\sigma^2.
+\end{aligned}
+$$
+
+The last equality holds because
+
+$$
+\operatorname{Cov}\left(\sum_{i=1}^t X_i, \sum_{j=t+1}^{t+h} X_j\right)
+= \sum_{i=1}^t \sum_{j=t+1}^{t+h} \operatorname{Cov}(X_i, X_j) = 0
+$$
+
+by independence.
+
+If we also consider the special case $t=0$, for which $\gamma_S(0,h) = 0$, we can conclude that, for all $t,h \in \mathbb{N}_0$, we have
+
+$$\gamma_S(t, t+h) = t\sigma^2.$$
+
+_Secondly,_ we can do the same for the <b>autocorrelation</b> of a random walk. For all $h \in \mathbb{N}_0$ and $t \ge 1$, we can compute:
+
+$$
+\rho_S(t, t+h) = \frac{\operatorname{Cov}(S_t, S_{t+h})}{\sqrt{\operatorname{Var}(S_t)}\sqrt{\operatorname{Var}(S_{t+h})}} = \frac{t\sigma^2}{\sqrt{t\sigma^2}\sqrt{(t+h)\sigma^2}} = \sqrt{\frac{t}{t+h}}.
+$$
+
+We can now characterize the <b>asymptotic behavior of random walk autocorrelation</b>.
+
+- If we fix lag $h$ and let $t \to \infty$, we have _stronger correlation as the length of shared history grows_:
+
+$$\lim_{t \to \infty} \rho_S(t, t+h) = 1.$$
+
+- If we fix $t$ and let $h \to \infty$, we have _weaker correlation for larger time gaps_:
+
+$$\lim_{h \to \infty} \rho_S(t, t+h) = 0.$$
+
+---
+<br/>
+<b>First-Order Moving Average Process | MA(1)</b>
+
+Let $\{Z_t\}_t \sim \operatorname{WN}(0, \sigma^2)$ and $\theta \in \mathbb{R}$. Consider the time series $\{X_t\}_t$ defined as:
+
+$$X_t = Z_t + \theta Z_{t-1}$$
+
+_Intuition:_ An MA(1) process combines today's random shock $Z_t$ with the previous period's shock $Z_{t-1}$, scaled by $\theta$. The sign of $\theta$ determines whether consecutive shocks reinforce or offset each other.
+
+_Given this,_ we define the <b>mean function</b> as:
+
+$$
+\mu_X(t) = \mathbb{E}[X_t] = \mathbb{E}[Z_t + \theta Z_{t-1}] = \mathbb{E}[Z_t] + \theta \mathbb{E}[Z_{t-1}] = 0, \quad \forall t \in \mathbb{Z}.
+$$
+
+_Secondly,_ we can define the <b>autocovariance function (ACVF)</b> of an MA(1) process for all $h \in \mathbb{Z}$:
+
+$$
+\begin{aligned}
+\gamma_X(t, t+h) &= \operatorname{Cov}(X_t, X_{t+h}) \\
+&= \operatorname{Cov}(Z_t + \theta Z_{t-1}, Z_{t+h} + \theta Z_{t+h-1}) \\
+&= \operatorname{Cov}(Z_t, Z_{t+h}) + \theta\operatorname{Cov}(Z_t, Z_{t+h-1}) \\
+&\quad + \theta\operatorname{Cov}(Z_{t-1}, Z_{t+h}) + \theta^2\operatorname{Cov}(Z_{t-1}, Z_{t+h-1}) \\
+&= \sigma^2\mathbf{1}_{h=0} + \theta\sigma^2\mathbf{1}_{h=1} + \theta\sigma^2\mathbf{1}_{h=-1} + \theta^2\sigma^2\mathbf{1}_{h=0} \\
+&= \sigma^2(1 + \theta^2)\mathbf{1}_{h=0} + \theta\sigma^2\left(\mathbf{1}_{h=1} + \mathbf{1}_{h=-1}\right) \\
+&= \sigma^2(1 + \theta^2)\mathbf{1}_{h=0} + \theta\sigma^2\mathbf{1}_{|h|=1}.
+\end{aligned}
+$$
+
+The equalities follow from the fact that white noise has zero covariance across different times ($\operatorname{Cov}(Z_i, Z_j) = 0$) and variance $\sigma^2$ at each time. Each indicator marks when two shocks in the expansion are the same shock.
+
+_So,_ since this depends only on the lag $h$, the MA(1) process is <b>stationary</b>, with the following ACVF:
+
+$$
+\gamma_X(h) =
+\begin{cases}
+\sigma^2(1 + \theta^2), & \text{if } h = 0,\\
+\theta\sigma^2, & \text{if } h \in \{-1, 1\},\\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+_Similarly,_ we can compute the <b>autocorrelation function</b> of MA(1), given by:
+
+$$
+\rho_X(h) = \frac{\gamma_X(h)}{\gamma_X(0)} =
+\begin{cases}
+1, & \text{if } h = 0,\\
+\frac{\theta}{1 + \theta^2}, & \text{if } h \in \{-1, 1\},\\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+<br/>
+---
+<br/>
+<b>First-Order Autoregressive Process | AR(1)</b>
+
+Let $\{Z_t\}_t \sim \operatorname{WN}(0, \sigma^2)$ and consider a stationary time series $\{X_t\}_t$ satisfying:
+
+$$X_t = \Phi X_{t-1} + Z_t, \quad t \in \mathbb{Z}$$
+
+where $\Phi \in (-1,1)$ and $\operatorname{Cov}(X_s, Z_t) = 0$ for all $s < t$.
+
+_Intuition:_ The current value is the previous value, scaled by $\Phi$, plus a shock. $\Phi$ controls how much of the past carries forward. _Note that_ AR(1) is useful when past values help predict future values, while MA(1) is useful when the dependence comes from recent shocks; these processes will soon be combined in ARMA models.
+
+The <b>mean function</b> of $\{X_t\}_t$ is then:
+
+Since the time series is stationary, we have that $\mu_X(t) = \mathbb{E}[X_t] = \mu \in \mathbb{R}$. Taking expectations on both sides yields:
+
+$$
+\mathbb{E}[X_t] = \Phi\mathbb{E}[X_{t-1}] + \mathbb{E}[Z_t]
+\iff \mu = \Phi\mu + 0
+\iff \mu(1 - \Phi) = 0.
+$$
+
+But since $\Phi \in (-1,1)$, we cannot have $\Phi = 1$, so it follows that $\mu = 0$.
+
+_As before,_ the <b>autocovariance function</b> for AR(1) can be computed as follows for $h \ge 1$:
+
+$$
+\begin{aligned}
+\gamma_X(h) &= \operatorname{Cov}(X_{t-h}, X_t) \\
+&= \operatorname{Cov}(X_{t-h}, \Phi X_{t-1} + Z_t) \\
+&= \Phi\operatorname{Cov}(X_{t-h}, X_{t-1}) + \operatorname{Cov}(X_{t-h}, Z_t).
+\end{aligned}
+$$
+
+Since $t-h < t$, according to the condition in the AR(1) definition, $\operatorname{Cov}(X_{t-h}, Z_t) = 0$, so we write:
+
+$$
+\gamma_X(h) = \Phi\gamma_X(h-1), \quad \implies \quad \gamma_X(h) = \Phi^h\gamma_X(0), \quad \forall h \ge 1.
+$$
+
+_However,_ we still have to compute $\gamma_X(0)$, which in this case is:
+
+$$
+\begin{aligned}
+\gamma_X(0) &= \operatorname{Var}(X_t) = \operatorname{Var}(\Phi X_{t-1} + Z_t) \\
+&= \Phi^2\operatorname{Var}(X_{t-1}) + 2\Phi\operatorname{Cov}(X_{t-1}, Z_t) + \operatorname{Var}(Z_t).
+\end{aligned}
+$$
+
+So we can conclude that $\gamma_X(0) = \Phi^2\gamma_X(0) + \sigma^2$, which gives $\gamma_X(0) = \frac{\sigma^2}{1-\Phi^2}$.
+
+And, _since the function $h \to \gamma_X(h)$ is even,_ we finally state:
+
+$$\gamma_X(h) = \frac{\sigma^2}{1-\Phi^2}\Phi^{|h|}, \quad \forall h \in \mathbb{Z}.$$
+
+_Similarly,_ the <b>autocorrelation function</b> of AR(1) is _simply given_ by:
+
+$$\rho_X(h) = \frac{\gamma_X(h)}{\gamma_X(0)} = \Phi^{|h|}, \quad \forall h \in \mathbb{Z}.$$
+
+---
+
+### <a id="3" ><b>3. Sample Estimation and Testing</b></a>
+
+We now consider $x_1, \ldots, x_n$ to be observations from a stationary time series with:
+- <b>sample mean</b> $\bar{x} = \frac{1}{n}\sum_{t=1}^{n} x_t$
+- <b>sample ACVF</b> at lag $h$ given by: $\hat{\gamma}(h) = \frac{1}{n}\sum_{t=1}^{n-|h|}(x_{t+|h|} - \bar{x})(x_t - \bar{x}), \quad \forall |h| \le n - 1$
+- <b>sample ACF</b> at lag $h$ given by: $\hat{\rho}(h) = \frac{\hat{\gamma}(h)}{\hat{\gamma}(0)} = \frac{\sum_{t=1}^{n-|h|}(x_{t+|h|} - \bar{x})(x_t - \bar{x})}{\sum_{t=1}^{n}(x_t - \bar{x})^2}, \quad \forall |h| \le n - 1$
+
+_Note that_ we divide by $n$ and not by $n - |h|$ to obtain a <b>positive semidefinite matrix</b>.
+
+_In particular,_ let $y_t = x_t - \bar{x}$ be the centered observation and define, for $h \ge 0$:
+
+$$\hat{\gamma}(h) = \frac{1}{n}\sum_{t=1}^{n-h} y_t y_{t+h}.$$
+
+Then build the <b>Toeplitz matrix</b> $\hat{\Gamma}$ by setting $\hat{\Gamma}_{ij}=\hat{\gamma}(|i-j|)$.
+
+_Recall also_ that "positive semidefinite" means that, for all vectors $a$, we have:
+
+$$a^T\hat{\Gamma}a \ge 0.$$
+
+To see the reason, imagine the data $y_t$ outside the observed range _(i.e., we only observed $(y_1,\ldots,y_n)$, so define $y_t=0$ for all other integer times)_. The quadratic form can be written as
+
+$$a^T\hat{\Gamma}a = \frac{1}{n}\sum_{k\in\mathbb{Z}}\left(\sum_{i=1}^{n}a_i y_{k-i}\right)^2,$$
+
+which is <b>nonnegative</b> because it is a sum of squares.
+
+_Intuition:_ Using $n$ as the denominator preserves the structure and allows the matrix to represent squared combinations of the data.
+
+_Note also that,_ for all time series such that the seasonal component $s_t=0$, we can consider the <b>sample estimation of the trend</b> as
+
+$$x_t = m_t + y_t, \quad t \in \mathbb{Z}, \quad \text{with } \mathbb{E}[Y_t]=0 \text{ for all } t.$$
+
+---
+<br/>
+<b>Estimation with Two-Sided Moving Average</b>
+
+We now spend some time presenting two different estimation approaches. _Firstly,_ we begin with the <b>two-sided moving average approach</b>.
+
+Suppose there exist $a,b \in \mathbb{R}$ and an integer $q \ge 1$ such that, near $t$, the following approximation for the trend term $m_t$ holds (i.e., a two-sided moving average), assuming the underlying model is $X_t = m_t + Y_t$:
+
+$$
+m_{t'} \approx a + bt'
+$$
+
+for all times $t'$ in the interval $[t-q, t+q]$. _Note that_ the trend does not have to be a line globally, just to look linear on a small window of width $2q + 1$ around $t$.
+
+The estimate then averages the $2q + 1$ observations centered on $t$ and is given by:
+
+$$
+\hat m_t = \frac{1}{2q+1}\sum_{i=t-q}^{t+q} X_i = \frac{1}{2q+1}\sum_{j=-q}^{q} X_{t-j}
+$$
+
+If we substitute $X_{t-j} = m_{t-j} + Y_{t-j}$ and split the sum, we get:
+
+$$
+\hat m_t = \underbrace{\frac{1}{2q+1}\sum_{j=-q}^{q} m_{t-j}}_{\text{signal part}} + \underbrace{\frac{1}{2q+1}\sum_{j=-q}^{q} Y_{t-j}}_{\text{noise part}}
+$$
+
+If we use the local linearity approximation, i.e., $m_{t-j} \approx a + b(t-j)$, we get:
+
+$$
+\sum_{j=-q}^{q}\big(a+b(t-j)\big) = \sum_{j=-q}^{q}(a+bt) - b\sum_{j=-q}^{q} j = (2q+1)(a+bt)
+$$
+
+_We notice now_ that the offsets cancel, i.e., $\sum_{j=-q}^{q}j = 0$, so averaging preserves the trend's value at the center while averaging the noise.
+
+The condition $q+1 \le t \le n-q$ just says the whole window must fit within the observed data, from time $1$ to $n$.
+
+So we can conclude that:
+
+$$
+\hat m_t \approx a + bt + \frac{1}{2q+1}\sum_{j=-q}^{q} Y_{t-j} \approx m_t + \frac{1}{2q+1}\sum_{j=-q}^{q} Y_{t-j}
+$$
+
+That translates into saying that $\hat m_t$ equals the true trend plus a small, averaged-out noise term.
+
+Consider also that:
+- Large $q$ averages out more noise, so the estimate is smoother, but the window should be small enough for the trend to be linear.
+- Small $q$, _on the other hand,_ keeps the linearity assumption more plausible but leaves more noise _(and this is the famous bias-variance trade-off!)_
+
+_Furthermore,_ for a large $q$, we can apply the <b>Weak Law of Large Numbers (WLLN)</b> to conclude that:
+
+$$
+\frac{1}{N}\sum_{i=1}^{N} Y_i \xrightarrow{P} 0 \quad \text{as } N\to\infty
+$$
+
+_Intuition:_ for $N = 2q + 1$, as $q$ grows, the noise term is concentrated near $0$.
+
+_Furthermore,_ for uncorrelated noise with variance $\sigma^2$, Chebyshev's inequality allows us to be more precise and state that:
+
+$$
+P\left(\left|\frac{1}{2q+1}\sum_{j=-q}^{q} Y_{t-j}\right| > \varepsilon\right) \le \frac{\sigma^2}{(2q+1)\,\varepsilon^2} \to 0
+$$
+
+We now spend some more time on the <b>bias-variance trade-off</b>. Let's start by considering:
+
+$$
+\{Y_t\}_t \sim \operatorname{WN}(0, \sigma^2), \qquad \Delta_{t'} = m_{t'} - (a + bt'), \qquad t' \in \{t-q, \ldots, t+q\}
+$$
+
+_Note that_ we assumed $\{Y_t\}_t$ to be white noise, so it has mean $0$, variance $\sigma^2$, and no correlation between samples. _Also, note that_ $\Delta_{t'}$ is the linearization error _(measuring how far the true trend is from the approximation line $a + bt'$)_
+
+We now calculate the expectation of the estimator. The white-noise term vanishes because it has zero mean:
+
+$$
+\mathbb{E}(\hat m_t)=\frac{1}{2q+1}\sum_{j=-q}^{q}\mathbb{E}(X_{t-j}) = \frac{1}{2q+1}\sum_{j=-q}^{q} m_{t-j}
+$$
+
+If we subtract and add the line $a + bt'$, we have:
+
+$$
+\begin{aligned}
+\mathbb{E}[\hat m_t] &= \frac{1}{2q+1}\sum_{j=-q}^{q} \big(m_{t-j}-(a+b(t-j))\big)+\frac{1}{2q+1}\sum_{j=-q}^{q} (a+b(t-j)) \\
+&= \frac{1}{2q+1}\sum_{j=-q}^{q} \Delta_{t-j} + a+bt
+\end{aligned}
+$$
+
+where the second equality holds since the average of the line equals $a + bt$, _as shown before_.
+
+We now define the <b>bias of the estimator</b> as:
+
+$$
+\text{Bias}(q)=\mathbb{E}(\hat m_t)-m_t=\frac{1}{2q+1}\sum_{j=-q}^{q}\Delta_{t-j}+a+bt-m_t=\frac{1}{2q+1}\sum_{j=-q}^{q}\Delta_{t-j}-\Delta_t
+$$
+
+_Intuition:_ the bias is the average linearization error over the window, minus the linearization error at the center. _Therefore,_ if the trend is truly linear, both terms are $0$ and the estimator is <b>unbiased</b>. <br/>_On the other hand,_ if the trend is curved, the bias is non-zero, and it usually grows with $q$ _(window size)_ because a wider window includes points where the line fits worse.
+
+_Furthermore,_ we can compute the <b>mean squared error (MSE)</b> using its standard decomposition:
+
+$$
+\text{MSE}(q)=\mathbb{E}[(\hat m_t-m_t)^2]=\text{Bias}(q)^2+\text{Var}(\hat m_t)
+$$
+
+_Lastly,_ if we compute its variance, we immediately notice that, since $m_t$ is <b>deterministic</b>, it only comes from the noise, where, since the errors are uncorrelated, the variance _"simply"_ adds up:
+
+$$
+\text{Var}\Big(\frac{1}{2q+1}\sum_{j=-q}^{q} Y_{t-j}\Big)=\frac{(2q+1)\,\sigma^2}{(2q+1)^2}=\frac{\sigma^2}{2q+1}
+$$
+
+It is still interesting to point out that the plain average defined before is a special case of a <b>broader family of estimators</b>. Indeed, _so far_ we used one specific way to average the window, equal weights, but this is not the only choice:
+
+$$
+\hat m_t=\sum_{j=-q}^{q} \tfrac{1}{2q+1}\,X_{t-j}
+$$
+
+_For example,_ we could put more weight near the center or more at the edges. In general, we can then say that:
+
+$$
+\hat m_t=\sum_{j=-q}^{q} w_j X_{t-j},\quad \sum_{j=-q}^{q} w_j=1,\quad \sum_{j=-q}^{q} j\,w_j=0
+$$
+
+where each condition can be written as follows:
+- $\sum_{j=-q}^{q} w_j = 1$ implies each constant trend passes through unchanged.
+- $\sum_{j=-q}^{q} j w_j = 0$ implies a linear trend passes through unchanged.
+
+_Note also that_ any symmetric weights satisfy the second condition, and that $w_j = 1 / (2q + 1)$ is the simplest choice.
+
+---
+<br/>
+<b>Parametric Estimation via Least Squares</b>
+
+We now spend some time with parametric estimation. Consider a model $X_t = m_t + Y_t$, where $Y_t$ is noise, with the <b>parametric assumption</b> that the trend belongs to a finite-dimensional family of functions. _That is,_ we can consider a polynomial of degree $k$ such that $m_t = \alpha_0 + \alpha_1 t + \cdots + \alpha_k t^k$, where the unknowns are the $k + 1$ coefficients.
+
+For the <b>least-squares estimator</b>, we want to find the coefficients that make the curve as close as possible to the data _under the squared-error_ sense, i.e., we want to find:
+
+$$
+(\hat{\alpha}_0, \hat{\alpha}_1, \ldots, \hat{\alpha}_k) = \operatorname*{arg\,min}_{\alpha_0,\ldots,\alpha_k} C(\alpha_0,\ldots,\alpha_k),
+$$
+
+$$
+C(\alpha_0,\ldots,\alpha_k) = \sum_{t=1}^{n} (X_t - \alpha_0 - \alpha_1 t - \cdots - \alpha_k t^k)^2.
+$$
+
+_Intuition:_ $C$ is the total squared vertical distance between the data points and the polynomial, and _note that_ we square it since we want a smooth, convex function. We therefore want to minimize it by finding the unique point where the slope _in every direction_ is $0$; this means the least-squares estimator is a <b>stationary point</b> of $C$.
+
+We can then set $\partial C / \partial \alpha_i = 0$, which gives the following linear system of $k + 1$ equations in $k + 1$ unknowns:
+
+$$
+\sum_{t=1}^{n} t^i \left(X_t - \sum_{j=0}^{k} \alpha_j t^j\right) = 0, \quad i = 0, \ldots, k.
+$$
+
+_Intuition:_ the residuals are orthogonal to every regressor $1, t, t^2, \ldots, t^k$.
+
+_We can proceed with illustrative examples._
+
+If $k = 0$ _(i.e., we have a constant trend)_, the equation is simply $\sum_{t=1}^{n}(X_t - \alpha_0) = 0$, which gives $\alpha_0 = \bar{X}$; the best constant fit is the sample mean.
+
+If $k = 1$ _(i.e., we have a linear trend)_, the two equations are:
+
+$$
+\sum_{t=1}^{n} (X_t - \hat{\alpha}_0 - \hat{\alpha}_1 t) = 0, \qquad
+\sum_{t=1}^{n} t (X_t - \hat{\alpha}_0 - \hat{\alpha}_1 t) = 0.
+$$
+
+If we divide by $n$ and do some algebra, we get:
+
+$$
+\begin{cases}
+\hat{\alpha}_0 + \frac{n+1}{2}\hat{\alpha}_1 = \bar{X},\\
+\frac{n+1}{2}\hat{\alpha}_0 + \frac{(n+1)(2n+1)}{6}\hat{\alpha}_1 = \frac{1}{n}\sum_{t=1}^{n} t X_t.
+\end{cases}
+$$
+
+$$
+\begin{cases}
+\hat{\alpha}_1 = \frac{12}{n(n^2-1)} \sum_{t=1}^{n} t(X_t - \bar{X}),\\
+\hat{\alpha}_0 = \bar{X} - \frac{n+1}{2}\hat{\alpha}_1.
+\end{cases}
+$$
+
+_Note that_ this is the simple-regression formula, with $\hat{\alpha}_1 = \operatorname{Cov}(t, X)/\operatorname{Var}(t)$.
+
+We now consider the <b>matrix formula</b> by stacking the data into $X = (X_1, \ldots, X_n)^T$ and the coefficients into $\alpha = (\alpha_0, \ldots, \alpha_k)^T$.
+
+Let $A$ be the $n \times (k+1)$ matrix whose row $t$ is $(1, t, t^2, \ldots, t^k)$, called the <b>Vandermonde matrix</b>.
+
+Then the model becomes $X = A\alpha + Y$, which gives:
+
+$$
+\hat{\alpha} = (A^T A)^{-1} A^T X.
+$$
+
+_(The normal equation in matrix form)_ is $\partial C/\partial\alpha = -2A^T(X-A\alpha)=0$, so $A^T A\hat{\alpha}=A^T X$, given that $n \ge k + 1$ _(i.e., we need at least as many data points as parameters, so that $A$ has full column rank and $A^T A$ is invertible)_.
+
+_In this case,_ if the noise has zero mean, $\mathbb{E}[\hat{\alpha}] = \alpha$, i.e., the estimator is unbiased.
+
+_Furthermore,_ in the case of white noise, $\operatorname{Var}(\hat{\alpha}) = \sigma^2 (A^T A)^{-1}$.
+
+---
+<br/>
+<b>Estimating trend and seasonality together (nonparametric approach)</b>
+
+We now consider the following model:
+
+$$
+X_t = m_t + S_t + Y_t
+$$
+
+where $m_t$ is the slowly moving trend, $S_t$ is a seasonal component with known period $d$ such that $S_{t+d} = S_t$ and sums to zero over one period, $\sum_{t=1}^{d} S_t = 0$ _(without it, you could move a constant between $m_t$ and $S_t$ and get the same $X_t$)_.
+
+_Again,_ we assume that $m_t$ is _locally linear_.
+
+The starting idea is that, to estimate the trend, we have to remove the seasonal component; averaging over exactly one full period does exactly this.
+
+So, given that the seasonal period has length $d$, we can set $q$ to be the half-width of the interval, so the simple <b>equal-weight averaging</b> works as follows:
+
+$$
+\hat{m}_t = \frac{1}{d} \sum_{j=-q}^{q} X_{t-j} \qquad \text{(}d\text{ odd, } q = (d-1)/2\text{)}
+$$
+
+$$
+\hat{m}_t = \frac{1}{d} \left( \frac{1}{2}X_{t-q} + \frac{1}{2}X_{t+q} + \sum_{j=-(q-1)}^{q-1} X_{t-j} \right) \qquad \text{(}d\text{ even, } q = d/2\text{)}
+$$
+
+We now focus on the case where $d$ is even _(even if the opposite case can be solved similarly)_, so we can say:
+
+$$
+\begin{aligned}
+\hat{m}_t &= \underbrace{\frac{1}{d}\left(\frac{1}{2}m_{t-q} + \frac{1}{2}m_{t+q} + \sum_{j=-(q-1)}^{q-1} m_{t-j}\right)}_{=:A_t} \\
+&\quad + \underbrace{\frac{1}{d}\left(\frac{1}{2}S_{t-q} + \frac{1}{2}S_{t+q} + \sum_{j=-(q-1)}^{q-1} S_{t-j}\right)}_{=:B_t} \\
+&\quad + \underbrace{\frac{1}{d}\left(\frac{1}{2}Y_{t-q} + \frac{1}{2}Y_{t+q} + \sum_{j=-(q-1)}^{q-1} Y_{t-j}\right)}_{=:C_t}
+\end{aligned}
+$$
+
+_(Note that this looks very similar to a moving average...)_
+
+_Indeed,_ the weights $w_{-q} = w_q = \frac{1}{2d}$ and $w_j = \frac{1}{d}$ for $j \in \{-(q-1), \ldots, (q-1)\}$ satisfy
+
+$$
+\sum_{j=-q}^{q} w_j = 1 \quad \text{and} \quad \sum_{j=-q}^{q} j\, w_j = 0,
+$$
+
+so we can use the same argument as before to show that $A_t \approx a + bt \approx m_t$.
+
+_Furthermore,_ the window covers exactly one period, and $S_{t-q} = S_{t+q}$ since they are $d$ steps apart, so the two half-weights add up to a single term and $B_t$ is the sum of $S$ over one full period, i.e., $B_t = 0$.
+
+_Lastly,_ using the WLLN, we can show that $C_t \approx 0$ with high probability for $q$ large enough, so $\hat{m}_t \approx m_t$.
+
+_Remark_ that $q$ is large enough if and only if $d$ is large enough. _Note also_ that we always take $d$ to be large enough because if $d_0$ is the smallest period of the seasonal component, then $d = k d_0$ is also a period for $k \in \mathbb{N}$.
+
+<b>Nonparametric estimation of the seasonal component</b>
+
+Suppose now that we know the trend $m_t$ exactly, so we can consider it as a _“new observation”_ and consider:
+
+$$Z_t = X_t - m_t = s_t + Y_t$$
+
+Let $r \ge 1$ be the largest integer such that $1 + rd \le n$. Then we have that:
+
+$$s_1 = s_{1+d} = \cdots = s_{1+rd} = a$$
+
+where $a$ is unknown. So we can write:
+
+$$Z_{1+(k-1)d} = a + Y_{1+(k-1)d}$$
+
+To estimate $a$, we then _naturally_ use the <b>empirical sample average</b>, that is:
+
+$$
+\hat a = \frac{1}{r+1}\sum_{k=1}^{r+1} Z_{1+(k-1)d}
+= \frac{1}{r+1}\sum_{k=1}^{r+1} \left(X_{1+(k-1)d} - m_{1+(k-1)d}\right).
+$$
+
+_Instead,_ suppose now the trend $m_t$ is <b>unknown</b>, but we can replace it with $\hat m_t$ for $q+1 \le t \le n-q$ _(since the two-sided window must fit inside the data)_. Then $W_j$ is the average deviation from the trend at seasonal position $j$, defined as:
+
+$$
+W_j = \frac{1}{N_j}\sum_{k:\,q+1 \le j+kd \le n-q} \left(X_{j+kd} - \hat m_{j+kd}\right)
+$$
+
+$$
+N_j = \#\{k : q+1 \le j+kd \le n-q\}
+= \#\left\{k : \frac{q+1-j}{d} \le k \le \frac{n-q-j}{d}\right\}
+$$
+
+Then, in order to enforce the constraint $\sum_{i=1}^d s_i = 0$, the final estimator is given by:
+
+$$
+\hat{s}_j =
+\begin{cases}
+W_j - \frac{1}{d}\sum_{i=1}^d W_i, & j \in \{1,\ldots,d\},\\
+\hat{s}_{j-d}, & j > d.
+\end{cases}
+$$
+
+_Intuition:_ the estimator averages across periods (to kill noise), subtracts the trend estimate (to isolate the season), and then re-centres the result (to fix the identifiability ambiguity between $m$ and $S$).
+
+<b>Parametric Estimation of the seasonal component</b>
+
+We now introduce the <b>parametric estimation of $s$</b>, with the assumption that the seasonal component follows a harmonic function, _that is:_
+
+$$
+s_t = a_0 + \sum_{j=1}^k \left(a_j \cos\left(\frac{2\pi\alpha_j t}{d}\right) + b_j \sin\left(\frac{2\pi\beta_j t}{d}\right)\right)
+$$
+
+where $k \in \mathbb{N}$, $\alpha_j, \beta_j \in \mathbb{N}$ are known, and $a_0, a_j$, and $b_j$ are unknown. To avoid trivialities, we assume that $\alpha_j, \beta_j$ are not multiples of $d$ for all $j$.
+
+_Furthermore,_ note that
+
+$$
+\sum_{t=1}^d \cos\left(\frac{2\pi\alpha_j t}{d}\right)
+= \sum_{t=1}^d \sin\left(\frac{2\pi\beta_j t}{d}\right) = 0.
+$$
+
+To prove that, simply set $c = e^{i 2\pi a/d}$, where $a \in \mathbb{N}$ is _not_ a multiple of $d$, so we have $c \neq 1$. Then $c^d = 1$, and we have that:
+
+$$
+\sum_{t=1}^d c^t = c \sum_{i=0}^{d-1} c^i = c\frac{c^d - 1}{c-1} = 0.
+$$
+
+_Note that_ in order to enforce the constraint $\sum_{i=1}^d s_i = 0$, we must impose $a_0 = 0$.
+
+To estimate $s_t$, we can use the least-squares approach based on the <b>de-trended</b> data $\tilde X_t = X_t - \hat m_t$, with $q + 1 \le t \le n-q$. Then, the LSE estimator of $(a_1,\ldots,a_k,b_1,\ldots,b_k)$ is defined as:
+
+$$
+(\hat a_1, \ldots, \hat a_k, \hat b_1, \ldots, \hat b_k)
+= \operatorname*{arg\,min}_{\tilde a_1,\ldots,\tilde a_k,\tilde b_1,\ldots,\tilde b_k}
+\sum_{t=q+1}^{n-q}
+\left(\tilde X_t - \sum_{j=1}^k \left(\tilde a_j \cos\left(\frac{2\pi\alpha_j t}{d}\right) + \tilde b_j \sin\left(\frac{2\pi\beta_j t}{d}\right)\right)\right)^2.
+$$
+
+---
+<br/>
+<b>Estimating by differencing</b>
+
+Suppose now the model is $X_t = m_t + Y_t$, with $\mathbb{E}[Y_t] = 0$. We want to eliminate $m_t$ _(the trend component)_ instead of estimating it, so we apply an operator that sends a polynomial trend into a constant _(or to zero)_. In particular, we then define:
+- $B$, the <b>backward shift</b> operator, which moves the series back by one step, defined as:
+
+    $$BX_t = X_{t-1}$$
+- $\nabla$, the <b>lag-1 differencing operator</b>, which compares each value with the previous one _(the discrete analogue of a derivative measuring the change per step)_, defined as:
+
+    $$\nabla X_t = X_t - X_{t-1} = (1-B)X_t$$
+
+where $1 = B^0$ is the <b>identity operator</b>.
+
+For $j \ge 2$, we can define recursively:
+- $$B^j = B \circ B^{j-1} \implies B^j X_t = X_{t-j}$$
+- $$\nabla^j = \nabla \circ \nabla^{j-1} \implies \nabla^j X_t = (1 - B)^j X_t$$
+
+We can also show that:
+
+$$
+\nabla^j = (1-B)^j = \sum_{k=0}^{j}(-1)^k \binom{j}{k}B^k
+\implies \nabla^j X_t = \sum_{k=0}^{j}(-1)^k\binom{j}{k}X_{t-k}.
+$$
+
+_Intuition:_ each application of $\nabla$ lowers the degree by one, so after $j$ applications, a degree-$j$ polynomial is left as a coefficient, and only the leading coefficient survives, multiplied by $j!$ _(the same factor that appears when we differentiate $t^j$ $j$ times)_.
+
+_Note also that_:
+- <b>Stationarity is preserved</b>, i.e., if $Y_t$ is stationary, then $\nabla^j Y_t$ is a linear combination of shifted copies of $Y_t$ and is therefore stationary too. $\implies$ The differenced series can therefore be managed with the usual stationary-friendly tools.
+- <b>Zero mean</b>, i.e., since $\mathbb{E}[Y_t] = 0$, we get $\mathbb{E}[\nabla^k X_t] = k!\,a_k$, so $a_k$ can be estimated from the sample mean of the differenced series.
+
+
+We also have the following properties:
+
+- $\nabla X_t = X_t - X_{t-1} = \frac{X_t - X_{t-1}}{t - (t-1)}$.
+- If $m(t) = a_0 + a_1 t + \cdots + a_k t^k$ with $t \in \mathbb{Z}$, then $\nabla^k m(t) = k!\,a_k$.
+- If $m_t = a_0 + a_1 t + \cdots + a_k t^k$ and $X_t = m_t + Y_t$ with $t \in \mathbb{Z}$, then $\nabla^k X_t = k!\,a_k + \nabla^k Y_t$.
+- If $\{Y_t\}_{t \in \mathbb{Z}}$ is stationary, then $\{\nabla^k Y_t\}_{t \in \mathbb{Z}}$ is also stationary.

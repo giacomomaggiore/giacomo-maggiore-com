@@ -1,0 +1,107 @@
+---
+title: 'Oltre il foglio di calcolo'
+publishedAt: '2026-10-24'
+summary: ''
+---
+
+## <b>IF ELSE, FILTER, VLOOKUP  e altre formule <s>poco</s> utili</b>
+
+Negli ultimi anni, ho sempre tenuto traccia di entrate, uscite e investimenti in un semplice Google Sheet. 
+Si trattava di una soluzione abbastanza <b>efficiente e minimale:</b> sempre a portata di mano, poche funzioni di filtro/aggregazione, tabelle di riepilogo mese per mese e qualche grafico per i trend di lungo periodo.
+
+Ero ben consapevole del fatto che ci fossero tools più automatizzati e _"ricchi"_ di metriche e analisi; _ciò nonostante,_ restavo sereno e soddisfatto del<b> mio umile spreadsheet</b>, con formule _"faticosamente"_ scritte a mano, prima che Gemini e Copilot approdassero sulle rispettive suite.
+
+Ultimamente tuttavia, ho visto una serie _infinita_ di soluzioni molto più eleganti ed evolute, nel 99.X% dei casi _AI-based_ o comunque sviluppate a botta di prompt: fancy dashboard, sincronizzazione con la banca, l'estratto conto e WhatsApp, analisi in tempo reale degli investimenti e molte altre features che, _per forza di cose,_ erano poco compatibili con un foglio di calcolo.
+
+<div align = "center">
+![Bao](/images/blog/claude-pf.png)
+</div>
+<small><i>Il male</i></small>
+
+<br/>
+<br/>
+---
+
+## <b>Design principles minimali</b>
+
+Tutto ciò non ha fatto altro che mettere in discussione il modo in cui tracciavo i flussi di cassa e gli investimenti. 
+
+Tuttavia, _pur rimanendo tentato_ di convertirmi anche io a un flow automatizzato in grado di sincronizzare Revolut, UBS, Interactive Brokers e tutto il resto... ho preso una strada alternativa che riflette abbastanza bene <b>la mia filosofia di tracking </b>e rapporto con i soldi.
+
+Nello specifico, parto da quelli che sono, almeno per me, i punti deboli di una strategia totalmente automatizzata _(AI-based),_ ridondante di analisi, grafici e statistiche iper-granulari e specifiche:
+- <b>attribuisco valore in senso lato</b> a sedermi periodicamente, aprire l'app della banca e segnarmi _manualmente_ le spese effettuate. Si tratta comunque di pochi minuti a settimana e, _anche nel caso fossero notevolmente di più_, sono convinto che diano una maggiore consapevolezza di quello che entra/esce. <br/>_Secondariamente,_ traccio i flussi di casa non perchè sia preoccupato di non arrivare a fine mese o debba in qualche modo limitarmi, bensì per il "piacere"/volontà di sapere che cosa sta succedendo. Delegare tutto ciò a un agente ne toglierebbe di coseguenza il senso.
+- mi bastano pochi indicatori, grafici e tabelle per tracciare il mio spending e l'evoluzione del mio patrimonio, motivo per cui la loro abbondanza non fa altro che <b>aumentare il rumore</b> e togliere l'attenzione dai _(pochi)_ numeri che mi interessano davvero
+- trattandosi di finanza _personale_, perché mai dovrei delegare _(anche parzialmente)_ all'AI la sua gestione? Mi piace infatti l'idea di avere <b>tutto sotto controllo</b>, _i.e._ decidere di avere la metrica $x$ secondo la formula $y$ per il motivo $z$, non perché secondo Claude stava bene. 
+
+In sintesi: tutte queste soluzioni overkill mi sembravano più uno <b>show-off</b> su chi facesse la dashboard più figa, <a href="https://h4sci.github.io/blog/ai-age-programming/" target="_blank">senza la necessità di mettere l'uomo _(e le sue necessità)_ al centro...</a> _(ma questo è ormai un pattern frequente: quante volte facciamo qualcosa perché è figo e gratis farlo - grazie Claude - e quante volte perché davvero porta del valore aggiunto?)_
+
+
+Ciò nonostante, non nego che patissi anche io i limiti di uno spreadsheet _(e un po' di FOMO)_, ragione per cui mi sono interrogato su come evolvere il mio sistema di tracking, pur mantenendolo <b>essenziale, human-centered e rilevante</b> per le mie necessità.
+
+La soluzione che ne è uscita, _pur essendo ancora un WIP,_ sfrutta infatti un foglio di calcolo per l'input manuale dei dati e una dashboard più elaborata per una  visualizzazione dei numeri _(in sola lettura)_, accessibile tramite server localhost o facilmente hostabile online; sempre mantenendo l'assoluta <b>protezione della privacy.</b>
+
+Il progetto è pubblico su <a href="https://github.com/giacomomaggiore/nw" target="_blank" rel="noopener noreferrer">GitHub</a> o a <a href="https://nw.giacomomaggiore.com/" target="_blank" rel="noopener noreferrer">questo link</a> e, _più rilevante,_ <b>la soluzione è utilizzabile da tutti </b>seguendo il setup riportato nel dettaglio <a href="https://github.com/giacomomaggiore/nw/blob/main/README.md" target="_blank" rel="noopener noreferrer">qui</a>.
+
+---
+
+## <b>Uno spreadsheet è per sempre</b>
+
+Più nello specifico, l'idea è di utilizzare Google Sheet, facilmente accessibile ovunque, come <b>source of truth</b> e database esterno, collegato alla dashboard tramite <a href="https://github.com/giacomomaggiore/nw/blob/main/docs/how-it-works.md" target="_blank">l'API di Google Cloud</a> in modo che i dati, _e la rispettiva classificazione,_ siano totalmente deterministici e in mano all'utente _(non lascerò mai decidere a una rete neurale in quale categoria rientrano 190 euro spesi in scarpe da corsa...)_
+
+L'utente infatti digita manualmente spese, guadagni e, _alla fine di ogni periodo,_ gli asset in portafoglio _(inserendo il numero di shares o la liquidità cash su un conto)_ e _"magicamente"_ l'app legge i dati e si aggiorna in tempo reale _(l'API non ha accesso in scrittura sul foglio di calcolo, quindi l'integrità dei dati è solo nostra responsabilità)_.
+
+Una volta configurata, infatti, l'utente può fare tutto tramite Google Sheet: categorie di spesa, guadagni, asset in portafoglio, valute di riferimento e costanti sono infatti totalmente definite nello spreadsheet e, _di conseguenza,_ facilmente modificabili.
+
+Per quanto riguarda l'app, si tratta di un semplice Next.js, sviluppata _ovviamente_ con il supporto di \**LLM di fiducia\**, in seguito a un lungo e <b>non-lineare brainstorming</b> e dettagliato file di specifiche, affinché il progetto, _nonostante non avessi scritto io il codice html (a volte mi capita comunque di leggerlo...),_ incarnasse al meglio i design principles e la filosofia sottostante.
+
+
+Nello specifico, l'app si divide, _almeno al momento,_ in due sezioni principali:
+- <b>/cashflow</b>, dove è possibile visualizzare, periodo per periodo, spese divise per categorie e sottocategorie, entrate e metriche derivate _(prima fra tutte: il saving rate!)_, in semplici tabelle _(richiamando la grafica di uno spreadsheet)_, in line chart e poco altro, permettendo sempre all'utente di scegliere la valuta di riferimento
+
+<div align = "center">
+![Bao](/images/blog/cf.png)
+</div>
+
+- <b>/networth</b>, dove viene presentata, sempre con tabelle e line chart, l'evoluzione del patrimonio, sia nell'aggregato sia suddiviso per strumenti finanziari, lasciando gestire all'app il download dei dati finanziari e i cambi valuta più necessari. _Secondariamente,_ nella stessa pagina è anche presente il confronto tra il proprio portafoglio storico "effettivo" e un ipotetico benchmark _(60/40 e 100% azioni)_ a parità di flussi di cassa in ingresso/uscita.
+
+
+
+<div align = "center">
+![Bao](/images/blog/nw.png)
+</div>
+<br/>
+---
+## <b>Pseudo-random number generators e numeri fortunati!</b>
+
+Volendo tuttavia pubblicare la dashboard online, _in primis_ per una questione di accessibilità e, _secondariamente,_ per poterla condividere più facilmente, non ero sicuro di voler pubblicare, _nonostante nessuno vada a vedere il sito e non abbia nulla da nascondere,_ i numeri assoluti dietro le mie abitudini di spesa e il mio conto in banca.
+
+Di conseguenza, ho pensato a due modi, _entrambi implementati_ ma eventualmente ridondanti tra loro, per poter mettere il progetto online pur mantenendo i dati protetti.
+
+_In primis,_ tutti gli importi letti dal foglio vengono moltiplicati, direttamente nel backend, per un <b>numero pseudo-random</b> compreso in [0,10], così che un visitatore esterno non possa risalire ai valori reali. Il moltiplicatore dipende da un seed, che ogni visitatore può scegliere dalla navbar.<br/>Tuttavia, se il seed inserito coincide con il `LUCKY_SEED` _(che si può "indovinare" oppure, più probabilmente, già conoscere in quanto proprietario della dashboard)_, il moltiplicatore diventa 1 e la dashboard mostra i valori esatti. Provare per credere <a href="https://nw.giacomomaggiore.com/" target="_blank" rel="noopener noreferrer">qui</a>.
+
+_Secondariamente,_ è possibile accedere con Google: se l'email dell'account rientra tra quelle autorizzate dal proprietario, la dashboard mostra i valori reali.
+
+Sia il `LUCKY_SEED` sia la lista delle email autorizzate sono costanti definite nel Google Sheet, quindi modificabili da lì senza mai toccare il codice.
+
+---
+
+## <b>Ambizioni e sviluppi futuri</b>
+
+_Lastly,_ non nego che la tentazione di aggiungere dashboard, analisi e metriche derivate, _soprattutto quando tutto è a portata di prompt,_ sia alta. Ciò nonostante, preferisco limitarmi e pensare a possibili estensioni del progetto.
+
+_In primis,_ una prossima release introdurrà probabilmente un <b>Monte Carlo generator</b> per poter simulare l'evoluzione di spese e patrimonio. _Secondariamente,_ non mi dispiacerebbe aggiungere una sezione di <b>fund look-through</b>, in grado di scomporre il portafoglio in fattori di rischio, esposizioni nazionali, per asset class _etc etc,_ in modo da avere una visione il più possibile "lucida" sul proprio net worth.
+
+A prescindere dai suoi sviluppi futuri, l'app resta comunque "umana", <b>di conseguenza limitata e potenzialmente imprecisa:</b> i dividendi ricevuti sul broker non ricevono il trattamento giusto, discrepanze e missing data nello spreadsheet potrebbero causare bug e, _non meno importante,_ <b>il fattore umano introduce un'ulteriore incertezza.</b>
+
+That's it. 
+
+I dettagli tecnici restano noiosi per il 99.X% di chi mi legge, quindi rimando alla <a href="https://github.com/giacomomaggiore/nw" target="_blank" rel="noopener noreferrer">repo GitHub</a> e invito i più coraggiosi a clonarla, configurarla e giocarci un po'! 
+
+<div align = "center">
+![Pizza!](/images/blog/napoli-money.jpeg)
+</div>
+<small><i>Friendly reminder: spendete i soldi per esperienze di valore con persone di valore (quattro pizze a Napoli con fidanzata e amici sono un buon esempio)</i></small>
+
+<b>PS:</b> non posso garantire che non ci siano bug nel progetto, in caso di problemi, segnalazioni e pull request sono ben accette!
+
+Cheers!

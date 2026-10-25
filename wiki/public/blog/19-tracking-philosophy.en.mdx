@@ -1,0 +1,106 @@
+---
+title: 'About tracking money'
+publishedAt: '2026-10-24'
+summary: ''
+---
+
+## <b>IF ELSE, FILTER, VLOOKUP and other <s>not-so</s> useful formulas</b>
+
+For the past few years, I’ve kept track of my income, expenses and investments in a simple Google Sheet. 
+It was a fairly <b>efficient and minimal</b> solution: always at hand, with a few filtering/aggregation functions, month-by-month summary tables and some charts to show long-term trends.
+
+I knew perfectly well that there were more automated tools, _"richer"_ in metrics and analysis. _But still,_ I was happy with <b>my humble spreadsheet</b>, with formulas written by hand, before Gemini and Copilot arrived in their respective suites.
+
+Lately, though, I’ve seen an _endless_ stream of more advanced solutions, 99.X% of them _AI-based_ or at least built by prompting: fancy dashboards, syncing with banks, statements, and WhatsApp, real-time investment analysis and many other features that, _by their very nature,_ don’t fit well in a spreadsheet.
+
+<div align = "center">
+![Bao](/images/blog/claude-pf.png)
+</div>
+<small><i>The evil</i></small>
+
+<br/>
+<br/>
+---
+
+## <b>Minimal design principles</b>
+
+All of this challenged the way I tracked cash flow and investments.
+
+Still, _even though I was tempted_ to switch to an automated setup that could sync Revolut, UBS, Interactive Brokers, and everything else... I took a different path that reflects <b>my tracking philosophy</b> and my relationship with money quite well.
+
+More specifically, I started with what I see as the weak points of a fully automated _(AI-based)_ strategy, full of redundant analysis, charts, and hyper-granular, specific statistics:
+- <b>I place value, in a broad sense,</b> on sitting down from time to time, opening my banking app, and _manually_ noting my expenses. It only takes a few minutes a week and, _even if it took much longer,_ I’m convinced it would make me more aware of what comes in and goes out. <br/>_Second,_ I track cash flow not because I’m worried about making budget limits or I don't have enough momey, but because I want to know what’s going in/on. Delegating all of this to an agent would take away the point of it.
+- A few indicators, charts and tables are enough to track my spending and how my net worth changes. Having too many of them only <b>adds noise</b> and distracts from the _(few)_ numbers I actually care about.
+- Since this is _personal_ finance, why should I delegate its management to AI _(even partially)_? I like the idea of having <b>everything under control</b>—_i.e._ choosing to have metric $x$ calculated using formula $y$ for reason $z$, not because Claude thought it looked right.
+
+In short, all these overkill solutions seemed more like a <b>show-off</b> contest over who could build the coolest dashboard, <a href="https://h4sci.github.io/blog/ai-age-programming/" target="_blank">without needing to put people _(and their needs)_ at the center...</a> _(but this has become a common pattern: how often do we do something because it’s cool and almost free —thanks, Claude — and how often because it actually adds value?)_
+
+
+Even so, I won’t deny that I also felt the limitations of a spreadsheet _(and a bit of FOMO)_, so I started thinking about how to evolve my tracking system while keeping it <b>essential, human-centered, and relevant</b> to my needs.
+
+The result, _though it’s still a work in progress,_ uses a spreadsheet for manual data entry and a more elaborate dashboard for viewing the numbers _(read-only)_. It can be accessed through a localhost server or easily hosted online, while maintaining <b>complete privacy.</b>
+
+The project is public on <a href="https://github.com/giacomomaggiore/nw" target="_blank" rel="noopener noreferrer">GitHub</a> and <a href="https://nw.giacomomaggiore.com/" target="_blank" rel="noopener noreferrer">at this link</a>. More importantly, <b>anyone can use it</b> by following the detailed setup instructions <a href="https://github.com/giacomomaggiore/nw/blob/main/README.md" target="_blank" rel="noopener noreferrer">here</a>.
+
+---
+
+## <b>A spreadsheet is forever</b>
+
+More specifically, the idea is to use Google Sheets, easy to access anywhere, as the <b>source of truth</b> and external database. It connects to the dashboard through <a href="https://github.com/giacomomaggiore/nw/blob/main/docs/how-it-works.md" target="_blank">the Google Cloud API</a>, so the data _and its classification_ are fully deterministic and in the user’s hands _(I’ll never let a neural network decide which category the €190 I spent on running shoes belong to...)_.
+
+The user manually enters expenses, income, and, _at the end of each period,_ the assets in their portfolio _(by entering the number of shares or the cash balance in an account)_. Then, _"magically,"_ the app reads the data and updates in real time _(the API has no write access to the spreadsheet, so data integrity is our responsibility alone)_.
+
+Once it’s set up, the user can do everything through Google Sheets: expense categories, income, portfolio assets, reference currencies, and constants are all defined in the spreadsheet and, _as a result,_ easy to change.
+
+The app itself is a simple Next.js application, developed _of course_ with help from my trusted \**LLM\**, after a long, <b>non-linear brainstorming</b> process and a detailed specification file. The goal was for the project to reflect its design principles and underlying philosophy, _even though I unfortunately didn’t write the HTML myself (though I do sometimes read it...)_.
+
+More specifically, _at least for now,_ the app has two main sections:
+- <b>/cashflow</b>, where you can view expenses by category and subcategory, income and derived metrics _(first and most important: the saving rate!)_ for each period. They’re shown in simple tables _(with a spreadsheet-like look)_, line charts, and little else, and users can always choose the reference currency.
+
+<div align = "center">
+![Bao](/images/blog/cf.png)
+</div>
+
+- <b>/networth</b>, where tables and line charts show how net worth changes, both overall and broken down by financial instrument. The app handles downloading financial data and the most necessary currency conversions. _Also,_ the page compares your historical "actual" portfolio with a hypothetical benchmark _(60/40 and 100% stocks)_, using the same cash inflows and outflows.
+
+
+
+<div align = "center">
+![Bao](/images/blog/nw.png)
+</div>
+<br/>
+---
+## <b>Pseudo-random number generators and lucky numbers!</b>
+
+I wanted to publish the dashboard online, _first_ to make it accessible and _second_ to make it easier to share. But I wasn’t sure I wanted to publish the actual numbers behind my spending habits and bank account, _even though nobody visits the site and I have nothing to hide._
+
+So I came up with two ways to put the project online while keeping the data protected. _Both are implemented,_ though they may be redundant.
+
+_First,_ every amount read from the spreadsheet is multiplied in the backend by a <b>pseudo-random number</b> between [0,10], so an outside visitor can’t work out the real values. The multiplier depends on a seed that each visitor can choose from the navbar.<br/>However, if the seed matches `LUCKY_SEED` _(which someone could "guess" or, more likely, already know as the dashboard owner)_, the multiplier becomes 1 and the dashboard shows the exact values. See for yourself <a href="https://nw.giacomomaggiore.com/" target="_blank" rel="noopener noreferrer">here</a>.
+
+_Second,_ you can sign in with Google. If the account’s email is on the owner’s allowlist, the dashboard shows the real values.
+
+Both `LUCKY_SEED` and the list of authorized email addresses are constants defined in Google Sheets, so they can be changed there without touching the code.
+
+---
+
+## <b>Ambitions and future plans</b>
+
+_Lastly,_ I won’t deny that I’m tempted to add dashboards, analysis, and derived metrics, _especially when everything is just a prompt away._ Even so, I’d rather keep things focused and think about possible extensions to the project.
+
+_First,_ a future release will probably introduce a <b>Monte Carlo generator</b> to simulate how spending and net worth might evolve. _Second,_ I’d like to add a <b>fund look-through</b> section that breaks down the portfolio by risk factors, country exposure, asset class _etc.,_ to give a clear picture of one’s net worth.
+
+Whatever comes next, the app will remain "human," and <b>therefore limited and potentially inaccurate:</b> dividends paid into the brokerage account aren’t handled properly, discrepancies and missing data in the spreadsheet could cause bugs, and, _last but not least,_ <b>the human factor introduces more uncertainty.</b>
+
+That’s it.
+
+The technical details are boring to 99.X% of my readers, so I’ll point you to the <a href="https://github.com/giacomomaggiore/nw" target="_blank" rel="noopener noreferrer">GitHub repo</a> and invite the braver ones to clone it, set it up, and play around!
+
+<div align = "center">
+![Pizza!](/images/blog/napoli-money.jpeg)
+</div>
+<small><i>Friendly reminder: spend your money on meaningful experiences with meaningful people (four pizzas in Naples with your partner and friends are a good example)</i></small>
+
+<b>PS:</b> I can’t guarantee that the project is bug-free. If you run into any issues, reports and pull requests are welcome!
+
+Cheers!
