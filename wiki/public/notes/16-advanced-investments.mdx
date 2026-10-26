@@ -1202,7 +1202,13 @@ $$
 
 that, _if we do a Taylor approximation around the log at a point $P/D = e^{p-d}$,_ i.e.
 
-[formula of taylor]
+$$
+\ln\left(1 + \exp(x)\right)
+\approx \ln\left(1 + \exp(\bar{x})\right)
++ \frac{\exp(\bar{x})}{1 + \exp(\bar{x})}(x - \bar{x})
+$$
+
+where $x = p_{t+1} - d_{t+1}$ and $\bar{x} = p - d$.
 
 we get:
 
@@ -1313,7 +1319,7 @@ _On the other hand,_ a <b>volatility-scaled</b> portfolio with exposure to stock
 <b>Sentiment analysis</b> uses computer software to understand the tone of news stories and is then used to time exposure to the equity market.
 
 A good example is represented by the work of <a href="https://doi.org/10.3905/jpm.2015.41.2.100" target="_blank">Uhl et al. in 2015</a>, who performed the following analysis:
-- they obtained news sentiment analysis from <a href="https://www.lseg.com/" target="_blank">Thomson Reuters News Analytics</a>, where each story is linked to a sentiment that can be positive, neutral, or negative (1, 0, or -1);
+- they obtained news sentiment analysis from <a href="https://developers.lseg.com/en/product/news/news_analytics" target="_blank">Thomson Reuters News Analytics</a>, where each story is linked to a sentiment that can be positive, neutral, or negative (1, 0, or -1);
 - they aggregated news at the company and macro levels and created the <b>sentiment momentum</b>, defined as the recent change in sentiment;
 - they smoothed the variable to make the signal less noisy;
 - they invested in <a href="https://www.msci.com/our-solutions/indexes/developed-markets" target="_blank">MSCI World</a> equities if aggregate equity sentiment (momentum) was positive and in an investment-grade 3–5-year bond index otherwise, achieving a Sharpe ratio of 1.47.
@@ -1384,3 +1390,56 @@ _Furthermore,_ if we only include the first and last trading days of the month, 
 
 
 ## <a id="8">The Cross-Section of Expected Returns</a>
+
+The general idea of this section is to analyze the <b>cross-section</b> of expected returns to identify variables that help explain <b>differences in expected returns</b> across stocks.
+
+Typically, new factors are identified by comparing returns on assets _(or portfolios)_ using some variable. For example, the <a href="https://www.investopedia.com/terms/c/capm.asp" target="_blank">CAPM</a> predicts that <b>market beta</b>, defined as the covariance between the asset and the market portfolio divided by the variance of the market portfolio, should explain the <b>cross-sectional</b> variation in expected returns; $\implies$ expected returns should be driven by <b>one single factor</b>.
+
+We can test this with a <b>regression test</b>, with the hypothesis that market-model alphas are <b>jointly zero</b> (i.e., stocks earn higher returns only by carrying more market risk, which translates into higher $\beta$).
+
+_In particular,_ for all assets $j$, we can estimate the <b>market model</b> as:
+
+$$
+R_{j,t} - R_{f,t} = \alpha_j + \beta_j(R_{M,t} - R_{f,t}) + \epsilon_{j,t}
+$$
+
+and test the null hypothesis of the CAPM, i.e., $H_0: \alpha_j = 0$ for all $j$. If this is not the case, $\alpha_j > 0$ implies that the asset is <b>underpriced</b> (as it "beats" the market), while $\alpha_j < 0$ implies the opposite.
+
+_Note that_ we could test each $\alpha_j$ on its own, but with many assets, probably some of them will look significant by pure chance, so we must test if all the $\alpha_j$ are zero at the same time; _only in this way_ does the test take into account that the $\alpha_j$ are correlated across assets.
+
+_Graphically,_ we can see the null hypothesis as follows:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/capm-test.png)
+</div>
+
+Once an effect has been documented and we have tested the CAPM, we can ask ourselves if the differences we see in returns are caused by some other factor exposures (risk premia) or by mispricing, as a consequence of some investors' behaviors _(slow processing of information, institutional constraints or frictions, behavioral anomalies, etc.)_. In the following lines, we therefore spend some time considering and diving deeper into some factors that have been documented to affect expected returns.
+
+_However,_ before we dive in, note that in the financial literature there is a large number of documented factors, but the majority of them comes from data mining (p-hacking) and are not explained by any economic rationale. For the systematic investor, it is then important to differentiate between authentic and robust factors based on economic rationale, logic, and causation from redundant factors driven only by correlation. More on this topic can be found in the bestseller <a href="https://www.amazon.de/-/en/Navigating-Factor-Zoo-Quantitative-Investing/dp/103276841X" target="_blank">Navigating the Factor Zoo: The Science of Quantitative Investing by Michael Zhang, Tao Lu, and Chuan Shi</a>.
+
+<b>Size and Value Factors</b>
+
+Banz, in his 1981 paper titled <a href="https://doi.org/10.1016/0304-405X(81)90018-0" target="_blank">"The Relationship Between Return and Market Value of Common Stocks"</a> _(Journal of Financial Economics)_, found differences in average returns between stocks with large and small market capitalization.
+
+_Similarly,_ Stattman in 1980 in <a href="https://scholar.google.com/scholar?q=Stattman+1980+Book+values+and+stock+returns" target="_blank">"Book Values and Stock Returns"</a> _(The Chicago MBA: A Journal of Selected Papers)_ and Rosenberg et al. in 1985 in <a href="https://doi.org/10.3905/jpm.1985.409007" target="_blank">"Persuasive Evidence of Market Inefficiency"</a> _(Journal of Portfolio Management)_ found that average returns on US stocks are <b>positively correlated</b> with the ratio of a company's <b>book value of common equity to its market value</b>, defined as the B/M ratio.
+
+_Lastly,_ Fama and French, in 1992, 1993, and 1996, in their papers <a href="https://doi.org/10.1111/j.1540-6261.1992.tb04398.x" target="_blank">"The Cross-Section of Expected Stock Returns"</a> _(Journal of Finance, 1992)_, <a href="https://doi.org/10.1016/0304-405X(93)90023-5" target="_blank">"Common Risk Factors in the Returns on Stocks and Bonds"</a> _(Journal of Financial Economics, 1993)_, and <a href="https://doi.org/10.1111/j.1540-6261.1996.tb05202.x" target="_blank">"Multifactor Explanations of Asset Pricing Anomalies"</a> _(Journal of Finance, 1996)_, combined <b>size and value</b> factors and expanded the CAPM to explain the cross-section of expected stock returns, in particular:
+- at a given $t$, they sorted stocks according to their B/M ratio;
+- they distinguished stocks with high B/M as <b>value stocks</b> and those with low B/M as <b>growth stocks</b>, so these names were defined relative to other stocks in the cross-section, _not in absolute terms_;
+- _similarly,_ they sorted stocks based on their market capitalization;
+- they then distinguished them into <b>Small</b> and <b>Big</b> stocks;
+- with these two dimensions, they constructed $2 \times 2$ portfolios and investigated their expected returns.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/fama-french.png)
+</div>
+
+
+They then found that:
+- value stocks have higher average returns than growth stocks;
+- small stocks have higher average returns than big stocks.
+
+_However,_ they noticed that these differences were not reflected in differences in the market $\beta$, so the higher return could not be explained by the CAPM.
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/fama-french-2.png)
+</div>
