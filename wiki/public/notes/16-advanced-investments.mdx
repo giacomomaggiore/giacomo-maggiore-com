@@ -13,10 +13,16 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 ### Index
 
-- [Introduction](#introduction)
-- [Strategy Development](#1)
+1. [Introduction to Asset Management: Asset Allocation, Hedging and Performance Measures](#1)
+2. [Strategy Development: Sources of Returns, Return Calculations, Performance Measurement and Timing Ability](#2)
+3. [Principles of Strategy Development: Statistical Significance, Overfitting, Biases and Transaction Costs](#3)
+4. [Constant-Allocation, Timing and Selection Strategies: Risk Premium Estimation and Predictive Models](#4)
+5. [Combining Strategies and Implementation: Portfolio Weights, Leverage, Short Selling and Levered ETFs](#5)
+6. [Equity Risk Premium and Return Predictability: Valuation Ratios, Dividend Yield and the Term Premium](#6)
+7. [Volatility, News Sentiment and Seasonality: Further Predictors of Equity Returns](#7)
+8. [The Cross-Section of Expected Returns](#8)
 
-## <a id="introduction"></a>Introduction
+## <a id="1">Introduction to Asset Management: Asset Allocation, Hedging and Performance Measures</a>
 
 Asset management is about investing in assets to achieve certain goals subject to restrictions.
 
@@ -78,7 +84,7 @@ $$
 
 ---
 
-## <a id="1"></a>Strategy Development
+## <a id="2">Strategy Development: Sources of Returns, Return Calculations, Performance Measurement and Timing Ability</a>
 
 Finding ideas is the hard part of strategy development. Conceptually, one can see returns as coming from three sources:
 - <b>asset classes</b>
@@ -91,8 +97,8 @@ For example, here are three sources of returns for some common strategies:
 - <b>selection strategies</b>: take long and short positions within an asset class. They usually _do not target_ risk premia, but returns provided by strategy styles.
 
 Testing the strategy is an essential part of the process. Ideally, you should know what to test before downloading the data. Common sources of data are:
-- <b>general data sources</b> (Bloomberg, Datastream, Yahoo Finance)
-- <b>specialized sources</b> (CRSP, Compustat, OptionMetrics)
+- <b>general data sources</b> (<a href="https://www.bloomberg.com/professional/" target="_blank">Bloomberg</a>, Datastream, <a href="https://finance.yahoo.com/" target="_blank">Yahoo Finance</a>)
+- <b>specialized sources</b> (<a href="https://www.crsp.org/" target="_blank">CRSP</a>, Compustat, <a href="https://optionmetrics.com/" target="_blank">OptionMetrics</a>)
 
 It is important to be aware of biases and to make sure that dividends and interest are accounted for.
 
@@ -252,7 +258,7 @@ $$
 R_{n,t} = \frac{P_{n,t} + D_{n,t}}{P_{n,t-1}} - 1
 $$
 
-_(When using Bloomberg to get data, you can use the `DPDF` function to make the necessary adjustments.)_
+_(When using <a href="https://www.bloomberg.com/professional/" target="_blank">Bloomberg</a> to get data, you can use the `DPDF` function to make the necessary adjustments.)_
 
 _Note also that <a href="https://www.unisg.ch/en/university/library/search-and-use/databases/crsp-center-for-research-in-security-prices-/-wrds/">CRSP</a> also provides returns that are adjusted for splits and dividends._
 
@@ -276,7 +282,7 @@ Example: US withholding tax on dividends.
 
 If you are a non-US investor and own US stocks, the IRS generally imposes a 30% withholding tax on dividends paid by US companies.
 
-However, most EU countries and Switzerland have tax treaties with the US: with a valid Form W-8BEN completed through your broker, the withholding tax is typically reduced from 30% to 15%.
+However, most EU countries and Switzerland have tax treaties with the US: with a valid <a href="https://www.irs.gov/forms-pubs/about-form-w-8-ben" target="_blank">Form W-8BEN</a> completed through your broker, the withholding tax is typically reduced from 30% to 15%.
 
 For a <b>European investor</b> that wants to invest in US equities through ETFs, there are two alternatives:
 - Holding a US ETF directly, with a reduced withholding tax of 15%
@@ -355,7 +361,7 @@ _(Note that the formula is similar to the previous one, but always remember that
 
 However, when <b>futures positions are rolled</b> _(i.e., closing the current position before expiry and opening a new one with later expiry),_ we make sure to use a given futures contract and _not mix contracts_ with different maturities.
 
-_Consider, for example, E-Mini S&P 500 Futures around the September 2026 expiry:_
+_Consider, for example, <a href="https://www.cmegroup.com/markets/equities/sp/e-mini-sandp500.html" target="_blank">E-Mini S&P 500 Futures</a> around the September 2026 expiry:_
 - On September 17, we would use the September contract to compute returns.
 - Starting from September 18, we would use the December contract.
 
@@ -434,7 +440,7 @@ $$
 R_{p,t}-R_{f,t}=\alpha_p+\beta_p(R_{M,t}-R_{f,t})+\epsilon_{p,t}.
 $$
 
-_Similarly,_ we can extend this regression to the <b>Fama–French three-factor model</b> _(market factor, SMB size factor, and HML value factor)_:
+_Similarly,_ we can extend this regression to the <b><a href="https://doi.org/10.1016/0304-405X(93)90023-5" target="_blank">Fama–French three-factor model</a></b> _(market factor, SMB size factor, and HML value factor)_:
 
 $$
 \begin{aligned}
@@ -444,7 +450,7 @@ R_{p,t}-R_{f,t}={}&\alpha_p+\beta_{M,p}(R_{M,t}-R_{f,t})\\
 \end{aligned}
 $$
 
-By adding the momentum factor, we obtain the <b>Fama–French–Carhart four-factor model</b>:
+By adding the momentum factor, we obtain the <b><a href="https://doi.org/10.1111/j.1540-6261.1997.tb03808.x" target="_blank">Fama–French–Carhart four-factor model</a></b>:
 
 $$
 \begin{aligned}
@@ -504,7 +510,7 @@ _Secondly_, if a strategy is <b>successful at timing the market</b>, the portfol
 ![Bias variance tradeoff](/images/notes/third-semester/timing-2.png)
 </div>
 
-Therefore, we can detect timing ability by testing for <b>nonlinearity</b> in the relationship between market returns and portfolio returns. One common approach is the <b>Treynor–Mazuy procedure</b>, which fits a quadratic curve to the returns using the following _(linear, despite the quadratic curve!)_ regression:
+Therefore, we can detect timing ability by testing for <b>nonlinearity</b> in the relationship between market returns and portfolio returns. One common approach is the <b><a href="https://hbr.org/1966/07/can-mutual-funds-outguess-the-market" target="_blank">Treynor–Mazuy procedure</a></b>, which fits a quadratic curve to the returns using the following _(linear, despite the quadratic curve!)_ regression:
 
 $$
 R_{p,t}-R_{f,t}=\alpha_p+\beta_p(R_{M,t}-R_{f,t})+\gamma_p(R_{M,t}-R_{f,t})^2+\epsilon_{p,t}.
@@ -512,7 +518,7 @@ $$
 
 In the case of good timing ability, we expect a positive and statistically significant $\gamma_p$ coefficient.
 
-Furthermore, the <b>Merton–Henriksson procedure</b> tests whether the portfolio return resembles the <b>payoff diagram of a long market position plus a long call</b> on the market by running the regression:
+Furthermore, the <b><a href="https://doi.org/10.1086/296131" target="_blank">Merton–Henriksson procedure</a></b> tests whether the portfolio return resembles the <b>payoff diagram of a long market position plus a long call</b> on the market by running the regression:
 
 $$
 R_{p,t}-R_{f,t}=\alpha_p+\beta_p(R_{M,t}-R_{f,t})+\gamma_p\max(R_{M,t}-R_{f,t},0)+\epsilon_{p,t}.
@@ -537,7 +543,7 @@ $$
 ![Bias variance tradeoff](/images/notes/third-semester/timing-3.png)
 </div>
 
-## <b>Principles of Strategy Development</b>
+## <a id="3">Principles of Strategy Development: Statistical Significance, Overfitting, Biases and Transaction Costs</a>
 
 When developing a strategy, it is essential to keep the following in mind:
 - always worry about <b>statistical significance</b>
@@ -606,7 +612,9 @@ $$
 $$
 
 ---
-<br/>
+
+## <a id="4">Constant-Allocation, Timing and Selection Strategies: Risk Premium Estimation and Predictive Models</a>
+
 <b>Risk Premium Estimation</b>
 
 We start by saying that the simplest strategies are the ones targeting a <b>constant allocation</b> to a number of asset classes, so the key decisions are:
@@ -626,7 +634,7 @@ _Deep dive:_ if you want to know more about risk premia, well, it is better to s
 
 However, notice that average return estimates are _noisy_, so we must rely on <b>long sample periods</b>. Furthermore, _note that_ <b>risk premia are not constant over time</b> and therefore estimating <b>conditional risk premia</b> is much harder than obtaining unconditional estimates. (Recall that the unconditional risk premium is the long-run average return without conditioning on/knowing the current market information, while the conditional risk premium is the expected excess return given the information available today, such as valuation, interest rates, volatility, and market conditions.)
 
-In this context, the <b>Fama–MacBeth method</b> is a common approach to estimate risk premia. Suppose we have $N$ assets with excess return on asset $n$ given by:
+In this context, the <b><a href="https://doi.org/10.1086/260061" target="_blank">Fama–MacBeth method</a></b> is a common approach to estimate risk premia. Suppose we have $N$ assets with excess return on asset $n$ given by:
 
 $$
 R_{n,t} - R_{f,t} = a_n + \beta_n^{\mathsf{T}} f_t + \epsilon_{n,t}
@@ -705,7 +713,7 @@ Common predictors are:
     - credit spread (CS) _(BBB bond yields minus AAA yields; represents the market assessment of future default risk)_
 - <b>volatility variables</b>
     - realized volatility
-    - implied volatility _(example: VIX, which represents perceived risk)_
+    - implied volatility _(example: <a href="https://www.cboe.com/tradable_products/vix/" target="_blank">VIX</a>, which represents perceived risk)_
 - <b>macro variables</b>
     - GDP
     - inflation
@@ -749,7 +757,9 @@ Once we have selected a selection method, the resulting portfolio can be impleme
 - <b>long portfolio with a hedge for market risk</b>, where the hedge is implemented using futures, so the return of each period is given by:
     + the return of the long portfolio
     - the hedge ratio times the percentage price change of futures
-<br/>
+---
+
+## <a id="5">Combining Strategies and Implementation: Portfolio Weights, Leverage, Short Selling and Levered ETFs</a>
 
 <b>Combining strategies</b>
 
@@ -972,7 +982,7 @@ _Hence,_ a levered or short ETF requires adjusting the size of the ETF positions
 
 <br/>
 
-## <a id="2"></a>Equities
+## <a id="6">Equity Risk Premium and Return Predictability: Valuation Ratios, Dividend Yield and the Term Premium</a>
 
 The <b>equity risk premium (ERP)</b> is the excess return of the equity market over that of a low-risk asset.
 It is usually measured against Treasury bill or Treasury bond returns.
@@ -1155,49 +1165,222 @@ However, the out-of-sample predictive power is still poor, making it difficult t
 
 _Note that_ the one-period model can be extended to multiple periods, as Campbell and Shiller did in 1988. In this case, we start from the one-period return.
 
-R_tù1 = \frac{P_tè1+D_t+1}{P_t} \\
+$$
+R_{t+1} = \frac{P_{t+1}+D_{t+1}}{P_t}
+$$
 
-\frac{P_t}{D_t} ) \frac{1}{R_t+1}\frac{P_t+1 + D_t+1}{D_t} = R_t+1^-1 \frac{Dt+1}{D_t} (1 + \fra{Pt+1}{D_t+1})
+$$
+\frac{P_t}{D_t} = \frac{1}{R_{t+1}}\frac{P_{t+1}+D_{t+1}}{D_t}
+= R_{t+1}^{-1}\frac{D_{t+1}}{D_t}\left(1 + \frac{P_{t+1}}{D_{t+1}}\right)
+$$
 
 If we substitute forward one period, $$\frac{P_{t+1}}{D_{t+1}} = R_{t+2}^{-1}\,\frac{D_{t+2}}{D_{t+1}}\left(1 + \frac{P_{t+2}}{D_{t+2}}\right)$$, we have:
 
-\fra{P_t}{D_t} = R_tè1^-1 \frac{D_t+1}{D_t}+R_t+1^-1 \frac{D_t+1}{Dt}R_t+1^-1 \frac{D_t+2}{D_t+1}(1 + \fgrac{P_t+2}{D_t+1})
+$$
+\frac{P_t}{D_t}
+= R_{t+1}^{-1}\frac{D_{t+1}}{D_t}
++ R_{t+1}^{-1}\frac{D_{t+1}}{D_t}R_{t+2}^{-1}\frac{D_{t+2}}{D_{t+1}}
+\left(1 + \frac{P_{t+2}}{D_{t+2}}\right)
+$$
 
 If we iterate forward by imposing a limiting condition that P/D does not explode faster than returns, we can take expectations and write:
 
-\frac{P_t}{D_t} = E_t [\sum_i=1^\infty ( prod_i=1^i R_t+1^-1 \frac{D_t+j}{D_tèj-1})]
+$$
+\frac{P_t}{D_t}
+= E_t\left[\sum_{i=1}^{\infty}
+\left(\prod_{j=1}^{i}R_{t+j}^{-1}\right)\frac{D_{t+i}}{D_t}\right]
+$$
 
 _Intuition: today's P/D ratio is high if people expect <b>high future dividend growth</b> or <b>low future return</b>.
 
 Note that, due to its complexity, we often use the approximation suggested by, _again,_ Campbell and Shiller using logs, and we obtain:
 
-p_t - d_t = r_t+1 + \Delta d_t+1 + ln(1 + exp(p_t+1 - d_tè1))
+$$
+p_t - d_t = -r_{t+1} + \Delta d_{t+1}
++ \ln\left(1 + \exp(p_{t+1} - d_{t+1})\right)
+$$
 
-that, _if we do a Taylor approximation around the log at a point P/D = e^(p-d),_ i.e.
+that, _if we do a Taylor approximation around the log at a point $P/D = e^{p-d}$,_ i.e.
 
 [formula of taylor]
 
 we get:
 
-p_t - d_t = - r_t+1 + 1Deta d_t+1 + c + \rho(pt+1 - dt+1)
+$$
+p_t - d_t = -r_{t+1} + \Delta d_{t+1}
++ c + \rho(p_{t+1} - d_{t+1})
+$$
 
-where c = ln(1 + P/D) - \rho ( p -d) and \rho = èP / (P + D) is always less than, but close to, one.
+where $c = \ln(1 + P/D) - \rho(p - d)$ and $\rho = P/(P + D)$ is always less than, but close to, one.
 
 If we iterate forward and impose the limiting condition, we take expectations:
 
-p_t - d_t = const + E_t[\sum_i=1?\finty rho ^(i-1) (\Delta d+i - r_t+1)]
+$$
+p_t - d_t = \text{const}
++ E_t\left[\sum_{i=1}^{\infty}\rho^{i-1}
+(\Delta d_{t+i} - r_{t+i})\right]
+$$
 
-However, Shiller immediately noticed that, _since equity prices are quite volatile, this variation in price was not justified by changes in dividends or cash flow._ It turns out that <b>excess volatility</b> is the same as return predictability, i.e. if prices are _"too high"_, subsequent returns will be low as prices move back to their _"correct_" level (mean reversion).
+However, in its famous paper <a href="https://www.jstor.org/stable/1802789" target="_blank">Do stock prices move too much to be justified by subsequent changes in dividends?</a>, Shiller immediately noticed that, _since equity prices are quite volatile, this variation in price was not justified by changes in dividends or cash flow._ It turns out that <b>excess volatility</b> is the same as return predictability, i.e. if prices are _"too high"_, subsequent returns will be low as prices move back to their _"correct_" level (mean reversion).
 
 So from the multi-period price-dividend equation, we can compute the variance of the P/D ratio as:
 
-Var(p_t - d_t ) = Cov(p_t, \sum_i=1^infty \rho ^(i-1) \Delta dt+1) =
-- Cov(p_t - d_t, \sum_i=1^\finty \rho ^(i-1)r_t+1)
+$$
+\operatorname{Var}(p_t - d_t)
+= \operatorname{Cov}\left(p_t - d_t,
+\sum_{i=1}^{\infty}\rho^{i-1}\Delta d_{t+i}\right)
+- \operatorname{Cov}\left(p_t - d_t,
+\sum_{i=1}^{\infty}\rho^{i-1}r_{t+i}\right)
+$$
 
 We can then see that the dividend yield can only vary if it forecasts changes in future dividend growth or returns. This implies that P/D empirically predicts returns rather than dividend growth, and that variation in the P/D ratio comes from movements in expected returns.
 
-_Note that_ this analysis was conducted at the aggregate level _(focusing on the index)_. Vuolteenaho in 2002 showed that most of the variation in <b>single-stock returns</b> comes from cash-flow news rather than expected return news.
+_Note that_ this analysis was conducted at the aggregate level _(focusing on the index)_. <a href="https://doi.org/10.1111/1540-6261.00417" target="_blank">Vuolteenaho in 2002</a> showed that most of the variation in <b>single-stock returns</b> comes from cash-flow news rather than expected return news.
 
 Indeed, at the single-stock level, D/P is driven by changes in cash flows, while at the aggregate level it is driven by changes in expected returns.
 
 This happens because cash flow news about single stocks is highly idiosyncratic and is removed by diversification when stocks are combined into portfolios; movements in the aggregate portfolio/index mostly reflect changes in expected returns, which are driven by macro conditions.
+
+---
+<br/>
+<b>Other Profitability Ratios</b>
+
+Beyond the traditional and well-known dividend-price ratio, we can now consider, for example, the <b>earnings/price ratio (E/P)</b> and the <b>cyclically adjusted P/E ratio</b> _(the ratio of the 10-year moving average to price, denoted by E10/P, CAPE, or the Shiller ratio)_, which have some predictive ability.
+
+However, note that the CAPE ratio is usually more stable than the E/P ratio since it is less affected by single-year events. _Furthermore,_ E10/P is pretty good at catching periods of low expected returns and periods of discrepancies between fundamentals and valuations.
+
+_(Note that the index is also named the "Shiller ratio" because it was popularized by the famous economist <a href="http://www.econ.yale.edu/~shiller/data.htm" target="_blank">Robert Shiller</a> to evaluate whether a stock is undervalued or overvalued.)_
+
+Consider, _for example,_ the following plot and notice the crisis and the corresponding peaks in the CAPE ratio: during the dot-com bubble, it reached 44.4, and, _as of some months ago in August 2026,_ it was again very high.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cape.png)
+</div>
+
+If you want a nice live update on the Shiller ratio, <a href="https://www.multpl.com/shiller-pe" target="_blank">click here!</a>
+
+_However,_ note that there's a lot of criticism around it: firstly, the CAPE ratio might not be so useful because it is backward-looking and does not take into account future trends. _Furthermore,_ it relies on <a href="https://www.investopedia.com/terms/g/gaap.asp" target="_blank">generally accepted accounting principles (GAAP)</a>, which have undergone major changes in recent years, so we cannot compare today's CAPE with the same metric from $x$ years ago.
+
+---
+
+<br/>
+<b>D/P and the term premium</b>
+
+Fama and French, in their 1988 paper <a href="https://doi.org/10.1016/0304-405X(88)90020-7" target="_blank">"Dividend Yields and Expected Stock Returns,"</a> predict returns on stocks and long-term corporate bonds using the D/P and the <b>term premium</b> (TP), defined as:
+$$
+TP = AAA Bond Yield - 1-month T-bill yield
+$$
+
+_Firstly,_ they discovered that D/P and TP predict returns in both markets, so this suggests there is a <b>common variation</b> in expected returns across markets.
+
+Furthermore, one year later, in their 1989 paper <a href="https://doi.org/10.1016/0304-405X(89)90095-0" target="_blank">Business Conditions and Expected Returns on Stocks and Bonds</a>, they found that expected returns on stocks and bonds are linked and share a common <b>counter-cyclical component</b>.
+
+_In particular,_ they ask whether the same variables that track the business cycles also predict returns on stocks and bonds by regressing returns on three predictors, at horizons from one month to four years:
+- dividend yield on the market portfolio _(high in bad times since prices are low)_
+- default spread, BAA yield minus the AA yield _(widens in recessions and stays wide afterward)_
+- TS _(low near the cycle peak; it moves faster than D/P and tracks shorter cycles)_
+
+The main finding is that all the regressors have predictive power for both asset classes, with $R^2$ growing with the horizon. _In particular,_ the pattern is <b>counter-cyclical</b>: expected returns are highest at business cycle lows and lowest at the peaks.
+
+_Furthermore,_ different variables capture different parts of the cycle: D/P and the default spread focus on the long-term persistent component, while the TP focuses on the short-term cycle and relates more to bond returns. _Lastly,_ the variation over time in the risk premium related to D/P is stronger for low-grade bonds than for high-grade bonds and stronger for stocks than for bonds.
+
+---
+
+## <a id="7">Volatility, News Sentiment and Seasonality: Further Predictors of Equity Returns</a>
+
+<b>Volatility</b>
+
+We recall that the optimal exposure to stocks depends on the risk-return trade-off, not just on the ERP; i.e., we have that:
+
+$$
+w_t = \frac{1}{a}\frac{\mathbb{E}_t[R_{t+1}] - R_{f,t+1}}{\operatorname{Var}_t[R_{t+1}]}
+= \frac{1}{a}\frac{\mathbb{E}_t[\mathrm{ERP}_{t+1}]}{\operatorname{Var}_t[R_{t+1}]}.
+$$
+
+Moreira and Muir, in their 2017 paper <a href="https://doi.org/10.1111/jofi.12513" target="_blank">"Volatility-Managed Portfolios,"</a> show that <b>return variance</b> is highly forecastable, since it is persistent and tends to cluster. _In particular,_ a highly volatile month is followed by another turbulent month, and autocorrelation is high.
+
+_However,_ they also show that <b>expected returns</b> do not move much with variance: after a high-variance month, the market's expected return does not necessarily change.
+
+The intuition in a mean-variance framework says that investors allocate $w_t \approx \mu_t / \gamma\sigma^2$ to the risky assets (stocks), so they should scale exposure to stocks after volatile periods. However, the authors argue that most investors do not do this, as they are usually _buy-and-hold_ investors and target constant exposure, so their risk changes a lot during crises and their Sharpe ratio drops.
+
+_On the other hand,_ a <b>volatility-scaled</b> portfolio with exposure to stocks $w_t = c / \operatorname{RV}_t$, where $c$ is the average exposure to the strategy _(chosen to match the unconditional standard deviation of the buy-and-hold portfolio)_ and $\operatorname{RV}_t$ is the realized variance of the previous month, can improve the Sharpe ratio.
+
+---
+<br/>
+<b>News Sentiment</b>
+
+<b>Sentiment analysis</b> uses computer software to understand the tone of news stories and is then used to time exposure to the equity market.
+
+A good example is represented by the work of <a href="https://doi.org/10.3905/jpm.2015.41.2.100" target="_blank">Uhl et al. in 2015</a>, who performed the following analysis:
+- they obtained news sentiment analysis from <a href="https://www.lseg.com/" target="_blank">Thomson Reuters News Analytics</a>, where each story is linked to a sentiment that can be positive, neutral, or negative (1, 0, or -1);
+- they aggregated news at the company and macro levels and created the <b>sentiment momentum</b>, defined as the recent change in sentiment;
+- they smoothed the variable to make the signal less noisy;
+- they invested in <a href="https://www.msci.com/our-solutions/indexes/developed-markets" target="_blank">MSCI World</a> equities if aggregate equity sentiment (momentum) was positive and in an investment-grade 3–5-year bond index otherwise, achieving a Sharpe ratio of 1.47.
+
+
+The main findings, beyond the high Sharpe ratio, were:
+- news diffuses slowly _(prices don't fully absorb the information when it appears, and investors have limited attention)_;
+- the selection of the smoothing parameter (strength) affects performance;
+- change matters more than level, as sentiment levels carry persistent bias and some assets are always covered with more negative sentiment than others.
+
+
+
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/sentiment-2.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/sentiment-1.png)
+</div>
+
+---
+<br/>
+<b>Seasonality</b>
+
+On Wall Street, there's the popular myth "sell in May and go away," referring to wealthy British merchants and aristocrats leaving London for their country estates during the summer. More generally, it says to invest in the stock market from late October to May and stay in cash from May to late October.
+
+To investigate whether this pattern is present, we can easily use futures contracts since their percentage price change represents excess return. Take, _for example,_ the 1982–2019 period and compare the following:
+
+_(Recall that the return of futures is $$r^{\text{futures}}_{t+1} = \frac{F_{t+1} - F_t}{F_t}$$, which is the return of the risky position over the risk-free rate. Also, note that futures indices provide clean data, take dividends and rolling into account, and are easy to short or leverage.)_
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/sell-may.png)
+</div>
+
+_Furthermore,_ if we take a look at seasonal returns, we have the following:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/seasonality.png)
+</div>
+
+_Furthermore, again,_ this effect is not present only in the US market, but rather in almost all countries. We also notice that, since winter months also show lower volatility, the Sharpe ratio from investing during winter is quite high.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/seasonality-2.png)
+</div>
+
+When looking at seasonality, we also notice the <b>"turn-of-the-month"</b> effect, which says that returns are much higher at the turn of the month than during the rest of the month. Again, we can easily test this using futures contracts during the 1982–2019 period:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/seasonality-3.png)
+</div>
+
+_In particular,_ returns are higher during the first five and last five trading days of the month, and this is valid in almost all countries:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/seasonality-4.png)
+</div>
+
+_Furthermore,_ if we only include the first and last trading days of the month, we get a stronger result:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/seasonality-5.png)
+</div>
+
+---
+
+
+## <a id="8">The Cross-Section of Expected Returns</a>

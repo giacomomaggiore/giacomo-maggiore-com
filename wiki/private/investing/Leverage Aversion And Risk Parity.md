@@ -36,7 +36,7 @@ Figure 2 also shows that the risk-free T-bill rate averaged 3.6 percent a year o
 The CAPM goes beyond MPT by assuming that all investors invest in this way and concludes that the tangency portfolio must be equal to the market portfolio—that is, the value-weighted portfolio of all assets. Figure 2 illustrates the historical risk and return of the market portfolio. We can see that the historical performance of the market portfolio is quite different from that of the tangency portfolio. The market portfolio has realized a significantly lower Sharpe ratio than the tangency portfolio for two reasons: (1) The market weights of stocks relative to bonds have varied over time in such a way that the risk–return characteristics of the market are inside the hyperbola, and (2) the market portfolio allocates a much larger fraction of its capital to stocks than what has been optimal historically. The average market weight over this sample (1926–2010) was 68 percent in stocks and 32 percent in Treasury bonds, but we note that this long sample does not include other types of bonds, such as corporate bonds and mortgage bonds.
 
 Figure 2. Efficient Frontier, 1926–2010  
-![](images/874e98b20d0e84eaf66f4875413855c80d7a5bf834955fa02ab3578d3c71c112.jpg)
+![](874e98b20d0e84eaf66f4875413855c80d7a5bf834955fa02ab3578d3c71c112.jpg)
 
 <details>
 <summary>scatter</summary>
@@ -151,7 +151,7 @@ The CAPM predicts that securities will line up on the 45-degree line—that is, 
 Our finding that the security market line is too flat holds not only across asset classes but also within asset classes. In other words, with respect to different securities within the same asset class and across asset classes, safer assets have higher risk-adjusted returns than riskier assets. Indeed, Black, Jensen, and Scholes (1972) famously found that the security market line is too flat across U.S. stocks. Adding 40 years of out-of-sample evidence, Frazzini and Pedersen (2010) confirmed this finding: The security market line has remained remarkably flat since the study by Black, Jensen, and Scholes. Moreover, Frazzini and Pedersen found that the security market line is also too flat in all the other major asset classes. It is too flat in global stock markets, in 18 of 19 developed equity markets, across U.S. Treasuries, across corporate bonds, and even across futures.
 
 Figure 3. The Risk Parity, Market, and 60/40 Portfolios: Sharpe Ratios  
-![](images/2c58843c4964998461b5f5ffe9f993c7bfe5e4faa18ae536de8b44b17637c234.jpg)
+![](2c58843c4964998461b5f5ffe9f993c7bfe5e4faa18ae536de8b44b17637c234.jpg)
 
 <details>
 <summary>bar</summary>
@@ -195,7 +195,7 @@ Notes: See notes to Table 2. This table shows calendar-time returns of portfolio
 \*Significant at the 5 percent level.
 
 Figure 4. Risk Parity vs. 60/40 in Global Sample: Sharpe Ratios, 1986–2010  
-![](images/a5a5221b26f1772ff6b294efcd6204f20676be39158f2dec03fcae1b3b28d71b.jpg)
+![](a5a5221b26f1772ff6b294efcd6204f20676be39158f2dec03fcae1b3b28d71b.jpg)
 
 <details>
 <summary>bar</summary>
@@ -226,7 +226,7 @@ Risk Parity investing has become a popular alternative to traditional methods of
 Assuming that some market participants are unable or unwilling to use leverage is not unrealistic. Leverage simply presents a risk that investors want to be compensated for bearing. Further, to obtain and manage leverage requires the acquisition of a certain “technology.” Indeed, obtaining leverage requires getting financing, using derivatives, and establishing counterparty relations. Managing leverage requires, among other things, adjusting margin accounts and trading the portfolio dynamically over time. Our capital markets offer plenty of examples of investors that are not allowed (or choose not) to use leverage to increase their returns. For example, the majority of mutual funds and many pension funds are not allowed to borrow or are limited in the amount of leverage they can take. In addition, mutual fund families typically provide suggested asset allocations for low- to high-risk-tolerant investors. The high-risk recommendations rarely use leverage but, rather, suggest a very high concentration in equities. Similarly, the rise of embedded leverage in exchange-traded funds shows that some investors choose not to use leverage directly but prefer instruments with embedded leverage.
 
 Figure 5. Security Market Line across Asset Classes, 1973–2010  
-![](images/cba9ab0b92a2c573feb8c288db78b95dc5ed467fd3a9f1dda3afefb8dfaf2432.jpg)
+![](cba9ab0b92a2c573feb8c288db78b95dc5ed467fd3a9f1dda3afefb8dfaf2432.jpg)
 
 <details>
 <summary>scatter</summary>

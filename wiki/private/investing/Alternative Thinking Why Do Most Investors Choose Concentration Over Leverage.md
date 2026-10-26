@@ -33,7 +33,7 @@ Academics working within the mean-variance framework showed over 50 years ago th
 In recent decades, institutional investors have migrated toward a 60/40 stock/bond allocation<sup>2</sup> (as evidenced by typical institutional holdings and perhaps market-cap weights) while diversifying increasingly globally and making small allocations to other asset classes. A 60/40 portfolio may appear diversified, but its risk emanates almost exclusively from the more volatile asset class, stocks. The correlation between the monthly returns of a global 60/40 portfolio and a global equity index is 0.99 (1990-2011).
 
 Exhibit 1 | Expected Returns vs Risk (Volatility) – The Classical Picture  
-![](images/220a5c800a34879e9fd5d7ff982bc7ebe6b55ec2ed299439b488890e92336034.jpg)
+![](220a5c800a34879e9fd5d7ff982bc7ebe6b55ec2ed299439b488890e92336034.jpg)
 
 <details>
 
@@ -53,7 +53,7 @@ Exhibit 2 shows some of the major competitors to the by-now traditional 60/40 in
 All three major investment models thus choose concentration and avoid direct leverage, even while embracing embedded leverage.<sup>5</sup> Investors that actively exploit and lever the superior Sharpe ratios (SR) of low-risk investments are a distinct minority. They include many LBO managers, quantitative investors, and also Warren Buffett. The Sage of Omaha does not profess to be a fan of diversification, but he has favored low-beta stocks as much as value stocks and uses leverage through insurance company float (the difference between insurance premium payments and much later compensation payments).<sup>6</sup>
 
 Exhibit 2 | Summary of Major Approaches to Building Portfolios  
-![](images/5ea5c583cc7401a433e6f4fd2e94629ec33ec3b25ef4267e05f97bb332b3b683.jpg)
+![](5ea5c583cc7401a433e6f4fd2e94629ec33ec3b25ef4267e05f97bb332b3b683.jpg)
 
 <details>
 <summary>flowchart</summary>
@@ -110,7 +110,7 @@ Leverage is a risk that must – and can – be managed. The ultimate risk is be
 This approach is not for everyone, which is one reason we expect a return premium for investors who pursue it. Like many other active approaches, low-risk investing relies on someone else being “on the other side.”<sup>12</sup> We do not expect the majority of investors to become more pro-leverage so soon after 2008, both due to regulatory changes and investors’ own preferences, which leaves better reward for risk for the minority who can exploit these opportunities.
 
 Exhibit 3 | Within Asset Classes, Lower Risk Securities Are More Efficient, 1926‒2011  
-![](images/4dc9154fa115791c9706ebcdd860f3b5d903041f82f7ce589ef4e2a9a461fa94.jpg)
+![](4dc9154fa115791c9706ebcdd860f3b5d903041f82f7ce589ef4e2a9a461fa94.jpg)
 
 <details>
 <summary>bar</summary>

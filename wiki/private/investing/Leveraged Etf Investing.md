@@ -33,7 +33,7 @@ For stocks we use the SP500 and NDX100 indices. The author is mostly interested 
 
 The SP500 and SP500-TR data:
 
-![](images/980c27ca19682cb388420bd4b7c923add211dfb46f909acf6d599436a5f335f5.jpg)
+![](980c27ca19682cb388420bd4b7c923add211dfb46f909acf6d599436a5f335f5.jpg)
 
 <details>
 <summary>line</summary>
@@ -79,7 +79,7 @@ We also show a simulation in red (discussed in chapter 3) which follows the SP50
 
 The NDX100 data is from Yahoo $[14]$, but there is no corresponding NDX100-TR data. The best we found was $[15]$, which begins in 1999, so prior to that we artificially created NDX100-TR as NDX100 + assumed 0.7% dividends:
 
-![](images/502945bd07d9c0e55ef77296f3246ad2c988161e7a8c0a62860346232e06d60a.jpg)
+![](502945bd07d9c0e55ef77296f3246ad2c988161e7a8c0a62860346232e06d60a.jpg)
 
 <details>
 <summary>line</summary>
@@ -125,7 +125,7 @@ Figure 2: Data for the NDX100 index (price and total return) for the 1989-2020 p
 
 For bonds we use the long-term treasury ETF VUSTX since its inception is in 1986, prior to 1989. The data is again from Yahoo $[14]$, where the price is the “Close” column and the total return is the “Adj Close” column:
 
-![](images/95d5dbe33427867204f2fd454d54c18bd7f775dfb159d23c5ce388484fdecb42.jpg)
+![](95d5dbe33427867204f2fd454d54c18bd7f775dfb159d23c5ce388484fdecb42.jpg)
 
 <details>
 <summary>line</summary>
@@ -169,7 +169,7 @@ Figure 3: Data for the long-term treasury bond ETF VUSTX (price and total return
 
 First, we can see the significant contribution of the dividends to the total return of holding bonds. The simulation is in red, but the dividend model used is slightly more complicated than a constant percentage we used before. What we use is actually $5% + 0.5 \times [1 \text{ month LIBOR rate}]$, where the LIBOR rate is time-dependent and taken from $[16]$:
 
-![](images/d8b342ca1e3819bbea847a574da52302d40f94e31da759b0c0a43f648e77ab4a.jpg)
+![](d8b342ca1e3819bbea847a574da52302d40f94e31da759b0c0a43f648e77ab4a.jpg)
 
 <details>
 <summary>line</summary>
@@ -278,7 +278,7 @@ Examples We now validate our simulation against real LETF data to show it works 
 
 Simulation of TMF (assuming TLT-TR as the underlying index) against data, starting at 2011 (approximately when TMF started):
 
-![](images/6300d3aafe1097445c37086a37b778cfd359d8a1276f54d9b15bf03d7c1e9f1c.jpg)
+![](6300d3aafe1097445c37086a37b778cfd359d8a1276f54d9b15bf03d7c1e9f1c.jpg)
 
 <details>
 <summary>line</summary>
@@ -301,7 +301,7 @@ Figure 5: Data for the TLT and TMF ETFs for the 2010-2020 period. A tax-free sim
 
 Simulation of UPRO against data, starting at 2010 (approximately when UPRO started):
 
-![](images/9fdab8aebe6d5ae83383b02985eace21870d95828ba20b892509a77b86149f9b.jpg)
+![](9fdab8aebe6d5ae83383b02985eace21870d95828ba20b892509a77b86149f9b.jpg)
 
 <details>
 <summary>line</summary>
@@ -324,7 +324,7 @@ Figure 6: Data for the SP500-TR index and UPRO ETF for the 2010-2020 period. A t
 
 Simulation of TQQQ against data, starting at 2011 (approximately when TQQQ started):
 
-![](images/97a08ea7aa43ceb918e18cabd6b6cd4cac15dbf73af06ea4eaacf8296cbf72ef.jpg)
+![](97a08ea7aa43ceb918e18cabd6b6cd4cac15dbf73af06ea4eaacf8296cbf72ef.jpg)
 
 <details>
 <summary>line</summary>
@@ -358,7 +358,7 @@ We now compare the performance of the two methods of 2X leverage on a backtest f
 
 The two simulations side by side (the yield is defined as the total portfolio size, minus the margin debt, which is roughly 100% in the case of 2X target leverage):
 
-![](images/5d629afa0a39f2da94830607222639e0d2f95d73b031fd51f000dcf294c0ecf8.jpg)
+![](5d629afa0a39f2da94830607222639e0d2f95d73b031fd51f000dcf294c0ecf8.jpg)
 
 <details>
 <summary>line</summary>
@@ -402,7 +402,7 @@ Figure 8: Tax-free simulations for 2X leverage on the NDX100 index for the perio
 
 The margin leverage as a function of time:
 
-![](images/1c6e088c36c2d8a0e1a6adfe46297127e943e9cc23cce7e2b5fc6048a72cc348.jpg)
+![](1c6e088c36c2d8a0e1a6adfe46297127e943e9cc23cce7e2b5fc6048a72cc348.jpg)
 
 <details>
 <summary>line</summary>
@@ -448,7 +448,7 @@ We can see the margin leverage $L$ changes dynamically but does not exceed $10\%
 
 Same for SP500 index:
 
-![](images/d6c4b461cf9670a31989d27162288a05854590f9372912d2d0d13f0248679bb9.jpg)
+![](d6c4b461cf9670a31989d27162288a05854590f9372912d2d0d13f0248679bb9.jpg)
 
 <details>
 <summary>line</summary>
@@ -538,7 +538,7 @@ $$
 
 Backtest simulation of a 50%/50% non-leveraged VOO/VUSTX portfolio:
 
-![](images/ccbdddcaf1004287f0ce35d307d004208caeff11236b9e79534843bbd67f5ab4.jpg)
+![](ccbdddcaf1004287f0ce35d307d004208caeff11236b9e79534843bbd67f5ab4.jpg)
 
 <details>
 <summary>line</summary>
@@ -584,7 +584,7 @@ We can see intuitively that the stock component of the portfolio pulls it upward
 
 The evolution of the fractions:
 
-![](images/9d70ef13650004deb720567cbfe0c93cdbb9eed21edbaed439040e4e1f1a2556.jpg)
+![](9d70ef13650004deb720567cbfe0c93cdbb9eed21edbaed439040e4e1f1a2556.jpg)
 
 <details>
 <summary>line</summary>
@@ -630,7 +630,7 @@ We can see it indeed changes and triggers rebalance at the correct times.
 
 Now move on to 2X leveraged mixed portfolios, with both leverage methods. For SP500 index:
 
-![](images/8e943fb4019bd85b49eecee1e8a9fe4c36f2e8ff0399b1e0f80644fb457f42a1.jpg)
+![](8e943fb4019bd85b49eecee1e8a9fe4c36f2e8ff0399b1e0f80644fb457f42a1.jpg)
 
 <details>
 <summary>line</summary>
@@ -674,7 +674,7 @@ Figure 13: Tax-free simulation for a 50%/50% 2X leveraged SP500/VUSTX portfolios
 
 For NDX100 index:
 
-![](images/4e8d6202f59709011f90a1523526ab45d8f68bf982f7c3b1bb8d812b3a17f978.jpg)
+![](4e8d6202f59709011f90a1523526ab45d8f68bf982f7c3b1bb8d812b3a17f978.jpg)
 
 <details>
 <summary>line</summary>
@@ -826,7 +826,7 @@ G \frac{cgt}{1 - \text{sign}(P) cgt} & G \leq G^* \\
 \right. \tag{18}
 $$
 
-![](images/c6473d2906c479b8c1197645b39191d48a07448dfa60aced35b98f183f0c9331.jpg)
+![](c6473d2906c479b8c1197645b39191d48a07448dfa60aced35b98f183f0c9331.jpg)
 
 <details>
 <summary>line</summary>

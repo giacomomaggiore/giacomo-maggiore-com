@@ -24,7 +24,7 @@ We show how to maximize “Return Stacking<sup>®</sup>” opportunities by choo
 
 ## REACHING FOR YIELD  
 ## DIVERSIFIED RETURN STACKING  
-![](images/e242d1977368b9c190d3674e493862529e0a77275eb88ed781b4ab45618c7e4a.jpg)
+![](e242d1977368b9c190d3674e493862529e0a77275eb88ed781b4ab45618c7e4a.jpg)
 
 <details>
 <summary>natural_image</summary>
@@ -39,7 +39,7 @@ Stretched valuations in many stock and bond markets are challenging investors to
 Many thoughtful investors have eschewed this approach in favor of replacing stock and/or bond exposure with uncorrelated asset classes and alternative strategies. In practice, this approach often comes with the headwind fear of missing out (FOMO) as the returns from these portfolios are likely to deviate meaningfully from traditional portfolios. Despite an expectation that alternative exposures will introduce diversification benefits, many investors abandon diversifiers before they experience the expected pay-off. This behavior is especially common in periods when traditional portfolios have dominated for several years in a row.
 
 Figure 1 - Illustrative life cycle of the Hiring and Firing of Alt managers  
-![](images/1bf44c2495b7aeb97de0406300d0ab078ce0477b1578c40e0d471b1e2569298f.jpg)
+![](1bf44c2495b7aeb97de0406300d0ab078ce0477b1578c40e0d471b1e2569298f.jpg)
 
 <details>
 <summary>bar</summary>
@@ -64,7 +64,7 @@ Figure 2 – Illustrative Example of Risk and Return Changes from Non-Correlated
 <table><tr><td>Strategies</td><td>Expected Excess Return</td><td>Expected Volatility</td></tr><tr><td>Hypothetical Balanced Portfolio</td><td>6.0%</td><td>12.0%</td></tr><tr><td>Hypothetical Alternative Fund</td><td>3.0%</td><td>6.0%</td></tr><tr><td>Hypothetical 70% Balanced/30% Alternative</td><td>5.1%</td><td>8.6%</td></tr></table>
 
 Return and Risk Changes to Alternative Addition  
-![](images/c380f5679ed79dc7ca132b21a88de24e519a6954662614b860dd0a4fdb780c42.jpg)
+![](c380f5679ed79dc7ca132b21a88de24e519a6954662614b860dd0a4fdb780c42.jpg)
 
 <details>
 <summary>bar</summary>
@@ -84,7 +84,7 @@ As expected, the addition of uncorrelated alternatives provides an attractive 28
 The very core of Modern Portfolio Theory (MPT) states that investors should allocate to the portfolio that maximizes expected excess return per unit of risk. If this portfolio will not meet target returns (as may have been the case in our example in Figure 1), an investor should access geared exposure to this most efficient portfolio. For example, an investor who borrows 50% against the value of their investments and uses the proceeds to allocate 150 percent to the 60/40 portfolio would expect to earn materially higher returns than an investor in the 100 percent equity portfolio, with a similar amount of risk. In fact, a [[Why Not 100% Equity|150 percent allocation to the 60/40 portfolio]] substantially outperformed a 100 percent equity portfolio on both absolute and risk-adjusted terms, in backtested (1923 to 1996<sup>1</sup> ) and out-of-sample (1996 to 2021<sup>2</sup> ) time periods.
 
 Figure 3 - Benefits of Diversification and Portfolio Scaling to Risk and Returns  
-![](images/7a37397b6b8fe34cfec31d27d3f338a12275842dd204dceba9034e38db8c2295.jpg)
+![](7a37397b6b8fe34cfec31d27d3f338a12275842dd204dceba9034e38db8c2295.jpg)
 
 <details>
 <summary>scatter</summary>
@@ -111,7 +111,7 @@ Let us assume, for a moment, that we currently hold a 60/40 portfolio and want t
 Enter the WisdomTree US Efficient Core ETF (“NTSX”), which provides 1.5x leverage to a 60% S&P 500 / 40% U.S. Treasury ladder portfolio. By allocating two-thirds of our assets to this fund, we achieve the same 60/40 exposure (2/3×1.5=1), but free up one-third of valuable portfolio real estate for deployment to other diversifying investments. In other words, just 67 cents invested in NTSX is effectively equivalent to \$1 invested in the Vanguard Balanced Fund (“VBINX”).<sup>4</sup>
 
 Figure 4 – Comparison of VBINX vs NTSX Plus Cash  
-![](images/aef795533827b01a9d4a2f0a10bf5a59dd3ebe1c614f5c778c98bf7c24e1f1f0.jpg)
+![](aef795533827b01a9d4a2f0a10bf5a59dd3ebe1c614f5c778c98bf7c24e1f1f0.jpg)
 
 <details>
 <summary>line</summary>
@@ -128,7 +128,7 @@ Source: Data from Tiingo, analysis by ReSolve Asset Management SEZC. Results are
 Let us explore what else might be done to make efficient use of our excess capital. A very conservative investor might choose to take the remaining 1/3 of our capital and invest it in a short-term, high-quality corporate bond fund.
 
 Figure 5 - Return Stacking 101  
-![](images/738b1c976739e095acca839379ed8546784c36d2bc462373c3a5fb0085bae60f.jpg)
+![](738b1c976739e095acca839379ed8546784c36d2bc462373c3a5fb0085bae60f.jpg)
 
 <details>
 <summary>bar_stacked</summary>
@@ -145,7 +145,7 @@ Source: Newfound Research
 We analyzed the performance of a “Vanilla” 60/40 portfolio against a Return Stacking portfolio with two-thirds of capital in NTSX and one-third in investment-grade corporate bonds, over the 20-year period ending June 2021.<sup>5</sup> The Vanilla portfolio returned 6.9 percent annualized with an 8.6 percent annual volatility. The Return Stacking portfolio returned 7.7 percent annualized with 8.9 percent annual volatility. In other words, the latter approach increased annualized returns by 80 basis points, with just 30 basis points in extra volatility.
 
 Figure 6 - Return Stacking 101 Results  
-![](images/236ae781960f894134574e2632c86a493190bec82419798e74ab5b582cf59874.jpg)
+![](236ae781960f894134574e2632c86a493190bec82419798e74ab5b582cf59874.jpg)
 
 <details>
 <summary>line</summary>
@@ -186,7 +186,7 @@ Few investors will hold two-thirds of their portfolio in a single fund like NTSX
 Figure 7 describes the fundamental exposures underlying nine such products. Note that total exposures for all funds are greater than 100 percent since they employ professionally managed leverage. (For full disclosure, the authors of this paper advise or sub-advise Products #1 and #2. Furthermore, due to regulatory requirements, the authors are unable to disclose the specific product names used in this paper.)
 
 Figure 7 – Notional Allocations for Available Return Stacked Products  
-![](images/05e04d4745770f21b4579d8ac48b53d5f13d4a8dbaaa05f7a040255b1bedea7d.jpg)
+![](05e04d4745770f21b4579d8ac48b53d5f13d4a8dbaaa05f7a040255b1bedea7d.jpg)
 
 <details>
 <summary>bar_stacked</summary>
@@ -223,7 +223,7 @@ Table 1: Product Weightings with Look Through to Their Notional Exposures
 <table><tr><td colspan="7"></td><td>Total Notional Exposure</td></tr><tr><td>100.0%</td><td>61.9%</td><td>40.3%</td><td>28.0%</td><td>29.3%</td><td>1.0%</td><td>0.8%</td><td>161.3%</td></tr></table>
 
 Figure 8: Daily Correlation Between All Portfolio Sleeves (January 2000- July 2021)  
-![](images/5d040adf7ab59b211bb97f8e5e3248b681f9869d9f6a4fa0737b5fb2c9e1abed.jpg)
+![](5d040adf7ab59b211bb97f8e5e3248b681f9869d9f6a4fa0737b5fb2c9e1abed.jpg)
 
 <details>
 <summary>heatmap</summary>
@@ -239,7 +239,7 @@ Figure 8: Daily Correlation Between All Portfolio Sleeves (January 2000- July 20
 Source: Tiingo, SocGen, Goldman Sachs. Calculations by ReSolve Asset Management SEZC. S&P 500 is SPY, Aggregate Bond Index is VBMFX up to Sept 22, 2003 and AGG thereafter. PAST PERFORMANCE IS NOT INDICATIVE OF FUTURE RESULTS.
 
 Figure 9: Daily Correlation Between Beta Portfolio and Overlay Portfolio – (Jan 2000-July 2021) - Simulated Performance  
-![](images/9ef03a49cd19423dfece30c15bb604c337fee4337b6a762b69232b54632a29bc.jpg)
+![](9ef03a49cd19423dfece30c15bb604c337fee4337b6a762b69232b54632a29bc.jpg)
 
 <details>
 <summary>heatmap</summary>
@@ -263,7 +263,7 @@ Source: Tiingo, SocGen, Goldman Sachs. Calculations by ReSolve Asset Management 
 Furthermore, the Return Stacking portfolio outperformed the balanced portfolio in 18 out of 21 years, significantly reducing the FOMO that investors face when deploying diversifying exposures in a traditional way.
 
 Figure 10: Calendar Year Bar Chart  
-![](images/01fc45c49bb8c7331724266f559892a9a7a9e596e6d16690b09fa1c5b61b1a86.jpg)
+![](01fc45c49bb8c7331724266f559892a9a7a9e596e6d16690b09fa1c5b61b1a86.jpg)
 
 <details>
 <summary>bar</summary>
@@ -305,7 +305,7 @@ We can see this from Table 2 that despite employing leverage, the portfolio main
 
 ## Figure 11: 12 Month Rolling Drawdown and Time-to-Recovery
 
-![](images/c5bb205e55d91a3b1e17a55ce18ab420ab64fa06ba2507f0e0f0c1a35dcd9d39.jpg)
+![](c5bb205e55d91a3b1e17a55ce18ab420ab64fa06ba2507f0e0f0c1a35dcd9d39.jpg)
 
 <details>
 <summary>line</summary>
@@ -349,7 +349,7 @@ While such an approach has historically been out of reach for most investors, ne
 ## APPENDIX ADDITIONAL RISK AND RETURN METRICS AND EXTENDED DATA
 
 Figure 12: Growth of \$100 – Balanced vs Return Stacked Portfolio – SIMULATED PERFORMANCE.  
-![](images/9ead74494c4ae359c20b44a4e11065046af8249a25c4ac6d59ac38117db3c80d.jpg)
+![](9ead74494c4ae359c20b44a4e11065046af8249a25c4ac6d59ac38117db3c80d.jpg)
 
 <details>
 <summary>line</summary>
