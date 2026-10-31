@@ -437,7 +437,11 @@ $$
 _In our case,_ this translates to:
 
 $$
-\int_{\Delta_j(a,b)\times\Delta_{k-j}(b,c)}\!\!\! dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k} =\underbrace{\int_{\Delta_j(a,b)} dX^{i_1}_{t_1}\cdots dX^{i_j}_{t_j}}_{S^j(X_1)_{i_1\ldots i_j}} \cdot \underbrace{\int_{\Delta_{k-j}(b,c)} dX^{i_{j+1}}_{t_{j+1}}\cdots dX^{i_k}_{t_k}}_{S^{k-j}(X_2)_{i_{j+1}\ldots i_k}}
+\begin{aligned}
+\int_{\Delta_j(a,b)\times\Delta_{k-j}(b,c)}\!\!\! dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k}
+&=\underbrace{\int_{\Delta_j(a,b)} dX^{i_1}_{t_1}\cdots dX^{i_j}_{t_j}}_{S^j(X_1)_{i_1\ldots i_j}} \cdot \underbrace{\int_{\Delta_{k-j}(b,c)} dX^{i_{j+1}}_{t_{j+1}}\cdots dX^{i_k}_{t_k}}_{S^{k-j}(X_2)_{i_{j+1}\ldots i_k}}\\
+&=\bigl(S^j(X_1)\otimes S^{k-j}(X_2)\bigr)_{i_1\ldots i_k}.
+\end{aligned}
 $$
 
 
