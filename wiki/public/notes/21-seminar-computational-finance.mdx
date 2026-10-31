@@ -348,6 +348,44 @@ _Intuition:_ the "size" of a level-$k$ signature is at most $C(X)^k/k!$, so high
 
 Let $X:[0,1]\to\mathbb{R}^d$ be a continuous piecewise-smooth path. Let $\phi:[0,1]\to[0,1]$ be a continuously differentiable, increasing and surjective function. Then $\operatorname{Sig}(X)=\operatorname{Sig}(X\circ\phi)$.
 
+<b>Proof</b>
+
+First of all, we set $Y=X\circ\phi$.
+
+Since $\phi$ is continuous, increasing, and surjective, we have $\phi(0)=0$ and $\phi(1)=1$. Since $\phi\in C^1$ and $X$ is piecewise smooth, $Y$ is also continuous and piecewise smooth.
+
+_Furthermore,_ by the chain rule, we have
+
+$$
+\dot{Y}_t=\dot{X}_{\phi(t)}\,\phi'(t).
+$$
+
+We now prove the following:
+
+$$
+S^k(Y)_{0,t}=S^k(X)_{0,\phi(t)}.
+$$
+
+We can then proceed by induction on $k$, first proving that it holds for $k=0$. _Indeed,_ we have:
+
+$$
+S^0(Y)_{0,t}=1=S^0(X)_{0,\phi(t)}.
+$$
+
+We now do the <b>inductive step</b>, i.e. we assume that it also holds for $k-1$. So we have:
+
+$$
+\begin{aligned} S^k(Y)_{0,t} &=\int_0^t S^{k-1}(Y)_{0,u}\otimes \dot Y_u\,du\\ &=\int_0^t S^{k-1}(X)_{0,\phi(u)}\otimes \dot X_{\phi(u)}\,\phi'(u)\,du \qquad\text{(induction hypothesis and chain rule)}\\ &=\int_0^{\phi(t)} S^{k-1}(X)_{0,s}\otimes \dot X_{s}\,ds \qquad\text{(substitution } s=\phi(u))\\ &=S^k(X)_{0,\phi(t)} . \end{aligned}
+$$
+
+If we now take $t=1$ and $\phi(1)=1$, we have:
+
+$$
+S^k(X\circ\phi)=S^k(Y)_{0,1}=S^k(X)_{0,\phi(1)}=S^k(X)_{0,1}=S^k(X)\quad\text{for all }k\ge0.
+$$
+
+---
+
 _Intuition:_ $\phi$ represents the time change, so the path $X\circ\phi$ is the exact same curve as $X$ but at a different speed. The theorem says that speeding up or slowing down $X_t$ doesn't change the signature. This is an important feature because it implies that the signature encodes data by its arrival order and independently of its arrival time.
 
 From this theorem, note that the signature of a (discrete) stream of data is _not_ dependent on the choice of interpolation times $\mu_i$.
@@ -500,7 +538,12 @@ $$
 
 That means that for each data point we need to compute $A \boxtimes \exp(z)$, and so we have to compute each level from scratch. However, this is not efficient since many terms may overlap _(the $k$th power of $z$ is just the $(k-1)$th power times $z$ again)_, so we can reuse the previous result and multiply it by a small factor.
 
-However, _instead of_ computing $A \boxtimes \exp(z)$ conventionally with the composition of $\exp$ and $\boxtimes$, we can speed up the computation using <b>Horner's method</b>, which means expanding $A \boxtimes \exp(z)$ as:
+
+However, _instead of_ computing $A \boxtimes \exp(z)$ conventionally with the composition of $\exp$ and $\boxtimes$, we can speed up the computation using <b>Horner's method</b>.
+
+_Intuition:_ Horner's method rewrites a polynomial $a_0x^k+a_1x^{k-1}+\dots+a_k$ as $(\dots((a_0x+a_1)x+a_2)\dots)x+a_k$, which uses far fewer multiplications.
+
+In our case, this means expanding $A \boxtimes \exp(z)$ as:
 
 $$
 A \boxtimes \exp(z) = \left(\sum_{i=0}^{k} A_i \otimes \frac{z^{\otimes (k-i)}}{(k-i)!}\right)_{1 \le k \le N},
@@ -517,7 +560,21 @@ $$
 \end{aligned}
 $$
 
-_Note that_ this method has <b>fewer scalar multiplications</b> than the conventional approach and reduces the <b>asymptotic complexity</b> from $\mathcal{O}(N d^N)$ to $\mathcal{O}(d^N)$. This rate is <b>asymptotically optimal</b> since the size of the result is itself of size $\mathcal{O}(d^N)$.
+The cost of level $k$ is the sum of the step sizes:
+
+$$
+d^2+d^3+\dots+d^k=\mathcal{O}(d^k),
+$$
+
+because this is a geometric series dominated by its last term (for $d\ge2$). Summing over levels gives
+
+$$
+\sum_{k=1}^N\mathcal{O}(d^k)=\mathcal{O}(d^N).
+$$
+
+_Note that_ this method has <b>fewer scalar multiplications</b> than the conventional approach and reduces the <b>asymptotic complexity</b> from $\mathcal{O}(N d^N)$ _(where $N$ comes from adding up k +1 tensors at each level)_ to $\mathcal{O}(d^N)$.
+
+This rate is <b>asymptotically optimal</b> since the size of the result is itself of size $\mathcal{O}(d^N)$.
 
 ---
 
