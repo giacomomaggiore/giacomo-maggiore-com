@@ -21,30 +21,21 @@ _Lastly_, note that the following page reflects my learning journey and not the 
 - [2. Technical Background](#2)
     - [2.1. Tensors](#2.1)
     - [2.2. Signatures of a Continuous Path](#2.2)
-    - [2.3. Definition: signature of $X$ as a collection of iterated integrals](#2.3)
-    - [2.4. Example: linear interpolation](#2.4)
-    - [2.5. Example: one-dimensional smooth path](#2.5)
-    - [2.6. Signature of Discrete Data](#2.6)
-    - [2.7. Key Properties of Signature](#2.7)
-    - [2.8. Theorem 1: Uniqueness](#2.8)
-    - [2.9. Theorem 2: Universal nonlinearity](#2.9)
-    - [2.10. Theorem 3: Factorial Decay](#2.10)
-    - [2.11. Theroem 4: Invariance to Time Reparametrization](#2.11)
-    - [2.12. Computation of Signature Transform](#2.12)
-    - [2.13. Chen's Identity](#2.13)
-    - [2.14. Proof of Chen's Identity](#2.14)
-    - [2.15. Improving computational efficiency](#2.15)
+    - [2.3. Key Properties of Signature](#2.3)
+    - [2.4. Theorem 1: Uniqueness](#2.4)
+    - [2.5. Theorem 2: Universal nonlinearity](#2.5)
+    - [2.6. Theorem 3: Factorial Decay](#2.6)
+    - [2.7. Theroem 4: Invariance to Time Reparametrization](#2.7)
+    - [2.8. Computation of Signature Transform](#2.8)
+    - [2.9. Chen's Identity](#2.9)
+    - [2.10. Improving computational efficiency](#2.10)
 - [3. A Generic Framework for Linear Statistical Models with Signature Transform](#3)
     - [3.1. Forecasting Problem](#3.1)
     - [3.2. Linear Statistical Models with Signature Transforms](#3.2)
-    - [3.3. Adaptive weight via Signature Kernel](#3.3)
-    - [3.4. Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')](#3.4)
-    - [3.5. Algorithm 2: Adaptive Linear Models with Signature Kernel](#3.5)
-
-
+    - [3.3. Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')](#3.3)
+    - [3.4. Algorithm 2: Adaptive Linear Models with Signature Kernel](#3.4)
 
 <br/>
-
 ---
 
 ## <b><a id="1"></a>Introduction: Transportation Marketplace Rate Forecast Using Signature Transform</b>
@@ -138,7 +129,7 @@ Let $(\mathbb{R}^d)^{\otimes k} = \mathbb{R}^d \otimes \cdots \otimes \mathbb{R}
 
 _Intuition:_ the tensor product combines two tensors by multiplying their elements _without summing_. _Example:_ multiplying a 2-vector by a 3-vector produces a $2 \times 3$ matrix. If we repeat the operation, we have $v^{\otimes k}$, where each entry is a product of $k$ components, $v_{i_1} \cdots v_{i_k}$.
 
-<b><a id="2.3"></a>Definition: signature of $X$ as a collection of iterated integrals</b>
+<b>Definition: signature of $X$ as a collection of iterated integrals</b>
 
 Let $a < b$ and let $X = (X^1, \ldots, X^d): [a,b] \to \mathbb{R}^d$ be a continuous, piecewise-smooth path. <br/>The signature of $X$ is then defined as the <b>collection of iterated integrals</b>:
 
@@ -184,7 +175,7 @@ The inner integral collects changes in coordinate $i$ up to time $t_2$; the oute
 
 ---
 <br/>
-<b><a id="2.4"></a>Example: linear interpolation</b>
+<b>Example: linear interpolation</b>
 
 We now provide an illustrative example. Suppose $X:[a,b]\to\mathbb{R}^d$ is the <b>linear interpolation</b> between two points $x,y\in\mathbb{R}^d$ (i.e., the straight line from $x$ to $y$ as time goes from $a$ to $b$), so that:
 
@@ -242,7 +233,7 @@ $$
 
 ---
 <br/>
-<b><a id="2.5"></a>Example: one-dimensional smooth path</b>
+<b>Example: one-dimensional smooth path</b>
 
 Suppose $X:[a,b]\to\mathbb{R}$ is a one-dimensional smooth path. Its signature is the <b>collection of powers of its total increment</b>. We can proceed as follows:
 
@@ -282,7 +273,7 @@ Indeed, given a path $X:[a,b]\to\mathbb{R}^d$, we can define the corresponding <
 
 ---
 <br/>
-<b><a id="2.6"></a>Signature of Discrete Data</b>
+<b>Signature of Discrete Data</b>
 
 If we want to compute the signature of discrete data streams, we can simply use <b>linear interpolation</b> and then apply the signature transform.
 
@@ -307,9 +298,9 @@ Given that $X$ is a linear interpolation of $x$, the signature of $x$ _(the init
 ---
 
 <br/>
-<b><a id="2.7"></a>Key Properties of Signature</b>
+<b><a id="2.3"></a>Key Properties of Signature</b>
 
-<b><a id="2.8"></a>Theorem 1: Uniqueness</b>
+<b><a id="2.4"></a>Theorem 1: Uniqueness</b>
 
 Let $X:[a,b]\to\mathbb{R}^d$ be a continuous piecewise-smooth path. Then $\operatorname{Sig}(\hat X)$ uniquely determines $X$ up to translation.
 
@@ -317,7 +308,7 @@ _Intuition:_ the signature collects all iterated integrals, and these integrals 
 
 ---
 <br/>
-<b><a id="2.9"></a>Theorem 2: Universal nonlinearity</b>
+<b><a id="2.5"></a>Theorem 2: Universal nonlinearity</b>
 
 Let $F$ be a real-valued continuous function on continuous piecewise-smooth paths in $\mathbb{R}^d$ and let $\mathcal{K}$ be a compact set of such paths. Also assume that $X_0 = 0$ for all $X \in \mathcal{K}$.
 
@@ -338,7 +329,7 @@ This <b>universal nonlinearity</b> is the key property of the signature transfor
 
 ---
 <br/>
-<b><a id="2.10"></a>Theorem 3: Factorial Decay</b>
+<b><a id="2.6"></a>Theorem 3: Factorial Decay</b>
 
 Let $X:[a,b]\to\mathbb{R}^d$ be a continuous piecewise-smooth path, and let $\|\cdot\|$ be a tensor norm on $(\mathbb{R}^d)^{\otimes k}$.
 
@@ -353,7 +344,7 @@ _Intuition:_ the "size" of a level-$k$ signature is at most $C(X)^k/k!$, so high
 ---
 <br/>
 
-<b><a id="2.11"></a>Theroem 4: Invariance to Time Reparametrization</b>
+<b><a id="2.7"></a>Theroem 4: Invariance to Time Reparametrization</b>
 
 Let $X:[0,1]\to\mathbb{R}^d$ be a continuous piecewise-smooth path. Let $\phi:[0,1]\to[0,1]$ be a continuously differentiable, increasing and surjective function. Then $\operatorname{Sig}(X)=\operatorname{Sig}(X\circ\phi)$.
 
@@ -372,7 +363,7 @@ The idea is that, since the truncated signature is a long vector of numbers, eac
 ---
 
 <br/>
-<b><a id="2.12"></a>Computation of Signature Transform</b>
+<b><a id="2.8"></a>Computation of Signature Transform</b>
 
 The signature transform of a data stream can be computed in an efficient way with the help of Chen's identity.
 
@@ -402,7 +393,7 @@ Then, Chen's identity states that the image of the signature transform forms a g
 
 ---
 <br/>
-<b><a id="2.13"></a>Chen's Identity</b>
+<b><a id="2.9"></a>Chen's Identity</b>
 
 
 _Formally,_ this means that, given a sequence of data $(x_1,\ldots,x_L) \in \mathcal{S}(\mathbb{R}^d)$ and $j \in \{2,\ldots,L-1\}$, we have that
@@ -411,7 +402,7 @@ $$
 \operatorname{Sig}^N((x_1,\ldots,x_L)) = \operatorname{Sig}^N((x_1,\ldots,x_j)) \boxtimes \operatorname{Sig}^N((x_j,\ldots,x_L)).
 $$
 
-<b><a id="2.14"></a>Proof of Chen's Identity</b>
+<b>Proof of Chen's Identity</b>
 
 We start with the following definition:
 
@@ -480,7 +471,7 @@ Indeed, if we have some data and receive another data point, we do _NOT_ need to
 
 ---
 <br/>
-<b><a id="2.15"></a>Improving computational efficiency</b>
+<b><a id="2.10"></a>Improving computational efficiency</b>
 
 The key component of the signature computation is to evaluate the following:
 
@@ -582,7 +573,7 @@ $$
 
 ---
 <br/>
-<b><a id="3.3"></a>Adaptive weight via Signature Kernel</b>
+<b>Adaptive weight via Signature Kernel</b>
 
 In the classical approach to linear statistical modelling, each historical sample has equal weight in the optimization problem. _However,_ this equal weighting may fail to account for changes in regime or seasonality.
 
@@ -637,7 +628,7 @@ _Intuition:_ 'AdaWeight.Sig' assigns a higher weight to the sample if its season
 
 ---
 <br/>
-<b><a id="3.4"></a>Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')</b>
+<b><a id="3.3"></a>Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')</b>
 
 1. <b>Input</b>: forecast horizon $\Delta_t$, window size $l$, depth $N$, temperature $\gamma$, kernel distance $d_{\mathrm{Sig}}^N$, dataset $\mathcal{D}=\{z_\tau=(x_\tau,y_{\tau+\Delta_t})\}_{1\leq\tau\leq t-\Delta_t}$.
 2. For $\tau=1,2,\ldots,t-\Delta_t$:
@@ -661,7 +652,7 @@ We can now spend some time defining the algorithm.
 ---
 
 <br/>
-<b><a id="3.5"></a>Algorithm 2: Adaptive Linear Models with Signature Kernel</b>
+<b><a id="3.4"></a>Algorithm 2: Adaptive Linear Models with Signature Kernel</b>
 
 Once we have defined the adaptive weight algorithm as above, we can proceed with the forecasting algorithm.
 
