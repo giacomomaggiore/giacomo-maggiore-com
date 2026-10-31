@@ -21,6 +21,9 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 6. [Equity Risk Premium and Return Predictability: Valuation Ratios, Dividend Yield and the Term Premium](#6)
 7. [Volatility, News Sentiment and Seasonality: Further Predictors of Equity Returns](#7)
 8. [The Cross-Section of Expected Returns](#8)
+9. [Bonds, the Expectation Hypothesis and Bond Risk Premium](#9)
+10. [Bond Predictability and the Cross-Section of Bond Returns](#10)
+
 
 ## <a id="1">Introduction to Asset Management: Asset Allocation, Hedging and Performance Measures</a>
 
@@ -560,7 +563,7 @@ _Firstly,_ consider that many asset returns are <b>not normally distributed</b> 
 _Secondly,_ consider that <b>volatility is time-varying</b>, so asset returns are not independent and identically distributed.
 
 Therefore, when running a regression, we have that:
-- by the <b>Gauss-Markov theorem</b>, the OLS estimator is BLUE _(<a href="https://giacomomaggiore.com/notes/15-econometrics" target="_blank">Best Linear Unbiased Estimator; I've written more about it here in my econometrics notes!</a>) if the errors are independent and identically distributed (IID), so note that <b>normality is not required!</b>
+- by the <b>Gauss-Markov theorem</b>, the OLS estimator is BLUE _(<a href="https://giacomomaggiore.com/notes/15-econometrics" target="_blank">Best Linear Unbiased Estimator; I've written more about it here in my econometrics notes!</a>)_ if the errors are independent and identically distributed (IID), so note that <b>normality is not required!</b>
 - When the residuals are not IID _(i.e. if they are <b>correlated</b> or there is heteroskedasticity, so error variance changes with $x$):_
     - the OLS is still unbiased but it is <b>inefficient</b>, and GLS _(Generalized Least Squares)_ is BLUE.
     - the OLS standard errors are incorrect, and we should instead use <b>robust standard errors</b>.
@@ -932,7 +935,7 @@ _So,_ levered and inverse ETFs tend to do well in <b>trending markets</b> and do
 
 Assume, for example, a 2x-levered ETF _(rebalanced daily)_ investing in an index, and assume that the ETFs and the underlying index are both worth 100 at $t = 0$. Then assume that at $t = 1$ the index goes up by 10%, and then, at $t = 2$, it either rises another 10% or reverts to 100.
 
-| Period | $t = 0$ | $t = 1$ | \multicolumn\{2\}\{c\}\{$t = 2$\} |
+| Period | $t = 0$ | $t = 1$ | $t = 2$ | |
 | --- | ---: | ---: | ---: | ---: |
 |  |  |  | Continuation | Reversal |
 | **Index** | 100 | 110 | 121 | 100 |
@@ -944,7 +947,7 @@ Assume, for example, a 2x-levered ETF _(rebalanced daily)_ investing in an index
 
 _More generally,_ the table summarizes the <b>expected gross return</b> from a 1-year investment in each ETF, depending on daily return autocorrelation $\rho$.
 
-| Autocorrelation | \multicolumn\{3\}\{c\}\{Long ETFs\} | \multicolumn\{3\}\{c\}\{Short ETFs\} |
+| Autocorrelation | Long ETFs | | | Short ETFs | | |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 |  | 1X | 2X | 3X | 1X | 2X | 3X |
 | $\rho = -0.25$ | 1.0423 | 1.0692 | 1.0797 | 0.9443 | 0.8777 | 0.8029 |
@@ -1191,7 +1194,7 @@ $$
 \left(\prod_{j=1}^{i}R_{t+j}^{-1}\right)\frac{D_{t+i}}{D_t}\right]
 $$
 
-_Intuition: today's P/D ratio is high if people expect <b>high future dividend growth</b> or <b>low future return</b>.
+_Intuition: today's P/D ratio is high if people expect <b>high future dividend growth</b> or <b>low future return</b>._
 
 Note that, due to its complexity, we often use the approximation suggested by, _again,_ Campbell and Shiller using logs, and we obtain:
 
@@ -1210,7 +1213,7 @@ $$
 
 where $x = p_{t+1} - d_{t+1}$ and $\bar{x} = p - d$.
 
-we get:
+We get:
 
 $$
 p_t - d_t = -r_{t+1} + \Delta d_{t+1}
@@ -1227,7 +1230,7 @@ p_t - d_t = \text{const}
 (\Delta d_{t+i} - r_{t+i})\right]
 $$
 
-However, in its famous paper <a href="https://www.jstor.org/stable/1802789" target="_blank">Do stock prices move too much to be justified by subsequent changes in dividends?</a>, Shiller immediately noticed that, _since equity prices are quite volatile, this variation in price was not justified by changes in dividends or cash flow._ It turns out that <b>excess volatility</b> is the same as return predictability, i.e. if prices are _"too high"_, subsequent returns will be low as prices move back to their _"correct_" level (mean reversion).
+However, in his famous paper <a href="https://www.jstor.org/stable/1802789" target="_blank">Do stock prices move too much to be justified by subsequent changes in dividends?</a>, Shiller immediately noticed that, _since equity prices are quite volatile, this variation in price was not justified by changes in dividends or cash flow._ It turns out that <b>excess volatility</b> is the same as return predictability, i.e. if prices are _"too high"_, subsequent returns will be low as prices move back to their _"correct_" level (mean reversion).
 
 So from the multi-period price-dividend equation, we can compute the variance of the P/D ratio as:
 
@@ -1241,7 +1244,7 @@ $$
 
 We can then see that the dividend yield can only vary if it forecasts changes in future dividend growth or returns. This implies that P/D empirically predicts returns rather than dividend growth, and that variation in the P/D ratio comes from movements in expected returns.
 
-_Note that_ this analysis was conducted at the aggregate level _(focusing on the index)_. <a href="https://doi.org/10.1111/1540-6261.00417" target="_blank">Vuolteenaho in 2002</a> showed that most of the variation in <b>single-stock returns</b> comes from cash-flow news rather than expected return news.
+_Note that_ this analysis was conducted at the aggregate level _(focusing on the index)_. Vuolteenaho in 2002, in the paper <a href="https://doi.org/10.1111/1540-6261.00417" target="_blank">"What Drives Firm-Level Stock Returns?"</a> _(Journal of Finance)_, showed that most of the variation in <b>single-stock returns</b> comes from cash-flow news rather than expected return news.
 
 Indeed, at the single-stock level, D/P is driven by changes in cash flows, while at the aggregate level it is driven by changes in expected returns.
 
@@ -1318,7 +1321,7 @@ _On the other hand,_ a <b>volatility-scaled</b> portfolio with exposure to stock
 
 <b>Sentiment analysis</b> uses computer software to understand the tone of news stories and is then used to time exposure to the equity market.
 
-A good example is represented by the work of <a href="https://doi.org/10.3905/jpm.2015.41.2.100" target="_blank">Uhl et al. in 2015</a>, who performed the following analysis:
+A good example is represented by the work of Uhl et al. in 2015, in the paper <a href="https://doi.org/10.3905/jpm.2015.41.2.100" target="_blank">"What's in the News? Using News Sentiment Momentum for Tactical Asset Allocation"</a> _(Journal of Portfolio Management)_, who performed the following analysis:
 - they obtained news sentiment analysis from <a href="https://developers.lseg.com/en/product/news/news_analytics" target="_blank">Thomson Reuters News Analytics</a>, where each story is linked to a sentiment that can be positive, neutral, or negative (1, 0, or -1);
 - they aggregated news at the company and macro levels and created the <b>sentiment momentum</b>, defined as the recent change in sentiment;
 - they smoothed the variable to make the signal less noisy;
@@ -1415,7 +1418,7 @@ _Graphically,_ we can see the null hypothesis as follows:
 
 Once an effect has been documented and we have tested the CAPM, we can ask ourselves if the differences we see in returns are caused by some other factor exposures (risk premia) or by mispricing, as a consequence of some investors' behaviors _(slow processing of information, institutional constraints or frictions, behavioral anomalies, etc.)_. In the following lines, we therefore spend some time considering and diving deeper into some factors that have been documented to affect expected returns.
 
-_However,_ before we dive in, note that in the financial literature there is a large number of documented factors, but the majority of them comes from data mining (p-hacking) and are not explained by any economic rationale. For the systematic investor, it is then important to differentiate between authentic and robust factors based on economic rationale, logic, and causation from redundant factors driven only by correlation. More on this topic can be found in the bestseller <a href="https://www.amazon.de/-/en/Navigating-Factor-Zoo-Quantitative-Investing/dp/103276841X" target="_blank">Navigating the Factor Zoo: The Science of Quantitative Investing by Michael Zhang, Tao Lu, and Chuan Shi</a>.
+_However,_ before we dive in, note that in the financial literature there is a large number of documented factors, but the majority of them come from data mining (p-hacking) and are not explained by any economic rationale. For the systematic investor, it is then important to differentiate between authentic and robust factors based on economic rationale, logic, and causation from redundant factors driven only by correlation. More on this topic can be found in the bestseller <a href="https://www.amazon.de/-/en/Navigating-Factor-Zoo-Quantitative-Investing/dp/103276841X" target="_blank">Navigating the Factor Zoo: The Science of Quantitative Investing by Michael Zhang, Tao Lu, and Chuan Shi</a>.
 
 <b>Size and Value Factors</b>
 
@@ -1443,3 +1446,338 @@ _However,_ they noticed that these differences were not reflected in differences
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/fama-french-2.png)
 </div>
+
+In order then to explain the cross-sectional variation in returns, Fama and French constructed <b>size</b> and <b>value factors</b> as follows:
+- sort stocks _independently_ by market cap and by B/M ratio into $2 \times 3 = 6$ portfolios
+- compute their returns, with each portfolio value-weighted
+- define the <b>small minus big factor</b> as:
+
+$$
+\mathrm{SMB} = \frac{\text{Small Value} + \text{Small Neutral} + \text{Small Growth}}{3} - \frac{\text{Big Value} + \text{Big Neutral} + \text{Big Growth}}{3}
+$$
+
+- define the <b>value factor (High minus low)</b> as:
+
+$$
+\mathrm{HML} = \frac{\text{Small Value} + \text{Big Value}}{2} - \frac{\text{Small Growth} + \text{Big Growth}}{2}
+$$
+
+_Note that_ the factors are <b>self-financing</b> portfolios, i.e. the long part is financed by the short part; _in particular, we indeed have_:
+- for the size factor, we're investing in small caps and financing the positions by shorting large caps
+- for the value factor, we're investing long in value stocks and financing the positions by shorting growth stocks
+
+_Therefore_, factor returns are already <b>excess returns</b> and there's no need to subtract the riskless asset return.
+
+_For practical applications:_ on French's web page there are historical data and detailed descriptions of many factors! <a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html" target="_blank">Access everything here</a>.
+
+Based on these factors, the authors construct a 3-factor model:
+where:
+- $R^e \equiv R_{i,t} - R_{f,t}$ is the excess return of asset or portfolio $i$,
+- $\mathrm{MKT}_t \equiv R_{M,t} - R_{f,t}$ is the excess return of the market,
+- $\mathrm{SMB}_t$ and $\mathrm{HML}_t$ are the size and value factor returns, respectively, $\alpha_i$ represents the model’s mispricing, and
+- $\epsilon_{i,t}$ is a mean-zero error term.
+
+From this model, pricing errors are small on the tested portfolios, averaging $\alpha_i \approx 0.093\%$ per month.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/fama-french-3.png)
+</div>
+
+_Furthermore,_ note that the tested portfolios' market betas $b$ are quite similar, so the difference lies mainly in the exposure to value and factors, as $s$ and $h$ vary a lot.
+
+We can now infer that the <b>profitability</b> of a factor can represent its risk premium _(compensation for risk)_ or mispricing by the investors. _For example,_ the positive average returns on the value factor could be caused by a recession premium reflecting the _pro-cyclical_ nature of value stocks or by the _undervaluation_ of value firms due to behavioral reasons.
+
+_Empirically,_ returns of the HML factor forecast changes in the <a href="https://www.chicagofed.org/research/data/cfnai/current-data" target="_blank">Chicago Fed National Activity Index</a>, consistent with a risk-based explanation.
+
+---
+<br/>
+<b>Profitability and Investment Factors</b>
+
+If we go a little bit further in history... in 2015, with their famous paper <a href="https://doi.org/10.1016/j.jfineco.2014.10.010" target="_blank">"A Five-Factor Asset Pricing Model"</a> _(Journal of Financial Economics)_, Fama and French extended their 3-factor model to a 5-factor model by adding <b>profitability</b> and <b>investment factors</b>, so the model is:
+
+$$
+R^e = \alpha + b\,\mathrm{MKT} + s\,\mathrm{SMB} + h\,\mathrm{HML} + r\,\mathrm{RMW} + c\,\mathrm{CMA} + \epsilon, \tag{37}
+$$
+
+where $\mathrm{RMW}_t$ and $\mathrm{CMA}_t$ are the returns of the following factors:
+
+- <b>profitability factor</b> (robust minus weak profitability), sorting companies based on
+
+$$
+\frac{\text{Revenue} - \mathrm{COGS} - \mathrm{SGA} - \text{Interest}}{\text{Book value of equity}}
+$$
+
+- <b>Investment factor </b> (conservative minus aggressive portfolios), sorting companies based on the percentage growth in total assets.
+
+_As we should expect_, intercepts are much smaller when using 5 factors than when using the previous model _(so it performs better in terms of mispricing $\implies \alpha$ is negligible)_. _In particular,_ the profitability factor shows that firms with <b>operating profitability have higher results</b>. _Similarly,_ firms that <b>invest little have higher average returns</b> compared to firms that do less.
+
+_However,_ note that the profitability and investment factors may overlap with the value factor; we could indeed explain the premium of the value factor by its exposure to the other factors, making the <b>value factor redundant</b>.
+
+---
+
+<br/>
+<b>Momentum</b>
+
+Jegadeesh and Titman in 1993 and 2001, in their papers <a href="https://doi.org/10.1111/j.1540-6261.1993.tb04702.x" target="_blank">"Returns to Buying Winners and Selling Losers: Implications for Stock Market Efficiency"</a> _(Journal of Finance, 1993)_ and <a href="https://doi.org/10.1111/0022-1082.00342" target="_blank">"Profitability of Momentum Strategies: An Evaluation of Alternative Explanations"</a> _(Journal of Finance, 2001)_, studied a strategy whose fundamental idea was going long on stocks that performed well in the previous 3–12 months and shorting the others in the same period, with the intuition that firms with previous high returns keep performing well and the same applies to the ones with lower returns, with a reversal after about 12 months.
+
+This strategy can be called <b>momentum</b> and its returns are not explained by the Fama and French 5-factor models.
+
+_In particular,_ note that momentum is performing _particularly_ well in November and December and it reverses in January, likely because of window-dressing and tax-loss selling at the end of the year.
+
+We could interpret a momentum strategy in two similar ways:
+- we buy top performers and short bottom performers _(so based on the cross-sectional momentum, i.e. relative returns to the asset class)_
+- we buy assets with positive returns and short ones with negative returns _(so based on their absolute value)_
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/momentum.png)
+</div>
+
+Note that momentum is _NOT_ driven by differences in unconditional expected returns, but by under- and overreaction to firm-specific information that is processed slowly by investors _(i.e. trends take time to be born, live and end)_ and the subsequent overreaction of the investors once the trend is created and they want to ride this trend.
+
+Momentum can indeed achieve good performance but its returns are <b>negatively skewed</b>, i.e. it shows <b>infrequent but large crashes</b>; and its <b>turnover is high</b> $\implies$ large transaction costs.
+
+_Also,_
+Novy-Marx [2012], in the paper <a href="https://doi.org/10.1016/j.jfineco.2011.05.003" target="_blank">"Is Momentum Really Momentum?"</a> _(Journal of Financial Economics)_, shows that intermediate-horizon past performance _(measured over the period from 12 to seven months prior inclusive)_ predicts returns better than recent past performance _(measured over the period from six to two months prior inclusive)._
+
+_Regarding its relation with the other factors,_ we see that momentum is <b>negatively correlated </b> with the value factor and, _in a given country,_ the presence of momentum (or value) in an asset class is positively correlated with the presence of momentum (or value) in another asset class.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/momentum-2.png)
+</div>
+
+_In terms of performance,_ momentum has a very large <b>Sharpe ratio</b>, but, because of this negative skew and sudden crashes, there's still ongoing research into <b>dynamic momentum strategies</b> to decrease this asymmetric and negative aspect.
+
+_In particular,_ Barroso and Santa-Clara in 2015, in their paper titled <a href="https://doi.org/10.1016/j.jfineco.2014.11.010" target="_blank">"Momentum Has Its Moments"</a> _(Journal of Financial Economics)_, found that momentum's Sharpe ratio is much lower after periods with high volatility. If we indeed build quintiles based on the past six months' volatility, we see the following pattern:
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/momentum-3.png)
+</div>
+
+_So_ they scaled the investment in the momentum portfolio based on the ratio of target volatility to the realized volatility of daily momentum returns in the previous six months, using $w = \sigma_{\text{target}} / \hat{\sigma}_t$. Doing so, we see that between 1927 and 2011 this scaling increases the Sharpe ratio from 0.53 to 0.97 and reduces skewness.
+
+_Furthermore,_ Daniel and Moskowitz in 2016, in the paper <a href="https://doi.org/10.1016/j.jfineco.2015.12.002" target="_blank">"Momentum Crashes"</a> _(Journal of Financial Economics)_, incorporate expected return and risk separately in the weight allocation. _In particular,_ using regressions, they found that momentum returns are particularly poor during bear markets with high volatility, when:
+- there has been a constant/steady market decline
+- risk _($\approx$ variance of daily market returns in the previous 16 days)_ is high.
+
+_In this case,_ a dynamic momentum strategy scaled the investment in the momentum portfolio based on its conditional expected return and variance, considering
+
+$$
+w_t \propto \frac{\mathbb{E}_{t-1}[R_{\mathrm{momentum},t}]}{\mathbb{E}_{t-1}\left[(R_{\mathrm{momentum},t} - \mathbb{E}_{t-1}[R_{\mathrm{momentum},t}])^2\right]}
+$$
+
+achieving a Sharpe ratio double that of the initial static momentum strategy _(with in-sample parameters...)_
+
+---
+<br/>
+<b>Low Beta</b>
+
+We see that, _historically,_ the <b>security market line</b> is _flatter_ than predicted by the CAPM.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/low-beta.png)
+</div>
+
+This can be explained by the fact that many _(institutional)_ investors face <b>leverage constraints</b>. For example, US regulations constrain leverage at 2:1 and brokers _generally_ do not allow more than 4:1 intraday leverage _(hey! <a href="https://giacomomaggiore.com/blog/14-leveraged-etf-2" target="_blank">I've written a lot about leverage here!</a>)_.
+
+_Therefore,_ in order to achieve higher returns, investors facing this constraint purchase <b>high-\beta assets</b>, causing them to be overpriced. _On the other hand,_ unconstrained investors can achieve good returns by taking <b>leveraged positions</b> in <b>underpriced low-\beta assets</b>.
+
+The <b>betting-against-beta factor (BAB)</b>, introduced by Frazzini and Pedersen in the paper <a href="https://doi.org/10.1016/j.jfineco.2013.10.005" target="_blank">"Betting Against Beta"</a> _(Journal of Financial Economics, 2014)_, tries to capture this by going long on low-\beta assets and short on high-\beta assets, generating high returns and Sharpe ratios.
+
+The BAB, _furthermore,_ is constructed to be <b>market-neutral</b> by leveraging up _(scaling up)_ low-beta assets to a beta of 1 and then de-leveraging _(scaling down)_ high-beta assets to a beta of 1, so the factor return is given by:
+
+$$
+R_{t+1}^{\mathrm{BAB}} = \frac{1}{\beta_t^L}(R_{t+1}^L - R_{f,t+1}) - \frac{1}{\beta_t^H}(R_{t+1}^H - R_{f,t+1})
+$$
+
+_However,_ note that the BAB portfolio is <b>not self-financed</b>; therefore, the riskless rate must be subtracted from the short and long positions to obtain the excess return.
+
+_Also,_ note that the BAB return cannot be explained by other common factors _(otherwise it would be useless!)_, and the profitability of BAB holds across different asset classes and countries.
+
+---
+<br/>
+<b>Buffett's Factor Exposure</b>
+
+Frazzini et al., in their 2018 paper titled <a href="https://doi.org/10.2469/faj.v74.n4.3" target="_blank">"Buffett's Alpha"</a> _(Financial Analysts Journal)_ studied how Warren Buffett has been investing and how his performance is related to factor exposure.
+
+Their major finding is that Buffett is _largely positively correlated_ with <b>the market, value stocks, low-beta assets, and the quality factor</b>, with a leverage ratio of $\approx 1.7$.
+
+In this context, quality stocks are related to the <b>"quality factor"</b>, constituted by Asness and the previous work of Piotroski.
+
+_In particular,_ Piotroski, in his 2000 paper <a href="https://doi.org/10.2307/2672906" target="_blank">"Value Investing: The Use of Historical Financial Statement Information to Separate Winners from Losers"</a> _(Journal of Accounting Research)_, created an indicator to distinguish high-quality stocks from low-quality stocks, using only accounting information. The Piotroski F-Score is calculated by evaluating financial strength using scores from 0 to 9 across nine <b>signals</b> in the profitability, leverage and liquidity, and operating-efficiency categories. A score between 8 and 9 indicates strong _financial_ quality, while 0–2 indicates very weak quality.
+
+Asness et al. in 2019, in the paper <a href="https://doi.org/10.1007/s11142-018-9470-2" target="_blank">"Quality Minus Junk"</a> _(Review of Accounting Studies)_, then created the <b>QMJ (quality minus junk)</b> factor, which goes long on firms with strong profitability, high growth, and low risk, and short on the opposites.
+
+_Note that_ Frazzini, in the Buffett paper, used a _slightly_ different version, but the intuition is unchanged.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/buffet-factor.png)
+</div>
+
+_Furthermore,_ Frazzini reproduced Buffett's investment philosophy by "fictionally" investing in the academic factors and rescaling them to have the same volatility as Berkshire stock returns, as shown below:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/buffet-factor-2.png)
+</div>
+
+---
+<br/>
+<b>Statistical Significance Issues</b>
+
+As briefly reported at the beginning of the chapter, while mentioning <a href="https://www.amazon.de/-/en/Navigating-Factor-Zoo-Quantitative-Investing/dp/103276841X" target="_blank">Navigating the Factor Zoo (recommended!)</a>, a large number of factors have been studied throughout history. _However, many result from repetitive data mining._
+
+Harvey et al., in their 2016 paper <a href="https://doi.org/10.1093/rfs/hhv059" target="_blank">"...and the Cross-Section of Expected Returns"</a> _(Review of Financial Studies)_, claimed that, for a factor to be considered relevant, a t-statistic much higher than 2 should be achieved, so, _according to them,_ most of the factors found in the financial literature are most likely false. Nevertheless, they still attribute relevance and _statistical significance_ to the MKT, SMB, HML, MOM, and BAB factors.
+
+We can see in the following graph the required t-statistics over time for a factor to be considered relevant.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/buffet-factor-2.png)
+</div>
+
+---
+
+## <a id="9">Bonds, the Expectation Hypothesis and Bond Risk Premium</a>
+
+When working with <b>discount</b> or <b>zero-coupon</b> bonds, we can denote the price at time $t$ of an $n$-year bond by $P_t^{(n)}$ and the corresponding log bond price by $p_t^{(n)}$.
+
+We can interpret <b>coupon</b> bonds as a <b>portfolio of zero-coupon bonds</b>. _Indeed,_ if we denote by $CF_n$ the coupon bond's cash flow in $n$ periods, it can be written as:
+
+$$
+\text{Coupon bond price} = CF_1 P^{(1)} + CF_2 P^{(2)} + \cdots + CF_n P^{(n)}
+$$
+
+We can define the <b>gross yield</b> _(i.e. the annualized return from holding the bond to maturity)_ on a discount bond with $n$ years to maturity as the rate $Y_t^{(n)}$ that solves
+
+$$
+P_t^{(n)} = \frac{1}{(Y_t^{(n)})^n} \implies Y_t^{(n)} = \left(\frac{1}{P_t^{(n)}}\right)^{1/n}
+$$
+
+and the <b>continuously compounded yield</b> (log yield) as
+
+$$
+y_t^{(n)} = -\frac{1}{n}p_t^{(n)} = \ln(Y_t^{(n)}).
+$$
+
+_Note that_ the continuously compounded rate uses a linear relationship between the log price and the maturity, and this makes yields additive over time.
+
+We can now define the <b>forward rate</b> as the rate at which you can contract today to lend or borrow in the future. We denote the discrete and continuously compounded forward rates for a loan from time $t + n - 1$ to time $t + n$ by $F_t^{(n)}$ and $f_t^{(n)}$.
+
+From the <b>no-arbitrage condition</b>, we have:
+
+$$
+F_t^{(n)} = \frac{P_t^{(n-1)}}{P_t^{(n)}} = \frac{(Y_t^{(n)})^n}{(Y_t^{(n-1)})^{n-1}}
+$$
+
+$$
+f_t^{(n)} = p_t^{(n-1)} - p_t^{(n)} = n y_t^{(n)} - (n-1)y_t^{(n-1)}
+$$
+
+Then, we can express bond prices as their <b>discounted present value</b> using forward rates:
+
+$$
+P_t^{(n)} = \left(\prod_{j=1}^{n} F_t^{(j)}\right)^{-1}
+$$
+
+$$
+p_t^{(n)} = -\sum_{j=1}^{n} f_t^{(j)}
+$$
+
+We can now define the realized discrete and continuously compounded <b>returns from holding an $n$-period bond</b>, from $t$ to $t+1$ as:
+
+$$
+R_{t+1}^{(n)} = \frac{P_{t+1}^{(n-1)}}{P_t^{(n)}},
+$$
+
+$$
+r_{t+1}^{(n)} = p_{t+1}^{(n-1)} - p_t^{(n)}.
+$$
+
+_and note_ the particular case for which the return from holding a one-period bond is just its yield:
+
+$$
+R_{t+1}^{(1)} = Y_t^{(1)}, \qquad r_{t+1}^{(1)} = y_t^{(1)}.
+$$
+
+We denote the <b>excess log returns</b> from holding an $n$-period bond by:
+
+$$
+rx_{t+1}^{(n)} = r_{t+1}^{(n)} - y_t^{(1)}
+$$
+
+which can be decomposed into the <b>initial yield spread</b> and the <b>change in the bond's log yield</b> from period $t$ to period $t+1$, scaled by its remaining duration. _In formulas,_ we have:
+
+$$
+\begin{aligned}
+rx_{t+1}^{(n)} &= r_{t+1}^{(n)} - y_t^{(1)} \\
+&= p_{t+1}^{(n-1)} - p_t^{(n)} - y_t^{(1)} \\
+&= -(n-1)\,y_{t+1}^{(n-1)} + n\,y_t^{(n)} - y_t^{(1)} \\
+&= \underbrace{\left(y_t^{(n)} - y_t^{(1)}\right)}_{\text{Initial yield spread}}
+ - \underbrace{(n-1)}_{\text{Duration}}
+ \underbrace{\left(y_{t+1}^{(n-1)} - y_t^{(n)}\right)}_{\text{Yield change}} \, .
+\end{aligned}
+$$
+
+_For example,_ suppose that the 1-year log yield is 1% and we purchase a 10-year bond at 2%. Suppose also that one year later the 9-year yield is 1.8%, so the excess log return from holding the bond is:
+
+$$
+rx_{t+1}^{(10)} = (2\% - 1\%) - 9(1.8\% - 2\%) = 2.8\%.
+$$
+
+---
+<br/>
+<b>Three Basic Questions when investing in Bonds</b>
+
+_Note that_ yields are just a convenient way to describe zero-coupon bond prices, so if we can describe the evolution of yields, we can also model bond returns for portfolio construction and risk management.
+
+_In general,_ when evaluating the yield, we should start with the following questions:
+- <b>Why</b> do interest rates move?
+- <b>Why</b> do yields differ across maturities?
+- <b>Why</b> does the yield spread vary over time?
+
+We now start to understand the first point. _Firstly,_ recall that yields are characterized by a dominant <b>level factor</b> shifting yields of all maturities up and down. _Recall also_ that short rates are set by the central bank, taking macroeconomic factors _(with particular focus on unemployment and expected inflation)_ into account.
+
+_In particular,_ the central bank sets a target for the <b>overnight interbank rate</b> _(Fed funds rate or ECB deposit rate)_, steering the market rate toward the target rate using:
+- interest paid on reserves _(deposit rate)_
+- a ceiling on the rate for lending facilities _(money lent to banks overnight at a fixed rate)_
+- open market operations _(buying or selling securities to change the supply of reserves)_
+
+The rate is chosen, _with a good approximation thanks to the Taylor rule,_ using this formula:
+
+$$
+i_t = r^* + \pi_t + a(\pi_t - \pi^*) + b\,(\text{output gap}_t)
+$$
+
+where:
+- $i_t$ is the **nominal policy rate**, _i.e.,_ the rate the central bank sets at time $t$.
+- $r^*$ is the **neutral real rate**, _i.e.,_ the real interest rate that neither stimulates nor cools the economy _(usually estimated at about 2%)_.
+- $\pi_t$ is the <b>current inflation rate</b>, which is added to $r^*$.
+- $\pi^*$ is the <b>inflation target</b> _(more or less 2% for the Fed and the ECB)_.
+- $a > 0$ is how strongly the bank reacts to the inflation gap.
+- The <b>output gap</b> is the percentage difference between actual and potential GDP, positive in a boom and negative in a slump, and it is linked to unemployment _(a negative gap implies high unemployment)_.
+- $b > 0$ is how strongly the bank reacts to the output gap.
+
+If inflation is above the target, interest rates are raised to decrease demand; if unemployment is high _(i.e., the output gap is negative)_, rates are cut to stimulate the economy.
+
+_Then,_ the long yield curve is the <b>average expected future short rates</b> plus a <b>term premium</b> for the risk of holding bonds. _In particular,_ if markets expect the bank to keep rates high, yields at all maturities rise together (the <b>level factor</b>). _However,_ quantitative easing or tightening _(buying or selling long bonds directly)_, guidance and communication, and market demand and supply can also influence the long yield.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/yield.png)
+</div>
+
+The <b>yield curve</b> is a plot of yields of zero-coupon bonds as a function of their maturities, also called the <b>term structure of interest rates</b>.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/yield-2.png)
+</div>
+
+_Similarly,_ the <b>yield spread</b> (term premium or term spread) represents the <b>slope of the yield curve</b>, _i.e.,_ the difference between long and short yields. If the
+
+During recessions _(in grey in the plot below)_, we usually see a steeper yield curve _(central banks usually cut short-term rates, but the long yield falls less because investors expect the economy to recover and rates to rise again, and, since risk is higher, the term premium is also large)_, while during expansions the curve usually flattens or even inverts _(as the economy grows, inflation rises and the central bank raises the short rate, but long yields rise less since investors expect the tightening to be temporary)_.
+
+Note also that yield curve inversions typically occur <b>right before a recession</b>, since an inverted curve means that the market expects future short rates to be lower, usually because the central bank is holding rates high enough to slow down the economy.
+
+
+## <a id="10">Bond Predictability and the Cross-Section of Bond Returns</a>

@@ -14,13 +14,46 @@ _Lastly_, note that the following page reflects my learning journey and not the 
 
 ---
 
-## <a id = "0"><b>Introduction: Transportation Marketplace Rate Forecast Using Signature Transform</b></a>
+## <b>Index</b>
+- [1. Introduction: Transportation Marketplace Rate Forecast Using Signature Transform](#1)
+    - [1.1. Introduction: overview of freight marketplace rates and challenges in forecasting](#1.1)
+    - [1.2. Methodology](#1.2)
+- [2. Technical Background](#2)
+    - [2.1. Tensors](#2.1)
+    - [2.2. Signatures of a Continuous Path](#2.2)
+    - [2.3. Definition: signature of $X$ as a collection of iterated integrals](#2.3)
+    - [2.4. Example: linear interpolation](#2.4)
+    - [2.5. Example: one-dimensional smooth path](#2.5)
+    - [2.6. Signature of Discrete Data](#2.6)
+    - [2.7. Key Properties of Signature](#2.7)
+    - [2.8. Theorem 1: Uniqueness](#2.8)
+    - [2.9. Theorem 2: Universal nonlinearity](#2.9)
+    - [2.10. Theorem 3: Factorial Decay](#2.10)
+    - [2.11. Theroem 4: Invariance to Time Reparametrization](#2.11)
+    - [2.12. Computation of Signature Transform](#2.12)
+    - [2.13. Chen's Identity](#2.13)
+    - [2.14. Proof of Chen's Identity](#2.14)
+    - [2.15. Improving computational efficiency](#2.15)
+- [3. A Generic Framework for Linear Statistical Models with Signature Transform](#3)
+    - [3.1. Forecasting Problem](#3.1)
+    - [3.2. Linear Statistical Models with Signature Transforms](#3.2)
+    - [3.3. Adaptive weight via Signature Kernel](#3.3)
+    - [3.4. Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')](#3.4)
+    - [3.5. Algorithm 2: Adaptive Linear Models with Signature Kernel](#3.5)
+
+
+
+<br/>
+
+---
+
+## <b><a id="1"></a>Introduction: Transportation Marketplace Rate Forecast Using Signature Transform</b>
 
 We begin by approaching the paper <a href="https://arxiv.org/pdf/2401.04857" target="_blank">Transportation Marketplace Rate Forecast Using Signature Transform</a>, written by <a href="https://www.math.ucla.edu/people/visiting/haotian.gu" target="_blank">Haotian Gu</a>, <a href="https://ieor.berkeley.edu/people/xin-guo/" target="_blank">Xin Guo</a>, <a href="https://www.informs.org/Recognizing-Excellence/Award-Recipients/Timothy-L.-Jacobs" target="_blank">Timothy L. Jacobs</a>, <a href="https://kaminsky.ieor.berkeley.edu/" target="_blank">Philip Kaminsky</a>, and <a href="https://www.maths.ox.ac.uk/people/xinyu.li" target="_blank">Xinyu Li</a> in December 2024.
 
 In the following section, I try to provide a better understanding and summary of the paper, while still reviewing theoretical foundations.
 
-<b>Introduction: overview of freight marketplace rate and challenges in forecasting</b>
+<b><a id="1.1"></a>Introduction: overview of freight marketplace rates and challenges in forecasting</b>
 
 The starting point of the paper is Amazon's key problem in forecasting transportation freight marketplace rates, driven by a lot of factors _(networks of thousands of drivers, shippers of all sizes, seasonal and regular demands, traditional and digital exchanges, local, regional, and national economic factors, etc.)_ and often going through fundamental shifts _(because of wars, pandemics, fuel prices, or shifts in international patterns)_.
 
@@ -32,17 +65,21 @@ To address these problems, we can approach <b>statistical learning</b>, which re
 - <b>universality</b>: nonlinear functions of the input data are approximated by linear functionals in the feature space, so the forecasting problem is translated into a linear regression;
 - <b>characteristicness</b>: the expected value of the feature map characterizes the law of the random variable.
 
-Therefore, it is shown that the <b>signature transform</b> satisfies these two properties in duality.
+Therefore, the <b>signature transform</b> satisfies these two properties in duality.
 
 Furthermore, the signature kernel allows for computationally efficient comparison of similarities between time-series data, which is particularly useful for identifying different "signature feature maps" _(i.e., the statistical counterpart of identifying different distributions for time-series data in the linearized feature space of the signature transform)_.
 
 We recall that the signature transform _(path signature, signature)_ was introduced and initially studied in algebraic topology by Kuo-Tsai Chen in <a href="https://doi.org/10.1112/plms/s3-4.1.502" target="_blank">Iterated Integrals and Exponential Homomorphisms</a> (Proceedings of the London Mathematical Society) and <a href="https://doi.org/10.2307/1969671" target="_blank">Integration of Paths, Geometric Invariants and a Generalization of the Baker–Hausdorff Formula</a> (Annals of Mathematics), and then applied to the financial markets and machine learning.
 
-_Generally speaking,_ given any continuous or discrete time series, its signature transform produces a vector of <b>real-valued features</b> that extract information such as order and area, and then _explicitly_ consider combinations of different channels to determine the time series in a _computationally efficient way_. _Furthermore,_ every continuous function of a time series can be asymptotically approximated by a linear functional of its signature, so, _in other words,_ the signature transform <b>linearizes the complicated feature space</b> and can be used as a powerful tool for pattern identification and forecasting in machine learning.
+_Generally speaking,_ given any continuous or discrete time series, its signature transform produces a vector of <b>real-valued features</b> that extract information such as order and area, and then _explicitly_ considers combinations of different channels to characterize the time series in a _computationally efficient way_.
+
+_Furthermore,_ every continuous function of a time series can be asymptotically approximated by a linear functional of its signature, so, _in other words,_ the signature transform <b>linearizes the complicated feature space</b> and can be used as a powerful tool for pattern identification and forecasting in machine learning.
 
 _Intuition:_ consider each market period as a path with rates, supply and demand, etc. The signature turns the path into a _"fingerprint"_ that captures the values and how they changed. Then the signature kernel compares fingerprints by $k(a,b) = \langle\Phi(a), \Phi(b)\rangle$ to understand how similar they are. During forecasting, historical periods more similar to the current one get more weight in the regression and vice versa, helping the model to adapt to seasonality and market regimes.
 
-<b>Methodology</b>
+---
+<br/>
+<b><a id="1.2"></a>Methodology</b>
 
 The proposed approach starts by collecting data _(market supply and demand factors)_ and running correlation tests between the marketplace rate and the factors in order to remove <b>nonsignificant</b> factors and identify factors that are collinear. <br />Then, the authors use the <b>universal nonlinearity property</b> of the signature transform to build signature features as candidates for the "internal features" using a feature map that transforms time-series inputs into a vector of features. Note that the map $\Phi(x)$ does not capture only the values, but also their order and interactions.
 
@@ -50,9 +87,10 @@ _Recall that_ collinearity means that predictors overlap, and, in regression, th
 
 Furthermore, to avoid overfitting and collinearity between signature features and external factors, they adopted the <b>two-step LASSO</b> for the regression _(helping to shrink coefficients and select a small set of features)_, enhanced with adaptive weights using a signature kernel that allows it to capture changes in regimes or seasonality.
 
-## <a id = "0"><b>Technical Background</b></a>
+---
+## <b><a id="2"></a>Technical Background</b>
 
-<b>Tensors</b>
+<b><a id="2.1"></a>Tensors</b>
 
 A tensor is a mathematical object that generalizes vectors and matrices. <br/>
 _Formally,_ let $V$ be a vector space over a field $\mathbb{F}$. A tensor of type $(r,s)$ on $V$ is an element of $T^r_s(V) = V^{\otimes r} \otimes (V^*)^{\otimes s}$, where $V^*$ is the dual space.
@@ -84,7 +122,7 @@ $$
 ---
 <br/>
 
-<b>Signatures of a Continuous Path</b>
+<b><a id="2.2"></a>Signatures of a Continuous Path</b>
 
 Let $\mathbb{R}^{d_1} \otimes \mathbb{R}^{d_2} \otimes \cdots \otimes \mathbb{R}^{d_n}$ denote the space of all <b>real tensors</b> with shape $(d_1, \ldots, d_n)$. <br/>
 We define a binary operation called <b>tensor product</b>, denoted by $\otimes$, that maps a tensor of shape $(d_1, \ldots, d_n)$ and a tensor of shape $(e_1, \ldots, e_m)$ to a tensor of shape $(d_1, \ldots, d_n, e_1, \ldots, e_m)$ via
@@ -100,7 +138,7 @@ Let $(\mathbb{R}^d)^{\otimes k} = \mathbb{R}^d \otimes \cdots \otimes \mathbb{R}
 
 _Intuition:_ the tensor product combines two tensors by multiplying their elements _without summing_. _Example:_ multiplying a 2-vector by a 3-vector produces a $2 \times 3$ matrix. If we repeat the operation, we have $v^{\otimes k}$, where each entry is a product of $k$ components, $v_{i_1} \cdots v_{i_k}$.
 
-<b>Definition: signature of $X$ as a collection of iterated integrals</b>
+<b><a id="2.3"></a>Definition: signature of $X$ as a collection of iterated integrals</b>
 
 Let $a < b$ and let $X = (X^1, \ldots, X^d): [a,b] \to \mathbb{R}^d$ be a continuous, piecewise-smooth path. <br/>The signature of $X$ is then defined as the <b>collection of iterated integrals</b>:
 
@@ -144,7 +182,9 @@ $$
 
 The inner integral collects changes in coordinate $i$ up to time $t_2$; the outer integral then pairs those with later changes in coordinate $j$ _(intuition: this measures how much change in coordinate $i$ is followed by change in coordinate $j$, and higher levels represent increasingly detailed ordered combinations of changes)_.
 
-<b>Example: linear interpolation</b>
+---
+<br/>
+<b><a id="2.4"></a>Example: linear interpolation</b>
 
 We now provide an illustrative example. Suppose $X:[a,b]\to\mathbb{R}^d$ is the <b>linear interpolation</b> between two points $x,y\in\mathbb{R}^d$ (i.e., the straight line from $x$ to $y$ as time goes from $a$ to $b$), so that:
 
@@ -200,7 +240,9 @@ $$
 \operatorname{Sig}(X)=\left(1,\,\Delta X,\,\frac{(\Delta X)^{\otimes 2}}{2!},\,\frac{(\Delta X)^{\otimes 3}}{3!},\,\ldots,\,\frac{(\Delta X)^{\otimes k}}{k!},\,\ldots\right).
 $$
 
-<b>Example: one-dimensional smooth path</b>
+---
+<br/>
+<b><a id="2.5"></a>Example: one-dimensional smooth path</b>
 
 Suppose $X:[a,b]\to\mathbb{R}$ is a one-dimensional smooth path. Its signature is the <b>collection of powers of its total increment</b>. We can proceed as follows:
 
@@ -240,13 +282,11 @@ Indeed, given a path $X:[a,b]\to\mathbb{R}^d$, we can define the corresponding <
 
 ---
 <br/>
-<b>Signature of Discrete Data</b>
+<b><a id="2.6"></a>Signature of Discrete Data</b>
 
 If we want to compute the signature of discrete data streams, we can simply use <b>linear interpolation</b> and then apply the signature transform.
 
-<b>Definition: linear interpolation and its signature</b>
-
-We then define the <b>space of streams of data</b> as:
+We can indeed define the <b>space of streams of data</b> as:
 
 $$
 \mathcal{S}(\mathbb{R}^d)=\{x=(x_1,\ldots,x_n):x_i\in\mathbb{R}^d,\ n\in\mathbb{N}\}.
@@ -256,9 +296,391 @@ Given $x=(x_1,\ldots,x_n)\in\mathcal{S}(\mathbb{R}^d)$, the integer $n$ is calle
 _Furthermore,_ for $a,b\in\mathbb{R}$ such that $a<b$, we can fix:
 
 $$
-a=u_1<u_2<\cdots<u_{n-q}<u_n=b
+a=u_1<u_2<\cdots<u_{n-1}<u_n=b
 $$
 
 Let $X=(X^1,\ldots,X^d):[a,b]\to\mathbb{R}^d$ be continuous such that $X_{u_i}=x_i$ for all $i$ and linear on the intervals in between. Then $X$ is called the <b>linear interpolation</b> of $x$.
 
 Given that $X$ is a linear interpolation of $x$, the signature of $x$ _(the initial stream of data)_ is defined as $\operatorname{Sig}(x)=\operatorname{Sig}(X)$, and the same applies to the truncated signatures, i.e., $\operatorname{Sig}^n(x)=\operatorname{Sig}^n(X)$.
+
+
+---
+
+<br/>
+<b><a id="2.7"></a>Key Properties of Signature</b>
+
+<b><a id="2.8"></a>Theorem 1: Uniqueness</b>
+
+Let $X:[a,b]\to\mathbb{R}^d$ be a continuous piecewise-smooth path. Then $\operatorname{Sig}(\hat X)$ uniquely determines $X$ up to translation.
+
+_Intuition:_ the signature collects all iterated integrals, and these integrals are like the moments of a distribution. "Up to translation" means that two paths are considered the same if one is just the other shifted by a constant vector.
+
+---
+<br/>
+<b><a id="2.9"></a>Theorem 2: Universal nonlinearity</b>
+
+Let $F$ be a real-valued continuous function on continuous piecewise-smooth paths in $\mathbb{R}^d$ and let $\mathcal{K}$ be a compact set of such paths. Also assume that $X_0 = 0$ for all $X \in \mathcal{K}$.
+
+Consider now $\epsilon > 0$. Then there exists a linear functional $L$ such that
+
+$\forall X \in \mathcal{K},\ |F(X) - L(\operatorname{Sig}(\hat X))| < \epsilon.$
+
+_Intuition:_ any continuous function of a path, even if not linear, can be approximated as closely as we want by a linear combination of signatures.
+
+We can think of this theorem by analogy. The Weierstrass theorem says that any continuous function $f$ on an interval can be approximated by a polynomial, _i.e._
+$f(x) \approx a_0 + a_1x + a_2x^2 + \cdots + a_nx^n$
+
+that is <b>linear in the coefficients</b> $a_k$, and the "features" are the monomials $x^k$. _Well,_ theorem 2 is the same: the features are the iterated integrals _(signatures)_, and the polynomial is $L(\operatorname{Sig}) = \sum (\text{coefficients}) \times (\text{iterated integrals})$.
+
+This works _firstly because_ products of signature terms are again signatures _(\implies we can write the product of two iterated integrals as a linear combination of higher-level ones)_ and because the signature separates paths _(i.e. it is unique up to translation, but in the theorem we assume $X_0 = 0$ to avoid this)_.
+
+This <b>universal nonlinearity</b> is the key property of the signature transform, and it is necessary for the model and its applications. _Note also that_ the signature, by definition, is an infinitely-dimensional tensor; however, we often deal with the truncated signature $\operatorname{Sig}^N$ up to some depth $N$.
+
+---
+<br/>
+<b><a id="2.10"></a>Theorem 3: Factorial Decay</b>
+
+Let $X:[a,b]\to\mathbb{R}^d$ be a continuous piecewise-smooth path, and let $\|\cdot\|$ be a tensor norm on $(\mathbb{R}^d)^{\otimes k}$.
+
+$$
+\left\| \int_{a<t_1<\cdots<t_k<b} \mathrm{d}X_{t_1} \otimes \cdots \otimes \mathrm{d}X_{t_k} \right\| \le \frac{C(X)^k}{k!},
+$$
+
+where $C(X)$ is a constant depending on $X$.
+
+_Intuition:_ the "size" of a level-$k$ signature is at most $C(X)^k/k!$, so higher levels of the signature "shrink" faster than the exponential (the norm of the level-$k$ term gets smaller as $k$ grows), so a few levels can capture almost everything and this makes truncation justified.
+
+---
+<br/>
+
+<b><a id="2.11"></a>Theroem 4: Invariance to Time Reparametrization</b>
+
+Let $X:[0,1]\to\mathbb{R}^d$ be a continuous piecewise-smooth path. Let $\phi:[0,1]\to[0,1]$ be a continuously differentiable, increasing and surjective function. Then $\operatorname{Sig}(X)=\operatorname{Sig}(X\circ\phi)$.
+
+_Intuition:_ $\phi$ represents the time change, so the path $X\circ\phi$ is the exact same curve as $X$ but at a different speed. The theorem says that speeding up or slowing down $X_t$ doesn't change the signature. This is an important feature because it implies that the signature encodes data by its arrival order and independently of its arrival time.
+
+From this theorem, note that the signature of a (discrete) stream of data is _not_ dependent on the choice of interpolation.
+
+_Furthermore,_ if we consider $x=(x_1,\ldots,x_n)\in\mathcal{S}(\mathbb{R}^d)$ as a data stream of length $n$ in $\mathbb{R}^d$, then $\operatorname{Sig}^N(x)$ has $M(d,N)$ components, with
+
+$$
+M(d,N) = \sum_{k=0}^N d^k = \frac{d^{N+1}-1}{d-1}.
+$$
+
+The idea is that, since the truncated signature is a long vector of numbers, each number is one iterated integral of the path, where each level $k$ has $d^k$ components _(note also that this is independent of the length of the data stream)_.
+
+---
+
+<br/>
+<b><a id="2.12"></a>Computation of Signature Transform</b>
+
+The signature transform of a data stream can be computed in an efficient way with the help of Chen's identity.
+
+The main idea is that the signature of a path is a list of numbers that represent the path through iterated integrals _(level 1: displacement, level 2: areas between coordinates, etc.)_.
+
+Chen's identity states that the signature of a path made of <b>two consecutive pieces</b> is the <b>product of the signatures of the pieces</b>.
+
+That means that we do _NOT_ have to process the whole path at once, but we can instead compute the signature of each small piece and then add them together. This can be done _incrementally_ and far more cheaply, so, _when a new data point arrives,_ we can update the signature with one $\boxtimes$ operation instead of recomputing everything.
+
+
+_Formally speaking,_ we first have to introduce the $\boxtimes$ operator.
+
+Set $A_0 = B_0 = 1$ and define $\boxtimes$ by:
+
+$$
+\begin{aligned}
+\boxtimes : \left(\prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}\right) \times \left(\prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}\right) &\to \prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}, \\
+(A_1, \dots, A_N) \boxtimes (B_1, \dots, B_N) &\mapsto \left(\sum_{j=0}^{k} A_j \otimes B_{k-j}\right)_{1 \le k \le N}.
+\end{aligned}
+$$
+
+_Note that_ $(\mathbb{R}^d)^{\otimes k}$ is the space of tensors obtained via the tensor product _( $u \otimes v$ is a $d \times d$ matrix with entries $(u \otimes v)_{ab} = u_a v_b$ )_, and $\prod_{k=1}^{N}$ represents a list, not a product of numbers. Thus, each element of $\prod_{k=1}^N (\mathbb{R}^d)^{\otimes k}$ is a tuple $(A_1, A_2, \ldots, A_N)$ where $A_k$ lives at level $k$.
+
+_Furthermore,_ $(A_1,\ldots,A_N) \boxtimes (B_1,\ldots,B_N)$ represents the two signatures being multiplied. Each is a list with one entry per level, and the indices $j$ and $k-j$ sum to $k$.
+
+Then, Chen's identity states that the image of the signature transform forms a group structure with respect to $\boxtimes$.
+
+---
+<br/>
+<b><a id="2.13"></a>Chen's Identity</b>
+
+
+_Formally,_ this means that, given a sequence of data $(x_1,\ldots,x_L) \in \mathcal{S}(\mathbb{R}^d)$ and $j \in \{2,\ldots,L-1\}$, we have that
+
+$$
+\operatorname{Sig}^N((x_1,\ldots,x_L)) = \operatorname{Sig}^N((x_1,\ldots,x_j)) \boxtimes \operatorname{Sig}^N((x_j,\ldots,x_L)).
+$$
+
+<b><a id="2.14"></a>Proof of Chen's Identity</b>
+
+We start with the following definition:
+
+$$
+S^k(X)_{i_1\ldots i_k}=\int_{a<t_1<\cdots<t_k<c} dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k}
+$$
+
+This can be split into $k+1$ disjoint pieces, one for each $j=0,\ldots,k$:
+
+$$
+\{a<t_1<\cdots<t_k<c\}=\bigsqcup_{j=0}^{k}\underbrace{\{a<t_1<\cdots<t_j<b\}}_{\Delta_j(a,b)}\times\underbrace{\{b<t_{j+1}<\cdots<t_k<c\}}_{\Delta_{k-j}(b,c)}
+$$
+
+_Note that_ the only overlaps are sets where $t_i=b$, and they have measure zero, so they do not change the integral.
+
+Since $X$ is piecewise smooth, the integral with $dX_t=\dot{X}_t\,dt$ is a traditional Lebesgue integral with a bounded integrand.
+
+_So,_ according to Fubini's theorem, the integrand on each piece is a product of a function of $(t_1,\ldots,t_j)$ and a function of $(t_{j+1},\ldots,t_k)$, so the integral can be split as:
+
+$$
+\int_{\Delta_j(a,b)\times\Delta_{k-j}(b,c)}\!\!\! dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k} =\underbrace{\int_{\Delta_j(a,b)} dX^{i_1}_{t_1}\cdots dX^{i_j}_{t_j}}_{S^j(X_1)_{i_1\ldots i_j}} \cdot \underbrace{\int_{\Delta_{k-j}(b,c)} dX^{i_{j+1}}_{t_{j+1}}\cdots dX^{i_k}_{t_k}}_{S^{k-j}(X_2)_{i_{j+1}\ldots i_k}}
+$$
+
+_And note that_ the product of the two factors is the tensor product $S^j(X_1)\otimes S^{k-j}(X_2)$, so, if we sum over $j$, we get:
+
+$$
+S^k(X)=\sum_{j=0}^{k}S^j(X_1)\otimes S^{k-j}(X_2)
+$$
+
+This is the $k$-component of $\boxtimes$ as previously mentioned. If we set $A_0 = B_0 = 1$ and apply it for $1 \le k \le N$, we have:
+
+$$
+\operatorname{Sig}^N(X)=\operatorname{Sig}^N(X_1)\boxtimes\operatorname{Sig}^N(X_2).
+$$
+
+---
+<br/>
+
+_Furthermore,_ the signature of a sequence of length 2 can be computed _explicitly_ from the definition. Consider the following.
+
+$$
+\exp:\mathbb{R}^d \to \prod_{k=1}^N(\mathbb{R}^d)^{\otimes k}
+$$
+
+$$
+\exp : v \to \left(v, \frac{v^{\otimes 2}}{2!}, \frac{v^{\otimes 3}}{3!}, \dots, \frac{v^{\otimes N}}{N!}\right),
+$$
+
+so we have that
+
+$$
+\operatorname{Sig}^N((x_1,x_2)) = \exp(x_2 - x_1).
+$$
+
+That is a nice way to compute the signature of a single line segment, where $v$ in the previous formula is the displacement of the segment ($v = x_{i+1} - x_i$) and $v^{\otimes k}$ is $v$ tensored with itself $k$ times _(an order-$k$ array with entries $v_{a_1} \cdot v_{a_2} \cdot \ldots \cdot v_{a_k}$)_.
+
+but, _according to Chen's identity,_ the signature transform can be computed as
+
+$$
+\operatorname{Sig}^N((x_1,\ldots,x_L)) = \exp(x_2 - x_1) \boxtimes \exp(x_3 - x_2) \boxtimes \cdots \boxtimes \exp(x_L - x_{L-1}).
+$$
+
+This implies that computing the signature of an incoming data stream is doable, efficient and, _most importantly,_ <b>scalable!</b>
+
+Indeed, if we have some data and receive another data point, we do _NOT_ need to recompute the signature of the entire signal. We can just compute the signature of the new piece of information and then combine it with the previously computed signature using the tensor product.
+
+---
+<br/>
+<b><a id="2.15"></a>Improving computational efficiency</b>
+
+The key component of the signature computation is to evaluate the following:
+
+$$
+\left(\prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}\right) \times \mathbb{R}^d \to \prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}, \quad A, z \mapsto A \boxtimes \exp(z).
+$$
+
+That means that for each data point we need to compute $A \boxtimes \exp(z)$, and so we have to compute each level from scratch. However, this is not efficient since many terms may overlap _(the $k$th power of $z$ is just the $(k-1)$th power times $z$ again)_, so we can reuse the previous result and multiply it by a small factor.
+
+However, _instead of_ computing $A \boxtimes \exp(z)$ conventionally with the composition of $\exp$ and $\boxtimes$, we can speed up the computation using <b>Horner's method</b>, which means expanding $A \boxtimes \exp(z)$ as:
+
+$$
+A \boxtimes \exp(z) = \left(\sum_{i=0}^{k} A_i \otimes \frac{z^{\otimes (k-i)}}{(k-i)!}\right)_{1 \le k \le N},
+$$
+
+
+so that the $k$-th term can be computed by
+
+$$
+\begin{aligned}
+\sum_{i=0}^{k} A_i \otimes \frac{z^{\otimes (k-i)}}{(k-i)!}
+&= \left(\left(\cdots\left(\left(\frac{z}{k} + A_1\right) \otimes \frac{z}{k-1} + A_2\right) \otimes \frac{z}{k-2} + \cdots\right)\right. \\
+&\qquad \left.\otimes \frac{z}{2} + A_{k-1}\right) \otimes z + A_k.
+\end{aligned}
+$$
+
+_Note that_ this method has <b>fewer scalar multiplications</b> than the conventional approach and reduces the <b>asymptotic complexity</b> from $\mathcal{O}(N d^N)$ to $\mathcal{O}(d^N)$. This rate is <b>asymptotically optimal</b> since the size of the result is itself of size $\mathcal{O}(d^N)$.
+
+---
+
+
+## <b><a id="3"></a>A Generic Framework for Linear Statistical Models with Signature Transform</b>
+
+The core idea of this section is to use the <b>universal nonlinearity</b> of the signature transform to capture complex nonlinear relationships and translate them into linear models.
+
+
+<b><a id="3.1"></a>Forecasting Problem</b>
+
+We can start by considering a time-series forecasting problem with two time series, $\{x_\tau\}$ and $\{y_\tau\}$, where $x_\tau \in \mathcal{X} \subset \mathbb{R}^{d_0}$ is a $d_0$-dimensional vector representing the factor values at time $\tau$.
+
+The goal is to predict the value of $y_{\tau+\Delta_t}$ for a given time interval $\Delta_t$, _that means_ finding a _(possibly nonlinear)_ model $f^*_{\Delta_t} \in \mathcal{F} \subset \{f \mid f:\mathcal{X}\to\mathcal{Y}\}$ such that
+
+$$
+f^*_{\Delta_t}(x_\tau) = y_{\tau+\Delta_t}.
+$$
+
+where $\mathcal{F}$ is the class of all possible models.
+
+Specifically, given data up to time $t$, the standard approach is to solve the following optimization problem:
+
+$$
+f^*_{\Delta_t} \in \underset{f\in\mathcal{F}}{\arg\min}
+\frac{1}{t-\Delta_t}\sum_{\tau=1}^{t-\Delta_t}
+L\left(f(x_\tau),y_{\tau+\Delta_t}\right).
+$$
+
+where $L:\mathcal{Y}\times\mathcal{Y}\to\mathbb{R}$ is the <b>loss function</b>.
+
+---
+<br/>
+<b><a id="3.2"></a>Linear Statistical Models with Signature Transforms</b>
+
+For any time step $\tau\in\mathbb{N}^*$ and a time window of size $l\in\mathbb{N}$, we can denote the slice of the time series from $\tau-l$ to $\tau$ as
+
+$$
+x_{\tau-l:\tau}=(x_{\tau-l},\ldots,x_\tau).
+$$
+
+Let $N$ be the depth of the truncated signature, and let $\operatorname{Sig}^N(x_{\tau-l:\tau})$ be the corresponding signature for the truncated path from $\tau-l$ to $\tau$.
+
+We now consider $\Theta_{\text{linear}}$ as the <b>class of linear models</b> that map $\operatorname{Sig}^N(x_{\tau-l:\tau})$ to $y_{\tau+\Delta_t}$.
+
+Given the training data set $\{(x_\tau,y_\tau)\}_{\tau=1}^t$, the <b>optimal predictor</b> $\hat{\theta}$ is obtained by minimizing the <b>empirical loss</b>, _i.e._ by computing:
+
+$$
+\widehat{\boldsymbol{\theta}} \in \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^d} \left\{ \frac{1}{t-\Delta_t} \sum_{\tau=1}^{t-\Delta_t} L_{\text{linear}}\left(y_{\tau+\Delta_t}, \operatorname{Sig}^N(\boldsymbol{x}_{\tau-l:\tau}); \boldsymbol{\theta}\right) \right\},
+$$
+
+
+where $L_{\text{linear}}$ is the loss function. _For example,_ in the case of ordinary least squares (OLS), $L_{\text{linear}}$ is defined as the squared error, _i.e._
+
+$$
+L_{\text{OLS}}=\left(y_{\tau+\Delta_t}-\boldsymbol{\theta}^{\mathsf{T}}\operatorname{Sig}^N(x_{\tau-l:\tau})\right)^2.
+$$
+
+_Furthermore,_ for <b>Lasso regression</b>, the loss function is augmented with an $L_1$-regularization term to promote sparsity in the parameters, _i.e._
+
+$$
+L_{\text{Lasso}}=\left(y_{\tau+\Delta_t}-\boldsymbol{\theta}^{\mathsf{T}}\operatorname{Sig}^N(x_{\tau-l:\tau})\right)^2+\lambda\|\boldsymbol{\theta}\|_1.
+$$
+
+where $\lambda>0$ is the regularization parameter.
+
+_Similarly,_ <b>Ridge regression</b> adds an $L_2$-regularization term to penalize large parameters, _i.e._
+
+$$
+L_{\text{Ridge}}=\left(y_{\tau+\Delta_t}-\boldsymbol{\theta}^{\mathsf{T}}\operatorname{Sig}^N(x_{\tau-l:\tau})\right)^2+\lambda\|\boldsymbol{\theta}\|_2^2.
+$$
+
+---
+<br/>
+<b><a id="3.3"></a>Adaptive weight via Signature Kernel</b>
+
+In the classical approach to linear statistical modelling, each historical sample has equal weight in the optimization problem. _However,_ this equal weighting may fail to account for changes in regime or seasonality.
+
+To address this, we can adopt a more effective approach to assign weights based on their similarity to the current period.
+
+_To do so,_ we first recall the <b>signature feature map</b> as:
+
+$$
+\Phi:\mathcal{X}\to\operatorname{Sig}(\hat{\mathcal{X}}).
+$$
+
+To avoid computations over a large space of functions, we can define the <b>signature kernel</b> for any discrete time series $a,b$ _(where $\langle\cdot,\cdot\rangle$ is the inner product on the linear space of signatures)_ as
+
+$$
+k(a,b)=\langle\Phi(a),\Phi(b)\rangle.
+$$
+
+_Next,_ we want to measure the similarity between two discrete time series $a,b$ by considering the <b>distance induced</b> by the signature kernel, defined as
+
+$$
+d_{\mathrm{Sig}}(a,b)=k(a,a)-2k(a,b)+k(b,b).
+$$
+
+_The idea_ is that a small $d_{\mathrm{Sig}}(a,b)$ implies a <b>higher similarity</b> between patterns _(time series)_ in $a,b$ $\implies$ $a,b$ come from the same regime and share the same seasonality.
+
+_Finally,_ we can adapt the weights in the linear models according to the signature kernel _(and this is called 'AdaWeight.Sig')._
+
+_More precisely, as before,_ we can consider a forecast horizon $\Delta_t$, a window size $l$, signature depth $N$, distance metric $d_{\mathrm{Sig}}^N$, and <b>temperature parameter</b> $\gamma\geq 0$.
+
+Then, we can define, for all $\tau_1,\tau_2\in\mathbb{N}$ with $\tau_1<\tau_2$:
+
+$$
+z_\tau=(x_\tau,y_{\tau+\Delta_t})
+$$
+
+and then denote by $z_{\tau_1:\tau_2}=(z_{\tau_1},\ldots,z_{\tau_2})$ the slice of the time series $z$ from $\tau_1$ to $\tau_2$.
+
+At each time $t$, 'AdaWeight.Sig' takes the historical samples as inputs and calculates the <b>adaptive weight vector</b> as follows.
+
+$$
+\boldsymbol{W}^{(\Delta_t)} := \left(w_1^{(\Delta_t)}, w_2^{(\Delta_t)}, \cdots, w_{t-\Delta_t}^{(\Delta_t)}\right) \in \mathbb{R}_{\geq 0}^{t-\Delta_t},
+$$
+
+
+such that
+
+$$
+\sum_{\tau=1}^{t-\Delta_t}w_\tau^{(\Delta_t)}=1.
+$$
+
+_Intuition:_ 'AdaWeight.Sig' assigns a higher weight to the sample if its seasonality pattern near $\tau$ is similar to the current pattern. _Furthermore,_ whenever each new sample arrives, the weight vector is recomputed to adapt to recent changes.
+
+---
+<br/>
+<b><a id="3.4"></a>Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')</b>
+
+1. <b>Input</b>: forecast horizon $\Delta_t$, window size $l$, depth $N$, temperature $\gamma$, kernel distance $d_{\mathrm{Sig}}^N$, dataset $\mathcal{D}=\{z_\tau=(x_\tau,y_{\tau+\Delta_t})\}_{1\leq\tau\leq t-\Delta_t}$.
+2. For $\tau=1,2,\ldots,t-\Delta_t$:
+    - compute the distance $\delta_\tau$ between the truncated signatures of $z_{\tau-l:\tau}$ and $z_{t-\Delta_t-l:t-\Delta_t}$:
+
+    $$
+    \delta_\tau=d_{\mathrm{Sig}}^N(z_{\tau-l:\tau},z_{t-\Delta_t-l:t-\Delta_t}).
+    $$
+
+3. For $\tau=1,2,\ldots,t-\Delta_t$:
+    - compute the weights $w_\tau^{(\Delta_t)}$ as
+
+    $$
+    w_\tau^{(\Delta_t)}:=\frac{\exp(-\gamma\delta_\tau)}{\sum_{\tau=1}^{t-\Delta_t}\exp(-\gamma\delta_\tau)}.
+    $$
+
+
+4. Output the weight vector $\boldsymbol{W}^{(\Delta_t)}=(w_1^{(\Delta_t)},\ldots,w_{t-\Delta_t}^{(\Delta_t)})$.
+We can now spend some time defining the algorithm.
+
+---
+
+<br/>
+<b><a id="3.5"></a>Algorithm 2: Adaptive Linear Models with Signature Kernel</b>
+
+Once we have defined the adaptive weight algorithm as above, we can proceed with the forecasting algorithm.
+
+1. <b>Input</b>: regularization parameter $\lambda$, window size $l$, depth $N$, temperature parameter $\gamma$, kernel distance $d_{\mathrm{Sig}}^N$, and dataset $\mathcal{D}=\{z_\tau=(x_\tau,y_{\tau+\Delta_t})\}_{1\leq\tau\leq t-\Delta_t}$.
+2. For $\tau=1,2,\ldots,t-\Delta_t$:
+    - run 'AdaWeight.Sig' _(Algorithm 1, as defined above)_ with $\Delta_t$, $l$, $N$, $\gamma$, $d_{\mathrm{Sig}}^N$, and $\mathcal{D}$ to <b>identify the regime</b> and obtain $\boldsymbol{W}^{(\Delta_t)}$.
+
+    $$
+    \widehat{\boldsymbol{\theta}}^{\lambda}_{\Delta_t} \in \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^d} \left\{ \sum_{\tau=1}^{t-\Delta_t} w_\tau^{(\Delta_t)} \cdot L_{\text{linear}}\left(y_{\tau+\Delta_t}, \operatorname{Sig}^N(\boldsymbol{x}_{\tau-l:\tau}); \boldsymbol{\theta}\right) \right\}.
+    $$
+
+
+    - apply the linear model on the dataset $\mathcal{D}$ with <b>adaptive weights</b> $\boldsymbol{W}^{(\Delta_t)}$ and regularization parameter
+
+    $$
+    \widehat{y}_{t+\Delta_t} = \operatorname{Sig}^N(\boldsymbol{x}_{t-l:t}) \cdot \widehat{\boldsymbol{\theta}}^{\lambda}_{\Delta_t}.
+    $$
+
+
+_To sum up,_ we can say that measuring similarity via the signature kernel leads to a new linear modelling approach, where we adapt weights according to similarities between time series to capture seasonality and regime.
+
+Note that this is equivalent to identifying different distributions for a given set, but in a linearized feature space from the signature transform.
