@@ -410,7 +410,7 @@ $$
 S^k(X)_{i_1\ldots i_k}=\int_{a<t_1<\cdots<t_k<c} dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k}
 $$
 
-This can be split into $k+1$ disjoint pieces, one for each $j=0,\ldots,k$:
+This can be split into $k+1$ disjoint pieces by cutting the interval in $b$, so we have $X_1$ on $[a,b]$ and $X_2$ on $[b,c]$:
 
 $$
 \{a<t_1<\cdots<t_k<c\}=\bigsqcup_{j=0}^{k}\underbrace{\{a<t_1<\cdots<t_j<b\}}_{\Delta_j(a,b)}\times\underbrace{\{b<t_{j+1}<\cdots<t_k<c\}}_{\Delta_{k-j}(b,c)}
@@ -420,11 +420,20 @@ _Note that_ the only overlaps are sets where $t_i=b$, and they have measure zero
 
 Since $X$ is piecewise smooth, the integral with $dX_t=\dot{X}_t\,dt$ is a traditional Lebesgue integral with a bounded integrand.
 
-_So,_ according to Fubini's theorem, the integrand on each piece is a product of a function of $(t_1,\ldots,t_j)$ and a function of $(t_{j+1},\ldots,t_k)$, so the integral can be split as:
+_So,_ according to Fubini's theorem, the integrand on each piece is a product of a function of $(t_1,\ldots,t_j)$ and a function of $(t_{j+1},\ldots,t_k)$.
+
+_Recall that_ Fubini's theorem says that, when the integrand region is A x B, the integral is:
+
+$$
+\int_{A\times B} f(x)g(y)\,dx\,dy=\Big(\int_A f\Big)\Big(\int_B g\Big)
+$$
+
+_In our case,_ this translates to:
 
 $$
 \int_{\Delta_j(a,b)\times\Delta_{k-j}(b,c)}\!\!\! dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k} =\underbrace{\int_{\Delta_j(a,b)} dX^{i_1}_{t_1}\cdots dX^{i_j}_{t_j}}_{S^j(X_1)_{i_1\ldots i_j}} \cdot \underbrace{\int_{\Delta_{k-j}(b,c)} dX^{i_{j+1}}_{t_{j+1}}\cdots dX^{i_k}_{t_k}}_{S^{k-j}(X_2)_{i_{j+1}\ldots i_k}}
 $$
+
 
 _And note that_ the product of the two factors is the tensor product $S^j(X_1)\otimes S^{k-j}(X_2)$, so, if we sum over $j$, we get:
 
