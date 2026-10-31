@@ -25,7 +25,7 @@ _Lastly_, note that the following page reflects my learning journey and not the 
     - [2.4. Theorem 1: Uniqueness](#2.4)
     - [2.5. Theorem 2: Universal nonlinearity](#2.5)
     - [2.6. Theorem 3: Factorial Decay](#2.6)
-    - [2.7. Theroem 4: Invariance to Time Reparametrization](#2.7)
+    - [2.7. Theorem 4: Invariance to Time Reparametrization](#2.7)
     - [2.8. Computation of Signature Transform](#2.8)
     - [2.9. Chen's Identity](#2.9)
     - [2.10. Improving computational efficiency](#2.10)
@@ -344,13 +344,13 @@ _Intuition:_ the "size" of a level-$k$ signature is at most $C(X)^k/k!$, so high
 ---
 <br/>
 
-<b><a id="2.7"></a>Theroem 4: Invariance to Time Reparametrization</b>
+<b><a id="2.7"></a>Theorem 4: Invariance to Time Reparametrization</b>
 
 Let $X:[0,1]\to\mathbb{R}^d$ be a continuous piecewise-smooth path. Let $\phi:[0,1]\to[0,1]$ be a continuously differentiable, increasing and surjective function. Then $\operatorname{Sig}(X)=\operatorname{Sig}(X\circ\phi)$.
 
 _Intuition:_ $\phi$ represents the time change, so the path $X\circ\phi$ is the exact same curve as $X$ but at a different speed. The theorem says that speeding up or slowing down $X_t$ doesn't change the signature. This is an important feature because it implies that the signature encodes data by its arrival order and independently of its arrival time.
 
-From this theorem, note that the signature of a (discrete) stream of data is _not_ dependent on the choice of interpolation.
+From this theorem, note that the signature of a (discrete) stream of data is _not_ dependent on the choice of interpolation times $\mu_i$.
 
 _Furthermore,_ if we consider $x=(x_1,\ldots,x_n)\in\mathcal{S}(\mathbb{R}^d)$ as a data stream of length $n$ in $\mathbb{R}^d$, then $\operatorname{Sig}^N(x)$ has $M(d,N)$ components, with
 
@@ -371,7 +371,7 @@ The main idea is that the signature of a path is a list of numbers that represen
 
 Chen's identity states that the signature of a path made of <b>two consecutive pieces</b> is the <b>product of the signatures of the pieces</b>.
 
-That means that we do _NOT_ have to process the whole path at once, but we can instead compute the signature of each small piece and then add them together. This can be done _incrementally_ and far more cheaply, so, _when a new data point arrives,_ we can update the signature with one $\boxtimes$ operation instead of recomputing everything.
+That means that we do _NOT_ have to process the whole path at once, but we can instead compute the signature of each small piece and then multiply them with $\boxtimes$. This can be done _incrementally_ and far more cheaply, so, _when a new data point arrives,_ we can update the signature with one $\boxtimes$ operation instead of recomputing everything.
 
 
 _Formally speaking,_ we first have to introduce the $\boxtimes$ operator.
@@ -383,6 +383,12 @@ $$
 \boxtimes : \left(\prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}\right) \times \left(\prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}\right) &\to \prod_{k=1}^{N} \left(\mathbb{R}^d\right)^{\otimes k}, \\
 (A_1, \dots, A_N) \boxtimes (B_1, \dots, B_N) &\mapsto \left(\sum_{j=0}^{k} A_j \otimes B_{k-j}\right)_{1 \le k \le N}.
 \end{aligned}
+$$
+
+This can be interpreted as multiplication of signatures, _i.e._
+
+$$
+(A\boxtimes B)_k=\sum_{j=0}^{k}A_j\otimes B_{k-j}
 $$
 
 _Note that_ $(\mathbb{R}^d)^{\otimes k}$ is the space of tensors obtained via the tensor product _( $u \otimes v$ is a $d \times d$ matrix with entries $(u \otimes v)_{ab} = u_a v_b$ )_, and $\prod_{k=1}^{N}$ represents a list, not a product of numbers. Thus, each element of $\prod_{k=1}^N (\mathbb{R}^d)^{\otimes k}$ is a tuple $(A_1, A_2, \ldots, A_N)$ where $A_k$ lives at level $k$.
@@ -416,13 +422,13 @@ $$
 \{a<t_1<\cdots<t_k<c\}=\bigsqcup_{j=0}^{k}\underbrace{\{a<t_1<\cdots<t_j<b\}}_{\Delta_j(a,b)}\times\underbrace{\{b<t_{j+1}<\cdots<t_k<c\}}_{\Delta_{k-j}(b,c)}
 $$
 
-_Note that_ the only overlaps are sets where $t_i=b$, and they have measure zero, so they do not change the integral.
+_Note that_ the pieces are disjoint and the equality holds up to a null set: together they miss only the points where some $t_i=b$, which have measure zero, so they do not change the integral.
 
 Since $X$ is piecewise smooth, the integral with $dX_t=\dot{X}_t\,dt$ is a traditional Lebesgue integral with a bounded integrand.
 
-_So,_ according to Fubini's theorem, the integrand on each piece is a product of a function of $(t_1,\ldots,t_j)$ and a function of $(t_{j+1},\ldots,t_k)$.
+_So,_ on each piece the integrand is, by construction, a product of a function of $(t_1,\ldots,t_j)$ and a function of $(t_{j+1},\ldots,t_k)$, and Fubini's (Tonelli's) theorem lets the integral factor.
 
-_Recall that_ Fubini's theorem says that, when the integrand region is A x B, the integral is:
+_Recall that_ Fubini's theorem says that, when the integration region is $A \times B$ and the integrand is a product $f(x)g(y)$, the integral is:
 
 $$
 \int_{A\times B} f(x)g(y)\,dx\,dy=\Big(\int_A f\Big)\Big(\int_B g\Big)
@@ -521,13 +527,13 @@ The core idea of this section is to use the <b>universal nonlinearity</b> of the
 
 We can start by considering a time-series forecasting problem with two time series, $\{x_\tau\}$ and $\{y_\tau\}$, where $x_\tau \in \mathcal{X} \subset \mathbb{R}^{d_0}$ is a $d_0$-dimensional vector representing the factor values at time $\tau$.
 
-The goal is to predict the value of $y_{\tau+\Delta_t}$ for a given time interval $\Delta_t$, _that means_ finding a _(possibly nonlinear)_ model $f^*_{\Delta_t} \in \mathcal{F} \subset \{f \mid f:\mathcal{X}\to\mathcal{Y}\}$ such that
+The target $y_\tau$ takes values in $\mathcal{Y}\subset\mathbb{R}$ _(in our case: the freight rate)_. The goal is to predict the value of $y_{\tau+\Delta_t}$ for a given time interval $\Delta_t$, _that means_ finding a _(possibly nonlinear)_ model $f^*_{\Delta_t} \in \mathcal{F} \subset \{f \mid f:\mathcal{X}\to\mathcal{Y}\}$ such that, as closely as possible,
 
 $$
-f^*_{\Delta_t}(x_\tau) = y_{\tau+\Delta_t}.
+f^*_{\Delta_t}(x_\tau) \approx y_{\tau+\Delta_t}.
 $$
 
-where $\mathcal{F}$ is the class of all possible models.
+where $\mathcal{F}$ is the class of all possible models. _Note that_ here $f$ is written as a function of the current factor values $x_\tau$ for simplicity; in the next section it will depend on the recent window $x_{\tau-l:\tau}$ through its signature, which is what lets the model use the history of the factors.
 
 Specifically, given data up to time $t$, the standard approach is to solve the following optimization problem:
 
@@ -556,9 +562,10 @@ We now consider $\Theta_{\text{linear}}$ as the <b>class of linear models</b> th
 Given the training data set $\{(x_\tau,y_\tau)\}_{\tau=1}^t$, the <b>optimal predictor</b> $\hat{\theta}$ is obtained by minimizing the <b>empirical loss</b>, _i.e._ by computing:
 
 $$
-\widehat{\boldsymbol{\theta}} \in \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^d} \left\{ \frac{1}{t-\Delta_t} \sum_{\tau=1}^{t-\Delta_t} L_{\text{linear}}\left(y_{\tau+\Delta_t}, \operatorname{Sig}^N(\boldsymbol{x}_{\tau-l:\tau}); \boldsymbol{\theta}\right) \right\},
+\widehat{\boldsymbol{\theta}} \in \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^{M(d_0,N)}} \left\{ \frac{1}{t-\Delta_t} \sum_{\tau=1}^{t-\Delta_t} L_{\text{linear}}\left(y_{\tau+\Delta_t}, \operatorname{Sig}^N(\boldsymbol{x}_{\tau-l:\tau}); \boldsymbol{\theta}\right) \right\},
 $$
 
+where $\boldsymbol{\theta}$ has one component per signature feature, i.e. $M(d_0,N)$ of them _(or $M(d_0+1,N)$ if the window is time-augmented)_.
 
 where $L_{\text{linear}}$ is the loss function. _For example,_ in the case of ordinary least squares (OLS), $L_{\text{linear}}$ is defined as the squared error, _i.e._
 
@@ -600,17 +607,19 @@ $$
 k(a,b)=\langle\Phi(a),\Phi(b)\rangle.
 $$
 
-_Next,_ we want to measure the similarity between two discrete time series $a,b$ by considering the <b>distance induced</b> by the signature kernel, defined as
+_Next,_ we want to measure the similarity between two discrete time series $a,b$ by considering the <b>squared distance induced</b> by the signature kernel, defined as
 
 $$
-d_{\mathrm{Sig}}(a,b)=k(a,a)-2k(a,b)+k(b,b).
+d_{\mathrm{Sig}}(a,b)=k(a,a)-2k(a,b)+k(b,b)=\|\Phi(a)-\Phi(b)\|^2.
 $$
+
+_Note that_ this is a squared distance, so it is not a metric (the triangle inequality can fail), and with truncation depth $N$ it is only a pseudometric (two different series can have distance $0$).
 
 _The idea_ is that a small $d_{\mathrm{Sig}}(a,b)$ implies a <b>higher similarity</b> between patterns _(time series)_ in $a,b$ $\implies$ $a,b$ come from the same regime and share the same seasonality.
 
 _Finally,_ we can adapt the weights in the linear models according to the signature kernel _(and this is called 'AdaWeight.Sig')._
 
-_More precisely, as before,_ we can consider a forecast horizon $\Delta_t$, a window size $l$, signature depth $N$, distance metric $d_{\mathrm{Sig}}^N$, and <b>temperature parameter</b> $\gamma\geq 0$.
+_More precisely, as before,_ we can consider a forecast horizon $\Delta_t$, a window size $l$, signature depth $N$, kernel distance $d_{\mathrm{Sig}}^N$, and <b>temperature parameter</b> $\gamma\geq 0$.
 
 Then, we can define, for all $\tau_1,\tau_2\in\mathbb{N}$ with $\tau_1<\tau_2$:
 
@@ -665,16 +674,15 @@ We can now spend some time defining the algorithm.
 
 Once we have defined the adaptive weight algorithm as above, we can proceed with the forecasting algorithm.
 
-1. <b>Input</b>: regularization parameter $\lambda$, window size $l$, depth $N$, temperature parameter $\gamma$, kernel distance $d_{\mathrm{Sig}}^N$, and dataset $\mathcal{D}=\{z_\tau=(x_\tau,y_{\tau+\Delta_t})\}_{1\leq\tau\leq t-\Delta_t}$.
-2. For $\tau=1,2,\ldots,t-\Delta_t$:
-    - run 'AdaWeight.Sig' _(Algorithm 1, as defined above)_ with $\Delta_t$, $l$, $N$, $\gamma$, $d_{\mathrm{Sig}}^N$, and $\mathcal{D}$ to <b>identify the regime</b> and obtain $\boldsymbol{W}^{(\Delta_t)}$.
+1. <b>Input</b>: forecast horizon $\Delta_t$, regularization parameter $\lambda$, window size $l$, depth $N$, temperature parameter $\gamma$, kernel distance $d_{\mathrm{Sig}}^N$, and dataset $\mathcal{D}=\{z_\tau=(x_\tau,y_{\tau+\Delta_t})\}_{1\leq\tau\leq t-\Delta_t}$.
+2. Run 'AdaWeight.Sig' _(Algorithm 1, as defined above)_ once, at the current time $t$, with $\Delta_t$, $l$, $N$, $\gamma$, $d_{\mathrm{Sig}}^N$, and $\mathcal{D}$ to <b>identify the regime</b> and obtain $\boldsymbol{W}^{(\Delta_t)}$.
+3. Fit the linear model on the dataset $\mathcal{D}$ with the <b>adaptive weights</b> $\boldsymbol{W}^{(\Delta_t)}$ and regularization parameter $\lambda$, i.e. solve the weighted problem _(the sum already runs over all $\tau$)_:
 
     $$
-    \widehat{\boldsymbol{\theta}}^{\lambda}_{\Delta_t} \in \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^d} \left\{ \sum_{\tau=1}^{t-\Delta_t} w_\tau^{(\Delta_t)} \cdot L_{\text{linear}}\left(y_{\tau+\Delta_t}, \operatorname{Sig}^N(\boldsymbol{x}_{\tau-l:\tau}); \boldsymbol{\theta}\right) \right\}.
+    \widehat{\boldsymbol{\theta}}^{\lambda}_{\Delta_t} \in \arg\min_{\boldsymbol{\theta} \in \mathbb{R}^{M(d_0,N)}} \left\{ \sum_{\tau=1}^{t-\Delta_t} w_\tau^{(\Delta_t)} \cdot L_{\text{linear}}\left(y_{\tau+\Delta_t}, \operatorname{Sig}^N(\boldsymbol{x}_{\tau-l:\tau}); \boldsymbol{\theta}\right) \right\}.
     $$
 
-
-    - apply the linear model on the dataset $\mathcal{D}$ with <b>adaptive weights</b> $\boldsymbol{W}^{(\Delta_t)}$ and regularization parameter
+4. Predict:
 
     $$
     \widehat{y}_{t+\Delta_t} = \operatorname{Sig}^N(\boldsymbol{x}_{t-l:t}) \cdot \widehat{\boldsymbol{\theta}}^{\lambda}_{\Delta_t}.
