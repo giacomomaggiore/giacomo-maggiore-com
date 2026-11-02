@@ -755,3 +755,263 @@ Once we have defined the adaptive weight algorithm as above, we can proceed with
 _To sum up,_ we can say that measuring similarity via the signature kernel leads to a new linear modelling approach, where we adapt weights according to similarities between time series to capture seasonality and regime.
 
 Note that this is equivalent to identifying different distributions for a given set, but in a linearized feature space from the signature transform.
+
+---
+<br/>
+
+## <b><a id="4"></a>Signature-Based Deep Hedging</b>
+
+We now present an example of application of the signature transform. In particular, we will consider a <b>self-financing strategy</b> that replicates a <b>path-dependent terminal payoff</b>.
+
+We will simulate asset prices, encode the asset price's path using a truncated time-augmented signature, then fit a linear signature strategy by $L_2$ regression and finally train a nonlinear neural strategy on 256 newly simulated paths.
+
+
+Before starting, we define the requirements.
+
+```python
+
+import copy
+import math
+import numpy as np
+import torch
+from torch import nn
+import matplotlib.pyplot as plt
+
+# Dependencies: numpy, torch, matplotlib
+torch.set_num_threads(2)
+torch.manual_seed(7)
+plt.rcParams.update({'figure.figsize': (10, 4), 'axes.grid': True})
+
+```
+
+<b>Asset Prices</b>
+
+We can model asset prices using a <b>discretized geometric Brownian motion</b> given by
+
+$$
+S_{n+1}=S_n\exp\left((\mu-\tfrac12\sigma^2)\Delta t+\sigma\sqrt{\Delta t}\,Z_n\right).
+$$
+
+with $Z_n\sim N(0,1)$ and $S_0=1$. Solving the GBM stochastic differential equation gives this expression, so there is no Euler error in the prices.
+
+_Furthermore,_ note that the term $-\frac12\sigma^2$ is the <b>Itô correction</b> (convexity correction) applied because, _without it,_ the expected growth would be larger than $\mu$.
+
+
+```python
+
+
+
+n_calibration, n_val, n_test = 2048, 2048, 4096
+paths_per_epoch, epochs = 256, 2000
+n_pricing = 100_000
+n_steps, n_windows, d = 40, 10, 1
+T, sigma, rho, strike = 1.0, 0.25, 0.3, 1.0
+mu, r = 0.08, 0.03
+depth = 3
+claim_type = 'geometric_put'  # Alternative: 'asian_call'
+weights = torch.full((d,), 1.0 / d)
+
+assert n_steps % n_windows == 0, 'Each window must contain an integer number of steps.'
+assert d == 1 or -1 / (d - 1) < rho < 1
+
+feature_dim = sum((d + 1)**k for k in range(1, depth + 1))
+memory_gb = (n_calibration + paths_per_epoch + n_val + n_test) * n_steps * feature_dim * 4 / 1e9
+
+print(f'{feature_dim} features; approximately {memory_gb:.2f} GB for feature arrays.')
+
+# 14 features; approximately 0.02 GB for feature arrays.
+
+
+def simulate_paths(n_paths, seed, drift):
+    """Return prices [path, time, asset], including time zero."""
+    generator = torch.Generator().manual_seed(seed)
+
+    # Correlation matrix between assets.
+    corr = (1 - rho) * torch.eye(d) + rho * torch.ones(d, d)
+
+    # Compute the lower-triangular L, with LL^T = corr.
+    chol = torch.linalg.cholesky(corr)
+
+    # Draw independent N(0,1) shocks and multiply by L^T.
+    z = torch.randn(n_paths, n_steps, d, generator=generator) @ chol.T
+    dt = T / n_steps
+
+    # Log return at each step (Gaussian with mean (drift − ½σ²)Δt
+    # and standard deviation σ√Δt).
+    log_returns = (drift - 0.5 * sigma**2) * dt + sigma * math.sqrt(dt) * z
+    log_prices = torch.cat([torch.zeros(n_paths, 1, d), log_returns.cumsum(1)], dim=1)
+    return log_prices.exp()
+
+S_calibration = simulate_paths(n_calibration, 10, drift=mu)
+S_val = simulate_paths(n_val, 20, drift=mu)
+S_test = simulate_paths(n_test, 30, drift=mu)
+times = torch.linspace(0, T, n_steps + 1)
+
+
+```
+
+_Consider that_ in the previous code we assumed `n_steps = 40` and $T=1$ year, so we have $\Delta t=0.025$ (approximately rebalanced hedging every six trading days).
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/signature-1.png)
+</div>
+
+In the notebook, we use the $\mathbb P$ (physical) measure, with drift $\mu=0.08$ and volatility $\sigma=0.25$, for training, validation, testing, and feature calibration. We use the $\mathbb Q$ (risk-neutral) measure, with drift $r=0.03$ and the same volatility, for pricing only.
+
+_Intuition:_ we need $\mathbb Q$ for pricing because it gives the initial required capital $\tilde b$, which represents _"the fair cost of hedging"_. However, we need $\mathbb P$ for training and testing because we are interested in how the strategy performs in the real world.
+
+_Note that_ moving from P to Q changes only the drift through the <b>Girsanov change of measure</b>.
+
+_Setting:_ under P, the price solves $dS_t=\mu S_t\,dt+\sigma S_t\,dW^{\mathbb P}_t$, where $W^{\mathbb P}$ is a P-Brownian motion. Let $ \theta=\frac{\mu-r}{\sigma}$ be the <b>market price of risk</b> _(the excess return per unit of volatility)_. 
+
+<b>Girsanov's theorem</b> _(constant-drift case)_ states that, if $ L_t=\exp\left(-\theta W^{\mathbb P}_t-\tfrac12\theta^2t\right) $ is a martingale _(which is true here because $\theta$ is constant, e.g. by Novikov's condition)_, then the measure $\mathbb Q$ defined by $\frac{d\mathbb Q}{d\mathbb P}\big|_{\mathcal F_T}=L_T$ is equivalent to $\mathbb P$ and $W^{\mathbb Q}_t=W^{\mathbb P}_t+\theta t $ is a $\mathbb Q$-Brownian motion.
+
+_Substituting_ $dW^{\mathbb P}_t=dW^{\mathbb Q}_t-\theta\,dt$ in the dynamics of $S$:
+
+$$
+dS_t=\mu S_tdt+\sigma S_t\left(dW^{\mathbb Q}_t-\theta dt\right)=\bigl(\mu-\sigma\theta\bigr)S_tdt+\sigma S_tdW^{\mathbb Q}_t=rS_tdt+\sigma S_tdW^{\mathbb Q}_t.
+$$
+
+_Intuition:_ the change of measure removes the risk premium $\mu-r$ from the drift and replaces it with the risk-free rate, while the randomness stays the same.
+
+_On the grid,_ this is exactly the shift of the Gaussian shocks $Z^{\mathbb Q}_n=Z_n+\theta\sqrt{\Delta t}$: if $Z_n\sim N(0,1)$ under $\mathbb P$, then $Z^{\mathbb Q}_n\sim N(0,1)$ under $\mathbb Q$, and
+
+$$
+(\mu-\tfrac12\sigma^2)\Delta t+\sigma\sqrt{\Delta t}\,Z_n=(r-\tfrac12\sigma^2)\Delta t+\sigma\sqrt{\Delta t}\,Z^{\mathbb Q}_n,
+$$
+
+which is the same recursion with drift $r$. This is why `simulate_paths(..., drift=r)` samples exactly from $\mathbb Q$. The density on the grid is $L_N=\prod_{n}\exp\bigl(-\theta\sqrt{\Delta t}\,Z_n-\tfrac12\theta^2\Delta t\bigr)$.
+
+$\sigma$ is indeed unchanged since it is linked to the path's quadratic variation: $d\langle\log S\rangle_t=\sigma^2dt$ holds path by path, and equivalent measures have the same null sets, so no change of measure can alter it. Only the drift can be changed.
+
+_Furthermore,_ note that under $\mathbb Q$ the discounted price $\tilde S_t=e^{-rt}S_t$ is a martingale, that _formally_ means:
+
+$$
+\mathbb E^{\mathbb Q}\left[\tilde S_t\mid\mathcal F_s\right]=\tilde S_s,\qquad 0\le s\le t\le T.
+$$
+
+_To see this,_ solve the SDE under $\mathbb Q$:
+
+$$
+\tilde S_t=\tilde S_s\exp\left(-\tfrac12\sigma^2(t-s)+\sigma\bigl(W^{\mathbb Q}_t-W^{\mathbb Q}_s\bigr)\right).
+$$
+
+The increment $W^{\mathbb Q}_t-W^{\mathbb Q}_s$ is independent of $\mathcal F_s$ and $N(0,t-s)$, and $\mathbb E[e^{\sigma N(0,t-s)}]=e^{\frac12\sigma^2(t-s)}$, so the factors cancel and we get $\tilde S_s$. On the grid the same computation gives $\mathbb E^{\mathbb Q}[\tilde S_{n+1}\mid\mathcal F_n]=\tilde S_n$.
+
+_Under_ $\mathbb P$ _instead,_ the same computation gives $\mathbb E^{\mathbb P}[\tilde S_{n+1}\mid\mathcal F_n]=\tilde S_ne^{(\mu-r)\Delta t}$: the discounted price drifts upward at the risk premium, so it is _NOT_ a martingale.
+
+<b>Self-financing portfolio.</b> Let $h_n$ be the number of shares held over $[t_n,t_{n+1}]$, chosen using only the information up to $t_n$ _(predictable)_, and let the rest of the wealth $V_n-h_n\cdot S_n$ sit in the bank account. Then
+
+$$
+V_{n+1}=h_n\cdot S_{n+1}+(V_n-h_n\cdot S_n)e^{r\Delta t}.
+$$
+
+Multiplying by $e^{-rt_{n+1}}$ and writing $\tilde V_n=e^{-rt_n}V_n$, this becomes
+
+$$
+\tilde V_{n+1}=\tilde V_n+h_n\cdot\bigl(\tilde S_{n+1}-\tilde S_n\bigr),
+\qquad\text{so}\qquad
+\tilde V_N=V_0+\sum_{k=0}^{N-1}h_k\cdot\Delta\tilde S_k.
+$$
+
+This also implies that, for any holding $h$, the discounted gains $\sum_k h_k\cdot\Delta\tilde S_k$ have mean zero under $\mathbb Q$. _Indeed,_ since $h_k$ is $\mathcal F_{t_k}$-measurable, by the tower property
+
+$$
+\mathbb E^{\mathbb Q}\left[h_k\cdot\Delta\tilde S_k\right]=\mathbb E^{\mathbb Q}\Bigl[h_k\cdot\underbrace{\mathbb E^{\mathbb Q}[\Delta\tilde S_k\mid\mathcal F_{t_k}]}_{=0}\Bigr]=0
+$$
+
+_(assuming enough integrability, e.g. bounded or square-integrable $h$)_. Hence $\mathbb E^{\mathbb Q}[e^{-rT}V_T]=V_0$.
+
+_Consequence:_ if a strategy replicated the claim exactly, $V_T=H$, then $V_0=\mathbb E^{\mathbb Q}[e^{-rT}H]$. This is why the Q-expectation is the no-arbitrage price, and it is the reason why we use it as initial capital. _Under_ $\mathbb P$ the gains have mean $\neq0$ _(they earn the risk premium)_, which is why the hedging error under $\mathbb P$ can show a bias.
+
+<b>Path-dependent claim</b>
+
+We now split $[0,T]$ into $M$ equal windows and, _for each simulated asset,_ compute the arithmetic average in each window and then the geometric mean across windows.
+
+$$
+A_j^i=\frac{1}{u_{j+1}-u_j}\int_{u_j}^{u_{j+1}}S_t^i\,dt,
+\qquad I_i=\exp\left(\frac1M\sum_{j=0}^{M-1}\log A_j^i\right)
+$$
+
+We then build the <b>terminal claim</b> as
+
+$$
+H=\left(K-\sum_{i=1}^d w_i I_i\right)^+.
+$$
+
+_We immediately notice_ that $H$ depends on the whole trajectory, not only on the price at expiry, so the value at time $t$ is _NOT_ a function of $(t,S_t)$ alone. Therefore, we cannot use Black–Scholes; we can use the signature for hedging because it represents how the path has evolved so far.
+
+- <b>Payoff:</b> $\max(K-S_{\mathrm{ave}},0)$
+
+_Note that_ the payoff $H$ can be defined as an <b>Asian-style put</b> with a variant. Indeed, an Asian put value depends on the average (arithmetic or geometric average across the windows) of the underlying price over time, not on $S_T$ alone. _Formally,_ this means:
+
+$$
+\underbrace{(K-S_T)^+}_{\text{vanilla put}}
+\qquad\text{vs.}\qquad
+\underbrace{\Bigl(K-\tfrac1T\int_0^TS_t\,dt\Bigr)^+}_{\text{arithmetic Asian put}}
+\qquad\text{or}\qquad
+\underbrace{\Bigl(K-\exp\bigl(\tfrac1T\int_0^T\log S_t\,dt\bigr)\Bigr)^+}_{\text{geometric Asian put}}.
+$$
+
+Our payoff $H=(K-I)^+$ sits between the last two: if $M=1$, then $I$ is the arithmetic average over $[0,T]$; if each window shrinks to a single observation date, $I$ is the geometric average of the prices.
+
+In our case, we are dealing with a particular case: in each window the average is not lognormal, so there's no exact closed form for the full payoff _(only the pure geometric Asian put has one, since the geometric average of a lognormal process is lognormal)_.
+
+_Note that_ by the AM–GM inequality, $I\le\frac1M\sum_jA_j$, so this put is slightly more valuable than the corresponding arithmetic one, and averaging reduces the volatility of the payoff compared with a vanilla put _(roughly $\sigma/\sqrt3\approx0.14$ instead of $\sigma=0.25$ for the log of the average)_.
+
+```python
+def terminal_claim(S, kind=claim_type):
+    """Return one terminal payoff per path."""
+    midpoint_prices = 0.5 * (S[:, :-1] + S[:, 1:])
+    if kind == 'geometric_put':
+        steps_per_window = n_steps // n_windows
+        window_means = midpoint_prices.reshape(-1, n_windows, steps_per_window, d).mean(2)
+        geometric_means = window_means.log().mean(1).exp()
+        return (strike - geometric_means @ weights).clamp_min(0)
+    if kind == 'asian_call':
+        arithmetic_means = midpoint_prices.mean(1)
+        return (arithmetic_means @ weights - strike).clamp_min(0)
+    raise ValueError('Unknown claim type')
+```
+
+
+_Furthermore,_ for this case, we can estimate the <b>risk-neutral value</b> of the discretized claim using 100,000 independent pricing paths with drift $r$ and discounting the payoff to time zero. _Formally, we have:_
+
+$$
+\widehat p\approx\mathbb E^{\mathbb Q}[e^{-rT}H],\qquad\widehat p=\frac{e^{-rT}}{N_{\mathrm{price}}}\sum_{j=1}^{N_{\mathrm{price}}}H^{(j)}
+$$
+
+```python
+def estimate_price(n_paths, batch_size=4096):
+    """Estimate the claim price and its Monte Carlo standard error."""
+    payoffs = []
+
+    # Walk through 100,000 paths in chunks of 4,096 (25 batches)
+    # to keep memory small.
+    for batch, start in enumerate(range(0, n_paths, batch_size)):
+        size = min(batch_size, n_paths - start)
+
+        # simulation under Q
+        S = simulate_paths(size, seed=1_000_000 + batch, drift=r)
+        payoffs.append(terminal_claim(S))
+
+    # Discounting.
+    H = math.exp(-r * T) * torch.cat(payoffs).double()
+
+    # return price p = mean(H) and standard error: std(H̃)/√N
+    return H.mean().item(), (H.std() / math.sqrt(n_paths)).item()
+
+initial_capital, price_se = estimate_price(n_pricing)
+H_val = terminal_claim(S_val)
+H_test = terminal_claim(S_test)
+
+print(f'Fixed initial capital (risk-neutral price): {initial_capital:.5f}')
+print(f'Pricing Monte Carlo SE: {price_se:.5f}')
+print(f'Approximate 95% pricing CI: [{initial_capital - 1.96*price_se:.5f}, '
+      f'{initial_capital + 1.96*price_se:.5f}]')
+
+# 14 features; approximately 0.02 GB for feature arrays.
+# Fixed initial capital (risk-neutral price): 0.05119
+# Pricing Monte Carlo SE: 0.00023
+# Approximate 95% pricing CI: [0.05074, 0.05164]
+```
