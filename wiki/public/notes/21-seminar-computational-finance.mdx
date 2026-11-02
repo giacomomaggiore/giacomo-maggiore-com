@@ -453,10 +453,10 @@ $$
 We start with the following definition:
 
 $$
-S^k(X)_{i_1\ldots i_k}=\int_{a<t_1<\cdots<t_k<c} dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k}
+S^k(X)_{i_1, \ldots, i_k}=\int_{a<t_1<\cdots<t_k<c} dX^{i_1}_{t_1}\cdots dX^{i_k}_{t_k}
 $$
 
-This can be split into $k+1$ disjoint pieces by cutting the interval in $b$, so we have $X_1$ on $[a,b]$ and $X_2$ on $[b,c]$:
+This can be split into $k+1$ disjoint pieces by cutting the interval at $b$, so we have $X_1$ on $[a,b]$ and $X_2$ on $[b,c]$:
 
 $$
 \{a<t_1<\cdots<t_k<c\}=\bigsqcup_{j=0}^{k}\underbrace{\{a<t_1<\cdots<t_j<b\}}_{\Delta_j(a,b)}\times\underbrace{\{b<t_{j+1}<\cdots<t_k<c\}}_{\Delta_{k-j}(b,c)}
@@ -518,7 +518,7 @@ $$
 
 That is a nice way to compute the signature of a single line segment, where $v$ in the previous formula is the displacement of the segment ($v = x_{i+1} - x_i$) and $v^{\otimes k}$ is $v$ tensored with itself $k$ times _(an order-$k$ array with entries $v_{a_1} \cdot v_{a_2} \cdot \ldots \cdot v_{a_k}$)_.
 
-but, _according to Chen's identity,_ the signature transform can be computed as
+But, _according to Chen's identity,_ the signature transform can be computed as
 
 $$
 \operatorname{Sig}^N((x_1,\ldots,x_L)) = \exp(x_2 - x_1) \boxtimes \exp(x_3 - x_2) \boxtimes \cdots \boxtimes \exp(x_L - x_{L-1}).
@@ -862,7 +862,7 @@ _Intuition:_ we need $\mathbb Q$ for pricing because it gives the initial requir
 
 _Note that_ moving from P to Q changes only the drift through the <b>Girsanov change of measure</b>.
 
-_Setting:_ under P, the price solves $dS_t=\mu S_t\,dt+\sigma S_t\,dW^{\mathbb P}_t$, where $W^{\mathbb P}$ is a P-Brownian motion. Let $ \theta=\frac{\mu-r}{\sigma}$ be the <b>market price of risk</b> _(the excess return per unit of volatility)_. 
+Indeed, under P, the price solves $dS_t=\mu S_t\,dt+\sigma S_t\,dW^{\mathbb P}_t$, where $W^{\mathbb P}$ is a P-Brownian motion. Let $ \theta=\frac{\mu-r}{\sigma}$ be the <b>market price of risk</b> _(the excess return per unit of volatility)_.
 
 <b>Girsanov's theorem</b> _(constant-drift case)_ states that, if $ L_t=\exp\left(-\theta W^{\mathbb P}_t-\tfrac12\theta^2t\right) $ is a martingale _(which is true here because $\theta$ is constant, e.g. by Novikov's condition)_, then the measure $\mathbb Q$ defined by $\frac{d\mathbb Q}{d\mathbb P}\big|_{\mathcal F_T}=L_T$ is equivalent to $\mathbb P$ and $W^{\mathbb Q}_t=W^{\mathbb P}_t+\theta t $ is a $\mathbb Q$-Brownian motion.
 
@@ -874,17 +874,10 @@ $$
 
 _Intuition:_ the change of measure removes the risk premium $\mu-r$ from the drift and replaces it with the risk-free rate, while the randomness stays the same.
 
-_On the grid,_ this is exactly the shift of the Gaussian shocks $Z^{\mathbb Q}_n=Z_n+\theta\sqrt{\Delta t}$: if $Z_n\sim N(0,1)$ under $\mathbb P$, then $Z^{\mathbb Q}_n\sim N(0,1)$ under $\mathbb Q$, and
 
-$$
-(\mu-\tfrac12\sigma^2)\Delta t+\sigma\sqrt{\Delta t}\,Z_n=(r-\tfrac12\sigma^2)\Delta t+\sigma\sqrt{\Delta t}\,Z^{\mathbb Q}_n,
-$$
+$\sigma$, _on the other hand_ is unchanged since it is linked to the path's quadratic variation: $d\langle\log S\rangle_t=\sigma^2dt$ holds path by path, and equivalent measures have the same null sets, so no change of measure can alter it. Only the drift can be changed.
 
-which is the same recursion with drift $r$. This is why `simulate_paths(..., drift=r)` samples exactly from $\mathbb Q$. The density on the grid is $L_N=\prod_{n}\exp\bigl(-\theta\sqrt{\Delta t}\,Z_n-\tfrac12\theta^2\Delta t\bigr)$.
-
-$\sigma$ is indeed unchanged since it is linked to the path's quadratic variation: $d\langle\log S\rangle_t=\sigma^2dt$ holds path by path, and equivalent measures have the same null sets, so no change of measure can alter it. Only the drift can be changed.
-
-_Furthermore,_ note that under $\mathbb Q$ the discounted price $\tilde S_t=e^{-rt}S_t$ is a martingale, that _formally_ means:
+_Furthermore,_ note that under $\mathbb Q$ the discounted price $\tilde S_t=e^{-rt}S_t$ is a martingale, which _formally_ means:
 
 $$
 \mathbb E^{\mathbb Q}\left[\tilde S_t\mid\mathcal F_s\right]=\tilde S_s,\qquad 0\le s\le t\le T.
@@ -900,7 +893,7 @@ The increment $W^{\mathbb Q}_t-W^{\mathbb Q}_s$ is independent of $\mathcal F_s$
 
 _Under_ $\mathbb P$ _instead,_ the same computation gives $\mathbb E^{\mathbb P}[\tilde S_{n+1}\mid\mathcal F_n]=\tilde S_ne^{(\mu-r)\Delta t}$: the discounted price drifts upward at the risk premium, so it is _NOT_ a martingale.
 
-<b>Self-financing portfolio.</b> Let $h_n$ be the number of shares held over $[t_n,t_{n+1}]$, chosen using only the information up to $t_n$ _(predictable)_, and let the rest of the wealth $V_n-h_n\cdot S_n$ sit in the bank account. Then
+_Secondly,_ let $h_n$ be the number of shares held over $[t_n,t_{n+1}]$, chosen using only the information up to $t_n$ _(predictable)_, and let the rest of the wealth $V_n-h_n\cdot S_n$ sit in the bank account. Then
 
 $$
 V_{n+1}=h_n\cdot S_{n+1}+(V_n-h_n\cdot S_n)e^{r\Delta t}.
@@ -914,7 +907,7 @@ $$
 \tilde V_N=V_0+\sum_{k=0}^{N-1}h_k\cdot\Delta\tilde S_k.
 $$
 
-This also implies that, for any holding $h$, the discounted gains $\sum_k h_k\cdot\Delta\tilde S_k$ have mean zero under $\mathbb Q$. _Indeed,_ since $h_k$ is $\mathcal F_{t_k}$-measurable, by the tower property
+This also implies that, _for any holding $h$,_ the discounted gains $\sum_k h_k\cdot\Delta\tilde S_k$ have mean zero under $\mathbb Q$. _Indeed,_ since $h_k$ is $\mathcal F_{t_k}$-measurable, by the tower property
 
 $$
 \mathbb E^{\mathbb Q}\left[h_k\cdot\Delta\tilde S_k\right]=\mathbb E^{\mathbb Q}\Bigl[h_k\cdot\underbrace{\mathbb E^{\mathbb Q}[\Delta\tilde S_k\mid\mathcal F_{t_k}]}_{=0}\Bigr]=0
@@ -922,8 +915,12 @@ $$
 
 _(assuming enough integrability, e.g. bounded or square-integrable $h$)_. Hence $\mathbb E^{\mathbb Q}[e^{-rT}V_T]=V_0$.
 
-_Consequence:_ if a strategy replicated the claim exactly, $V_T=H$, then $V_0=\mathbb E^{\mathbb Q}[e^{-rT}H]$. This is why the Q-expectation is the no-arbitrage price, and it is the reason why we use it as initial capital. _Under_ $\mathbb P$ the gains have mean $\neq0$ _(they earn the risk premium)_, which is why the hedging error under $\mathbb P$ can show a bias.
+_To sum up..._ if a strategy replicated the claim exactly, $V_T=H$, then $V_0=\mathbb E^{\mathbb Q}[e^{-rT}H]$. This is why the Q-expectation is the <b>no-arbitrage price,</b> which is why we use it as initial capital.
 
+_Under_ $\mathbb P$ the gains have mean $\neq0$ _(they earn the risk premium)_, which is why the hedging error under $\mathbb P$ can show a bias.
+
+---
+<br/>
 <b>Path-dependent claim</b>
 
 We now split $[0,T]$ into $M$ equal windows and, _for each simulated asset,_ compute the arithmetic average in each window and then the geometric mean across windows.
@@ -939,17 +936,21 @@ $$
 H=\left(K-\sum_{i=1}^d w_i I_i\right)^+.
 $$
 
-_We immediately notice_ that $H$ depends on the whole trajectory, not only on the price at expiry, so the value at time $t$ is _NOT_ a function of $(t,S_t)$ alone. Therefore, we cannot use Black–Scholes; we can use the signature for hedging because it represents how the path has evolved so far.
+_We immediately notice_ that $H$ <b>depends on the whole trajectory,</b> not only on the price at expiry, so the value at time $t$ is _NOT_ a function of $(t,S_t)$ alone.
 
-- <b>Payoff:</b> $\max(K-S_{\mathrm{ave}},0)$
+_Therefore,_ we cannot use Black–Scholes; we can use the signature for hedging because it represents how the path has evolved so far.
 
-_Note that_ the payoff $H$ can be defined as an <b>Asian-style put</b> with a variant. Indeed, an Asian put value depends on the average (arithmetic or geometric average across the windows) of the underlying price over time, not on $S_T$ alone. _Formally,_ this means:
+<b>Payoff:</b> $\max(K-S_{\mathrm{average}},0)$
+
+_Note that_ the payoff $H$ can be defined as an <b>Asian-style put</b> with a variant. Indeed, an Asian put value depends on the average (arithmetic or geometric average across the windows) of the underlying price over time, not on $S_T$ alone.
+
+_Formally,_ this means:
 
 $$
-\underbrace{(K-S_T)^+}_{\text{vanilla put}}
-\qquad\text{vs.}\qquad
+\underbrace{(K-S_T)^+}_{\text{vanilla put}},
+\qquad
 \underbrace{\Bigl(K-\tfrac1T\int_0^TS_t\,dt\Bigr)^+}_{\text{arithmetic Asian put}}
-\qquad\text{or}\qquad
+\qquad
 \underbrace{\Bigl(K-\exp\bigl(\tfrac1T\int_0^T\log S_t\,dt\bigr)\Bigr)^+}_{\text{geometric Asian put}}.
 $$
 
@@ -957,7 +958,6 @@ Our payoff $H=(K-I)^+$ sits between the last two: if $M=1$, then $I$ is the arit
 
 In our case, we are dealing with a particular case: in each window the average is not lognormal, so there's no exact closed form for the full payoff _(only the pure geometric Asian put has one, since the geometric average of a lognormal process is lognormal)_.
 
-_Note that_ by the AM–GM inequality, $I\le\frac1M\sum_jA_j$, so this put is slightly more valuable than the corresponding arithmetic one, and averaging reduces the volatility of the payoff compared with a vanilla put _(roughly $\sigma/\sqrt3\approx0.14$ instead of $\sigma=0.25$ for the log of the average)_.
 
 ```python
 def terminal_claim(S, kind=claim_type):
