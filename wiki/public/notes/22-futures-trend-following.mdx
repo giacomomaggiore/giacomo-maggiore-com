@@ -27,7 +27,7 @@ We first spend some time introducing and defining futures contracts.
 
 A <b>futures contract</b> is a standardized legal agreement to buy or sell a specific asset (underlying) at a predetermined price on a set date (delivery date) in the future.
 
-In the futures market, exchanges set contract sizes, qualities, delivery dates and locations, so trades occur transparently and not OTC on organized exchanges (CME Group, ICE, Eurex). _On the other hand,_ <b>forward contracts</b> or OTC derivatives can have similar characteristics but are traded over the counter as private, customizable and bilateral agreements without a settlement house or a central exchange.
+In the futures market, exchanges set contract sizes, qualities, delivery dates and locations, so trades occur transparently, rather than OTC, on organized exchanges (CME Group, ICE, Eurex). _On the other hand,_ <b>forward contracts</b> or OTC derivatives can have similar characteristics but are traded over the counter as private, customizable and bilateral agreements without a settlement house or a central exchange.
 
 The most important thing when entering a futures contract is that the trader doesn't have to <b>pay the full contract</b> upfront; he only posts an <b>initial margin</b> _(typically 2 to 12% of the total underlying value)_ and then accounts are <b>settled daily</b>, _i.e._ profits or losses from the contract are credited or debited every day rather than waiting for expiration.
 
@@ -237,15 +237,15 @@ Regarding this, pay attention not only to overall returns but in particular to d
 
 ## <a id="3"><b>3. Futures data</b></a>
 
-With equities, if you buy some stocks quoted in USD but you do not earn/spend in USD, you are <b>exposed both to the stock and to the currency. </b> The return then depends both on the performance of the stock and on the currency.
+With equities, if you buy some stocks quoted in USD but you do not earn/spend in USD, you are <b>exposed both to the stock and to the currency.</b> The return then depends both on the performance of the stock and on the currency.
 
 With futures, the situation is different. When you open a futures position, <b>no money changes hands</b> except for commission fees. Since no money changes hands on initiation of the position, you have much <b>less foreign exchange risk</b>, and so your return depends on the currency exchange <b>only when you close the position.</b>
 
 _For example,_ suppose that you are CHF-based.
 
-- At $t = 0$ you buy 10 contracts of 10 Nasdaq Futures for 2,000 USD, with exchange rate 1.56.
+- At $t = 0$ you buy 10 Nasdaq futures contracts at 2,000 USD, with an exchange rate of 1.56.
 - You close the position at $t = 1$ by offsetting the contracts at a price of 1,834 USD.
-- You lose 166,000 USD, _i.e._ 166 basis points times the point value _(in the case of Nasdaq, this is 100)_ times the number of contracts.
+- You lose 166,000 USD, _i.e._ 166 points times the point value _(in the case of Nasdaq, this is 100)_ times the number of contracts.
 - The exchange rate at $t = 1$ is 1.44.
 - So your loss in CHF is more or less 115,300, and the exchange rate at opening has no impact.
 
@@ -262,14 +262,18 @@ Most people in futures trading <b>roll</b> their positions, so open interest osc
 As a futures trader, you need a clear rule to switch from one contract to another. Common methods are based on volume and/or open interest.
 
 <div align = "center">
-![Open interest moving from month to month](/images/notes/third-semester/open-interest.png)
+![Open interest moving from month to month](/images/notes/third-semester/open-interest-2.png)
 </div>
+<small><i> Open interest moving from month to month </i></small>
+
 
 Note that we often see <b>volume spikes between months.</b>
 
 <div align = "center">
 ![Volume across contract months](/images/notes/third-semester/volume.png)
 </div>
+<small><i> Volume moving from month to month </i></small>
+
 
 ---
 <br/>
@@ -280,6 +284,9 @@ The <b>term structure</b> (or yield curve) refers to the shape of the curve obta
 <div align = "center">
 ![Term structure of heating oil](/images/notes/third-semester/term-structure.png)
 </div>
+<small><i>Term structure of heating oil</i></small>
+
+
 
 _In the normal case,_ the price goes up in each successive month.
 
@@ -377,7 +384,7 @@ $$
 
 The Eurodollar is based on the three-month US dollar LIBOR _(LIBOR has been discontinued and the contract replaced by the 3-month SOFR future, which has the same $25 per bp)_. The notional of this contract is USD 1 million. It is a bet on the 3-month interest rate, so a price of 98.00 means an implied rate of 2%.
 
-Moving the price by 1 full point means that the rate moves by 1 percentage point, i.e. 1% per year. The contract only covers 3 months _(1/4 of a year)_, so you earn a quarter of that:
+Moving the price by 1 full point means that the rate moves by 1 percentage point, i.e., 1% per year. The contract only covers 3 months _(1/4 of a year)_, so you earn a quarter of that:
 - convert the index point to a percentage by dividing by $100$ _(1 index point = 1% of the annualized rate)_;
 - turn the annual rate into a quarterly one by dividing by $4$.
 
@@ -431,8 +438,14 @@ Note also that, if you plot the performance of the major managed futures funds i
 - but if you <b>scale/normalize for volatility</b>, they all look the same.
 
 <div align = "center">
-![Performance comparison of futures funds, unadjusted and normalised for volatility](/images/notes/third-semester/funds-performance.png)
+![Performance comparison of futures funds, unadjusted and normalised for volatility](/images/notes/third-semester/funds-performance-2.png)
 </div>
+<small><i> Performance comparison of futures funds since 2004 (unadjusted) </i></small>
+<div align = "center">
+![Performance comparison of futures funds, unadjusted and normalised for volatility](/images/notes/third-semester/funds-performance-3.png)
+</div>
+<small><i> Performance comparison of futures funds since 2004 (normalised for volatility) </i></small>
+
 
 _So,_ they are all doing _the same thing!_
 
@@ -458,7 +471,7 @@ $$
 TR_t = \max(H_t, C_{t-1}) - \min(L_t, C_{t-1})
 $$
 
-where $H_t$, $L_t$ and $C_{t-1}$ are today's high, today's low and yesterday's close, so we arrive at the range in which we have been trading today. Then, _for each day,_ we take the <b>average </b>of all $TR_t$. Some common options include exponential smoothing.
+where $H_t$, $L_t$ and $C_{t-1}$ are today's high, today's low and yesterday's close, so we arrive at the range in which we have been trading today. Then, _for each day,_ we take the <b>average</b> of all $TR_t$. Some common options include exponential smoothing.
 
 The idea is that it provides not only a comparable number to standardize position sizes, but also an estimate of how large a move we can expect in a day.
 
@@ -489,84 +502,144 @@ _(Note that we used the term "theoretical" because volatility is not stationary 
 Furthermore, some hedge funds use <b>margin-to-equity</b> as their position sizing and risk measurement. In this case, the exchange sets the margins of each futures market based primarily on its view of volatility, to minimize the risk of default by market participants. The hedge fund then uses this as a basis, for example taking 0.5% of equity risk for each position, where equity is the full account value.
 
 ---
-<br/>
-<b>Trend Strategies</b>
-
-Looking at trend strategies, there are two common methods:
-
-- buying positive breakouts and shorting negative breakouts _(you need to figure out what a breakout is)_;
-- using a classic trend indicator (moving average) and entering on different crossover rules. The simplest example is to plot a moving average, then buy if the price crosses above it and short when it crosses below.
-
-Often, a <b>filter rule</b> is added on top, which allows you to enter the market long only when it is in a bullish phase, and vice versa for short positions. You want to avoid going accidentally against a strong trend just because of a short-term counter move. A good way is to combine two layers of trend measurement with different time horizons _(a 200-day moving average and a shorter one for trend entry signals)_.
-
----
 
 ## <a id="5"><b>5. Two basic trend-following strategies</b></a>
 
-We now present 2 different trend-following strategies. Note that, even if they rely on different indicators, they can be combined and work better together.
+We now present 2 different trend-following strategies. _Note that,_ even if they rely on different indicators, they can be combined and work better together.
 
-<b>Moving Average</b>
+<b>Moving Averages Strategy</b>
 
-The basis of this strategy is the <b>moving average</b>, i.e. the average price of the underlying in the last $x$ days. _In particular,_ we consider 2 moving averages with different depths for the lookback period, so that we have a fast and a slow moving average.
+The basis of this strategy is the <b>moving average</b>, i.e. the average price of the underlying in the last $x$ days. _In particular,_ we consider 2 moving averages with different depths for the lookback period, so that we have a <b>fast</b> and a <b>slow </b>moving average.
 
 _(We can use different moving averages; the most common ones are the exponential ones over 50 and 100 days.)_
 
-The strategy goes both long and short and it is always in the market, i.e. for every asset in the asset universe (every futures contract) we are either long or short. The strategy is run on daily data and always trades the day after, to prevent look-ahead bias.
+The strategy goes both long and short and it is always in the market, i.e. for every asset in the asset universe (every futures contract) <b>we are either long or short.</b> The strategy is run on daily data and always trades the day after to prevent <b>look-ahead bias</b>.
 
 The logic is very simple: if the faster moving average is above the slower moving average, the trend is up, so we go long.
 
-<b>Breakout</b>
+Formally, let $P_t$ be the closing price at day $t$, and let $\text{MA}^{f}_t$ and $\text{MA}^{s}_t$ be the fast and slow moving averages, with lookbacks $n_f < n_s$. _For the simple moving average we have:_
 
-The second strategy is still very simple: if today's closing price is higher than or equal to the highest close of the past 100 days, we buy the following day. _Similarly,_ if the price is below or equal to the lowest close of the past 100 days, we sell at the open tomorrow and go short.
+$$
+\text{MA}^{(n)}_t = \frac{1}{n}\sum_{i=0}^{n-1} P_{t-i}
+$$
+
+
+_For the exponential one we use, with $\alpha = \frac{2}{n+1}$:_
+$$
+\text{EMA}^{(n)}_t = \alpha P_t + (1-\alpha)\,\text{EMA}^{(n)}_{t-1}
+$$
+
+Then the signal computed at the close of day $t$ is:
+
+$$
+s_t =
+\begin{cases}
++1 & \text{if } \text{MA}^{f}_t > \text{MA}^{s}_t \quad \text{(long)}\\[2pt]
+-1 & \text{if } \text{MA}^{f}_t \le \text{MA}^{s}_t \quad \text{(short)}
+\end{cases}
+$$
+
+and, to avoid look-ahead bias, the position held on day $t+1$ is $\text{pos}_{t+1} = s_t$. The strategy return on day $t+1$ is therefore:
+
+$$
+R^{\text{strat}}_{t+1} = s_t \cdot r_{t+1}, \qquad r_{t+1} = \frac{P_{t+1}-P_t}{P_t}.
+$$
+
+---
+<br/>
+
+
+<b>Breakout Strategy</b>
+
+The second strategy is _still_ very simple: if today's closing price is higher than or equal to the highest close of the past 100 days, we buy the following day. _Similarly,_ if the price is below or equal to the lowest close of the past 100 days, we sell at the open tomorrow and go short.
 
 To get out of the position, a long trade is closed when the close reaches the lowest point in 50 days, and a short trade is covered when the price makes a 50-day high (always the day following the signal).
 
 _(Note that this strategy doesn't have to be always in the market.)_
 
+Formally, let $P_t$ be the closing price at day $t$ and define the rolling extremes of the previous $n$ closes as
+
+$$
+H^{(n)}_t = \max_{1\le i\le n} P_{t-i}, \qquad L^{(n)}_t = \min_{1\le i\le n} P_{t-i}.
+$$
+
+Let $\text{pos}_t \in \{-1,0,+1\}$ be the position held during day $t$ _(short, flat, long)_. The signal is computed at the close of day $t$ and executed the following day, so $\text{pos}_{t+1}$ depends only on information up to $t$:
+
+$$
+\text{pos}_{t+1} =
+\begin{cases}
++1 & \text{if } \text{pos}_t = 0 \text{ and } P_t \ge H^{(100)}_t \quad \text{(long entry)}\\[2pt]
+-1 & \text{if } \text{pos}_t = 0 \text{ and } P_t \le L^{(100)}_t \quad \text{(short entry)}\\[2pt]
+0 & \text{if } \text{pos}_t = +1 \text{ and } P_t \le L^{(50)}_t \quad \text{(long exit)}\\[2pt]
+0 & \text{if } \text{pos}_t = -1 \text{ and } P_t \ge H^{(50)}_t \quad \text{(short exit)}\\[2pt]
+\text{pos}_t & \text{otherwise.}
+\end{cases}
+$$
+
+_Therefore, the strategy return on day $t+1$ is:_
+
+$$
+R^{\text{strat}}_{t+1} = \text{pos}_{t+1} \cdot r_{t+1}, \qquad r_{t+1} = \frac{P_{t+1}-P_t}{P_t}.
+$$
+
 ---
+
 <br/>
 <b>Performance</b>
 
-These strategies are quite uncorrelated with the MSCI World (and in general with equities):
-
-- when equities skyrocket, there is nothing we can do and the strategies look poor in comparison;
+These strategies are quite uncorrelated with the MSCI World _(and in general with equities):_
+- when equities skyrocket, there is nothing we can do and the strategies look poor in comparison
 - but the true value of these strategies is providing uncorrelated returns.
 
-Also, note that the correlation between these two strategies has been fairly positive, and they have low correlation to the stock market.
+_Also, note that_ the correlation between these two strategies has pretty much always been positive and they have <b>low correlation to the stock market.</b>
+However, they are <b>more volatile</b> than the benchmarks and show larger numbers in both return and risk _(volatility)._ But note that volatility itself is not a risk, as it can be <b>scaled up/down with the position-sizing factor.</b>
 
-The two strategies are more volatile than the benchmarks and show larger numbers in both return and risk (volatility). But note that volatility itself is not a risk, as it can be scaled up/down with the position-sizing factor.
-
-Furthermore, note that the Sharpe ratio is not a meaningful metric here because:
-
-- it takes upward volatility into account as well, so for this we can use the Sortino ratio;
-- we are dealing with leveraged trading.
+_Furthermore,_ note that the Sharpe ratio is not a meaningful metric here because:
+- it takes upward volatility into account as well $\implies$ so for this we can use the Sortino ratio;
+- we are dealing with <b>leveraged trading.</b>
 
 ---
 <br/>
 <b>Combining the Strategies</b>
 
-The moving average strategy has the problem that it is always in the market, even if there is not really a trend. When there is sideways movement, the strategy tends to enter and exit after some time, losing each turn.
+The moving average strategy has the problem that it <b>is always in the market,</b> even if there is _NOT_ a meaningful trend. Indeed, when there is sideways movement, the strategy tends to enter and exit after some time, losing each turn.
 
-_Conversely,_ the breakout strategy has the same problem: since it enters the market after seeing the highest/lowest price, it has the tendency to go against the main market trend at times.
+_Conversely,_ the breakout strategy has a similar problem: since it enters the market after seeing the highest/lowest price, it tends to go against the main market trend at times.
 
 The idea to solve both problems is to apply a <b>trend filter</b> to make sure we only trade in the direction of the main trend. We can indeed use the moving average for trend filtering and then use the breakout strategy for entries.
 
-To sum up, the full strategy is:
+Formally, let $s_t \in \{-1,+1\}$ be the <b>trend filter</b>, i.e. the moving average signal
 
-- broad universe of futures markets traded, across all major sectors;
-- trading daily;
-- trend is considered bullish if EMA 50 is above EMA 100;
-- trend is considered bearish if EMA 50 is below EMA 100;
-- enter long on a new 100-day high if the trend is bullish;
-- enter short on a new 100-day low if the trend is bearish;
-- exit long if the price falls to a 50-day low, or the trend turns bearish;
-- exit short if the price rises to a 50-day high, or if the trend turns bullish;
-- position sizing uses a 20-day ATR with a target of 15 basis points.
+$$
+s_t = \begin{cases} +1 & \text{if } \text{MA}^{f}_t > \text{MA}^{s}_t \\[2pt] -1 & \text{otherwise,} \end{cases}
+$$
+
+and let $H^{(n)}_t$, $L^{(n)}_t$ be the highest and lowest close of the previous $n$ days. The breakout entries are only taken <b>in the direction of the filter</b>:
+
+$$
+\text{pos}_{t+1} =
+\begin{cases}
++1 & \text{if } \text{pos}_t = 0,\; s_t = +1 \text{ and } P_t \ge H^{(100)}_t \quad \text{(long entry)}\\[2pt]
+-1 & \text{if } \text{pos}_t = 0,\; s_t = -1 \text{ and } P_t \le L^{(100)}_t \quad \text{(short entry)}\\[2pt]
+0 & \text{if } \text{pos}_t = +1 \text{ and } P_t \le L^{(50)}_t \quad \text{(long exit)}\\[2pt]
+0 & \text{if } \text{pos}_t = -1 \text{ and } P_t \ge H^{(50)}_t \quad \text{(short exit)}\\[2pt]
+\text{pos}_t & \text{otherwise.}
+\end{cases}
+$$
+
+_Equivalently,_ the entry condition can be written as a product of the two signals: a long entry requires both $s_t = +1$ and a breakout above $H^{(100)}_t$, a short entry requires both $s_t = -1$ and a breakout below $L^{(100)}_t$. A breakout against the filter is simply ignored.
+
+The return is _as before:_
+
+$$
+R^{\text{strat}}_{t+1} = \text{pos}_{t+1}\, r_{t+1}
+$$
+
 
 ---
 <br/>
 <b>Cash Management</b>
 
-The interest rate is a very important factor in futures trading since, when dealing with futures, we do not need cash for our positions. We just need enough cash on the books to cover the initial margin and to avoid the risk of margin calls.
+The interest rate is a very important factor in futures trading since, _when dealing with futures,_ we do not need cash for our positions. We just need enough cash on the books to cover the initial margin and to avoid the risk of margin calls.
 
-Note that when holding cash in a bank, we face counterparty risk, so we should carefully think about how to hold cash. An alternative is to stick with government debt of top-tier countries, preferably in your own currency.
+Note that when holding cash in a bank, we face <b>counterparty risk</b>, so we should carefully think about how to hold cash. An alternative is to stick with government debt of top-tier countries, <b>preferably in your own currency.</b>
