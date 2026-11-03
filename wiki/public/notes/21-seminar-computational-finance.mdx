@@ -783,7 +783,7 @@ torch.manual_seed(7)
 plt.rcParams.update({'figure.figsize': (10, 4), 'axes.grid': True})
 
 ```
-
+<br/>
 <b>Asset Prices</b>
 
 We can model asset prices using a <b>discretized geometric Brownian motion</b> given by
@@ -798,9 +798,6 @@ _Furthermore,_ note that the term $-\frac12\sigma^2$ is the <b>Itô correction</
 
 
 ```python
-
-
-
 n_calibration, n_val, n_test = 2048, 2048, 4096
 paths_per_epoch, epochs = 256, 2000
 n_pricing = 100_000
@@ -850,7 +847,7 @@ times = torch.linspace(0, T, n_steps + 1)
 
 ```
 
-_Consider that_ in the previous code we assumed `n_steps = 40` and $T=1$ year, so we have $\Delta t=0.025$ (approximately rebalanced hedging every six trading days).
+_Consider that_ in the previous code we assumed `n_steps = 40` and $T=1$ year, so we have $\Delta t=0.025$ ($\approx$ rebalanced hedging every six trading days).
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/signature-1.png)
@@ -875,8 +872,7 @@ $$
 _Intuition:_ the change of measure removes the risk premium $\mu-r$ from the drift and replaces it with the risk-free rate, while the randomness stays the same.
 
 
-$\sigma$, _on the other hand_ is unchanged since it is linked to the path's quadratic variation: $d\langle\log S\rangle_t=\sigma^2dt$ holds path by path, and equivalent measures have the same null sets, so no change of measure can alter it. Only the drift can be changed.
-
+$\sigma$, _on the other hand_ is unchanged since it is linked to the path's quadratic variation: $d\langle\log S\rangle_t=\sigma^2dt$.
 _Furthermore,_ note that under $\mathbb Q$ the discounted price $\tilde S_t=e^{-rt}S_t$ is a martingale, which _formally_ means:
 
 $$
@@ -892,20 +888,6 @@ $$
 The increment $W^{\mathbb Q}_t-W^{\mathbb Q}_s$ is independent of $\mathcal F_s$ and $N(0,t-s)$, and $\mathbb E[e^{\sigma N(0,t-s)}]=e^{\frac12\sigma^2(t-s)}$, so the factors cancel and we get $\tilde S_s$. On the grid the same computation gives $\mathbb E^{\mathbb Q}[\tilde S_{n+1}\mid\mathcal F_n]=\tilde S_n$.
 
 _Under_ $\mathbb P$ _instead,_ the same computation gives $\mathbb E^{\mathbb P}[\tilde S_{n+1}\mid\mathcal F_n]=\tilde S_ne^{(\mu-r)\Delta t}$: the discounted price drifts upward at the risk premium, so it is _NOT_ a martingale.
-
-_Secondly,_ let $h_n$ be the number of shares held over $[t_n,t_{n+1}]$, chosen using only the information up to $t_n$ _(predictable)_, and let the rest of the wealth $V_n-h_n\cdot S_n$ sit in the bank account. Then
-
-$$
-V_{n+1}=h_n\cdot S_{n+1}+(V_n-h_n\cdot S_n)e^{r\Delta t}.
-$$
-
-Multiplying by $e^{-rt_{n+1}}$ and writing $\tilde V_n=e^{-rt_n}V_n$, this becomes
-
-$$
-\tilde V_{n+1}=\tilde V_n+h_n\cdot\bigl(\tilde S_{n+1}-\tilde S_n\bigr),
-\qquad\text{so}\qquad
-\tilde V_N=V_0+\sum_{k=0}^{N-1}h_k\cdot\Delta\tilde S_k.
-$$
 
 This also implies that, _for any holding $h$,_ the discounted gains $\sum_k h_k\cdot\Delta\tilde S_k$ have mean zero under $\mathbb Q$. _Indeed,_ since $h_k$ is $\mathcal F_{t_k}$-measurable, by the tower property
 
