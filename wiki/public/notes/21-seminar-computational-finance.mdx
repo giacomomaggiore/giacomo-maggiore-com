@@ -34,7 +34,7 @@ _Lastly_, note that the following page reflects my learning journey and not the 
     - [3.2. Linear Statistical Models with Signature Transforms](#3.2)
     - [3.3. Algorithm 1: Adaptive Weight via Signature Kernel ('AdaWeight.Sig')](#3.3)
     - [3.4. Algorithm 2: Adaptive Linear Models with Signature Kernel](#3.4)
-
+- [4. Signature Based Deep Hedging](#4)
 <br/>
 ---
 
@@ -922,7 +922,9 @@ _We immediately notice_ that $H$ <b>depends on the whole trajectory,</b> not onl
 
 _Therefore,_ we cannot use Black–Scholes; we can use the signature for hedging because it represents how the path has evolved so far.
 
-<b>Payoff:</b> $\max(K-S_{\mathrm{average}},0)$
+$$
+\text{Payoff} = \max(K-S_{\mathrm{average}},0)
+$$
 
 _Note that_ the payoff $H$ can be defined as an <b>Asian-style put</b> with a variant. Indeed, an Asian put value depends on the average (arithmetic or geometric average across the windows) of the underlying price over time, not on $S_T$ alone.
 
@@ -1137,7 +1139,10 @@ where each term is the profit or loss of that interval. We then want $G$ to be a
 
 We now consider $F_m$, the standardized signature up to degree $m$, and include a constant coordinate by defining:
 
-$\Phi_n=(1,F_n)\in\mathbb R^q$
+$$
+\Phi_n=(1,F_n)\in\mathbb R^q
+$$
+
 
 
 def add_constant(features):
@@ -1238,7 +1243,9 @@ torch.testing.assert_close(actual_gain, expected_gain, rtol=1e-4, atol=1e-6)
 
 We now apply the same procedure, but replace the linear map with a <b>nonlinear neural network</b> of the following form:
 
-$h_n=f_\theta(F_n)$
+$$
+h_n=f_\theta(F_n)
+$$
 
 _Note that_ the network has two hidden layers of 32 units with Tanh activation and a linear output. Consider also that holdings can be negative.
 
@@ -1327,8 +1334,4 @@ Fixed initial capital (Q price): 0.05119. Physical-measure test mean payoff (not
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/signature-3.png)
-</div>
-
-<div align = "center">
-![Bias variance tradeoff](/images/notes/third-semester/signature-4.png)
 </div>

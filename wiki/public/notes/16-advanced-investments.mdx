@@ -1779,5 +1779,327 @@ During recessions _(in grey in the plot below)_, we usually see a steeper yield 
 
 Note also that yield curve inversions typically occur <b>right before a recession</b>, since an inverted curve means that the market expects future short rates to be lower, usually because the central bank is holding rates high enough to slow down the economy.
 
+---
+<br/>
+<b>The Expectations Hypothesis</b>
+
+The expectations hypothesis (EH) is the classic theory behind understanding the shape of the yield curve, and it can be stated mathematically in three equivalent ways:
+
+1. the n-period yield is the <b>average of the expected future one-period yields</b>:
+
+$$
+y_t^{(n)} = \frac{1}{n}E_t\left[\sum_{i=0}^{n-1} y_{t+i}^{(1)}\right] + rp_y^{(n)}
+$$
+
+2. the <b>forward rate</b> equals the <b>expected future spot rate</b>:
+
+$$
+f_t^{(n)} = E_t\left[y_{t+n-1}^{(1)}\right] + rp_f^{(n)}
+$$
+
+3. the <b>expected returns</b> from holding bonds of <b>all maturities are identical</b>:
+
+$$
+E_t\left[r_{t+1}^{(n)}\right] = y_t^{(1)} + rp_h^{(n)}
+$$
+
+_Note that_ even if we include the risk premia $rp_y$, $rp_f$, and $rp_h$ in the above equations, they are zero in the purest form of the expectations hypothesis.
+
+The idea behind these expressions is that alternative ways of getting money from one period to another must have the <b>same expected value</b> plus a risk premium.
+
+The inclusion of the risk premium can be justified because one way can be riskier than the other. For 1), the intuition is that $rp_y$ is the expected return from holding an $n$-period bond to maturity financed by rolling over short-term bonds.<br/>From 2), the _intuition_ is that the forward premium $rp_f$ is the expected return from planning to borrow for a given future year in the spot market and agreeing today to lend in the forward market. <br/>From 3), _the intuition_ is that $rp_h$ is the one-period excess return from holding a long-term bond for one period financed by issuing a one-period bond _(note that this is typically a dependent variable in return regressions)_.
+
+_However,_ note that to test this we have to make some assumptions about risk premia. In particular, suppose the risk premia can be anything and can change over time. _In this case,_ we could always define:
+
+$$
+rp_{f,t}^{(n)} = f_t^{(n)} - E_t\left[y_{t+n-1}^{(1)}\right]
+$$
+
+so, independently of the data, the premium just absorbs the difference and then the equation holds by construction. Therefore, if we want to test the EH, we need to impose that the risk premia are zero, constant, or not dependent on the slope of the curve.
+
+We can then proceed with an illustrative example. Suppose you have $1$ to invest for two years at $t = 0$; you have two ways to do this:
+- buy a two-year zero-coupon bond and hold it until maturity ($t = 2$);
+- buy a one-year bond today and roll it at $t = 1$ when it matures, reinvesting in a new one-year bond.
+
+In the first case, the return of the long bond is known at $t = 0$, but the return from the rolling alternative is not since the next one-year rate is not known. _However,_ the EH says that the two alternatives must have the same expected value, so the long yield is the average of the current yield and the expected future one.
+
+$$
+y_t^{(2)} = \frac{1}{2}\left(y_t^{(1)} + E_t\left[y_{t+1}^{(1)}\right]\right)
+$$
+
+---
 
 ## <a id="10">Bond Predictability and the Cross-Section of Bond Returns</a>
+
+_Empirically,_ average holding period returns of bonds of different maturities are quite similar, despite the increasing variance of long-maturity bond returns.
+
+_For example,_ if we consider the period 1961–2005, the average <b>continuously compounded</b> one-year return on zero-coupon US Treasury bonds was:
+
+**Zero-coupon bond returns**
+
+| Bond maturity | Average holding period return | Standard deviation |
+| --- | --- | --- |
+| 1 | 4.78 | 3.22 |
+| 2 | 5.10 | 3.78 |
+| 3 | 5.41 | 4.57 |
+| 4 | 5.66 | 5.42 |
+| 5 | 5.87 | 6.30 |
+
+But the reward for extending the duration is highest at short maturities and then decays at longer maturities:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-1.png)
+</div>
+
+_Similarly,_ the Sharpe ratios obtained by extending the duration are greater than 1 at short maturities and then decline for longer portfolios.
+
+Indeed, for short maturities, a small increase in duration earns a premium for little extra risk, so the Sharpe ratio increases. _On the other hand,_ at long maturities each year introduces more and more volatility because long bonds are more sensitive to yield changes, so we have a smaller Sharpe ratio.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-2.png)
+</div>
+---
+<br/>
+<b>Predictability</b>
+
+Under the expectations hypothesis, <b>risk premia are constant and unpredictable</b>.
+
+So if we want to analyze predictability, we have to test the various forms of the expectations hypothesis.
+
+<b>Testing the EH using forward rates</b>
+
+We can start by testing form 2 of the expectations hypothesis, which _recall_ states that forward rates should forecast future short rates, _i.e._
+
+$$
+f_t^{(n)} = E_t\left[y_{t+n-1}^{(1)}\right] + rp_f^{(n)}
+$$
+
+This implies that we can set up th following regression:
+
+$$
+y_{t+n-1}^{(1)} = \alpha + \beta f_t^{(n)} + \epsilon_{t+n-1}
+$$
+
+If the EH holds, the forward rate is an unbiased forecast of the future spot rate, up to a constant, so we would have β = 1 and \alpha as the risk premium.
+
+
+$$
+y_{t+n-1}^{(1)} - y_t^{(1)}
+= \alpha + \beta\left(f_t^{(n)} - y_t^{(1)}\right) + \varepsilon_{t+n-1}
+$$
+
+We now see that, _under the EH,_ the spread between the forward one-year rate and today's rate should predict the change in the one-year yield.
+
+_Intuition:_ if the forward rate is above today's rate, the market is saying that rates will rise and, under the EH, the yield should rise by about that spread since we have $\beta = 1$. _However,_ if the data is not constant, the forward rate is a <b>biased forecast</b>, so the premium is not constant _(it varies with time and spread)_.
+
+In the case $n = 2$, the forward-spot spread $f_t^{(2)} - y_t^{(1)}$ can be rewritten as:
+
+$$
+\begin{aligned}
+f_t^{(2)} - y_t^{(1)} &= p_t^{(1)} - p_t^{(2)} - y_t^{(1)} \\
+&= \left({\color{green} p_{t+1}^{(1)}} - p_t^{(2)} + p_t^{(1)}\right) + \left({\color{green} -p_{t+1}^{(1)}} - y_t^{(1)}\right) \\
+&= {\color{blue}\left(r_{t+1}^{(2)} - y_t^{(1)}\right)} + {\color{red}\left(y_{t+1}^{(1)} - y_t^{(1)}\right)} \, .
+\end{aligned}
+$$
+
+_Note that_ this must hold both ex post _(using realized values, i.e. the current $r_{t+1}^{(2)}$ and $y_{t+1}^{(1)}$)_ and ex ante _(using expectations conditional on today's information)_.
+
+<b>Fama–Bliss Regressions</b>
+
+The decomposition of the forward-spot spread for $n = 2$ suggests two complementary regressions, first run by Fama and Bliss in 1987. Indeed, from:
+
+$$
+f_t^{(2)} - y_t^{(1)}
+= \left(r_{t+1}^{(2)} - y_t^{(1)}\right)
++ \left(y_{t+1}^{(1)} - y_t^{(1)}\right)
+$$
+
+we can derive the two following regressions:
+
+$$
+y_{t+1}^{(1)} - y_t^{(1)}
+= \alpha + \beta\left(f_t^{(2)} - y_t^{(1)}\right) + \varepsilon_{t+1},
+$$
+
+$$
+r_{t+1}^{(2)} - y_t^{(1)}
+= a + b\left(f_t^{(2)} - y_t^{(1)}\right) + \eta_{t+1}.
+$$
+
+_In this case, again,_ the EH predicts that:
+- forward rates forecast future short rates, with $\beta = 1$;
+- risk premia are constant and unpredictable, $b = 0$, with the further implication that $\beta + b = 1$.
+
+_In the general case,_ for $n$, the forward-spot spread $f_t^{(n)} - y_t^{(1)}$ can be decomposed as:
+
+$$
+\begin{aligned}
+f_t^{(n)} - y_t^{(1)} &= p_t^{(n-1)} - p_t^{(n)} - y_t^{(1)} \\
+&= \left(p_{t+1}^{(n-1)} - p_t^{(n)} - y_t^{(1)}\right) + \left(-p_{t+1}^{(n-1)} + p_t^{(n-1)}\right) \\
+&= \left(r_{t+1}^{(n)} - y_t^{(1)}\right) + (n-1)\left(y_{t+1}^{(n-1)} - y_t^{(n-1)}\right) \, .
+\end{aligned}
+$$
+
+
+and, _again,_ the spread must <b>predict future returns</b> or changes in yields. _Again,_ for general $n$, the Fama–Bliss regressions are _(however, note that for the general case $n > 2$, $b$ and $\beta$ do not need to sum to 1)_:
+
+$$
+y_{t+n-1}^{(1)} - y_t^{(1)}
+= \alpha + \beta\left(f_t^{(n)} - y_t^{(1)}\right) + \varepsilon_{t+n-1},
+$$
+
+$$
+r_{t+1}^{(n)} - y_t^{(1)}
+= a + b\left(f_t^{(n)} - y_t^{(1)}\right) + \eta_{t+1}.
+$$
+
+_Empirically,_ using US Treasury rates from 1961 to 2025, we see the following:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-3.png)
+</div>
+
+- at short horizons, the spread does not predict future yields but only future returns _(excess returns move almost one-to-one with the spread)_;
+- at longer horizons, the spread starts to predict changes in interest rates $\implies$ the <b>expectations hypothesis works better in the long run!</b>
+
+_Furthermore,_ note that <b>risk premia are not constant</b>, contrary to what the EH says. They indeed vary over time and with the forward-spot spread _(the violation of the EH is often called the <b>expectations hypothesis puzzle</b>).
+
+---
+<br/>
+<b>A Simple Forward-Spot Spread Strategy</b>
+
+We can now try to exploit return predictability by considering the following simple strategy:
+- at the end of each year $t$, we compute the <b>forward-spot spread</b> $f_t^{(5)} - y_t^{(1)}$;
+- if $f_t^{(5)} - y_t^{(1)} > 0$, we go long on the five-year bond;
+- if $f_t^{(5)} - y_t^{(1)} < 0$, we go short on the five-year bond and invest the capital and the short-sale proceeds in the one-year bond.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-4.png)
+</div>
+
+| Strategy | 5-Y Bond | Spread |
+| --- | --- | --- |
+| Mean Xs Return | 1.10% | 1.62% |
+| Std Xs Return | 5.78% | 5.62% |
+| Sharpe Ratio | 0.19 | 0.29 |
+| Skewness | 0.34 | 0.29 |
+| Kurtosis | 2.97 | 2.94 |
+| Min | −10.46% | −9.92% |
+| Max | 16.77% | 16.77% |
+<br/>
+---
+<br/>
+<b>Testing the EH using yield spreads</b>
+
+_We recall_ that the EH using yield spreads states that:
+
+that can be rewritten in the following form:
+
+$$
+\frac{1}{n}\sum_{i=0}^{n-1} \mathbb{E}_t\left(y_{t+i}^{(1)}\right) - y_t^{(1)} + rpy^{(n)} = y_t^{(n)} - y_t^{(1)} \, .
+$$
+
+
+_Similarly,_ form 3) of the EH in excess log-return form states that:
+
+$$
+E_t\left[r_{t+1}^{(n)} - y_t^{(1)}\right]
+= E_t\left[rx_{t+1}^{(n)}\right] = rp_h^{(n)}.
+$$
+
+So if we substitute, we get:
+
+$$
+\mathbb{E}_t\left[\left(y_t^{(n)} - y_t^{(1)}\right) - (n-1)\left(y_{t+1}^{(n-1)} - y_t^{(n)}\right)\right] = rph^{(n)}
+$$
+
+$$
+\mathbb{E}_t\left[y_{t+1}^{(n-1)}\right] - y_t^{(n)} = \frac{y_t^{(n)} - y_t^{(1)}}{n-1} - \frac{1}{n-1}\, rph^{(n)} \, .
+$$
+
+This suggests that we can test the EH with two regressions using yield spreads instead of the forward-spot spread, as done by Campbell and Shiller in 1991:
+
+$$
+\frac{1}{n}\sum_{i=0}^{n-1}\left(y_{t+i}^{(1)}\right) - y_t^{(1)} = \alpha + \beta\left(y_t^{(n)} - y_t^{(1)}\right) + \varepsilon_{t+n-1} \, ,
+$$
+
+$$
+y_{t+1}^{(n-1)} - y_t^{(n)} = a + b\left(\frac{y_t^{(n)} - y_t^{(1)}}{n-1}\right) + \eta_{t+1} \, .
+$$
+
+_Again,_ the EH predicts $\beta = 1$, $b = 1$; that means that, if the EH holds, a steep yield curve should predict:
+- an increase in future short rates;
+- an increase in future long rates.
+
+_Empirically,_ $\beta \approx 1$ _(i.e. yield spreads do predict changes in short rates)_ and it is significant, so the EH seems to hold, _as we can see in the results proposed by Tang and Xia in 2007, where the results correspond to the regression problem stated in the first regression:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-5.png)
+</div>
+
+_However,_ the yield spread <b>cannot predict</b> changes in long rates, so $b \neq 1$ and it is significant; therefore, the EH fails.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-6.png)
+</div>
+
+---
+<br/>
+<b>Predicting Excess Returns</b>
+
+_Alternatively,_ we can consider whether the <b>yield spread predicts excess bond returns</b>. From the previous expression, the one-period excess return $rx_{t+1}^{(n)} = r_{t+1}^{(n)} - y_t^{(1)}$ can be decomposed into the yield spread and the yield change, _that means:_
+
+$$
+r_{t+1}^{(n)} - y_t^{(1)} + (n-1)\left(y_{t+1}^{(n-1)} - y_t^{(n)}\right) = y_t^{(n)} - y_t^{(1)} \, .
+$$
+
+_Therefore,_ yield spreads must predict excess returns or changes in yields. We can test this by estimating:
+
+$$
+r_{t+1}^{(n)} - y_t^{(1)} = \alpha + \beta\left(\frac{y_t^{(n)} - y_t^{(1)}}{n-1}\right) + \varepsilon_{t+1} \, .
+$$
+
+
+_But note that_ the EH implies a constant risk premium, so we would expect $\beta = 0$ and, _by the previous equation,_ the regressions predicting changes in long rates and excess returns are <b>complementary</b>; therefore, their $b$ and $\beta$ must satisfy:
+
+$$
+\frac{\beta}{n-1} + b = 1
+$$
+
+To see this, we can substitute:
+
+$$
+\begin{aligned}
+&\alpha + \beta\left(\frac{y_t^{(n)} - y_t^{(1)}}{n-1}\right) + \varepsilon_{t+1} \\
+&+ (n-1)\left(a + b\left(\frac{y_t^{(n)} - y_t^{(1)}}{n-1}\right) + \eta_{t+1}\right) = y_t^{(n)} - y_t^{(1)} \, .
+\end{aligned}
+$$
+
+
+_Empirically,_ with data from 1961 to 2025 on US Treasury bonds, we see that a <b>steep yield curve</b> predicts <b>high excess returns</b>, where $\beta$ is high and significant.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bonds-7.png)
+</div>
+
+_Therefore,_ risk premia (expected excess returns) are high when the <b>price of long-term bonds is low</b> _(\iff a steep yield curve implies that long-term bonds are cheap and short-term bonds are expensive)_.
+
+---
+<br/>
+<b>A Simple Yield-Spread Strategy</b>
+
+To take advantage of this, we can consider the following strategy:
+- at the end of each year $t$, compute the yield spread $y_t^{(5)} - y_t^{(1)}$;
+- if $y_t^{(5)} - y_t^{(1)} > 0$, go long on the five-year bond;
+- if $y_t^{(5)} - y_t^{(1)} < 0$, short the five-year bond and invest the capital and the short-sale proceeds in the one-year bond.
+
+| Strategy | 5-Y Bond | Spread |
+| --- | --- | --- |
+| Mean Xs Return | 1.10% | 1.51% |
+| Std Xs Return | 5.78% | 5.65% |
+| Sharpe Ratio | 0.19 | 0.27 |
+| Skewness | 0.34 | 0.33 |
+| Kurtosis | 2.97 | 2.90 |
+| Min | −10.46% | −9.92% |
+| Max | 16.77% | 16.77% |
