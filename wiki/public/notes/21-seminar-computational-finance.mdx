@@ -996,4 +996,339 @@ print(f'Approximate 95% pricing CI: [{initial_capital - 1.96*price_se:.5f}, '
 # Fixed initial capital (risk-neutral price): 0.05119
 # Pricing Monte Carlo SE: 0.00023
 # Approximate 95% pricing CI: [0.05074, 0.05164]
+
 ```
+<br/>
+<b>Time-augmented Signature</b>
+
+The idea is that the hedging strategy at time t only <b>depends on the path </b> of the asset price up to t. We can then compress this information into the <b>signature</b>.
+
+_To do so,_ we firstly consider the following <b>time-augmented path</b> for the generic case with d assets:
+
+$$
+Z_t=(t/T,S_t^1/S_0^1-1,\ldots,S_t^d/S_0^d-1)
+$$
+
+where the time channel is added since the plain signature ignores the "timing" dynamics of the path _(i.e. it ignores how fast the path moves)_.
+
+We then normalize prices to start at 0 and consider the case with $d=1$ asset, so the path has a total of 2 channels.
+
+The path is <b>linearly interpolated</b> between two observations, so if we consider the segment $v=Z_{n+1}-Z_n$, the signature has the following <b>closed form</b>:
+
+$$
+E^{(0)}=1,\qquad E^{(k)}=\frac{v^{\otimes k}}{k!}
+$$
+
+We can now apply <b>Chen's identity</b> to update the signature only when a new segment is added _(i.e. when a new data point is received)_:
+
+$$
+A_{\mathrm{new}}^{(k)}=\sum_{j=0}^k A_{\mathrm{old}}^{(j)}\otimes E^{(k-j)}
+$$
+
+_Then,_ we apply <b>truncation</b> so that only levels $1,\ldots,m$ are kept _(in this case, $m=3$)_. The number of features is therefore $\sum_{k=1}^m (d+1)^k$ _(it grows exponentially with depth and asset count)_.
+
+In the code, `tensor_product` computes the flattened outer product. Then `prefix_signatures` loops over time steps, appends the current signature, adds a new segment, and builds the segment's levels <b>recursively</b> using $E^{(k)}=E^{(k-1)}\otimes v/k$ and Chen's identity.
+
+```python
+def tensor_product(a, b):
+    """Flattened tensor product for each path."""
+    return (a.unsqueeze(-1) * b.unsqueeze(-2)).flatten(1)
+
+def prefix_signatures(Z, depth):
+    """Prefix signatures before each price increment: [batch, steps, features]."""
+    batch, nodes, channels = Z.shape
+    levels = [torch.ones(batch, 1, dtype=Z.dtype)]
+    levels += [torch.zeros(batch, channels**k, dtype=Z.dtype) for k in range(1, depth + 1)]
+    prefixes = []
+    for n in range(nodes - 1):
+        # Record the prefix at n before adding the segment n -> n+1.
+        prefixes.append(torch.cat(levels[1:], dim=1))
+        increment = Z[:, n + 1] - Z[:, n]
+        segment = [torch.ones(batch, 1, dtype=Z.dtype)]
+        for k in range(1, depth + 1):
+            segment.append(tensor_product(segment[-1], increment) / k)
+        old = levels
+        levels = [sum(tensor_product(old[j], segment[k-j]) for j in range(k+1))
+                  for k in range(depth + 1)]
+    return torch.stack(prefixes, dim=1)
+
+def make_features(S):
+    time_channel = times.reshape(1, -1, 1).expand(S.shape[0], -1, -1) / T
+    relative_prices = S / S[:, :1] - 1
+    augmented_path = torch.cat([time_channel, relative_prices], dim=-1)
+    return prefix_signatures(augmented_path, depth)
+```
+
+We then standardize each feature into $(x - \text{mean})/\text{std}$ so every feature _(every iterated integral)_ has a comparable scale.
+
+```python
+# Fit scaling once on an independent calibration sample.
+F_calibration = make_features(S_calibration)
+feature_mean = F_calibration.mean(dim=(0, 1), keepdim=True)
+feature_scale = F_calibration.std(dim=(0, 1), keepdim=True).clamp_min(1e-6)
+
+def scaled_features(S):
+    return (make_features(S) - feature_mean) / feature_scale
+
+F_val = scaled_features(S_val)
+F_test = scaled_features(S_test)
+print('Validation feature shape:', tuple(F_val.shape))
+```
+<br/>
+<b>Self-financing Portfolio and $L_2$ Objective</b>
+
+At each date $t$, suppose we choose to hold $h_n$ shares of the asset using only information up to $t$, with initial fixed capital $\hat p$.
+
+The cash balance is then b_n = V_n - h_n S_n, subject to interest rate r, so the <b>total wealth</b> is:
+
+$$
+V_{n+1}=h_n\cdot S_{n+1}+(V_n-h_n\cdot S_n)e^{r\Delta t}
+$$
+
+where the first term represents the share's new value and the second the cash left in the bank at interest rate $r$. Note that nothing is added or withdrawn, so the strategy is <b>self-financing</b>.
+
+We now define the <b>discounted asset price</b> as $\widetilde S_n=e^{-rt_n}S_n$. If we divide the recursion by $e^{rt_{n+1}}$, we reach the following closed form for the total wealth:
+
+$$
+V_n=e^{rt_n}\Big(\widehat p+\sum_{k=0}^{n-1}h_k\cdot\Delta\widetilde S_k\Big)
+$$
+
+_Intuition:_ the discounted wealth equals the initial capital plus the accumulated and discounted trading gains.
+
+We now want to minimize the mean squared hedging error at maturity under the physical measure $\mathbb P$; that means that we want to minimize the following <b>loss function</b>:
+
+$$
+\mathcal L(h)=\mathbb E^{\mathbb P}[(V_N-H)^2]
+$$
+
+Since $V_N=e^{rT}(\widehat p+\text{gains})$ and the rest is fixed, this implies minimizing:
+
+$$
+\mathbb E^{\mathbb P}\Big[\Big(\sum_n h_n\cdot\Delta\widetilde S_n-Y\Big)^2\Big],\qquad Y=e^{-rT}H-\widehat p
+$$
+
+So the target is $Y$, the discounted claim minus the initial capital, and the model tries to reproduce it with trading gains.
+
+_Note that_ this is not a regression of the claim on the signature of the whole path. The model is fitted through the trading gains; hence, the signature only appears as the input for the holdings $h_n$.
+
+```python
+def wealth_from_holdings(h, S, capital):
+    """Self-financing wealth, including interest on the cash balance."""
+
+    bank_account = torch.exp(r * times).reshape(1, -1)
+    discounted_S = S / bank_account.unsqueeze(-1)
+    gains = (h * (discounted_S[:, 1:] - discounted_S[:, :-1])).sum(dim=-1)
+    initial = torch.as_tensor(capital, dtype=S.dtype).expand(S.shape[0], 1)
+
+    discounted_V = torch.cat([initial, initial + gains.cumsum(dim=1)], dim=1)
+    return bank_account * discounted_V
+```
+
+<br/>
+<b>Linear Signature Hedging by Least Squares</b>
+
+The starting point of the hedging problem is that, _for one path,_ the trading gain is a sum over 40 dates:
+
+$$
+G=\sum_{n=0}^{39} h_n\,\Delta\widetilde S_n
+$$
+
+where each term is the profit or loss of that interval. We then want $G$ to be as close as possible to $Y=e^{-rT}H-\tilde p$, the discounted payoff minus the Asian put we owe and the initial capital _(which implies that the trading gains have to cover that difference)_.
+
+We now consider $F_m$, the standardized signature up to degree $m$, and include a constant coordinate by defining:
+
+$\Phi_n=(1,F_n)\in\mathbb R^q$
+
+
+def add_constant(features):
+    return torch.cat([torch.ones_like(features[..., :1]), features], dim=-1)
+
+
+We then define the holdings $h_n$ as a linear combination of $\Phi_n$:
+
+$$
+h_n=C^\top\phi_n=C_0\phi_{n,0}+C_1\phi_{n,1}+\dots+C_{14}\phi_{n,14}=\sum_a C_a\,\phi_{n,a}.
+$$
+
+_Intuition:_ we want to find the weights $C$ at every date, and the time dependence comes from the feature because the signature contains $t/T$. The strategy is therefore a <b>linear combination</b> of the path's iterated integrals.
+
+We can now substitute $h_n=\sum_a C_a\,\phi_{n,a}$ in the gains formula and change the order of summation since $C_a$ does not depend on $n$:
+
+$$
+\begin{aligned}
+G &= \sum_n\Big(\sum_a C_a\phi_{n,a}\Big)\Delta\widetilde S_n
+= \sum_n\sum_a C_a\,\phi_{n,a}\,\Delta\widetilde S_n \\
+&= \sum_a C_a\underbrace{\Big(\sum_n \phi_{n,a}\,\Delta\widetilde S_n\Big)}_{A_a} \\
+&= C_0A_0+C_1A_1+\dots+C_{14}A_{14}.
+\end{aligned}
+$$
+
+We recall that $A_a=\sum_n\phi_{n,a}\Delta\widetilde S_n$ is the gain we would make following the _"elementary strategy"_ _(hold $\phi_{n,a}$ shares at date $n$, with weight 1; this is a number you can compute for each path before fitting anything.)_
+
+```python
+def regression_batch(S):
+    phi = add_constant(scaled_features(S)).double()
+
+    discounted_S = S.double() * torch.exp(-r * times.double()).reshape(1, -1, 1)
+
+    increments = discounted_S[:, 1:] - discounted_S[:, :-1]
+
+    # build A with path b, date n, feature q, asset i
+    A = torch.einsum('bnq,bni->bqi', phi, increments).flatten(1)
+    y = math.exp(-r * T) * terminal_claim(S).double() - initial_capital
+    return A, y
+```
+
+_Again,_ we want $G$ to match $y$ ($y\approx AC$), so we can find $\hat C$ that minimizes the squared loss:
+
+$$
+\widehat C=\arg\min_C\ \frac1J\sum_{j}\Big(y_j-\sum_aC_aA_{j,a}\Big)^2=\arg\min_C\frac1J\|y-AC\|^2
+$$
+
+where $j$ indexes the paths, and each $y_j-\sum_aC_aA_{j,a}$ is the discounted hedging error on path $j$ _(note that this is the "Monte Carlo version" of $\mathbb E^{\mathbb P}[(\text{gain}-Y)^2]$)_
+
+If we set the gradient to zero, we obtain $A^\top A\,C=A^\top y$ and, if $A^\top A$ is invertible, we get $\widehat C=(A^\top A)^{-1}A^\top y$.
+
+_However,_ note that many columns are _nearly or exactly_ <b>linearly dependent</b>, so inverting the matrix gives <b>unstable coefficients</b>.
+
+Therefore, we can use an <b>SVD-based solver</b> that handles dependencies without inverting $A^\top A$.
+
+```python
+def fit_linear_signature(n_batches=epochs, batch_size=paths_per_epoch):
+    """Fit empirical L2 hedging on the same simulated paths as the NN."""
+    rows, targets = [], []
+
+    # Generate 2,000 batches of 256 paths under the physical measure P.
+    for batch in range(n_batches):
+        S = simulate_paths(batch_size, seed=10_000 + batch, drift=mu)
+        A, y = regression_batch(S)
+        rows.append(A)
+        targets.append(y)
+    A, y = torch.cat(rows), torch.cat(targets)
+
+    # lstsq with gelsd solves min|AC-y|^2 with an SVD
+    # solution: vector of 15 numbers
+    fit = torch.linalg.lstsq(A, y, driver='gelsd', rcond=1e-10)
+    coefficients = fit.solution.reshape(feature_dim + 1, d).float()
+    print(f'Least squares: {len(y):,} paths, {A.shape[1]} coefficients, rank {fit.rank.item()}')
+    return coefficients
+
+def linear_portfolio(coefficients, features, S):
+    h = add_constant(features) @ coefficients
+    return wealth_from_holdings(h, S, initial_capital), h
+```
+
+Once we have fitted the model and found $C$, we can apply $h_n=C^\top\phi_n$ at every date $n$ and then compute the wealth, starting from $\tilde p$.
+
+```python
+linear_coefficients = fit_linear_signature()
+with torch.no_grad():
+    V_linear_val, _ = linear_portfolio(linear_coefficients, F_val, S_val)
+    print(f'Linear validation MSE: {(V_linear_val[:, -1] - H_val).square().mean():.6f}')
+
+# The regression prediction must equal the discounted trading gain.
+A_check, _ = regression_batch(S_val[:4])
+V_check, _ = linear_portfolio(linear_coefficients, F_val[:4], S_val[:4])
+expected_gain = A_check @ linear_coefficients.double().flatten()
+actual_gain = math.exp(-r * T) * V_check[:, -1].double() - initial_capital
+torch.testing.assert_close(actual_gain, expected_gain, rtol=1e-4, atol=1e-6)
+```
+<br/>
+<b>Neural Signature Hedging</b>
+
+We now apply the same procedure, but replace the linear map with a <b>nonlinear neural network</b> of the following form:
+
+$h_n=f_\theta(F_n)$
+
+_Note that_ the network has two hidden layers of 32 units with Tanh activation and a linear output. Consider also that holdings can be negative.
+
+```python
+def portfolio(model, features, S):
+    """V includes V_0; h[:, n] is held over the interval n -> n+1."""
+    h = model(features)
+    V = wealth_from_holdings(h, S, model.capital)
+    return V, h
+
+def hedging_loss(model, features, S, H):
+    V, _ = portfolio(model, features, S)
+    return (V[:, -1] - H).square().mean()
+
+model = HedgeNet(feature_dim, d, initial_capital)
+assert "capital" not in dict(model.named_parameters())
+```
+
+_Then,_ the initial capital, features, simulated paths, and objective are the same as in the previous linear regression case.
+
+_Note also_ that in this case the capital is not a parameter: the model stores it but never updates it. Otherwise, if capital were trainable, the model could lower the loss by increasing the starting wealth, breaking the setup.
+
+We can then proceed with the <b>training on new simulations</b>: each epoch generates 256 new paths under the physical measure, computes their payoffs and signature features, and performs one <b>gradient update</b>.
+
+Then, every 50 epochs the model is evaluated on the fixed validation set and, if the validation improves, the weights are stored. Only at the end, the best weights are loaded _(however, note that the loss is not convex $\implies$ no global optimum is guaranteed)_.
+
+
+```python
+def train_model(model, epochs=epochs, batch_size=paths_per_epoch, learning_rate=0.002):
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    history = {'train': [], 'validation': [], 'validation_epoch': []}
+    best_loss, best_state = float('inf'), None
+    for epoch in range(epochs):
+
+        # One new Monte Carlo batch and one optimizer step per epoch.
+        S = simulate_paths(batch_size, seed=10_000 + epoch, drift=mu)
+        H = terminal_claim(S)
+        F = scaled_features(S)
+
+        model.train()
+        optimizer.zero_grad()
+        loss = hedging_loss(model, F, S, H)
+        loss.backward()
+        optimizer.step()
+        history['train'].append(loss.item())
+
+        if (epoch + 1) % 50 == 0 or epoch + 1 == epochs:
+            model.eval()
+            with torch.no_grad():
+                val_loss = hedging_loss(model, F_val, S_val, H_val).item()
+            history['validation'].append(val_loss)
+            history['validation_epoch'].append(epoch + 1)
+            if val_loss < best_loss:
+                best_loss = val_loss
+
+                # copy weights if loss is improved
+                best_state = copy.deepcopy(model.state_dict())
+            if (epoch + 1) % 250 == 0 or epoch + 1 == epochs:
+                print(f'Epoch {epoch+1:4d} | fresh-batch MSE {loss.item():.6f} | validation {val_loss:.6f}')
+
+    model.load_state_dict(best_state)
+    model.eval()
+    return history
+
+capital_before_training = model.capital.clone()
+history = train_model(model)
+```
+
+<br/>
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/signature-2.png)
+</div>
+
+<br/>
+<b>Out-of-Sample Results</b>
+
+We now present the linear and neural strategies on <b>independent paths under the physical measure</b>, starting from the fixed Monte Carlo price estimate.
+
+| Strategy | MSE | RMSE | MAE | Bias | 95th pct. of \|error\| |
+|---|---|---|---|---|---|
+| Linear signature | 0.00024 | 0.01554 | 0.01238 | -0.00023 | 0.0295 |
+| Signature + NN | 0.00009 | 0.00991 | 0.00777 | -0.00003 | 0.0194 |
+
+Fixed initial capital (Q price): 0.05119. Physical-measure test mean payoff (not a price): 0.04162 ± 0.00207 (approx. 95% MC CI).
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/signature-3.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/signature-4.png)
+</div>
