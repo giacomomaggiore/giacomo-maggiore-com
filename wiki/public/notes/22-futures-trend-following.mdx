@@ -643,3 +643,157 @@ $$
 The interest rate is a very important factor in futures trading since, _when dealing with futures,_ we do not need cash for our positions. We just need enough cash on the books to cover the initial margin and to avoid the risk of margin calls.
 
 Note that when holding cash in a bank, we face <b>counterparty risk</b>, so we should carefully think about how to hold cash. An alternative is to stick with government debt of top-tier countries, <b>preferably in your own currency.</b>
+
+---
+
+## <a id="6"><b>6. Analysis of Trend Following Strategies Performance</b></a>
+
+We now spend some time to understand how the combined strategy performs. We start with the <b>daily return distribution</b>, which provides a quick and general overview of what we could expect on a daily basis.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-1.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-2.png)
+</div>
+
+We can immediately see that on the majority (90%) of days, returns are in a range of $\pm 4\%$. Outliers are indeed few and rare. _On the other side,_ drawdowns are very common, since the strategy is underwater almost all the time, but this comes from the nature of the strategy.
+
+_However, what is most relevant when talking about trend following is the <b>correlation with equities</b>: for this strategy, it is always in the range [-0.6, 0.6] but, _most importantly_, it turns negative when the stock market turns down.
+
+Another important aspect of trend following strategy is the so-called <b>crisis alpha effect</b>, _i.e._ the tendency of performing well when traditional markets do not. _Indeed,_ as we said before, when the stock market starts falling, trend following usually does the opposite because the model was already short in stocks and long in bonds.
+
+In the following chart, you can respectively _clearly_ see how the strategy performed during the <b>bear market of 1990</b>, the <b>LTCM blow-up of 1998</b> and the <b>dot-com crash</b> around 2000.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-3.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-4.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-5.png)
+</div>
+
+_Furthermore,_ during the <b>Great Financial Crisis</b> of 2008, it was the best year for the trend following strategy with extremely high returns.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-6.png)
+</div>
+
+_Lastly,_ we can see how the strategy performed during the <b>Covid crash</b> in March 2020. _In this case,_ even if the stock market recovered extremely quickly and well, the trend following strategy was already positioned very well _(the stock market lost about a third, trend following gained the same)_.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-7.png)
+</div>
+
+---
+<br/>
+<b>Trading Direction</b>
+
+We defined our strategy such that it can go both long and short. _However,_ trading directions have different outcomes in terms of risk and return on the overall strategy.
+
+The performance <b>attributed to the long position</b> is indeed higher and positive for almost all the years, while the <b>short side</b> has several losing years. _However, interestingly,_ the short side had a large positive contribution in 2008 and it was quite nice too in 2014, when classical markets failed.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-8.png)
+</div>
+
+The short side required indeed some counterintuitive thinking about, _especially if we consider the following table_:
+
+|                         | Core strategy | Long attribution | Short attribution |
+|-------------------------|--------------:|-----------------:|------------------:|
+| Annualised return       |         18.24 |            20.37 |             −2.13 |
+| Max drawdown            |        −43.30 |           −32.58 |            −54.27 |
+| Annualised volatility   |         27.52 |            21.02 |             15.90 |
+| Sharpe ratio            |          0.722 |             0.988 |            −0.056 |
+
+We indeed see that trading only the short can be a very bad idea, so we could think of trading only the long side, achieving potentially a higher return.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-9.png)
+</div>
+
+_However,_ we must be aware that the short side acts as a <b>volatility dampener</b>, _i.e._ the long side would not have been able to achieve positive performance if the short were not there. _Furthermore,_ the more we lean toward the long-only side of the strategy, the higher the correlation with the stock market will be.
+
+---
+<br/>
+<b>Sector contribution</b>
+
+We now consider how different sectors contribute to the overall performance of the strategy by looking at the <b>annualized returns before fees</b>
+
+|        | Currencies | Agriculture | Non-Agriculture | Equities | Rates | All sector |
+|--------|-----------:|------------:|----------------:|---------:|------:|-----------:|
+| Long   |      −0.18 |        6.43 |           −0.41 |     5.44 |  9.10 |      20.37 |
+| Short  |       0.51 |       −0.84 |            0.67 |    −1.33 | −1.13 |      −2.13 |
+| Total  |       0.33 |        5.58 |            0.26 |     4.11 |  7.97 |      18.24 |
+
+Furthermore, if we look at the sector performance by year, we clearly see the following:
+- rates show a lot of positive years and quite outsized returns on the positive side
+- equities play a minor role compared to rates and commodities
+- non-agricultural commodities have modest positive contributions _(with large returns in 1996 and 2008)_
+- agricultural commodities show strong overall performance
+- currencies rarely make extremely positive returns
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-10.png)
+</div>
+
+---
+<br/>
+<b>Leverage in Trend Following Strategies</b>
+
+Since we are dealing with futures, leverage is the main assumption and starting point of trend following strategies. _However,_ in this context, we should think of leverage from a different perspective.
+
+First, consider the gross exposure of the strategy as the total of long and short positions added up _(instead of offset)_ and consider that this total number can be extremely high for a trend following strategy.
+
+However, in this context, we do not really care about <b>notional exposure</b> since we size the positions according to volatility or ATR. _For example,_ if you consider the portfolio composition of the combined strategy, you will see very odd _(large!)_ numbers.
+
+
+| Contract                         | Sector          | Exposure US$ | Exposure (%) |
+|----------------------------------|-----------------|------------:|-------------:|
+| Live Cattle June 2009            | Agriculture     |    −429,130 |         −4.3 |
+| Brent Crude Oil July 2009        | Non-Agriculture |     359,580 |          3.6 |
+| Canadian Bankers Acceptance June 2009 | Rates       |   7,222,088 |         72.2 |
+| 2-Year U.S. T-Note June 2009     | Rates           |   6,970,496 |         69.7 |
+| 30 Day Federal Funds May 2009    | Rates           |  49,496,555 |        495.0 |
+| U.S. T-Bond June 2009            | Rates           |    −842,296 |         −8.4 |
+| Eurodollar June 2009             | Rates           |  24,092,375 |        240.9 |
+
+The exposure of each contract reflects indeed the volatility of the sector, which forces the strategy to take <b>larger leverage</b> _(exposure)_ to achieve risk parity.
+
+---
+<br/>
+<b>Trend Following as a component to an Equity Portfolio</b>
+
+People often tend to allocate large portions of their portfolios to equity, and so the natural question is whether a standard long-only equity portfolio can be improved by <b>adding managed futures to the portfolio</b>.
+
+We could address this challenge with a Markowitz methodology of building covariance matrices and then optimizing with Lagrange to find the optimal mix...but this is not a good idea since covariance data may be unstable and estimation error can be amplified, trend following returns are not normal etc etc...
+
+What we can instead do is run an efficient frontier calculation iteratively and test empirically different combinations.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trend-11.png)
+</div>
+
+_With no surprise,_ we see that, since trend following strategies have higher returns, the extreme right _(higher expected return, higher volatility)_ is dominated by the full futures portfolio.
+
+_However,_ as shown in the following table, the best Sharpe ratio can be achieved by adding a balanced mix of stocks to the combined strategy.
+
+| Percent futures | Return | Volatility | Sharpe ratio |
+|----------------:|-------:|-----------:|-------------:|
+|             100 |  16.16 |      23.71 |         0.68 |
+|              90 |  15.55 |      21.10 |         0.74 |
+|              80 |  14.94 |      18.69 |         0.80 |
+|              70 |  14.33 |      16.56 |         0.87 |
+|              60 |  13.72 |      14.84 |         0.92 |
+|              50 |  13.10 |      13.66 |         0.96 |
+|              40 |  12.49 |      13.19 |         0.95 |
+|              30 |  11.88 |      13.50 |         0.88 |
+|              20 |  11.27 |      14.54 |         0.78 |
+|              10 |  10.65 |      16.16 |         0.66 |
+|               0 |  10.04 |      18.22 |         0.55 |
