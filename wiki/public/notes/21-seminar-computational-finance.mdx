@@ -308,7 +308,7 @@ _Intuition:_ the signature collects all iterated integrals, and these integrals 
 
 ---
 <br/>
-<b><a id="2.5"></a>Theorem 2: Universal nonlinearity</b>
+<b><a id="2.5"></a>Theorem 2: Universal nonlinearity (Weierstrass Theorem)</b>
 
 Let $F$ be a real-valued continuous function on continuous piecewise-smooth paths in $\mathbb{R}^d$ and let $\mathcal{K}$ be a compact set of such paths. Also assume that $X_0 = 0$ for all $X \in \mathcal{K}$.
 
@@ -922,9 +922,6 @@ _We immediately notice_ that $H$ <b>depends on the whole trajectory,</b> not onl
 
 _Therefore,_ we cannot use Black–Scholes; we can use the signature for hedging because it represents how the path has evolved so far.
 
-$$
-\text{Payoff} = \max(K-S_{\mathrm{average}},0)
-$$
 
 _Note that_ the payoff $H$ can be defined as an <b>Asian-style put</b> with a variant. Indeed, an Asian put value depends on the average (arithmetic or geometric average across the windows) of the underlying price over time, not on $S_T$ alone.
 
@@ -1329,9 +1326,16 @@ We now present the linear and neural strategies on <b>independent paths under th
 | Linear signature | 0.00024 | 0.01554 | 0.01238 | -0.00023 | 0.0295 |
 | Signature + NN | 0.00009 | 0.00991 | 0.00777 | -0.00003 | 0.0194 |
 
-Fixed initial capital (Q price): 0.05119. Physical-measure test mean payoff (not a price): 0.04162 ± 0.00207 (approx. 95% MC CI).
-
+<br/>
+```python
+Fixed initial capital (Q price): 0.05119. 
+Physical-measure test mean payoff (not a price): 0.04162 ± 0.00207 
+    (approx. 95% MC CI).
+```
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/signature-3.png)
 </div>
+
+---
+<br/>

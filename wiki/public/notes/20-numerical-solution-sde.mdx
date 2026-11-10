@@ -569,8 +569,10 @@ From the definition, we can draw some nice properties:
 - Consider a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ and $X: \Omega \to \mathbb{R}$, an $\mathcal{F}/\mathcal{B}(\mathbb{R})$-measurable function _(imagine $X$ as a model for the change in value of a financial portfolio)._<br/>
 Consider $F$, the distribution of $-X$, and let $\alpha \in (0,1)$ be a confidence level, typically a number close to 1 (95%, 99.999%): Then the real number
 $$
-I_F(\alpha) = \min \{x \in \mathbb{R}: F(x) \ge \alpha\} = \min \{x \in \mathbb{R}: \mathbb{P}(-X \le x) \ge \alpha\} = \\
-\min \{x \in \mathbb{R}: \mathbb{P}(-X > x) \le 1 - \alpha\}
+\begin{aligned}
+I_F(\alpha) &= \min \{x \in \mathbb{R}: F(x) \ge \alpha\} = \min \{x \in \mathbb{R}: \mathbb{P}(-X \le x) \ge \alpha\} \\
+&= \min \{x \in \mathbb{R}: \mathbb{P}(-X > x) \le 1 - \alpha\}
+\end{aligned}
 $$
 
 is called the <b>Value at Risk with confidence level $\alpha$ associated with $-X$</b> _(i.e. it holds with probability of at least $\alpha$ that the loss $-X$ does not exceed $I_F(\alpha)$)._
@@ -1612,7 +1614,7 @@ $$
 W(\cdot, \omega) \in W^{r,p}(0,1) \quad \text{a.s. for } r < 1/2.
 $$
 
-_In particular, in one dimension, we have that $W^{r,p}(0,1) \to C^\beta([0,1])$ when $rp > 1$ and $\beta < r - 1/p$.
+_In particular, in one dimension, we have that $W^{r,p}(0,1) \to C^\beta([0,1])$ when $rp > 1$ and $\beta < r - 1/p$._
 
 If we fix any $\beta < 1/2$ and choose $p$ large and then $r$ such that:
 
@@ -1677,7 +1679,7 @@ def isonormal_brownian_trig(t, modes=200, rng=rng):
 ```
 
 <div align = "center">
-![Bias variance tradeoff](/images/notes/numerical-sol-sde/trigonometric-wiener.png.png)
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/trigogometric-wiener.png)
 </div>
 
 <br/>
@@ -2468,6 +2470,173 @@ $$
 
 
 ---
+<br/>
+<b>Numerical Illustrations of Stochastic Integration</b>
+
+In the following section, we spend some time showing _"numerically"_ and _"visually"_ what we've done so far by showing some processes and examples.
+
+_Firstly,_ we just defined <b>Brownian Motion</b> by continuity, independent increments and:
+
+$$
+W_t - W_s \sim N(0, t-s)
+$$
+
+which can be simulated with the following script of code.
+
+```python
+
+rng = np.random.default_rng(20261015)
+
+def brownian(T=1.0, N=5000, dim=1, rng=rng):
+    dt = T/N
+    dW = np.sqrt(dt)*rng.standard_normal((N, dim))
+    W = np.vstack([np.zeros((1, dim)), np.cumsum(dW, axis=0)])
+    t = np.linspace(0.0, T, N+1)
+    return t, W.squeeze()
+
+t, W = brownian(T=2.0, N=10_000, rng=rng)
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-1.png)
+</div>
+
+We can now further define a basic <b>stopping time</b> as:
+
+$$
+\tau_a = \inf\{t \ge 0 : |X_t| \ge a\}
+$$
+
+_that,_ for our Brownian motion, translates to
+
+$$
+\tau_a = \inf\{t \ge 0 : |W_t| \ge a\}
+$$
+
+_that_ brings us to the following:
+
+```python
+a = 1.0
+idx = np.flatnonzero(np.abs(W) >= a)
+i_tau = idx[0] if len(idx) else len(W)-1
+
+plt.scatter([t[i_tau]], [W[i_tau]])
+```
+<br/>
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-2.png)
+</div>
+
+We now show three different <b>Brownian Martingales</b> ($W_t$, $W_t^2 - t$, $L_t = \exp(-1/2 \theta^2 t - \theta W_t)$), but _note that_ from a single trajectory we cannot prove the martingale property; we can only see its _typical path shape._
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-3.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-4.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-5.png)
+</div>
+
+
+We now spend some time illustrating a <b>simple predictable process</b> and its <b>Itô Integral</b>. We define it by:
+
+$$
+K_t = \sum_j \bar K_j \mathbf{1}_{(t_j, t_{j+1})}(t), \quad \bar K_j = \operatorname{sign}(W_{t_j})
+$$
+
+Then the integral $I_t = \int_0^t K_s\,dW_s$ can be built exactly from the increments as follows:
+
+$$
+\sum_j \bar K_j\left(W_{t_{j+1}\wedge t} - W_{t_j\wedge t}\right)
+$$
+
+```python
+T = 1.0
+N = 2000
+t2, W2 = brownian(T=T, N=N, rng=rng)
+dW2 = np.diff(W2)
+
+# Use blocks of 40 simulation steps as the simple-process partition.
+block = 40
+K = np.zeros(N)
+for j in range(0, N, block):
+    K[j:min(j+block, N)] = 1.0 if W2[j] >= 0 else -1.0
+
+I = np.concatenate([[0.0], np.cumsum(K*dW2)])
+
+plt.plot(t2, I)
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-6.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-7.png)
+</div>
+
+_Furthermore,_ if we consider $H_t = W_t$, Itô's formula gives the following exact identity:
+
+$$
+\int_0^t W_s\,dW_s = \int_0^t \left(\frac{1}{2}\,d(W_s^2) - \frac{1}{2}\,ds\right) = \frac{1}{2}(W_t^2 - t)
+$$
+
+where the first identity comes from Itô’s formula applied to $f(x)=x^2$ with $d(W_t^2)=2W_t\,dW_t+dt$, and the second one from integrating from $0$ to $t$ and using $W_0 = 0$.
+
+So the stochastic integral can be approximated by left-point sums:
+
+$$
+\int_0^t W_s\,dW_s = \lim_{n\to\infty} \sum_{i=0}^{n-1} W_{t_i}(W_{t_{i+1}} - W_{t_i}),
+$$
+
+
+```python
+dW2 = np.diff(W2)
+I_left = np.concatenate([[0.0], np.cumsum(W2[:-1]*dW2)])
+I_exact = 0.5*(W2**2 - t2)
+
+plt.plot(t2, I_left, label="left-point Itô sum")
+plt.plot(t2, I_exact, "--", label=r"Exact formula")
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-8.png)
+</div>
+
+We now consider the <b>quadratic variation of a stochastic integral</b> that, _again_ for $H_s = W_s$, is defined as:
+
+$$
+\left[\int_0^\cdot H_s\,dW_s\right]_t
+= \int_0^t H_s^2\,ds.
+$$
+
+$$
+\left[\int_0^\cdot W_s\,dW_s\right]_t
+= \int_0^t W_s^2\,ds.
+$$
+
+```python
+
+dI = np.diff(I_left)
+qvI = np.concatenate([[0.0], np.cumsum(dI**2)])
+dt = T/N
+rhs_qv = np.concatenate([[0.0], np.cumsum(W2[:-1]**2 * dt)])
+
+plt.plot(t2, qvI, label="discrete quadratic variation")
+plt.plot(t2, rhs_qv, "--", label=r"integral")
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-9.png)
+</div>
+
+
+---
+
 ## <a id="4-sde"><b>Stochastic Ordinary Differential Equations</b></a>
 
 Let $\mathcal{T}=[0,T]$ for some $T>0$, consider $n,m\in\mathbb{N}$, and let $\mathcal{O}\in\mathcal{B}(\mathbb{R}^m)$ be the state space _(intuition: $\mathcal{O}$ is the set of possible values of the state process $X_t$; it is a measurable subset of $\mathbb{R}^m$)._
@@ -2563,6 +2732,8 @@ $$
 
 _Intuition:_ the coefficients may grow as $x$ grows, but not faster than linearly, and this prevents the SDE solution from exploding in finite time.
 
+---
+<br/>
 <b>Theorem: Existence and uniqueness of solutions</b>
 
 Let $p \in [2,\infty)$, let $\varepsilon$ be $\mathcal{F}_0$-measurable with $\|\varepsilon\|_p < \infty$, and let $\mu$ and $\sigma$ be globally Lipschitz coefficients. Then:
@@ -2744,7 +2915,27 @@ $$
 \sup_{0\le t\le T}\mathbb{E}[|X_t|^2]<\infty.
 $$
 
+---
 
+In Python, we can replicate numerically
+
+```python
+
+alpha, beta, xi = 0.05, 0.20, 100.0
+
+W, dW = brownian_path(1)
+W = W[:, 0]
+
+# exact solution
+X_gbm = xi * np.exp((alpha - beta**2 / 2) * tgrid + beta * W)
+mean = xi * np.exp(alpha * tgrid)
+
+ax.plot(tgrid, X_gbm, lw=0.8, label=r'one trajectory')
+ax.plot(tgrid, mean, 'k--', lw=1.2, label=r'deterministic mean')
+```
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-10.png)
+</div>
 
 ---
 <br/>
@@ -2778,6 +2969,21 @@ $$
 
 Here, _notice that_ $X^1$ represents a <b>bank account</b> with interest rate $r$, and $X^2$ represents a <b>risky asset</b> with expected return $\alpha$ and volatility $\beta$.
 
+In Python, we can replicate it numerically with the following code.
+
+```python
+r, alpha_bs, beta_bs = 0.02, 0.06, 0.25
+xi1, xi2 = 100.0, 100.0
+
+X1 = xi1 * np.exp(r * tgrid)                       # deterministic
+X2 = xi2 * np.exp((alpha_bs - beta_bs**2 / 2) * tgrid + beta_bs * W)
+
+ax.plot(tgrid, X1, lw=1.2, label=r'bank account ')
+ax.plot(tgrid, X2, lw=0.8, label=r'risky asset ')
+```
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-11.png)
+</div>
 
 ---
 <br/>
@@ -2797,7 +3003,28 @@ Note that the term $\delta-\alpha X_t$ represents the <b>mean reversion</b>: if 
 
 Note that this process is used to model <b>instantaneous interest rates</b> ($r_t=X_t$, which are nonnegative and mean-reverting quantities) or the <b>square of the volatility</b> (variance) of asset prices, as in the Heston model. It captures nonnegativity, mean reversion, larger fluctuations when variance is high, and volatility clustering, i.e. large price movements tend to occur near other large price movements and vice versa.
 
+In Python, we do the following.
+
+```python
+alpha_cir, delta_cir, beta_cir = 0.5, 0.05, 0.25
+xi_cir = 0.04
+assert 2 * delta_cir >= beta_cir**2, "Feller condition 2*delta >= beta^2 violated"
+
+mu  = lambda x: delta_cir - alpha_cir * x
+sig = lambda x: beta_cir * np.sqrt(max(x, 0.0))
+
+X_cir = euler_maruyama(xi_cir, mu, sig, W, dim=1)[:, 0]
+
+ax.plot(tgrid, X_cir, lw=0.8)
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-12.png)
+</div>
+
+
 ---
+
 <br/>
 <b>Example: the Heston stochastic volatility model</b>
 
@@ -2809,7 +3036,7 @@ $$
 \widehat W_t:=\sqrt{1-\rho^2}\,W_t^1+\rho W_t^2.
 $$
 
-Then $\widehat W$ is a Brownian motion, and it is independent of $W^1$ if and only if $\rho=0$.
+Then $\widehat W$ is a Brownian motion, and it is independent of $W^1$ if and only if $|\rho|=1$.
 
 The Heston model is the system:
 
@@ -2828,9 +3055,524 @@ Therefore, we can write the model in the more familiar form:
 $$
 \begin{aligned}
 dS_t&=\mu S_t\,dt+\sqrt{V_t}\,S_t\,dW_t^1,\\
-dV_t&=\kappa(\theta-V_t)\,dt+\xi\sqrt{V_t}\,dW_t^2,
+dV_t&=\kappa(\theta-V_t)\,dt+\xi\sqrt{V_t}\,d\widehat W_t,
 \end{aligned}
 $$
 
 where $S_t$ is the asset price, $V_t$ is the instantaneous variance, $\sqrt{V_t}$ is the instantaneous volatility, $\mu$ is the expected return, $\kappa$ is the speed at which the variance returns to its long-run level $\theta$, and $\xi$ controls the randomness of the variance.
+
+In Python, we do the following:
+
+```python
+al_h, alh, delh, beth = 0.05, 1.0, 0.08, 0.25   # asset drift; variance mean-reversion params
+rho = 0.7
+x0 = np.array([100.0, 0.04])
+assert 2 * delh >= beth**2, "Feller condition for the variance process violated"
+
+Wh, _ = brownian_path(2)          # (W^1, W^2)
+WhW = np.sqrt(1 - rho**2) * Wh[:, 0] + rho * Wh[:, 1]   # correlated driver
+
+X_h = np.empty((N + 1, 2)); X_h[0] = x0
+for k in range(N):
+    dW1 = Wh[k+1, 0] - Wh[k, 0]
+    dWh = WhW[k+1] - WhW[k]
+    v = max(X_h[k, 1], 0.0)
+    X_h[k+1, 0] = X_h[k, 0] + al_h * X_h[k, 0] * dt + X_h[k, 0] * np.sqrt(v) * dW1
+    X_h[k+1, 1] = X_h[k, 1] + (delh - alh * X_h[k, 1]) * dt + beth * np.sqrt(v) * dWh
+    X_h[k+1, 1] = max(X_h[k+1, 1], 1e-12)
+
+ax1.plot(tgrid, X_h[:, 0], lw=0.8, color='tab:blue')
+ax2.plot(tgrid, X_h[:, 1], lw=0.8, color='tab:red')
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-13.png)
+</div>
+
 ---
+
+## <a id = "0"><b>Tractability</b></a>
+
+We now try to understand what we can calculate from a stochastic differential equation without relying entirely on simulated paths _(i.e., when computing simulated paths is costly)_.
+
+In particular, we will take a deep dive into three possible types of <b>tractability</b>:
+- <b>explicit solution</b>, where a formula gives exact updates on a time grid
+- <b>explicit transition law</b>, where we can derive the conditional distribution at a later time, _either_ for direct sampling or integration
+- <b>tractable Fourier–Laplace transform</b>, where we can derive a formula or an ODE system for a transform, and then its inversion can give quantities.
+
+_Note that_ these types may overlap: one model may have more than one type of tractability.
+
+---
+
+<b>Explicit Solution | Black–Scholes and Geometric Brownian Motion</b>
+
+We can start by considering the Black–Scholes model as before, with $dS_t = \mu S_t\,dt + \sigma S_t\,dW_t$ and $S_0 = s_0 > 0$.
+
+_First,_ we can solve the SDE explicitly by applying Itô's formula to $\log S_t$. This gives:
+
+$$
+d\log S_t = \frac{1}{S_t}\,dS_t - \frac{1}{2S_t^2}\,d[S]_t.
+$$
+
+Since $dS_t = \mu S_t\,dt + \sigma S_t\,dW_t$ and $d[S]_t = \sigma^2 S_t^2\,dt$, we can write:
+
+$$
+d\log S_t = \left(\mu - \frac{1}{2}\sigma^2\right)dt + \sigma\,dW_t.
+$$
+
+If we now integrate from $0$ to $t$ and use $S_0 = s_0$ and $W_0 = 0$, we get:
+
+$$
+\log S_t = \log s_0 + \left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t.
+$$
+
+$$
+S_t = s_0\exp\left(\left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t\right).
+$$
+
+From the same model, we can calculate the <b>marginal law</b> and <b>moments</b>.
+
+Indeed, since $W_t \sim N(0,t)$ and $\log S_t = \log s_0 + (\mu - \frac{1}{2}\sigma^2)t + \sigma W_t$, the marginal law is:
+
+$$
+\log S_t \sim N\left(\log s_0 + \left(\mu - \frac{1}{2}\sigma^2\right)t, \sigma^2 t\right).
+$$
+
+_Therefore, $S_t$ is <b>lognormally distributed</b>._
+
+Then, for all $p \in \mathbb{R}$, the <b>Gaussian moment-generating formula</b>, $\mathbb{E}[e^{aW_t}] = e^{a^2t/2}$, gives:
+
+$$
+\begin{aligned}
+\mathbb{E}[S_t^p]
+&= s_0^p e^{p(\mu - \frac{1}{2}\sigma^2)t}\mathbb{E}[e^{p\sigma W_t}] \\
+&= s_0^p\exp\left(p\mu t + \frac{1}{2}p(p-1)\sigma^2t\right).
+\end{aligned}
+$$
+
+In the particular case $p = 1$, we can calculate the expected value as $\mathbb{E}[S_t] = s_0 e^{\mu t}$.
+
+We can now compare the <b>exact transition</b> and the <b>Euler preview</b>. In particular, we know that:
+
+$$
+S_{t+\Delta} = S_t\exp\left(\left(\mu - \frac{1}{2}\sigma^2\right)\Delta + \sigma\sqrt{\Delta}Z\right), \qquad Z \sim N(0,1).
+$$
+
+While Euler uses:
+
+$$
+S_{n+1}^E = S_n^E + \mu S_n^E\Delta + \sigma S_n^E\Delta W_n.
+$$
+
+_Recall that_ the Euler preview is an approximate way to step the price forward _(if we do not know the exact solution)_. If we start at price $S_n$ at time $t_n$, we freeze the drift and volatility for one small interval $\Delta$. The Brownian-motion increment during that interval is $\Delta W_n$ _(whereas the Black–Scholes update uses the exponential formula)_.
+
+_Therefore,_ we can simply <b>exponentiate</b> the exact increments in the log-price for the exact formula and then use Euler, _by freezing coefficients at each step,_ to compare them.
+
+```python
+T,N=1.0,80 #Change T to broadcast changes to discretization vs exact method: the bigger T gets, the higher the discrepancy between the 2 methods. Try e.g. T=50.
+dt=T/N
+s0,mu,sig=100.0,0.08,0.25
+dW=np.sqrt(dt)*rng.standard_normal(N)
+t=np.linspace(0,T,N+1)
+Sx=np.empty(N+1); Se=np.empty(N+1)
+Sx[0]=Se[0]=s0
+for n in range(N):
+    Sx[n+1]=Sx[n]*np.exp((mu-.5*sig**2)*dt+sig*dW[n])
+    Se[n+1]=Se[n]+mu*Se[n]*dt+sig*Se[n]*dW[n]
+plt.figure(figsize=(8,3.5)); plt.plot(t,Sx,label='exact'); plt.plot(t,Se,'--',label='Euler preview')
+plt.xlabel('t'); plt.ylabel('S'); plt.title('Black–Scholes'); plt.legend(); plt.show()
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-14.png)
+</div>
+
+<br/>
+---
+<br/>
+<b>Explicit Solution | Multivariate Black–Scholes</b>
+
+_Similarly,_ we can consider an $m$-dimensional Brownian motion and an $m$-dimensional Black–Scholes model, with $a=\Sigma\Sigma^\top$ (how the assets move together). The diagonal entries are $a_{ii}=\sum_{j=1}^m\Sigma_{ij}^2$, the variance rates of the individual assets:
+
+$$
+\frac{dS_t^i}{S_t^i} = \mu_i\,dt + \sum_{j=1}^m \Sigma_{ij}\,dW_t^j,
+\qquad i=1,\ldots,m.
+$$
+
+In this case, by applying Itô's formula to each $\log S_t^i$ and using $d[S^i]_t = (S_t^i)^2 a_{ii}\,dt$, we obtain:
+
+$$
+d\log S_t^i = \left(\mu_i - \frac{1}{2}a_{ii}\right)dt + \sum_{j=1}^m \Sigma_{ij}\,dW_t^j.
+$$
+
+$$
+S_t^i = S_0^i\exp\left(\left(\mu_i - \frac{1}{2}a_{ii}\right)t + (\Sigma W_t)_i\right).
+$$
+
+_So,_ this is still <b>explicit-solution tractability:</b> the assets' exact values can be calculated from the initial prices and Brownian motion, without using an Euler approximation.
+
+_Again,_ if we want to compute the joint law, we can integrate the log-price equations:
+
+$$
+\log S_t
+=
+\log S_0+
+\left(\mu-\frac12\operatorname{diag}(a)\right)t+\Sigma W_t,
+\qquad a=\Sigma\Sigma^\top.
+$$
+
+Since $\Sigma W_t$ is Gaussian with covariance $t\Sigma\Sigma^\top=ta$, we have:
+
+$$
+\log S_t\sim
+N\left(\log S_0+\left(\mu-\frac12\operatorname{diag}(a)\right)t,\;ta\right).
+$$
+
+_Therefore,_ the asset prices are <b>jointly lognormally distributed</b>.
+
+_Again,_ we can perform a <b>numerical check</b> and compare the asset paths coordinate by coordinate using the exact formula and Euler approximation.
+
+```python
+T,N=1.0,100; dt=T/N; d=3
+S0=np.array([100.,80.,120.]); mu=np.array([.06,.03,.08])
+Sigma=np.array([[.20,0,0],[.10,.18,0],[.06,.04,.22]])
+a=Sigma@Sigma.T
+dW=np.sqrt(dt)*rng.standard_normal((N,d)); t=np.linspace(0,T,N+1)
+Sx=np.empty((N+1,d)); Se=np.empty((N+1,d)); Sx[0]=Se[0]=S0
+for n in range(N):
+    shock=Sigma@dW[n]
+    Sx[n+1]=Sx[n]*np.exp((mu-.5*np.diag(a))*dt+shock)
+    Se[n+1]=Se[n]+mu*Se[n]*dt+Se[n]*shock
+plt.figure(figsize=(8,4))
+for i in range(d):
+    plt.plot(t,Sx[:,i],label=f'asset {i+1} exact')
+    plt.plot(t,Se[:,i],'--',alpha=.65)
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-15.png)
+</div>
+
+---
+
+<br/>
+<b>Explicit Solution | Multivariate Ornstein–Uhlenbeck Process</b>
+
+We can consider a vector-valued process $X_t\in\mathbb{R}^d$ such that
+
+$$
+dX_t=K(\theta-X_t)\,dt+\Sigma\,dW_t,
+\qquad X_0=x.
+$$
+
+Here, $\theta$ is the long-run mean, $K$ controls how quickly the process moves back toward its mean _(since $K$ is a matrix, the coordinates can influence one another)_, and $\Sigma$ controls the random fluctuations and their correlations.
+
+To obtain the explicit solution, subtract $\theta$ and write the drift as $K(\theta-X_t)=-K(X_t-\theta)$:
+
+$$
+Y_t=X_t-\theta,
+\qquad dY_t=-KY_t\,dt+\Sigma\,dW_t.
+$$
+
+Now multiply by the <b>integrating factor</b> $e^{Kt}$ and use the product rule. Since $e^{Kt}$ is deterministic and differentiable:
+
+$$
+d(e^{Kt}Y_t)=Ke^{Kt}Y_t\,dt+e^{Kt}\,dY_t.
+$$
+
+Substituting $dY_t=-KY_t\,dt+\Sigma\,dW_t$, the drift terms cancel:
+
+$$
+\begin{aligned}
+d(e^{Kt}Y_t)
+&=Ke^{Kt}Y_t\,dt-e^{Kt}KY_t\,dt+e^{Kt}\Sigma\,dW_t \\
+&=e^{Kt}\Sigma\,dW_t.
+\end{aligned}
+$$
+
+Integrating from $0$ to $t$ and using $Y_0=x-\theta$, we obtain:
+
+$$
+\begin{aligned}
+e^{Kt}(X_t-\theta)&=x-\theta+\int_0^t e^{Ks}\Sigma\,dW_s\\
+X_t&=\theta+e^{-Kt}(x-\theta)+\int_0^t e^{-K(t-s)}\Sigma\,dW_s.
+\end{aligned}
+$$
+
+The stochastic integral is Gaussian, so $X_t$ has a Gaussian distribution:
+
+$$
+X_t\sim N(m_t,C_t),
+\qquad
+m_t=\theta+e^{-Kt}(x-\theta),
+\qquad
+C_t=\int_0^t e^{-Ks}\Sigma\Sigma^\top e^{-K^\top s}\,ds.
+$$
+
+More generally, given the current state $X_t=x$, the state after an interval $h$ is:
+
+$$
+X_{t+h}\mid X_t=x\sim N\left(\theta+e^{-Kh}(x-\theta),C_h\right).
+$$
+
+So we can sample the next state directly from this Gaussian distribution. _Again,_ this is <b>explicit transition-law tractability</b> _(i.e., no small Euler steps are needed to get the exact distribution at the next grid point)_.
+
+_Furthermore,_ note that if all the eigenvalues of $K$ have <b>positive real parts</b>, then $e^{-Kt}$ decays as $t$ grows. The covariance therefore converges to $C_\infty$, which solves:
+
+$$
+KC_\infty+C_\infty K^\top=\Sigma\Sigma^\top.
+$$
+
+_Therefore,_ $N(\theta,C_\infty)$ is the <b>invariant distribution</b> _(if the process starts with this distribution, it keeps it over time)_.
+
+_Again,_ we perform a <b>numerical comparison</b> between the exact Gaussian transition, sampled using a Cholesky factor of its covariance, and the usual Euler discretization _(using the same normal draws)_.
+
+```python
+T,N=5.0,250; dt=T/N
+K=np.array([[1.4,-.35],[.20,.90]])
+theta=np.array([1.0,-.5]); Sigma=np.array([[.65,.10],[0,.45]])
+Q=Sigma@Sigma.T; x0=np.array([3.0,1.5])
+Cinf=solve_continuous_lyapunov(K,Q)
+E=expm(-K*dt); Cdt=Cinf-E@Cinf@E.T; Cdt=.5*(Cdt+Cdt.T)
+L=np.linalg.cholesky(Cdt+1e-14*np.eye(2))
+Z=rng.standard_normal((N,2))
+Xx=np.empty((N+1,2)); Xe=np.empty((N+1,2)); Xx[0]=Xe[0]=x0
+for n in range(N):
+    Xx[n+1]=theta+E@(Xx[n]-theta)+L@Z[n]
+    Xe[n+1]=Xe[n]+K@(theta-Xe[n])*dt+Sigma@(np.sqrt(dt)*Z[n])
+t=np.linspace(0,T,N+1)
+plt.figure(figsize=(8,4))
+for i in range(2):
+    plt.plot(t,Xx[:,i],label=f'coord {i+1} exact')
+    plt.plot(t,Xe[:,i],'--',alpha=.7)
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/bm-16.png)
+</div>
+
+---
+<br/>
+<b>Generator of a General Diffusion</b>
+
+The starting idea is that the <b>generator</b> describes how the expected value of a function of a diffusion changes over an _infinitesimally_ small short time.
+
+_Firstly,_ consider a stochastic differential equation of the form:
+
+$$
+dX_t = b(X_t)\,dt + \sigma(X_t)\,dW_t.
+$$
+
+where $X_t \in \mathbb{R}^d$ is the state of the system, $W_t \in \mathbb{R}^m$ is an $m$-dimensional Brownian motion, $b(x) \in \mathbb{R}^d$ the drift, and $\sigma(x) \in \mathbb{R}^{d\times m}$ the diffusion matrix.
+
+The SDE says that, for a small time interval $h$, we have
+
+$$
+X_{t+h} - X_t \approx b(X_t)h + \sigma(X_t)(W_{t+h} - W_t).
+$$
+
+where $b(X_t)h$ is the <b>local average displacement</b> and $\sigma(X_t)(W_{t+h} - W_t)$ is the <b>random displacement</b>. _Furthermore,_ since Brownian motion increments are $\sim N(0,hI)$, we have that
+
+$$
+\mathbb{E}[W_{t+h} - W_t] = 0, \quad \operatorname{Cov}(W_{t+h} - W_t) = hI.
+$$
+
+_Therefore,_ if we start at $X_t = x$, we have that
+
+$$
+\mathbb{E}[X_{t+h} - X_t \mid X_t = x] \approx b(x)h,
+\quad
+\operatorname{Cov}(X_{t+h} - X_t \mid X_t = x) \approx a(x)h,
+$$
+
+where $a(x) = \sigma(x)\sigma(x)^T$ is the <b>instantaneous covariance</b> of the state increments.
+
+Consider now a sufficiently smooth function $f: \mathbb{R}^d \to \mathbb{R}$ and think of $f(X_t)$ as an "observable" of the system _(its positions, squared position, payoff etc...)_.
+
+The <b>generator</b> $L$ is defined, _if the limits exist_, as:
+
+$$
+Lf(x) = \lim_{h\downarrow 0} \frac{\mathbb{E}_x[f(X_h)] - f(x)}{h},
+$$
+
+or, _equivalently,_
+
+$$
+\mathbb{E}_x[f(X_h)] = f(x) + hLf(x) + o(h).
+$$
+
+_Intuition:_ $Lf(x)$ is the <b>instantaneous rate of change</b> of the expected observable $f(X_t)$ starting at $x$. _Note that_ the expectation comes first: indeed, the generator does _NOT_ describe any derivative of a Brownian path _(also because they are not generally differentiable!)_
+
+_In the case_ of the diffusion above the generator is:
+
+$$
+Lf(x) = b(x)\cdot\nabla f(x) + \frac{1}{2}\operatorname{Tr}(a(x)D^2 f(x)).
+$$
+
+$$
+Lf(x) = b(x)\cdot\nabla f(x) + \frac{1}{2}\operatorname{Tr}(a(x)D^2 f(x)).
+$$
+
+where $\nabla f$ is the gradient, $D^2 f$ is the <b>Hessian matrix</b> with all the second derivatives and $\operatorname{Tr}$ is the <b>trace</b> _(sum of diagonal entries)_. _Note that_ in the formula $b(x)\cdot\nabla f(x)$ represents the effect of the drift, the remaining part the effect of randomness.
+
+<b>Derivation of the generator</b>
+
+Suppose we have $dX_t = b(X_t)\,dt + \sigma(X_t)\,dW_t$. Over a short interval, we can write:
+
+$$
+\Delta X \approx b(x)h + \sigma(x)\Delta W, \quad \Delta W \sim N(0,h).
+$$
+
+We then expand with <b>Taylor</b> around $x$ and take expectations to get:
+
+$$
+f(x+\Delta X) \approx f(x) + f'(x)\Delta X + \frac{1}{2}f''(x)(\Delta X)^2
+$$
+
+$$
+\implies
+$$
+
+$$
+\mathbb{E}[f(x+\Delta X)] - f(x) \approx f'(x)\mathbb{E}[\Delta X] + \frac{1}{2}f''(x)\mathbb{E}[(\Delta X)^2].
+$$
+
+We now notice that $\mathbb{E}[\Delta X] = b(x)h$ so, _to first order in $h$,_ we also have $\mathbb{E}[(\Delta X)^2] = \sigma^2(x)h + O(h^2)$, so we can write:
+
+$$
+\mathbb{E}[f(x+\Delta X)] - f(x) \approx h\left(b(x)f'(x) + \frac{1}{2}\sigma^2(x)f''(x)\right).
+$$
+
+and, by dividing by $h$ and taking the limit:
+
+$$
+Lf(x) = b(x)f'(x) + \frac{1}{2}\sigma^2(x)f''(x).
+$$
+
+$$
+Lf(x) = b(x)f'(x) + \frac{1}{2}\sigma^2(x)f''(x).
+$$
+
+_Note that_ we have a second derivative because a Brownian increment is typically of size $\sqrt{h}$, so its square is of size $h$. _Therefore,_ as $h \to 0$, the second-order Taylor term contributes at the same order as the drift term and so we have the second derivatives.
+
+_Furthermore,_ even if the random displacement has <b>zero mean</b>, its variance can change the expected value of a curved function. _For example,_ take $f(x) = x^2$ and add zero-mean noise. _In this example,_ the expected square increases.
+
+---
+<br/>
+<b>Example: Dynkin's formula</b>
+
+We now prove Dynkin's formula by calculating $\mathbb{E}_x[f(X_t)]$.
+
+For a _sufficiently_ smooth $f$, we can apply the <b>multidimensional Itô's formula</b>:
+
+$$
+df(X_t) = \nabla f(X_t)^\top\,dX_t + \frac{1}{2}\operatorname{Tr}(a(X_t)D^2 f(X_t))\,dt.
+$$
+
+We then substitute $dX_t = b(X_t)\,dt + \sigma(X_t)\,dW_t$ so we can have:
+
+$$
+df(X_t) = \left[b(X_t)\cdot\nabla f(X_t) + \frac{1}{2}\operatorname{Tr}(a(X_t)D^2 f(X_t))\right]dt
++ \nabla f(X_t)^\top\sigma(X_t)\,dW_t.
+$$
+
+and _immediately_ notice that what is in the brackets is _exactly_ $Lf(X_t)$, so we can write:
+
+$$
+df(X_t) = Lf(X_t)\,dt + \nabla f(X_t)^\top\sigma(X_t)\,dW_t.
+$$
+
+If we now integrate from $0$ to $t$ (with $X_0 = x$, $f(X_0) = f(x)$):
+
+$$
+f(X_t) - f(X_0) = \int_0^t Lf(X_s)\,ds + \int_0^t \nabla f(X_s)^\top\sigma(X_s)\,dW_s.
+$$
+
+If $X_0 = x$, then $f(X_0) = f(x)$.
+
+_If we assume_ <b>sufficient integrability</b>, the stochastic integral is a <b>true martingale</b> with zero expectation, so we have:
+
+$$
+\mathbb{E}_x\left[\int_0^t \nabla f(X_s)^\top\sigma(X_s)\,dW_s\right] = 0 \implies
+$$
+
+$$
+\mathbb{E}_x[f(X_t)] - f(x) = \mathbb{E}_x\left[\int_0^t Lf(X_s)\,ds\right].
+$$
+
+_that is precisely_ <b>Dynkin's formula</b>.
+
+_Intuition:_ the generator returns the instantaneous expected change, while Dynkin’s formula adds that change up over time, so the expected value at $t$ is the initial value plus the accumulated expected value of the generator.
+
+<b>Basic Properties of the Generator</b>
+
+- $L1 = 0$
+- $L$ is linear
+- If $f$ has a local maximum at an interior point $x$, then $Lf(x) \ge 0$ (<b>positive maximum principle</b>)
+- for $P_t f(x) = E_x[f(X_t)]$ we have $\delta_t P_t f = P_t L f = L P_t f$
+
+The idea behind the first point is that, if we take the constant function $f(x) = 1$, the gradient and the Hessian are zero ($\Delta f = 0$, $D^2 f = 0$), therefore $L1 = 0$ _(intuition: a constant never changes and its instantaneous expected change must be zero)_
+
+Furthermore, if we consider smooth functions $f,g$ and constants $\alpha, \beta$, since differentiation is linear we have:
+
+$$
+\Delta (\alpha f + \beta g) = \alpha \Delta f + \beta \Delta g,
+$$
+
+$$
+D^2 (\alpha f + \beta g) = \alpha D^2 f + \beta D^2 g
+$$
+
+So the generator is
+
+$$
+L(\alpha f + \beta g) = \alpha L f + \beta L g.
+$$
+
+_Furthermore,_ we can interpret $P_t$ as the <b>transition operator</b>. _In this context,_ $P_t$ takes observable $f$ and returns a new function of the starting point $x$, so $f$ is what we measure, $P_t f$ is its expected value at $t$.
+
+_Lastly,_ the intuition behind the last property is that the rate of change of the expected observable is the expected value of its generator.
+
+---
+<br/>
+<b>Example: generator as a short-time derivative</b>
+
+Consider now the 1D Ornstein–Uhlenbeck process, _that is_:
+
+$$
+dX_t = \kappa(\theta-X_t)\,dt+\sigma\,dW_t.
+$$
+
+where, _again,_ $\theta$ is the long-run mean, $\kappa > 0$ controls the mean reversion and $\sigma$ the noise. In this case, the drift is $b(x) = \kappa (\theta -x)$, so if $x > \theta$ the overall drift is negative and the process is pulled down.
+
+The one-dimensional generator for $f(x) = x^2$ is:
+
+$$
+\begin{aligned}
+Lf(x) &= b(x)f'(x) + \dfrac{1}{2}\sigma^2 f''(x) \\
+&= b(x) 2x + \frac{1}{2}\sigma^2 2 \\
+&= \kappa (\theta - x)(2x) + \frac{1}{2}\sigma^2 (2) \\
+&= 2\kappa x(\theta -x) +\sigma^2.
+\end{aligned}
+$$
+
+where the first term represents the mean-reverting drift and $\sigma^2$ the noise _(note that this is positive even if the noise has zero mean, since it indeed increases the expected square with its variance)_.
+
+---
+<br/><b>Affine Transforms</b>
+
+In this section, we understand how to calculate useful information about the future of an SDE without simulating thousands of paths. _Indeed,_ often the distribution of an SDE is difficult to write down explicitly, but we may be able to calculate the transform of that distribution.
+
+_In particular,_ a transform takes an expectation of a convenient function of the random variable, _for example_, the <b>Laplace transform</b> is defined as $E[e^{-\mu X_t}]$, the <b>characteristic function</b> as $E[e^{iuX_t}]$, so we _clearly_ see that they summarize the distribution.
+
+Once we know the transform, we can use it to calculate the moments or, _with Fourier inversions for example,_ prices of financial derivatives.
+
+_In particular,_ we are interested in the special feature of an <b>affine process</b>, _i.e._ that its transform has an exponent that is affine in the initial state, _in one dimension this means_:
+
+$$
+E_x[e^{zX_t}]=\exp(\phi(t,z)+\psi(t,z)x).
+$$
+
+where $x$ is the starting value ($X_0 = x$), $z$ determines which transform we calculate and $\phi$, $\psi$ depend on time and $z$.
+
+The _intuition_ is that we can find $\phi$ and $\psi$ by solving ordinary differential equations, rather than solving a full partial differential equation or simulating paths.
