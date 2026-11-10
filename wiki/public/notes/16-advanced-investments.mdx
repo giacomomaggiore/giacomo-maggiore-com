@@ -1419,7 +1419,7 @@ _Graphically,_ we can see the null hypothesis as follows:
 
 Once an effect has been documented and we have tested the CAPM, we can ask ourselves if the differences we see in returns are caused by some other factor exposures (risk premia) or by mispricing, as a consequence of some investors' behaviors _(slow processing of information, institutional constraints or frictions, behavioral anomalies, etc.)_. In the following lines, we therefore spend some time considering and diving deeper into some factors that have been documented to affect expected returns.
 
-_However,_ before we dive in, note that in the financial literature there is a large number of documented factors, but the majority of them come from data mining (p-hacking) and are not explained by any economic rationale. For the systematic investor, it is then important to differentiate between authentic and robust factors based on economic rationale, logic, and causation from redundant factors driven only by correlation. More on this topic can be found in the bestseller <a href="https://www.amazon.de/-/en/Navigating-Factor-Zoo-Quantitative-Investing/dp/103276841X" target="_blank">Navigating the Factor Zoo: The Science of Quantitative Investing by Michael Zhang, Tao Lu, and Chuan Shi</a>.
+_However,_ before we dive in, note that in the financial literature there is a large number of documented factors, but the majority of them come from data mining (p-hacking) and are not explained by any economic rationale. For the systematic investor, it is then important to differentiate authentic and robust factors based on economic rationale, logic, and causation from redundant factors driven only by correlation. More on this topic can be found in the bestseller <a href="https://www.amazon.de/-/en/Navigating-Factor-Zoo-Quantitative-Investing/dp/103276841X" target="_blank">Navigating the Factor Zoo: The Science of Quantitative Investing by Michael Zhang, Tao Lu, and Chuan Shi</a>.
 
 <b>Size and Value Factors</b>
 
@@ -1583,9 +1583,9 @@ We see that, _historically,_ the <b>security market line</b> is _flatter_ than p
 
 This can be explained by the fact that many _(institutional)_ investors face <b>leverage constraints</b>. For example, US regulations constrain leverage at 2:1 and brokers _generally_ do not allow more than 4:1 intraday leverage _(hey! <a href="https://giacomomaggiore.com/blog/14-leveraged-etf-2" target="_blank">I've written a lot about leverage here!</a>)_.
 
-_Therefore,_ in order to achieve higher returns, investors facing this constraint purchase <b>high-\beta assets</b>, causing them to be overpriced. _On the other hand,_ unconstrained investors can achieve good returns by taking <b>leveraged positions</b> in <b>underpriced low-\beta assets</b>.
+_Therefore,_ in order to achieve higher returns, investors facing this constraint purchase <b>high-$\beta$ assets</b>, causing them to be overpriced. _On the other hand,_ unconstrained investors can achieve good returns by taking <b>leveraged positions</b> in <b>underpriced low-$\beta$ assets</b>.
 
-The <b>betting-against-beta factor (BAB)</b>, introduced by Frazzini and Pedersen in the paper <a href="https://doi.org/10.1016/j.jfineco.2013.10.005" target="_blank">"Betting Against Beta"</a> _(Journal of Financial Economics, 2014)_, tries to capture this by going long on low-\beta assets and short on high-\beta assets, generating high returns and Sharpe ratios.
+The <b>betting-against-beta factor (BAB)</b>, introduced by Frazzini and Pedersen in the paper <a href="https://doi.org/10.1016/j.jfineco.2013.10.005" target="_blank">"Betting Against Beta"</a> _(Journal of Financial Economics, 2014)_, tries to capture this by going long on low-$\beta$ assets and short on high-$\beta$ assets, generating high returns and Sharpe ratios.
 
 The BAB, _furthermore,_ is constructed to be <b>market-neutral</b> by leveraging up _(scaling up)_ low-beta assets to a beta of 1 and then de-leveraging _(scaling down)_ high-beta assets to a beta of 1, so the factor return is given by:
 
@@ -1875,13 +1875,13 @@ $$
 f_t^{(n)} = E_t\left[y_{t+n-1}^{(1)}\right] + rp_f^{(n)}
 $$
 
-This implies that we can set up th following regression:
+This implies that we can set up the following regression:
 
 $$
 y_{t+n-1}^{(1)} = \alpha + \beta f_t^{(n)} + \epsilon_{t+n-1}
 $$
 
-If the EH holds, the forward rate is an unbiased forecast of the future spot rate, up to a constant, so we would have β = 1 and \alpha as the risk premium.
+If the EH holds, the forward rate is an unbiased forecast of the future spot rate, up to a constant, so we would have $\beta = 1$ and $\alpha$ as the risk premium.
 
 
 $$
@@ -1963,7 +1963,7 @@ _Empirically,_ using US Treasury rates from 1961 to 2025, we see the following:
 - at short horizons, the spread does not predict future yields but only future returns _(excess returns move almost one-to-one with the spread)_;
 - at longer horizons, the spread starts to predict changes in interest rates $\implies$ the <b>expectations hypothesis works better in the long run!</b>
 
-_Furthermore,_ note that <b>risk premia are not constant</b>, contrary to what the EH says. They indeed vary over time and with the forward-spot spread _(the violation of the EH is often called the <b>expectations hypothesis puzzle</b>).
+_Furthermore,_ note that <b>risk premia are not constant</b>, contrary to what the EH says. They indeed vary over time and with the forward-spot spread _(the violation of the EH is often called the <b>expectations hypothesis puzzle</b>)_.
 
 ---
 <br/>
@@ -2032,7 +2032,7 @@ _Again,_ the EH predicts $\beta = 1$, $b = 1$; that means that, if the EH holds,
 - an increase in future short rates;
 - an increase in future long rates.
 
-_Empirically,_ $\beta \approx 1$ _(i.e. yield spreads do predict changes in short rates)_ and it is significant, so the EH seems to hold, _as we can see in the results proposed by Tang and Xia in 2007, where the results correspond to the regression problem stated in the first regression:
+_Empirically,_ $\beta \approx 1$ _(i.e. yield spreads do predict changes in short rates)_ and it is significant, so the EH seems to hold, _as we can see in the results proposed by Tang and Xia in 2007, where the results correspond to the regression problem stated in the first regression:_
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-5.png)
@@ -2084,7 +2084,7 @@ _Empirically,_ with data from 1961 to 2025 on US Treasury bonds, we see that a <
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-7.png)
 </div>
 
-_Therefore,_ risk premia (expected excess returns) are high when the <b>price of long-term bonds is low</b> _(\iff a steep yield curve implies that long-term bonds are cheap and short-term bonds are expensive)_.
+_Therefore,_ risk premia (expected excess returns) are high when the <b>price of long-term bonds is low</b> _($\iff$ a steep yield curve implies that long-term bonds are cheap and short-term bonds are expensive)_.
 
 ---
 <br/>
@@ -2107,13 +2107,13 @@ To take advantage of this, we can consider the following strategy:
 
 <br/>
 ---
-<b>the Cross-sectio of Bond Returns</b> 
+<b>The Cross-Section of Bond Returns</b>
 
 <b>Single-Factor Model</b> 
 
-We now investigate if there' s a <b>common factor</b> that drives expected returns on bonds across different maturities.
+We now investigate if there's a <b>common factor</b> that drives expected returns on bonds across different maturities.
 
-Cochrand and Piazzesi, in their <a href="" target="_blank">2005 paper title "" </a> forecasrt <b>annual excess returns </b> rx on bonds (2 to 5 years maturity) using five different foward rates so they include infroamtion from the <b>entire yield curve</b>:
+Cochrane and Piazzesi, in their <a href="" target="_blank">2005 paper title "" </a>, forecast <b>annual excess returns </b> $rx$ on bonds (2 to 5 years to maturity) using five different forward rates, so they include information from the <b>entire yield curve</b>:
 
 $$
 rx_{t+1}^{(n)}
@@ -2133,20 +2133,20 @@ rx_{t+1}^{(n)}
 \varepsilon_{t+1}.
 $$
 
-With the followinf findings:
-- the model has higher R'2 than the Fama-Bliss and Campbell-Shiller regressions
-- regressoin oefficients form a "tent shape" for bonds of all maturities 
-- a <b>signel factor</b> as a linear combination of the fotward rates predicts returns across all maturities; _furthermore,_ this single factor is <b>countercycliccal</b> ans also forecasts stock returns.
+With the following findings:
+- the model has higher $R^2$ than the Fama-Bliss and Campbell-Shiller regressions
+- regression coefficients form a "tent shape" for bonds of all maturities
+- a <b>single factor</b> as a linear combination of the forward rates predicts returns across all maturities; _furthermore,_ this single factor is <b>countercyclical</b> and also forecasts stock returns.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-8.png)
 </div>
 
-We now spend some time to understand how the single factor is computed.
+We now spend some time understanding how the single factor is computed.
 
 Firstly, we regress average bond returns on the forward rates as:
 
-\[
+$$
 \frac{1}{4}\sum_{n=2}^{5}
 \left(r_{t+1}^{(n)} - y_t^{(1)}\right)
 =
@@ -2163,28 +2163,28 @@ Firstly, we regress average bond returns on the forward rates as:
 \gamma_5 f_t^{(5)}
 +
 \varepsilon_{t+1}
-\]
+$$
 
-\[
+$$
 =
 \gamma' f_t + \varepsilon_{t+1}.
-\]
+$$
 
-whereγ=[γ γ γ γ γ γ]′ andf =[1y(1)f(2)f(3)f(4)f(5)]′. We then computethe factor as \gamma' f_t.
+where γ=[γ γ γ γ γ γ]′ and f =[1y(1)f(2)f(3)f(4)f(5)]′. We then compute the factor as $\gamma' f_t$.
 
-Then, the excess return on bonds of each maturity has som "loading" on this factor. To understand how much, we simply run the following regression, that, _for each maturity,_ estimats b_n 
+Then, the excess return on bonds of each maturity has some "loading" on this factor. To understand how much, we simply run the following regression that, _for each maturity,_ estimates $b_n$:
 
-\[
+$$
 r_{t+1}^{(n)} - y_t^{(1)}
 =
 b_n\left(\gamma' f_t\right)
 +
 \varepsilon_{t+1}.
-\]
+$$
 
-So, the b_n coefficients say how uch exepcte returns move with the single factor and they <b>increae in maturity</b> _(i.e. long maturities are scaled-up versions of the factor)_. _Instead,_ note that R^2 are almost identical across maturities.
+So, the $b_n$ coefficients say how much expected returns move with the single factor and they <b>increase in maturity</b> _(i.e. long maturities are scaled-up versions of the factor)_. _Instead,_ note that $R^2$ values are almost identical across maturities.
 
-_However..._ we have just showed that <b>bonds returns are predictable</b>, so the <b>expectation hypotesis is regected</b> or, _in other words_, we could say that the aisngle-factor model is a significant improvement of the Fama-Bliss regressions.
+_However..._ we have just shown that <b>bond returns are predictable</b>, so the <b>expectations hypothesis is rejected</b> or, _in other words_, we could say that the single-factor model is a significant improvement over the Fama-Bliss regressions.
 
 _Furthermore,_ note also that the single-factor model <b>predicts stock returns</b> and so it implies common/shared changes in risk premia for both stocks and bonds, and this is in line with the findings of Fama and French _(previously discussed in the <a href="https://giacomomaggiore.com/notes/16-advanced-investments#8" target="_blank">equity chapter</a>)_.
 
@@ -2192,8 +2192,8 @@ _Furthermore,_ note also that the single-factor model <b>predicts stock returns<
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-9.png)
 </div>
 
-_Furthermore,_ Koijen et al in their 2017 <a rhef="" target="_ " > paper toitle </a> find that the <b>common factor </b>(Cochrane–Piazzesi  Factor, CP)> _(increasing in recessions, simlar to the yield spread)_ helps to princ the <b>cross ectoin of stock returns</b>, therefore it is not he factor is not relevant only for bonds, but it also contains information about <b>discount-rate risk.</b>
-Indeed, value stocks are more sewnsitives to shocks to these factors than frowth stocks because their cash flows are more sensitive to the business cycle, suggesting that the value premoium refelcts <b>compensation for macroeconomics risk</b>.ù
+_Furthermore,_ Koijen et al., in their 2017 <a rhef="" target="_ " > paper title </a>, find that the <b>common factor </b>(Cochrane–Piazzesi Factor, CP) _(increasing in recessions, similar to the yield spread)_ helps to price the <b>cross-section of stock returns</b>; therefore, the factor is not relevant only for bonds, but it also contains information about <b>discount-rate risk.</b>
+Indeed, value stocks are more sensitive to shocks to these factors than growth stocks because their cash flows are more sensitive to the business cycle, suggesting that the value premium reflects <b>compensation for macroeconomic risk</b>.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-9.png)
@@ -2312,13 +2312,13 @@ _However,_ note that $f_1$, $f_2$, and $f_3$ are the <b>most important</b> for p
 <br/>
 <b>International Bond Selection</b> 
 
-We have just seen how the slope of the curve predcits bond excess returns. _However_ research has also shownt aht the slope contains information about the <b>corss section of exepcted bonds returns</b>. We now spend some time to see a simple cross-sectional strategy to exploit this behavior.
+We have just seen how the slope of the curve predicts bond excess returns. _However,_ research has also shown that the slope contains information about the <b>cross-section of expected bond returns</b>. We now spend some time looking at a simple cross-sectional strategy to exploit this behavior.
 
-_In detail,_ one the<b>penutlimated </b> trading  day of each month t, we compute the yield spread y_t^(10) - y_t^(3m) on governemtn bonds in each country.
+_In detail,_ on the <b>penultimate </b> trading day of each month $t$, we compute the yield spread $y_t^{(10)} - y_t^{(3m)}$ on government bonds in each country.
 
-Then, in the <b>last</b> trading day fo the month t, we go long in bond futueses from the countries with the<b> steepest </b> _(or least inverted)_ yield curve and <b>hedge</b> foreign ecghange risk using currency futures.
+Then, on the <b>last</b> trading day of the month $t$, we go long in bond futures from the countries with the <b> steepest </b> _(or least inverted)_ yield curve and <b>hedge</b> foreign exchange risk using currency futures.
 
-From 2002 to 2006, _considering Germanby, Frnace, Italy, UK, Switzerland, Japan, Canada and US;_ the strategy sowed an improvemnts in returns versus a equally weighted strategy.
+From 2002 to 2006, _considering Germany, France, Italy, the UK, Switzerland, Japan, Canada and the US,_ the strategy showed an improvement in returns versus an equally weighted strategy.
 
 | Strategy        | EW     | Slope  |
 |-----------------|--------|--------|
@@ -2335,45 +2335,45 @@ From 2002 to 2006, _considering Germanby, Frnace, Italy, UK, Switzerland, Japan,
 
 ## <a id="11">FX Rates</a>
 
-The return in domestic currency of an investment in as asset in foreign currency as two components:
-- the return exspressed in oreign currency 
-- the return of the foreig currency expressed in mdomestic currency 
+The return in domestic currency of an investment in an asset in foreign currency has two components:
+- the return expressed in foreign currency
+- the return of the foreign currency expressed in domestic currency
 
-Deonet by R_t,l^é the return of the foreign currency asset measured in foreign currency, in [t,t+k] and r_tlk^* = ln(1 + R_t+,^*) the correspodning cointuously compounded return.
+Denote by R_t,l^é the return of the foreign currency asset measured in foreign currency, in $[t,t+k]$, and r_tlk^* = ln(1 + R_t+,^*) the corresponding continuously compounded return.
 
-Denote by S_t the spot exchange rate expressed as the number of hunits of domestic currency per unit of foreign currency and s_t its logairthm.
+Denote by $S_t$ the spot exchange rate expressed as the number of units of domestic currency per unit of foreign currency and $s_t$ its logarithm.
 
-Therefore, an incrwase in S_t means that the foreig urrency is appreacigin, _i.e._ one unit of foreign currencybuys more units of the domestich currency.
+Therefore, an increase in $S_t$ means that the foreign currency is appreciating, _i.e._ one unit of foreign currency buys more units of the domestic currency.
 
-Suppose that we take one unit of fomestich currency, change it in foreign currency and we invest the resuling 1 / S_t in the foreign currency asset. 
+Suppose that we take one unit of domestic currency, change it into foreign currency and invest the resulting $1 / S_t$ in the foreign currency asset.
 
-After k periods, the value of the investments (<b>gross return</b>) measured in <b>domestic currency</v> is:
+After $k$ periods, the value of the investment (<b>gross return</b>) measured in <b>domestic currency</b> is:
 
-V_t+k = 1 + R_t+k = \frac{S_t+k (1 + R_t+k^*)}{S_t} = (1 + R_t,l^FX)(1 + R_t,k^*)
+$$V_{t+k} = 1 + R_{t+k} = \frac{S_{t+k} (1 + R_{t+k}^*)}{S_t} = (1 + R_{t,l}^{FX})(1 + R_{t,k}^*)$$
 
-and the correspodnign log return is:
+and the corresponding log return is:
 
 r =s −s+r∗ =rFX+r∗ . 
 
-If we consider the excess log return compared to the risk less asset:
+If we consider the excess log return compared to the riskless asset:
 
 
 rx _t+k=s_t+k −s_t+ r_tèk^* −i_t+k 
 
 <b>Covered Interest Rate Parity (CIP)</b>
 
-Assume we are a dometic investor considering investing in a foreign money or bond market. Let I_t,l the k-period cumultaitve discrete interested earned onthe <b>domestic</b> currency at time t and i_tk = ln(1 + I_t+k) the equivalent continuously compounted interest.
+Assume we are a domestic investor considering investing in a foreign money or bond market. Let I_t,l denote the $k$-period cumulative discrete interest earned on the <b>domestic</b> currency at time $t$ and i_tk = ln(1 + I_t+k) the equivalent continuously compounded interest.
 
-Let I^*_t+k denote the k-period cumulative discree interest earned on the <b>foreign</b> cirrency at time t and i_t+k the equivalent conitnuoulsy compounded interest.
+Let I^*_t+k denote the $k$-period cumulative discrete interest earned on the <b>foreign</b> currency at time $t$ and i_t+k the equivalent continuously compounded interest.
 
-Let F_t,k denote the <b>forward foreign exchange rate</b>, _i.e._ the FX rate you can agree to today for a foreign currency transaction with delivery in k èerods. _In other words,_ if you sell the foreign currency forward, you will recevie F_t,à units of the domestic currency per unit of foreign currency at time t + k.
+Let F_t,k denote the <b>forward foreign exchange rate</b>, _i.e._ the FX rate you can agree to today for a foreign currency transaction with delivery in $k$ periods. _In other words,_ if you sell the foreign currency forward, you will receive F_t,à units of the domestic currency per unit of foreign currency at time $t + k$.
 
-From the no arbitrage condition, the fofrward rate must be such that the return on a riskles sinvestment in the domestic currency (1 + I_t,k) is identical to that of a <b>hedged investment</b> in the foreign currency, so we must have
+From the no-arbitrage condition, the forward rate must be such that the return on a riskless investment in the domestic currency (1 + I_t,k) is identical to that of a <b>hedged investment</b> in the foreign currency, so we must have
 
-1 + I_t,k = \frac{F_t,k}{S_t} (1 + I^*_t,k) \implies F_t,k = S_t \frac[{I_t,k}{1 + I^*t,k}
+`1 + I_t,k = \frac{F_t,k}{S_t} (1 + I^*_t,k) \implies F_t,k = S_t \frac[{I_t,k}{1 + I^*t,k}`
 
-This result isknown as <b>covered iterest parity (CIP)</b> and its says that borrowing at home and lending abroad or doing the opposite earns zero return is the FX risk is hedged.
+This result is known as <b>covered interest parity (CIP)</b> and it says that borrowing at home and lending abroad or doing the opposite earns zero return if the FX risk is hedged.
 
-In the log form, covered inter parity reads as;
+In log form, covered interest parity reads as:
 
 f_t,k = s_t + (i_t,k - i^*t,k)
