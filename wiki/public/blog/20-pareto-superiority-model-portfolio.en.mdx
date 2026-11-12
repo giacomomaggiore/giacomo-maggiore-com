@@ -1,0 +1,219 @@
+---
+title: 'On return stacking, futures and Pareto Superiority'
+publishedAt: '2026-11-11'
+summary: ''
+---
+
+## <b>Strong opinions</b>
+
+A few days ago, <a href="https://www.toobigtofail.it/la-verita-dietro-il-kid-dei-prodotti-finanziari-ep-118/" target="_blank">while listening to one of my favorite podcasts</a>, I was almost surprised by one of the hosts' _(deliberately provocative)_ statements: "<b>90/60 + <a href="https://www.imgp.com/us/dbmf/" target="_blank">DBMF</a> is now Pareto superior to 60/40"</b>, with the not-so-implicit subtext: "if you still have a 60/40, you're an idiot".
+
+While I generally agree _(and have a similar allocation in my portfolio),_ I was naturally curious to look at the numbers behind this claim.
+
+For fans of _"<a href="https://www.vanguard.co.uk/professional/product/etf/equity/9679/ftse-all-world-ucits-etf-usd-accumulating" target="_blank">VT</a> & chill",_ a quick recap:
+- 60/40 generally means a portfolio made up of 60% stocks (usually companies diversified globally) and 40% bonds (the choice here is more complex and depends on the country or reference currency);
+- 90/60, on the other hand, means 90% exposure to stocks and 60% to bonds, obtained through <b>bond futures contracts</b>.
+- _Lastly,_ DBMF is an ETF that seeks to replicate the performance of the largest <b>managed futures</b> funds (CTA funds) that use trend following
+
+The rationale behind a 90/60 + managed futures portfolio _(from here on: "model portfolio")_ is therefore to combine <b>capital efficiency</b>, i.e. the efficient use of capital and thus leverage to break through the 100% barrier and make room for other asset classes; with managed futures, which can offer additional diversification even when bonds and stocks are in the red.
+
+In practice, for the 90/60 we can consider the two most popular ETFs:
+- <a href="https://www.nasdaq.com/market-activity/etf/ntsx" target="_blank">NTSX</a> _(90% US equities + 60% <a href="https://www.cmegroup.com/trading/interest-rates/basics-of-us-treasury-futures.html" target="_blank">US Treasury</a> futures)_
+- <a href="https://www.marketwatch.com/investing/fund/ntsg" target="_blank">NTSG</a> _(90% developed-market equities with an <s>unfortunate</s> ESG filter + 60% developed-market government bond futures)_
+
+while for managed futures, depending on whether you invest in UCITS products or not, several ETFs besides DBMF offer trend-following exposure through futures contracts.
+
+Details and further discussion are available in the technical appendix at the end of the article and in the accompanying [Python notebook](https://github.com/giacomomaggiore/financial-analyses/blob/main/03_pareto_superiority_90_60.ipynb) on Github.
+
+---
+
+## <b>Reverse Engineering</b>
+
+The idea behind this brief analysis is, _again_, to see whether Pareto superiority "holds up", or, _in other words,_ to study the model portfolio's relative performance against a classic 60/40.
+
+_On paper,_ everything looks easy: take some ETFs, run a backtest, calculate Sharpe and CAGR and that's it. Too bad NTSG has two years of history, DBMF only a little more and choosing a single bond ETF is far from straightforward and depends heavily on the reference currency and country of residence.
+
+For the 60/40, however, the solution is fairly simple: a <b>linear combination</b> of the <a href="https://www.msci.com/indexes/index/990100" target="_blank">MSCI World</a> Net Total Return and <a href="https://www.lseg.com/en/ftse-russell/indices/world-government-bond-index" target="_blank">FTSE WGBI Developed Markets</a> indices _(with an optimistic TER estimate of 0.10% for each)_ gives us a proxy for a 100% equity ETF and a 60/40 portfolio.<br/>_(In the analysis, however, these proxies are replaced with returns from the "real" ETFs when available, for greater accuracy.)_
+
+For NTSG things are <b>slightly more complicated.</b>
+
+_First of all,_ the ETF invests through futures contracts which, _by their nature,_ do not have a continuous price series over time, since they are subject to delivery and rolling. Reconstructed "adjusted" historical series exist to reconcile the gap between contracts, but backtesting them involves a number of simplifications and leaves out transaction and roll costs.
+<br/>_Secondly,_ NTSG has a far-from-simple methodology: besides applying an ESG filter to equities, it invests in government bond futures from the United States, Germany, Japan and the United Kingdom, and rebalances positions periodically in February, May, August and November, or when exposure deviates from the target by more than 5 percentage points.
+
+As a result, I started with a simplified <b>return stacking</b> model:
+
+$$
+R_{90/60,t}^{\mathrm{gross}}=0{,}90R_{E,t}+0{,}60R_{B,t}-0{,}50R_{cash,t}.
+$$
+
+where $R_E$ is the return of the equity index, $R_B$ the return of the bond index and $R_{cash,t}$ represents the cost of financing.
+
+The version actually used in the backtest adds the proxy's monthly TER (0.25% annually) and an annual drag $d = 0,50 \%$ on the bond notional:
+
+$$
+R_{90/60,t}^{\mathrm{net}}\approx0{,}90R_{E,t}+0{,}60R_{B,t}-0{,}50R_{cash,t}-c_{TER,m}-0{,}60\frac{d}{12},
+\\ c_{TER,m}=1-(1-0{,}25\%)^{1/12}.
+$$
+
+
+_(From December 2024, the backtest instead uses NTSG's actual observed returns rather than the synthetically replicated ETF)_
+
+The main limitation of this model is that an unhedged cash bond index, _measured in USD,_ incorporates currency movements on the value of the entire position. _By contrast,_ a foreign bond future does not necessarily imply currency exposure on the full notional: the contract and margin currencies and the conversion of P&L all matter.
+
+As for DBMF, the available methodology is not sufficient to faithfully reconstruct its historical exposures to individual futures contracts or replicate the Dynamic Beta for each CTA fund tracked.<br/>
+As a result, I considered three possible <b>proxy indices</b> (<a href="https://ionanalytics.com/barclayhedge/indices/" target="_blank">SG Trend</a>, <a href="https://ionanalytics.com/barclayhedge/indices/" target="_blank">SG CTA</a> and <a href="https://portal.barclayhedge.com/cgi-bin/indices/displayHfIndex.cgi?indexCat=Barclay-Investable-Benchmarks&amp;indexName=BTOP50-Index" target="_blank">BarclayHedge BTOP50</a>) and the <a href="https://www.aqr.com/Insights/Research/Journal-Article/Time-Series-Momentum" target="_blank">AQR TSMOM</a> factor, and compared them with DBMF over their common months _(June 2019/May 2026)_ by looking at their correlation.
+SG CTA turns out to be the closest _(higher correlation, lower tracking error),_ and is therefore chosen as the synthetic proxy between 2000 and 2019, while BTOP50 returns are used for the preceding years and the performance of DBMF itself for the years after that.
+
+With all the ingredients on the table, a few free parameters remain to be chosen/calibrated (mainly relating to estimates of futures costs, product fees and rebalancing strategies). _Again,_ technical details and the rationale behind each choice are in the appendix.
+
+---
+
+## <b>Christ's age, plus a few years</b>
+
+The USD backtest covers 1990 to 2026, comparing the 60/40 and 100% stocks with the model portfolio.
+In its EUR version without currency hedging, _starting from the same initial configuration,_ the currency factor is common and relative performance is therefore necessarily preserved. _By contrast,_ volatility, drawdown and risk-return ratios remain <b>sensitive to the exchange rate.</b>
+
+<div align = "center">
+![Growth of 100,000 USD: model portfolio, 60/40 and 100% stocks compared](/images/blog/pareto-performance-1990-2026.png)
+</div>
+
+<div align = "center">
+![Wealth relative to the 60/40: model portfolio and 100% stocks, initial ratio of 1](/images/blog/pareto-relative-wealth-1990-2026.png)
+</div>
+
+
+| Portfolio | CAGR | Volatility | Max drawdown | Average drawdown |
+| --- | ---: | ---: | ---: | ---: |
+| 90/60 + managed futures | 7.51% | 10.35% | -32.25% | -4.37% |
+| 60/40 | 6.63% | 9.94% | -34.24% | -4.43% |
+| 100% stocks | 7.96% | 15.02% | -54.09% | -9.48% |
+
+
+
+_(Average drawdown is measured as the mean of month-end drawdowns over the entire period, including months with zero drawdown)._
+
+_To sum things up...._ if we wanted to be "nitpickers", in this configuration the model portfolio is <b>NOT Pareto superior</b> to a classic 60/40 _(note the higher volatility)_ but, allowing for a generous margin of error and turning a blind eye, <b>the thesis holds up</b>.
+
+In exchange for 41 basis points of additional volatility, the model portfolio has a <b>higher CAGR</b> (7.51% vs 6.63%) and a slightly shallower average drawdown than a classic 60/40.
+Note also that, _unsurprisingly given the presence of an additional diversifier (managed futures!),_ the model portfolio also offers a more conservative risk profile than 100% stocks.
+In this case, with a broadly similar CAGR (7.51% vs 7.96%), the model portfolio has substantially lower volatility and average drawdown in absolute terms (10.35% vs 15.02% and -4.37% vs -9.48%).
+
+| Portfolio | Ulcer index | Sharpe | Sortino | Calmar |
+| --- | ---: | ---: | ---: | ---: |
+| 90/60 + managed futures | 7.23% | 0.49 | 0.75 | 0.23 |
+| 60/40 | 7.90% | 0.43 | 0.62 | 0.19 |
+| 100% stocks | 15.31% | 0.41 | 0.58 | 0.15 |
+
+
+
+Taking the analysis one step further, _(at least)_ two more things are worth mentioning:
+- the standard deviation of rolling 12-month cumulative returns _(and consequently sequence risk)_ is similar for the model portfolio and the 60/40 (10.35% vs 9.97%), while it is higher for 100% stocks (15.87%).
+
+<div align = "center">
+![Rolling 12-month cumulative returns: model portfolio, 60/40 and 100% stocks](/images/blog/pareto-rolling-12-month-returns.png)
+</div>
+
+- the six-month rolling correlation between managed futures and 100% equities <b>falls during equity bear markets</b>, showing that the diversifier works especially when everything seems to be going to shit. _By contrast,_ during strong bull markets (just like from Covid to today), it is difficult to outperform equities in terms of expected returns.
+
+<div align = "center">
+![Rolling 6-month correlation between the model portfolio and equities, with USD equity regime](/images/blog/pareto-rolling-correlation-equities.png)
+</div>
+
+<div align = "center">
+![Managed futures and equities: total return and rolling correlation](/images/blog/managed-futures-equities-correlation.png)
+</div>
+
+---
+<br/>
+
+_In conclusion,_ far be it from me to <b>1)</b> promote NTSG <b>2)</b> disparage VWCE & chill <b>3) </b>challenge<a href="https://theitalianleathersofa.com/blog/" target="_blank"> people who know much more than I do... </a><br/>The numbers and comments come simply from curiosity and the need to model a problem as accurately as possible, even when the data and rules of the game are far from clear.
+
+_Secondly,_ as already mentioned<a href="https://giacomomaggiore.com/blog/17-model-portfolio-2" target="_blank"> here</a>, I attach very limited importance to backtests... if <b>"past performance is not indicative of future results"</b> is one of the most overused phrases on Wall Street, there must be a reason!
+
+Cheers!
+
+<div align = "center">
+![Wealth relative to the 60/40: model portfolio and 100% stocks, initial ratio of 1](/images/blog/pizza.jpeg)
+</div>
+<small><i>Some italian "vibes" after too many numbers and charts</i></small>
+<br/>
+---
+
+## <b>References</b>
+
+<a href="https://github.com/giacomomaggiore/financial-analyses/blob/main/03_pareto_superiority_90_60.ipynb" target="_blank">Source code (Python Notebook by Giacomo)</a>
+<br/>
+<a href="https://www.nasdaq.com/market-activity/etf/ntsx" target="_blank">WisdomTree U.S. Efficient Core Fund (NTSX) - Nasdaq</a>
+<br/>
+<a href="https://www.marketwatch.com/investing/fund/ntsg" target="_blank">WisdomTree Global Efficient Core UCITS ETF (NTSG) - MarketWatch</a>
+<br/>
+<a href="https://www.imgp.com/us/dbmf/" target="_blank">iMGP DBi Managed Futures Strategy ETF (DBMF) - iM Global Partner</a>
+<br/>
+<a href="https://www.lseg.com/en/ftse-russell/indices/world-government-bond-index" target="_blank">FTSE World Government Bond Index - factsheet and methodology (LSEG)</a>
+<br/>
+<a href="https://www.cmegroup.com/trading/interest-rates/basics-of-us-treasury-futures.html" target="_blank">The basics of U.S. Treasury futures (CME Group)</a>
+<br/>
+<a href="https://ionanalytics.com/barclayhedge/indices/" target="_blank">SG Prime Services Indices and BTOP50 - indices and data (BarclayHedge / ION Analytics)</a>
+<br/>
+<a href="https://www.toobigtofail.it/" target="_blank">TooBigToFail - An irreverent personal finance podcast</a>
+<br/>
+
+<br/>
+
+---
+
+## <b>Appendix</b>
+
+## <b>A1. Methodology</b>
+
+The backtest uses monthly USD returns from January 1990 to August 2026. The 60/40 and 100% equity portfolios are built using their respective available historical series; the model portfolio combines 90% equity exposure, a 60% target bond exposure and an allocation to managed futures. _When available,_ observed NTSG and DBMF returns replace their respective synthetic proxies.
+
+To extend the sample, the 90/60 is approximated using equity and bond indices plus an annual drag of 0.50% applied to the bond notional; DBMF is represented by SG CTA for 2000–2019 and BTOP50 for the preceding years. The results therefore remain highly indicative and sensitive to the choice of indices and calibration parameters.
+
+| TICKER | Product name | Methodology and basic info |
+| --- | --- | --- |
+| N/A (index) | <a href="https://www.msci.com/indexes/index/990100" target="_blank">MSCI World Net Total Return</a> | Developed-market equity index, with net dividends reinvested; historical equity proxy in USD. Replaced by observed URTH returns when available. |
+| WGBI DM (index) | <a href="https://www.lseg.com/en/ftse-russell/indices/world-government-bond-index" target="_blank">FTSE World Government Bond Index Developed Markets</a> | Fixed-rate, local-currency investment-grade government bonds from developed markets; currency-unhedged USD series used as a bond proxy. Replaced by observed IGLO returns when available. |
+| USD T-bills (series) | <a href="https://www.treasurydirect.gov/marketable-securities/treasury-bills/" target="_blank">U.S. Treasury Bills</a> | Monthly benchmark return for USD cash/financing and the risk-free rate. |
+| BTOP50 | <a href="https://portal.barclayhedge.com/cgi-bin/indices/displayHfIndex.cgi?indexCat=Barclay-Investable-Benchmarks&amp;indexName=BTOP50-Index" target="_blank">BarclayHedge BTOP50 Index</a> | Diversified managed futures benchmark based on net CTA returns; main proxy for 1990–1999. |
+| SG CTA | <a href="https://ionanalytics.com/barclayhedge/indices/" target="_blank">SG CTA Index</a> | CTA index with returns net of manager fees; main proxy for 2000–May 2019, chosen for its greater similarity to DBMF over the common period. |
+| SG Trend | <a href="https://ionanalytics.com/barclayhedge/indices/" target="_blank">SG Trend Index</a> | Index of trend-following strategies; used as a candidate proxy in the comparison with DBMF, not in the baseline historical series. |
+| TSMOM (factor) | <a href="https://www.aqr.com/Insights/Research/Journal-Article/Time-Series-Momentum" target="_blank">AQR Time Series Momentum</a> | Time-series momentum factor on futures; excess return series compared with DBMF and available for optional extensions of the sample before 1987. |
+| URTH (ETF) | iShares MSCI World ETF | Observed equity ETF returns used in place of the MSCI World proxy from the start of the available series. |
+| IGLO (ETF) | iShares Global Government Bond UCITS ETF | Observed bond ETF returns used in place of the FTSE WGBI proxy from the start of the available series. |
+| NTSG (ETF) | WisdomTree Global Efficient Core UCITS ETF | Observed returns used in place of the synthetic 90/60 proxy from December 2024. |
+| DBMF (ETF) | iMGP DBi Managed Futures Strategy ETF | Observed total returns, net of fund expenses. |
+
+
+
+## <b>A2. Currency risk of the bond proxy</b>
+
+The 90/60 proxy uses a foreign bond index that is not currency-hedged. _Specifically,_ the total index return consists of prices, coupons on the underlying bonds and currency movements.
+
+A bond future provides exposure to the bond's return through margin and collateral, without requiring the purchase of the full notional in the foreign currency. _As a result,_ 60% of a cash bond index is not necessarily equivalent to 60% in bond futures.
+
+NTSG holds collateral in USD, EUR, GBP and JPY; the proxy, on the other hand, combines unhedged bonds with financing linked to <a href="https://www.treasurydirect.gov/marketable-securities/treasury-bills/" target="_blank">US T-bills</a>. Currency exposure, carry, financing and collateral therefore differ. The drag included in the model represents only a hypothetical cost and does not eliminate these differences. _As a result,_ the proxy's volatility, correlations and returns may differ from those of NTSG.
+
+## <b>A3. Sensitivity to assumptions</b>
+
+For the January 1990–August 2026 configuration, CAGR remains sensitive to the drag assumptions.
+
+| Assumption | Model portfolio CAGR |
+| --- | ---: |
+| Bond drag of 0% annually on notional | 7.71% |
+| Bond drag of 0.50% annually on notional (baseline) | 7.51% |
+| Bond drag of 1.00% annually on notional | 7.31% |
+| Hypothetical CTA gross-up of 2%/20%, with baseline drag | 8.52% |
+
+The CTA indices used as proxies report returns net of manager fees. To explore an estimate of gross returns, the notebook applies a hypothetical 2/20 fee model _(a 2% annual management fee and a 20% performance fee on new NAV highs)._ The performance fee is therefore reversed only when the net NAV exceeds its previous all-time high.
+
+_However,_ the baseline configuration does not apply the gross-up. The 2/20 configuration is shown only as a sensitivity test: applying it would increase the model portfolio CAGR from 7.51% to 8.52%. The hypothetical TER for the managed futures proxy is still applied to the synthetic months.
+
+## <b>A4. NTSG proxy</b>
+
+Using zero drag, the brief comparison between NTSG and the 90/60 proxy from December 2024 to August 2026 shows:
+
+- monthly correlation 0.990
+- annualized tracking error 1.75%
+
+_Nevertheless,_ the backtest uses 0.50% annually on the bond notional in the synthetic months to adopt a more conservative approach.
