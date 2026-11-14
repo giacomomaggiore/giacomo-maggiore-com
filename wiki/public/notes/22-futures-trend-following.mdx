@@ -11,10 +11,30 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 ## <b>Index</b>
 
 - [1. Introduction to Futures Contracts](#1)
+  - [1.1 Futures Pricing Model: the "Cost of Carry" Framework](#1.1)
+  - [1.2 The Term Structure: Contango vs Backwardation](#1.2)
+  - [1.3 Hedging Applications and Optimal Hedge Ratio](#1.3)
 - [2. Cross-asset trend following with futures](#2)
+  - [2.1 Why diversified futures trends and why equities and bonds are not enough](#2.1)
+  - [2.2 Criticism of Trend-Following Strategies](#2.2)
 - [3. Futures data](#3)
+  - [3.1 Open Interest and Rolling](#3.1)
+  - [3.2 Term Structure](#3.2)
+  - [3.3 Basis Gaps](#3.3)
+  - [3.4 Futures Sectors](#3.4)
 - [4. Constructing diversified futures trading strategies](#4)
+  - [4.1 Position Sizing](#4.1)
 - [5. Two basic trend-following strategies](#5)
+  - [5.1 Moving Averages Strategy](#5.1)
+  - [5.2 Breakout Strategy](#5.2)
+  - [5.3 Combining the Strategies](#5.3)
+  - [5.4 Cash Management](#5.4)
+- [6. Analysis of Trend Following Strategies Performance](#6)
+  - [6.1 Trading Direction](#6.1)
+  - [6.2 Sector contribution](#6.2)
+  - [6.3 Leverage in Trend Following Strategies](#6.3)
+  - [6.4 Trend Following as a component to an Equity Portfolio](#6.4)
+- [7. Trend Following with stocks](#7)
 
 
 <br/>
@@ -54,7 +74,7 @@ $$
 ---
 <br/>
 
-<b>Futures Pricing Model: the "Cost of Carry" Framework</b>
+<span id="1.1"></span><b>Futures Pricing Model: the "Cost of Carry" Framework</b>
 
 Futures prices are derived via the <b>no-arbitrage pricing principle</b>, _i.e._ the relationship between the spot price $S_0$ and the futures price $F_0$ is governed by the <b>cost of carry</b> ($c$) that takes into account financing costs, storage costs and income yields.
 
@@ -87,7 +107,7 @@ F_0 = S_0 e^{(r + \mu - y)T}
 $$
 ---
 <br/>
-<b>The Term Structure: Contango vs Backwardation</b>
+<span id="1.2"></span><b>The Term Structure: Contango vs Backwardation</b>
 
 The relationship between spot prices and futures prices across different maturity dates brings us to the <b>futures curve term structure</b>, where we can distinguish two different market regimes.
 
@@ -99,7 +119,7 @@ The relationship between spot prices and futures prices across different maturit
 </div>
 ---
 <br/>
-<b>Hedging Applications and Optimal Hedge Ratio</b>
+<span id="1.3"></span><b>Hedging Applications and Optimal Hedge Ratio</b>
 
 We first recall that hedging is implemented to <b>reduce/remove</b> an unwanted risk so that the outcome is more predictable. Note that hedging is not meant to make money; think of hedging as "insurance", where you give up some upside to limit the downside.
 
@@ -131,7 +151,7 @@ $$
 = \sigma_S^2 + h^2\sigma_F^2 - 2h\rho\sigma_S\sigma_F
 $$
 
-and, since this is convex in h, we can set the derivative to zero:
+and, since this is convex in $h$, we can set the derivative to zero:
 
 $$
 \frac{d\operatorname{Var}}{dh} = 2h\sigma_F^2 - 2\rho\sigma_S\sigma_F = 0
@@ -167,7 +187,7 @@ $$
 
 Also, we have $h = N V_C / V_A$ and $\Delta V_{\text{hedged}} = V_A\,(r_A - h\,r_F)$.
 
-If we now solve for N, we get:
+If we now solve for $N$, we get:
 
 $$
 N^* = h^*\,\frac{V_A}{V_C} = h^*\,\frac{V_A}{F_0\,Q}
@@ -187,7 +207,7 @@ The basic idea is that <b>you never buy at the bottom and never sell at the top.
 
 The underlying assumption is that <b>financial markets tend to move in trends</b> _(perhaps not all the time and not even most of the time)_. Therefore, when markets are moving <b>sideways,</b> trend following is not profitable.
 
-_However,_ note that trend following on a single instrument is quite often a useless and very expensive exercise, since any single instrument can have very long periods where it does not work. _Furthermore,_ trading on a single market or a few markets means taking too large bets.
+_However,_ note that trend following on a single instrument is quite often a useless and very expensive exercise, since any single instrument can have very long periods where it does not work. _Furthermore,_ trading on a single market or a few markets means taking bets that are too large.
 
 <b>Diversified futures strategies</b> instead have the following characteristics:
 
@@ -196,7 +216,7 @@ _However,_ note that trend following on a single instrument is quite often a use
 - each bet is in itself almost insignificant compared to the total portfolio
 - most trend-following trades lose, but the idea is to gain more than what is lost on average.
 <br/>
-<b>Why diversified futures trends and why equities and bonds are not enough</b>
+<span id="2.1"></span><b>Why diversified futures trends and why equities and bonds are not enough</b>
 
 - Equities as an asset class have <b>very high internal correlation</b>, so they move together and diversification breaks down in market distress.
 - Equities move up in the long run, but we may not be able to <b>afford their drawdown periods</b>.
@@ -217,7 +237,7 @@ _In contrast,_ managed futures usually <b>show no correlation</b> with equities,
 
 
 <br/>
-<b>Criticism of Trend-Following Strategies</b>
+<span id="2.2"></span><b>Criticism of Trend-Following Strategies</b>
 - <b>survivorship bias</b>, since some strategies did not survive or were closed. _However,_ this is also true if we look at the performance of current S&P 500 companies... survivorship bias in finance is an extremely hard topic!
 - <b>high leverage</b> makes the strategy too risky. _However,_ leverage and risk are not necessarily related.
 - trend following needs to short, and <b>shorting has unlimited downside risk</b> _...but_ you can only lose what you put on the table, so the loss is potentially unlimited only if you have unlimited margin capital, which is not the case.
@@ -249,11 +269,11 @@ _For example,_ suppose that you are CHF-based.
 - The exchange rate at $t = 1$ is 1.44.
 - So your loss in CHF is more or less 115,300, and the exchange rate at opening has no impact.
 
-The currency exposure is not on the position but <b>only on the P&L,</b> and it varies day by day. It is both difficult to hedge but <b>less impactful</b> since it cannot change the direction/sign of the P&L.
+The currency exposure is not on the position but <b>only on the P&L,</b> and it varies day by day. It is difficult to hedge but <b>less impactful</b> since it cannot change the direction/sign of the P&L.
 
 ---
 <br/>
-<b>Open Interest and Rolling</b>
+<span id="3.1"></span><b>Open Interest and Rolling</b>
 
 The <b>open interest</b> of a contract is the number of people actively trading it.
 
@@ -277,7 +297,7 @@ Note that we often see <b>volume spikes between months.</b>
 
 ---
 <br/>
-<b>Term Structure</b>
+<span id="3.2"></span><b>Term Structure</b>
 
 The <b>term structure</b> (or yield curve) refers to the shape of the curve obtained by plotting the delivery month on the x-axis and the futures price on the y-axis.
 
@@ -305,7 +325,7 @@ _In contrast,_ note that backwardation is usually caused by seasonality, interes
 
 ---
 <br/>
-<b>Basis Gaps</b>
+<span id="3.3"></span><b>Basis Gaps</b>
 
 The current prices of two contracts with the same underlying but different delivery dates will always be different and this difference is the <b>basis gap</b>.
 
@@ -319,7 +339,7 @@ _Note, however,_ that these continuations are not real and are not tradable inst
 
 ---
 <br/>
-<b>Futures Sectors</b>
+<span id="3.4"></span><b>Futures Sectors</b>
 
 When dealing with futures..._well_, we could have a futures contract for each "real" object in the world... _however,_ for simplicity, we briefly describe major futures sectors.
 
@@ -382,7 +402,7 @@ $$
 
 <b>Example</b> _(3-month Eurodollar future)_
 
-The Eurodollar is based on the three-month US dollar LIBOR _(LIBOR has been discontinued and the contract replaced by the 3-month SOFR future, which has the same $25 per bp)_. The notional of this contract is USD 1 million. It is a bet on the 3-month interest rate, so a price of 98.00 means an implied rate of 2%.
+The Eurodollar is based on the three-month US dollar LIBOR _(LIBOR has been discontinued and the contract replaced by the 3-month SOFR future, which has the same \$25 per bp)_. The notional of this contract is USD 1 million. It is a bet on the 3-month interest rate, so a price of 98.00 means an implied rate of 2%.
 
 Moving the price by 1 full point means that the rate moves by 1 percentage point, i.e., 1% per year. The contract only covers 3 months _(1/4 of a year)_, so you earn a quarter of that:
 - convert the index point to a percentage by dividing by $100$ _(1 index point = 1% of the annualized rate)_;
@@ -410,21 +430,21 @@ Below find some typical examples:
 
 | Contract (ticker) | Contract size | Quoted in | Tick size = tick value | Point value |
 | :--- | :--- | :--- | :--- | ---: |
-| [E-mini S&P 500 (ES)](https://www.cmegroup.com/markets/equities/sp/e-mini-sandp500.contractSpecs.html) | $50 × index | index points | 0.25 = $12.50 | $50 per point |
-| [Micro E-mini S&P 500 (MES)](https://www.cmegroup.com/markets/equities/sp/micro-e-mini-sandp-500.contractSpecs.html) | $5 × index | index points | 0.25 = $1.25 | $5 per point |
-| [E-mini Nasdaq-100 (NQ)](https://www.cmegroup.com/markets/equities/nasdaq/e-mini-nasdaq-100.contractSpecs.html) | $20 × index | index points | 0.25 = $5.00 | $20 per point |
+| [E-mini S&P 500 (ES)](https://www.cmegroup.com/markets/equities/sp/e-mini-sandp500.contractSpecs.html) | \$50 × index | index points | 0.25 = \$12.50 | \$50 per point |
+| [Micro E-mini S&P 500 (MES)](https://www.cmegroup.com/markets/equities/sp/micro-e-mini-sandp-500.contractSpecs.html) | \$5 × index | index points | 0.25 = \$1.25 | \$5 per point |
+| [E-mini Nasdaq-100 (NQ)](https://www.cmegroup.com/markets/equities/nasdaq/e-mini-nasdaq-100.contractSpecs.html) | \$20 × index | index points | 0.25 = \$5.00 | \$20 per point |
 | [Euro Stoxx 50 (FESX, Eurex)](https://www.eurex.com/ex-en/markets/idx/stx/euro-stoxx-50-derivatives/products/EURO-STOXX-50-Index-Futures-160088) | €10 × index | index points | 1 = €10.00 | €10 per point |
-| [3-month SOFR (SR3)](https://www.cmegroup.com/markets/interest-rates/stir/three-month-sofr.contractSpecs.html) | $1,000,000 | 100 − annualized rate | 0.0025 = $6.25 | $2,500 per point ($25 per bp) |
-| [10-year T-Note (ZN)](https://www.cmegroup.com/markets/interest-rates/us-treasury/10-year-us-treasury-note.contractSpecs.html) | $100,000 face | % of par, in 64ths | 1/64 = $15.625 | $1,000 per point |
+| [3-month SOFR (SR3)](https://www.cmegroup.com/markets/interest-rates/stir/three-month-sofr.contractSpecs.html) | \$1,000,000 | 100 − annualized rate | 0.0025 = \$6.25 | \$2,500 per point (\$25 per bp) |
+| [10-year T-Note (ZN)](https://www.cmegroup.com/markets/interest-rates/us-treasury/10-year-us-treasury-note.contractSpecs.html) | \$100,000 face | % of par, in 64ths | 1/64 = \$15.625 | \$1,000 per point |
 | [Euro-Bund (FGBL, Eurex)](https://www.eurex.com/ex-en/markets/int/long-term-interest-rates/fix/government-bonds/Euro-Bund-Futures-137298) | €100,000 face | % of par | 0.01 = €10.00 | €1,000 per point |
-| [EUR/USD (6E)](https://www.cmegroup.com/markets/fx/g10/euro-fx.contractSpecs.html) | €125,000 | USD per EUR | 0.00005 = $6.25 | $125,000 per 1.00 |
-| [WTI crude oil (CL)](https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.contractSpecs.html) | 1,000 barrels | USD per barrel | 0.01 = $10.00 | $1,000 per $1.00 |
-| [Natural gas (NG)](https://www.cmegroup.com/markets/energy/natural-gas/natural-gas.contractSpecs.html) | 10,000 MMBtu | USD per MMBtu | 0.001 = $10.00 | $10,000 per $1.00 |
-| [Gold (GC)](https://www.cmegroup.com/markets/metals/precious/gold.contractSpecs.html) | 100 troy oz | USD per oz | 0.10 = $10.00 | $100 per $1.00 |
-| [Corn (ZC)](https://www.cmegroup.com/markets/agriculture/grains/corn.contractSpecs.html) | 5,000 bushels | cents per bushel | 0.25 cent = $12.50 | $50 per 1 cent |
-| [Soybeans (ZS)](https://www.cmegroup.com/markets/agriculture/oilseeds/soybean.contractSpecs.html) | 5,000 bushels | cents per bushel | 0.25 cent = $12.50 | $50 per 1 cent |
-| [Coffee "C" (KC, ICE)](https://www.ice.com/products/15/Coffee-C-Futures) | 37,500 lb | cents per lb | 0.05 cent = $18.75 | $375 per 1 cent |
-| [Sugar No. 11 (SB, ICE)](https://www.ice.com/products/23/sugar-no-11-futures) | 112,000 lb | cents per lb | 0.01 cent = $11.20 | $1,120 per 1 cent |
+| [EUR/USD (6E)](https://www.cmegroup.com/markets/fx/g10/euro-fx.contractSpecs.html) | €125,000 | USD per EUR | 0.00005 = \$6.25 | \$125,000 per 1.00 |
+| [WTI crude oil (CL)](https://www.cmegroup.com/markets/energy/crude-oil/light-sweet-crude.contractSpecs.html) | 1,000 barrels | USD per barrel | 0.01 = \$10.00 | \$1,000 per \$1.00 |
+| [Natural gas (NG)](https://www.cmegroup.com/markets/energy/natural-gas/natural-gas.contractSpecs.html) | 10,000 MMBtu | USD per MMBtu | 0.001 = \$10.00 | \$10,000 per \$1.00 |
+| [Gold (GC)](https://www.cmegroup.com/markets/metals/precious/gold.contractSpecs.html) | 100 troy oz | USD per oz | 0.10 = \$10.00 | \$100 per \$1.00 |
+| [Corn (ZC)](https://www.cmegroup.com/markets/agriculture/grains/corn.contractSpecs.html) | 5,000 bushels | cents per bushel | 0.25 cent = \$12.50 | \$50 per 1 cent |
+| [Soybeans (ZS)](https://www.cmegroup.com/markets/agriculture/oilseeds/soybean.contractSpecs.html) | 5,000 bushels | cents per bushel | 0.25 cent = \$12.50 | \$50 per 1 cent |
+| [Coffee "C" (KC, ICE)](https://www.ice.com/products/15/Coffee-C-Futures) | 37,500 lb | cents per lb | 0.05 cent = \$18.75 | \$375 per 1 cent |
+| [Sugar No. 11 (SB, ICE)](https://www.ice.com/products/23/sugar-no-11-futures) | 112,000 lb | cents per lb | 0.01 cent = \$11.20 | \$1,120 per 1 cent |
 
 ---
 
@@ -451,7 +471,7 @@ _So,_ they are all doing _the same thing!_
 
 ---
 <br/>
-<b>Position Sizing</b>
+<span id="4.1"></span><b>Position Sizing</b>
 
 Which asset universe should we trade? There is always a trade-off between the number of markets and the complexity of the strategy.
 
@@ -507,7 +527,7 @@ Furthermore, some hedge funds use <b>margin-to-equity</b> as their position sizi
 
 We now present 2 different trend-following strategies. _Note that,_ even if they rely on different indicators, they can be combined and work better together.
 
-<b>Moving Averages Strategy</b>
+<span id="5.1"></span><b>Moving Averages Strategy</b>
 
 The basis of this strategy is the <b>moving average</b>, i.e. the average price of the underlying in the last $x$ days. _In particular,_ we consider 2 moving averages with different depths for the lookback period, so that we have a <b>fast</b> and a <b>slow </b>moving average.
 
@@ -549,7 +569,7 @@ $$
 <br/>
 
 
-<b>Breakout Strategy</b>
+<span id="5.2"></span><b>Breakout Strategy</b>
 
 The second strategy is _still_ very simple: if today's closing price is higher than or equal to the highest close of the past 100 days, we buy the following day. _Similarly,_ if the price is below or equal to the lowest close of the past 100 days, we sell at the open tomorrow and go short.
 
@@ -600,7 +620,7 @@ _Furthermore,_ note that the Sharpe ratio is not a meaningful metric here becaus
 <br/>
 ---
 <br/>
-<b>Combining the Strategies</b>
+<span id="5.3"></span><b>Combining the Strategies</b>
 
 The moving average strategy has the problem that it <b>is always in the market,</b> even if there is _NOT_ a meaningful trend. Indeed, when there is sideways movement, the strategy tends to enter and exit after some time, losing each turn.
 
@@ -638,7 +658,7 @@ $$
 
 ---
 <br/>
-<b>Cash Management</b>
+<span id="5.4"></span><b>Cash Management</b>
 
 The interest rate is a very important factor in futures trading since, _when dealing with futures,_ we do not need cash for our positions. We just need enough cash on the books to cover the initial margin and to avoid the risk of margin calls.
 
@@ -660,7 +680,7 @@ We now spend some time to understand how the combined strategy performs. We star
 
 We can immediately see that on the majority (90%) of days, returns are in a range of $\pm 4\%$. Outliers are indeed few and rare. _On the other side,_ drawdowns are very common, since the strategy is underwater almost all the time, but this comes from the nature of the strategy.
 
-_However, what is most relevant when talking about trend following is the <b>correlation with equities</b>: for this strategy, it is always in the range [-0.6, 0.6] but, _most importantly_, it turns negative when the stock market turns down.
+_However,_ what is most relevant when talking about trend following is the <b>correlation with equities</b>: for this strategy, it is always in the range [-0.6, 0.6] but, _most importantly_, it turns negative when the stock market turns down.
 
 Another important aspect of trend following strategy is the so-called <b>crisis alpha effect</b>, _i.e._ the tendency of performing well when traditional markets do not. _Indeed,_ as we said before, when the stock market starts falling, trend following usually does the opposite because the model was already short in stocks and long in bonds.
 
@@ -692,7 +712,7 @@ _Lastly,_ we can see how the strategy performed during the <b>Covid crash</b> in
 
 ---
 <br/>
-<b>Trading Direction</b>
+<span id="6.1"></span><b>Trading Direction</b>
 
 We defined our strategy such that it can go both long and short. _However,_ trading directions have different outcomes in terms of risk and return on the overall strategy.
 
@@ -702,7 +722,7 @@ The performance <b>attributed to the long position</b> is indeed higher and posi
 ![Bias variance tradeoff](/images/notes/third-semester/trend-8.png)
 </div>
 
-The short side required indeed some counterintuitive thinking about, _especially if we consider the following table_:
+The short side indeed requires some counterintuitive thinking, _especially if we consider the following table_:
 
 |                         | Core strategy | Long attribution | Short attribution |
 |-------------------------|--------------:|-----------------:|------------------:|
@@ -722,7 +742,7 @@ _However,_ we must be aware that the short side acts as a <b>volatility dampener
 
 ---
 <br/>
-<b>Sector contribution</b>
+<span id="6.2"></span><b>Sector contribution</b>
 
 We now consider how different sectors contribute to the overall performance of the strategy by looking at the <b>annualized returns before fees</b>
 
@@ -745,7 +765,7 @@ Furthermore, if we look at the sector performance by year, we clearly see the fo
 
 ---
 <br/>
-<b>Leverage in Trend Following Strategies</b>
+<span id="6.3"></span><b>Leverage in Trend Following Strategies</b>
 
 Since we are dealing with futures, leverage is the main assumption and starting point of trend following strategies. _However,_ in this context, we should think of leverage from a different perspective.
 
@@ -768,7 +788,7 @@ The exposure of each contract reflects indeed the volatility of the sector, whic
 
 ---
 <br/>
-<b>Trend Following as a component to an Equity Portfolio</b>
+<span id="6.4"></span><b>Trend Following as a component to an Equity Portfolio</b>
 
 People often tend to allocate large portions of their portfolios to equity, and so the natural question is whether a standard long-only equity portfolio can be improved by <b>adding managed futures to the portfolio</b>.
 
@@ -797,3 +817,31 @@ _However,_ as shown in the following table, the best Sharpe ratio can be achieve
 |              20 |  11.27 |      14.54 |         0.78 |
 |              10 |  10.65 |      16.16 |         0.66 |
 |               0 |  10.04 |      18.22 |         0.55 |
+
+---
+
+## <a id="7"><b>7. Trend Following with stocks</b></a>
+
+Trend-following strategies come from the futures world but, _thanks to their simplicity,_ it could be attractive to expand the approaches to a broader universe of financial products..._for example_ stocks!
+
+_Firstly,_ we distinguish between:
+- in <b>trend-following strategies</b>, we either go long with a positive signal and short on the opposite, with moving averages, breakouts or channel rules _()_ as typical signals.
+- <b>momentum strategies</b>, _on the other hand,_ focus on assets that have performed best relative to others, so they focus on cross-sectional return. Typical signals are ranking, past returns or winner-minus-loser portfolios.
+
+_Recall that_ <b>channel rules </b> are based on whether the price breaks out of a recent price channel, defined by the upper channel _(highest closing price of the period)_ and the lower channel. _So_ we go long if the close is above the upper channel, short otherwise and hold the positions while the breakout continues.
+
+_Coming back to_ the initial question... why should trend following not work with stocks? The reason behind this is not the lack of trend in equity markets since they actually have one!
+
+The problem is that the stock market is <b>extremely homogeneous</b> or, _in other words,_ all the markets in the investment universe move up/down/sideways at the same time _(very high internal correlation)_, so the strategy would end either in a high $\beta$ or in an approximately zero $\beta$.
+
+_In particular,_ during periods of bull markets, the strategy will perform well since it will be long on the stocks, _but on the other hand,_ during sideways markets, the strategy will not be profitable. _Furthermore,_ during bear markets, trend-following strategies on stocks will suck, since equity bear markets are tricky, sharp and _often_ very quick and violent.
+
+_Recall that_ we've previously seen that during equity bear markets short equity positions do not perform well, but rather the trend-following positions on rates, commodities and currencies that perform well.
+
+_So, at the end of the day,_ trend following with stocks would just be a model that adds $\beta$ when $\beta$ is good and it will be highly dependent on the health of the market.
+
+_Furthermore,_ when approaching trend following with stocks, there's another important problem: <b>leverage</b>.
+
+With futures indeed, the strategy can take almost any exposure level given the <b>built-in leverage mechanism</b> _(i.e. leverage with futures is easy and cheap)_. With stocks instead, it is really expensive to borrow for exposure over 100% of the portfolio.
+
+---

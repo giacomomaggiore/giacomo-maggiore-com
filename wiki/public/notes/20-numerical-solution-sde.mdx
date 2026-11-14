@@ -3409,9 +3409,6 @@ $$
 Lf(x) = b(x)\cdot\nabla f(x) + \frac{1}{2}\operatorname{Tr}(a(x)D^2 f(x)).
 $$
 
-$$
-Lf(x) = b(x)\cdot\nabla f(x) + \frac{1}{2}\operatorname{Tr}(a(x)D^2 f(x)).
-$$
 
 where $\nabla f$ is the gradient, $D^2 f$ is the <b>Hessian matrix</b> with all the second derivatives and $\operatorname{Tr}$ is the <b>trace</b> _(sum of diagonal entries)_. _Note that_ in the formula $b(x)\cdot\nabla f(x)$ represents the effect of the drift, the remaining part the effect of randomness.
 
@@ -3426,11 +3423,7 @@ $$
 We then expand with <b>Taylor</b> around $x$ and take expectations to get:
 
 $$
-f(x+\Delta X) \approx f(x) + f'(x)\Delta X + \frac{1}{2}f''(x)(\Delta X)^2
-$$
-
-$$
-\implies
+f(x+\Delta X) \approx f(x) + f'(x)\Delta X + \frac{1}{2}f''(x)(\Delta X)^2 \implies
 $$
 
 $$
@@ -3482,6 +3475,8 @@ $$
 df(X_t) = Lf(X_t)\,dt + \nabla f(X_t)^\top\sigma(X_t)\,dW_t.
 $$
 
+
+
 If we now integrate from $0$ to $t$ (with $X_0 = x$, $f(X_0) = f(x)$):
 
 $$
@@ -3504,16 +3499,20 @@ _that is precisely_ <b>Dynkin's formula</b>.
 
 _Intuition:_ the generator returns the instantaneous expected change, while Dynkin’s formula adds that change up over time, so the expected value at $t$ is the initial value plus the accumulated expected value of the generator.
 
-<b>Basic Properties of the Generator</b>
+_Furthermore,_ we've nicely seen that for a <b>time-homogeneous Markov diffusion</b>, if $f$ is sufficiently smooth and belongs to the generator’s domain, the coefficient of $dt$ in Itô’s formula is $Lf$.
 
+---
+<br/>
+<b>Basic Properties of the Generator</b>
+<br/>
 - $L1 = 0$
 - $L$ is linear
-- If $f$ has a local maximum at an interior point $x$, then $Lf(x) \ge 0$ (<b>positive maximum principle</b>)
+- If $f$ has a local maximum at an interior point $x$, then $Lf(x) \le 0$ (<b>positive maximum principle</b>)
 - for $P_t f(x) = E_x[f(X_t)]$ we have $\delta_t P_t f = P_t L f = L P_t f$
 
 The idea behind the first point is that, if we take the constant function $f(x) = 1$, the gradient and the Hessian are zero ($\Delta f = 0$, $D^2 f = 0$), therefore $L1 = 0$ _(intuition: a constant never changes and its instantaneous expected change must be zero)_
 
-Furthermore, if we consider smooth functions $f,g$ and constants $\alpha, \beta$, since differentiation is linear we have:
+_Furthermore,_ if we consider smooth functions $f,g$ and constants $\alpha, \beta$, since differentiation is linear we have:
 
 $$
 \Delta (\alpha f + \beta g) = \alpha \Delta f + \beta \Delta g,
@@ -3576,3 +3575,605 @@ $$
 where $x$ is the starting value ($X_0 = x$), $z$ determines which transform we calculate and $\phi$, $\psi$ depend on time and $z$.
 
 The _intuition_ is that we can find $\phi$ and $\psi$ by solving ordinary differential equations, rather than solving a full partial differential equation or simulating paths.
+
+---
+
+<br/>
+<b>CIR Process</b>
+
+We now consider a <b>CIR process</b> defined by:
+
+$$
+dX_t = \kappa (\theta - X_t)dt + \sigma \sqrt{X_t}dW_t, \quad X_0 = x \ge 0
+$$
+
+and we derive its generator by applying Itô's formula:
+
+$$
+df(X_t) = f'(X_t)dX_t + \frac{1}{2}f''(X_t)(dX_t)^2
+$$
+
+where we can substitute $(dW_t)^2 = dt$ and $(dX_t)^2 = \sigma^2 X_t dt$ _(remember that Brownian motion increments have variance $dt$, so their squares accumulate at order $dt$)_ so we have:
+
+$$
+df(X_t) = \left[\kappa(\theta-X_t)f'(X_t) + \frac{1}{2}\sigma^2 X_t f''(X_t)\right]dt + \sigma\sqrt{X_t}f'(X_t)dW_t.
+$$
+
+and we remember that the generator is the coefficient of $dt$, so we have:
+
+$$
+Lf(x) = \kappa(\theta-x)f'(x) + \frac{1}{2}\sigma^2 x f''(x).
+$$
+
+$$
+Lf(x) = \kappa(\theta-x)f'(x) + \frac{1}{2}\sigma^2 x f''(x).
+$$
+
+_Furthermore,_ since $X_t \ge 0$, it is convenient to define the <b>Laplace Transform</b> as
+
+$$
+L_t(u, x) = \mathbb{E}_x[e^{-uX_t}], \quad u \ge 0
+$$
+
+To calculate $L_t(u, x)$, we proceed as follows. We want to find an exponential-affine expression $g$, called an <b>ansatz</b>, that is equal to the Laplace transform and has the following form:
+
+$$
+g(t,x) = \exp(-\Phi(t,u) - \Psi(t, u)x)
+$$
+
+The backward equation tells us to require
+
+$$
+\frac{\partial g}{\partial t} = Lg.
+$$
+
+Furthermore, since $X_0 = x$, the initial condition must hold, _i.e._
+
+$$
+g(0, x) = \mathbb{E}_x[e^{-u X_0}] = e^{-ux}
+$$
+
+that, if we write $g$ in the ansatz form, gives $\Phi(0, u) = 0$ and $\Psi(0, u) = u$.
+
+We now compute the derivatives of $g$ holding $u$ fixed (a dot denotes a derivative with respect to $t$) and with respect to $x$ holding $t$ fixed.
+
+$$
+g_x = -\Psi g, \quad g_{xx} = \Psi^2 g
+$$
+
+$$
+g_t = (-\dot\Phi - \dot\Psi x)g
+$$
+
+We now substitute these derivatives in the generator function that, _as stated before,_ has the form:
+
+$$
+Lf(x) = \kappa(\theta-x)f'(x) + \frac{1}{2}\sigma^2 x f''(x).
+$$
+
+$$
+\begin{aligned}
+Lg &= \kappa(\theta-x)(-\Psi g) + \frac{1}{2}\sigma^2 x\Psi^2 g \\
+&= \left[-\kappa\theta\Psi + \left(\kappa\Psi + \frac{1}{2}\sigma^2\Psi^2\right)x\right]g.
+\end{aligned}
+$$
+
+If we set $g_t = Lg$ _(from the backward equation)_ and we divide by $g > 0$:
+
+$$
+-\dot\Phi - \dot\Psi x = -\kappa\theta\Psi + \left(\kappa\Psi + \frac{1}{2}\sigma^2\Psi^2\right)x.
+$$
+
+and, _since this_ has to hold for every $X_0$, we must have:
+
+$$
+-\dot\Phi = -\kappa\theta\Psi \implies \dot\Phi = \kappa\theta\Psi.
+$$
+
+and the coefficients of $x$ must match:
+
+$$
+-\dot\Psi = \kappa\Psi + \frac{1}{2}\sigma^2\Psi^2 \implies \dot\Psi = -\kappa\Psi - \frac{1}{2}\sigma^2\Psi^2.
+$$
+
+_Note that_ the equation for $\Psi$ is called a <b>Riccati equation</b> because it contains the quadratic term $\Psi^2$. _However..._ we're not done yet.
+
+For $u > 0$, we put $y = 1 / \Psi$, then we can write:
+
+$$
+\dot y = -\frac{\dot\Psi}{\Psi^2} = \kappa y + \frac{\sigma^2}{2}, \quad y(0) = \frac{1}{u}.
+$$
+
+so we can solve the linear equation and take the reciprocal:
+
+$$
+\Psi(t,u) = \frac{u e^{-\kappa t}}{1+c_tu}, \quad c_t = \frac{\sigma^2}{2\kappa}(1-e^{-\kappa t}).
+$$
+
+_Finally,_ we integrate $\dot\Phi = \kappa \theta \Psi$ and we obtain:
+
+$$
+\Phi(t,u) = \kappa\theta\int_0^t \Psi(s,u)\,ds = \frac{2\kappa\theta}{\sigma^2}\log(1+c_tu).
+$$
+
+_Therefore,_ we found a function $g$ that satisfies the <b>backward equation</b>, but this is only the starting point: we indeed have to connect it to the expectation.
+
+So we fix a future time $T$ and we move _"forward in the process, backward in time"_
+
+$$
+M_s = g(T-s, X_s), \quad 0 \le s \le T
+$$
+
+$$
+M_0 = g(T, X_0) = g(T, x), \quad M_T = g(0, X_T) = e^{-uX_T}
+$$
+
+_Intuition:_ as $s$ increases, $X_s$ moves forward on its random path, while the time argument $T-s$ decreases to $0$.
+
+Since $g(T-s, X_s)$ depends both on time and $X_s$, we can apply Itô's formula and we get:
+
+$$
+dM_s = \underbrace{[-g_t(T-s,X_s)+Lg(T-s,X_s)]}_{\text{coefficient of }ds}\,ds + \sigma\sqrt{X_s}\,g_x(T-s,X_s)\,dW_s.
+$$
+
+But $g$ satisfies the backward equation $g_t = Lg$, so the $ds$ coefficients cancel out and we have:
+
+$$
+dM_s = \sigma\sqrt{X_s}\,g_x(T-s,X_s)\,dW_s.
+$$
+
+and we _immediately notice_ that $M$ is a <b>local martingale</b> since it has no remaining drift.
+
+For $u \ge 0$, we have, _according to the above formulas,_ $\Phi, \Psi \ge 0$ and, since $X_s \ge 0$, we have:
+
+$$
+-\Phi - \Psi X_s \le 0 \implies 0 < M_s = g(T-s,X_s) \le 1.
+$$
+
+So here every stopped process is bounded in $[0,1]$ and we can use dominated convergence as the stopping times move out to infinity _(so we can consider processes and not stopped processes)_ and so the martingale property of the stopped processes passes to $M$ directly, _so we have,_
+
+$$
+\mathbb{E}[M_t \mid \mathcal{F}_s] = M_s, \quad s \le t
+$$
+
+_Therefore,_ $M$ is a <b>true martingale</b> and, if we take expectations on both sides, we have $\mathbb{E}[M_t] = \mathbb{E}[M_s]$, which means that the expected value is constant.
+
+Coming back to the beginning, its expectations must be the same also at the endpoints, so we must have $\mathbb{E}_x[M_0] = \mathbb{E}_x[M_T]$ that, if we substitute, gives:
+
+$$
+g(T,x)=\mathbb{E}_x[e^{-uX_T}].
+$$
+
+---
+<br/>
+<b>Heston Model</b>
+
+We now consider $X_t = \log S_t$ and, _under a pricing measure,_ we define on the state space $\mathbb{R} \times \mathbb{R}_+$:
+
+$$
+dX_t = (r - q - \frac{1}{2}V_t)dt + \sqrt{V_t}dW_t^1
+$$
+
+$$
+dV_t = \kappa (\theta - V_t)dt + \epsilon\sqrt{V_t}dW_t^2 \quad d[W^1,W^2]_t = \rho dt
+$$
+
+The <b>Heston Model</b> describes a stock whose volatility changes randomly over time, where $X_s$ is the log stock price, $V_t$ is the instantaneous <b>variance</b> ($\sqrt{V_t}$ is volatility). <br/>
+In the model, the stock's log return is $(r - q - 1/2 V_t)$, where $r$ is the risk-free rate, $q$ the dividend yield and $-1/2 V_t$ comes from taking the log. _Furthermore,_ variance has a long-run level $\theta$ to which it comes back at a speed $\kappa$ and $\epsilon$ controls how "randomly" variance fluctuates. Brownian motions $W^1$ _(for the stock)_ and $W^2$ _(for the variance)_ have correlation $\rho$.
+
+_Furthermore,_ we consider the <b>Fourier transform</b> in $X$ and the <b>Laplace transform</b> in $V$ that summarize the <b>joint distribution</b> of log price and variance.
+
+$$
+F_T (u, \eta) = E_{x,v} (e^{iu X_T - \eta V_T})
+$$
+
+_In particular,_ $e^{iuX_T}$ is the Fourier part _($u$ denotes the distribution of the log price)_ and $e^{-\eta V_T}$ is the Laplace part _($\eta$ denotes the distribution of the variance)_. The expectation then averages their product over all outcomes, capturing how $X_T$ and $V_T$ move together.
+
+_As we've done before,_ we will write the generator, propose an exponential-affine expression, use the backward equation and obtain equations for $\phi$, $\psi$.
+
+For the Fourier–Laplace transform, we consider $w = -\eta$ and, for the characteristic function of $X_T$, we consider $\eta = 0$, so we can write:
+
+$$
+g(t,x,v)=\mathbb{E}_{x,v}[e^{iuX_t-\eta V_t}].
+$$
+
+and we propose the following <b>exponential-affine form</b> where $\phi$, $\psi$ depend on $u$ and $w$ _(but we suppress this to keep the notation friendly!)_
+
+$$
+g(t,x,v)=\exp(\phi(t)+iux+\psi(t)v).
+$$
+
+_Intuition:_ as before, we do not directly calculate the expectation over all possible random paths, but we look for <b>two deterministic</b> functions $\psi$, $\phi$ that characterize the expectation.
+
+We start with the initial conditions. At $t = 0$, $X_0 = x$, $V_0 = v$, so we have:
+
+$$
+g(0,x,v)=\mathbb{E}_{x,v}[e^{iuX_0+wV_0}]=e^{iux+wv}.
+$$
+
+The <b>ansatz</b> at $t = 0$ is $g(0, x,v) = e^{\phi(0) + iu x + \psi(0)v}$, so we need:
+
+$$
+\phi(0) = 0, \quad \psi(0) = w
+$$
+
+We now derive the generator considering $f(x,v)$ a _sufficiently smooth_ function and applying the 2-dimensional Itô's formula:
+
+$$
+df(X_t,V_t)=f_x\,dX_t+f_v\,dV_t+\frac{1}{2}f_{xx}\,d[X]_t+f_{xv}\,d[X,V]_t+\frac{1}{2}f_{vv}\,d[V]_t.
+$$
+
+In this expression we have:
+- for the diffusion part of $X_t$, we have that $d[X]_t = V_t\,dt$
+- for the diffusion part of $V_t$, we have that $d[V]_t = \epsilon^2 V_t\,dt$.
+- for the cross-variation we use the correlation defined above: $d[X,V]_t = \sqrt{V_t}\epsilon \sqrt{V_t}d[W^1,W^2]_t = \rho \epsilon V_t\,dt$
+
+We now substitute these into Itô's formula and we take the coefficient of $dt$, so we end up with the <b>Heston Generator</b> that describes the expected change of a function of the state.
+
+$$
+Lf(x,v) = (r-q-\frac{1}{2}v)f_x + \kappa(\theta-v)f_v + \frac{1}{2}vf_{xx} + \rho\epsilon vf_{xv} + \frac{1}{2}\epsilon^2vf_{vv}.
+$$
+
+_In the formula,_ the first two terms come directly from the drifts of $X$, $V$. $f_{xx}$, $f_{vv}$ come from their random fluctuations and $f_{xv}$ from their correlation.
+
+_As before,_ we now apply the <b>backward equation</b>, so we require $\frac{\partial g}{\partial t} = Lg$ where $t$ is time from the initial state.
+
+We now calculate each derivative for $g$:
+
+$$
+g_t = (\dot\phi + \dot\psi v)g
+$$
+
+$$
+g_x = iug, \quad g_{xx} = (iu)^2 g = - u^2 g
+$$
+
+$$
+g_v = \psi g, \quad g_{vv} = \psi^2 g
+$$
+
+$$
+g_{xv} = iu\psi g
+$$
+
+Now we start from the generator formula, _defined above_, we apply the derivatives, we expand each term, separate those with and without $v$ and _finally_ combine the coefficients for $v$, so we have:
+
+$$
+\begin{aligned}
+Lg={}&(r-q-\frac{1}{2}v)g_x+\kappa(\theta-v)g_v+\frac{1}{2}vg_{xx}+\rho\epsilon vg_{xv}+\frac{1}{2}\epsilon^2vg_{vv},\\
+={}&(r-q-\frac{1}{2}v)iug+\kappa(\theta-v)\psi g-\frac{1}{2}u^2vg+\rho\epsilon iu\psi vg+\frac{1}{2}\epsilon^2\psi^2vg,\\
+={}&[iu(r-q)+\kappa\theta\psi+v(-\frac{1}{2}iu-\kappa\psi-\frac{1}{2}u^2+\rho\epsilon iu\psi+\frac{1}{2}\epsilon^2\psi^2)]g,\\
+={}&[iu(r-q)+\kappa\theta\psi+v(\frac{1}{2}\epsilon^2\psi^2+(\rho\epsilon iu-\kappa)\psi-\frac{1}{2}(u^2+iu))]g.
+\end{aligned}
+$$
+
+We now set $g_t = Lg$ and, _cancelling $g$,_ we have:
+
+$$
+\dot\phi+\dot\psi v=iu(r-q)+\kappa\theta\psi+v[\frac{1}{2}\epsilon^2\psi^2+(\rho\epsilon iu-\kappa)\psi-\frac{1}{2}(u^2+iu)].
+$$
+
+and, since this must hold for every starting variance $v$, we can use the initial conditions to derive:
+
+$$
+\dot\phi=iu(r-q)+\kappa\theta\psi,\quad \phi(0)=0.
+$$
+
+$$
+\dot\psi=\underbrace{\frac{1}{2}\epsilon^2\psi^2}_{\text{variance fluctuations}}+\underbrace{(\rho\epsilon iu-\kappa)\psi}_{\text{correlation and mean reversion}}-\underbrace{\frac{1}{2}(u^2+iu)}_{\text{log-price dynamics}}, \quad \psi(0)=w.
+$$
+
+_However,_ so far we have shown that the candidate satisfies the backward equation and the initial conditions. We now connect it to the expectations using the "forward in process, backward in time" approach _(same for the CIR process above)_. <br/>
+We indeed fix $T$ and we define:
+
+$$
+M_s = g(T -s , X_s, V_s), \quad 0 \le s \le T
+$$
+
+_As shown before,_ $M$ is a <b>true martingale</b> and we have $\mathbb{E}_{x,v}[M_0] = \mathbb{E}_{x,v}[M_T]$, but we also have:
+
+$$
+M_0 = g(T,x, v)
+$$
+
+$$
+M_T = g(0, X_T, V_T) = e^{iuX_T + wV_T}
+$$
+
+_Therefore,_ for a real $u$ and $w = -\eta$, this is the <b>bounded Fourier–Laplace transform</b>.
+
+---
+<br/>
+<b>Heston Model: a numerical comparison</b>
+
+We now spend some time checking the Heston transform derived above by comparing two solutions:
+- the Riccati ODE by numerically solving the equations for $\phi$, $\psi$
+- the Euler Monte Carlo by simulating many approximate Heston paths and averaging the transform over them
+
+In particular, both approaches estimate:
+
+$$
+F_T(u,\eta)=\mathbb{E}_{x_0,v_0}[e^{iuX_T-\eta V_T}].
+$$
+
+```python
+# Heston joint Fourier–Laplace transform:
+# Riccati ODE versus empirical Euler transform
+
+import numpy as np
+from scipy.integrate import solve_ivp
+
+rng = np.random.default_rng(20261015)
+
+# #risk free, dividdent yield
+r, q = 0.02, 0.0
+
+# long run mean, speed reversion, volatility of variance, correlation
+kappa_h, theta_h, xi_h, rho = 1.8, 0.04, 0.45, -0.7
+
+# starting values
+x0_h, v0_h = np.log(100.0), 0.04
+T_h = 1.0
+eta_laplace = 2.0
+```
+
+<br/>
+For the Riccati approach, we use the formula derived before. _Note that,_ the small tolerances request a precise ODE solution. This is still a numerical approximation, not an exact closed-form evaluation.
+
+
+```python
+def heston_joint_transform_riccati(u, eta=eta_laplace, T=T_h):
+    w = -eta
+
+    def rhs(t, y):
+        phi, psi = y
+        dpsi = (0.5*xi_h**2*psi**2
+                + (rho*xi_h*1j*u-kappa_h)*psi
+                - 0.5*(u**2 + 1j*u))
+        dphi = 1j*u*(r-q) + kappa_h*theta_h*psi
+        return np.array([dphi, dpsi], dtype=complex)
+
+    sol = solve_ivp(
+        rhs, (0.0, T), np.array([0j, w+0j]),
+        rtol=1e-10, atol=1e-12
+    )
+    phi_T, psi_T = sol.y[:, -1]
+    return np.exp(phi_T + 1j*u*x0_h + psi_T*v0_h)
+```
+
+<br/>
+For the Euler Monte Carlo approach, we estimate the original stochastic equation directly for `M_h` paths with `N_h` time steps, so we have $\Delta t = 1 / 400 = 0.0025$.
+
+In particular, we generate correlated Brownian motion increments $dW_1$, $dW_2$ and so we have:
+
+$$
+\operatorname{Var}(\Delta W_1)=\operatorname{Var}(\Delta W_2)=\Delta t,\quad \operatorname{Corr}(\Delta W_1,\Delta W_2)=\rho.
+$$
+
+Then, at each step, we update the log price `X_heston_euler +=` and we get:
+
+$$
+X_{n+1}=X_n+(r-q-\frac{1}{2}V_n^+)\Delta t+\sqrt{V_n^+}\Delta W_n^1
+$$
+
+where $V_n^+ = \max(V_n, 0)$ to keep the variance positive. _Secondly,_ we update the variance `v_new` so we have:
+
+$$
+V_{\mathrm{new}}=V_n+\kappa(\theta-V_n^+)\Delta t+\xi\sqrt{V_n^+}\Delta W_n^2.
+$$
+
+
+```python
+M_h = 50_000
+N_h = 400
+dt_h = T_h / N_h
+
+X_heston_euler = np.full(M_h, x0_h)
+V_heston_euler = np.full(M_h, v0_h)
+
+for _ in range(N_h):
+    z1 = rng.standard_normal(M_h)
+    z2 = rng.standard_normal(M_h)
+
+    dW1 = np.sqrt(dt_h)*z1
+    dW2 = np.sqrt(dt_h)*(rho*z1 + np.sqrt(1-rho**2)*z2)
+
+    vp = np.maximum(V_heston_euler, 0.0)
+
+    X_heston_euler += (
+        (r-q-0.5*vp)*dt_h
+        + np.sqrt(vp)*dW1
+    )
+
+    v_new = (
+        V_heston_euler
+        + kappa_h*(theta_h-vp)*dt_h
+        + xi_h*np.sqrt(vp)*dW2
+    )
+    V_heston_euler = np.maximum(v_new, 0.0)
+
+```
+
+_Lastly,_ we can plot both of them.
+
+```python
+u_grid_h = np.linspace(0.0, 6.0, 25)
+
+tf_riccati = np.array([
+    heston_joint_transform_riccati(u) for u in u_grid_h
+])
+
+tf_euler = np.array([
+    np.mean(np.exp(1j*u*X_heston_euler
+                   - eta_laplace*V_heston_euler))
+    for u in u_grid_h
+])
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/heston-2.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/numerical-sol-sde/heston-1.png)
+</div>
+
+_Note that_ some discrepancy is expected because of Monte Carlo sampling error, Euler time-stepping bias and numerical ODE error.
+
+Increasing the number of paths primarily reduces sampling noise, while decreasing the time steps improves discretization error.
+
+---
+
+<br/>
+<b>Carr–Madan Option Pricing</b>
+
+We now spend some time understanding how to price European call options using the <b>characteristic function</b> of the terminal log-price, $X_T$, as this is useful when that function can be found but the probability distribution of $X_T$ is difficult to work out.
+
+_Firstly,_ we consider $S_T = e^{X_T}$, the asset price at maturity, and $K = e^k$, the strike. A call option pays $(S_T - K)^+ = (e^{X_T} - e^k)^+$, so its <b>discounted price</b> is:
+
+$$
+C(k) = e^{-rT}\mathbb{E}[(e^{X_T} - e^k)^+].
+$$
+
+Since we have $K \in (0, \infty)$, $k = \log K$ can take any value, so we have $k \in \mathbb{R}$. We therefore work with $k$ (and not $K$) since the Fourier transform integrates over $\mathbb{R}$.
+
+As $k \to -\infty$, $K$ tends to zero, so the call pays almost the entire asset price ($C(k) \to e^{-rT}\mathbb{E}[e^{X_T}]$), so $C(k)$ does not decay at the left of the real line _(but note that its Fourier integral is not absolutely integrable there)_.
+
+We now introduce the <b>damped call price</b> as:
+
+$$
+c_\alpha(k) = e^{\alpha k}C(k), \quad \alpha > 0.
+$$
+
+_Intuition: as $k \to -\infty$, $e^{\alpha k}$ goes to zero, so we remove the nondecaying left tail, and the condition $\mathbb{E}[e^{(\alpha+1)X_T}] < \infty$ ensures that damping does NOT cause integrability problems._
+
+With the damped call price, we can write the <b>Fourier transform</b>, substitute the definition of $c_\alpha$, and then the call price formula as:
+
+$$
+\begin{aligned}
+\widehat c_\alpha(v)
+&= \int_{\mathbb{R}} e^{ivk}c_\alpha(k)\,dk \\
+&= \int_{\mathbb{R}} e^{ivk}e^{\alpha k}C(k)\,dk \\
+&= e^{-rT}\int_{\mathbb{R}}e^{(\alpha+iv)k}\mathbb{E}[(e^{X_T}-e^k)^+]\,dk.
+\end{aligned}
+$$
+
+We now define $\beta = \alpha + iv$, so we have $\operatorname{Re}(\beta) = \alpha > 0$. We now interchange the integral and the expectation and write:
+
+$$
+\widehat c_\alpha(v)=e^{-rT}\mathbb{E}\left[\int_{\mathbb{R}}e^{\beta k}(e^{X_T}-e^k)^+\,dk\right].
+$$
+
+_Given this,_ we fix the terminal log-price $X_T = x$ and calculate
+
+$$
+I(x)=\int_{\mathbb{R}}e^{\beta k}(e^x-e^k)^+\,dk.
+$$
+
+_As above,_ this is nonzero only if $k < x$, so we can substitute and distribute $e^{\beta k}$:
+
+$$
+\begin{aligned}
+I(x)&=\int_{-\infty}^{x}e^{\beta k}(e^x-e^k)\,dk \\
+&=e^x\int_{-\infty}^{x}e^{\beta k}\,dk-\int_{-\infty}^{x}e^{(\beta+1)k}\,dk.
+\end{aligned}
+$$
+
+where the extra $1$ in $\beta + 1$ comes from the fact that $e^{\beta k}e^k = e^{(\beta+1)k}$.
+
+Since $\operatorname{Re}(\beta) = \alpha > 0$, $e^{\beta k}$ tends to zero if $k \to -\infty$, so we have $|e^{\beta k}| = e^{\alpha k} \to 0$, which implies:
+
+$$
+\int_{-\infty}^{x}e^{\beta k}\,dk=\left[\frac{e^{\beta k}}{\beta}\right]_{-\infty}^{x}=\frac{e^{\beta x}}{\beta}.
+$$
+
+If we multiply by $e^x$, we have
+
+$$
+e^x\int_{-\infty}^{x}e^{\beta k}\,dk=\frac{e^{(\beta+1)x}}{\beta}.
+$$
+
+We now integrate the second term _similarly_, so we have:
+
+$$
+\int_{-\infty}^{x}e^{(\beta+1)k}\,dk=\frac{e^{(\beta+1)x}}{\beta+1}.
+$$
+
+We now combine the results:
+
+$$
+I(x)=\frac{e^{(\beta+1)x}}{\beta}-\frac{e^{(\beta+1)x}}{\beta+1}=e^{(\beta+1)x}\left(\frac{1}{\beta}-\frac{1}{\beta+1}\right).
+$$
+
+and we _immediately notice that_ we can simplify the expression in parentheses:
+
+$$
+\frac{1}{\beta}-\frac{1}{\beta+1}=\frac{(\beta+1)-\beta}{\beta(\beta+1)}=\frac{1}{\beta(\beta+1)}.
+$$
+
+So we have:
+
+$$
+I(x)=\frac{e^{(\beta+1)x}}{\beta(\beta+1)}=\frac{e^{(\alpha+1+iv)x}}{(\alpha+iv)(\alpha+1+iv)}.
+$$
+
+We now replace $x$ by the random value $X_T$, substitute the integral into the damped call price and, since the denominator does _NOT_ depend on $X_T$, we can extract it from the expectation:
+
+$$
+\begin{aligned}
+\widehat c_\alpha(v)&=e^{-rT}\mathbb{E}\left[\frac{e^{(\alpha+1+iv)X_T}}{(\alpha+iv)(\alpha+1+iv)}\right] \\
+&=\frac{e^{-rT}\mathbb{E}[e^{(\alpha+1+iv)X_T}]}{(\alpha+iv)(\alpha+1+iv)}.
+\end{aligned}
+$$
+
+We now recall that the characteristic function is $\varphi_T(z)=\mathbb{E}[e^{izX_T}]$, so we want to express the numerator using $\varphi_T$. We therefore choose
+
+$$
+z = v-i(\alpha+1) \implies iz=i(v-i(\alpha+1))=iv+(\alpha+1)
+$$
+
+$$
+\varphi_T(v-i(\alpha+1))=\mathbb{E}[e^{(\alpha+1+iv)X_T}].
+$$
+
+_Finally,_ we obtain the <b>transformed call price</b>
+
+$$
+\widehat c_\alpha(v)=\frac{e^{-rT}\varphi_T(v-i(\alpha+1))}{(\alpha+iv)(\alpha+1+iv)}.
+$$
+
+If we multiply the factors:
+
+$$
+\begin{aligned}
+(\alpha+iv)(\alpha+1+iv)
+&=\alpha(\alpha+1)+i\alpha v+i(\alpha+1)v+(iv)^2 \\
+&=\alpha^2+\alpha-v^2+i(2\alpha+1)v,
+\end{aligned}
+$$
+
+$$
+\implies \widehat c_\alpha(v)=\frac{e^{-rT}\varphi_T(v-i(\alpha+1))}{\alpha^2+\alpha-v^2+i(2\alpha+1)v}.
+$$
+
+_Finally,_ we recover the call price by <b>Fourier inversion</b>.
+
+Our transform uses the positive sign $e^{ivk}$, so its inverse uses the negative sign $e^{-ivk}$. Since $c_\alpha(k)$ is real-valued, we have <b>conjugate symmetry</b>:
+
+$$
+\widehat c_\alpha(-v)=\overline{\widehat c_\alpha(v)}.
+$$
+
+Adding them together gives us the real part:
+
+$$
+c_\alpha(k)=\frac{1}{\pi}\int_0^\infty\operatorname{Re}[e^{-ivk}\widehat c_\alpha(v)]\,dv.
+$$
+
+and, if we undo the damping since $c_\alpha(k)=e^{\alpha k}C(k)$, we finally have:
+
+$$
+C(k)=\frac{e^{-\alpha k}}{\pi}\int_0^\infty\operatorname{Re}[e^{-ivk}\widehat c_\alpha(v)]\,dv.
+$$
+
+This is the <b>Carr–Madan inversion formula</b>.
