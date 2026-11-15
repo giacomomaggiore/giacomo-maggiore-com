@@ -8,7 +8,7 @@ summary: ''
 "The aim of this course is to equip students with the skills to conduct simulations and perform mathematical convergence analysis for stochastic models, with applications in fields such as mathematical finance.
 <br/>The course provides a comprehensive understanding of various numerical methods, covering their foundational principles, convergence properties, and practical implementation considerations." _(from the official course's page)_
 
-The course has been taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Professor Josef Teichmann</a> and <a href="https://www.lse.ac.uk/people/christoph-czichowsky" target="_blank">Dr Christoph Czichowsky</a>
+The course has been taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~jteichma/" target="_blank">Professor Josef Teichmann</a> and <a href="https://www.lse.ac.uk/people/christoph-czichowsky" target="_blank">Dr Christoph Czichowsky</a>.
 
 Additional notes and notebooks can be found <a href="https://people.math.ethz.ch/~jteichma/index.php?content=teach_nasode_hs26" target="_blank">here</a>.
 
@@ -20,16 +20,36 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 ## <b>Index</b>
 
-- [Basics of probability theory](#0)
-- [Introduction to Stochastic Differential Equations](#0.1)
-- [The Inversion Method](#2)
-- [Monte Carlo Integration](#4)
-- [Stochastic Integration and Itô Calculus](#3)
-- [Stochastic Ordinary Differential Equations](#4-sde)
+- [1. Basics of probability theory](#1)
+    - [1.1. Probability foundations](#1.1)
+    - [1.2. Sampling and random numbers](#1.2)
+- [2. Introduction to Stochastic Differential Equations](#2)
+    - [2.1. Financial and physical stochastic models](#2.1)
+    - [2.2. Filtering and noisy observations](#2.2)
+- [3. The Inversion Method](#3)
+    - [3.1. Generalized inverse distribution functions](#3.1)
+    - [3.2. Gaussian and multidimensional sampling](#3.2)
+- [4. Monte Carlo Integration](#4)
+    - [4.1. Monte Carlo estimators](#4.1)
+    - [4.2. Error analysis and practical integration](#4.2)
+- [5. Stochastic Integration and Itô Calculus](#5)
+    - [5.1. Stochastic processes and Brownian motion](#5.1)
+    - [5.2. Itô integration and calculus](#5.2)
+- [6. Stochastic Ordinary Differential Equations](#6)
+    - [6.1. SDE formulation and well-posedness](#6.1)
+    - [6.2. Examples and numerical illustrations](#6.2)
+- [7. Tractability](#7)
+    - [7.1. Explicit solutions and generators](#7.1)
+    - [7.2. Transform methods and option pricing](#7.2)
+- [8. Strong approximation of Stochastic Differential Equations](#8)
+    - [8.1. Coefficient regularity and convergence](#8.1)
+    - [8.2. Euler–Maruyama approximation](#8.2)
 <br/>
 ---
 
-## <a id = "0"><b>Basics of probability theory</b></a>
+## <a id="1"><b>1. Basics of probability theory</b></a>
+
+### <a id="1.1"><b>1.1. Probability foundations</b></a>
 
 <b>Probability spaces</b>
 
@@ -39,7 +59,7 @@ A probability space is a mathematical concept that provides a formal model for a
 - <b>probability measure</b> $P$: a function $P: \mathcal{F} \to [0,1]$ that assigns a probability to each event. Note that $P$ satisfies the following:
     - $P(A) \ge 0$ for all $A \in \mathcal{F}$.
     - $P(\Omega) = 1$.
-    - For any countable sequence of events $(A_i)_{i \in \mathbb{N}} \subseteq \mathcal{F}$, $P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)$.
+    - For any countable sequence of pairwise disjoint events $(A_i)_{i \in \mathbb{N}} \subseteq \mathcal{F}$, $P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)$.
 <br/>
 ---
 <br/>
@@ -215,7 +235,11 @@ Even if this is a very generic definition, the importance and advantage of $\mat
 
 ---
 
-## <a id = "0.1"><b>Introduction to Stochastic Differential Equations</b></a>
+### <a id="1.2"><b>1.2. Sampling and random numbers</b></a>
+
+## <a id="2"><b>2. Introduction to Stochastic Differential Equations</b></a>
+
+### <a id="2.1"><b>2.1. Financial and physical stochastic models</b></a>
 
 We first show three important examples of stochastic differential equations, largely discussed in the sector and for which numerical approximations will be useful.
 
@@ -315,10 +339,10 @@ t = np.linspace(0, T, N)
 
 The Langevin equation was inspired by the dynamics of a particle in a potential, where the gradient of the potential determines the force acting on the particle. It is the theoretical foundation of highly influential algorithms like Markov chain Monte Carlo or stochastic gradient descent. The goal of the equation is to sample from $\exp(-U/\epsilon)$.
 
-Recall, a potential function $U(x)$ is a scalar function that defines a force/drift $b(x)$ through its negative gradient:
+Recall, a potential function $U(x)$ is a scalar function that defines the drift $b(x)$ through its scaled negative gradient:
 
 $$
-b(x) = -\nabla U(x)
+b(x) = -\frac{1}{2}\nabla U(x)
 $$
 
 where $b(x)$ is the drift function, i.e. the deterministic instantaneous tendency of the process in its state $x$.
@@ -387,6 +411,8 @@ Furthermore, in the following plot we can see the convergence of the simulated d
 
 ---
 <br/>
+### <a id="2.2"><b>2.2. Filtering and noisy observations</b></a>
+
 <b>The Kalman Filter (Continuous Time for OU Process)</b>
 
 The <b>Kalman filter</b> provides an optimal estimate of the state of a linear system observed with additive Gaussian noise. <br/>_Intuition_: the filter repeats two steps:
@@ -399,7 +425,7 @@ $$
 dX_t = \theta(\mu_{\mathrm{ou}} - X_t)\,dt + \sigma_{\mathrm{ou}}\,dW_t
 $$
 
-where $\mu_{\mathrm{ou}}$ is the <b>mean of the process</b> and $\theta$ is the <b>reversion speed</b>
+where $\mu_{\mathrm{ou}}$ is the <b>long-run mean</b> and $\theta$ is the <b>reversion speed</b>
 
 We now consider a <b>noisy observation </b>of this OU process.<br/>In this case, we observe $(Z_k)_{k \ge 0}$ such that $Z_k = H X_{t_k} + \varepsilon_k$, where $(\varepsilon_k)_{k \ge 0}$ are independent random variables with $\varepsilon_k \sim \mathcal{N}(0, R_{\mathrm{measurement}})$ representing the measurement noise.
 
@@ -408,10 +434,10 @@ _Intuition:_ in an OU process, $X_t$ is hidden and we only see the noisy signal,
 Over a short interval $\Delta t$, we can say:
 
 $$
-Z_{k+1} = H X_{t_{k+1}} + \sqrt{R_{\mathrm{measurement}}}\,\varepsilon_{k+1}
+Z_{k+1} = H X_{t_{k+1}} + \sqrt{R_{\mathrm{measurement}}}\,\eta_{k+1}
 $$
 
-where $\varepsilon_{k+1} \sim \mathcal{N}(0,1)$ represents the random measurement noise in the discretized observation.
+where $\eta_{k+1} \sim \mathcal{N}(0,1)$ represents the standardized measurement noise in the discretized observation.
 
 ```python
 
@@ -435,7 +461,7 @@ for i in range(N_sim - 1):
     # sde
     X_true[i+1] = X_true[i] + theta * (mu_ou - X_true[i]) * dt_sim + sigma_ou * dW
 
-t_sim = np.linspace(0, T_sim, N_sim)
+t_sim = np.arange(N_sim) * dt_sim
 
 # we now generate noisy observations
 
@@ -492,7 +518,7 @@ $$
 \hat X_{k+1} = \hat X^-_{k+1} + K_{k+1}(Z_{k+1} - H \hat X^-_{k+1})
 $$
 
-(the term in parentheses represents the <b>innovation</b> or prediction error, _i.e. the difference between the observation and the value predicted by the model)_
+(the term in parentheses represents the <b>innovation</b> or prediction error, _i.e. the difference between the observation and the value predicted by the model_)
 
 Starting from the previous code block, we can implement the Kalman filter as:
 
@@ -518,14 +544,12 @@ P[0] = 1.0           # Initial covariance (high uncertainty)
 
 for k in range(N_sim - 1):
 
-    # Prediction step (using discretized Riccati equation for P)
-    P_dot = F * P[k] + P[k] * F + L * Q_process * L - P[k] * H * (1/R_measurement) * H * P[k]
-    P_minus = P[k] + P_dot * dt_filter
+    # Prediction step
+    P_minus = (1 + F * dt_filter)**2 * P[k] + L**2 * Q_process * dt_filter
+    x_hat_minus = x_hat[k] + theta * (mu_ou - x_hat[k]) * dt_filter
 
-    x_hat_minus = x_hat[k] + F * x_hat[k] * dt_filter
-
-    # Kalman Gain (discrete-time equivalent for this observation model)
-    K_k = P_minus * H / (H * P_minus * H + R_measurement / dt_filter) # Adjust R for discrete observation
+    # Kalman gain
+    K_k = P_minus * H / (H * P_minus * H + R_measurement)
 
     # Update step
     x_hat[k+1] = x_hat_minus + K_k * (Z_obs[k+1] - H * x_hat_minus)
@@ -536,10 +560,11 @@ for k in range(N_sim - 1):
 ![Bias variance tradeoff](/images/notes/numerical-sol-sde/kalman.png)
 </div>
 
-
 ---
 
-## <a id="2"><b>The Inversion Method</b></a>
+## <a id="3"><b>3. The Inversion Method</b></a>
+
+### <a id="3.1"><b>3.1. Generalized inverse distribution functions</b></a>
 
 <b>Method for General Distributions</b>
 
@@ -604,7 +629,7 @@ Let $F: \mathbb{R} \to [0,1]$ be a distribution function and $I_F : (0,1) \to \m
     - $F^{-1}([y,1]) = [I_F(y), \infty)$.
     - $I_F(y) = \min(F^{-1}([y,1]))$.
 3. For all $x \in F^{-1}((0,1)) = \{z \in \mathbb{R} : F(z) \in (0,1)\}$: $I_F(F(x)) \le x$.
-4. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) < x$ if and only if $y \le F(x)$ _(switching formula)_.
+4. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) \le x$ if and only if $y \le F(x)$ _(switching formula)_.
 5. For all $x \in \mathbb{R}$, $y \in (0,1)$: $I_F(y) > x$ if and only if $y > F(x)$ _(switching formula)_.
 6. For all open sets $D \subseteq \mathbb{R}$ with the property that $F|_D : D \to [0,1]$ is <b>injective</b> and all $y \in F(D)$, we have that $(F|_D)^{-1}(y) = I_F(y)$.
 
@@ -708,6 +733,8 @@ With a similar substitution, we get:
 $$
 I_F(u) = \mu + \lambda \tan\left(\pi\left(u - \frac{1}{2}\right)\right)
 $$
+
+### <a id="3.2"><b>3.2. Gaussian and multidimensional sampling</b></a>
 
 <b>Reduction to the standard normal</b>
 
@@ -1025,7 +1052,9 @@ for n, er, et in zip(ns, errs_rect, errs_trap):
 ---
 <br/>
 
-## <a id="4"><b>Monte Carlo Integration</b></a>
+## <a id="4"><b>4. Monte Carlo Integration</b></a>
+
+### <a id="4.1"><b>4.1. Monte Carlo estimators</b></a>
 
 <b>Integration equals expectation</b>
 
@@ -1169,6 +1198,8 @@ Thus, RMSE $\sim N^{-1/2}$ _(reducing the error by a factor of 2 costs about 4 t
 
 ---
 <br/>
+### <a id="4.2"><b>4.2. Error analysis and practical integration</b></a>
+
 <b>Estimating the unknown variance</b>
 
 Consider:
@@ -1685,7 +1716,9 @@ def isonormal_brownian_trig(t, modes=200, rng=rng):
 <br/>
 ---
 
-## <a id="3"><b>Stochastic Integration and Itô Calculus</b></a>
+## <a id="5"><b>5. Stochastic Integration and Itô Calculus</b></a>
+
+### <a id="5.1"><b>5.1. Stochastic processes and Brownian motion</b></a>
 
 <b>Stochastic Process</b>
 
@@ -1966,6 +1999,8 @@ Let $(W_t)$ be an $(\mathcal{F}_t)$-Brownian motion. Then:
 <br/>
 ---
 <br/>
+### <a id="5.2"><b>5.2. Itô integration and calculus</b></a>
+
 <b>Stochastic Itô Integral of Simple Processes</b>
 
 Let $\mathcal{T} = [0,T]$ for some $T > 0$. We fix the same probability space supporting an $(\mathcal{F}_t)$-Brownian motion $(W_t)$.
@@ -2637,7 +2672,9 @@ plt.plot(t2, rhs_qv, "--", label=r"integral")
 
 ---
 
-## <a id="4-sde"><b>Stochastic Ordinary Differential Equations</b></a>
+## <a id="6"><b>6. Stochastic Ordinary Differential Equations</b></a>
+
+### <a id="6.1"><b>6.1. SDE formulation and well-posedness</b></a>
 
 Let $\mathcal{T}=[0,T]$ for some $T>0$, consider $n,m\in\mathbb{N}$, and let $\mathcal{O}\in\mathcal{B}(\mathbb{R}^m)$ be the state space _(intuition: $\mathcal{O}$ is the set of possible values of the state process $X_t$; it is a measurable subset of $\mathbb{R}^m$)._
 
@@ -2939,6 +2976,8 @@ ax.plot(tgrid, mean, 'k--', lw=1.2, label=r'deterministic mean')
 
 ---
 <br/>
+### <a id="6.2"><b>6.2. Examples and numerical illustrations</b></a>
+
 <b>Examples: the Black-Scholes model</b>
 
 We now consider another very famous example! Let $m=2$, $n=1$, $\mathcal{O}=(0,\infty)^2$, $r,\alpha\in\mathbb{R}$, $\beta>0$, and $\varepsilon\in\mathcal{O}$. The coefficient functions are:
@@ -2999,7 +3038,7 @@ $$
 
 Here, $\mu(x)=\delta-\alpha x$ and $\sigma(x)=\beta\sqrt{x}$. For $\beta>0$, the diffusion coefficient is locally Lipschitz but not globally Lipschitz near zero. Furthermore, if $2\delta\ge\beta^2$, there is a unique solution that remains in $(0,\infty)$.
 
-Note that the term $\delta-\alpha X_t$ represents the <b>mean reversion</b>: if the quantity is negative, the process is pushed upward, and vice versa. The equilibrium level is $\delta/\alpha$ _(the deterministic equation $dx_t/dt=\delta-\alpha x_t$ converges to $\delta/\alpha$)_.
+Note that the term $\delta-\alpha X_t$ represents the <b>mean reversion</b>: if the quantity is negative, the process is pushed downward, and vice versa. The equilibrium level is $\delta/\alpha$ _(the deterministic equation $dx_t/dt=\delta-\alpha x_t$ converges to $\delta/\alpha$)_.
 
 Note that this process is used to model <b>instantaneous interest rates</b> ($r_t=X_t$, which are nonnegative and mean-reverting quantities) or the <b>square of the volatility</b> (variance) of asset prices, as in the Heston model. It captures nonnegativity, mean reversion, larger fluctuations when variance is high, and volatility clustering, i.e. large price movements tend to occur near other large price movements and vice versa.
 
@@ -3036,7 +3075,7 @@ $$
 \widehat W_t:=\sqrt{1-\rho^2}\,W_t^1+\rho W_t^2.
 $$
 
-Then $\widehat W$ is a Brownian motion, and it is independent of $W^1$ if and only if $|\rho|=1$.
+Then $\widehat W$ is a Brownian motion, and it is independent of $W^1$ if and only if $|\rho|=1$. Its correlation with $W^1$ is $\sqrt{1-\rho^2}$, while its correlation with $W^2$ is $\rho$.
 
 The Heston model is the system:
 
@@ -3091,7 +3130,9 @@ ax2.plot(tgrid, X_h[:, 1], lw=0.8, color='tab:red')
 
 ---
 
-## <a id = "0"><b>Tractability</b></a>
+## <a id="7"><b>7. Tractability</b></a>
+
+### <a id="7.1"><b>7.1. Explicit solutions and generators</b></a>
 
 We now try to understand what we can calculate from a stochastic differential equation without relying entirely on simulated paths _(i.e., when computing simulated paths is costly)_.
 
@@ -4025,11 +4066,13 @@ Increasing the number of paths primarily reduces sampling noise, while decreasin
 ---
 
 <br/>
+### <a id="7.2"><b>7.2. Transform methods and option pricing</b></a>
+
 <b>Carr–Madan Option Pricing</b>
 
 We now spend some time understanding how to price European call options using the <b>characteristic function</b> of the terminal log-price, $X_T$, as this is useful when that function can be found but the probability distribution of $X_T$ is difficult to work out.
 
-_Firstly,_ we consider $S_T = e^{X_T}$, the asset price at maturity, and $K = e^k$, the strike. A call option pays $(S_T - K)^+ = (e^{X_T} - e^k)^+$, so its <b>discounted price</b> is:
+_Firstly,_ we consider $S_T = e^{X_T}$, the asset price at maturity and $K = e^k$, the strike. A call option pays $(S_T - K)^+ = (e^{X_T} - e^k)^+$, so its <b>discounted price</b> is:
 
 $$
 C(k) = e^{-rT}\mathbb{E}[(e^{X_T} - e^k)^+].
@@ -4167,7 +4210,8 @@ $$
 Adding them together gives us the real part:
 
 $$
-c_\alpha(k)=\frac{1}{\pi}\int_0^\infty\operatorname{Re}[e^{-ivk}\widehat c_\alpha(v)]\,dv.
+c_\alpha(k)=\frac{1}{2\pi}\int_{-\infty}^{\infty}e^{-ivk}\widehat c_\alpha(v)\,dv
+=\frac{1}{\pi}\int_0^\infty\operatorname{Re}[e^{-ivk}\widehat c_\alpha(v)]\,dv.
 $$
 
 and, if we undo the damping since $c_\alpha(k)=e^{\alpha k}C(k)$, we finally have:
@@ -4177,3 +4221,408 @@ C(k)=\frac{e^{-\alpha k}}{\pi}\int_0^\infty\operatorname{Re}[e^{-ivk}\widehat c_
 $$
 
 This is the <b>Carr–Madan inversion formula</b>.
+
+---
+<br/>
+<b>Discrete (DFT) and Fast Fourier Transform (FFT) in the Carr–Madan formula</b>
+
+To use the Carr–Madan formula mentioned before, we need to approximate an integral. To do this, we need to replace the integral with a sum, so if we choose equally spaced frequencies $v_j = j\eta$ for $j = 0,\ldots,N-1$, we can write:
+
+$$
+C(k)\approx\frac{e^{-\alpha k}}{\pi}\operatorname{Re}\left[\sum_{j=0}^{N-1}\eta w_j e^{-iv_jk}\widehat c_\alpha(v_j)\right].
+$$
+
+where $w_j$ are numerical integration weights.
+
+Given $N$ complex numbers $a_0, a_1,\ldots,a_{N-1}$, we define the <b>discrete Fourier transform</b> (DFT) as the array
+
+$$
+F_m = \sum_{j=0}^{N-1} a_j e^{-2\pi i j m/N}.
+$$
+
+where $j$ identifies the input $a_j$ and $m$ the output value $F_m$. The idea is that for each $m$ we multiply every $a_j$ by a complex oscillating factor and sum the results.
+
+_However,_ each $F_m$ requires the sum of $N$ terms, _so,_ since we have $N$ outputs, we have complexity $O(N^2)$.
+
+The <b>fast Fourier transform</b> (FFT), _on the other hand,_ does the same more efficiently.
+
+We indeed assume that $N$ is a power of 2, so we start from:
+
+$$
+F_m = \sum_{j=0}^{N-1}a_j e^{-2\pi ijm/N}.
+$$
+
+and we define $\omega_N = e^{-2\pi i/N}$, so we can write:
+
+$$
+F_m = \sum_{j=0}^{N-1}a_j\omega_N^{jm}.
+$$
+
+The even indices are $j = 2\ell$, while the odd indices are $j = 2\ell + 1$, so we have:
+
+$$
+\begin{aligned}
+F_m
+&= \sum_{\ell=0}^{N/2-1}a_{2\ell}\omega_N^{2\ell m} + \sum_{\ell=0}^{N/2-1}a_{2\ell+1}\omega_N^{(2\ell+1)m} \\
+&= \sum_{\ell=0}^{N/2-1}a_{2\ell}(\omega_N^2)^{\ell m} + \omega_N^m\sum_{\ell=0}^{N/2-1}a_{2\ell+1}(\omega_N^2)^{\ell m}.
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+F_m
+&= \sum_{\ell=0}^{N/2-1}a_{2\ell}\omega_N^{2\ell m} + \sum_{\ell=0}^{N/2-1}a_{2\ell+1}\omega_N^{(2\ell+1)m} \\
+&= \sum_{\ell=0}^{N/2-1}a_{2\ell}(\omega_N^2)^{\ell m} + \omega_N^m\sum_{\ell=0}^{N/2-1}a_{2\ell+1}(\omega_N^2)^{\ell m}.
+\end{aligned}
+$$
+
+where the second equality comes from $\omega_N^{(2\ell+1)m} = \omega_N^{2\ell m}\omega_N^m$.
+
+Since we have that $\omega_N^2 = e^{-2\pi i/(N/2)} = \omega_{N/2}$, the two sums are DFTs of size $N/2$ defined by:
+
+$$
+E_m = \sum_{\ell=0}^{N/2-1}a_{2\ell}\omega_{N/2}^{\ell m},
+\qquad
+O_m = \sum_{\ell=0}^{N/2-1}a_{2\ell+1}\omega_{N/2}^{\ell m}.
+$$
+
+and if we consider that $E_m$ is the transform of the even indices and $O_m$ of the odd, we can express one large transform in terms of two smaller ones:
+
+$$
+F_m = E_m + \omega_N^m O_m.
+$$
+
+_Furthermore,_ for $0 \le m < N/2$, the smaller DFTs repeat after $N/2$ indices and, since $\omega_N^{N/2} = e^{-\pi i} = -1$, we have:
+
+$$
+\begin{aligned}
+F_{m+N/2}
+&=E_m+\omega_N^{m+N/2}O_m \\
+&=E_m-\omega_N^mO_m.
+\end{aligned}
+$$
+
+So, _for the same_ $E_m$ and $O_m$, we have two outputs:
+
+$$
+\begin{aligned}
+F_m &= E_m+\omega_N^mO_m, \\
+F_{m+N/2} &= E_m-\omega_N^mO_m.
+\end{aligned}
+$$
+
+so the FFT applies this split to smaller transforms until we reach arrays of size 1. Doing so, there are $\log_2 N$ splitting levels and, _at each level,_ the total work is proportional to $N$, _therefore_ the total cost is $O(N\log N)$.
+
+We now come back to the DFT in Carr–Madan and the <b>discretized integral</b>
+
+$$
+C(k)\approx\frac{e^{-\alpha k}}{\pi}\operatorname{Re}\left[\eta\sum_{j=0}^{N-1}w_j e^{-iv_jk}\widehat c_\alpha(v_j)\right].
+$$
+
+The idea is to choose frequency and strike grids so that $e^{-iv_jk_m}$ becomes $e^{-2\pi ijm/N}$ from the DFT.
+
+_Indeed,_ we choose the grid $v_j = j\eta$ and we choose equally spaced log-strikes:
+
+$$
+k_m = k_{\min} + m\lambda, \quad m = 0,\ldots,N-1, \quad K_m = e^{k_m}.
+$$
+
+_Note that_ $k_m$ are equally spaced but the corresponding actual strikes $K_m$ are not.
+
+If we substitute $v_j$ and $k_m$ we get:
+
+$$
+\begin{aligned}
+e^{-iv_jk_m}
+&=e^{-i(j\eta)(k_{\min}+m\lambda)} \\
+&=e^{-ij\eta k_{\min}}e^{-ijm\eta\lambda}.
+\end{aligned}
+$$
+
+We then choose the grid spacings such that $\eta\lambda = 2\pi/N$, so we have exactly the DFT factor:
+
+$$
+e^{-ijm\eta\lambda}=e^{-2\pi ijm/N}.
+$$
+
+Define now the inputs $a_j$ as:
+
+$$
+a_j=\eta w_j e^{-ij\eta k_{\min}}\widehat c_\alpha(j\eta).
+$$
+
+so the sum in the pricing formula becomes exactly a <b>DFT sum</b>
+
+$$
+\eta\sum_{j=0}^{N-1}w_j e^{-iv_jk_m}\widehat c_\alpha(v_j)
+=\sum_{j=0}^{N-1}a_j e^{-2\pi ijm/N}=F_m.
+$$
+
+Taking the real part and undoing the damping gives the call prices at the log-strike grid points:
+
+$$
+C(k_m)\approx\frac{e^{-\alpha k_m}}{\pi}\operatorname{Re}(F_m),
+\qquad m=0,\ldots,N-1.
+$$
+
+---
+<br/>
+
+## <a id="8"><b>8. Strong approximation of Stochastic Differential Equations</b></a>
+
+### <a id="8.1"><b>8.1. Coefficient regularity and convergence</b></a>
+
+In this chapter, we spend some time understanding how to <b>numerically approximate stochastic differential equations</b> of the form:
+
+$$
+dX_t = \mu(X_t)\,dt + \sigma(X_t)\,dW_t, \quad X_0 = \xi.
+$$
+
+where $X_t \in \mathbb{R}^d$ is the unknown state, $\mu$ the drift, $\sigma$ the diffusion coefficient and $W_t \in \mathbb{R}^m$ a Brownian motion.
+
+---
+<br/>
+<b>Growth properties</b>
+
+Growth conditions describe how quickly a function can become large as inputs move and this matters because coefficients that grow too fast can make solutions or their moments difficult to handle.
+
+<b>Linear Growth</b> 
+
+A function $f: \mathbb{R}^k \to \mathbb{R}^l$ has at most linear growth if, for some $C < \infty$ we have:
+
+$$
+\|f(x)\|\le C(1+\|x\|).
+$$
+
+The constant $1$ allows $f(0)$ to be nonzero, otherwise the property would not be satisfied.
+
+_Intuition:_ doubling the input can increase the upper bound of the function by a factor of two.
+
+<b>Quadratic growth</b> 
+
+A function $f$ has at most quadratic growth if
+
+$$
+\|f(x)\|\le C(1+\|x\|)^2
+$$
+_Of course,_ every linear growth function is also of quadratic growth.
+
+<b>Polynomial growth</b>
+
+A function has at most polynomial growth if, for some $C, q \ge 0$ we have:
+$$
+\|f(x)\|\le C(1+\|x\|^q).
+$$
+
+_Intuition:_ if $f$ has polynomial growth and $X$ has sufficiently many finite moments, then $E[f(X)]$ is finite _(this will be important when testing for weak convergence)_.
+
+<b>Growth properties of derivatives</b>
+
+<b>Global Lipschitz continuity</b>
+
+A function is globally Lipschitz if there is an $L < \infty$ such that, for all $x,y$:
+
+$$
+\|f(x)-f(y)\|\le L\|x-y\|
+$$
+
+For a differentiable scalar function, a bounded derivative gives this property. By the mean value theorem we indeed have:
+
+$$
+|f(x)-f(y)|\le \sup_z |f'(z)|\,|x-y|
+$$
+
+ _Note that_ Lipschitz continuity implies linear growth _(but the converse is false)_. If we indeed set $y = 0$ we have:
+
+$$
+\begin{aligned}
+\|f(x)\| &\le \|f(x)-f(0)\|+\|f(0)\|\\
+&\le L\|x\|+\|f(0)\|\\
+&\le C(1+\|x\|).
+\end{aligned}
+$$
+
+<b>Polynomially growing derivatives</b>
+
+A function $f : \mathbb{R}^k \to \mathbb{R}^l$ is $v$ times continuously differentiable with at most polynomially growing derivatives when $f \in C^v$ and its $v$-th derivative satisfies the polynomial growth condition _(note that in this case the lower derivatives also have polynomial growth)_
+​
+<b>Infinitely differentiable with polynomially growing derivatives</b>
+
+$f$ is infinitely differentiable with at most polynomially growing derivatives if $f \in C^\infty$ and every derivative has at most polynomial growth _(note however that the bound can be different for each derivative)_.
+
+---
+<br/>
+<b>Strong convergence</b>
+
+Let $Y^0$ be the target process and $Y^N$ its approximation using $N$ steps. At time $T$, we can write the error as
+
+$$
+e_N = \|Y_T^0 - Y_T^N\|
+$$
+
+We can say that there is <b>strong $L^p$ convergence</b> if, for $p > 0$ we have $E[e_N^p]\to 0$.
+
+_Intuition:_ for $p = 1$, the absolute average error tends to zero, for $p = 2$ the root mean square error tends to zero and larger $p$ penalizes large errors more heavily.
+
+_Furthermore,_ we say that convergence has a <b>strong order </b> $\alpha > 0$ if there is $C < \infty$ such that:
+
+$$
+\|Y_T^0 - Y_T^N\|_{L^p} \le CN^{-\alpha}
+$$
+
+---
+<br/>
+<b>Almost sure convergence</b>
+
+We say that $Y_T^N$ converges to $Y_T^0$ <b>almost surely</b> if
+
+$$
+P\left(\lim_{N\to\infty}\|Y_T^0 - Y_T^N\| = 0\right)=1.
+$$
+
+We say that $Y_T^N$ converges to $Y_T^0$ <b>almost surely of order $\alpha>0$</b> if there is a finite random variable $C(\omega)$ such that, almost surely, for all $N$
+
+$$
+\|Y_T^0 - Y_T^N\|(\omega)\le C(\omega)N^{-\alpha}
+$$
+
+_Note that_ there's an important difference between strong order convergences:
+- strong $L^p$ convergence uses a deterministic constant
+- almost sure order uses a path-dependent constant.
+ 
+---
+<br/>
+<b>Convergence in probability</b>
+
+$Y_T^N$ converges to $Y_T^0$ in probability if for every $\epsilon > 0$ we have, for $N \to \infty$:
+
+$$
+P(\|Y_T^N - Y_T^0\| \ge \epsilon) \to 0
+$$
+
+_Intuition:_ up to approximation, the chance of making an error larger than $\epsilon$ becomes small.
+
+_Note also_ that both almost sure convergence and strong $L^p$ convergence imply convergence in probability _(but the reverse does not hold)_.
+
+---
+<br/>
+<b>Numerically weak convergence</b>
+
+Weak convergence focuses on statistics of the solution. For each smooth test function $\phi$, we say that $Y^N$ <b>converges numerically weakly</b> at time $T$ to $Y^0$ if:
+
+$$
+E[\phi(Y_T^N)]\longrightarrow E[\phi(Y_T^0)],
+$$
+
+_Intuition:_ while strong convergence tests if the paths are close, weak convergence tests if the statistics of the path _(for example expected value)_ are similar.
+
+_Similarly_ we have <b>weak convergence </b> of order $\alpha$ if for every admissible $\phi$ there is a $C_\phi$ such that:
+
+$$
+\left|E[\phi(Y_T^0)]-E[\phi(Y_T^N)]\right|\le C_\phi N^{-\alpha}
+$$
+
+---
+<br/>
+
+### <a id="8.2"><b>8.2. Euler–Maruyama approximation</b></a>
+
+<b>Euler-Maruyama scheme</b>
+
+We now consider an interval $[t_n, t_{n+1}]$ of length $h = T/N$. The exact solution of the SDE is
+
+$$
+X_{t_{n+1}} = X_{t_n} + \int_{t_n}^{t_{n+1}} \mu(X_s)\,ds + \int_{t_n}^{t_{n+1}} \sigma(X_s)\,dW_s
+$$
+If we approximate both coefficients by their values at the start of the interval we have:
+
+$$
+\mu(X_s) \approx \mu(X_{t_n}), \quad \sigma(X_s) \approx \sigma(X_{t_n})
+$$
+
+so we can write
+
+$$
+\int_{t_n}^{t_{n+1}} \mu(X_s)\,ds \approx \mu(X_{t_n})h
+$$
+
+$$
+\int_{t_n}^{t_{n+1}} \sigma(X_s)\,dW_s \approx \sigma(X_{t_n})(W_{t_{n+1}}-W_{t_n})
+$$
+
+so we can write:
+
+$$
+X_{t_{n+1}}\approx X_{t_n}+\mu(X_{t_n})h+\sigma(X_{t_n})(W_{t_{n+1}}-W_{t_n}),\qquad h=T/N.
+$$
+
+<b>Euler-Maruyama approximation</b>
+
+If we now consider $t_n = nT/N$, $h = T/N$ and $Y_0 = \xi$ the previous scheme can be written as:
+
+$$
+Y_{n+1}=Y_n+\mu(Y_n)h+\sigma(Y_n)\Delta W_n,\quad \Delta W_n=W_{t_{n+1}}-W_{t_n}
+$$
+_Intuition:_ we take the previous state $Y_n$ and we apply a deterministic drift increment $\mu(Y_n)h$ and a random increment $\sigma(Y_n)\Delta W_n$.
+
+_Furthermore,_ for $t \in [t_n, t_{n+1}]$ we can write:
+
+$$
+\theta = \frac{t-t_n}{h}
+$$
+so the <b>Linear interpolated Euler approximation</b> _(i.e. the continuous piecewise linear version of the Euler-Maruyama approximation)_ is
+
+$$
+\bar Y_t = (1-\theta)Y_n+\theta Y_{n+1}
+$$
+---
+<br/>
+
+<b>Theorem: Strong Convergence of Euler-Maruyama</b> 
+
+We assume $p \ge 2$, $\xi$ in $L^p$ and global Lipschitz bounds, _i.e._
+
+$$
+\|\mu(x)-\mu(y)\|\le L_\mu\|x-y\|,\quad \|\sigma(x)-\sigma(y)\|_{\mathrm{HS}}\le L_\sigma\|x-y\|.
+$$
+
+Let also $X$ be the solution and $\bar Y$ the linearly interpolated Euler approximation with $N$ steps. We define
+
+$$
+c_p=\sqrt{\frac{p(p-1)}{2}},\qquad
+H_X=\sup_{0\le s<t\le T}\frac{\|X_t-X_s\|_{L^p}}{|t-s|^{1/2}}<\infty,\qquad
+A=L_\mu\sqrt{T}+L_\sigma c_p.
+$$
+
+Then we have that:
+
+$$
+\sup_{t\in[0,T]}\|X_t-\bar Y_t\|_{L^p}
+\le\exp\!\left(\sqrt{T}+(T+T^2)A^2\right)H_X N^{-1/2}.
+$$
+_Intuition:_ at every $t$, we take $L^p$ errors across the sample paths, we take the worst error and we say that the worst fixed time error decreases at least as order $N^{-1/2}$.
+
+---
+<br/>
+<b>Theorem: Uniform strong convergence</b> 
+
+Under the stated global-Lipschitz and moment assumptions, the linearly interpolated scheme satisfies
+
+$$
+\left\|\sup_{t\in[0,T]}\|X_t-\bar Y_t\|\right\|_{L^p}
+\le C\sqrt{\frac{1+\log N}{N}}.
+$$
+
+
+where the constant $C$ does not depend on $N$.
+
+
+Note that the previous theorem focuses on $\sup_t \|X_t - \bar Y_t\|_{L^p}$. <br/>
+
+In the first expression, choose one time and average across paths; then find the worst time. In the second, find the worst time separately for each path, then average. Different paths may have their largest errors at different times.
+
+Indeed, we have that:
+$$
+\sup_t\|X_t-\bar Y_t\|_{L^p}
+\le\left\|\sup_t\|X_t-\bar Y_t\|\right\|_{L^p}.
+$$
