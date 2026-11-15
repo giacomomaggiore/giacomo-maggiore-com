@@ -27,7 +27,7 @@ Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-
 
 1. [Linear Regression with housing price data](#p1)
 1. [Credit Analytics](#p2)
-1. [Project name](#p3)
+1. [Deep Hedging](#p3)
 1. [Project name](#p4)
 
 <br/>
@@ -961,7 +961,7 @@ _Generally speaking,_ <b>standardization is unnecessary</b>
 - when the original units are meaningful and we want interpretable coefficients
 
 Furthermore, <b>standardizing the input variables</b> is useful:
-- in regularized regression _(e.g. truncated SVD, ridge, LASSO, and elastic net) because penalties depend on the magnitude of the coefficients
+- in regularized regression _(e.g. truncated SVD, ridge, LASSO, and elastic net)_ because penalties depend on the magnitude of the coefficients
 - for comparing coefficient sizes, since standardization makes them easier to compare across different scenarios/input variables
 
 Secondly, <b>standardizing both the input and the target variables</b> is useful:
@@ -1717,7 +1717,7 @@ _Example: in the following graph, we can nicely see SVR for $\Psi(x) = x$._
 ---
 <b>Kernel Functions and Reproducing Kernel Hilbert Spaces</b>
 The previous discussion was _veeeeery_ theoretical in the following ways:
-- what is a good feature map \Psi(x)?
+- what is a good feature map $\Psi(x)$?
 - how should we choose the Hilbert space?
 - what is the resulting function space H?
 
@@ -2018,13 +2018,15 @@ $$
 where $W^\dagger$ is the <b>pseudoinverse</b> of $W$.
 
 
-_Secondly,_ we can opt for <b>preconditioning methods</b>. A popular method is called <b>FALKON</b> and tries to find suitable $B$ and $z$ such that:
+_Secondly,_ we can opt for <b>preconditioning methods</b>. A popular method is called <b>FALKON</b> (see <a href="https://arxiv.org/abs/1705.10958" target="_Blank" rel="noopener noreferrer">Rudi et al.</a>). To illustrate preconditioning, let $A = K_m + \lambda m I_m$ and consider an ideal preconditioner $B$ and a vector $z$ such that:
 
-BB^T = A^-1, B^TABz = B^T
+$$
+BB^T = A^{-1}, \qquad B^TABz = B^Ty.
+$$
 
-then a = B is a solution of Aa = y for A = (K_m + \lambda m I_m) is the closed form solution of the above corollary
+Then $a = Bz$ solves $Aa = y$, the linear system for the closed-form solution of the above corollary.
 
-_However,_ note that constructing $B$ precisely can be costly, so we can instead look for $B$ such that $BB^T \approx A^{-1}$ _(using again a random feature method like the Nyström approximation)_.
+_However,_ note that constructing this ideal $B$ can be costly. FALKON instead uses a Nyström approximation of the problem and an efficiently computed preconditioner for the resulting system.
 
 ---
 <br/>
@@ -3039,7 +3041,7 @@ _Credits to Giacomo Maggiore, Ugo Buzzacchino, Kostas Zisis, Konstantin Krstevsk
 ---
 
 
-## <a id="p1"><b>P1 Linear Regression with housing price data</b></a>
+## <a id="p1"><b>P1. Linear Regression with housing price data</b></a>
 
 <b>P.1.1 Data preparation</b>
 
@@ -3274,11 +3276,11 @@ To sum up, when deciding on a final model for recommendation, we ended up with <
 <br/>
 ---
 <br/>
-## <a id="p2"><b>P2 Credit Analytics  </b></a>
+## <a id="p2"><b>P2. Credit Analytics  </b></a>
 
 Before starting with the practical coding project, we give a short introduction of the topic.
 
-In every day language, we often associate risk \approx uncertainty. _However,_ risk management is more precise, since it defines risk as the exposure to the possibility of loss.
+In everyday language, we often associate risk $\approx$ uncertainty. _However,_ risk management is more precise, since it defines risk as the exposure to the possibility of loss.
 
 For the sake of this project, we define <b>credit risk</b> as the risk coming from losses from borrowers who default. Therefore, _later in the code,_ we will model each borrower $i$ with a default probability $1 - p(x_i)$, where $p(x_i)$ is the probability the borrower repays.
 
@@ -3531,7 +3533,7 @@ _Furthermore, recall that_ the AUC is the average FDR across all the TPR levels,
 
 ---
 <br/>
-<b>P3 Scenario simulation</b>
+<b>P2.3 Scenario simulation</b>
 
 We now define a scenario matrix D: each row is a borrower, each column a scenario.
 
@@ -3593,6 +3595,162 @@ _Furthermore,_ we notice that selective strategies issue fewer loans and use the
 ---
 <br/>
 
-## <a id="p3"><b>P3 </b></a>
+## <a id="p3"><b>P3. Deep Hedging </b></a>
 
+In the following project, we show a nice application of neural networks in <b>hedging a European call</b>, comparing this approach with the classical <a href="https://quantindex.org/learn/guides/how-to-price-options-with-black-scholes-in-python" target="_Blank" rel="noopener noreferrer">Black–Scholes delta-hedging</a>.
+
+We firstly define a <b>European Call Option</b> as the right of the holder to buy a stock for a fixed strike price $K$ at a future expiration time $T$. Its payoff at maturity is then
+
+$$
+g(S_T) = (S_T-K)^+ = \max(S_T-K,0).
+$$
+
+
+_Note that_ a European call can be exercised only at maturity, while an American call can be exercised at every time $t$ until maturity.
+
+In the project, we take the point of view of a trader that sells the option, so we receive a premium $p$ at the beginning and, _at maturity,_ we must pay the option payoff $g(S_T)$. In between, we have to hold shares of the underlying stock $S_t$ to offset the risk of the future payment _(in other words: we have to hedge ourselves)_.
+
+_In particular,_ in the interval $[t_j, t_{j+1}]$, we hold $H_j$ shares, so the gain from those shares is
+
+$$
+H_j(S_{t_{j+1}}-S_{t_j})
+$$
+
+and the total profit and loss (P&L) of the hedging strategy is:
+
+$$
+\text{P\&L} = p + \sum_{j=0}^{N-1} H_j(S_{t_j})(S_{t_{j+1}}-S_{t_j}) - g(S_T).
+$$
+
+Even if the term "P&L" may sound misleading, the goal of the hedging strategy is to make the P&L as close to zero as possible across many possible paths, as this would mean that the premium and the trading gains cover the option payment.
+
+_Note that,_ as in major finance literature, we assume no transaction costs, zero interest rates and, _furthermore,_ we consider trading at $N = 30$ discrete dates and, _at least for the first part,_ a Black–Scholes stock price model.
+
+For most of the project, we will work with <a href="https://pytorch.org/" target="_Blank" rel="noopener noreferrer">PyTorch</a>, a very common Python library that provides tensors _(array-like objects, I wrote something about them <a href="https://giacomomaggiore.com/notes/21-seminar-computational-finance" >here</a>)_, neural-network layers, automatic differentiation and different optimization algorithms.
+
+In particular, `torch.nn` contains the neural network building blocks, including the `Linear`, `Tanh`, `Sequential` and `ModuleList` objects used below.
+
+<b>P3.1 Black–Scholes stock-price process</b>
+
+We assume a zero interest rate, so we model the stock price as
+
+$$
+dS_t = \sigma S_t\,dW_t, \qquad S_0 = s_0,
+$$
+with $\sigma$ volatility, $W_t$ Brownian motion and $s_0$ the initial stock price.
+
+Since Brownian motion is continuous with independent random increments, we can write for a small time interval $\Delta t$:
+
+$$
+\Delta S_t \approx \sigma S_t\sqrt{\Delta t}\,Z, \qquad Z \sim \mathcal{N}(0,1).
+$$
+
+so that we have proportional, rather than fixed-size, price changes. _(Note that under the risk-neutral measure, the drift of the stock is $r$ and, since we assumed $r = 0$, there's no drift term for the stock.)_
+
+We firstly show the solution of this stochastic differential equation by applying Itô's formula.<br/>
+We indeed define $f(t,w) = s_0 e^{\sigma w - \frac12\sigma^2t}$, so we have $S_t = f(t, W_t)$.
+
+If we take the relevant derivatives, we have:
+
+
+$$
+\frac{\partial f}{\partial t} = -\frac12\sigma^2f, \qquad
+\frac{\partial f}{\partial w} = \sigma f, \qquad
+\frac{\partial^2 f}{\partial w^2} = \sigma^2f.
+$$
+
+that can be substituted in Itô's formula so we end up with:
+
+$$
+\begin{aligned}
+dS_t = df(t,W_t)
+&= \left(\frac{\partial f}{\partial t} + \frac12\frac{\partial^2 f}{\partial w^2}\right)dt + \frac{\partial f}{\partial w}\,dW_t \\
+&= \left(-\frac12\sigma^2S_t + \frac12\sigma^2S_t\right)dt + \sigma S_t\,dW_t \\
+&= \sigma S_t\,dW_t.
+\end{aligned}
+$$
+We now get our hands dirty with the code. _Firstly,_ we define the parameters:
+
+```python
+K, N, s0, T, sigma, r = 1.0, 30, 1.0, 0.25, 0.35, 0.0
+dt = T / N
+```
+
+_Note that_ we will have 30 intervals but 31 stock prices, from $S_{t_0}$ to $S_{t_{30}}$, where the last one determines the payoff.
+
+We then simulate the geometric Brownian motion (stock price) as
+
+```python
+def simulate_gbm(m, rng):
+
+    # generate shocks
+    # m rows for m simulate paths
+    # N cols, one for each time interval
+    Z = rng.standard_normal((m, N))
+
+    # log increments
+    log_incr = -0.5 * sigma**2 * dt + sigma * np.sqrt(dt) * Z
+    log_S = np.concatenate([np.zeros((m, 1)), np.cumsum(log_incr, axis=1)], axis=1)
+    return s0 * np.exp(log_S)
+
+```
+
+Note that we use log returns since they are more convenient: multiplication of prices _nicely_ becomes addition:
+
+$$
+\log S_{t_{j+1}} = \log S_{t_j} + \Delta\log S_j.
+$$
+
+We define the training and test paths with 100,000 and 10,000 paths.
+
+```python
+rng = np.random.default_rng(0)
+S_train = simulate_gbm(100_000, rng)
+S_test = simulate_gbm(10_000, rng)
+print(S_train.shape, S_test.shape)
+```
+
+We can now finally build the neural network using PyTorch.
+
+_In particular,_ we build $N = 30$ networks $H$ _(each one with its parameters)_ whose goal is to predict how many shares to hold at time $t_j$ when the price is $s$.
+
+In each network, the first layer transforms one stock price input into 32 values, then `nn.Tanh` applies the hyperbolic tangent elementwise, so it maps values between $(-1,1)$, introducing nonlinearity.
+
+$$
+z^{(1)} = W^{(1)}s+b^{(1)}.
+$$
+
+$$
+\tanh(x) = \frac{e^x-e^{-x}}{e^x+e^{-x}}.
+$$
+The following two layers repeat the pattern. _At the end,_ another linear layer produces the output number of shares. _Note that_ this final layer has no activation function, so the output is _NOT_ constrained in $[0,1]$.
+
+```python
+torch.manual_seed(1)
+
+N = 30
+nh1 = 32
+nh2 = 32
+
+def make_network():
+    return nn.Sequential(
+        nn.Linear(1, nh1),
+        nn.Tanh(),
+        nn.Linear(nh1, nh2),
+        nn.Tanh(),
+        nn.Linear(nh2, 1)
+    )
+
+H = nn.ModuleList([make_network() for _ in range(N)])
+```
+
+In the above code, `ModuleList` stores all 30 networks and registers them as PyTorch modules. Therefore we can access each network's parameters simply by `H.parameters()`.
+
+_Note that_ each network has:
+- $1 \times 32 + 32 = 64$ params in the first layer
+- $32 \times 32 + 32$ params in the second layer
+- $32 \times 1 + 1$ in the last layer
+- so we have 1,153 parameters for each network and $30 \times 1153 = 34590$ parameters in total.
+
+_Furthermore, note also_ that time is not an explicit input to a single shared network; it is represented by which network is selected. Indeed, each network sees only the current price, _not future prices._
 ## <a id="p4"><b>P4 </b></a>
