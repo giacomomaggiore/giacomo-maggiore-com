@@ -26,6 +26,7 @@ Next.js 14 (App Router) personal website, [giacomomaggiore.com](https://giacomom
 | `app/blog/`, `app/notes/` | Pages plus `utils.ts` readers for each collection |
 | `lib/site.ts` | `PRODUCTION_URL` and `baseUrl` (production vs localhost) |
 | `lib/dates.ts` | `formatDate`, `byPublishedDesc` |
+| `lib/economy-chart.ts` | Fixed illustrative scenario and calculations for the desktop-only economy article chart |
 | `lib/seo.ts` | `articleMetadata` (title, canonical, Open Graph) |
 | `lib/rate-limit.ts` | In-memory per-IP limiter, `getClientIp`, `tooManyRequests` |
 | `lib/posthog.ts` | Three fixed server HogQL queries with a 60 s in-memory cache and last-good fallback |
@@ -46,6 +47,7 @@ Imports use `baseUrl: "."`, e.g. `import { baseUrl } from 'lib/site'` or `'app/c
 ## How things work
 
 - **Pages.** MDX files are read from disk with `lib/wiki/mdx-files.ts` (parsed files are cached in memory in production only). Frontmatter has `title`, `publishedAt`, `summary`. `app/components/mdx.tsx` renders MDX with KaTeX; `<Table data={{ headers, rows }} />` blocks are converted to Markdown tables first. Slugs from URLs are validated (`isSafeSlug`) before touching the filesystem.
+- **Economy chart.** `EconomyChart` is a desktop-only MDX component with four interactive controls and an illustrative fixed-production scenario; calculations are in `lib/economy-chart.ts`.
 - **Language.** `middleware.ts` sets a `lang` cookie (`en`/`it`) on `/blog/*`. Blog pages read it; the list defaults to `en`, a post defaults to `it`. Notes are English only.
 - **`/ask`.** Question (max 500 chars) → rate limit (15/min/IP) → embed the query (`text-embedding-3-small`) while loading the index → `retrieveHybrid` (BM25 + cosine similarity fused with RRF, top 8; keyword-only when there is no embedding) → `selectContext` keeps only the best-matching passages of those notes (max `CONTEXT_BUDGET` = 30,000 characters, at least one passage per note) → stream the answer from OpenAI (first line is JSON citations, the rest is Markdown). Closing the connection aborts the OpenAI call. Sources shown to the visitor are exactly the notes the model received. Query and index **must** use the same embedding model (`EMBEDDING_MODEL` in `lib/wiki/openai.ts`).
 - **Search index.** `scripts/build-wiki-index.ts` indexes public notes, `*.en.mdx` blog posts and every `.md`/`.mdx` under `wiki/private/` (skips `images/`, `_*`, `index`, `log`). Private notes get `url: null`.

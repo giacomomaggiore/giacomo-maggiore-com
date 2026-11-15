@@ -1,0 +1,751 @@
+---
+title: 'Economics, work and dystopias in a post-AI society'
+publishedAt: '2026-11-16'
+summary: ''
+---
+
+
+Predicting how AI will change the world of work is, _at least for now,_ a fun and challenging exercise in style that remains useless... the direction is anything but clear, there are too many power dynamics at play and opinions are often too <b>biased</b> by people's experiences and backgrounds _(even so,_ for at least a year now, every dinner with friends has ended up on the same topic....).
+
+Despite not being much of an AI enthusiast _(I still have to figure out whether the net effect on the world has been positive or not)_ I recently had fun imagining <b>a (dystopian) economy</b> in which AI has <s>revolutionized</s> swept away a large share of jobs.
+
+In this scenario, _although it corresponds neither to my idea of the most likely future nor to what I hope for, but only to one of many possible outcomes,_ AI has replaced most jobs,<b> automating them and making them obsolete.</b>
+
+As a result, only a minority of the population is employed in <b>high-value-added</b> professions that can provide a salary.
+<br/>_At the same time,_ all companies make heavy use of AI and their ownership is distributed <b>unevenly between citizens and the State</b>, which, _through taxes and profits from the companies it owns shares in,_ provides a <b>Universal Basic Income </b> _(from here on: UBI)_ to the entire population, employed or not.
+
+
+<div align = "center">
+![Dinners without AI!](/images/blog/cena-no-ai.jpg)
+</div>
+<small><i>Rare tables where we didn't talk about AI: a family dinner in the middle of Turkey and a mountain hut at 2000m with friends!</i> </small>
+
+
+## <b>Will it still make sense to study?</b>
+
+
+Let's consider a society _(deliberately simplified)_ made up of $N$ people (agents) and two periods, $t = 0,1$.
+
+At time $t = 0$, each agent chooses whether to <b>spend</b> $\kappa_i > 0$ _(a training cost that varies across citizens)_ and undertake <b>specialized training</b> _(i.e. training that adds value to the world, whether that means curing cancer or stretching pizza dough by hand)_, represented by $s_i = 1$ and $0$ otherwise.
+
+Also at $t = 0$, each agent receives <b>UBI</b> $B_0$, <b>dividends</b> from their initial holdings $D_{i,0}$ and, _if applicable,_ pays the <b>cost of training</b>, leaving them with income $m_{i,0}$ defined by
+
+$$
+m_{i,0} = B_0 + D_{i,0} - \kappa_i s_i
+$$
+
+At time $t = 1$, optimistically assuming that everyone who trained finds a job, we can divide citizens into workers _(paid)_ and unemployed people _(unpaid)_.
+
+Consequently, income at time $t = 1$, with $\omega$ as the individual wage and $\tau_\omega$ as the corresponding tax, is:
+
+$$
+m_{i,1} = B_1 + D_{i,1} + (1 - \tau_\omega)\omega s_i
+$$
+
+In this society people can consume essential goods in quantity $c_i$ at price $p_c$, with $\bar c$ as the minimum subsistence level shared by everyone; and discretionary goods $x_i$ at price $p_x$.
+<br/>In each period, agents have <a href="https://en.wikipedia.org/wiki/Stone–Geary_utility_function" target="_blank">Stone-Geary preferences</a> with diminishing marginal utility beyond a minimum consumption threshold for survival _(health, food, housing etc...)_, given by $\bar c$.
+
+$$
+u(c_i, x_i) = \beta \ln(c_i - \bar c) + (1-\beta)\ln(x_i)
+$$
+
+We associate this function with an indirect utility function $v(m)$, defined as the maximum utility attainable with income $m$. Consequently, being rational, the agent solves the following optimization problem:
+
+$$
+\max_{c_i,x_i} [\beta \ln(c_i - \bar c) + (1 - \beta)\ln(x_i)], \quad \text{s.t. } p_c c_i + p_x x_i \leq m,\quad c_i > \bar c,\quad x_i > 0
+$$
+
+which gives the following optimal consumption:
+
+$$
+c_i^*=\bar c+\frac{\beta (m - p_c \bar c)}{p_c},
+\qquad
+x_i^*=\frac{(1-\beta)(m - p_c \bar c)}{p_x}.
+$$
+
+Substituting into the utility function $v(m)$ and applying an intertemporal discount factor $\delta$ in $(0,1)$, the agent chooses whether or not to train by maximizing the following total utility for $t = 0,1$:
+
+$$
+V_i(s_i) = v(m_{i,0}) + \delta v(m_{i,1})
+$$
+
+and, _still optimistically assuming that education is always feasible_, the agent chooses to train only if the following holds:
+
+$$
+\underbrace{
+\ln(B_0+D_{i,0}-\kappa_i-p_c\bar c)
+-\ln(B_0+D_{i,0}-p_c\bar c)
+}_{\text{utility lost to training at } t = 0}
+
+\underbrace{
+\delta\left[
+\ln(m_{i,1}^{E}-p_c\bar c)
+-\ln(m_{i,1}^{U}-p_c\bar c)
+\right]
+}_{\text{discounted future utility gain at } t = 1}
+\geq 0.
+$$
+
+The idea is simple: studying is worthwhile only if the future benefit makes up for the financial cost paid at $t=0$.
+_Moreover_, note that if initial income is not enough to cover subsistence expenses _(i.e. if UBI or dividends are not high enough)_ training is not a feasible choice.
+
+This, however, does not resolve the biggest unknown in the entire model: which field to spend the training cost $\kappa_i$ on and where to find added value in a world where AI has made many professions obsolete.<br/>While I am convinced that there will always be a need, perhaps a decreasing one, for "intellectual" work, I am _even more_ convinced that <b>non-monotonous manual work</b> _(often associated with non-discretionary goods: cooking, crafts, personal care)_ will become central again.
+
+<div align = "center">
+![things AI doesn't do!](/images/blog/cose-ai-non-fa.jpg)
+</div>
+<small><i>Things AI still doesn't do: make focaccia ligure, iron shirts and stir polenta.</i> </small>
+
+<br/>
+
+
+## <b>A generous government</b>
+
+
+Let's now assume that output $Y$ is produced using AI (capital) $K$ and non-automatable _(high-value-added)_ labor $L$, supplied by employed agents, according to a production function by <a href="https://it.wikipedia.org/wiki/Funzione_di_produzione_Cobb-Douglas" target="_blank">Cobb-Douglas:</a>
+
+$$
+Y = F(K,L) = AK^\alpha L^{1-\alpha}, \quad A > 0, K > 0, 0 < \alpha < 1
+$$
+
+Let's also assume that the gross wage equals the marginal productivity of high-value-added labor, giving us:
+
+$$
+w = \frac{\partial Y}{\partial L} = (1 - \alpha)AK^\alpha L^{-\alpha}, \quad L > 0
+$$
+
+_Consequently_, wages depend on employment and this leads us to consider situations where $L > 0$ for output to be nonzero, that is, an economy in which at least some non-automatable human labor is needed to keep things moving.
+
+Suppose capital is given and there is neither investment nor depreciation _(a simplification bordering on implausible if we look at the current cash flows of the corporates working on AI...)_. Let's define profit before taxes and dividends as $\pi$:
+
+$$
+\pi = Y - wL = \alpha A K^\alpha L^{1-\alpha}
+$$
+
+
+With corporate tax $\tau_\pi$, after-tax profit then becomes:
+
+$$
+\pi^{net} = (1 -\tau_\pi) \pi
+$$
+
+_As mentioned earlier_, ownership of AI is split between the State, which owns a share $\gamma \in [0,1]$, and citizens, who own individual shares $\theta_i$, subject to the following constraints:
+
+$$
+\sum_i\theta_i=\sum_i(1-\gamma)h_i=(1-\gamma)\sum_i h_i=1-\gamma.
+$$
+
+Where each $h_i$ represents citizen $i$'s share of private ownership. Keeping $h_i$ fixed when $\gamma$ changes, an increase in the public share therefore reduces all private shares proportionally.
+
+_Consequently,_ the central government's budget $R$ comes from taxes on profits, taxes on wages and dividends from the State's share of AI:
+
+$$
+R=\tau_\pi\pi+\underbrace{\gamma(1-\tau_\pi)\pi}_{\text{dividends to the State}}+\underbrace{\tau_w wL}_{\text{total wage tax}}.
+$$
+
+And, _assuming that all State revenues are redistributed equally as UBI_, every citizen, whether employed or not, receives from the State:
+
+$$
+B=\frac{R}{N} = \frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}.
+$$
+
+To this we add the dividend $D_i$ _(which varies across citizens and is determined by their individual ownership share)_, equal to:
+
+$$
+D_i = \theta_i (1 - \tau_\pi)\pi
+$$
+
+Going back to the optimal choices found earlier and again defining the individual wage as $w_i = w$ for workers, $0$ otherwise, we can rewrite everyone's disposable income as:
+
+$$
+\begin{aligned}
+m_i
+&=B+D_i+(1-\tau_w)w_i \\
+&=\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi
++(1-\tau_w)w_i.
+\end{aligned}
+$$
+
+Substituting this income into the optimal choices found earlier, we get:
+
+$$
+c_i^*=\bar c+\frac{\beta}{p_c}\left(m_i-p_c\bar c\right),
+\qquad
+x_i^*=\frac{1-\beta}{p_x}\left(m_i-p_c\bar c\right).
+$$
+
+From this we can easily see how optimal consumption depends mainly on $\theta_i$: for the same labor income, a larger ownership share means a higher dividend and higher consumption.
+
+Treating $\pi$, $w$ and $L$ as constants, we get the following partial derivatives:
+
+
+$$
+\frac{\partial m_i}{\partial\gamma}
+=(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),
+$$
+
+$$
+\frac{\partial m_i}{\partial\tau_\pi}
+=\pi\left(\frac{1-\gamma}{N}-\theta_i\right),
+$$
+
+$$
+\frac{\partial m_i}{\partial\tau_w}
+=\frac{wL}{N}-w_i,
+$$
+
+$$
+\frac{\partial m_i}{\partial\theta_i}
+=(1-\tau_\pi)\pi.
+$$
+
+_Moreover,_ multiplying each income derivative by the corresponding spending coefficient gives us the effects on consumption. <br/>For each parameter $a\in\{\gamma,\tau_\pi,\tau_w,\theta_i\}$, keeping prices and preferences unchanged, we have:
+
+$$
+\frac{\partial c_i^*}{\partial a}
+=\frac{\beta}{p_c}\frac{\partial m_i}{\partial a},
+\qquad
+\frac{\partial x_i^*}{\partial a}
+=\frac{1-\beta}{p_x}\frac{\partial m_i}{\partial a}.
+$$
+
+<EconomyChart language="en" />
+
+## <b>Economic inequality, incentives and redistribution</b>
+
+
+_Beyond the individual derivatives,_ the partial derivatives reveal _(some)_ interesting properties:
+- as the State's share $\gamma$ of AI increases, consumption _(of both essential and discretionary goods)_ falls for those who "own" more and vice versa for those with smaller shares.
+<br/>_More generally,_ we can say that an increase in the State's share or in corporate profit taxation transfers income, through UBI, from those with private capital above the median to those who own less, reducing income differences due to AI ownership.
+- with employment, output and prices unchanged, redistribution does not change total income, but it affects the total welfare _(utility)_ it generates.
+- <b>public ownership and profit taxation </b> are two versions of the same instrument. Defining $\rho=\gamma+(1-\gamma)\tau_\pi$ as the share of profits distributed by the State, we can see that, _ceteris paribus,_ different combinations of $\gamma$, $\tau_\pi$ that lead to the same $\rho$ generate the same incomes for citizens.
+- a higher UBI does not necessarily imply greater welfare. If private shares are equally distributed ($h_i=1/N$), increasing public ownership or taxation increases UBI but reduces individual dividends by the same amount.<br/>_Consequently,_ what changes is the channel through which income is received, not how much money remains available.
+- UBI can support training by <b>reducing the financial constraint</b> but, _at the same time,_ <b>reduce its relative return</b> _(and incentive)_ because it reduces the additional utility from work.<br/>Defining disposable income above subsistence as $z_i = m_i^U - p_c \bar c$, the future benefit of high-value-added work, _holding net wages constant,_ decreases as $z_i$ increases and is proportional to
+
+$$
+\ln\left(1 + \frac{(1 - \tau_\omega)\omega}{z_i}\right)
+$$
+
+
+_Moreover,_ given two citizens $i$ and $j$, the income gap and the corresponding consumption gaps are:
+
+$$
+m_i-m_j=(1-\tau_\pi)\pi(\theta_i-\theta_j)+(1-\tau_w)(w_i-w_j),
+$$
+
+$$
+c_i^*-c_j^*=\frac{\beta}{p_c}(m_i-m_j),
+\qquad
+x_i^*-x_j^*=\frac{1-\beta}{p_x}(m_i-m_j).
+$$
+
+
+From this it is clear that the differences are caused by both income and ownership.
+_Consequently,_ in a society where workers are also owners, the two components reinforce each other, leading to <b>greater polarization.</b>
+
+---
+
+## <b>An unrealistic political class</b>
+
+
+From an aggregate perspective, we can also define <b>social welfare</b> as the sum of utilities across the two periods, with equal weight for each individual:
+
+$$
+W=\sum_{i=1}^{N}V_i(s_i)
+=\sum_{i=1}^{N}\left[\ln(m_{i,0}-p_c\bar c)+\delta\ln(m_i-p_c\bar c)\right]+N(1+\delta)C.
+$$
+
+Let's now consider the central government, _assuming it is (implausibly) omniscient about the characteristics of society and individuals' preferences,_ faced with the following optimization problem:
+
+$$
+\max_{\gamma,\tau_\pi,\tau_w\in[0,1]} W,
+$$
+
+
+subject to the public budget and all the other constraints mentioned earlier.
+
+_In an ideal (rather unrealistic) world,_ where politicians and experts know all this and consider the consequences of their policies _(again: increasingly unrealistic),_ with employment and output held constant, they should act in accordance with the following derivatives:
+
+$$
+\frac{\partial W}{\partial\gamma}
+=\delta(1-\tau_\pi)\pi\sum_{i=1}^{N}\left(\frac{1}{m_i-p_c\bar c}\right)\left(\frac{1}{N}-h_i\right),
+$$
+
+$$
+\frac{\partial W}{\partial\tau_\pi}
+=\delta\pi\sum_{i=1}^{N}\left(\frac{1}{m_i-p_c\bar c}\right)\left(\frac{1-\gamma}{N}-\theta_i\right),
+\qquad
+\frac{\partial W}{\partial\tau_w}
+=\delta\sum_{i=1}^{N}\left(\frac{1}{m_i-p_c\bar c}\right)\left(\frac{wL}{N}-w_i\right).
+$$
+
+
+
+<EconomyWelfare language="en" />
+
+## <b>Maybe we should all learn to [...]</b>
+
+
+_As mentioned at the beginning,_ all this remains an entertaining exercise in style and, _given the complexity of the situation and the many parameters at play,_ I am not convinced that everything can be <b>engineered</b> and reduced to a simple optimization problem.
+
+On the contrary, approaching the situation as a<b> design problem,</b> where there are _NO_ assumptions, data known for certain at the outset or linear processes, and proceeding through iterations, mistakes and adaptation to the context, remains in my opinion the most balanced response to _(almost)_ total <b>uncertainty</b>.
+
+_Even so,_ this does not mean that now, at time $t = 0$, we cannot have a strategy or take concrete steps to prepare for <s>the worst</s> tomorrow. <br/>On the contrary, I am convinced that this is the right time to 1) <b>acquire a hedge</b> _(added value!)_ 2) be <b>aware </b> of how society is changing...._but that's another story._
+
+Cheers!
+
+<div align = "center">
+![things AI doesn't do!](/images/blog/prep-food.jpg)
+</div>
+<small><i>Things to do to prepare for the arrival of AI: stretch leavened dough, cook pizzoccheri, make gnocchi al pesto from scratch.</i> </small>
+
+## <b>To learn more</b>
+
+<a href="https://www.anthropic.com/institute/econ-scenarios" target="_blank">What will our economic future look like? - Anthropic</a>
+<br/>
+<a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index</a>
+<br/>
+<a href="https://youtu.be/t5ihk_bNRSk?si=CYCNmnSNL5RKHph5" target="_blank">Does it still make sense to study? - Salvatore Sanfilippo</a>
+<br/>
+<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank">The 2026 AI Index Report - Stanford HAI</a>
+<br/>
+<a href="https://finance.yahoo.com/markets/stocks/articles/elon-musk-promises-spacex-share-170029366.html" target="_blank">Elon Musk Promises a SpaceX Share To Every American Child in 2027 - Yahoo Finance</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=l61dK2gZCk8" target="_blank">AI: a tool or a replacement for humans? - Salvatore Sanfilippo</a>
+<br/>
+<a href="https://www.reddit.com/r/wallstreetbets/comments/1x725yl/accenture_tells_employees_they_can_now_spend_only/" target="_blank">Accenture Tells Employees They Can Now Spend Only &#36;29 on Claude Per Month - Reddit</a>
+<br/>
+<a href="https://giacomomaggiore.com/blog/11-did-ai-get-my-life-worse" target="_blank">How has my life gotten worse since AI came along?</a>
+<br/>
+<a href="https://giacomomaggiore.com/blog/09-my-take-on-ai-2026" target="_blank">Satisfied, convinced and concerned about AI</a>
+<br/>
+<br/>
+---
+
+## <b>Appendix</b>
+
+<b>A1. Agents, training and incomes</b>
+
+The economy comprises $N$ citizens and two periods, $t=0,1$. At $t=0$ each citizen chooses whether to train:
+
+$$
+s_i\in\{0,1\},\qquad
+s_i=\begin{cases}
+1 & \text{if they train},\\
+0 & \text{otherwise}.
+\end{cases}
+$$
+
+The individual cost $\kappa_i>0$ is drawn independently from a normal distribution truncated at zero:
+
+$$
+\kappa_i\sim\mathcal N(\mu_\kappa,\sigma_\kappa^2)\mid\kappa_i>0,
+\qquad \sigma_\kappa>0.
+$$
+
+The distribution of costs is independent of ownership shares and initial incomes. This independence applies to the population before the choice, not necessarily to the group that trains. Denoting the standard normal cumulative distribution function by $\Phi$:
+
+$$
+G(k)=\Pr(\kappa_i\leq k)=
+\begin{cases}
+0 & \text{if } k\leq0,\\
+\displaystyle
+\frac{\Phi\left((k-\mu_\kappa)/\sigma_\kappa\right)
+-\Phi\left(-\mu_\kappa/\sigma_\kappa\right)}
+{1-\Phi\left(-\mu_\kappa/\sigma_\kappa\right)}
+& \text{if } k>0.
+\end{cases}
+$$
+
+Initial transfers $B_0$ and initial dividends $D_{i,0}$ are given. Disposable income at $t=0$ is:
+
+$$
+m_{i,0}=B_0+D_{i,0}-\kappa_i s_i.
+$$
+
+At $t=1$ every trained citizen finds a specialized, non-automatable job and supplies one unit of labor. There is no employment uncertainty. Those who do not train do not work:
+
+$$
+\begin{aligned}
+U:&\quad s_i=0,\qquad m_{i,1}^{U}=B_1+D_{i,1},\\
+E:&\quad s_i=1,\qquad m_{i,1}^{E}=B_1+D_{i,1}+(1-\tau_w)w.
+\end{aligned}
+$$
+
+In general:
+
+$$
+m_{i,1}=B_1+D_{i,1}+(1-\tau_w)w s_i,
+\qquad
+L=\sum_{i=1}^{N}s_i.
+$$
+
+Here $w$ is the gross wage, $\tau_w\in[0,1]$ the labor tax and $L$ the number of employed citizens. Each citizen takes wages, dividends and transfers as given when deciding whether to train. The two budgets are separate: there are no savings or loans between periods.
+
+<b>A2. Preferences and optimal consumption</b>
+
+In each period the agent consumes essential goods $c_i$ and discretionary goods $x_i$. The subsistence threshold $\bar c$ and preferences are shared; prices $p_c,p_x>0$ are the same in both periods. With $0<\beta<1$:
+
+$$
+u(c_i,x_i)=\beta\ln(c_i-\bar c)+(1-\beta)\ln x_i,
+\qquad c_i>\bar c,\quad x_i>0.
+$$
+
+For disposable income $m$, the problem is:
+
+$$
+\max_{c_i,x_i}\ u(c_i,x_i)
+\quad\text{subject to}\quad
+p_cc_i+p_xx_i\leq m.
+$$
+
+The solution requires $m>p_c\bar c$. The Lagrangian and first-order conditions are:
+
+$$
+\mathcal L_i=\beta\ln(c_i-\bar c)+(1-\beta)\ln x_i
++\lambda_i(m-p_cc_i-p_xx_i),
+$$
+
+$$
+\frac{\beta}{c_i-\bar c}=\lambda_i p_c,
+\qquad
+\frac{1-\beta}{x_i}=\lambda_i p_x,
+\qquad
+p_cc_i+p_xx_i=m.
+$$
+
+Utility is increasing, so the entire budget is spent. Setting $z=m-p_c\bar c>0$:
+
+$$
+p_c(c_i-\bar c)+p_xx_i=z,
+\qquad
+p_c(c_i-\bar c)=\frac{\beta}{\lambda_i},
+\qquad
+p_xx_i=\frac{1-\beta}{\lambda_i}.
+$$
+
+Adding them up, $z=1/\lambda_i$. The optimal demands are therefore:
+
+$$
+c_i^*=\bar c+\frac{\beta z}{p_c},
+\qquad
+x_i^*=\frac{(1-\beta)z}{p_x}.
+$$
+
+The indirect utility function is:
+
+$$
+\begin{aligned}
+v(m)
+&=\beta\ln\left(\frac{\beta z}{p_c}\right)
++(1-\beta)\ln\left(\frac{(1-\beta)z}{p_x}\right)\\
+&=\ln(m-p_c\bar c)+C,
+\end{aligned}
+$$
+
+$$
+C=\beta\ln\left(\frac{\beta}{p_c}\right)
++(1-\beta)\ln\left(\frac{1-\beta}{p_x}\right).
+$$
+
+The discount factor is $\delta\in(0,1)$. Utility across the two periods is:
+
+$$
+V_i(s_i)=v(m_{i,0})+\delta v(m_{i,1}).
+$$
+
+<b>A3. Production, ownership and the public budget</b>
+
+Capital/AI $K>0$ is given; there is neither investment nor depreciation. Specialized labor $L$ and capital produce:
+
+$$
+Y=AK^\alpha L^{1-\alpha},
+\qquad A>0,\quad 0<\alpha<1.
+$$
+
+The gross wage equals the marginal productivity of labor:
+
+$$
+w=(1-\alpha)AK^\alpha L^{-\alpha},\qquad L>0.
+$$
+
+The model considers equilibria with $L>0$. For $L=0$, $Y=0$ and the marginal wage is undefined. Total wages and the corporate surplus before taxes are:
+
+$$
+wL=(1-\alpha)AK^\alpha L^{1-\alpha}=(1-\alpha)Y,
+$$
+
+$$
+\begin{aligned}
+\pi&=Y-wL\\
+&=AK^\alpha L^{1-\alpha}-(1-\alpha)AK^\alpha L^{1-\alpha}\\
+&=\alpha AK^\alpha L^{1-\alpha}=\alpha Y>0.
+\end{aligned}
+$$
+
+Capital is owned by shareholders and its return is included in $\pi$: no separate payment $rK$ is added. The surplus is not necessarily an excess economic profit.
+
+The State owns the share $\gamma\in[0,1]$; citizens own the shares $\theta_i\geq0$:
+
+$$
+\sum_{i=1}^{N}\theta_i=1-\gamma.
+$$
+
+To describe proportional changes in private shares when $\gamma$ changes, we set:
+
+$$
+\theta_i=(1-\gamma)h_i,
+\qquad h_i\geq0,\qquad \sum_{i=1}^{N}h_i=1.
+$$
+
+The $h_i$ remain fixed when comparing public shares. At $\gamma=1$ no private ownership remains; the $h_i$ describe the path by which this is reached. The acquisition of public shares is assumed to be costless in the comparison.
+
+With corporate tax $\tau_\pi\in[0,1]$:
+
+$$
+\pi^{net}=(1-\tau_\pi)\pi,
+\qquad
+D_i=\theta_i(1-\tau_\pi)\pi,
+$$
+
+$$
+D^{tot}=\sum_iD_i=(1-\gamma)(1-\tau_\pi)\pi.
+$$
+
+State revenues and UBI, which is equal for everyone, are:
+
+$$
+R=\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL,
+\qquad
+B=\frac{R}{N}.
+$$
+
+All revenues are redistributed; no other public spending is modeled. Defining $w_i=ws_i$, at $t=1$:
+
+$$
+\begin{aligned}
+m_i
+&=B+D_i+(1-\tau_w)w_i\\
+&=\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi+(1-\tau_w)w_i.
+\end{aligned}
+$$
+
+The sum of incomes equals output:
+
+$$
+\begin{aligned}
+\sum_i m_i
+&=R+(1-\gamma)(1-\tau_\pi)\pi+(1-\tau_w)wL\\
+&=\pi+wL=Y.
+\end{aligned}
+$$
+
+<b>A4. Consumption and redistribution at given employment</b>
+
+Setting $z_i=m_i-p_c\bar c>0$, individual demands become:
+
+$$
+\begin{aligned}
+c_i^*
+&=\bar c+\frac{\beta}{p_c}(m_i-p_c\bar c)\\
+&=\bar c+\frac{\beta}{p_c}\left[
+\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi+(1-\tau_w)w_i-p_c\bar c
+\right],
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+x_i^*
+&=\frac{1-\beta}{p_x}(m_i-p_c\bar c)\\
+&=\frac{1-\beta}{p_x}\left[
+\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi+(1-\tau_w)w_i-p_c\bar c
+\right].
+\end{aligned}
+$$
+
+The following derivatives hold $\pi$, $w$, $L$, employment and prices fixed. For $\gamma$, the $h_i$ remain fixed; for $\theta_i$, a change in the individual share is offset by changes in other citizens' shares, with $\gamma$ constant:
+
+$$
+\begin{aligned}
+\frac{\partial m_i}{\partial\gamma}
+&=(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),\\
+\frac{\partial m_i}{\partial\tau_\pi}
+&=\pi\left(\frac{1-\gamma}{N}-\theta_i\right),\\
+\frac{\partial m_i}{\partial\tau_w}
+&=\frac{wL}{N}-w_i,\\
+\frac{\partial m_i}{\partial\theta_i}
+&=(1-\tau_\pi)\pi.
+\end{aligned}
+$$
+
+For $a\in\{\gamma,\tau_\pi,\tau_w,\theta_i\}$ the consumption derivatives are:
+
+$$
+\frac{\partial c_i^*}{\partial a}
+=\frac{\beta}{p_c}\frac{\partial m_i}{\partial a},
+\qquad
+\frac{\partial x_i^*}{\partial a}
+=\frac{1-\beta}{p_x}\frac{\partial m_i}{\partial a}.
+$$
+
+Explicitly:
+
+$$
+\begin{aligned}
+\frac{\partial c_i^*}{\partial\gamma}
+&=\frac{\beta}{p_c}(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),
+&\quad
+\frac{\partial x_i^*}{\partial\gamma}
+&=\frac{1-\beta}{p_x}(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),\\
+\frac{\partial c_i^*}{\partial\tau_\pi}
+&=\frac{\beta\pi}{p_c}\left(\frac{1-\gamma}{N}-\theta_i\right),
+&\quad
+\frac{\partial x_i^*}{\partial\tau_\pi}
+&=\frac{(1-\beta)\pi}{p_x}\left(\frac{1-\gamma}{N}-\theta_i\right),\\
+\frac{\partial c_i^*}{\partial\tau_w}
+&=\frac{\beta}{p_c}\left(\frac{wL}{N}-w_i\right),
+&\quad
+\frac{\partial x_i^*}{\partial\tau_w}
+&=\frac{1-\beta}{p_x}\left(\frac{wL}{N}-w_i\right),\\
+\frac{\partial c_i^*}{\partial\theta_i}
+&=\frac{\beta}{p_c}(1-\tau_\pi)\pi,
+&\quad
+\frac{\partial x_i^*}{\partial\theta_i}
+&=\frac{1-\beta}{p_x}(1-\tau_\pi)\pi.
+\end{aligned}
+$$
+
+For $\gamma<1$, an increase in public ownership or the tax on profits transfers income from those who own more than the average private share to those who own less; the effect is zero for those who own the average share. The effect of $\gamma$ is also zero if $\tau_\pi=1$; the effect of $\tau_\pi$ is zero if $\gamma=1$.
+For $0<L<N$, an increase in $\tau_w$ reduces the income of employed citizens and increases that of unemployed citizens; this conclusion holds with employment and wages fixed, regardless of individual shares.
+
+The share of profits that passes through the State is:
+
+$$
+\rho=\gamma+(1-\gamma)\tau_\pi,
+\qquad 1-\rho=(1-\gamma)(1-\tau_\pi).
+$$
+
+Therefore, holding $\pi$, $w$, $L$ and $h_i$ constant:
+
+$$
+m_i=\frac{\rho\pi+\tau_w wL}{N}
++(1-\rho)h_i\pi+(1-\tau_w)w_i.
+$$
+
+Combinations of $\gamma$ and $\tau_\pi$ with the same $\rho$ produce the same incomes. This result does not include acquisition costs or differences in governance.
+
+For two citizens $i$ and $j$:
+
+$$
+m_i-m_j=(1-\tau_\pi)\pi(\theta_i-\theta_j)
++(1-\tau_w)(w_i-w_j),
+$$
+
+$$
+c_i^*-c_j^*=\frac{\beta}{p_c}(m_i-m_j),
+\qquad
+x_i^*-x_j^*=\frac{1-\beta}{p_x}(m_i-m_j).
+$$
+
+Even with $\tau_w=1$, in the comparison at given employment, ownership can leave differences in income and consumption. These derivatives do not describe the overall effects if training choices change.
+
+<b>A5. Training choice and equilibrium</b>
+
+We define resources above subsistence before training and in the second period when unemployed:
+
+$$
+A_i=B_0+D_{i,0}-p_c\bar c,
+\qquad
+H_i=B+D_i-p_c\bar c,
+\qquad
+\ell=(1-\tau_w)w.
+$$
+
+For $A_i>0$, $0<\kappa_i<A_i$, $H_i>0$ and $\ell\geq0$, the comparison between the two choices is:
+
+$$
+\begin{aligned}
+V_i(1)-V_i(0)
+&=\ln(A_i-\kappa_i)-\ln A_i\\
+&\quad+\delta\left[\ln(H_i+\ell)-\ln H_i\right]\\
+&=\ln\left(1-\frac{\kappa_i}{A_i}\right)
++\delta\ln\left(\frac{H_i+\ell}{H_i}\right).
+\end{aligned}
+$$
+
+Training is feasible only if $A_i-\kappa_i>0$. The comparison also assumes $H_i>0$: if future income when unemployed does not exceed subsistence, the formula does not apply. When both choices are feasible, the agent trains if the preceding difference is non-negative. In the event of indifference, we assume they choose to train. The condition becomes:
+
+$$
+\begin{aligned}
+\ln\left(1-\frac{\kappa_i}{A_i}\right)
+&\geq-\delta\ln\left(\frac{H_i+\ell}{H_i}\right),\\
+1-\frac{\kappa_i}{A_i}
+&\geq\left(\frac{H_i}{H_i+\ell}\right)^\delta,\\
+\kappa_i&\leq\kappa_i^*
+=A_i\left[1-\left(\frac{H_i}{H_i+\ell}\right)^\delta\right].
+\end{aligned}
+$$
+
+For $\ell>0$, $\kappa_i^*<A_i$, so costs within the threshold also satisfy the initial feasibility constraint. For $\ell=0$, $\kappa_i^*=0$ and nobody trains, since $\kappa_i>0$. An increase in $A_i$ makes training easier; holding other variables constant, an increase in $H_i$ reduces its relative benefit.
+
+Labor must be consistent with individual choices:
+
+$$
+L=\sum_{i=1}^{N}\mathbf 1\!\left\{\kappa_i\leq\kappa_i^*(L)\right\}.
+$$
+
+This form requires $A_i>0$ and $H_i>0$ for everyone; other cases require a separate assessment of feasible choices. It is a fixed-point condition: $L$ determines wages, profits, UBI and dividends, which in turn affect the thresholds. In a finite population, the actual costs drawn matter; the sum of indicators cannot automatically be replaced by a sum of probabilities calculated at equilibrium thresholds. The existence and uniqueness of a feasible equilibrium with $L>0$ are not guaranteed.
+
+<b>A6. Welfare and public policy</b>
+
+Welfare sums individual utilities with equal weight:
+
+$$
+\begin{aligned}
+W&=\sum_{i=1}^{N}V_i(s_i)\\
+&=\sum_{i=1}^{N}\left[
+\ln(m_{i,0}-p_c\bar c)
++\delta\ln(m_i-p_c\bar c)
+\right]+N(1+\delta)C.
+\end{aligned}
+$$
+
+The policymaker observes the agents' characteristics, including costs, and chooses a credible policy before training choices are made. Initial transfers and dividends remain given. The problem is:
+
+$$
+\max_{\gamma,\tau_\pi,\tau_w\in[0,1]} W,
+$$
+
+subject to the public budget, the ownership-share constraint, individual choices, equilibrium for $L>0$, $\pi>0$ and feasibility $m_{i,0}>p_c\bar c$, $m_i>p_c\bar c$ for each agent. Wages and profits must correspond to the equilibrium under the chosen policy. If there are multiple equilibria, it is necessary to specify which one occurs. The policy $\tau_w=1$ is not admissible in the set considered, because nobody trains.
+
+To isolate redistribution, we hold $s_i$, $L$, $w$, $\pi$ and prices fixed. Setting:
+
+$$
+q_i=\frac{1}{m_i-p_c\bar c},
+$$
+
+the partial derivatives are:
+
+$$
+\frac{\partial W}{\partial\gamma}
+=\delta(1-\tau_\pi)\pi\sum_{i=1}^{N}q_i\left(\frac{1}{N}-h_i\right),
+$$
+
+$$
+\frac{\partial W}{\partial\tau_\pi}
+=\delta\pi\sum_{i=1}^{N}q_i\left(\frac{1-\gamma}{N}-\theta_i\right),
+\qquad
+\frac{\partial W}{\partial\tau_w}
+=\delta\sum_{i=1}^{N}q_i\left(\frac{wL}{N}-w_i\right).
+$$
+
+The sign depends on who receives and who gives up income: high ownership and high income do not necessarily coincide. The derivatives are local comparisons at fixed employment, not the overall effects of policies. To choose a policy, welfare must be compared across admissible equilibria, taking incentives and output into account. With discrete choices, setting the partial derivatives equal to zero is not enough. Without parameters and realized costs, optimal values cannot be identified; if costs are not observed, a criterion must be specified, for example expected welfare. The existence of a maximum is not guaranteed.
+
+---
+
+_For anyone who made it this far:_ I am aware that the model is 1) imperfect 2) open to improvement 3) whatever else you like... but sometimes I have to remind myself that these articles certainly aren't what pays my rent!

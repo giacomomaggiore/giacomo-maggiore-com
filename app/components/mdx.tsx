@@ -4,6 +4,7 @@ import { highlight } from 'sugar-high'
 import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import katex from 'katex'
+import { EconomyChart, EconomyWelfare } from './EconomyChart'
 
 function Table({ data }) {
   // Safety check for undefined data
@@ -238,7 +239,9 @@ const components = {
   a: CustomLink,
   code: Code,
   Table,
-  Quote
+  Quote,
+  EconomyChart,
+  EconomyWelfare,
 }
 
 interface CustomMDXProps {

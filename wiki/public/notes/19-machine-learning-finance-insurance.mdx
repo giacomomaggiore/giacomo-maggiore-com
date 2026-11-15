@@ -4,7 +4,7 @@ publishedAt: '2026-10-01'
 summary: ''
 ---
 
-The following notes come from the course <b><a href="" target="_blank">Machine Learning in Finance and Insurance</a></b>, taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~patrickc/" target="_blank">Patrick Cheridito</a>, Professor of Mathematics at ETH Zurich and Director of <a href="https://risklab.ethz.ch/" target="_blank">RiskLab Switzerland</a>.
+The following notes come from the course <b><a href="https://people.math.ethz.ch/~patrickc/mlfi/" target="_blank">Machine Learning in Finance and Insurance</a></b>, taught at <a href="https://ethz.ch/en.html" target="_blank">ETH Zurich</a> by <a href="https://people.math.ethz.ch/~patrickc/" target="_blank">Patrick Cheridito</a>, Professor of Mathematics at ETH Zurich and Director of <a href="https://risklab.ethz.ch/" target="_blank">RiskLab Switzerland</a>.
 
 Feel free to reach out to <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">me</a> with any comments, clarifications, or corrections.
 
@@ -1973,7 +1973,7 @@ _If we go back to the optimization problem,_ we notice that the objective wants 
 
 
 
-<b>SMO Algorithm from Platt, 1998</b>
+<b>SMO Algorithm from <a href="https://www.researchgate.net/publication/2624239_Sequential_Minimal_Optimization_A_Fast_Algorithm_for_Training_Support_Vector_Machines" target="_blank">Platt, 1998</a></b>
 
 Note that the following algorithm comes from the paper <a href="https://www.researchgate.net/publication/2624239_Sequential_Minimal_Optimization_A_Fast_Algorithm_for_Training_Support_Vector_Machines" target="_blank">Sequential Minimal Optimization: A Fast Algorithm for Training Support Vector Machines</a>, written by Platt (Google) in 1998. The idea is that, _instead of optimizing for all coefficients $w_1,\ldots,w_m$,_ the algorithm can repeatedly:
 - selects two coefficients
@@ -2633,7 +2633,7 @@ We can use random initialization, but if $\theta_0$ is too small:
 If $\theta_0$ is too big:
 - gradients explode (in the chain rule, we multiply weights that are on average larger than one).
 
-An initializer that works well is the Xavier (Glorot) initialization [Glorot and Bengio, 2010]:
+An initializer that works well is the Xavier (Glorot) initialization [<a href="https://proceedings.mlr.press/v9/glorot10a.html" target="_blank">Glorot and Bengio, 2010</a>]:
 
 $$
 W_{ij}^{(k)} \overset{\mathrm{iid}}{\sim} \mathcal{N}\left(0, \frac{2}{N_{k-1}+N_k}\right),
@@ -2650,7 +2650,7 @@ $$
 
 If $\rho(x) \approx x$ near 0 (e.g. $\rho(x) = \tanh(x)$), then $\mathbb{E}[(a_j^{(k-1)})^2] \approx \operatorname{Var}(\tilde{a}_j^{(k-1)})$. Thus, the variance neither vanishes nor explodes across layers if $\operatorname{Var}(W_{ij}^{(k)}) = 1/N_{k-1}$. The same argument for the backward pass (a sum over the $N_k$ neurons of layer $k$) gives $1/N_k$; Xavier takes a compromise between the two.
 
-ReLU sets about half of the pre-activations to 0, so $\mathbb{E}[(a_j^{(k)})^2] \approx \frac{1}{2}\operatorname{Var}(\tilde{a}_j^{(k)})$. He initialization, $W_{ij}^{(k)} \overset{\mathrm{iid}}{\sim} \mathcal{N}(0,2/N_{k-1})$ [He et al., 2015], compensates with the factor 2.
+ReLU sets about half of the pre-activations to 0, so $\mathbb{E}[(a_j^{(k)})^2] \approx \frac{1}{2}\operatorname{Var}(\tilde{a}_j^{(k)})$. He initialization, $W_{ij}^{(k)} \overset{\mathrm{iid}}{\sim} \mathcal{N}(0,2/N_{k-1})$ [<a href="https://arxiv.org/abs/1502.01852" target="_blank">He et al., 2015</a>], compensates with the factor 2.
 
 Other initializers can also be used (see, e.g., `torch.nn.init` and `tf.keras.initializers`). Typically, one repeats the training for different sampled values of $\theta_0$.
 ---
@@ -2712,7 +2712,7 @@ _Secondly,_ note that <b>training techniques</b> can be regularizers too. _For e
 - <b>dropout</b>: before each gradient step, we set each neuron to zero with probability $q$ _(independently of all others)_, then perform backpropagation as usual. This encourages sparse and redundant representations _(this can be viewed equivalently as training exponentially many neural networks)_.
 
 
-To see this in practice, we now present a dropout method, proposed by Srivastava et al. in 2014, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_1
+To see this in practice, we now present a dropout method, proposed by <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" target="_blank">Srivastava et al. in 2014</a>, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_1
 
 $$
 a^{(k)} \leftarrow \frac{1}{1-q}\,\xi^{(k)} \odot a^{(k)},
@@ -2762,7 +2762,215 @@ print(variance.item(), w.grad)
 
 Note that automatic differentiation is exact up to floating-point errors _(no finite-difference error)_.
 
-## <a id="7"><b>7 Classification and Regression Trees</b></a>
+## <a id="7"><b>7 Deep Learning</b></a>
+
+<b>Convolutional Neural Networks (CNNs)</b>
+
+In this chapter we focus on a type of machine learning that uses <b>artificial neural networks with many layers</b>.
+
+_Recall_ that a neural network learns by receiving input data, producing a prediction, comparing the prediction with the correct answer, and adjusting its internal parameters to reduce the error.
+
+In this way, the layers gradually learn increasingly complex patterns.
+
+_Similarly,_ a <b>convolutional neural network (CNN)</b> is a type of deep-learning model designed especially for images and other data composed on a grid.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-1.png)
+</div>
+
+_Indeed,_ instead of analyzing each data point _(pixel)_ independently, a CNN uses a "filter" that scans across the image to detect patterns _(edges, corners, textures, etc.)_:
+
+In particular, a CNN consists of a layer with three stages _(on the left)_ or a composition of three different layers _(on the right)_. In either case, we have three main components: the <b>convolutional layer</b>, the <b>detector</b>, and the <b>pooling layer</b>.
+
+<b>The Convolutional Layer</b>
+
+The convolutional layer implements a matrix operation known as <b>cross-correlation</b>.
+
+_Indeed,_ let $I \in \mathbb{R}^{n_1 \times n_2}$ and $K \in \mathbb{R}^{m_1 \times m_2}$ be matrices such that $m_1 \le n_1$ and $m_2 \le n_2$.<br/>
+Then their cross-correlation is a matrix, denoted by $I \circledast K$, whose entries are given by
+
+$$
+(I \circledast K)_{i,j}
+:=
+\sum_{m=1}^{m_1}
+\sum_{n=1}^{m_2}
+I_{m+i-1,n+j-1}K_{m,n},
+\qquad
+1 \leq i \leq n_1-m_1+1,\quad
+1 \leq j \leq n_2-m_2+1.
+$$
+
+These are exactly the $(i,j)$ for which the window stays inside $I$, so
+$$
+I \circledast K \in \mathbb{R}^{(n_1-m_1+1)\times(n_2-m_2+1)}.
+$$
+
+_Furthermore,_ $I$ is called the <b>input</b> and $K$ is called the <b>kernel</b> (or <b>filter</b>).
+
+_Note that_ in machine learning, cross-correlation is related to matrix convolution, so the terms are often used as synonyms.
+
+_Intuition:_ $I$ is an image represented by a matrix, and $K$ is a smaller matrix acting as a filter. The kernel slides over the image and, _at each position,_ multiplies the numbers element by element and then adds the results into a sum in the output.
+
+_For example,_ suppose the following:
+
+$$
+I =
+\begin{pmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{pmatrix},
+\qquad
+K =
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix}.
+$$
+
+We then place the kernel on the top-left $2 \times 2$ submatrix and multiply element by element, so we have:
+
+$$
+=(I \circledast K)_{1,1}
+=1(1)+2(0)+4(0)+5(-1)=-4.
+$$
+
+Then, we move the kernel across every position where it fits _(positions $(1,1)$, $(1,2)$, $(2,1)$, and $(2,2)$)_, so we have:
+
+$$
+I \circledast K =
+\begin{pmatrix}
+-4 & -4 \\
+-4 & -4
+\end{pmatrix}.
+$$
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-2.png)
+</div>
+
+
+_As a further example,_ we can consider the following convolution:
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-3.png)
+</div>
+
+_In this case,_ the <a href="https://en.wikipedia.org/wiki/Sobel_operator" target="_blank">Sobel Y kernel</a> takes the difference between the row above and the row below each pixel, so it is able to approximate the vertical derivative and measure vertical intensity changes.
+<br/> The output is large at horizontal edges (back, belly, tail) and has the same shape as the
+input.
+
+In machine learning, kernels are usually <b>square matrices</b> $m \times m$, and we usually treat $m$ as a <b>hyperparameter</b>.
+
+_Therefore,_ if $I$ has shape $(n_1,n_2)$ and $K$ has shape $m \times m$, then the output of the cross-correlation has shape $(n_1-m+1,n_2-m+1)$.
+
+_However,_ to keep the same shape as the input _(as in the example of the dog before)_, we can <b>pad</b> the input with $p$ <b>layers</b> of zeros.
+
+_For example,_ for $I \in \mathbb{R}^{3 \times 3}$ and $p=1$, we have
+
+$$
+\begin{aligned}
+I \mapsto
+\begin{pmatrix}
+0 & 0 & 0 & 0 & 0 \\
+0 & I_{1,1} & I_{1,2} & I_{1,3} & 0 \\
+0 & I_{2,1} & I_{2,2} & I_{2,3} & 0 \\
+0 & I_{3,1} & I_{3,2} & I_{3,3} & 0 \\
+0 & 0 & 0 & 0 & 0
+\end{pmatrix}
+\end{aligned}
+$$
+
+So the padded input has shape $(n_1+2p,n_2+2p)$, and the output has shape
+$$
+(n_1+2p-m+1,n_2+2p-m+1).
+$$
+
+This means that, if $p=(m-1)/2$ with $m$ odd, we can keep the input size unchanged.
+
+Also in this case, we often treat $p$ as a <b>hyperparameter</b>.
+
+_Additionally,_ you can compute convolution with <b>strides</b> of length $s$. The idea is that $s$ specifies how many cells the kernel moves after each computation.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-4.png)
+</div>
+
+For stride $s$, the output has shape
+$$
+\left(
+\left\lfloor\frac{n_1-m}{s}\right\rfloor+1,
+\left\lfloor\frac{n_2-m}{s}\right\rfloor+1
+\right),
+$$
+so the window must stay inside the input and leftover rows and columns are dropped.
+
+_As usual,_ we treat the stride $s$ as a <b>hyperparameter</b>.
+
+_However,_ note that normally convolutional layers consist of more than one kernel ($M>1$ kernels), each with its own set of parameters.
+
+_Therefore,_ if the input $I$ has shape $(n_1,n_2)$ and we have $M$ kernels with the same shape $m \times m$, padding $p$, and stride $s$, then the final output will have shape:
+
+$$
+\left(
+M,
+\left\lfloor\frac{n_1+2p-m}{s}\right\rfloor+1,
+\left\lfloor\frac{n_2+2p-m}{s}\right\rfloor+1
+\right).
+$$
+
+---
+<br/>
+<b>The Detector Layer</b>
+
+The detector layer applies a nonlinear activation function $\rho:\mathbb{R}\to\mathbb{R}$ componentwise, so the output of this layer has the same shape as the input, and the detector layer has _no_ trainable parameters.
+
+---
+<br/>
+<b>The Pooling Layer</b>
+
+The pooling layer slides over a window of shape $(m,m)$, with stride $s$ and padding $p$, over the input and summarizes each window by one number.
+
+We can consider two common types of pooling: <b>max pooling</b> and <b>average pooling</b>.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-4.png)
+</div>
+
+The idea behind pooling is that we can <b>downsample</b>: for example, with $m=s=2$, we can halve $n_1$ and $n_2$, so there are four times fewer values and therefore less computation.
+
+_Furthermore,_ note that pooling is approximately <b>invariant to small shifts</b>, since the maximum of a window often stays the same when a feature moves within the window. What matters is whether a feature is present, not its exact position.
+
+_Therefore,_ the output of the pooling layer is <b>approximately invariant under small translations</b> (this is particularly useful for image-recognition tasks). <br/>
+_Indeed,_ this means that if an object moves slightly within an image, the pooling output often remains similar.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-6.png)
+</div>
+
+---
+<br/>
+<b>Example: Architecture LeNet-5</b>
+
+<a href="https://doi.org/10.1109/5.726791" target="_blank">LeNet-5</a> is one of the earliest convolutional networks, from the paper by LeCun et al. in 1998.
+
+It was trained on the <a href="https://www.yannlecun.com/exdb/mnist/" target="_blank">MNIST dataset</a>, which contains 70,000 pictures of handwritten digits.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-7.png)
+</div>
+
+The model is able to classify input images and understand which digit they represent.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/cnn-8.png)
+</div>
+
+---
+<br/>
+<b>CNNs and Data Priors</b>
 
 ## <a id="8"><b>8 Bagging and Random Forests</b></a>
 
@@ -2773,6 +2981,12 @@ Note that automatic differentiation is exact up to floating-point errors _(no fi
 ## <a id="11"><b>11 Generative Models</b></a>
 
 ---
+
+
+
+
+
+
 
 
 

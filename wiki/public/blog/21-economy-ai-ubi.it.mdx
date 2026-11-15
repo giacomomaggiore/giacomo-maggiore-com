@@ -1,0 +1,751 @@
+---
+title: 'Economia, lavoro e distopie in una società post-AI'
+publishedAt: '2026-11-16'
+summary: ''
+---
+
+
+Prevedere come l'AI cambierà il mondo del lavoro è, _almeno al momento,_ un esercizio di stile abbastanza simpatico e sfidante che resta tuttavia inutile e fine a se stesso... la direzione è tutt'altro che chiara, ci sono troppi rapporti di forza in gioco e le opinioni sono spesso troppo <b>biased</b> dalle esperienze e dal contesto di provenienza _(ciò nonostante,_ da almeno un anno a questa parte, in ogni cena tra amici la conversazione finisce sempre lì....).
+
+Pur non essendo troppo un'AI enthusiast _(devo ancora capire se il net effect sul mondo sia stato positivo o meno)_ mi sono recentemente divertito a immaginare <b>un'economia (distopica)</b> in cui l'AI ha <s>rivoluzionato</s> spazzato via buona parte dei lavori.
+
+In questo scenario, _nonostante non corrisponda alla mia idea di futuro più probabile né tantomeno a ciò che auspico, ma solo a una delle tante soluzioni possibili,_ l'AI ha infatti sostituito la maggior parte dei lavori,<b> automatizzandoli e rendendoli obsoleti.</b> 
+
+Di conseguenza, solo una minoranza della popolazione è occupata in professioni ad <b>alto valore aggiunto</b> in grado di garantire un salario. 
+<br/>_Parallelamente,_ tutte le aziende adoperano pesantemente l'AI e la loro proprietà è distribuita in maniera <b>non uniforme tra cittadini e Stato</b>, che, _tramite le tasse e i profitti delle società partecipate,_ eroga un <b>Universal Basic Income </b> _(da qui in poi: UBI)_ a tutta la popolazione, occupati e non.
+
+
+<div align = "center">
+![Cene no ai!](/images/blog/cena-no-ai.jpg)
+</div>
+<small><i>Rare cene in cui non si parlava di AI: festa nel mezzo della Turchia in famiglia e rifugio a 2000m con amici!</i> </small>
+
+
+## <b>Avrà ancora senso studiare?</b>
+
+
+Consideriamo dunque una società _(volutamente semplificata)_ composta da $N$ persone (agenti) e due periodi, $t = 0,1$.
+
+Al tempo $t = 0$,  ogni agente sceglie se <b>spendere</b> $\kappa_i > 0$ _(costo di formazione non omogeneo per i cittadini)_ e  intraprendere un percorso di <b>formazione "specializzante"</b> _(i.e. che porta valore aggiunto al mondo, che esso sia curare il cancro o stendere la pizza a mano)_, definito da $s_i = 1$ e $0$ altrimenti.
+
+Sempre a $t = 0$, ogni agente riceve l'<b>UBI</b> $B_0$, i <b>dividendi</b> delle sue partecipazioni iniziali $D_{i,0}$ e, _eventualmente,_ sostiene il <b>costo della formazione</b>, disponendo di conseguenza del reddito $m_{i,0}$ definito da
+
+$$
+m_{i,0} = B_0 + D_{i,0} - \kappa_i s_i
+$$
+
+Al tempo $t = 1$, assumendo ottimisticamente che ogni persona che si è formata trovi un impiego, possiamo dividere la cittadinanza di lavoratori _(stipendati)_ e disocuppati _(non-stipendiati)_. 
+
+Di conseguenza, il reddito al tempo $t = 1$, considerando $\omega$ salario individuale e $\tau_\omega$ relativa imposta, è quindi:
+
+$$
+m_{i,1} = B_1 + D_{i,1} + (1 - \tau_\omega)\omega s_i
+$$
+
+Nella società le persone possono consumare beni essenziali in quantità $c_i$ a prezzo $p_c$, associati a $\bar c$ livello minimo di sopravvivenza comune per tutti; e beni discrezionali $x_i$ a prezzo $p_x$.
+<br/>In ciascun periodo, gli agenti hanno <a href="https://en.wikipedia.org/wiki/Stone–Geary_utility_function" target="_blank">preferenze Stone-Geary</a> con utilità marginale decrescente oltre una soglia minima di consumo per sopravvivere _(salute, cibo, housing etc...)_, dettata da $\bar c$.
+
+$$
+u(c_i, x_i) = \beta \ln(c_i - \bar c) + (1-\beta)\ln(x_i)
+$$
+
+A questa funzione associamo una funzione di utilità indiretta $v(m)$, definita come l'utilità massima raggiungibile con reddito $m$. Di conseguenza, essendo l'agente razionale, risolve il seguente problema di ottimizzazione:
+
+$$
+\max_{c_i,x_i} [\beta \ln(c_i - \bar c) + (1 - \beta)\ln(x_i)], \quad \text{s.t. } p_c c_i + p_x x_i \leq m,\quad c_i > \bar c,\quad x_i > 0
+$$
+
+che si traduce nei seguenti consumi ottimali:
+
+$$
+c_i^*=\bar c+\frac{\beta (m - p_c \bar c)}{p_c},
+\qquad
+x_i^*=\frac{(1-\beta)(m - p_c \bar c)}{p_x}.
+$$
+
+Sostituendo nella funzione di utilità $v(m)$ e applicando un fattore di sconto intertemporale $\delta$ in $(0,1)$, consegue che l'agente sceglie se formarsi o meno massimizzando la seguente utilità totale per $t = 0,1$:
+
+$$
+V_i(s_i) = v(m_{i,0}) + \delta v(m_{i,1})
+$$
+
+e, _assumendo sempre ottimisticamente che l'istruzione sia sempre fattibile_, l'agente sceglie di formarsi solo se vale la seguente:
+
+$$
+\underbrace{
+\ln(B_0+D_{i,0}-\kappa_i-p_c\bar c)
+-\ln(B_0+D_{i,0}-p_c\bar c)
+}_{\text{perdita di utilità dovuta alla formazione in } t = 0}
+
+\underbrace{
+\delta\left[
+\ln(m_{i,1}^{E}-p_c\bar c)
+-\ln(m_{i,1}^{U}-p_c\bar c)
+\right]
+}_{\text{guadagno futuro di utilità scontato in} t = 1}
+\geq 0.
+$$
+
+L'idea alla base è semplice: studiare conviene solo se il beneficio futuro compensa il costo economico sostenuto a $t=0$.
+_Inoltre_, si noti che se il reddito iniziale non è sufficiente a sostenere le spese di sopravvivenza _(i.e. se l'UBI o i dividendi non sono sufficientemente alti)_ la formazione non è una scelta fattibile.
+
+Ciò non risolve tuttavia l'incognità più rilevante in tutto il modello: in che settore spendere il costo di formazione $\kappa_i$ e dove trovare del valore aggiunto in un mondo in cui l'AI ha reso obsolete molte professioni.<br/>Pur essendo convinto che ci sarà sempre bisogno, magari in quantità decrescente, di lavoro "intellettuale", sono _ancora più_ convinto che lavori <b>manuali non-monotoni</b> _(spesso associati a beni non discrezionali: cucina, artigianato, cura della persona)_ ritorneranno centrali.
+
+<div align = "center">
+![cose che AI non fa!](/images/blog/cose-ai-non-fa.jpg)
+</div>
+<small><i>Cose che l'AI ancora non fa: la focaccia ligure, stirare le camicie e girare la polenta.</i> </small>
+
+<br/>
+
+
+## <b>Un governo generoso</b>
+
+
+Assumiamo ora che la produzione $Y$ avvenga tramite l'AI (il capitale) $K$ e il lavoro non automatizzabile _(ad alto valore aggiunto)_ $L$, fornito dagli agenti occupati, secondo una funzione di <a href="https://it.wikipedia.org/wiki/Funzione_di_produzione_Cobb-Douglas" target="_blank">Cobb-Douglas:</a>
+
+$$
+Y = F(K,L) = AK^\alpha L^{1-\alpha}, \quad A > 0, K > 0, 0 < \alpha < 1
+$$
+
+Assumiamo anche che il salario lordo sia pari alla produttività marginale ad alto valore aggiunto, così da avere:
+
+$$
+w = \frac{\partial Y}{\partial L} = (1 - \alpha)AK^\alpha L^{-\alpha}, \quad L > 0
+$$
+
+_Di conseguenza_, il salario dipende dall'occupazione e questo ci porta a considerare situazioni in cui $L > 0$ per avere una produzione non nulla, ossia immaginiamo un'economia in cui un minimo di lavoro umano non automatizzabile sia necessario per portare avanti il carro.
+
+Supponiamo che il capitale sia dato e che non vi siano investimenti né deprezzamento _(semplificazione al limite del verosimile se osserviamo i flussi di cassa attuali delle corporates impegnate con l'AI...)_. Definiamo quindi il profitto prima delle imposte e dei dividendi con $\pi$:
+
+$$
+\pi = Y - wL = \alpha A K^\alpha L^{1-\alpha}
+$$
+
+
+Con imposta societaria $\tau_\pi$, il profitto dopo le imposte diventa quindi:
+
+$$
+\pi^{net} = (1 -\tau_\pi) \pi
+$$
+
+_Come accennato prima_, la proprietà dell'AI si divide tra lo Stato, che possiede una quota $\gamma \in [0,1]$, e i cittadini che possiedono quote individuali $\theta_i$, con i seguenti vincoli:
+
+$$
+\sum_i\theta_i=\sum_i(1-\gamma)h_i=(1-\gamma)\sum_i h_i=1-\gamma.
+$$
+
+Dove ogni $h_i$ rappresenta la quota del cittadino $i$ all'interno della proprietà privata. Mantenendo quindi $h_i$ fissi quando cambia $\gamma$, un aumento della quota pubblica riduce quindi proporzionalmente tutte le quote private.
+
+_Di conseguenza,_ il budget del governo centrale $R$ proviene dalle imposte sui profitti, dalle imposte sui salari e dai dividendi della quota statale dell'AI:
+
+$$
+R=\tau_\pi\pi+\underbrace{\gamma(1-\tau_\pi)\pi}_{\text{dividendi allo Stato}}+\underbrace{\tau_w wL}_{\text{imposta totale sui salari}}.
+$$
+
+E, _assumendo che tutte le entrate statali siano redistribuite egualmente sotto forma di UBI_, ogni cittadino, a prescindere che sia lavoratore o meno, riceve dallo Stato:
+
+$$
+B=\frac{R}{N} = \frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}.
+$$
+
+A cui si aggiunge il dividendo $D_i$ _(non omogeneo per ogni cittadino e determinato dalla quota di partecipazione individuale)_ pari a:
+
+$$
+D_i = \theta_i (1 - \tau_\pi)\pi
+$$
+
+Tornando indietro alle scelte ottimali trovate in precedenza e definendo ancora il salario individuale $w_i = w$ per chi lavora, $0$ altrimenti, riscriviamo il reddito disponibile di ognuno come:
+
+$$
+\begin{aligned}
+m_i
+&=B+D_i+(1-\tau_w)w_i \\
+&=\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi
++(1-\tau_w)w_i.
+\end{aligned}
+$$
+
+Sostituendo questo reddito nelle scelte ottimali trovate prima, otteniamo:
+
+$$
+c_i^*=\bar c+\frac{\beta}{p_c}\left(m_i-p_c\bar c\right),
+\qquad
+x_i^*=\frac{1-\beta}{p_x}\left(m_i-p_c\bar c\right).
+$$
+
+Da cui leggiamo facilmente come il consumo ottimo dipenda principalmente da $\theta_i$: a parità di reddito da lavoro, una partecipazione maggiore comporta un dividendo più alto e un consumo più elevato.
+
+Trattando $\pi$, $w$ e $L$ come costanti, abbiamo quindi le seguenti derivate parziali:
+
+
+$$
+\frac{\partial m_i}{\partial\gamma}
+=(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),
+$$
+
+$$
+\frac{\partial m_i}{\partial\tau_\pi}
+=\pi\left(\frac{1-\gamma}{N}-\theta_i\right),
+$$
+
+$$
+\frac{\partial m_i}{\partial\tau_w}
+=\frac{wL}{N}-w_i,
+$$
+
+$$
+\frac{\partial m_i}{\partial\theta_i}
+=(1-\tau_\pi)\pi.
+$$
+
+_Inoltre,_ moltipicando ciascuna derivata del reddito per il relativo coefficiente di spesa, otteniamo gli effetti suoi consumi. <br/>Per ogni parametro  $a\in\{\gamma,\tau_\pi,\tau_w,\theta_i\}$, a prezzi e preferenze invariati abbiamo infatti:
+
+$$
+\frac{\partial c_i^*}{\partial a}
+=\frac{\beta}{p_c}\frac{\partial m_i}{\partial a},
+\qquad
+\frac{\partial x_i^*}{\partial a}
+=\frac{1-\beta}{p_x}\frac{\partial m_i}{\partial a}.
+$$
+
+<EconomyChart />
+
+## <b>Divario economico, incentivi e redistribuzione</b>
+
+
+_Al di là delle singole derivate,_ dalle derivate parziali emergono _(alcune)_ proprietà interessanti:
+- all'aumentare della quota statale $\gamma$ dell'AI, i consumi _(sia per i beni essenziali che discrezionali)_ diminuiscono per chi "possiede" di più e viceversa per chi ha quote minoritarie.
+<br/>_Più in generale,_ possiamo dire che un aumento della quota statale o della tassazione dei profitti aziendali trasferisce reddito, tramite l'UBI, da chi ha capitale privato sopra il valore mediano a chi ne possiede di meno, riducendo le differenze di reddito dovute alla proprietà dell'AI.
+- a occupazione, produzione e prezzi invariati, la redistribuzione non cambia la somma dei redditi, ma influisce sul benessere totale _(utilità)_ che esso genera.
+- <b>proprietà pubblica e tassazione dei profitti </b> sono due versioni dello stesso strumento. Definendo con $\rho=\gamma+(1-\gamma)\tau_\pi$ la quota dei profitti distribuita dallo Stato, si nota che, _ceteris paribus,_ combinazioni differenti di $\gamma$, $\tau_\pi$ che convergono nello stesso $\rho$ generano gli stessi redditi sui cittadini. 
+- un UBI più alto non implica necesseriamente un benessere maggiore. Nel caso in cui le quote private siano egualmente distribuite ($h_i=1/N$), aumentare proprietà pubblica o tassazione aumenta l'UBI ma riduce dello stesso dividendi individuali.<br/>_Di conseguenza,_ cambia il canale attraverso cui arriva il reddito viene percepito, non quanto denaro rimane disponibile.
+- l'UBI può sostenere la formazione <b>riducendo il vincolo economico</b> ma, _allo stesso tempo,_ <b>ridurne il rendimento relativo</b> _(e l'incentivo)_ in quanto riduce l'utilità aggiuntiva del lavoro.<br/>Definendo il reddito disponibile oltre la sussistenza come $z_i = m_i^U - p_c \bar c$, il beneficio futuro ottenuto dal lavoro ad alto valore aggiunto, _a salario netto costante,_ diminuisce all'aumentare di $z_i$ ed è proporzionale a
+
+$$
+\ln\left(1 + \frac{(1 - \tau_\omega)\omega}{z_i}\right)
+$$
+
+
+_Inoltre,_ dati due cittadini $i$ e $j$, il divario di reddito e i relativi divari di consumo sono:
+
+$$
+m_i-m_j=(1-\tau_\pi)\pi(\theta_i-\theta_j)+(1-\tau_w)(w_i-w_j),
+$$
+
+$$
+c_i^*-c_j^*=\frac{\beta}{p_c}(m_i-m_j),
+\qquad
+x_i^*-x_j^*=\frac{1-\beta}{p_x}(m_i-m_j).
+$$
+
+
+Da cui emerge chiaramente che le differenze sono causate sia da reddito che da proprietà.
+_Di conseguenza,_ in una società in cui i lavoratori sono anche i proprietari, le due componenti si rafforzano portando a <b>maggiore polarizzazione.</b>
+
+---
+
+## <b>Una classe politica irrealistica</b>
+
+
+Dal punto di vista aggregato, possiamo inoltre definire il <b>welfare sociale</b> come la somma delle utilità nei due periodi, con egual peso per ciascun individuo:
+
+$$
+W=\sum_{i=1}^{N}V_i(s_i)
+=\sum_{i=1}^{N}\left[\ln(m_{i,0}-p_c\bar c)+\delta\ln(m_i-p_c\bar c)\right]+N(1+\delta)C.
+$$
+
+Consideriamo ora il governo centrale, _assumendolo (inverosimilmente) onnisciente riguardo alle caratteristiche della società e alle preferenze degli individui,_ che si ritrova davanti al seguente problema di ottimizzazione:
+
+$$
+\max_{\gamma,\tau_\pi,\tau_w\in[0,1]} W,
+$$
+
+
+soggetto al bilancio pubblico e a tutti gli altri vincoli menzionati prima.
+
+_In un mondo ideale (poco realistico),_ in cui politici e tecnici sono a conoscenza di tutto ciò e considerano le conseguenze delle loro policy _(again: sempre meno realistico),_ a parità di occupazione e produzione, bisognerebbe agire in concordanza con le seguenti derivate:
+
+$$
+\frac{\partial W}{\partial\gamma}
+=\delta(1-\tau_\pi)\pi\sum_{i=1}^{N}\left(\frac{1}{m_i-p_c\bar c}\right)\left(\frac{1}{N}-h_i\right),
+$$
+
+$$
+\frac{\partial W}{\partial\tau_\pi}
+=\delta\pi\sum_{i=1}^{N}\left(\frac{1}{m_i-p_c\bar c}\right)\left(\frac{1-\gamma}{N}-\theta_i\right),
+\qquad
+\frac{\partial W}{\partial\tau_w}
+=\delta\sum_{i=1}^{N}\left(\frac{1}{m_i-p_c\bar c}\right)\left(\frac{wL}{N}-w_i\right).
+$$
+
+
+
+<EconomyWelfare />
+
+## <b>Forse dovremmo tutti imparare a [...]</b>
+
+
+_Come menzionato in apertura,_ tutto ciò rimane un divertente esercizio di stile e, _data la complessità della situazione e i molteplici parametri in gioco,_ non sono convinto che tutto si possa <b>ingegnerizzare</b> e ridurre a un semplice problema di ottimizzazione.
+
+Al contrario, affrontare la situazione come un<b> problema di design,</b> in cui _NON_ vi sono assunzioni, dati certi in partenza nè tantomeno processi lineari,  e procedere per iterazioni, errori e adattandosi in base al contesto, rimane a mio parere la scelta più equilibrata nei verso dell'<b>incertezza</b> _(quasi)_ totale.
+
+_Ciò nonostante,_ questo non significa che ora, al tempo $t = 0$, non si possa avere una strategia o intraprendere azioni concrete per prepararsi <s>al peggio</s> al domani. <br/>Al contrario, sono convinto che sia il momento giusto per 1) <b>acquisire un hedge</b> _(valore aggiunto!)_ 2) avere <b>coscienza </b> di come la società sta cambiando...._ma questa è un'altra storia._
+
+Cheers!
+
+<div align = "center">
+![cose che AI non fa!](/images/blog/prep-food.jpg)
+</div>
+<small><i>Cose da fare per prepararsi all'avvento dell'AI: stendere i lievitati, cucinare i pizzoccheri, preparare gnocchi al pesto da zero.</i> </small>
+
+## <b>Per saperne di più</b>
+
+<a href="https://www.anthropic.com/institute/econ-scenarios" target="_blank">What will our economic future look like? - Anthropic</a>
+<br/>
+<a href="https://www.anthropic.com/economic-index" target="_blank">Anthropic Economic Index</a>
+<br/>
+<a href="https://youtu.be/t5ihk_bNRSk?si=CYCNmnSNL5RKHph5" target="_blank">Ha ancora senso studiare? - Salvatore Sanfilippo</a>
+<br/>
+<a href="https://hai.stanford.edu/ai-index/2026-ai-index-report" target="_blank">The 2026 AI Index Report - Stanford HAI</a>
+<br/>
+<a href="https://finance.yahoo.com/markets/stocks/articles/elon-musk-promises-spacex-share-170029366.html" target="_blank">Elon Musk Promises a SpaceX Share To Every American Child in 2027 - Yahoo Finance</a>
+<br/>
+<a href="https://www.youtube.com/watch?v=l61dK2gZCk8" target="_blank">AI: strumento o sostituto dell'umano? - Salvatore Sanfilippo</a>
+<br/>
+<a href="https://www.reddit.com/r/wallstreetbets/comments/1x725yl/accenture_tells_employees_they_can_now_spend_only/" target="_blank">Accenture Tells Employees They Can Now Spend Only &#36;29 on Claude Per Month - Reddit</a>
+<br/>
+<a href="https://giacomomaggiore.com/blog/11-did-ai-get-my-life-worse" target="_blank">Com'è peggiorata la mia vita da quando c'è l'AI?</a>
+<br/>
+<a href="https://giacomomaggiore.com/blog/09-my-take-on-ai-2026" target="_blank">Appagato, convinto e preoccupato dall'AI</a>
+<br/>
+<br/>
+---
+
+## <b>Appendice</b>
+
+<b>A1. Agenti, formazione e redditi</b>
+
+L'economia comprende $N$ cittadini e due periodi, $t=0,1$. A $t=0$ ogni cittadino sceglie se formarsi:
+
+$$
+s_i\in\{0,1\},\qquad
+s_i=\begin{cases}
+1 & \text{se si forma},\\
+0 & \text{altrimenti}.
+\end{cases}
+$$
+
+Il costo individuale $\kappa_i>0$ è estratto indipendentemente da una normale troncata a zero:
+
+$$
+\kappa_i\sim\mathcal N(\mu_\kappa,\sigma_\kappa^2)\mid\kappa_i>0,
+\qquad \sigma_\kappa>0.
+$$
+
+La distribuzione dei costi è indipendente dalle quote di proprietà e dai redditi iniziali. Questa indipendenza riguarda la popolazione prima della scelta, non necessariamente il gruppo che si forma. Indicando con $\Phi$ la funzione di ripartizione della normale standard:
+
+$$
+G(k)=\Pr(\kappa_i\leq k)=
+\begin{cases}
+0 & \text{se } k\leq0,\\
+\displaystyle
+\frac{\Phi\left((k-\mu_\kappa)/\sigma_\kappa\right)
+-\Phi\left(-\mu_\kappa/\sigma_\kappa\right)}
+{1-\Phi\left(-\mu_\kappa/\sigma_\kappa\right)}
+& \text{se } k>0.
+\end{cases}
+$$
+
+I trasferimenti iniziali $B_0$ e i dividendi iniziali $D_{i,0}$ sono dati. Il reddito disponibile a $t=0$ è:
+
+$$
+m_{i,0}=B_0+D_{i,0}-\kappa_i s_i.
+$$
+
+A $t=1$ ogni cittadino formato trova un impiego specialistico non automatizzabile e fornisce un'unità di lavoro. Non vi è incertezza occupazionale. Chi non si forma non lavora:
+
+$$
+\begin{aligned}
+U:&\quad s_i=0,\qquad m_{i,1}^{U}=B_1+D_{i,1},\\
+E:&\quad s_i=1,\qquad m_{i,1}^{E}=B_1+D_{i,1}+(1-\tau_w)w.
+\end{aligned}
+$$
+
+In generale:
+
+$$
+m_{i,1}=B_1+D_{i,1}+(1-\tau_w)w s_i,
+\qquad
+L=\sum_{i=1}^{N}s_i.
+$$
+
+Qui $w$ è il salario lordo, $\tau_w\in[0,1]$ l'imposta sul lavoro e $L$ il numero di occupati. Ogni cittadino considera dati salario, dividendi e trasferimenti quando decide se formarsi. I due bilanci sono separati: non sono introdotti risparmio o prestiti tra periodi.
+
+<b>A2. Preferenze e consumi ottimali</b>
+
+In ogni periodo l'agente consuma beni essenziali $c_i$ e discrezionali $x_i$. La soglia di sussistenza $\bar c$ e le preferenze sono comuni; i prezzi $p_c,p_x>0$ sono uguali nei due periodi. Con $0<\beta<1$:
+
+$$
+u(c_i,x_i)=\beta\ln(c_i-\bar c)+(1-\beta)\ln x_i,
+\qquad c_i>\bar c,\quad x_i>0.
+$$
+
+Per un reddito disponibile $m$, il problema è:
+
+$$
+\max_{c_i,x_i}\ u(c_i,x_i)
+\quad\text{soggetto a}\quad
+p_cc_i+p_xx_i\leq m.
+$$
+
+La soluzione richiede $m>p_c\bar c$. La Lagrangiana e le condizioni del primo ordine sono:
+
+$$
+\mathcal L_i=\beta\ln(c_i-\bar c)+(1-\beta)\ln x_i
++\lambda_i(m-p_cc_i-p_xx_i),
+$$
+
+$$
+\frac{\beta}{c_i-\bar c}=\lambda_i p_c,
+\qquad
+\frac{1-\beta}{x_i}=\lambda_i p_x,
+\qquad
+p_cc_i+p_xx_i=m.
+$$
+
+L'utilità è crescente, quindi il bilancio è interamente speso. Ponendo $z=m-p_c\bar c>0$:
+
+$$
+p_c(c_i-\bar c)+p_xx_i=z,
+\qquad
+p_c(c_i-\bar c)=\frac{\beta}{\lambda_i},
+\qquad
+p_xx_i=\frac{1-\beta}{\lambda_i}.
+$$
+
+Sommando, $z=1/\lambda_i$. Le domande ottimali sono dunque:
+
+$$
+c_i^*=\bar c+\frac{\beta z}{p_c},
+\qquad
+x_i^*=\frac{(1-\beta)z}{p_x}.
+$$
+
+La funzione di utilità indiretta è:
+
+$$
+\begin{aligned}
+v(m)
+&=\beta\ln\left(\frac{\beta z}{p_c}\right)
++(1-\beta)\ln\left(\frac{(1-\beta)z}{p_x}\right)\\
+&=\ln(m-p_c\bar c)+C,
+\end{aligned}
+$$
+
+$$
+C=\beta\ln\left(\frac{\beta}{p_c}\right)
++(1-\beta)\ln\left(\frac{1-\beta}{p_x}\right).
+$$
+
+Il fattore di sconto è $\delta\in(0,1)$. L'utilità nei due periodi è:
+
+$$
+V_i(s_i)=v(m_{i,0})+\delta v(m_{i,1}).
+$$
+
+<b>A3. Produzione, proprietà e bilancio pubblico</b>
+
+Il capitale/AI $K>0$ è dato; non vi sono investimenti né deprezzamento. Il lavoro specialistico $L$ e il capitale producono:
+
+$$
+Y=AK^\alpha L^{1-\alpha},
+\qquad A>0,\quad 0<\alpha<1.
+$$
+
+Il salario lordo è uguale alla produttività marginale del lavoro:
+
+$$
+w=(1-\alpha)AK^\alpha L^{-\alpha},\qquad L>0.
+$$
+
+Il modello considera equilibri con $L>0$. Per $L=0$, $Y=0$ e il salario marginale non è definito. Il salario complessivo e il surplus societario prima delle imposte sono:
+
+$$
+wL=(1-\alpha)AK^\alpha L^{1-\alpha}=(1-\alpha)Y,
+$$
+
+$$
+\begin{aligned}
+\pi&=Y-wL\\
+&=AK^\alpha L^{1-\alpha}-(1-\alpha)AK^\alpha L^{1-\alpha}\\
+&=\alpha AK^\alpha L^{1-\alpha}=\alpha Y>0.
+\end{aligned}
+$$
+
+Il capitale è posseduto dagli azionisti e la sua remunerazione è inclusa in $\pi$: non è aggiunto un pagamento separato $rK$. Il surplus non è necessariamente un extraprofitto economico.
+
+Lo Stato possiede la quota $\gamma\in[0,1]$; i cittadini possiedono le quote $\theta_i\geq0$:
+
+$$
+\sum_{i=1}^{N}\theta_i=1-\gamma.
+$$
+
+Per descrivere variazioni proporzionali delle quote private quando cambia $\gamma$, poniamo:
+
+$$
+\theta_i=(1-\gamma)h_i,
+\qquad h_i\geq0,\qquad \sum_{i=1}^{N}h_i=1.
+$$
+
+Gli $h_i$ restano fissi nel confronto tra quote pubbliche. A $\gamma=1$ non resta proprietà privata; gli $h_i$ descrivono il percorso con cui vi si arriva. L'acquisizione delle quote pubbliche è assunta senza costi nel confronto.
+
+Con imposta societaria $\tau_\pi\in[0,1]$:
+
+$$
+\pi^{net}=(1-\tau_\pi)\pi,
+\qquad
+D_i=\theta_i(1-\tau_\pi)\pi,
+$$
+
+$$
+D^{tot}=\sum_iD_i=(1-\gamma)(1-\tau_\pi)\pi.
+$$
+
+Le entrate dello Stato e l'UBI, uguale per tutti, sono:
+
+$$
+R=\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL,
+\qquad
+B=\frac{R}{N}.
+$$
+
+Tutte le entrate sono redistribuite; non si modellano altre spese pubbliche. Definendo $w_i=ws_i$, a $t=1$:
+
+$$
+\begin{aligned}
+m_i
+&=B+D_i+(1-\tau_w)w_i\\
+&=\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi+(1-\tau_w)w_i.
+\end{aligned}
+$$
+
+La somma dei redditi è uguale alla produzione:
+
+$$
+\begin{aligned}
+\sum_i m_i
+&=R+(1-\gamma)(1-\tau_\pi)\pi+(1-\tau_w)wL\\
+&=\pi+wL=Y.
+\end{aligned}
+$$
+
+<b>A4. Consumi e redistribuzione a occupazione data</b>
+
+Ponendo $z_i=m_i-p_c\bar c>0$, le domande individuali diventano:
+
+$$
+\begin{aligned}
+c_i^*
+&=\bar c+\frac{\beta}{p_c}(m_i-p_c\bar c)\\
+&=\bar c+\frac{\beta}{p_c}\left[
+\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi+(1-\tau_w)w_i-p_c\bar c
+\right],
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+x_i^*
+&=\frac{1-\beta}{p_x}(m_i-p_c\bar c)\\
+&=\frac{1-\beta}{p_x}\left[
+\frac{\tau_\pi\pi+\gamma(1-\tau_\pi)\pi+\tau_w wL}{N}
++\theta_i(1-\tau_\pi)\pi+(1-\tau_w)w_i-p_c\bar c
+\right].
+\end{aligned}
+$$
+
+Le seguenti derivate mantengono fissi $\pi$, $w$, $L$, occupazione e prezzi. Per $\gamma$ restano fissi gli $h_i$; per $\theta_i$ una variazione della quota individuale è compensata da variazioni delle quote degli altri cittadini, a $\gamma$ costante:
+
+$$
+\begin{aligned}
+\frac{\partial m_i}{\partial\gamma}
+&=(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),\\
+\frac{\partial m_i}{\partial\tau_\pi}
+&=\pi\left(\frac{1-\gamma}{N}-\theta_i\right),\\
+\frac{\partial m_i}{\partial\tau_w}
+&=\frac{wL}{N}-w_i,\\
+\frac{\partial m_i}{\partial\theta_i}
+&=(1-\tau_\pi)\pi.
+\end{aligned}
+$$
+
+Per $a\in\{\gamma,\tau_\pi,\tau_w,\theta_i\}$ le derivate dei consumi sono:
+
+$$
+\frac{\partial c_i^*}{\partial a}
+=\frac{\beta}{p_c}\frac{\partial m_i}{\partial a},
+\qquad
+\frac{\partial x_i^*}{\partial a}
+=\frac{1-\beta}{p_x}\frac{\partial m_i}{\partial a}.
+$$
+
+Esplicitamente:
+
+$$
+\begin{aligned}
+\frac{\partial c_i^*}{\partial\gamma}
+&=\frac{\beta}{p_c}(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),
+&\quad
+\frac{\partial x_i^*}{\partial\gamma}
+&=\frac{1-\beta}{p_x}(1-\tau_\pi)\pi\left(\frac{1}{N}-h_i\right),\\
+\frac{\partial c_i^*}{\partial\tau_\pi}
+&=\frac{\beta\pi}{p_c}\left(\frac{1-\gamma}{N}-\theta_i\right),
+&\quad
+\frac{\partial x_i^*}{\partial\tau_\pi}
+&=\frac{(1-\beta)\pi}{p_x}\left(\frac{1-\gamma}{N}-\theta_i\right),\\
+\frac{\partial c_i^*}{\partial\tau_w}
+&=\frac{\beta}{p_c}\left(\frac{wL}{N}-w_i\right),
+&\quad
+\frac{\partial x_i^*}{\partial\tau_w}
+&=\frac{1-\beta}{p_x}\left(\frac{wL}{N}-w_i\right),\\
+\frac{\partial c_i^*}{\partial\theta_i}
+&=\frac{\beta}{p_c}(1-\tau_\pi)\pi,
+&\quad
+\frac{\partial x_i^*}{\partial\theta_i}
+&=\frac{1-\beta}{p_x}(1-\tau_\pi)\pi.
+\end{aligned}
+$$
+
+Per $\gamma<1$, un aumento della proprietà pubblica o dell'imposta sui profitti trasferisce reddito da chi possiede più della quota privata media a chi ne possiede meno; l'effetto è nullo per chi possiede la quota media. L'effetto di $\gamma$ è nullo anche se $\tau_\pi=1$; quello di $\tau_\pi$ è nullo se $\gamma=1$. 
+Per $0<L<N$, un aumento di $\tau_w$ riduce il reddito degli occupati e aumenta quello dei non occupati; la conclusione vale a occupazione e salario fissi, indipendentemente dalle quote individuali.
+
+La quota dei profitti che passa attraverso lo Stato è:
+
+$$
+\rho=\gamma+(1-\gamma)\tau_\pi,
+\qquad 1-\rho=(1-\gamma)(1-\tau_\pi).
+$$
+
+Quindi, a parità di $\pi$, $w$, $L$ e $h_i$:
+
+$$
+m_i=\frac{\rho\pi+\tau_w wL}{N}
++(1-\rho)h_i\pi+(1-\tau_w)w_i.
+$$
+
+Combinazioni di $\gamma$ e $\tau_\pi$ con lo stesso $\rho$ producono gli stessi redditi. Questo risultato non include costi di acquisizione o differenze di governance.
+
+Per due cittadini $i$ e $j$:
+
+$$
+m_i-m_j=(1-\tau_\pi)\pi(\theta_i-\theta_j)
++(1-\tau_w)(w_i-w_j),
+$$
+
+$$
+c_i^*-c_j^*=\frac{\beta}{p_c}(m_i-m_j),
+\qquad
+x_i^*-x_j^*=\frac{1-\beta}{p_x}(m_i-m_j).
+$$
+
+Anche con $\tau_w=1$, nel confronto a occupazione data la proprietà può lasciare differenze di reddito e consumo. Queste derivate non descrivono gli effetti complessivi se le scelte di formazione cambiano.
+
+<b>A5. Scelta di formazione ed equilibrio</b>
+
+Definiamo le risorse oltre la sussistenza prima della formazione e nel secondo periodo da non occupato:
+
+$$
+A_i=B_0+D_{i,0}-p_c\bar c,
+\qquad
+H_i=B+D_i-p_c\bar c,
+\qquad
+\ell=(1-\tau_w)w.
+$$
+
+Per $A_i>0$, $0<\kappa_i<A_i$, $H_i>0$ e $\ell\geq0$, il confronto tra le due scelte è:
+
+$$
+\begin{aligned}
+V_i(1)-V_i(0)
+&=\ln(A_i-\kappa_i)-\ln A_i\\
+&\quad+\delta\left[\ln(H_i+\ell)-\ln H_i\right]\\
+&=\ln\left(1-\frac{\kappa_i}{A_i}\right)
++\delta\ln\left(\frac{H_i+\ell}{H_i}\right).
+\end{aligned}
+$$
+
+La formazione è fattibile solo se $A_i-\kappa_i>0$. Il confronto assume anche $H_i>0$: se il reddito futuro da non occupato non supera la sussistenza, la formula non è applicabile. Quando entrambe le scelte sono fattibili, l'agente si forma se il precedente differenziale è non negativo. In caso di indifferenza assumiamo che scelga di formarsi. La condizione diventa:
+
+$$
+\begin{aligned}
+\ln\left(1-\frac{\kappa_i}{A_i}\right)
+&\geq-\delta\ln\left(\frac{H_i+\ell}{H_i}\right),\\
+1-\frac{\kappa_i}{A_i}
+&\geq\left(\frac{H_i}{H_i+\ell}\right)^\delta,\\
+\kappa_i&\leq\kappa_i^*
+=A_i\left[1-\left(\frac{H_i}{H_i+\ell}\right)^\delta\right].
+\end{aligned}
+$$
+
+Per $\ell>0$, $\kappa_i^*<A_i$, quindi i costi entro la soglia rispettano anche il vincolo di fattibilità iniziale. Per $\ell=0$, $\kappa_i^*=0$ e nessuno si forma, poiché $\kappa_i>0$. Un aumento di $A_i$ facilita la formazione; a parità delle altre variabili, un aumento di $H_i$ ne riduce il beneficio relativo.
+
+Il lavoro deve essere coerente con le scelte individuali:
+
+$$
+L=\sum_{i=1}^{N}\mathbf 1\!\left\{\kappa_i\leq\kappa_i^*(L)\right\}.
+$$
+
+Questa forma richiede $A_i>0$ e $H_i>0$ per tutti; gli altri casi richiedono una valutazione separata delle scelte fattibili. È una condizione a punto fisso: $L$ determina salario, profitti, UBI e dividendi, che a loro volta influenzano le soglie. In una popolazione finita contano i costi effettivamente estratti; non si può sostituire automaticamente la somma degli indicatori con una somma di probabilità calcolate alle soglie di equilibrio. Esistenza e unicità di un equilibrio ammissibile con $L>0$ non sono garantite.
+
+<b>A6. Welfare e politica pubblica</b>
+
+Il welfare somma le utilità individuali con eguale peso:
+
+$$
+\begin{aligned}
+W&=\sum_{i=1}^{N}V_i(s_i)\\
+&=\sum_{i=1}^{N}\left[
+\ln(m_{i,0}-p_c\bar c)
++\delta\ln(m_i-p_c\bar c)
+\right]+N(1+\delta)C.
+\end{aligned}
+$$
+
+Il decisore osserva le caratteristiche degli agenti, inclusi i costi, e sceglie una politica credibile prima delle scelte di formazione. Trasferimenti e dividendi iniziali restano dati. Il problema è:
+
+$$
+\max_{\gamma,\tau_\pi,\tau_w\in[0,1]} W,
+$$
+
+soggetto a bilancio pubblico, vincolo sulle quote, scelte individuali, equilibrio per $L>0$, $\pi>0$ e fattibilità $m_{i,0}>p_c\bar c$, $m_i>p_c\bar c$ per ogni agente. Salari e profitti devono corrispondere all'equilibrio della politica scelta. Se vi sono più equilibri, occorre specificare quale si realizza. La politica $\tau_w=1$ non è ammissibile nell'insieme considerato, perché nessuno si forma.
+
+Per isolare la redistribuzione, manteniamo fissi $s_i$, $L$, $w$, $\pi$ e prezzi. Ponendo:
+
+$$
+q_i=\frac{1}{m_i-p_c\bar c},
+$$
+
+le derivate parziali sono:
+
+$$
+\frac{\partial W}{\partial\gamma}
+=\delta(1-\tau_\pi)\pi\sum_{i=1}^{N}q_i\left(\frac{1}{N}-h_i\right),
+$$
+
+$$
+\frac{\partial W}{\partial\tau_\pi}
+=\delta\pi\sum_{i=1}^{N}q_i\left(\frac{1-\gamma}{N}-\theta_i\right),
+\qquad
+\frac{\partial W}{\partial\tau_w}
+=\delta\sum_{i=1}^{N}q_i\left(\frac{wL}{N}-w_i\right).
+$$
+
+Il segno dipende da chi riceve e da chi cede reddito: proprietà elevata e reddito elevato non coincidono necessariamente. Le derivate sono confronti locali a occupazione fissa, non effetti complessivi delle politiche. Per scegliere una politica occorre confrontare il welfare negli equilibri ammissibili, considerando incentivi e produzione. Con scelte discrete non basta porre le derivate parziali uguali a zero. Senza parametri e costi realizzati non si possono individuare valori ottimali; se i costi non sono osservati, occorre specificare un criterio, per esempio il welfare atteso. L'esistenza di un massimo non è garantita.
+
+---
+
+_Per chi fosse arrivato fino a qui:_ sono consapevole che il modello sia 1) imperfetto 2) migliorabile 3) tutto ciò che volete... ma a volte devo ricordarmi che a pagarmi l'affitto non sono certo questi articoli!

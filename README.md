@@ -52,6 +52,8 @@ app/               # pages and components (blog, notes, books, resources, /ask, 
 app/api/           # server endpoints: /api/ask, /api/posthog, /api/newsletter
 ```
 
+The economy and AI article includes a desktop-only interactive distribution chart. Its fixed illustrative scenario and calculations live in `lib/economy-chart.ts`; the MDX component is `app/components/EconomyChart.tsx`.
+
 ---
 
 ## Skills (automated helpers)
