@@ -164,7 +164,7 @@ The Acceptance-Rejection (A-R) algorithm is a method for generating random sampl
 This method can be viewed through a Bayesian lens, where the <b>decision to accept or reject</b> is observed data that updates our belief about whether the sample comes from the target distribution.
 
 We then consider:
-- <b>prior-proposal</b>: the samples drawn from the proposal distribution $Q$ as realizations of $Y$ _(we are proposing that $Y$ might also be a sample from $Q$ after accepting/rejecting)_
+- <b>prior-proposal</b>: the samples drawn from the proposal distribution $Q$ as realizations of $Y$ _(we are proposing that $Y$ might also be a sample from $R$ after accepting/rejecting)_
 - <b>likelihood/acceptance criterion</b>: generate an independent uniform random variable $U \sim U(0,1)$, and accept if:
 
 $$

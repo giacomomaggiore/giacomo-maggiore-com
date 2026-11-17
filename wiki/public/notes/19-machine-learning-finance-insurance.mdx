@@ -1126,7 +1126,7 @@ Furthermore _(and most importantly)_, if a convex function $h : \mathbb{R}^d \to
 
 Furthermore, $x^* \in \mathbb{R}^d$ is a <b>minimizer for a convex function</b> $h: \mathbb{R}^d \to \mathbb{R}$ if and only if $0 \in \partial h(x^*)$.
 
-_Recall that, given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase _(therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)_.
+_Recall that, given a function $h: \mathbb{R}^d \to \mathbb{R}$, the gradient is the vector of all partial derivatives: it tells how much h changes when each coordinate changes and points in the direction of the steepest increase (therefore, $-\nabla h(x)$ points in the direction of the steepest decrease)._
 
 ---
 <br/>
@@ -1766,7 +1766,7 @@ Furthermore, a function $k: \mathcal{X} \times \mathcal{X} \to \mathbb{R}$ is a 
 
 If this function $k$ exists, we call $\Psi: \mathcal{X} \to \mathcal{H}$, given by $\Psi(x) = k(x, \cdot)$, the <b>canonical feature map</b>.
 
-_Intuition: an RKHS is a space of functions where evaluating a function at a point is a <b>well behaved operation</b>, i.e. for each fixed x, f(x) cannot change while the function norms stays norm.<br/> _As a consequence,_ we have the reproducibility property: we can recover a function value at x by taking an inner product with a special function associated with x.
+_Intuition: an RKHS is a space of functions where evaluating a function at a point is a <b>well behaved operation</b>, i.e. for each fixed x, f(x) cannot change while the function norms stays norm._<br/> _As a consequence,_ we have the reproducibility property: we can recover a function value at x by taking an inner product with a special function associated with x.
 
 _So,_ an RKHS is a function space with a norm and inner product that make pointwise evaluation possible through a kernel.
 
@@ -2714,7 +2714,7 @@ _Secondly,_ note that <b>training techniques</b> can be regularizers too. _For e
 - <b>dropout</b>: before each gradient step, we set each neuron to zero with probability $q$ _(independently of all others)_, then perform backpropagation as usual. This encourages sparse and redundant representations _(this can be viewed equivalently as training exponentially many neural networks)_.
 
 
-To see this in practice, we now present a dropout method, proposed by <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" target="_blank">Srivastava et al. in 2014</a>, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_1
+To see this in practice, we now present a dropout method, proposed by <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" target="_blank">Srivastava et al. in 2014</a>, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_
 
 $$
 a^{(k)} \leftarrow \frac{1}{1-q}\,\xi^{(k)} \odot a^{(k)},
@@ -2774,7 +2774,7 @@ _Recall_ that a neural network learns by receiving input data, producing a predi
 
 In this way, the layers gradually learn increasingly complex patterns.
 
-_Similarly,_ a <b>convolutional neural network (CNN)</b> is a type of deep-learning model designed especially for images and other data composed on a grid.
+_Similarly,_ a <b>convolutional neural network (CNN)</b> is a type of deep-learning model designed especially for images and other data arranged on a grid.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/cnn-1.png)
@@ -2833,7 +2833,7 @@ $$
 We then place the kernel on the top-left $2 \times 2$ submatrix and multiply element by element, so we have:
 
 $$
-=(I \circledast K)_{1,1}
+(I \circledast K)_{1,1}
 =1(1)+2(0)+4(0)+5(-1)=-4.
 $$
 
@@ -2974,6 +2974,157 @@ The model is able to classify input images and understand which digit they repre
 <br/>
 <b>CNNs and Data Priors</b>
 
+But... whare are CNNs doing in practicse? _We now provide an example._ 
+
+CPnsider a input impage I and a kerle K:
+
+\[
+I =
+\begin{pmatrix}
+I_{1,1} & I_{1,2} & I_{1,3}\\
+I_{2,1} & I_{2,2} & I_{2,3}\\
+I_{3,1} & I_{3,2} & I_{3,3}
+\end{pmatrix},
+\qquad
+K =
+\begin{pmatrix}
+a & b\\
+c & d
+\end{pmatrix}.
+\]
+
+The convolution I \circledast K is actually a <b>linear tranformation</b> of the flattened input image</B>
+
+\[
+\begin{pmatrix}
+(I\circledast K)_{1,1}\\
+(I\circledast K)_{1,2}\\
+(I\circledast K)_{2,1}\\
+(I\circledast K)_{2,2}
+\end{pmatrix}
+=
+\underbrace{
+\begin{pmatrix}
+a & b & 0 & c & d & 0 & 0 & 0 & 0\\
+0 & a & b & 0 & c & d & 0 & 0 & 0\\
+0 & 0 & 0 & a & b & 0 & c & d & 0\\
+0 & 0 & 0 & 0 & a & b & 0 & c & d
+\end{pmatrix}
+}_{\text{doubly block-Toeplitz matrix}}
+\begin{pmatrix}
+I_{1,1}\\
+I_{1,2}\\
+I_{1,3}\\
+I_{2,1}\\
+I_{2,2}\\
+I_{2,3}\\
+I_{3,1}\\
+I_{3,2}\\
+I_{3,3}
+\end{pmatrix}.
+\]
+
+_NOte that_ most entires of the <b>doublu block Toeplitz matricz/b> are spero (sparity) and non-zero entires are repeated. Indeed, 16 non-zero entries are only 4 parameters a, b, c, d _(parameter sharing, also called tied weights: several entries of a weight matrix are constrained to be the same parameter)_
+
+_In general,_ CNNs work well becasue they explolit structural properties, or <b>data priors</b> of image data. 
+
+---
+<br/>
+<b>CNNs in Finance</b> 
+
+Often <b>one-dimensional convolutions</b> for time series x = (x_1....x_T) with kernel K \in R are used, such that we havr 
+
+(x \circledast K)_t = \sum_n=1^M x_t+n-1 K_n 
+
+and we are able to apply the same <b>local pattern detecotro</b> _(such as an upward trend, sudden change, or oscillation)_ at every time step.
+
+_Furthermore and for example,_ implied volatility sufraces on a (moneyness x maturity) grid can be processed and esimdated with a two-dimensioanl convolution.ss
+
+---
+<br/>
+<b>Recurrent Neural Networks</b> 
+
+The architecture of a Recurrent Neural Netowrk (RNN) is specifically designed to expolit data priots of seqeutnail data (x_1,...x_T):
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/rnn.png)
+</div>
+
+_Indeed,_ an RNN processes a sequence one element at a time while maintaining a hidden state that acts as memory.
+
+At each step it performs:
+
+\begin{cases}
+a_t = W h_t-1 + U x_t + b \\
+h_t = \rho(a_t)\\
+y_t = V h_t + c
+
+where x_t is the input at t, h_t-1 the memoruy, W controls how much past information is brough forward, U maps the current input into the hidder layer, b is thebias, \hro the activation function, h_t the updated memory and y_t the output.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/rnn-2.png)
+</div>
+
+_Mathematically,_ the hidden states of a RNN forma <b>dynamical system with stationary transition</b>:
+
+_Indeed,_ a RNN  processes a sequence one element at a time while maintaining a hidden state that acts as memory.
+
+h_t = f_\theta (h_t.1, x_t), \quad \theta = (W, U, b) 
+
+_Notice_ that the same model parameters θ = (W, U, b) are used at each time step t, so learning is shared
+between time steps (parameter sharing).
+
+_Note also_ tht the network uses h as as ummary statsitc of the past sequente of inputs to predict y_t
+
+_Furthermore,_ note that many RNN architectures are possible and input and output can differe in lenghts.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/rnn-3.png)
+</div>
+
+---
+<br/b>
+<b>GARCH: volatility clustering</b>
+
+We now spend some time to deep dive into the GARCH(1,1) model (<b>Generalized AutoRegressive Conditional Heteroskedasticity</b>).
+
+The motivation behind this is that stock returnds are almos iuncorrelated, square returns are also clearly uncorrelated  but the aytocorrelation decays slowly _(i.e. large moves follow large moves, so the size's of tomorrow returns and their variane given the past can be predictable)_, Therefore, we can model cariance \sigma_t^2 as a function of past square returns.
+
+_Specicifally,_ for daily returns r_t we can define:
+
+r_t = \sigma_t z_t, \quad \sigma_t^2 = \omega è \alha r_t-1^2 + \beta \sigma_t-1^2 \quad \omega > 0, \alpha, \beta \\ge 0, \alpha + \beta < 1 
+
+where zt are i.i.d shocks of mean 0 and variance 1 indpendent by r_t _(for example: Standard Normal o Student-t for heavier tailes). 
+
+The idea of the model is that <b>conditional variance</b> (\sifgma_t^2 = Var(r_t | \matchal F_t-1)) changes over time (<b>conditional heteroskedacity</b>) and is drien by past square return (<b>autoregressive</b>. _Lastly,_ <b>generalized</b> comes form the fact that the term \beta \sigma_t-1^2 was added to the ARCH model.
+
+We can see this as a RNN with hidden statee \h_t ? \digma_t^2 and inut x_t =r_t-1^2 with a <bLinear ativutation function</b> and parameters (W, U, B) = (\beta, \alpha, \omega), such that we have 
+
+h_t = W h_t-1 + Ux_t + b \implies \sigma_t^2 = \beta \sigma_t-1^2 + \alpha x_t + \omega 
+
+We can fit it by <b>maximum likelihood</b>, e.g vy minimizaing \sum_t (log \sigma_t^2 + r_t^2 / \sigma_t^2) for a Gaussian z_t.
+
+The recursion needs starting values σ
+2
+0
+(the initial state h0) and r
+2
+0
+: usually the sample variance of the
+returns or the unconditional variance ω/(1 − α − β); σ
+2
+0 can also be estimated as one more parameter.
+Their weights in σ
+2
+t are β
+t
+and αβt−1
+, so for long samples they hardly matter (e.g. 0.9
+50 ≈ 0.005).
+Neural RNNs likewise start from h0 = 0 or a learned h0.
+
+_Note that_ we could replace the linear recutions with a <b>learned non-linear</b> using a neutral RNN.
+
 ## <a id="8"><b>8 Bagging and Random Forests</b></a>
 
 ## <a id="9"><b>9 Gradient Boosted Trees</b></a>
@@ -3029,6 +3180,8 @@ The model is able to classify input images and understand which digit they repre
 
 
 
+
+---
 
 ## <b>Projects </b>
 
@@ -3093,7 +3246,7 @@ ols_numerical_coefficients = pd.DataFrame({
 Recall that in this first run the target variable is `log(SalePrice)` and the features were standardized.
 <br/>_Intuition: given a coefficient b, the price is about 100*b higher when the corresponding feature increases by one standard deviation, ceteris paribus._
 
-We then calculated MSE and $R^2$ for both training and testing data, on both `log(SalePrice` and `SalePrice` scales, resulting in the following:
+We then calculated MSE and $R^2$ for both training and testing data, on both `log(SalePrice)` and `SalePrice` scales, resulting in the following:
 
 | Sample | Target scale | MSE | R² |
 | --- | --- | ---: | ---: |
@@ -3754,3 +3907,541 @@ _Note that_ each network has:
 
 _Furthermore, note also_ that time is not an explicit input to a single shared network; it is represented by which network is selected. Indeed, each network sees only the current price, _not future prices._
 ## <a id="p4"><b>P4 </b></a>
+
+Once we have defined the neural networks, we define a function that, given the trained networks H and the stock price, returns the hedging positions for each time.
+
+```python
+# Implement the hedge_positions function that takes a batch of paths S and returns the corresponding batch of hedging positions.
+# H[j] neural networks for time j
+# S[:, j:j+1] selects the stock price at time j for every path, preserving the shape (B, 1).
+# torch.cat combined N output cols
+def hedge_positions(S):
+    return torch.cat([H[j](S[:, j:j+1]) for j in range(N)], dim=1)
+```
+
+_Then,_ we can implement the payoff function and the Black–Scholes call price as:
+
+$$
+C(t,s)=s\Phi(d_+)-Ke^{-r\tau}\Phi(d_-),
+$$
+
+```python
+# Implement the call payoff with strike K=1.
+def payoff(S_T, K=K):
+    return torch.clamp(S_T - K, min=0.0)
+
+# Implement the Black-Scholes call-price formula (3).
+def bs_call_price(t, s, K=K, T=T, sigma=sigma, r=r):
+    s = torch.as_tensor(s, dtype=torch.float32)
+    tau = T - t
+    d_plus = (torch.log(s / K) + (r + 0.5 * sigma**2) * tau) / (sigma * math.sqrt(tau))
+    d_minus = d_plus - sigma * math.sqrt(tau)
+    Phi = Normal(0.0, 1.0).cdf
+    return Phi(d_plus) * s - Phi(d_minus) * K * math.exp(-r * tau)
+# Compute and fix the initial premium p=C(0,s0); p is not trained.
+p = bs_call_price(0.0, s0).item()
+```
+
+
+_Finally,_ we can train all the 30 networks _jointly_ by minimizing the loss function.
+
+```python
+# Define training hyperparameters
+n_epochs = 100
+lr = 1e-2
+batch_size = 1000
+milestones = [75]
+```
+
+_Note that_ this implies that the network iterates over the training dataset 100 times, with initial learning rate 0.01, using 1000 paths _(100,000 paths $\implies$ each epoch contains 100 batches of 1000 paths)_ per optimization and _finally,_ reducing the learning rate at the specified schedule milestone.
+
+We then select the <b>Adam optimizer</b> that uses gradients and adaptive estimates to update the parameters without using p as a parameter _(that remains of course fixed)_.
+
+```python
+# Instantiate an optimizer (only the network parameters are trained; p is fixed)
+optimizer = torch.optim.Adam(H.parameters(), lr=lr)
+```
+
+
+_Furthermore,_ the schedule changes the learning rate during training. Using gamma = 0.1 the learning rate is multiplied each time by that number at every milestone.
+
+
+```python
+# Instantiate a scheduler to decrease the learning rate during training according to a pre-defined rule
+scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=milestones, gamma=0.1)
+```
+
+_Finally,_ we have the training loop:
+
+```python
+losses = torch.empty(n_epochs)
+training_loop = tqdm(range(n_epochs))
+for epoch in training_loop:
+
+    # At each epoch iterate over batches
+    for S, in loader:
+        # compute training loss (2) on batch
+        dS = S[:, 1:] - S[:, :-1]
+        pnl = p + torch.sum(hedge_positions(S) * dS, dim=1) - payoff(S[:, -1])
+        loss = torch.mean(pnl**2)
+        # compute gradient of training loss wrt parameters
+        loss.backward()
+        # do one gradient step
+        optimizer.step()
+        # reset the computational graph
+
+
+        optimizer.zero_grad()
+
+    # Print loss in the progression bar
+    training_loop.set_postfix(loss = loss.item())
+
+    # decrease learning rate according to scheduler's settings
+    scheduler.step()
+
+    # save training loss for plotting
+    losses[epoch] = loss.item()
+
+plt.plot(torch.log(losses), label='Training loss')
+plt.show()
+```
+
+For every batch S with shape (1000,31), we compute the stock price changes dS with shape (1000,30), and we compute the P&L as
+
+$$
+\text{P\&L}=p+\sum_{j=0}^{N-1} H_j(S_{t_j})\Delta S_j-g(S_T).
+$$
+
+```python
+pnl = p + torch.sum(hedge_positions(S) * dS, dim=1) - payoff(S[:, -1])
+```
+
+Then, we apply our loss function to the loss that is simply the mean square P&L.
+
+$$
+L(\theta)=\frac{1}{B}\sum_{i=1}^{B}(\text{P\&L}_{\theta}^{(i)})^2.
+$$
+
+$$
+\mathbb{E}[(\text{P\&L})^2]=\operatorname{Var}(\text{P\&L})+(\mathbb{E}[\text{P\&L}])^2.
+$$
+
+The loop then proceeds with backpropagation (`loss.backward()`) by computing the gradients $\partial L/\partial \theta$. We then clear the gradients (`optimizer.zero_grad()`) after each optimizer step.
+
+In the following plot, we can clearly see the decrease of the loss over the epochs.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p3.png)
+</div>
+
+_Overall,_ the intuition is that:
+
+_Note that during testing the model does not need gradients, so we can use `torch.no_grad()` to avoid building the computational graph._
+
+- for one batch of 1000 paths:
+    - use all 30 networks on 1000 paths  and compute hedging positions for every path
+    - compute P&L per path
+    - compute the batch MSE
+    - backpropagate and update the parameters of all the 30 networks
+- then, move to the following batch using _already updated networks._
+
+
+Now that we've fitted the network, we evaluate them on unseen paths.
+
+S_test = torch.as_tensor(S_test, dtype=torch.float32)
+
+with torch.no_grad():
+    dS_test = S_test[:, 1:] - S_test[:, :-1]
+    pnl_nn = p + torch.sum(hedge_positions(S_test) * dS_test, dim=1) - payoff(S_test[:, -1])
+
+print(f"Deep hedge P&L on test set: mean = {pnl_nn.mean().item():.2e}, std = {pnl_nn.std().item():.4f}")
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p3-2.png)
+</div>
+
+
+We now spend some time to derive the analytical hedge, i.e. the one obtained with Black–Scholes:
+
+With $\tau = T - t$, $r = 0$, $\varphi = \Phi'$ the standard normal density, and
+$C(t,s) = s\,\Phi(d_+) - K\,\Phi(d_-)$, where $d_+ = \frac{\log(s/K) + \frac12\sigma^2\tau}{\sigma\sqrt{\tau}}$ and $d_- = d_+ - \sigma\sqrt{\tau}$:
+
+\begin{align*}
+H^{\text{BS}}_t(s) & = \frac{\partial C(t, s)}{\partial s} \\
+& = \frac{\partial}{\partial s}\big[s\,\Phi(d_+)\big] - K\,\frac{\partial}{\partial s}\Phi(d_-) \\
+& = \Phi(d_+) + s\,\varphi(d_+)\,\frac{\partial d_+}{\partial s} - K\,\varphi(d_-)\,\frac{\partial d_-}{\partial s} \\
+& = \Phi(d_+) + \frac{1}{s\,\sigma\sqrt{\tau}}\Big(s\,\varphi(d_+) - K\,\varphi(d_-)\Big)
+&& \text{(since } \tfrac{\partial d_+}{\partial s} = \tfrac{\partial d_-}{\partial s} = \tfrac{1}{s\,\sigma\sqrt{\tau}}\text{)} \\
+& = \Phi(d_+)
+\end{align*}
+
+The last step uses $d_- = d_+ - \sigma\sqrt{\tau}$:
+
+\begin{align*}
+\varphi(d_-) & = \frac{1}{\sqrt{2\pi}}\, e^{-\frac12 (d_+ - \sigma\sqrt{\tau})^2}
+= \varphi(d_+)\, e^{\,d_+\sigma\sqrt{\tau} - \frac12\sigma^2\tau}
+= \varphi(d_+)\, e^{\,\log(s/K)}
+= \varphi(d_+)\,\frac{s}{K}.
+\end{align*}
+
+Hence
+$$
+\boxed{\,H^{\text{BS}}_t(s) = \Phi(d_+) = \Phi\!\left(\frac{\log(s/K) + \frac12\sigma^2 (T-t)}{\sigma\sqrt{T-t}}\right)\,}
+$$
+
+That, _in python,_ rewrites as:
+
+```python
+def bs_delta(t, s, K=K, T=T, sigma=sigma):
+    tau = T - t
+    d_plus = (torch.log(s / K) + 0.5 * sigma**2 * tau) / (sigma * torch.sqrt(tau))
+    return Normal(0.0, 1.0).cdf(d_plus)
+```
+
+_The idea is that_ a short call loses value (from the seller's point of view) when the stock rises, since its future obligation increases. Holding shares offsets this exposure, so delta tells us how many shares approximately offset a small change in the option value.
+
+_However,_ note that in Black–Scholes theory, continuous rebalancing permits exact replication under the model assumptions, but we previously rebalanced only 30 times. Between trading dates, delta changes but the held position remains fixed.
+
+_Therefore,_ we now compare the analytical delta with the results we got from the network.
+
+# Rebalance at t_0,...,t_29 using the same test paths, premium and payoff as in 1.e.
+t_grid = torch.arange(N) * T / N                       # t_0, ..., t_29
+positions_bs = bs_delta(t_grid, S_test[:, :-1])        # (10000, 30), column j = H^BS_{t_j}(S_{t_j})
+
+# Compute P&L using the same sign convention as in 1.e.
+pnl_bs = p + torch.sum(positions_bs * dS_test, dim=1) - payoff(S_test[:, -1])
+
+# Plot histograms of both P&L distributions and print their means and standard deviations.
+# [....]
+bins = torch.linspace(min(pnl_nn.min(), pnl_bs.min()).item(), max(pnl_nn.max(), pnl_bs.max()).item(), 100).numpy()
+
+plt.show()
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p3-3.png)
+</div>
+
+We now do one last step forward to understand whether the different strategies produce different stock holdings across time. In particular, we can write the following _(note that we focus on specific dates only)_:
+
+```python
+# Compare the hedge functions at j=0,10,20,29.
+# Make a grid of stock prices s in [0.5,1.5].
+# Create four plots or panels, one per selected date.
+# In each panel, overlay H_j(s) and the analytical delta evaluated on the same price grid.
+# Label the date, both strategies, and axes (stock price and number of shares).
+
+s_grid = torch.linspace(0.5, 1.5, 200).unsqueeze(1)   # (200, 1), input shape for the networks
+S_train = torch.as_tensor(S_train, dtype=torch.float32)
+fig, axes = plt.subplots(2, 2, figsize=(10, 7), sharex=True, sharey=True)
+for ax, j in zip(axes.flat, [0, 10, 20, 29]):
+    t_j = torch.tensor(j * T / N)
+    with torch.no_grad():
+        h_nn = H[j](s_grid).squeeze(1)
+    h_bs = bs_delta(t_j, s_grid.squeeze(1))
+
+    # Range of training prices at t_j (1st-99th percentile): where H_j actually saw data
+    lo, hi = torch.quantile(S_train[:, j], torch.tensor([0.01, 0.99]))
+    ax.axvspan(lo.item(), hi.item(), color="gray", alpha=0.15, label="Training data range")
+
+    ax.plot(s_grid.squeeze(1), h_bs, "r-", label="Analytical delta $H^{BS}_{t_j}(s)$")
+    ax.plot(s_grid.squeeze(1), h_nn, "b--", label="Deep hedge $H_j(s)$")
+    ax.set_title(f"j = {j}")
+    ax.set_xlabel("Stock price s")
+    ax.set_ylabel("Number of shares")
+
+axes[0, 0].legend(loc="upper left", fontsize=9)
+plt.tight_layout()
+plt.savefig("output/1g_hedge_comparison.png", dpi=150)
+plt.show()
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p3-4.png)
+</div>
+
+---
+
+<b>P3.2 Deep Hedging with the Heston Model</b>
+
+In the previous exercise, we used a Black–Scholes model with constant volatility. Now we use the <b>Heston Model</b> that includes stochastic volatility.
+
+In particular, the Heston Model can be written as:
+
+$$
+\begin{aligned}
+dS_t &= S_t\sqrt{V_t}\,dW_t^S,\\
+dV_t &= a(b-V_t)\,dt+\sigma\sqrt{V_t}\,dW_t^V,\\
+d\langle W^S,W^V\rangle_t &= \rho\,dt.
+\end{aligned}
+$$
+
+where $\rho$ is the correlation between the stock price and the volatility and, _again,_ we use $r = 0$. $a$ controls how quickly variance comes back to its long-run level $b$, and $\sigma$ is the volatility of variance.
+
+_Note that_ this model is harder to hedge, since with only the stock available for trading and two stochastic Brownian motions, the seller of the option cannot perfectly eliminate both sources of risk. _Therefore,_ instead of expecting perfect replication, we should optimize the risk measure.
+
+_As before,_ we firstly generate the data.
+
+```python
+N = 30
+T = 0.25
+rho = -0.3
+dt = T / N
+s0 = 1
+v0 = 0.5
+
+a = 4
+b = 0.5
+sigma = 1
+```
+
+... the variance
+
+```python
+def simulate_variance(m, rng):
+    V = np.empty((m, N + 1))
+    V[:, 0] = v0
+
+    decay = np.exp(-a * dt)
+    c = sigma**2 / (4 * a) * (1 - decay)
+    degrees_freedom = 4 * a * b / sigma**2
+
+    for j in range(N):
+        lambda_j = decay * V[:, j] / c
+        V[:, j + 1] = c * rng.noncentral_chisquare(
+            degrees_freedom, lambda_j
+        )
+
+    return V
+```
+
+and _finally_ the stock paths:
+
+```python
+def simulate_stock_broadie_kaya(V, rng):
+    m = V.shape[0]
+
+    S = np.empty_like(V)
+    S[:, 0] = s0
+
+    for j in range(N):
+        Z = rng.standard_normal(m)
+
+        log_return = (
+            rho / sigma
+            * (V[:, j + 1] - V[:, j] - a * b * dt)
+            + (a * rho / sigma - 0.5) * V[:, j] * dt
+            + np.sqrt((1 - rho**2) * V[:, j] * dt) * Z
+        )
+
+        S[:, j + 1] = S[:, j] * np.exp(log_return)
+
+    return S
+```
+
+_Note that in the function we used the <b>Simplified Broadie–Kaya Update Rule</b>, which uses the exact variance transition but then approximates the integrated variance using the value at the beginning of each interval. _Therefore,_ the stock also uses an approximation that introduces discretization error.
+
+[Place formula of the Simplified Broadie–Kaya Update Rule.]
+
+_As before,_ we build the network architecture and then initialize one network per trading date, but note that in this case the first layer takes 2 values as inputs, since we are considering both the stock and the variance.
+
+```python
+def make_heston_network():
+    return nn.Sequential(
+        nn.Linear(2, 32), nn.Tanh(),
+        nn.Linear(32, 32), nn.Tanh(),
+        nn.Linear(32, 1),
+    )
+
+networks = nn.ModuleList([
+    make_heston_network() for _ in range(N)
+])
+```
+
+We now define the training loss, but first we define the <b>seller's hedging loss</b> from the payoff at maturity $g(S_T)$ and the gains from the stock $G$ as:
+
+$$
+L = g(S_T) - G
+$$
+
+_Then,_ for the loss variable $L$, the Value at Risk at level $\alpha$ is approximately the $\alpha$-quantile, so we can define the <b>Average Value at Risk</b>, taking into consideration the tail's severity, by writing:
+
+$$
+\operatorname{AVaR}_{\alpha}(L)
+=
+\inf_{w\in\mathbb{R}}
+\left[
+w+\frac{1}{1-\alpha}\mathbb{E}\left[(L-w)^+\right]
+\right].
+$$
+
+where $\alpha$ is the risk level, $w$ is the threshold, and $(L-w)^+$ defines how far the loss exceeds the threshold. _For a continuous distribution,_ the optimal $w$ is an $\alpha$-quantile, and the AVaR is the average loss beyond that quantile _(for example, $\alpha = 0.5$ focuses on the median losses, while $\alpha = 0.9$ focuses on the worst 10% of the losses)_.
+
+_However,_ note that $w$ is a trainable scalar, so the training problem is:
+
+$$
+\inf_{\theta,w}
+\left[
+w+\frac{1}{1-\alpha}
+\mathbb{E}\left[(g(S_T)-G_\theta-w)^+\right]
+\right].
+$$
+
+where $\theta$ represents all neural network parameters. _Therefore,_ while hedging, the model finds a hedging strategy and the appropriate $w$ for the strategy's loss distribution _(and this is exactly equivalent to saying that we also optimize the loss function)_.
+
+We can now implement it with:
+
+```python
+def avar_objective(S, V, networks, w, alpha):
+    if not 0 <= alpha < 1:
+        raise ValueError("alpha must satisfy 0 <= alpha < 1")
+
+    positions = torch.cat([
+        networks[j](torch.stack((S[:, j], V[:, j]), dim=1))
+        for j in range(N)
+    ], dim=1)
+
+    trading_gain = (
+        positions * (S[:, 1:] - S[:, :-1])
+    ).sum(dim=1)
+
+    path_loss = torch.clamp(S[:, -1] - K, min=0.0) - trading_gain
+
+    return w + torch.relu(path_loss - w).mean() / (1 - alpha)
+```
+
+Now, we can test the network for different $\alpha$ as we did before.
+
+```python
+alpha_values = [0.5, 0.9]
+
+K = 1
+T = 0.25
+
+n_epochs = 100
+learning_rate = 0.001
+
+# training dataset
+V_heston_train = simulate_variance(100_000, rng)
+S_heston_train = simulate_stock_broadie_kaya(V_heston_train, rng)
+
+# testing dataset
+V_heston_test = simulate_variance(10_000, rng)
+S_heston_test = simulate_stock_broadie_kaya(V_heston_test, rng)
+
+# convert into tensors
+train_dataset = TensorDataset(
+    torch.as_tensor(S_heston_train, dtype=torch.float32),
+    torch.as_tensor(V_heston_train, dtype=torch.float32),)
+
+# create batches
+train_loader = DataLoader(
+    train_dataset,
+    batch_size=1000,
+    shuffle=True)
+
+models = {}
+
+# consider median and 90th percentile AVaR levels
+for alpha in [0.5, 0.9]:
+    # Create a new set of networks and a new threshold w for each alpha.
+    networks = nn.ModuleList([make_heston_network() for _ in range(N)])
+
+    # Create one trainable threshold shared across all paths.
+    w = nn.Parameter(torch.tensor(0.0))
+
+    # Train the network parameters and threshold together.
+    # w chosen as a parameter to be optimized, not a fixed value (adam)
+    optimizer = torch.optim.Adam([*networks.parameters(), w], lr=learning_rate)
+
+    for epoch in range(n_epochs):
+        total_loss = 0.0
+
+        for S_batch, V_batch in train_loader:
+            # Clear gradients from the previous batch.
+            optimizer.zero_grad()
+
+            # Calculate equation (6) for this batch.
+            loss = avar_objective(S_batch, V_batch, networks, w, alpha)
+
+            # Calculate gradients and update networks and w.
+            loss.backward()
+            optimizer.step()
+
+            # Accumulate a path-weighted epoch average.
+            total_loss += loss.item() * S_batch.shape[0]
+
+        if (epoch + 1) % 10 == 0:
+            average_loss = total_loss / len(train_dataset)
+            # optional printing of training progress
+            #print(f"alpha={alpha}, epoch={epoch + 1}, loss={average_loss:.6f}")
+
+    # Save this model before creating the next one.
+    models[alpha] = {"networks": networks, "w": w}
+
+    # alpha=0.5: p=0.160634
+    # alpha=0.9: p=0.193209
+```
+
+_Note that_ the calculated premiums $p$ are risk-based premiums under the chosen simulation and optimization, not the unique no-arbitrage prices. Also, consider that focusing on more severe losses ($\alpha = 0.9$) leads to a higher risk premium.
+
+We now compare the P&L distributions,
+
+```python
+# Calculate price changes and call payoffs on the shared test paths.
+dS_test = S_test_tensor[:, 1:] - S_test_tensor[:, :-1]
+payoff_test = torch.clamp(S_test_tensor[:, -1] - K, min=0.0)
+
+pnl = {}
+
+with torch.no_grad():
+    for alpha in [0.5, 0.9]:
+        networks = models[alpha]["networks"]
+
+        # Calculate the stock holding at each trading date.
+        positions = torch.cat([
+            networks[j](torch.stack(
+                (S_test_tensor[:, j], V_test_tensor[:, j]), dim=1))
+            for j in range(N)], dim=1)
+
+        # P&L = premium received + trading gains - option payoff.
+        trading_gain = (positions * dS_test).sum(dim=1)
+
+        pnl[alpha] = prices[alpha] + trading_gain - payoff_test
+
+# Use identical bins for both distributions.
+all_pnl = torch.cat([pnl[0.5], pnl[0.9]]).cpu().numpy()
+bins = np.histogram_bin_edges(all_pnl, bins=100)
+
+for alpha in [0.5, 0.9]:
+    plt.hist(
+        pnl[alpha].cpu().numpy(),
+        bins=bins,
+        alpha=0.5,
+        label=f"alpha={alpha}",)
+
+plt.show()
+
+# alpha=0.5: mean=0.022918, std=0.030858
+# alpha=0.9: mean=0.055603, std=0.032524
+```
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/p3-5.png)
+</div>
+
+_We immediately notice_ that the average P&L can be positive. Indeed, for either strategy we have:
+
+$$
+\mathbb{E}[\text{P\&L}]
+=p+\mathbb{E}[G]-\mathbb{E}[g(S_T)].
+$$
+
+if the stock is a martingale under the simulation measure and the strategy doesn't introduce look-ahead bias. _Under those assumptions,_ we have $E[G] = 0$ and therefore:
+
+$$
+\mathbb{E}[\text{P\&L}]
+=p-\mathbb{E}[g(S_T)].
+$$
+
+_Intuition:_  AVaR-based premium can exceed the expected payoff because it also reflects adverse hedging outcomes. In that case, positive average P&L is reasonable.
