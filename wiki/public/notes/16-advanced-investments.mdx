@@ -1472,6 +1472,11 @@ _Therefore_, factor returns are already <b>excess returns</b> and there's no nee
 _For practical applications:_ on French's web page there are historical data and detailed descriptions of many factors! <a href="https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html" target="_blank">Access everything here</a>.
 
 Based on these factors, the authors construct a 3-factor model:
+
+$$
+R^e_{i,t} = \alpha_i + b_i\,\mathrm{MKT}_t + s_i\,\mathrm{SMB}_t + h_i\,\mathrm{HML}_t + \epsilon_{i,t}.
+$$
+
 where:
 - $R^e \equiv R_{i,t} - R_{f,t}$ is the excess return of asset or portfolio $i$,
 - $\mathrm{MKT}_t \equiv R_{M,t} - R_{f,t}$ is the excess return of the market,
@@ -1774,7 +1779,7 @@ The <b>yield curve</b> is a plot of yields of zero-coupon bonds as a function of
 ![Bias variance tradeoff](/images/notes/third-semester/yield-2.png)
 </div>
 
-_Similarly,_ the <b>yield spread</b> (term premium or term spread) represents the <b>slope of the yield curve</b>, _i.e.,_ the difference between long and short yields. If the
+_Similarly,_ the <b>yield spread</b> (term premium or term spread) represents the <b>slope of the yield curve</b>, _i.e.,_ the difference between long and short yields.
 
 During recessions _(in grey in the plot below)_, we usually see a steeper yield curve _(central banks usually cut short-term rates, but the long yield falls less because investors expect the economy to recover and rates to rise again, and, since risk is higher, the term premium is also large)_, while during expansions the curve usually flattens or even inverts _(as the economy grows, inflation rises and the central bank raises the short rate, but long yields rise less since investors expect the tightening to be temporary)_.
 
@@ -1994,6 +1999,10 @@ We can now try to exploit return predictability by considering the following sim
 
 _We recall_ that the EH using yield spreads states that:
 
+$$
+y_t^{(n)} = \frac{1}{n}E_t\left[\sum_{i=0}^{n-1}y_{t+i}^{(1)}\right] + rp_y^{(n)}
+$$
+
 that can be rewritten in the following form:
 
 $$
@@ -2113,7 +2122,7 @@ To take advantage of this, we can consider the following strategy:
 
 We now investigate if there's a <b>common factor</b> that drives expected returns on bonds across different maturities.
 
-Cochrane and Piazzesi, in their <a href="" target="_blank">2005 paper title "" </a>, forecast <b>annual excess returns </b> $rx$ on bonds (2 to 5 years to maturity) using five different forward rates, so they include information from the <b>entire yield curve</b>:
+Cochrane and Piazzesi, in their 2005 paper <a href="https://doi.org/10.1257/0002828053828581" target="_blank">"Bond Risk Premia"</a>, forecast <b>annual excess returns </b> $rx$ on bonds (2 to 5 years to maturity) using five different forward rates, so they include information from the <b>entire yield curve</b>:
 
 $$
 rx_{t+1}^{(n)}
@@ -2170,7 +2179,7 @@ $$
 \gamma' f_t + \varepsilon_{t+1}.
 $$
 
-where γ=[γ γ γ γ γ γ]′ and f =[1y(1)f(2)f(3)f(4)f(5)]′. We then compute the factor as $\gamma' f_t$.
+where $\gamma = (\gamma_0,\gamma_1,\gamma_2,\gamma_3,\gamma_4,\gamma_5)^T$ and $f_t = (1,y_t^{(1)},f_t^{(2)},f_t^{(3)},f_t^{(4)},f_t^{(5)})^T$. We then compute the factor as $\gamma' f_t$.
 
 Then, the excess return on bonds of each maturity has some "loading" on this factor. To understand how much, we simply run the following regression that, _for each maturity,_ estimates $b_n$:
 
@@ -2192,7 +2201,7 @@ _Furthermore,_ note also that the single-factor model <b>predicts stock returns<
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-9.png)
 </div>
 
-_Furthermore,_ Koijen et al., in their 2017 <a rhef="" target="_ " > paper title </a>, find that the <b>common factor </b>(Cochrane–Piazzesi Factor, CP) _(increasing in recessions, similar to the yield spread)_ helps to price the <b>cross-section of stock returns</b>; therefore, the factor is not relevant only for bonds, but it also contains information about <b>discount-rate risk.</b>
+_Furthermore,_ Koijen et al., in their 2017 paper <a href="https://business.columbia.edu/faculty/research/cross-section-and-time-series-stock-and-bond-returns" target="_blank">"The Cross-Section and Time-Series of Stock and Bond Returns"</a>, find that the <b>common factor </b>(Cochrane–Piazzesi Factor, CP) _(increasing in recessions, similar to the yield spread)_ helps to price the <b>cross-section of stock returns</b>; therefore, the factor is not relevant only for bonds, but it also contains information about <b>discount-rate risk.</b>
 Indeed, value stocks are more sensitive to shocks to these factors than growth stocks because their cash flows are more sensitive to the business cycle, suggesting that the value premium reflects <b>compensation for macroeconomic risk</b>.
 
 <div align = "center">
@@ -2339,7 +2348,7 @@ The return in domestic currency of an investment in an asset in foreign currency
 - the return expressed in foreign currency
 - the return of the foreign currency expressed in domestic currency
 
-Denote by R_t,l^é the return of the foreign currency asset measured in foreign currency, in $[t,t+k]$, and r_tlk^* = ln(1 + R_t+,^*) the corresponding continuously compounded return.
+Denote by $R_{t,k}^*$ the return of the foreign currency asset measured in foreign currency, in $[t,t+k]$, and $r_{t,k}^* = \ln(1 + R_{t,k}^*)$ the corresponding continuously compounded return.
 
 Denote by $S_t$ the spot exchange rate expressed as the number of units of domestic currency per unit of foreign currency and $s_t$ its logarithm.
 
@@ -2349,31 +2358,135 @@ Suppose that we take one unit of domestic currency, change it into foreign curre
 
 After $k$ periods, the value of the investment (<b>gross return</b>) measured in <b>domestic currency</b> is:
 
-$$V_{t+k} = 1 + R_{t+k} = \frac{S_{t+k} (1 + R_{t+k}^*)}{S_t} = (1 + R_{t,l}^{FX})(1 + R_{t,k}^*)$$
+$$
+V_{t+k} = 1 + R_{t,k} = \frac{S_{t+k} (1 + R_{t,k}^*)}{S_t} = (1 + R_{t,k}^{FX})(1 + R_{t,k}^*),
+\qquad R_{t,k}^{FX} = \frac{S_{t+k}}{S_t} - 1.
+$$
 
 and the corresponding log return is:
 
-r =s −s+r∗ =rFX+r∗ . 
+$$
+r_{t,k} = s_{t+k} - s_t + r_{t,k}^* = r_{t,k}^{FX} + r_{t,k}^*,
+\qquad r_{t,k}^{FX} = s_{t+k} - s_t.
+$$
 
 If we consider the excess log return compared to the riskless asset:
 
 
-rx _t+k=s_t+k −s_t+ r_tèk^* −i_t+k 
+$$
+rx_{t,k} = s_{t+k} - s_t + r_{t,k}^* - i_{t,k}.
+$$
 
 <b>Covered Interest Rate Parity (CIP)</b>
 
-Assume we are a domestic investor considering investing in a foreign money or bond market. Let I_t,l denote the $k$-period cumulative discrete interest earned on the <b>domestic</b> currency at time $t$ and i_tk = ln(1 + I_t+k) the equivalent continuously compounded interest.
+Assume we are a domestic investor considering investing in a foreign money or bond market. Let $I_{t,k}$ denote the $k$-period cumulative discrete interest earned on the <b>domestic</b> currency at time $t$ and $i_{t,k} = \ln(1 + I_{t,k})$ the equivalent continuously compounded interest.
 
-Let I^*_t+k denote the $k$-period cumulative discrete interest earned on the <b>foreign</b> currency at time $t$ and i_t+k the equivalent continuously compounded interest.
+Let $I^*_{t,k}$ denote the $k$-period cumulative discrete interest earned on the <b>foreign</b> currency at time $t$ and $i^*_{t,k} = \ln(1 + I^*_{t,k})$ the equivalent continuously compounded interest.
 
-Let F_t,k denote the <b>forward foreign exchange rate</b>, _i.e._ the FX rate you can agree to today for a foreign currency transaction with delivery in $k$ periods. _In other words,_ if you sell the foreign currency forward, you will receive F_t,à units of the domestic currency per unit of foreign currency at time $t + k$.
+Let $F_{t,k}$ denote the <b>forward foreign exchange rate</b>, _i.e._ the FX rate you can agree to today for a foreign currency transaction with delivery in $k$ periods. _In other words,_ if you sell the foreign currency forward, you will receive $F_{t,k}$ units of the domestic currency per unit of foreign currency at time $t + k$.
 
-From the no-arbitrage condition, the forward rate must be such that the return on a riskless investment in the domestic currency (1 + I_t,k) is identical to that of a <b>hedged investment</b> in the foreign currency, so we must have
+From the no-arbitrage condition, the forward rate must be such that the return on a riskless investment in the domestic currency $(1 + I_{t,k})$ is identical to that of a <b>hedged investment</b> in the foreign currency, so we must have
 
-`1 + I_t,k = \frac{F_t,k}{S_t} (1 + I^*_t,k) \implies F_t,k = S_t \frac[{I_t,k}{1 + I^*t,k}`
+$$
+1 + I_{t,k} = \frac{F_{t,k}}{S_t}(1 + I^*_{t,k})
+\implies F_{t,k} = S_t\frac{1 + I_{t,k}}{1 + I^*_{t,k}}.
+$$
 
 This result is known as <b>covered interest parity (CIP)</b> and it says that borrowing at home and lending abroad or doing the opposite earns zero return if the FX risk is hedged.
 
-In log form, covered interest parity reads as:
+In log form, with $f_{t,k} = \ln F_{t,k}$, covered interest parity reads as:
 
-f_t,k = s_t + (i_t,k - i^*t,k)
+$$
+f_{t,k} = s_t + (i_{t,k} - i^*_{t,k}) \implies
+f_{t,k} - s_t = i_{t,k} - i^*_{t,k}
+$$
+
+where the second form is called in terms of <b>forward premium/discount</b>. _Note also_ that CIP is a <b>non-arbitrage</b> relation and does not depend on investor preferences.
+
+---
+<br/>
+<b>Uncovered Interest Rate Parity</b>
+
+Consider now the return from an <b>unhedged</b> investment in foreign currency. This can be implemented in two ways:
+- borrow one unit of the domestic currency, change it into the foreign currency, invest abroad for $k$ periods and change the proceeds back to the domestic currency at time $t + k$, so the excess return is:
+
+$$
+R^e_{t,k} = \frac{S_{t+k}}{S_t} (1 + I^*_{t,k}) - (1 + I_{t,k})
+$$
+
+- buy one unit of the foreign currency forward for delivery at time $t + k$ and change it back to the domestic currency at time $t + k$, so the payoff is:
+
+$$
+\pi_{t,k}^F = S_{t+k} - F_{t,k}
+$$
+
+If CIP holds, both payoffs should be proportional to each other:
+
+$$
+\Pi^F_{t,k}
+= S_{t+k} - S_t \frac{1 + I_{t,k}}{1 + I^*_{t,k}}
+= \frac{S_t}{1 + I^*_{t,k}}
+\left(
+\frac{S_{t+k}}{S_t}(1 + I^*_{t,k})
+- (1 + I_{t,k})
+\right)
+= \frac{S_t}{1 + I^*_{t,k}} R^e_{t,k}.
+$$
+
+_Indeed,_ <b>Uncovered Interest Rate Parity (UIP)</b> states that the expected return from an investment in foreign currency should be the same as that of an investment in domestic currency – on average, the FX move should offset the interest rate differential.
+
+_Or, in other words,_ the expected excess return from an investment in foreign currency should be zero. This writes as:
+
+$$
+1 + I_{t,k}
+= \frac{\mathbb{E}_t[S_{t+k}]}{S_t}
+  \left(1 + I^*_{t,k}\right).
+$$
+
+_This implies_, together with CIP, that $F_{t,k} = \mathbb{E}_t[S_{t+k}]$: the forward rate is an <b>unbiased predictor</b> of the future spot rate.
+
+Using $s_{t,k}^E = \ln(\mathbb{E}_t[S_{t+k}])$, UIP can be written in logs:
+
+$$
+s_{t,k}^E - s_t = i_{t,k} - i_{t,k}^*.
+$$
+
+_(Again: recall that $S_t$ is the spot exchange rate in domestic currency and $i_{t,k}$ is the cumulative interest rate on the domestic currency over $k$ periods.)_
+
+_However,_ note that UIP is <b>not an arbitrage relation</b> since its condition is based on equilibrium reasoning that may or may not hold. _Indeed,_ there are actually two statements in UIP:
+- there's no risk premium from holding the foreign currency _(since appreciation/depreciation offsets the interest rate differential)_
+- currency excess returns are unpredictable
+<br/>
+---
+<br/>
+<b>Currency Risk Premia</b>
+Recall that the excess log return from an unhedged money market investment in the foreign currency consists of two components:
+- the forex return
+- the interest rate differential between the two currencies
+
+$$
+rx_{t,k}
+= \underbrace{(s_{t+k} - s_t)}_{\text{Forex return}}
++ \underbrace{(i^*_{t,k} - i_{t,k})}_{\text{Interest rate differential}}.
+$$
+
+and under a log-return approximation to UIP, the first component offsets the other and so the average return should not be _statistically_ different from zero.
+
+_However,_ empirically this is not the case. Over the period 1983-2009, G10 currencies with the highest yield earned the highest excess returns against USD.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/uip.png)
+</div>
+
+_Indeed,_ note that even if differences are small, there was no depreciation of high-yielding currencies but a small appreciation.
+
+_In addition to the gain on the interest rate differential, investments in high-yielding currencies earned an extra return from the appreciation, so the <b>currency risk premium</b> is positive _( $\implies$ some compensation for exchange risk when making unhedged investments in high interest rate countries)_ and the returns are <b>negatively skewed</b> _(steady gains for long periods but sudden steep drawdowns happen in bad times)_, suggesting that this is a <b>risk premium rather than a mispricing</b>.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/uip-2.png)
+</div>
+
+_So we can say_ that investing in the currencies based on their relative yields over time improves average returns (<b>carry trade</b>).
+
+---
+<br/>

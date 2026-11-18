@@ -1976,9 +1976,9 @@ _If we go back to the optimization problem,_ we notice that the objective wants 
 <b>SMO Algorithm from <a href="https://www.researchgate.net/publication/2624239_Sequential_Minimal_Optimization_A_Fast_Algorithm_for_Training_Support_Vector_Machines" target="_blank">Platt, 1998</a></b>
 
 Note that the following algorithm comes from the paper <a href="https://www.researchgate.net/publication/2624239_Sequential_Minimal_Optimization_A_Fast_Algorithm_for_Training_Support_Vector_Machines" target="_blank">Sequential Minimal Optimization: A Fast Algorithm for Training Support Vector Machines</a>, written by Platt (Google) in 1998. The idea is that, _instead of optimizing for all coefficients $w_1,\ldots,w_m$,_ the algorithm can repeatedly:
-- selects two coefficients
-- optimizes only over those coefficients while keeping the constraints valid
-- updates the model and repeats until convergence
+- select two coefficients
+- optimize only over those coefficients while keeping the constraints valid
+- update the model and repeat until convergence
 
 This comes from the fact that the dual SVM problem has _many variables_, one for each training point, so solving all of them at once can be very expensive.
 
@@ -2974,11 +2974,11 @@ The model is able to classify input images and understand which digit they repre
 <br/>
 <b>CNNs and Data Priors</b>
 
-But... whare are CNNs doing in practicse? _We now provide an example._ 
+But... what are CNNs doing in practice? _We now provide an example._
 
-CPnsider a input impage I and a kerle K:
+Consider an input image $I$ and a kernel $K$:
 
-\[
+$$
 I =
 \begin{pmatrix}
 I_{1,1} & I_{1,2} & I_{1,3}\\
@@ -2991,11 +2991,11 @@ K =
 a & b\\
 c & d
 \end{pmatrix}.
-\]
+$$
 
-The convolution I \circledast K is actually a <b>linear tranformation</b> of the flattened input image</B>
+The convolution $I \circledast K$ is actually a <b>linear transformation</b> of the flattened input image.
 
-\[
+$$
 \begin{pmatrix}
 (I\circledast K)_{1,1}\\
 (I\circledast K)_{1,2}\\
@@ -3022,29 +3022,31 @@ I_{3,1}\\
 I_{3,2}\\
 I_{3,3}
 \end{pmatrix}.
-\]
+$$
 
-_NOte that_ most entires of the <b>doublu block Toeplitz matricz/b> are spero (sparity) and non-zero entires are repeated. Indeed, 16 non-zero entries are only 4 parameters a, b, c, d _(parameter sharing, also called tied weights: several entries of a weight matrix are constrained to be the same parameter)_
+_Note that_ most entries of the <b>doubly block-Toeplitz matrix</b> are zero (sparsity) and non-zero entries are repeated. Indeed, 16 non-zero entries are only 4 parameters $a, b, c, d$ _(parameter sharing, also called tied weights: several entries of a weight matrix are constrained to be the same parameter)_.
 
-_In general,_ CNNs work well becasue they explolit structural properties, or <b>data priors</b> of image data. 
-
----
-<br/>
-<b>CNNs in Finance</b> 
-
-Often <b>one-dimensional convolutions</b> for time series x = (x_1....x_T) with kernel K \in R are used, such that we havr 
-
-(x \circledast K)_t = \sum_n=1^M x_t+n-1 K_n 
-
-and we are able to apply the same <b>local pattern detecotro</b> _(such as an upward trend, sudden change, or oscillation)_ at every time step.
-
-_Furthermore and for example,_ implied volatility sufraces on a (moneyness x maturity) grid can be processed and esimdated with a two-dimensioanl convolution.ss
+_In general,_ CNNs work well because they exploit structural properties, or <b>data priors</b>, of image data.
 
 ---
 <br/>
-<b>Recurrent Neural Networks</b> 
+<b>CNNs in Finance</b>
 
-The architecture of a Recurrent Neural Netowrk (RNN) is specifically designed to expolit data priots of seqeutnail data (x_1,...x_T):
+Often <b>one-dimensional convolutions</b> for time series $x = (x_1,\ldots,x_T)$ with kernel $K = (K_1,\ldots,K_M) \in \mathbb{R}^M$ are used, such that we have
+
+$$
+(x \circledast K)_t = \sum_{n=1}^M x_{t+n-1} K_n
+$$
+
+and we are able to apply the same <b>local pattern detector</b> _(such as an upward trend, sudden change, or oscillation)_ at every time step.
+
+_Furthermore and for example,_ implied volatility surfaces on a (moneyness x maturity) grid can be processed and estimated with a two-dimensional convolution.
+
+---
+<br/>
+<b>Recurrent Neural Networks</b>
+
+The architecture of a Recurrent Neural Network (RNN) is specifically designed to exploit data priors of sequential data $(x_1,\ldots,x_T)$:
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/rnn.png)
@@ -3054,76 +3056,71 @@ _Indeed,_ an RNN processes a sequence one element at a time while maintaining a 
 
 At each step it performs:
 
+$$
 \begin{cases}
-a_t = W h_t-1 + U x_t + b \\
-h_t = \rho(a_t)\\
-y_t = V h_t + c
+a_t = W h_{t-1} + U x_t + b, \\
+h_t = \rho(a_t), \\
+y_t = V h_t + c.
+\end{cases}
+$$
 
-where x_t is the input at t, h_t-1 the memoruy, W controls how much past information is brough forward, U maps the current input into the hidder layer, b is thebias, \hro the activation function, h_t the updated memory and y_t the output.
+where $x_t$ is the input at $t$, $h_{t-1}$ the memory, $W$ controls how much past information is brought forward, $U$ maps the current input into the hidden layer, $b$ is the bias, $\rho$ the activation function, $h_t$ the updated memory and $y_t$ the output.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/rnn-2.png)
 </div>
 
-_Mathematically,_ the hidden states of a RNN forma <b>dynamical system with stationary transition</b>:
+_Mathematically,_ the hidden states of an RNN form a <b>dynamical system with stationary transition</b>:
 
-_Indeed,_ a RNN  processes a sequence one element at a time while maintaining a hidden state that acts as memory.
+_Indeed,_ an RNN processes a sequence one element at a time while maintaining a hidden state that acts as memory.
 
-h_t = f_\theta (h_t.1, x_t), \quad \theta = (W, U, b) 
+$$
+h_t = f_\theta (h_{t-1}, x_t), \quad \theta = (W, U, b)
+$$
 
-_Notice_ that the same model parameters θ = (W, U, b) are used at each time step t, so learning is shared
+_Notice_ that the same model parameters $\theta = (W, U, b)$ are used at each time step $t$, so learning is shared
 between time steps (parameter sharing).
 
-_Note also_ tht the network uses h as as ummary statsitc of the past sequente of inputs to predict y_t
+_Note also_ that the network uses $h$ as a summary statistic of the past sequence of inputs to predict $y_t$.
 
-_Furthermore,_ note that many RNN architectures are possible and input and output can differe in lenghts.
+_Furthermore,_ note that many RNN architectures are possible and input and output can differ in length.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/rnn-3.png)
 </div>
 
 ---
-<br/b>
+<br/>
 <b>GARCH: volatility clustering</b>
 
 We now spend some time to deep dive into the GARCH(1,1) model (<b>Generalized AutoRegressive Conditional Heteroskedasticity</b>).
 
-The motivation behind this is that stock returnds are almos iuncorrelated, square returns are also clearly uncorrelated  but the aytocorrelation decays slowly _(i.e. large moves follow large moves, so the size's of tomorrow returns and their variane given the past can be predictable)_, Therefore, we can model cariance \sigma_t^2 as a function of past square returns.
+The motivation behind this is that stock returns are often nearly uncorrelated, while squared returns can be autocorrelated and their autocorrelation can decay slowly _(i.e. large moves follow large moves, so the sizes of tomorrow's returns and their variance given the past can be predictable)_. Therefore, we can model variance $\sigma_t^2$ as a function of past squared returns.
 
-_Specicifally,_ for daily returns r_t we can define:
+_Specifically,_ for daily returns $r_t$ we can define:
 
-r_t = \sigma_t z_t, \quad \sigma_t^2 = \omega è \alha r_t-1^2 + \beta \sigma_t-1^2 \quad \omega > 0, \alpha, \beta \\ge 0, \alpha + \beta < 1 
+$$
+r_t = \sigma_t z_t, \quad \sigma_t^2 = \omega + \alpha r_{t-1}^2 + \beta \sigma_{t-1}^2, \quad \omega > 0, \alpha, \beta \geq 0, \alpha + \beta < 1
+$$
 
-where zt are i.i.d shocks of mean 0 and variance 1 indpendent by r_t _(for example: Standard Normal o Student-t for heavier tailes). 
+where $z_t$ are i.i.d. shocks of mean 0 and variance 1, independent of the past information $\mathcal{F}_{t-1}$ _(for example: standard normal or standardized Student-t for heavier tails)_.
 
-The idea of the model is that <b>conditional variance</b> (\sifgma_t^2 = Var(r_t | \matchal F_t-1)) changes over time (<b>conditional heteroskedacity</b>) and is drien by past square return (<b>autoregressive</b>. _Lastly,_ <b>generalized</b> comes form the fact that the term \beta \sigma_t-1^2 was added to the ARCH model.
+The idea of the model is that <b>conditional variance</b> ($\sigma_t^2 = \operatorname{Var}(r_t \mid \mathcal{F}_{t-1})$) changes over time (<b>conditional heteroskedasticity</b>) and is driven by past squared returns (<b>autoregressive</b>). _Lastly,_ <b>generalized</b> comes from the fact that the term $\beta \sigma_{t-1}^2$ was added to the ARCH model.
 
-We can see this as a RNN with hidden statee \h_t ? \digma_t^2 and inut x_t =r_t-1^2 with a <bLinear ativutation function</b> and parameters (W, U, B) = (\beta, \alpha, \omega), such that we have 
+We can see this as an RNN with hidden state $h_t = \sigma_t^2$ and input $x_t = r_{t-1}^2$ with a <b>linear activation function</b> and parameters $(W, U, b) = (\beta, \alpha, \omega)$, such that we have
 
-h_t = W h_t-1 + Ux_t + b \implies \sigma_t^2 = \beta \sigma_t-1^2 + \alpha x_t + \omega 
+$$
+h_t = W h_{t-1} + Ux_t + b \implies \sigma_t^2 = \beta \sigma_{t-1}^2 + \alpha x_t + \omega
+$$
 
-We can fit it by <b>maximum likelihood</b>, e.g vy minimizaing \sum_t (log \sigma_t^2 + r_t^2 / \sigma_t^2) for a Gaussian z_t.
+We can fit it by <b>maximum likelihood</b>, e.g. by minimizing $\sum_t (\log \sigma_t^2 + r_t^2 / \sigma_t^2)$ for a Gaussian $z_t$.
 
-The recursion needs starting values σ
-2
-0
-(the initial state h0) and r
-2
-0
-: usually the sample variance of the
-returns or the unconditional variance ω/(1 − α − β); σ
-2
-0 can also be estimated as one more parameter.
-Their weights in σ
-2
-t are β
-t
-and αβt−1
-, so for long samples they hardly matter (e.g. 0.9
-50 ≈ 0.005).
-Neural RNNs likewise start from h0 = 0 or a learned h0.
+The recursion needs starting values $\sigma_0^2$ (the initial state $h_0$) and $r_0^2$: usually the sample variance of the
+returns or the unconditional variance $\omega/(1 - \alpha - \beta)$; $\sigma_0^2$ can also be estimated as one more parameter.
+Their weights in $\sigma_t^2$ are $\beta^t$ and $\alpha\beta^{t-1}$, so for long samples they hardly matter (e.g. $0.9^{50} \approx 0.005$).
+Neural RNNs likewise start from $h_0 = 0$ or a learned $h_0$.
 
-_Note that_ we could replace the linear recutions with a <b>learned non-linear</b> using a neutral RNN.
+_Note that_ we could replace the linear recursion with a <b>learned nonlinearity</b> using a neural RNN.
 
 ## <a id="8"><b>8 Bagging and Random Forests</b></a>
 
@@ -4046,8 +4043,9 @@ _Note that during testing the model does not need gradients, so we can use `torc
 - then, move to the following batch using _already updated networks._
 
 
-Now that we've fitted the network, we evaluate them on unseen paths.
+Now that we've fitted the networks, we evaluate them on unseen paths.
 
+```python
 S_test = torch.as_tensor(S_test, dtype=torch.float32)
 
 with torch.no_grad():
@@ -4055,6 +4053,7 @@ with torch.no_grad():
     pnl_nn = p + torch.sum(hedge_positions(S_test) * dS_test, dim=1) - payoff(S_test[:, -1])
 
 print(f"Deep hedge P&L on test set: mean = {pnl_nn.mean().item():.2e}, std = {pnl_nn.std().item():.4f}")
+```
 
 
 <div align = "center">
@@ -4067,23 +4066,27 @@ We now spend some time to derive the analytical hedge, i.e. the one obtained wit
 With $\tau = T - t$, $r = 0$, $\varphi = \Phi'$ the standard normal density, and
 $C(t,s) = s\,\Phi(d_+) - K\,\Phi(d_-)$, where $d_+ = \frac{\log(s/K) + \frac12\sigma^2\tau}{\sigma\sqrt{\tau}}$ and $d_- = d_+ - \sigma\sqrt{\tau}$:
 
-\begin{align*}
+$$
+\begin{aligned}
 H^{\text{BS}}_t(s) & = \frac{\partial C(t, s)}{\partial s} \\
 & = \frac{\partial}{\partial s}\big[s\,\Phi(d_+)\big] - K\,\frac{\partial}{\partial s}\Phi(d_-) \\
 & = \Phi(d_+) + s\,\varphi(d_+)\,\frac{\partial d_+}{\partial s} - K\,\varphi(d_-)\,\frac{\partial d_-}{\partial s} \\
 & = \Phi(d_+) + \frac{1}{s\,\sigma\sqrt{\tau}}\Big(s\,\varphi(d_+) - K\,\varphi(d_-)\Big)
 && \text{(since } \tfrac{\partial d_+}{\partial s} = \tfrac{\partial d_-}{\partial s} = \tfrac{1}{s\,\sigma\sqrt{\tau}}\text{)} \\
 & = \Phi(d_+)
-\end{align*}
+\end{aligned}
+$$
 
 The last step uses $d_- = d_+ - \sigma\sqrt{\tau}$:
 
-\begin{align*}
+$$
+\begin{aligned}
 \varphi(d_-) & = \frac{1}{\sqrt{2\pi}}\, e^{-\frac12 (d_+ - \sigma\sqrt{\tau})^2}
 = \varphi(d_+)\, e^{\,d_+\sigma\sqrt{\tau} - \frac12\sigma^2\tau}
 = \varphi(d_+)\, e^{\,\log(s/K)}
 = \varphi(d_+)\,\frac{s}{K}.
-\end{align*}
+\end{aligned}
+$$
 
 Hence
 $$
@@ -4105,6 +4108,7 @@ _However,_ note that in Black–Scholes theory, continuous rebalancing permits e
 
 _Therefore,_ we now compare the analytical delta with the results we got from the network.
 
+```python
 # Rebalance at t_0,...,t_29 using the same test paths, premium and payoff as in 1.e.
 t_grid = torch.arange(N) * T / N                       # t_0, ..., t_29
 positions_bs = bs_delta(t_grid, S_test[:, :-1])        # (10000, 30), column j = H^BS_{t_j}(S_{t_j})
@@ -4117,6 +4121,7 @@ pnl_bs = p + torch.sum(positions_bs * dS_test, dim=1) - payoff(S_test[:, -1])
 bins = torch.linspace(min(pnl_nn.min(), pnl_bs.min()).item(), max(pnl_nn.max(), pnl_bs.max()).item(), 100).numpy()
 
 plt.show()
+```
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/p3-3.png)
@@ -4239,9 +4244,17 @@ def simulate_stock_broadie_kaya(V, rng):
     return S
 ```
 
-_Note that in the function we used the <b>Simplified Broadie–Kaya Update Rule</b>, which uses the exact variance transition but then approximates the integrated variance using the value at the beginning of each interval. _Therefore,_ the stock also uses an approximation that introduces discretization error.
+_Note that_ in the function we used the <b>Simplified Broadie–Kaya Update Rule</b>, which uses the exact variance transition but then approximates the integrated variance using the value at the beginning of each interval. _Therefore,_ the stock also uses an approximation that introduces discretization error.
 
-[Place formula of the Simplified Broadie–Kaya Update Rule.]
+$$
+\begin{aligned}
+\log S_{t_{j+1}} ={}& \log S_{t_j}
++ \frac{\rho}{\sigma}\left(V_{t_{j+1}} - V_{t_j} - ab\,\Delta t\right) \\
+&+ \left(\frac{a\rho}{\sigma} - \frac{1}{2}\right)V_{t_j}\,\Delta t
++ \sqrt{(1-\rho^2)V_{t_j}\,\Delta t}\,Z_j,
+\qquad Z_j \sim \mathcal{N}(0,1).
+\end{aligned}
+$$
 
 _As before,_ we build the network architecture and then initialize one network per trading date, but note that in this case the first layer takes 2 values as inputs, since we are considering both the stock and the variance.
 
