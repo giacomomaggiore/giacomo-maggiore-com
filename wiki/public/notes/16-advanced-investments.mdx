@@ -2636,6 +2636,62 @@ _Furthermore,_ exchange rates are quoted in units of the foreign currency per US
 ![Bias variance tradeoff](/images/notes/third-semester/carry-4.png)
 </div>
 
+
+A [principal component analysis](#10) on the same setting reveals that the <b>two principal components</b> that explain 80% of the variation in returns are the <b>level factor</b> _(all portfolios load approximately equally on it)_ and the <b>slope factor</b> _(portfolio loadings decrease across portfolios)_.
+
+_Based on this,_ the authors construct <b>two candidate currency risk factors</b>:
+- the <b>dollar factor</b>, _i.e._ the average currency excess return (denoted by RX) corresponding _approximately_ to the average portfolio return of a US investor that buys all available foreign currencies in the forward market.
+- the <b>carry factor</b>, _i.e._ the difference between the return on the last portfolio and the first portfolio defined above (denoted by $HML_{FX}$), corresponding _approximately_ to the return on a zero-cost strategy that goes long in the highest interest rate currencies and short in the lowest rate currencies.
+
+_Thus,_ the correlation of the first principal component with RX is 0.99 and the one of the second with $HML_{FX}$ is 0.94.
+
+The risk prices of the two factors can be estimated using a cross-sectional regression of average returns on the factor exposures or the Fama-MacBeth approach. (The constant is assumed to be zero.)
+
+_In particular,_ price estimates are 1.34\$ per year for the dollar factor and 5.50% a year for the carry factor.
+
+Regressing the excess returns of the portfolios on the factors reveals that the alphas of portfolios 2 and 4 are significant at the 5% level, while those of the other portfolios are not.
+
+_Furthermore,_ the joint test that all alphas are zero is insignificant.
+
+_So, as expected,_ the portfolio's exposure to the dollar factor is very similar across all of them and the dollar factor's risk price alone does _NOT_ explain the cross-sectional variation in portfolio returns.
+
 ---
 <br/>
-<b>Principal Component Analysis in Carry Returns</b>
+<b>Carry and Equity Volatility Risk</b>
+
+The carry factor has <b>poor returns in bad times</b>, in particular if we refer to periods of high equity volatility. _Indeed,_ the exposure of the currency portfolio to innovations in volatility is <b>monotonically decreasing</b> _($\implies$ high interest rate currencies have low returns when equity market volatility increases)_, therefore exposure to the carry factor <b>increases exposure to global risk</b>.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-5.png)
+</div>
+
+---
+<br/>
+<b>Carry and FX volatility risk</b>
+
+Menkhoff et al. in their 2012 paper titled " investigated the impact of <b>unexpected global FX volatility</b> on the returns of carry trade strategies.
+
+They define global FX volatility as:
+
+$$
+\sigma_t^{FX} = \frac{1}{T_t}
+\sum_{\tau \in T_t}
+\left[
+\sum_{k \in K_\tau}
+\left(\frac{|r_\tau^k|}{K_\tau}\right)
+\right]
+$$
+
+where $K_\tau$ is the number of available currencies on day $\tau$ of the month $t$, $r_\tau^k$ is the spot foreign exchange return of currency $k$ on that day and $T_t$ is the number of trading days in month $t$.
+
+They measure unexpected volatility shocks using innovations from an AR(1) process of global FX volatility (the AR(1) is estimated over the entire sample).
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-6.png)
+</div>
+
+_The idea (and the findings!)_ say that <b>high interest rate urrencies</b> react <b>negatielu to volatility shocks</b> explaining why they earn a positive premium _(and the opposute applies for low interest rate currencies tha reacts positevely)_
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-7.png)
+</div>
