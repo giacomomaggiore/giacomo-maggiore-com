@@ -126,21 +126,21 @@ export async function sendConfirmationEmail(email: string, confirmUrl: string): 
     subject: 'Please confirm your subscription',
     replyTo: REPLY_TO,
     html: `
-      <p>Hi, thanks for signing up to my newsletter.</p>
-      <p>To start receiving it, please confirm your email address by clicking <a href="${escapeAttr(confirmUrl)}">this link</a>. It works for 48 hours.</p>
+      <p>Ciao! thanks for signing up.</p>
+      <p>To start receiving my newsletter, please confirm your email address by clicking <a href="${escapeAttr(confirmUrl)}">here</a>. It works for 48 hours.</p>
       <p>If you didn't sign up, just ignore this email and nothing will happen. Questions? Reply to this email.</p>
 
-      <p>Best,<br/>Giacomo</p>
+      <p>See you<br/>Giacomo</p>
     `,
     text: [
-      'Hi, thanks for signing up to my newsletter.',
+      'Ciao! thanks for signing up.',
       '',
       'To start receiving it, please confirm your email address by opening this link (it works for 48 hours):',
       confirmUrl,
       '',
-      "If you didn't sign up, just ignore this email and nothing will happen. Questions? Reply to this email.",
+      "If you didn't sign up, just ignore this email. Questions? Reply to this email.",
       '',
-      'Best,',
+      'See you',
       'Giacomo',
     ].join('\n'),
   })
@@ -162,21 +162,21 @@ export async function sendWelcomeEmail(email: string, unsubscribeUrl: string): P
       'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
     },
     html: `
-      <p>Thanks for confirming, you're on the list. I'll only write when there's something new worth sharing, about one email a month.</p>
-      <p>If this landed in Promotions, drag it to Primary so the next ones don't get lost.</p>
+      <p>Ciao! Thanks for confirming. You're on the list. I'll only write when there's something new worth sharing, approx. one email a month.</p>
+      <p>If this landed in promotions, move it to primary so the next ones don't get lost.</p>
       <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${escapeAttr(unsubscribeUrl)}">here</a>.</p>
 
-      <p>Best,<br/>Giacomo</p>
+      <p>See you<br/>Giacomo</p>
     `,
     text: [
-      "Thanks for confirming, you're on the list. I'll only write when there's something new worth sharing, about one email a month.",
+      'Ciao! Thanks for confirming. You\'re on the list. I\'ll only write when there\'s something new worth sharing, approx. one email a month.',
       '',
-      "If this landed in Promotions, drag it to Primary so the next ones don't get lost.",
+      "If this landed in promotions, move it to primary so the next ones don't get lost.",
       '',
       'If you ever change your mind, you can unsubscribe anytime here:',
       unsubscribeUrl,
       '',
-      'Best,',
+      'See you,',
       'Giacomo',
     ].join('\n'),
   })

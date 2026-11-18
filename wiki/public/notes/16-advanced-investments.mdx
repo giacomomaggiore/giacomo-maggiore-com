@@ -1051,7 +1051,7 @@ We can then use this decomposition to get an estimate of the ERP by assessing ea
 <br/>
 <b>Equity Return Predictability</b>
 
-We first recall that timing models are based on predictability, which studies patterns in the return distribution over time to identify sets of variables that forecast the future return distribution. We previously saw that predictability is about finding indicators for which an asset's conditional return distribution differs from its unconditional distribution.
+We first recall that [timing models](#4) are based on predictability, which studies patterns in the return distribution over time to identify sets of variables that forecast the future return distribution. We previously saw that predictability is about finding indicators for which an asset's conditional return distribution differs from its unconditional distribution.
 
 We also saw that, in order to assess whether a variable $x_t$ has predictive ability, we have to:
 - <b>split the sample</b> based on the value of $x_t$, compute statistics of $R_{t+h}$ for the subsamples, and run a test for identical distributions
@@ -1178,7 +1178,7 @@ $$
 = R_{t+1}^{-1}\frac{D_{t+1}}{D_t}\left(1 + \frac{P_{t+1}}{D_{t+1}}\right)
 $$
 
-If we substitute forward one period, $$\frac{P_{t+1}}{D_{t+1}} = R_{t+2}^{-1}\,\frac{D_{t+2}}{D_{t+1}}\left(1 + \frac{P_{t+2}}{D_{t+2}}\right)$$, we have:
+If we substitute forward one period, $\frac{P_{t+1}}{D_{t+1}} = R_{t+2}^{-1}\,\frac{D_{t+2}}{D_{t+1}}\left(1 + \frac{P_{t+2}}{D_{t+2}}\right)$, we have:
 
 $$
 \frac{P_t}{D_t}
@@ -1301,7 +1301,7 @@ _Furthermore,_ different variables capture different parts of the cycle: D/P and
 
 <b>Volatility</b>
 
-We recall that the optimal exposure to stocks depends on the risk-return trade-off, not just on the ERP; i.e., we have that:
+We recall that the optimal exposure to stocks depends on the risk-return trade-off, not just on the [ERP](#6); i.e., we have that:
 
 $$
 w_t = \frac{1}{a}\frac{\mathbb{E}_t[R_{t+1}] - R_{f,t+1}}{\operatorname{Var}_t[R_{t+1}]}
@@ -1354,7 +1354,7 @@ On Wall Street, there's the popular myth "sell in May and go away," referring to
 
 To investigate whether this pattern is present, we can easily use futures contracts since their percentage price change represents excess return. Take, _for example,_ the 1982–2019 period and compare the following:
 
-_(Recall that the return of futures is $$r^{\text{futures}}_{t+1} = \frac{F_{t+1} - F_t}{F_t}$$, which is the return of the risky position over the risk-free rate. Also, note that futures indices provide clean data, take dividends and rolling into account, and are easy to short or leverage.)_
+_(Recall that the return of [futures](#2) is $r^{\text{futures}}_{t+1} = \frac{F_{t+1} - F_t}{F_t}$, which is the return of the risky position over the risk-free rate. Also, note that futures indices provide clean data, take dividends and rolling into account, and are easy to short or leverage.)_
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/sell-may.png)
@@ -1874,7 +1874,7 @@ So if we want to analyze predictability, we have to test the various forms of th
 
 <b>Testing the EH using forward rates</b>
 
-We can start by testing form 2 of the expectations hypothesis, which _recall_ states that forward rates should forecast future short rates, _i.e._
+We can start by testing form 2 of the [expectations hypothesis](#9), which _recall_ states that forward rates should forecast future short rates, _i.e._
 
 $$
 f_t^{(n)} = E_t\left[y_{t+n-1}^{(1)}\right] + rp_f^{(n)}
@@ -2195,7 +2195,7 @@ So, the $b_n$ coefficients say how much expected returns move with the single fa
 
 _However..._ we have just shown that <b>bond returns are predictable</b>, so the <b>expectations hypothesis is rejected</b> or, _in other words_, we could say that the single-factor model is a significant improvement over the Fama-Bliss regressions.
 
-_Furthermore,_ note also that the single-factor model <b>predicts stock returns</b> and so it implies common/shared changes in risk premia for both stocks and bonds, and this is in line with the findings of Fama and French _(previously discussed in the <a href="https://giacomomaggiore.com/notes/16-advanced-investments#8" target="_blank">equity chapter</a>)_.
+_Furthermore,_ note also that the single-factor model <b>predicts stock returns</b> and so it implies common/shared changes in risk premia for both stocks and bonds, and this is in line with the findings of Fama and French _(previously discussed in the [equity chapter](#6))_.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-9.png)
@@ -2490,3 +2490,86 @@ _So we can say_ that investing in the currencies based on their relative yields 
 
 ---
 <br/>
+<b>Predictability</b>
+
+One way to test the <b>uncovered interest rate parity</b> introduced above is to understand whether the <b>initial interest rate differential</b> is offset by an equal change in the exchange rates, _i.e._ by estimating the following regression:
+
+$$
+s_{t+k} - s_t = \alpha + \beta (i_{t,k} - i^*_{t,k}) + \epsilon_{t+k}
+$$
+
+In the case that UIP is valid, we would have:
+- $\alpha = 0$ implies there's no currency risk premium;
+- $\beta = 1$ implies the exchange rates on average exactly offset the yield differential.
+
+_Equivalently,_ we can invoke the <b>covered interest rate parity</b> in the form $f_{t,k} - s_t = i_{t,k} - i^*_{t,k}$ and use the forward discount/premium as the explanatory variable:
+
+$$
+s_{t+k} - s_t = \alpha + \beta (f_{t,k} - s_t) + \epsilon_{t+k}
+$$
+
+_In this case,_ we would check if the forward rate is an unbiased predictor of the future spot exchange rate _(still UIP implies $\alpha = 0, \beta = 1$)_.
+
+An alternative but equivalent test of UIP is to investigate <b>if excess log returns</b> are predictable, using the following regression:
+
+$$
+rx_{t,k} = s_{t+k} - s_t + (i_{t,k} - i_{t,k}^*) + \epsilon_{t+k}
+$$
+
+$$
+rx_{t,k} = \alpha + \beta(i_{t,k} - i_{t,k}^*) + \epsilon_{t+k}
+$$
+
+_Note that_ since we have $rx_{t,k} = s_{t+k} - f_{t+k}$ the regression can also be written as:
+
+$$
+s_{t+k} - f_{t,k} = \alpha + \beta(i_{t,k} - i_{t,k}^{*}) + \varepsilon_{t+k}
+$$
+
+$$
+s_{t+k} - f_{t,k} = \alpha + \beta(f_{t,k} - s_t) + \varepsilon_{t+k}
+$$
+
+_Again,_ according to UIP we would expect $\alpha = 0, \beta = 1$.
+
+_In the case_ $\beta \neq 0$, the expected currency excess returns are time-varying and predictable.
+
+_Again,_ as we've seen for the tests on the [expectations hypothesis of the term structure](#9) of interest rates, the two tests constitute <b>complementary regressions</b>:
+
+$$
+f_{t,k} - s_{t+k} = \alpha_1 + \beta_1(f_{t,k} - s_t) + \varepsilon_{1,t+k}
+$$
+
+$$
+s_{t+k} - s_t = \alpha_2 + \beta_2(f_{t,k} - s_t) + \varepsilon_{2,t+k}
+$$
+
+where by construction $\alpha_1 + \alpha_2 = 0, \beta_1 + \beta_2 = 1$.
+
+In this case, Fama in 1984 found that $\beta_1 = 0$ `\beta_2 = \` are mostly rejected.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/uip-3.png)
+</div>
+
+_Furthermore,_ when estimating the regression $s_{t+k} - s_t = \alpha + \beta(i_{t,k} - i_{t,k}^*)$ in the period 1979-2011, Chinna and Quayyun in 2012 found that <b>is rejected in most countries</b>:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/uip-4.png)
+</div>
+
+_However,_ in the form $s_{t+k} - s_t = \alpha + \beta(i_{t,k} - i_{t,k}^*) + \epsilon_{t+k}$ there are fewer rejections of UIP; _moreover,_ most $\beta$ estimates are positive, as shown before:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/uip-5.png)
+</div>
+
+_To sum up... UIP doesn't hold in the data ($\implies$ there's a currency risk premium and foreign exchange rate returns can be predictable)_ and, _on average,_ countries with high interest rates also experience an <b>appreciation of their currency</b>.
+
+This means that there could be profitable opportunities _(i.e. we can capture a positive currency risk premium by borrowing in low interest rate countries and investing in high interest rate countries)_ but... these strategies often suffer from <b>steep drawdowns!</b>.
+
+---
+<br/>
+<b>Carry</b>
+
+The <a href="" target="_blank"> carry trade </a> is a popular trading strategy that exploits <b>deviations from the UIP</b>.

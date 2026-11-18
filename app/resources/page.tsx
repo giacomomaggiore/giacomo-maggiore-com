@@ -1,26 +1,6 @@
-
-import React from "react";
-
-import blogList from "./lists/blogList.json";
-import newsList from "./lists/newsList.json";
-import podcastList from "./lists/podcastList.json";
-import toolsList from "./lists/toolsList.json";
-import youtubeList from "./lists/youtubeList.json";
-
-type Resource = {
-  name: string;
-  link: string;
-  topic: string;
-};
-
-// Sections in display order: [heading, list]
-const sections: [string, Resource[]][] = [
-  ["Blog", blogList],
-  ["Podcast", podcastList],
-  ["Newsletter", newsList],
-  ["YouTube Channels", youtubeList],
-  ["Tools", toolsList],
-];
+import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
+import { resources } from './resources'
 
 export const metadata = {
   title: 'Resources',
@@ -29,38 +9,8 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <section>
-      <h1 className="font-semibold text-2xl mb-8 tracking-tighter">Giacomo's Inputs</h1>
-    
-      <p className="mb-2">
-      All the inputs and resources I consume daily, some in Italian, mostly in English.
-      </p>
-      <p className="mb-4">
-        Feel free to reach out on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank"><b>Instagram</b></a>, <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank"><b>Linkedin</b></a> or via <a href="mailto:giaco.maggiore@gmail.com" target="_blank"><b>Email</b></a> if you have any comments or want to share your own resources!
-      </p>
-
-      <p className="mb-4 italic">
-        PS: I also have a second-brain in Obsidian, where I store every note/paper/article. <br />Unfortunately, it is still private, but you can <a href="/ask" className="underline underline-offset-2">ask any question here.</a>.
-      </p>
-
-    
-      {sections.map(([heading, items]) => (
-        <React.Fragment key={heading}>
-          <h1 className="semi-title">{heading}</h1>
-          <ul className="list-disc ml-5 mt-2 text-gray-300">
-            {items.map((item, index) => (
-              <li key={index}>
-                <a href={item.link} target="_blank" className="text-black hover:underline">
-                  {item.name}
-                </a>{" "}
-                <span className="text-gray-400">[{item.topic}]</span>
-              </li>
-            ))}
-          </ul>
-        </React.Fragment>
-      ))}
+    <section className="prose">
+      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{resources}</ReactMarkdown>
     </section>
- 
-    
   )
 }
