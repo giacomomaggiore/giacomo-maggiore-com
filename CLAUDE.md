@@ -4,7 +4,7 @@ Next.js 14 (App Router) personal website, [giacomomaggiore.com](https://giacomom
 
 ## Hard rules
 
-1. **The UI, UX and frontend are frozen.** Rendered HTML, CSS, copy and client behavior must stay identical, on Vercel and on localhost. Refactors are fine only if `Verify the UI is unchanged` (below) shows no diff.
+1. **Preserve the overall UI style** on Vercel and localhost. HTML elements and tags may change when needed, including for requested page changes; preserve existing copy and client behavior unless the user asks otherwise. Refactors must still show no diff in `Verify the UI` (below).
 2. **Public content is human-authored and AI-free.** Do not edit `wiki/public/notes/` or `wiki/public/blog/` unless the user explicitly asks or an active skill authorizes it.
 3. **Ask for approval before editing anything under `wiki/private/`**, even when a retained skill requests it.
 4. **Private notes never become a public route, page, metadata, feed, sitemap entry or log line.** The only way to reach them is `/ask`, and they are cited by title only.
@@ -90,9 +90,9 @@ pnpm build          # index + assertion + next build (ask first)
 
 Prefer the smallest relevant validation. Do not install or bump dependencies unless validation proves one is missing. Pinned on purpose: Next 14.1.4, React 18.2, Tailwind 4 alpha.
 
-## Verify the UI is unchanged
+## Verify the UI
 
-Run this for any change to `app/`, `lib/`, `middleware.ts` or `next.config.js`. It needs no env vars and calls no external service. Stop `pnpm dev` first (dev and build share `.next`).
+Run this for any change to `app/`, `lib/`, `middleware.ts` or `next.config.js`. Refactors must have no diff; for requested UI changes, verify that differences are intentional and preserve the overall style. It needs no env vars and calls no external service. Stop `pnpm dev` first (dev and build share `.next`).
 
 ```bash
 # 1. baseline = last commit in a throwaway worktree (older commits need RESEND_API_KEY=x to build)
@@ -112,7 +112,7 @@ git worktree remove --force /tmp/site-base
 ```
 
 - Use `pnpm exec next build`, not `pnpm build`, so the OpenAI-calling indexer is skipped.
-- The snapshot covers every route, the blog in `none`/`en`/`it` cookie variants, redirects, feed, sitemap and robots. Compiled CSS lives in `.next/static/css/`; a diff there should only ever remove rules for classes you deleted.
+- The snapshot covers every route, the blog in `none`/`en`/`it` cookie variants, redirects, feed, sitemap and robots. Compiled CSS lives in `.next/static/css/`; review any diff to ensure the overall style is preserved.
 - For client behavior, dump the hydrated DOM with headless Chrome (`--headless=new --dump-dom --virtual-time-budget=6000 <url>`) on both builds and diff. Point `POSTHOG_API_HOST` at a local mock to exercise the counters.
 
 ## Conventions
@@ -131,7 +131,7 @@ These look like bugs but are current, user-visible behavior.
 - `lang` cookie: unsupported browser languages become Italian; list and post defaults differ (see above). A first visit renders with the cookie from the *request*, so the first response may use the default.
 - `next.config.js` `/ingest` rewrites point to PostHog EU but nothing uses them (the browser calls the US host directly). `skipTrailingSlashRedirect` also affects trailing-slash URLs site-wide.
 - MathJax (CDN) loads on every page next to KaTeX but typeset nothing on any note or blog page when checked on 2026-10-23 (it only injects a stylesheet). It is a removal candidate, but only with a before/after diff and the user's approval.
-- Visible copy is frozen with the UI. Typos were fixed on 2026-10-23 with the user's approval; do not edit copy otherwise.
+- Existing visible copy should not be edited without the user's approval. Typos were fixed on 2026-10-23 with the user's approval.
 - `<Table>` data in MDX is evaluated with `Function(...)` in `mdx.tsx`. This is acceptable only because content is trusted and repo-owned.
 - `/og` is an unused starter-template route.
 - `/blog` and `/notes` ship the full text of every item to the browser to power client-side search.
