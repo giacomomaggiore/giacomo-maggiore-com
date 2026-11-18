@@ -2572,4 +2572,70 @@ This means that there could be profitable opportunities _(i.e. we can capture a 
 <br/>
 <b>Carry</b>
 
-The <a href="" target="_blank"> carry trade </a> is a popular trading strategy that exploits <b>deviations from the UIP</b>.
+The <a href="" target="_blank"> carry trade </a> is a popular trading strategy that exploits <b>deviations from the UIP</b>. The idea behind carry trade is that we <b>borrow in low interest rate</b> currencies and we <b>lend in high interest rate </b> currencies.
+
+_Recall_ that the excess return from borrowing in a domestic currency and investing in foreign currency is:
+
+$$
+R_{t,k}^{e} = \frac{S_{t+k}}{S_t}(1 + I_{t,k}^{*}) - (1 + I_{t,k}).
+$$
+
+
+The carry trade implies going long on the foreign currency that has $I_{t,l}^* - I_{t,k} > 0$ and short otherwise. _Therefore,_ carry trade excess returns are:
+
+$$
+R_{t,k}^{C} = \operatorname{sign}[I_{t,k}^{*} - I_{t,k}]
+\left(\frac{S_{t+k}}{S_t}(1 + I_{t,k}^{*}) - (1 + I_{t,k})\right).
+$$
+
+_Note that_ an $R_{t,k}^{e} = \frac{S_{t+k}}{S_t}(1 + I_{t,k}^{*}) - (1 + I_{t,k})$.
+
+But... what about its profitability? Burnside et al. in 2011 investigate the profitability of the carry trade as well as the momentum for the period 1976-2010.
+
+In this case, the <b>carry portfolio</b> is an <b>equally weighted portfolio</b> of up to 20 individual currency carry trades against the USD. _Then,_ for each currency, the carry return defined before is computed each month, so the portfolio return is the average of the returns across all currencies.
+
+_On the other hand,_ the <b>momentum strategy</b> involves selling/buying a currency forward if its return _(as defined above)_ during the previous months was negative/positive. _Formally,_ for each currency and each month, the momentum excess return is given by:
+
+$$
+R_{t,1}^{M} = \operatorname{sign}[R_{t-1,1}^{e}]R_{t,1}^{e}
+$$
+
+_In particular,_ they found that the carry trade strategy earns large risk-adjusted returns that are <b>uncorrelated with those of currency momentum</b> and that <b>skewness</b> is negative but insificant.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-1.png)
+</div>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-2.png)
+</div>
+
+_Furthermore,_ as we should expect, carry trade returns cannot be explained by exposure to conventional risk factors.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-3.png)
+</div>
+
+---
+<br/>
+<b>Carry as a factor</b>
+
+Lustig et al. in 2011 investigate the returns of currency carry portfolios during the period 1983-2009.
+
+They studied a number of currencies that varies over time _(9 at the beginning, 26 at the end, max 34)_.
+
+At the end of each month, they allocate currencies to six portfolios on the basis of their forward premium/discount $f_t - s_t$ _(intuition: the difference reflects the interest rate gap between the currencies)_ according to:
+- portfolio 1 contains the currencies with the lowest interest rate
+- portfolio 6 contains those with the highest interest rate.
+
+_Then_ the authors also consider long-short portfolios called HMLj that are long portfolio j and short portfolio 1.
+
+_Furthermore,_ exchange rates are quoted in units of the foreign currency per US dollar, so the average exchange rate in the log spot exchange rate $\Delta s$ does not exactly match the premium $f_t - s_t$, resulting in <b>non-zero excess return</b>.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-4.png)
+</div>
+
+---
+<br/>
+<b>Principal Component Analysis in Carry Returns</b>
