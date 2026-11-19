@@ -120,4 +120,4 @@ Typical flow: edit or add a note → `pnpm index` → `pnpm build` → `git push
 
 Vercel builds with the search index stored in git, so always commit the rebuilt index (`lib/wiki-index.generated.json`) together with your notes.
 
-The reuse mode requires a compatible existing index and stops if private notes need new embeddings. Blog files marked `draft: true` or without a title and valid publication date are excluded from the site, feed, sitemap, and index. Public page previews use author-written excerpts and branded Open Graph images.
+The reuse mode requires a compatible existing index and stops if private notes need new embeddings. Blog files marked `draft: true` or without a title and valid publication date are excluded from the site, feed, sitemap, and index. Public page previews use author-written excerpts and the site icon.

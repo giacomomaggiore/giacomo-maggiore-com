@@ -2,11 +2,7 @@ import type { Metadata as NextMetadata } from 'next'
 import { baseUrl } from 'lib/site'
 import type { Metadata } from 'lib/wiki/frontmatter'
 
-function socialImage(title: string): string {
-  const image = new URL('/og', baseUrl)
-  image.searchParams.set('title', title)
-  return image.toString()
-}
+const socialImage = new URL('/icon.png', baseUrl).toString()
 
 export function pageMetadata(pagePath: string, title: string, description: string): NextMetadata {
   const url = `${baseUrl}${pagePath}`
@@ -21,9 +17,9 @@ export function pageMetadata(pagePath: string, title: string, description: strin
       siteName: 'Giacomo Maggiore',
       locale: 'en_US',
       type: 'website',
-      images: [{ url: socialImage(title), width: 1200, height: 630, alt: title }],
+      images: [{ url: socialImage, width: 1000, height: 1000, alt: 'Giacomo Maggiore' }],
     },
-    twitter: { card: 'summary_large_image', images: [socialImage(title)] },
+    twitter: { card: 'summary_large_image', images: [socialImage] },
   }
 }
 
@@ -74,8 +70,8 @@ export function articleMetadata(pagePath: string, meta: Metadata, content: strin
       locale: lang === 'it' ? 'it_IT' : 'en_US',
       type: 'article',
       publishedTime: meta.publishedAt,
-      images: [{ url: socialImage(meta.title), width: 1200, height: 630, alt: meta.title }],
+      images: [{ url: socialImage, width: 1000, height: 1000, alt: 'Giacomo Maggiore' }],
     },
-    twitter: { card: 'summary_large_image', images: [socialImage(meta.title)] },
+    twitter: { card: 'summary_large_image', images: [socialImage] },
   }
 }

@@ -20,3 +20,14 @@ test('article and page metadata have page-specific canonical and Open Graph URLs
   assert.equal(page.alternates?.canonical, 'http://localhost:3000/newsletter')
   assert.equal(page.openGraph?.url, 'http://localhost:3000/newsletter')
 })
+
+test('page and article previews use the site icon', () => {
+  const metadata = { title: 'Finance', publishedAt: '2026-01-01', summary: '' }
+  const article = articleMetadata('/notes/finance', metadata, 'Finance notes', 'en', true)
+  const page = pageMetadata('/newsletter', 'newsletter', 'A description')
+  const image = { url: 'http://localhost:3000/icon.png', width: 1000, height: 1000, alt: 'Giacomo Maggiore' }
+  for (const result of [article, page]) {
+    assert.deepEqual(result.openGraph?.images, [image])
+    assert.deepEqual(result.twitter?.images, [image.url])
+  }
+})

@@ -134,7 +134,7 @@ These look like bugs but are current, user-visible behavior.
 - MathJax (CDN) loads on every page next to KaTeX but typeset nothing on any note or blog page when checked on 2026-10-23 (it only injects a stylesheet). It is a removal candidate, but only with a before/after diff and the user's approval.
 - Existing visible copy should not be edited without the user's approval. Typos were fixed on 2026-10-23 with the user's approval.
 - `<Table>` data in MDX is evaluated with `Function(...)` in `mdx.tsx`. This is acceptable only because content is trusted and repo-owned.
-- `/og` generates the branded landscape Open Graph image used by public page metadata.
+- Public page metadata uses `/icon.png` for social previews; `/og` remains available as a landscape image generator.
 - `/blog` and `/notes` ship the full text of every item to the browser to power client-side search.
 
 ## Retained skills (`.github/skills/`)
