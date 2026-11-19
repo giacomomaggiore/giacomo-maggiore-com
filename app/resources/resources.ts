@@ -4,7 +4,7 @@ However, _for a long time,_ this page has not been updated and I can't promise i
 
 _Still,_ I've always had some stable references that I've been consuming for a long time and that I still find valuable.
 
-_Therefore,_ the best way to get periodic inputs is to either <b>1)</b> <a href="/newsletter" target="_blank">subscribe to the newsletter</a> _(approximately once per month, recently less)_ <b>2) read <a href="/blog" target="_blank">recent blog posts</a> 3) <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">follow me on LinkedIn</a>.
+_Therefore,_ the best way to get periodic inputs is to either <b>1)</b> <a href="/newsletter" target="_blank">subscribe to the newsletter</a> _(approximately once per month, recently less)_ <b>2)</b> <a href="/blog" target="_blank">read recent blog posts</a> <b>3)</b> <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">follow me on LinkedIn</a>.
 
 Otherwise, always feel free to drop me a message on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank">Instagram</a>, <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">LinkedIn</a> or by <a href="mailto:giaco.maggiore@gmail.com">email</a>.
 
@@ -49,7 +49,7 @@ Ok... I'm studying economics and working in finance, but my engineering roots _(
 I do not have a bucket for everything so here a bunch of stuff I enjoy:
 
 - <a href="https://www.youtube.com/@francesco_puppi" target="_blank">Francesco Puppi's YouTube, blog and podcast</a>. If you are an Italian <b>trail runner</b>, you probably know him. If you are an Italian runner, you should get to know him.
-- <a href="https://luca-dellanna.com/" target="_blank">Luca Dell'Anna</a>'s blog posts and newsletter. What I like: risk and work lessons anyone can apply in their context. _What I don't like:_ the posts are too generic and short _(also recommend his book <a href="https://luca-dellanna.com/ergodicity-economics/" target="_blank">Ergodicity</a>)._
+- <a href="https://luca-dellanna.com/" target="_blank">Luca Dell'Anna's blog posts and newsletter</a>. What I like: risk and work lessons anyone can apply in their context. _What I don't like:_ the posts are too generic and short _(also recommend his book <a href="https://luca-dellanna.com/ergodicity-economics/" target="_blank">Ergodicity</a>)._
 - <a href="https://ergodicityeconomics.com/" target="_blank">Ergodicity Economics</a>, from the <a href="https://www.lml.org.uk/" target="_blank">London Mathematical Laboratory</a>. An independent research group focused on applying the concept of <b>ergodicity</b> in different areas _(mostly finance and economics)_ with a scientific and rigorous approach. _Not beginner friendly and somewhat technical._
 - <a href="https://www.ilpost.it/" target="_blank">Il Post</a> (Italian only). I do not talk about news or politics often, but I'm a huge fan and supporter of this newspaper (and its founder <a href="https://www.francescocosta.net/" target="_blank">Francesco Costa</a> too; _if you are interested in the US, check his books_).
 - <a href="https://www.nassimnicholastaleb.org/" target="_blank">Nassim Nicholas Taleb</a>'s newsletter and books. He can be polarizing and sometimes hard to understand (I'm still sure I didn't get 100% of his books), but he is one of the most intelligent thinkers today in my view.
