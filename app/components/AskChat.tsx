@@ -77,7 +77,10 @@ export function AskChat() {
 
       setStatus('done')
     } catch (err: unknown) {
-      if ((err as Error).name !== 'AbortError') setStatus('error')
+      if ((err as Error).name !== 'AbortError') {
+        setAnswer('Something went wrong. Please try again.')
+        setStatus('error')
+      }
     }
   }
 
@@ -90,15 +93,17 @@ export function AskChat() {
     <div className="flex flex-col gap-4">
       <div className="flex gap-2 items-end">
         <textarea
+          aria-label="Question"
           ref={textareaRef}
           value={question}
           onChange={e => setQuestion(e.target.value)}
           onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit() } }}
           placeholder="Ask anything in the knowledge system…"
           rows={1}
-          className="flex-1 p-2 rounded border border-neutral-200 dark:border-neutral-700 bg-transparent text-sm resize-none overflow-hidden focus:outline-none"
+          className="min-w-0 flex-1 p-2 rounded border border-neutral-200 dark:border-neutral-700 bg-transparent text-sm resize-none overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
         />
         <button
+          aria-label="Submit question"
           onClick={submit}
           disabled={status === 'loading' || !question.trim()}
           className="px-4 py-2 text-sm rounded bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 disabled:opacity-40 shrink-0"
@@ -115,11 +120,9 @@ export function AskChat() {
         )}
       </div>
 
-      {answer && (
-        <div className="prose prose-sm dark:prose-invert max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>{answer}</ReactMarkdown>
-        </div>
-      )}
+      <div aria-live="polite" className="prose prose-sm dark:prose-invert max-w-none">
+        {answer && <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>{answer}</ReactMarkdown>}
+      </div>
 
       {citations.length > 0 && (
         <div className="text-xs text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800 pt-3">

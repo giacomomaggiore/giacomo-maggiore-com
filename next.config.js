@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [{ source: '/cv', destination: '/cv_giacomo_maggiore.pdf', permanent: false }];
+  },
   // PostHog reverse proxy (EU). Currently unused: the browser calls NEXT_PUBLIC_POSTHOG_HOST (US) directly.
   async rewrites() {
     return [

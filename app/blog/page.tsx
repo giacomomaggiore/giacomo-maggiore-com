@@ -2,11 +2,9 @@ import { cookies } from 'next/headers'
 import { ContentList } from 'app/components/ContentList'
 import { formatDate } from 'lib/dates'
 import { getBlogPostsByLang, type Lang } from './utils'
+import { pageMetadata } from 'lib/seo'
 
-export const metadata = {
-  title: 'Blog',
-  description: 'Read my blog.',
-}
+export const metadata = pageMetadata('/blog', 'Blog', 'Thoughts on coding, finance, and life — On spending money; On Spending Time; Surviving in a non-ergodic world.')
 
 export default async function Page() {
   // Language comes from the cookie set in middleware.ts (English if missing)
@@ -20,6 +18,7 @@ export default async function Page() {
   return (
     <section>
       <ContentList
+        heading="Blog"
         items={posts}
         basePath="/blog"
         searchId="blog-search"

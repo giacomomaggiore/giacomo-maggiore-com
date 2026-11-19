@@ -11,6 +11,7 @@ export type WikiNote = {
 
 export type WikiIndex = {
   generatedAt: string
+  embeddingModel?: string
   noteCount: number
   avgNoteLen: number
   df: Record<string, number>

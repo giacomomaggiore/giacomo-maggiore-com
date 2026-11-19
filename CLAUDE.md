@@ -4,7 +4,7 @@ Next.js 14 (App Router) personal website, [giacomomaggiore.com](https://giacomom
 
 ## Hard rules
 
-1. **Preserve the overall UI style** on Vercel and localhost. HTML elements and tags may change when needed, including for requested page changes; preserve existing copy and client behavior unless the user asks otherwise. Refactors must still show no diff in `Verify the UI` (below).
+1. **Preserve the UI** on Vercel and localhost unless the user explicitly requests a change in chat. Requested changes may modify HTML, CSS, copy and client behavior; keep unrelated UI unchanged. Refactors must still show no diff in `Verify the UI` (below).
 2. **Public content is human-authored and AI-free.** Do not edit `wiki/public/notes/` or `wiki/public/blog/` unless the user explicitly asks or an active skill authorizes it.
 3. **Ask for approval before editing anything under `wiki/private/`**, even when a retained skill requests it.
 4. **Private notes never become a public route, page, metadata, feed, sitemap entry or log line.** The only way to reach them is `/ask`, and they are cited by title only.
@@ -27,7 +27,7 @@ Next.js 14 (App Router) personal website, [giacomomaggiore.com](https://giacomom
 | `lib/site.ts` | `PRODUCTION_URL` and `baseUrl` (production vs localhost) |
 | `lib/dates.ts` | `formatDate`, `byPublishedDesc` |
 | `lib/economy-chart.ts` | Fixed illustrative scenario and calculations for the desktop-only economy article chart |
-| `lib/seo.ts` | `articleMetadata` (title, canonical, Open Graph) |
+| `lib/seo.ts` | Page and article metadata, author-written excerpt selection, canonical URLs and Open Graph images |
 | `lib/rate-limit.ts` | In-memory per-IP limiter, `getClientIp`, `tooManyRequests` |
 | `lib/posthog.ts` | Three fixed server HogQL queries with a 60 s in-memory cache and last-good fallback |
 | `lib/newsletter.ts` | Resend client, email validation, HMAC confirm/unsubscribe links, contact creation, confirmation and welcome emails |
@@ -46,11 +46,11 @@ Imports use `baseUrl: "."`, e.g. `import { baseUrl } from 'lib/site'` or `'app/c
 
 ## How things work
 
-- **Pages.** MDX files are read from disk with `lib/wiki/mdx-files.ts` (parsed files are cached in memory in production only). Frontmatter has `title`, `publishedAt`, `summary`. `app/components/mdx.tsx` renders MDX with KaTeX; `<Table data={{ headers, rows }} />` blocks are converted to Markdown tables first. Slugs from URLs are validated (`isSafeSlug`) before touching the filesystem.
+- **Pages.** MDX files are read from disk with `lib/wiki/mdx-files.ts` (parsed files are cached in memory in production only). Frontmatter has `title`, `publishedAt`, `summary`; blog entries marked `draft: true` or without a title and valid date are excluded from routes, listings, feed, sitemap and index. `app/components/mdx.tsx` renders MDX with KaTeX; `<Table data={{ headers, rows }} />` blocks are converted to Markdown tables first. Slugs from URLs are validated (`isSafeSlug`) before touching the filesystem.
 - **Economy chart.** `EconomyChart` is a desktop-only MDX component with four interactive controls and an illustrative fixed-production scenario; calculations are in `lib/economy-chart.ts`.
-- **Language.** `middleware.ts` sets a `lang` cookie (`en`/`it`) on `/blog/*`. Blog pages read it; the list defaults to `en`, a post defaults to `it`. Notes are English only.
+- **Language.** `middleware.ts` sets a `lang` cookie (`en`/`it`) on `/blog/*`. Blog pages read it; the list defaults to `en`, a post defaults to `it`. Article metadata matches the rendered language, with fallback to an available translation. The financial-mathematics note is Italian; other notes are English.
 - **`/ask`.** Question (max 500 chars) → rate limit (15/min/IP) → embed the query (`text-embedding-3-small`) while loading the index → `retrieveHybrid` (BM25 + cosine similarity fused with RRF, top 8; keyword-only when there is no embedding) → `selectContext` keeps only the best-matching passages of those notes (max `CONTEXT_BUDGET` = 30,000 characters, at least one passage per note) → stream the answer from OpenAI (first line is JSON citations, the rest is Markdown). Closing the connection aborts the OpenAI call. Sources shown to the visitor are exactly the notes the model received. Query and index **must** use the same embedding model (`EMBEDDING_MODEL` in `lib/wiki/openai.ts`).
-- **Search index.** `scripts/build-wiki-index.ts` indexes public notes, `*.en.mdx` blog posts and every `.md`/`.mdx` under `wiki/private/` (skips `images/`, `_*`, `index`, `log`). Private notes get `url: null`.
+- **Search index.** `scripts/build-wiki-index.ts` indexes public notes, published `*.en.mdx` blog posts and every `.md`/`.mdx` under `wiki/private/` (skips `images/`, `_*`, `index`, `log`). Private notes get `url: null`. The `--reuse-embeddings` option reuses unchanged vectors, embeds only changed public notes, and fails if private embeddings cannot be reused.
 - **View counters.** Client components in `app/components/stats.tsx` POST to `/api/posthog`; the route runs HogQL against PostHog and caches each query for 60 s (the last good result is served if a refresh fails). There are only three fixed queries (site views, site time, and one shared query that returns the views of every blog/notes URL); never add one query per page, because PostHog allows 3 concurrent queries per project and queues the rest for up to 30 s (that made page counters time out and show 0). The request timeout is 25 s and the route sets `maxDuration = 30`. Only blog/notes URLs on the site's own origin are accepted (strict regex); the URL is matched in code and never put in a query.
 - **Newsletter (double opt-in).** The footer form posts to `/api/newsletter`: honeypot field, consent check, 5 signups per 10 min per IP and 3 confirmation emails per hour per address. It only sends a confirmation email (HMAC-signed link, valid 48 h, no contact yet) and redirects to `/newsletter/check-inbox` (own origins only). Opening the link (`/api/newsletter/confirm`) creates the Resend contact (or switches an unsubscribed one back on), sends the welcome email (plain-text part, `List-Unsubscribe` one-click headers, signed unsubscribe link) and redirects to `/newsletter/confirmed`; a bad or expired link goes to `/newsletter/expired`. Those three pages are `noindex` and not in the sitemap. Confirm links are GET, so a mail scanner that prefetches links can confirm an address.
 
@@ -85,6 +85,7 @@ pnpm dev            # local dev server (localhost:3000)
 pnpm typecheck      # tsc --noEmit; must stay clean
 pnpm check:private  # private-page assertion (also part of pnpm build)
 pnpm index          # rebuild the search index; calls OpenAI embeddings if a key is set; rewrites a tracked file
+pnpm index --reuse-embeddings  # reuse matching vectors; only changed public notes are sent for embedding
 pnpm build          # index + assertion + next build (ask first)
 ```
 
@@ -92,7 +93,7 @@ Prefer the smallest relevant validation. Do not install or bump dependencies unl
 
 ## Verify the UI
 
-Run this for any change to `app/`, `lib/`, `middleware.ts` or `next.config.js`. Refactors must have no diff; for requested UI changes, verify that differences are intentional and preserve the overall style. It needs no env vars and calls no external service. Stop `pnpm dev` first (dev and build share `.next`).
+Run this for any change to `app/`, `lib/`, `middleware.ts` or `next.config.js`. Refactors must have no diff; for explicitly requested UI changes, verify that differences are intentional and limited to the request. It needs no env vars and calls no external service. Stop `pnpm dev` first (dev and build share `.next`).
 
 ```bash
 # 1. baseline = last commit in a throwaway worktree (older commits need RESEND_API_KEY=x to build)
@@ -112,7 +113,7 @@ git worktree remove --force /tmp/site-base
 ```
 
 - Use `pnpm exec next build`, not `pnpm build`, so the OpenAI-calling indexer is skipped.
-- The snapshot covers every route, the blog in `none`/`en`/`it` cookie variants, redirects, feed, sitemap and robots. Compiled CSS lives in `.next/static/css/`; review any diff to ensure the overall style is preserved.
+- The snapshot covers every route, the blog in `none`/`en`/`it` cookie variants, redirects, feed, sitemap and robots. Compiled CSS lives in `.next/static/css/`; review any diff to ensure it is intentional.
 - For client behavior, dump the hydrated DOM with headless Chrome (`--headless=new --dump-dom --virtual-time-budget=6000 <url>`) on both builds and diff. Point `POSTHOG_API_HOST` at a local mock to exercise the counters.
 
 ## Conventions
@@ -133,7 +134,7 @@ These look like bugs but are current, user-visible behavior.
 - MathJax (CDN) loads on every page next to KaTeX but typeset nothing on any note or blog page when checked on 2026-10-23 (it only injects a stylesheet). It is a removal candidate, but only with a before/after diff and the user's approval.
 - Existing visible copy should not be edited without the user's approval. Typos were fixed on 2026-10-23 with the user's approval.
 - `<Table>` data in MDX is evaluated with `Function(...)` in `mdx.tsx`. This is acceptable only because content is trusted and repo-owned.
-- `/og` is an unused starter-template route.
+- `/og` generates the branded landscape Open Graph image used by public page metadata.
 - `/blog` and `/notes` ship the full text of every item to the browser to power client-side search.
 
 ## Retained skills (`.github/skills/`)

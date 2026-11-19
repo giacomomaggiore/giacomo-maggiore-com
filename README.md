@@ -110,6 +110,7 @@ NEXT_PUBLIC_SITE_URL=...           # public site address, used in email links
 ```bash
 pnpm dev            # run the website locally
 pnpm index          # rebuild the search index after adding/editing notes
+pnpm index --reuse-embeddings  # reuse matching embeddings; only changed public notes are sent for embedding
 pnpm typecheck      # check the TypeScript code
 pnpm check:private  # check that no private note can become a page
 pnpm build          # build the website (also rebuilds the index automatically)
@@ -118,3 +119,5 @@ pnpm build          # build the website (also rebuilds the index automatically)
 Typical flow: edit or add a note → `pnpm index` → `pnpm build` → `git push`.
 
 Vercel builds with the search index stored in git, so always commit the rebuilt index (`lib/wiki-index.generated.json`) together with your notes.
+
+The reuse mode requires a compatible existing index and stops if private notes need new embeddings. Blog files marked `draft: true` or without a title and valid publication date are excluded from the site, feed, sitemap, and index. Public page previews use author-written excerpts and branded Open Graph images.

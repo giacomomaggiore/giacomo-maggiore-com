@@ -1,5 +1,7 @@
+import { pageMetadata } from 'lib/seo'
+
 export const metadata = {
-  title: 'subscription confirmed',
+  ...pageMetadata('/newsletter/confirmed', 'subscription confirmed', "Thank you for confirming. Approx. one email per month. Just occasional updates when I have something worth sharing."),
   robots: { index: false },
 }
 

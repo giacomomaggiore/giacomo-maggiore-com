@@ -1,9 +1,8 @@
+import { pageMetadata } from 'lib/seo'
 
+const description = 'Occasional updates from Giacomo Maggiore, delivered about once a month when there is something worth sharing. No spam.'
 
-export const metadata = {
-  title: 'newsletter',
-  description: 'Stay updated with the latest news and articles from Giacomo Maggiore',
-}
+export const metadata = pageMetadata('/newsletter', 'newsletter', description)
 
 export default function Page() {
   return (

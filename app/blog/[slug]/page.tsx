@@ -11,8 +11,9 @@ export async function generateStaticParams() {
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = getPost(params.slug, 'en')
-  return post ? articleMetadata(`/blog/${params.slug}`, post.metadata) : {}
+  const lang = cookies().get('lang')?.value || 'it'
+  const post = getPost(params.slug, lang)
+  return post ? articleMetadata(`/blog/${params.slug}`, post.metadata, post.content, post.lang) : {}
 }
 
 export default async function BlogPage({ params }: { params: { slug: string } }) {
@@ -24,5 +25,5 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   if (!post) notFound()
 
   // Views are always counted on the production URL, also when running locally
-  return <ArticlePage post={post} viewsUrl={`${PRODUCTION_URL}/blog/${params.slug}`} />
+  return <ArticlePage post={post} lang={post.lang} viewsUrl={`${PRODUCTION_URL}/blog/${params.slug}`} />
 }

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
+import { pageMetadata } from 'lib/seo'
 
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description: "Privacy policy for Giacomo Maggiore website",
-};
+export const metadata: Metadata = pageMetadata('/privacy', 'Privacy Policy', 'This Privacy Policy explains how personal data are processed when you use this website. The website owner is based in Switzerland.')
 
 const lastUpdated = "19 March 2026";
 

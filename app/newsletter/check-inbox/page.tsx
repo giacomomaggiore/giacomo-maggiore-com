@@ -1,5 +1,7 @@
+import { pageMetadata } from 'lib/seo'
+
 export const metadata = {
-  title: 'check your inbox',
+  ...pageMetadata('/newsletter/check-inbox', 'check your inbox', "Almost there. I've sent you an email: click the link in it to confirm your subscription. Check spam and mark it as not spam."),
   robots: { index: false },
 }
 

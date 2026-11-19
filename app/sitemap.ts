@@ -23,7 +23,7 @@ export default async function sitemap() {
     lastModified: note.metadata.publishedAt,
   }))
 
-  const routes = ['', '/blog', '/notes', '/resources'].map((route) => ({
+  const routes = ['', '/blog', '/notes', '/books', '/resources', '/newsletter', '/ask', '/privacy'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],
   }))

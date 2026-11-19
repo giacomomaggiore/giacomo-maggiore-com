@@ -8,7 +8,7 @@ if (fs.existsSync(envLocalPath)) {
   ;(process as unknown as { loadEnvFile(file: string): void }).loadEnvFile(envLocalPath)
 }
 
-import { parseFrontmatter } from 'lib/wiki/frontmatter'
+import { isPublished, parseFrontmatter } from 'lib/wiki/frontmatter'
 import { EMBEDDING_MODEL, getOpenAI } from 'lib/wiki/openai'
 import {
   WIKI_INDEX_PATH,
@@ -44,7 +44,8 @@ function buildNote(
   let title = slug
   let content = raw
   try {
-    const parsed = parseFrontmatter(raw)
+    // Keep the private vault's existing parsing behavior unchanged.
+    const parsed = parseFrontmatter(raw, collection === 'private')
     title = parsed.metadata.title || slug
     content = parsed.content
   } catch {
@@ -71,6 +72,7 @@ function collectBlog(): WikiNote[] {
   return fs
     .readdirSync(WIKI_PUBLIC_BLOG_DIR)
     .filter(f => f.endsWith('.en.mdx'))
+    .filter(f => isPublished(parseFrontmatter(fs.readFileSync(path.join(WIKI_PUBLIC_BLOG_DIR, f), 'utf8')).metadata))
     .map(f => {
       const slug = path.basename(f, '.en.mdx')
       return buildNote(path.join(WIKI_PUBLIC_BLOG_DIR, f), 'blog', 'public', slug, `/blog/${slug}`)
@@ -105,14 +107,39 @@ function collectPrivate(): WikiNote[] {
 // Batch-embed all notes in a single OpenAI request (supports up to 2048 inputs).
 // Attaches the embedding array directly onto each WikiNote in-place.
 // Silently skips if OPENAI_API_KEY is not set — /api/ask then falls back to BM25-only.
-async function embedNotes(notes: WikiNote[]): Promise<void> {
+async function embedNotes(notes: WikiNote[], reuseEmbeddings: boolean): Promise<void> {
+  let pending = notes
+  if (reuseEmbeddings) {
+    if (!fs.existsSync(WIKI_INDEX_PATH)) throw new Error('Cannot reuse embeddings without an existing index')
+    const previous: WikiIndex = JSON.parse(fs.readFileSync(WIKI_INDEX_PATH, 'utf8'))
+    // The legacy index was built with text-embedding-3-small before recording its model.
+    if ((previous.embeddingModel || 'text-embedding-3-small') !== EMBEDDING_MODEL) {
+      throw new Error('Cannot reuse embeddings from a different model')
+    }
+    const cached = new Map(previous.notes.map(note => [`${note.collection}:${note.slug}`, note]))
+    pending = []
+    for (const note of notes) {
+      const old = cached.get(`${note.collection}:${note.slug}`)
+      if (old?.embedding && old.fullText.slice(0, MAX_EMBED_CHARS) === note.fullText.slice(0, MAX_EMBED_CHARS)) {
+        note.embedding = old.embedding
+      } else {
+        pending.push(note)
+      }
+    }
+    if (pending.some(note => note.visibility === 'private')) {
+      throw new Error('Cannot reuse embeddings: private notes have changed or lack cached embeddings')
+    }
+    console.log(`  reused ${notes.length - pending.length} embeddings; ${pending.length} public notes need embeddings`)
+    if (!pending.length) return
+  }
   const openai = await getOpenAI()
   if (!openai) {
+    if (reuseEmbeddings) throw new Error('OPENAI_API_KEY is required to embed changed public notes')
     console.log('  OPENAI_API_KEY not set, skipping embeddings (BM25-only mode)')
     return
   }
 
-  const inputs = notes.map(n => n.fullText.slice(0, MAX_EMBED_CHARS))
+  const inputs = pending.map(n => n.fullText.slice(0, MAX_EMBED_CHARS))
 
   const res = await openai.embeddings.create({
     model: EMBEDDING_MODEL,
@@ -120,10 +147,10 @@ async function embedNotes(notes: WikiNote[]): Promise<void> {
   })
 
   for (const { index, embedding } of res.data) {
-    notes[index].embedding = embedding
+    pending[index].embedding = embedding
   }
 
-  console.log(`  embedded ${notes.length} notes (${EMBEDDING_MODEL})`)
+  console.log(`  embedded ${pending.length} notes (${EMBEDDING_MODEL})`)
 }
 
 async function main() {
@@ -132,7 +159,7 @@ async function main() {
   const privateNotes = collectPrivate()
   const notes = [...notesNotes, ...blogNotes, ...privateNotes]
 
-  await embedNotes(notes)
+  await embedNotes(notes, process.argv.includes('--reuse-embeddings'))
 
   const df: Record<string, number> = {}
   for (const note of notes) {
@@ -149,6 +176,7 @@ async function main() {
 
   const index: WikiIndex = {
     generatedAt: new Date().toISOString(),
+    ...(notes.some(note => note.embedding) ? { embeddingModel: EMBEDDING_MODEL } : {}),
     noteCount: notes.length,
     avgNoteLen,
     df,

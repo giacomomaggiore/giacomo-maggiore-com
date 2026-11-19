@@ -228,6 +228,14 @@ function Quote({ children }) {
   )
 }
 
+function ResponsiveTable(props: React.TableHTMLAttributes<HTMLTableElement>) {
+  return (
+    <div className="table-scroll" role="region" aria-label="Scrollable table" tabIndex={0}>
+      <table {...props} />
+    </div>
+  )
+}
+
 const components = {
   h1: createHeading(1),
   h2: createHeading(2),
@@ -239,6 +247,7 @@ const components = {
   a: CustomLink,
   code: Code,
   Table,
+  table: ResponsiveTable,
   Quote,
   EconomyChart,
   EconomyWelfare,

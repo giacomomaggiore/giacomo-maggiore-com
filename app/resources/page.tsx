@@ -1,11 +1,9 @@
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { resources } from './resources'
+import { pageMetadata } from 'lib/seo'
 
-export const metadata = {
-  title: 'Resources',
-  description: 'All the resources Giacomo Maggiore reads',
-}
+export const metadata = pageMetadata('/resources', 'Resources', "I've always had some stable references that I've been consuming for a long time and that I still find valuable.")
 
 export default function Page() {
   return (

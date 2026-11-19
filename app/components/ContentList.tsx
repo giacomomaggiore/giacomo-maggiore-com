@@ -19,6 +19,7 @@ type Item = {
 
 type ContentListProps = {
   items: Item[]
+  heading: string
   // URL prefix of each item page, e.g. "/blog"
   basePath: string
   searchId: string
@@ -32,7 +33,7 @@ function getPreview(content: string) {
 }
 
 // Searchable list of posts or notes, shared by /blog and /notes
-export function ContentList({ items, basePath, searchId, searchLabel, placeholder }: ContentListProps) {
+export function ContentList({ items, heading, basePath, searchId, searchLabel, placeholder }: ContentListProps) {
   const [query, setQuery] = useState('')
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase()
@@ -46,6 +47,7 @@ export function ContentList({ items, basePath, searchId, searchLabel, placeholde
 
   return (
     <div>
+      <h1 className="sr-only">{heading}</h1>
       <label className="sr-only" htmlFor={searchId}>
         {searchLabel}
       </label>
@@ -55,7 +57,7 @@ export function ContentList({ items, basePath, searchId, searchLabel, placeholde
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder={placeholder}
-        className="mb-12 w-full rounded border border-neutral-200 bg-transparent p-2 text-sm text-black placeholder:text-neutral-400 focus:outline-none dark:border-neutral-700 dark:text-white"
+        className="mb-12 w-full rounded border border-neutral-200 bg-transparent p-2 text-sm text-black placeholder:text-neutral-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-neutral-700 dark:text-white"
       />
 
       <div>

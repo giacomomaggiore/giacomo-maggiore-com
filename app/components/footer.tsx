@@ -28,8 +28,9 @@ export default function Footer() {
       type="email"
       required
       autoComplete="email"
+      spellCheck={false}
       placeholder="you@example.com"
-      className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-black dark:text-neutral-100 dark:placeholder:text-neutral-500"
+      className="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-neutral-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 dark:border-neutral-700 dark:bg-black dark:text-neutral-100 dark:placeholder:text-neutral-500"
     />
 
     <button
@@ -58,30 +59,30 @@ export default function Footer() {
       className="mt-0.4 h-3 w-3 rounded border-neutral-300 bg-transparent dark:border-neutral-700"
     />
     <span>
-      I agree to receive mail updates and I have read the<a href="./privacy"> <u>Privacy Policy.</u></a> <i><b>Only new articles, promise you.</b></i>
+      I agree to receive mail updates and I have read the<a href="/privacy"> <u>Privacy Policy.</u></a> <i><b>Only new articles, promise you.</b></i>
     </span>
   </label>
 
   <div className="flex gap-3 text-xl mt-4">
-    <a href="mailto:giaco.maggiore@gmail.com" target="_blank" rel="noopener noreferrer">
+    <a href="mailto:giaco.maggiore@gmail.com" aria-label="Email" target="_blank" rel="noopener noreferrer">
       <FaEnvelope />
     </a>
-    <a href="https://github.com/giacomomaggiore" target="_blank" rel="noopener noreferrer">
+    <a href="https://github.com/giacomomaggiore" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
       <FaGithub />
     </a>
-    <a href="https://www.instagram.com/giacomomaggiore/" target="_blank" rel="noopener noreferrer">
+    <a href="https://www.instagram.com/giacomomaggiore/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
       <FaInstagram />
     </a>
-    <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank" rel="noopener noreferrer">
+    <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
       <FaLinkedin />
     </a>
-    <a href="https://www.youtube.com/@giacomomaggiore01" target="_blank" rel="noopener noreferrer">
+    <a href="https://www.youtube.com/@giacomomaggiore01" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
       <FaYoutube />
     </a>
-    <a href="https://www.strava.com/athletes/24804406" target="_blank" rel="noopener noreferrer">
+    <a href="https://www.strava.com/athletes/24804406" aria-label="Strava" target="_blank" rel="noopener noreferrer">
       <FaStrava />
     </a>
-    <a href="https://giacomomaggiore.com/feed.xml" target="_blank" rel="noopener noreferrer">
+    <a href="https://giacomomaggiore.com/feed.xml" aria-label="RSS feed" target="_blank" rel="noopener noreferrer">
       <FaRss />
     </a>
   </div>

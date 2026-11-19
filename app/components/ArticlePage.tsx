@@ -5,14 +5,15 @@ import { PageViews } from './stats'
 
 type ArticlePageProps = {
   post: { metadata: Metadata; content: string }
+  lang: 'en' | 'it'
   // Page URL whose PostHog events are counted as "Page views"
   viewsUrl: string
 }
 
 // Page body shared by /blog/[slug] and /notes/[slug]
-export function ArticlePage({ post, viewsUrl }: ArticlePageProps) {
+export function ArticlePage({ post, lang, viewsUrl }: ArticlePageProps) {
   return (
-    <section>
+    <section lang={lang}>
       <h1 className="title font-semibold text-2xl tracking-tighter">
         {post.metadata.title}
       </h1>

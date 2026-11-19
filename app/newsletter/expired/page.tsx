@@ -1,5 +1,7 @@
+import { pageMetadata } from 'lib/seo'
+
 export const metadata = {
-  title: 'link expired',
+  ...pageMetadata('/newsletter/expired', 'link expired', "Giacomo's Newsletter — This link has expired. Subscribe again from the footer and I'll send a fresh one."),
   robots: { index: false },
 }
 

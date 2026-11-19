@@ -1,11 +1,9 @@
 import { ContentList } from 'app/components/ContentList'
 import { byPublishedDesc, formatDate } from 'lib/dates'
 import { getNotes } from './utils'
+import { pageMetadata } from 'lib/seo'
 
-export const metadata = {
-  title: 'Notes',
-  description: 'Read my notes.',
-}
+export const metadata = pageMetadata('/notes', 'Notes', 'Mathematical Foundations for Finance, Financial Risk Management, Economic Dynamics and Complexity, Principles of Econometrics.')
 
 export default function Page() {
   const notes = getNotes()
@@ -18,6 +16,7 @@ export default function Page() {
   return (
     <section>
       <ContentList
+        heading="Notes"
         items={notes}
         basePath="/notes"
         searchId="notes-search"

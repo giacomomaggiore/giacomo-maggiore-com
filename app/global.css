@@ -29,10 +29,6 @@
   }
 }
 
-html {
-  min-width: 360px;
-}
-
 .prose .anchor {
   @apply absolute invisible no-underline;
 
@@ -43,12 +39,20 @@ html {
   cursor: pointer;
 }
 
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 1rem;
+}
+
+.prose .anchor:focus-visible {
+  visibility: visible;
+}
+
 .anchor:hover {
   @apply visible;
 }
 
 .prose a {
-  @apply underline transition-all decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
+  @apply underline transition-colors decoration-neutral-400 dark:decoration-neutral-600 underline-offset-2 decoration-[0.1em];
 }
 
 .prose .anchor:after {
@@ -62,6 +66,36 @@ html {
 
 .prose pre {
   @apply bg-neutral-50 dark:bg-neutral-900 rounded-lg overflow-x-auto border border-neutral-200 dark:border-neutral-900 py-2 px-3 text-sm;
+}
+
+.prose {
+  overflow-wrap: anywhere;
+}
+
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.prose .katex {
+  max-width: 100%;
+}
+
+.prose .katex:not(.katex-display .katex) {
+  display: inline-block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: middle;
+}
+
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.table-scroll:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .prose code {
@@ -81,6 +115,8 @@ html {
 .prose img {
   /* Don't apply styles to next/image */
   @apply m-0;
+  max-width: 100%;
+  height: auto;
 }
 
 .prose p {

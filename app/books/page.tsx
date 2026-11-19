@@ -1,4 +1,5 @@
 import bookList from "./bookList.json";
+import { pageMetadata } from 'lib/seo'
 
 type Book = {
   title: string;
@@ -9,10 +10,7 @@ type Book = {
   rating: string;
 };
 
-export const metadata = {
-  title: 'Books',
-  description: 'All the books Giacomo Maggiore reads',
-}
+export const metadata = pageMetadata('/books', 'Books', "All the books I've read in the last years, some in Italian, mostly in English. Share your favourite readings.")
 
 export default function Page() {
   return (
@@ -30,7 +28,7 @@ export default function Page() {
   {bookList.map((item: Book, index: number) => (
     <div
       key={index}
-      className="overflow-x-auto whitespace-nowrap no-scrollbar">
+      className="break-words">
       {item.date}
       <a
         href={item.link}

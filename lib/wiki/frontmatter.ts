@@ -11,10 +11,17 @@ export type Metadata = {
   publishedAt: string
   summary: string
   image?: string
+  draft?: string
 }
 
-export function parseFrontmatter(fileContent: string) {
-  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/
+export function isPublished(metadata: Partial<Metadata>): boolean {
+  return Boolean(metadata.draft?.toLowerCase() !== 'true' && metadata.title?.trim() && metadata.publishedAt?.trim() && Number.isFinite(Date.parse(metadata.publishedAt)))
+}
+
+export function parseFrontmatter(fileContent: string, allowUnanchored = false) {
+  let frontmatterRegex = allowUnanchored
+    ? /---\s*([\s\S]*?)\s*---/
+    : /^\uFEFF?\s*---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/
   let match = frontmatterRegex.exec(fileContent)
 
   // No frontmatter block: return the whole file as content with empty metadata

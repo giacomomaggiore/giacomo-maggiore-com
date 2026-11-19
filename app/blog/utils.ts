@@ -1,7 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import { byPublishedDesc } from 'lib/dates'
-import { getMDXData, getMDXFiles, isSafeSlug, readMDXFile } from 'lib/wiki/mdx-files'
+import { getMDXData, isSafeSlug, readMDXFile } from 'lib/wiki/mdx-files'
+import { isPublished } from 'lib/wiki/frontmatter'
 import { WIKI_PUBLIC_BLOG_DIR } from 'lib/wiki/paths'
 
 /**
@@ -18,7 +19,7 @@ export const stripLangSuffix = (slug: string) => slug.replace(LANG_SUFFIX, '')
 
 // every post file in every language; slugs still carry the ".en"/".it" suffix
 export function getBlogPosts() {
-  return getMDXData(WIKI_PUBLIC_BLOG_DIR)
+  return getMDXData(WIKI_PUBLIC_BLOG_DIR).filter(post => isPublished(post.metadata))
 }
 
 // posts of one language, newest first, with the language suffix removed from the slug
@@ -31,8 +32,7 @@ export function getBlogPostsByLang(lang: Lang) {
 
 // unique slugs across languages, e.g. "slug.en.mdx" and "slug.it.mdx" count once
 export function getAllSlugs(): string[] {
-  const filenames = getMDXFiles(WIKI_PUBLIC_BLOG_DIR)
-  return Array.from(new Set(filenames.map((file) => file.replace(/\.(en|it)\.mdx$/, ''))))
+  return Array.from(new Set(getBlogPosts().map(post => stripLangSuffix(post.slug))))
 }
 
 export function getPost(slug: string, lang?: string) {
@@ -41,10 +41,14 @@ export function getPost(slug: string, lang?: string) {
   // Only a language starting with "it" selects Italian, everything else is English
   const normalizedLang: Lang = lang?.toLowerCase().startsWith('it') ? 'it' : 'en'
 
-  // Fall back to the English version when the requested language is missing
-  for (const candidate of [normalizedLang, 'en']) {
+  // Keep single-language articles reachable for either language preference.
+  const candidates: Lang[] = normalizedLang === 'it' ? ['it', 'en'] : ['en', 'it']
+  for (const candidate of candidates) {
     const filePath = path.join(WIKI_PUBLIC_BLOG_DIR, `${slug}.${candidate}.mdx`)
-    if (fs.existsSync(filePath)) return readMDXFile(filePath)
+    if (fs.existsSync(filePath)) {
+      const post = readMDXFile(filePath)
+      if (isPublished(post.metadata)) return { ...post, lang: candidate }
+    }
   }
 
   return null

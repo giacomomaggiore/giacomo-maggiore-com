@@ -1,4 +1,7 @@
 import { SiteTime, SiteViews } from './components/stats'
+import { pageMetadata } from 'lib/seo'
+
+export const metadata = pageMetadata('', 'Giacomo Maggiore', 'Deeply interested in how numbers model money: economic dynamics, time-series analysis, and both quantitative and personal finance.')
 
 export default function Page() {
   return (
