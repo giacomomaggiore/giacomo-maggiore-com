@@ -4,7 +4,7 @@ However, _for a long time,_ this page has not been updated and I can't promise i
 
 _Still,_ I've always had some stable references that I've been consuming for a long time and that I still find valuable.
 
-Therefore, the best way to get periodic inputs is to either 1) <a href="/newsletter" target="_blank">subscribe to the newsletter</a> _(approximately once per month, recently less)_ 2) read <a href="/blog" target="_blank">recent blog posts</a> 3) <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">follow me on LinkedIn</a>.
+Therefore, the best way to get periodic inputs is to either <b>1)</b> <a href="/newsletter" target="_blank">subscribe to the newsletter</a> _(approximately once per month, recently less)_ <b>2)</b> read <a href="/blog" target="_blank">recent blog posts</a> <b>3)</b> <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">follow me on LinkedIn</a>.
 
 Otherwise, always feel free to drop me a message on <a href="https://www.instagram.com/giacomomaggiore/" target="_blank">Instagram</a>, <a href="https://www.linkedin.com/in/giacomo-maggiore-499994263/" target="_blank">LinkedIn</a> or by <a mailto="giaco.maggiore@gmail.com">email</a>.
 

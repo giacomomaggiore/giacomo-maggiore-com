@@ -2480,7 +2480,7 @@ _However,_ empirically this is not the case. Over the period 1983-2009, G10 curr
 
 _Indeed,_ note that even if differences are small, there was no depreciation of high-yielding currencies but a small appreciation.
 
-_In addition to the gain on the interest rate differential, investments in high-yielding currencies earned an extra return from the appreciation, so the <b>currency risk premium</b> is positive _( $\implies$ some compensation for exchange risk when making unhedged investments in high interest rate countries)_ and the returns are <b>negatively skewed</b> _(steady gains for long periods but sudden steep drawdowns happen in bad times)_, suggesting that this is a <b>risk premium rather than a mispricing</b>.
+In addition to the gain on the interest rate differential, investments in high-yielding currencies earned an extra return from the appreciation, so the <b>currency risk premium</b> is positive _($\implies$ some compensation for exchange risk when making unhedged investments in high interest rate countries)_ and the returns are <b>negatively skewed</b> _(steady gains for long periods but sudden steep drawdowns happen in bad times)_, suggesting that this is a <b>risk premium rather than a mispricing</b>.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/uip-2.png)
@@ -2498,7 +2498,7 @@ $$
 s_{t+k} - s_t = \alpha + \beta (i_{t,k} - i^*_{t,k}) + \epsilon_{t+k}
 $$
 
-In the case that UIP is valid, we would have:
+Under a log-return approximation to UIP, we would have:
 - $\alpha = 0$ implies there's no currency risk premium;
 - $\beta = 1$ implies the exchange rates on average exactly offset the yield differential.
 
@@ -2508,19 +2508,21 @@ $$
 s_{t+k} - s_t = \alpha + \beta (f_{t,k} - s_t) + \epsilon_{t+k}
 $$
 
-_In this case,_ we would check if the forward rate is an unbiased predictor of the future spot exchange rate _(still UIP implies $\alpha = 0, \beta = 1$)_.
+_In this case,_ we would check if the log forward rate is an unbiased predictor of the future log spot exchange rate _(under the same approximation, UIP implies $\alpha = 0, \beta = 1$)_.
 
-An alternative but equivalent test of UIP is to investigate <b>if excess log returns</b> are predictable, using the following regression:
+An alternative but equivalent test of UIP is to investigate <b>if excess log returns</b> are predictable. Recall that:
 
 $$
-rx_{t,k} = s_{t+k} - s_t + (i_{t,k} - i_{t,k}^*) + \epsilon_{t+k}
+rx_{t,k} = s_{t+k} - s_t + (i_{t,k}^* - i_{t,k})
 $$
+
+We can estimate:
 
 $$
 rx_{t,k} = \alpha + \beta(i_{t,k} - i_{t,k}^*) + \epsilon_{t+k}
 $$
 
-_Note that_ since we have $rx_{t,k} = s_{t+k} - f_{t+k}$ the regression can also be written as:
+_Note that_ under CIP we have $rx_{t,k} = s_{t+k} - f_{t,k}$, so the regression can also be written as:
 
 $$
 s_{t+k} - f_{t,k} = \alpha + \beta(i_{t,k} - i_{t,k}^{*}) + \varepsilon_{t+k}
@@ -2530,7 +2532,7 @@ $$
 s_{t+k} - f_{t,k} = \alpha + \beta(f_{t,k} - s_t) + \varepsilon_{t+k}
 $$
 
-_Again,_ according to UIP we would expect $\alpha = 0, \beta = 1$.
+_Again,_ under a log-return approximation to UIP we would expect $\alpha = 0, \beta = 0$.
 
 _In the case_ $\beta \neq 0$, the expected currency excess returns are time-varying and predictable.
 
@@ -2546,19 +2548,19 @@ $$
 
 where by construction $\alpha_1 + \alpha_2 = 0, \beta_1 + \beta_2 = 1$.
 
-In this case, Fama in 1984 found that $\beta_1 = 0$ `\beta_2 = \` are mostly rejected.
+In this case, Fama in 1984, in the paper <a href="https://doi.org/10.1016/0304-3932(84)90046-1" target="_blank">"Forward and Spot Exchange Rates"</a>, found that the restrictions $\beta_1 = 0$ and $\beta_2 = 1$ are often rejected.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/uip-3.png)
 </div>
 
-_Furthermore,_ when estimating the regression $s_{t+k} - s_t = \alpha + \beta(i_{t,k} - i_{t,k}^*)$ in the period 1979-2011, Chinna and Quayyun in 2012 found that <b>is rejected in most countries</b>:
+_Furthermore,_ Chinn and Quayyum, in their 2012 paper <a href="https://doi.org/10.3386/w18482" target="_blank">"Long Horizon Uncovered Interest Parity Re-Assessed"</a>, found that UIP is often rejected at short horizons in data through 2011:
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/uip-4.png)
 </div>
 
-_However,_ in the form $s_{t+k} - s_t = \alpha + \beta(i_{t,k} - i_{t,k}^*) + \epsilon_{t+k}$ there are fewer rejections of UIP; _moreover,_ most $\beta$ estimates are positive, as shown before:
+_However,_ at longer horizons there are fewer rejections of UIP; _moreover,_ most $\beta$ estimates are positive, as shown below:
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/uip-5.png)
@@ -2572,7 +2574,7 @@ This means that there could be profitable opportunities _(i.e. we can capture a 
 <br/>
 <b>Carry</b>
 
-The <a href="" target="_blank"> carry trade </a> is a popular trading strategy that exploits <b>deviations from the UIP</b>. The idea behind carry trade is that we <b>borrow in low interest rate</b> currencies and we <b>lend in high interest rate </b> currencies.
+The <a href="https://www.britannica.com/money/carry-trade" target="_blank">carry trade</a> is a popular trading strategy that exploits <b>deviations from the UIP</b>. The idea behind carry trade is that we <b>borrow in low interest rate</b> currencies and we <b>lend in high interest rate </b> currencies.
 
 _Recall_ that the excess return from borrowing in a domestic currency and investing in foreign currency is:
 
@@ -2581,7 +2583,7 @@ R_{t,k}^{e} = \frac{S_{t+k}}{S_t}(1 + I_{t,k}^{*}) - (1 + I_{t,k}).
 $$
 
 
-The carry trade implies going long on the foreign currency that has $I_{t,l}^* - I_{t,k} > 0$ and short otherwise. _Therefore,_ carry trade excess returns are:
+The carry trade implies going long on the foreign currency when $I_{t,k}^* - I_{t,k} > 0$ and short otherwise. _Therefore,_ carry trade excess returns are:
 
 $$
 R_{t,k}^{C} = \operatorname{sign}[I_{t,k}^{*} - I_{t,k}]
@@ -2600,7 +2602,7 @@ $$
 R_{t,1}^{M} = \operatorname{sign}[R_{t-1,1}^{e}]R_{t,1}^{e}
 $$
 
-_In particular,_ they found that the carry trade strategy earns large risk-adjusted returns that are <b>uncorrelated with those of currency momentum</b> and that <b>skewness</b> is negative but insificant.
+_In particular,_ they found that the carry trade strategy earns large risk-adjusted returns that are <b>uncorrelated with those of currency momentum</b> and that <b>skewness</b> is negative but insignificant.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/carry-1.png)
@@ -2647,7 +2649,7 @@ _Thus,_ the correlation of the first principal component with RX is 0.99 and the
 
 The risk prices of the two factors can be estimated using a cross-sectional regression of average returns on the factor exposures or the Fama-MacBeth approach. (The constant is assumed to be zero.)
 
-_In particular,_ price estimates are 1.34\$ per year for the dollar factor and 5.50% a year for the carry factor.
+_In particular,_ price estimates are 1.34% per year for the dollar factor and 5.50% a year for the carry factor.
 
 Regressing the excess returns of the portfolios on the factors reveals that the alphas of portfolios 2 and 4 are significant at the 5% level, while those of the other portfolios are not.
 
@@ -2669,15 +2671,15 @@ The carry factor has <b>poor returns in bad times</b>, in particular if we refer
 <br/>
 <b>Carry and FX volatility risk</b>
 
-Menkhoff et al. in their 2012 paper titled " investigated the impact of <b>unexpected global FX volatility</b> on the returns of carry trade strategies.
+Menkhoff et al. in their 2012 paper <a href="https://doi.org/10.1111/j.1540-6261.2012.01728.x" target="_blank">"Carry Trades and Global Foreign Exchange Volatility"</a> investigated the impact of <b>unexpected global FX volatility</b> on the returns of carry trade strategies.
 
 They define global FX volatility as:
 
 $$
 \sigma_t^{FX} = \frac{1}{T_t}
-\sum_{\tau \in T_t}
+\sum_{\tau \in t}
 \left[
-\sum_{k \in K_\tau}
+\sum_{k=1}^{K_\tau}
 \left(\frac{|r_\tau^k|}{K_\tau}\right)
 \right]
 $$
@@ -2690,8 +2692,51 @@ They measure unexpected volatility shocks using innovations from an AR(1) proces
 ![Bias variance tradeoff](/images/notes/third-semester/carry-6.png)
 </div>
 
-_The idea (and the findings!)_ say that <b>high interest rate urrencies</b> react <b>negatielu to volatility shocks</b> explaining why they earn a positive premium _(and the opposute applies for low interest rate currencies tha reacts positevely)_
+_The idea (and the findings!)_ say that <b>high interest rate currencies</b> react <b>negatively to volatility shocks</b>, explaining why they earn a positive premium _(and the opposite applies for low interest rate currencies that react positively)_.
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/carry-7.png)
 </div>
+---
+<br/>
+<b>Carry crashes</b>
+
+Jurek in 2014, in his paper <a href="https://doi.org/10.1016/j.jfineco.2014.05.004" target="_blank">"Crash-Neutral Currency Carry Trades"</a>, investigated if the carry risk premium is affected by the <b>peso problem</b>, _i.e._ by the possibility that some infrequent or unprecedented event may occur and affect asset prices.
+
+_In particular,_ he studied G10 currency carry trades from January 1990 to June 2012, comparing unconstrained strategies with variants that are dollar-neutral at all times. Both use either equal weights or spread weights _(larger positions for currencies with larger interest-rate differences against the dollar)_. The findings, _in the table below,_ show that returns on the strategies are <b>negatively skewed</b>:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-8.png)
+</div>
+
+_Note that_ the dollar-neutral performance is slightly different from the unconstrained one because the unconstrained one had negative average net exposure to the US and the USD depreciated during the period.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-9.png)
+</div>
+
+_Then,_ to assess the importance of crash risk, the author compares the returns of these strategies with those of strategies that are hedged using out-of-the-money options with a Delta of 10%.
+
+In this case, hedging was done in three ways:
+- <b>hierarchical hedging</b> using all the 45 G10 cross-rate options using the fewest number of options possible
+- <b>combinatorial hedging</b> using the full set of cross-rate options and creating all the possible pairs
+- <b>variant</b> of the combinatorial hedging in which each long/short currency position is hedged using the corresponding currency/USD option.
+
+They showed that hedging <b>removes most of the negative skewness</b> in returns but, _as expected,_ reduced average returns by 20 to 50 bps a year.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-10.png)
+</div>
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-11.png)
+</div>
+
+_Furthermore,_ note that accounting for transaction costs increases estimates of the jump risk premium to 1.3–1.6% per year. These costs increase the cost of the option hedge and therefore the difference in returns between the unhedged and hedged portfolios.
+
+_Therefore,_ tail risk accounts for at most one third of carry returns and the crash premium is then relatively modest in FX.
+
+---
+<br/>
+<b>Dollar Carry</b>
