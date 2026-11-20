@@ -1513,7 +1513,7 @@ $$
 
 - <b>Investment factor </b> (conservative minus aggressive portfolios), sorting companies based on the percentage growth in total assets.
 
-_As we should expect_, intercepts are much smaller when using 5 factors than when using the previous model _(so it performs better in terms of mispricing $\implies \alpha$ is negligible)_. _In particular,_ the profitability factor shows that firms with <b>operating profitability have higher results</b>. _Similarly,_ firms that <b>invest little have higher average returns</b> compared to firms that do less.
+_As we should expect_, intercepts are much smaller when using 5 factors than when using the previous model _(so it performs better in terms of mispricing $\implies \alpha$ is negligible)_. _In particular,_ the profitability factor shows that firms with <b>operating profitability have higher results</b>. _Similarly,_ firms that <b>invest little have higher average returns</b> compared to firms that invest more.
 
 _However,_ note that the profitability and investment factors may overlap with the value factor; we could indeed explain the premium of the value factor by its exposure to the other factors, making the <b>value factor redundant</b>.
 
@@ -1909,7 +1909,7 @@ _Note that_ this must hold both ex post _(using realized values, i.e. the curren
 
 <b>Fama–Bliss Regressions</b>
 
-The decomposition of the forward-spot spread for $n = 2$ suggests two complementary regressions, first run by Fama and Bliss in 1987. Indeed, from:
+The decomposition of the forward-spot spread for $n = 2$ suggests two complementary regressions, first run by Fama and Bliss in 1987 in <a href="https://econpapers.repec.org/RePEc:aea:aecrev:v:77:y:1987:i:4:p:680-92" target="_blank">"The Information in Long-Maturity Forward Rates"</a>. Indeed, from:
 
 $$
 f_t^{(2)} - y_t^{(1)}
@@ -2024,7 +2024,7 @@ $$
 \mathbb{E}_t\left[y_{t+1}^{(n-1)}\right] - y_t^{(n)} = \frac{y_t^{(n)} - y_t^{(1)}}{n-1} - \frac{1}{n-1}\, rph^{(n)} \, .
 $$
 
-This suggests that we can test the EH with two regressions using yield spreads instead of the forward-spot spread, as done by Campbell and Shiller in 1991:
+This suggests that we can test the EH with two regressions using yield spreads instead of the forward-spot spread, as done by Campbell and Shiller in 1991 in <a href="https://www.nber.org/papers/w3153" target="_blank">"Yield Spreads and Interest Rate Movements: A Bird's Eye View"</a>:
 
 $$
 \frac{1}{n}\sum_{i=0}^{n-1}\left(y_{t+i}^{(1)}\right) - y_t^{(1)} = \alpha + \beta\left(y_t^{(n)} - y_t^{(1)}\right) + \varepsilon_{t+n-1} \, ,
@@ -2038,7 +2038,7 @@ _Again,_ the EH predicts $\beta = 1$, $b = 1$; that means that, if the EH holds,
 - an increase in future short rates;
 - an increase in future long rates.
 
-_Empirically,_ $\beta \approx 1$ _(i.e. yield spreads do predict changes in short rates)_ and it is significant, so the EH seems to hold, _as we can see in the results proposed by Tang and Xia in 2007, where the results correspond to the regression problem stated in the first regression:_
+_Empirically,_ $\beta \approx 1$ _(i.e. yield spreads do predict changes in short rates)_ and it is significant, so the EH seems to hold, _as we can see in the results proposed by Tang and Xia in 2007 in <a href="https://doi.org/10.1017/S0022109000002180" target="_blank">"An International Examination of Affine Term Structure Models and the Expectations Hypothesis"</a>, where the results correspond to the regression problem stated in the first regression:_
 
 <div align = "center">
 ![Bias variance tradeoff](/images/notes/third-semester/bonds-5.png)
@@ -2589,7 +2589,7 @@ $$
 
 _Note that_ an $R_{t,k}^{e} = \frac{S_{t+k}}{S_t}(1 + I_{t,k}^{*}) - (1 + I_{t,k})$.
 
-But... what about its profitability? Burnside et al. in 2011 investigate the profitability of the carry trade as well as the momentum for the period 1976-2010.
+But... what about its profitability? Burnside et al. in 2011 investigate the profitability of the carry trade as well as the momentum for the period 1976-2010 in <a href="https://www.nber.org/papers/w16942" target="_blank">"Carry Trade and Momentum in Currency Markets"</a>.
 
 In this case, the <b>carry portfolio</b> is an <b>equally weighted portfolio</b> of up to 20 individual currency carry trades against the USD. _Then,_ for each currency, the carry return defined before is computed each month, so the portfolio return is the average of the returns across all currencies.
 
@@ -2619,7 +2619,7 @@ _Furthermore,_ as we should expect, carry trade returns cannot be explained by e
 <br/>
 <b>Carry as a factor</b>
 
-Lustig et al. in 2011 investigate the returns of currency carry portfolios during the period 1983-2009.
+Lustig et al. in 2011 investigate the returns of currency carry portfolios during the period 1983-2009 in <a href="https://www.jstor.org/stable/41301998" target="_blank">"Common Risk Factors in Currency Markets"</a>.
 
 They studied a number of currencies that varies over time _(9 at the beginning, 26 at the end, max 34)_.
 
@@ -2738,7 +2738,7 @@ _Therefore,_ tail risk accounts for at most one third of carry returns and the c
 <br/>
 <b>Dollar Carry</b>
 
-Lustig et al., in their 2014 paper "" studied an investment strategy which they called the <b>"dollar carry trade"</b> that exploits the time-series variation in the difference between the <b>US interest rate and the average interest rate</b> in other countries, with the idea of doing the following with <b>quarterly rebalancing</b>:
+Lustig et al., in their 2014 paper <a href="https://doi.org/10.1016/j.jfineco.2013.12.005" target="_blank">"Countercyclical Currency Risk Premia"</a>, studied an investment strategy which they called the <b>"dollar carry trade"</b> that exploits the time-series variation in the difference between the <b>US interest rate and the average interest rate</b> in other countries, with the idea of doing the following with <b>quarterly rebalancing</b>:
 - going long on the basket of currencies and short the dollar when the foreign short-term interest rate is above the US interest rate _(typically happening during recessions)_
 - do the opposite otherwise
 
@@ -2754,4 +2754,4 @@ _The idea_ behind it is that its profitability arises from the fact that aggrega
 
 _However,_ note that if the traditional carry trade has a <b>global risk</b> _(that averages out specific country risk going both long and short on currencies)_, the dollar carry trade also has <b>country-specific risk</b>.
 
-Indeed, regressions show that the average forward discount versus the USD and the change in the <a href="" target="_blank">US industrial production index</a> explain up to 25% of the variation in the average returns by shorting USD and going long in other currencies.
+Indeed, regressions show that the average forward discount versus the USD and the change in the <a href="https://fred.stlouisfed.org/series/INDPRO" target="_blank">US industrial production index</a> explain up to 25% of the variation in the average returns by shorting USD and going long in other currencies.
