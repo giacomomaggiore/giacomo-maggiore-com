@@ -118,70 +118,34 @@ function getFromAddress(): string {
 // URLs go into an href, where a bare & is invalid HTML
 const escapeAttr = (value: string) => value.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
 
-// Both emails carry a plain-text part: spam filters expect a text alternative to the HTML
+// Include a plain-text part as an alternative to the HTML
 export async function sendConfirmationEmail(email: string, confirmUrl: string): Promise<void> {
   const { error } = await getResend().emails.send({
     from: getFromAddress(),
     to: email,
-    subject: 'Please confirm your subscription',
+    subject: 'please confirm your sub',
     replyTo: REPLY_TO,
     html: `
-      <p>Ciao! thanks for signing up.</p>
-      <p>To start receiving my newsletter, please confirm your email address by clicking <a href="${escapeAttr(confirmUrl)}">here</a>. It works for 48 hours.</p>
-      <p>If you didn't sign up, just ignore this email and nothing will happen. Questions? Reply to this email.</p>
+      <p>ciao! thanks for signing up.</p>
+      <p>to start receiving my newsletter, please confirm your email address by clicking <a href="${escapeAttr(confirmUrl)}">here</a>. It works for 48 hours.</p>
+      <p>questions? reply to this email.</p>
 
-      <p>See you<br/>Giacomo</p>
+      <p>see you<br/>Giacomo</p>
     `,
     text: [
-      'Ciao! thanks for signing up.',
+      'ciao! thanks for signing up.',
       '',
-      'To start receiving it, please confirm your email address by opening this link (it works for 48 hours):',
+      'to start receiving it, please confirm your email address by opening this link (it works for 48 hours):',
       confirmUrl,
       '',
-      "If you didn't sign up, just ignore this email. Questions? Reply to this email.",
+      'questions? reply to this email.',
       '',
-      'See you',
+      'see you',
       'Giacomo',
     ].join('\n'),
   })
 
   if (error) {
     throw new Error(error.message || 'Failed to send confirmation email')
-  }
-}
-
-export async function sendWelcomeEmail(email: string, unsubscribeUrl: string): Promise<void> {
-  const { error } = await getResend().emails.send({
-    from: getFromAddress(),
-    to: email,
-    subject: 'See you in the next one, ciao!',
-    replyTo: REPLY_TO,
-    // Lets mail clients show a native unsubscribe button (RFC 8058 one-click)
-    headers: {
-      'List-Unsubscribe': `<${unsubscribeUrl}>`,
-      'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-    },
-    html: `
-      <p>Ciao! Thanks for confirming. You're on the list. I'll only write when there's something new worth sharing, approx. one email a month.</p>
-      <p>If this landed in promotions, move it to primary so the next ones don't get lost.</p>
-      <p>If you ever change your mind, you can unsubscribe anytime by clicking <a href="${escapeAttr(unsubscribeUrl)}">here</a>.</p>
-
-      <p>See you<br/>Giacomo</p>
-    `,
-    text: [
-      'Ciao! Thanks for confirming. You\'re on the list. I\'ll only write when there\'s something new worth sharing, approx. one email a month.',
-      '',
-      "If this landed in promotions, move it to primary so the next ones don't get lost.",
-      '',
-      'If you ever change your mind, you can unsubscribe anytime here:',
-      unsubscribeUrl,
-      '',
-      'See you,',
-      'Giacomo',
-    ].join('\n'),
-  })
-
-  if (error) {
-    throw new Error(error.message || 'Failed to send welcome email')
   }
 }

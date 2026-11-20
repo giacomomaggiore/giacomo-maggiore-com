@@ -94,7 +94,7 @@ NEXT_PUBLIC_POSTHOG_HOST=...       # PostHog host for the browser
 POST_HOG_API_KEY=...               # page-view counters (PostHog API)
 RESEND_API_KEY=...                 # newsletter
 RESEND_AUDIENCE_ID=...             # newsletter list
-NEWSLETTER_FROM_EMAIL=...          # sender of the confirmation and welcome emails (a verified Resend domain)
+NEWSLETTER_FROM_EMAIL=...          # sender of confirmation emails (a verified Resend domain)
 NEWSLETTER_UNSUBSCRIBE_SECRET=...  # signs confirmation and unsubscribe links
 NEXT_PUBLIC_SITE_URL=...           # public site address, used in email links
 

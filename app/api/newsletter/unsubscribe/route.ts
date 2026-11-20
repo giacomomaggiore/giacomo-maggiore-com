@@ -14,7 +14,7 @@ async function unsubscribe(req: Request): Promise<boolean> {
   return !error
 }
 
-// Link clicked from the welcome email
+// Link clicked from an email
 export async function GET(req: Request) {
   const ok = await unsubscribe(req)
   const backUrl = new URL(getSiteOrigin(req))
