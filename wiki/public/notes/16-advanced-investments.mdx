@@ -2737,3 +2737,21 @@ _Therefore,_ tail risk accounts for at most one third of carry returns and the c
 ---
 <br/>
 <b>Dollar Carry</b>
+
+Lustig et al., in their 2014 paper "" studied an investment strategy which they called the <b>"dollar carry trade"</b> that exploits the time-series variation in the difference between the <b>US interest rate and the average interest rate</b> in other countries, with the idea of doing the following with <b>quarterly rebalancing</b>:
+- going long on the basket of currencies and short the dollar when the foreign short-term interest rate is above the US interest rate _(typically happening during recessions)_
+- do the opposite otherwise
+
+For the period 1983-2010, the strategy has a Sharpe ratio of 0.66 when using developed country currencies and 0.56 when using all currencies and, _more importantly,_ the correlation with the standard carry trade and equities is low.
+
+_In particular,_ the dollar carry trade performs _(slightly)_ better than the traditional carry trade that goes long the top currency bucket and short the bottom currency bucket sorted on interest rate differentials.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/carry-12.png)
+</div>
+
+_The idea_ behind it is that its profitability arises from the fact that aggregate returns on the currency market are predictable and <b>expected currency returns against USD are countercyclical</b> _(up in US recessions and down in US expansions $\implies$ when the US economy is going down the USD tends to depreciate)_.
+
+_However,_ note that if the traditional carry trade has a <b>global risk</b> _(that averages out specific country risk going both long and short on currencies)_, the dollar carry trade also has <b>country-specific risk</b>.
+
+Indeed, regressions show that the average forward discount versus the USD and the change in the <a href="" target="_blank">US industrial production index</a> explain up to 25% of the variation in the average returns by shorting USD and going long in other currencies.
