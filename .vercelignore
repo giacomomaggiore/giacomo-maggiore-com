@@ -1,0 +1,2 @@
+# Internal analysis never belongs in a CLI deployment.
+/wiki/notebooks/

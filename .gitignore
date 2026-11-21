@@ -32,6 +32,9 @@
 wiki/source/
 wiki/archive/
 
+# local analysis notebooks, inputs and outputs
+/wiki/notebooks/
+
 # python virtualenv (chart scripts)
 .venv
 

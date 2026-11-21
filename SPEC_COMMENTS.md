@@ -1,6 +1,6 @@
 # Public comments — implementation specification
 
-**Status:** Approved product direction; not implemented. This is the handoff for the implementing agent. Read the repository instructions before editing. This document does not authorize provisioning, a production migration, a commit, a push, or a deployment.
+**Status:** Implemented in the repository. This document preserves the original design and acceptance criteria; its prescriptive language and planning-time provider limits are historical. See [current behavior](docs/agent/architecture.md#comments) and the [operating notes](README.md#public-comments). The implementation in source is authoritative; this document does not confirm deployment or authorize provisioning, a production migration, a commit, a push, or a deployment.
 
 ## 1. Goal and scope
 

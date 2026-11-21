@@ -18,5 +18,5 @@ export default function NotePage({ params }: { params: { slug: string } }) {
   const post = getNote(params.slug)
   if (!post) notFound()
 
-  return <ArticlePage post={post} lang={post.slug === '01-math-finance' ? 'it' : 'en'} pageKey={`/notes/${post.slug}`} viewsUrl={`${baseUrl}/notes/${post.slug}`} />
+  return <ArticlePage post={post} lang={post.slug === '01-math-finance' ? 'it' : 'en'} viewsUrl={`${baseUrl}/notes/${post.slug}`} />
 }

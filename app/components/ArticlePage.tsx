@@ -9,7 +9,7 @@ type ArticlePageProps = {
   lang: 'en' | 'it'
   // Page URL whose PostHog events are counted as "Page views"
   viewsUrl: string
-  pageKey: string
+  pageKey?: string
 }
 
 // Page body shared by /blog/[slug] and /notes/[slug]
@@ -29,7 +29,7 @@ export function ArticlePage({ post, lang, viewsUrl, pageKey }: ArticlePageProps)
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
-      <Comments pageKey={pageKey} />
+      {pageKey && <Comments pageKey={pageKey} />}
     </section>
   )
 }

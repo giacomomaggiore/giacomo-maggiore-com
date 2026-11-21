@@ -75,7 +75,7 @@ function Composer({ pageKey, parentId, label, disabled, onPosted, onBusyChange }
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-3">
       {label && <p className="mb-2 text-sm text-neutral-600 dark:text-neutral-400">{label}</p>}
       <div className="flex items-start gap-2 rounded border border-neutral-300 p-2 dark:border-neutral-700">
         <textarea aria-label={label || 'Add a comment'} placeholder="Add a comment…" rows={2} value={body}
@@ -172,20 +172,20 @@ export function Comments({ pageKey }: { pageKey: string }) {
     setActiveReply(null)
   }
 
-  return <section ref={section} className="ph-no-capture mt-12" aria-labelledby="comments-heading">
+  return <section ref={section} className="ph-no-capture mt-8 border-t border-neutral-200 pt-4 dark:border-neutral-800" aria-labelledby="comments-heading">
     <h2 id="comments-heading" className="text-xl font-medium">Comments</h2>
     {state === 'ready' && <Composer pageKey={pageKey} parentId={null} disabled={submitting} onPosted={posted} onBusyChange={setSubmitting} />}
-    <div role="status" aria-live="polite" className="mt-4 text-sm text-neutral-600 dark:text-neutral-400">
+    <div role="status" aria-live="polite" className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
       {(state === 'waiting' || state === 'loading') && 'Loading comments…'}
       {state === 'error' && <>Comments are temporarily unavailable. <button type="button" className={buttonStyle} onClick={load}>Retry</button></>}
       {state === 'ready' && !thread.comments.length && 'No comments yet.'}
       {loadError}
     </div>
-    {state === 'ready' && <div className="mt-6 space-y-8">
+    {state === 'ready' && <div className="mt-3 space-y-4">
       {thread.comments.map(comment => <div key={comment.id}>
         <CommentView comment={comment} onReply={submitting ? undefined : () => setActiveReply(activeReply === comment.id ? null : comment.id)} />
         {activeReply === comment.id && <div className="ml-4"><Composer pageKey={pageKey} parentId={comment.id} label={`Replying to ${comment.deletedAt ? 'a deleted comment' : comment.displayName}`} disabled={submitting} onPosted={posted} onBusyChange={setSubmitting} /></div>}
-        <div className="ml-4 mt-4 space-y-5">
+        <div className="ml-4 mt-2 space-y-3">
           {thread.replies[comment.id]?.comments.map(reply => <CommentView key={reply.id} comment={reply} />)}
           {thread.replies[comment.id]?.nextCursor && <button type="button" className={buttonStyle} disabled={loadingMore} onClick={() => more(comment.id)}>Load more replies</button>}
         </div>
