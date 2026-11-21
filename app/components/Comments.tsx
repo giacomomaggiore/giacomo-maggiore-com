@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { Comment, CommentPage, ThreadPage } from 'lib/comments/store'
 import { bodyError, nameError, normalizeName } from 'lib/comments/validation'
 
@@ -31,8 +31,20 @@ function Composer({ pageKey, parentId, label, disabled, onPosted, onBusyChange }
   const [error, setError] = useState('')
   const busy = useRef(false)
   const nameRef = useRef<HTMLInputElement>(null)
+  const bodyRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => { if (confirming) nameRef.current?.focus() }, [confirming])
+  useLayoutEffect(() => {
+    const textarea = bodyRef.current
+    if (!textarea) return
+    const resize = () => {
+      textarea.style.height = 'auto'
+      textarea.style.height = `${textarea.scrollHeight}px`
+    }
+    resize()
+    window.addEventListener('resize', resize)
+    return () => window.removeEventListener('resize', resize)
+  }, [body, confirming])
 
   function prepare() {
     const message = bodyError(body)
@@ -75,12 +87,12 @@ function Composer({ pageKey, parentId, label, disabled, onPosted, onBusyChange }
   }
 
   return (
-    <div className="mt-3">
+    <div className="mt-2">
       {label && <p className="mb-2 text-sm text-neutral-600 dark:text-neutral-400">{label}</p>}
-      <div className="flex items-start gap-2 rounded border border-neutral-300 p-2 dark:border-neutral-700">
-        <textarea aria-label={label || 'Add a comment'} placeholder="Add a comment…" rows={2} value={body}
+      <div className="flex items-center gap-2 rounded border border-neutral-300 p-2 dark:border-neutral-700">
+        <textarea ref={bodyRef} aria-label={label || 'Add a comment'} placeholder="Add a comment…" rows={1} value={body}
           onChange={event => setBody(event.target.value)} disabled={disabled || posting}
-          className="min-w-0 flex-1 resize-y border-0 bg-transparent p-1 outline-offset-2 focus-visible:outline" />
+          className="min-w-0 flex-1 resize-none overflow-hidden border-0 bg-transparent p-1 outline-offset-2 focus-visible:outline" />
         {!confirming && <button type="button" className={buttonStyle} disabled={disabled} onClick={prepare}>Post</button>}
       </div>
       <div className="absolute left-[-10000px]" aria-hidden="true">
@@ -172,20 +184,20 @@ export function Comments({ pageKey }: { pageKey: string }) {
     setActiveReply(null)
   }
 
-  return <section ref={section} className="ph-no-capture mt-8 border-t border-neutral-200 pt-4 dark:border-neutral-800" aria-labelledby="comments-heading">
-    <h2 id="comments-heading" className="text-xl font-medium">Comments</h2>
+  return <section ref={section} className="ph-no-capture mt-8 border-t border-neutral-200 pt-3 dark:border-neutral-800" aria-labelledby="comments-heading">
+    <h2 id="comments-heading" className="text-xl font-bold">Comments</h2>
     {state === 'ready' && <Composer pageKey={pageKey} parentId={null} disabled={submitting} onPosted={posted} onBusyChange={setSubmitting} />}
-    <div role="status" aria-live="polite" className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+    <div role="status" aria-live="polite" className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
       {(state === 'waiting' || state === 'loading') && 'Loading comments…'}
       {state === 'error' && <>Comments are temporarily unavailable. <button type="button" className={buttonStyle} onClick={load}>Retry</button></>}
       {state === 'ready' && !thread.comments.length && 'No comments yet.'}
       {loadError}
     </div>
-    {state === 'ready' && <div className="mt-3 space-y-4">
+    {state === 'ready' && <div className="mt-2 space-y-3">
       {thread.comments.map(comment => <div key={comment.id}>
         <CommentView comment={comment} onReply={submitting ? undefined : () => setActiveReply(activeReply === comment.id ? null : comment.id)} />
         {activeReply === comment.id && <div className="ml-4"><Composer pageKey={pageKey} parentId={comment.id} label={`Replying to ${comment.deletedAt ? 'a deleted comment' : comment.displayName}`} disabled={submitting} onPosted={posted} onBusyChange={setSubmitting} /></div>}
-        <div className="ml-4 mt-2 space-y-3">
+        <div className="ml-4 mt-1 space-y-2">
           {thread.replies[comment.id]?.comments.map(reply => <CommentView key={reply.id} comment={reply} />)}
           {thread.replies[comment.id]?.nextCursor && <button type="button" className={buttonStyle} disabled={loadingMore} onClick={() => more(comment.id)}>Load more replies</button>}
         </div>
