@@ -115,15 +115,15 @@ function Composer({ pageKey, parentId, label, disabled, onPosted, onBusyChange }
 }
 
 function CommentView({ comment, onReply }: { comment: Comment; onReply?: () => void }) {
-  return <div className="min-w-0">
-    <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-      <span className={comment.deletedAt ? 'text-neutral-500' : 'font-semibold'}>{comment.deletedAt ? 'Deleted comment' : comment.displayName}</span>
-      <div className="flex items-baseline gap-2 text-sm">
-        {onReply && <button type="button" className={buttonStyle} onClick={onReply}>Reply</button>}
-        <time className="text-neutral-600 dark:text-neutral-400" dateTime={comment.createdAt}>{localDate(comment.createdAt)}</time>
-      </div>
-    </div>
-    {comment.body && <p className="whitespace-pre-wrap [overflow-wrap:anywhere]">{comment.body}</p>}
+  return <div className="min-w-0 [overflow-wrap:anywhere]">
+    {comment.deletedAt
+      ? <span className="text-neutral-500">Deleted comment</span>
+      : <><strong className="font-bold">{comment.displayName}:</strong>{' '}<span className="whitespace-pre-wrap italic">{comment.body}</span></>}
+    {' '}<span aria-hidden="true" className="text-xl font-bold leading-none text-neutral-500">•</span>{' '}
+    <time className="whitespace-nowrap text-sm text-neutral-600 dark:text-neutral-400" dateTime={comment.createdAt}>{localDate(comment.createdAt)}</time>
+    {onReply && <>{' '}<span aria-hidden="true" className="text-xl font-bold leading-none text-neutral-500">•</span>{' '}
+      <button type="button" className="relative -my-2 inline-block py-2 text-sm underline underline-offset-2 focus-visible:outline focus-visible:outline-offset-2" onClick={onReply} aria-label={`Reply to ${comment.deletedAt ? 'a deleted comment' : comment.displayName}`}>reply</button>
+    </>}
   </div>
 }
 
