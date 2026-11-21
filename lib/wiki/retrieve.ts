@@ -159,14 +159,9 @@ export function retrieveHybrid(
     const scored = index.notes
       .map((note, i) => ({
         i,
-        title: note.title,
         score: note.embedding ? cosineSim(queryEmbedding, note.embedding) : -2,
       }))
       .sort((a, b) => b.score - a.score)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[retrieve] cosine similarities:')
-      scored.forEach(({ title, score }) => console.log(`  ${score.toFixed(4)}  ${title}`))
-    }
     scored.forEach(({ i }, rank) => embRank.set(i, rank))
   }
 

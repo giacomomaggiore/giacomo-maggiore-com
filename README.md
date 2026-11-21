@@ -75,8 +75,8 @@ Four helpers live in `.github/skills/`. In your AI coding tool, type `/` and pic
 
 1. You type a question.
 2. The system searches all notes two ways at once — by keyword, and by meaning (AI similarity) — then combines the results.
-3. The best passages of the 8 best-matching notes are handed to an AI, which answers using only those passages (about 30,000 characters at most, to keep it cheap and fast).
-4. Public notes appear as clickable links; private notes are mentioned by title only.
+3. The best passages of the 8 best-matching notes are handed to an AI, which answers from those passages (about 30,000 characters at most, to keep it cheap and fast). Questions about Giacomo can also use the profile in the prompt.
+4. All notes supplied to the AI are listed as sources, whether or not the answer uses them. Public notes appear as clickable links; private notes are mentioned by title only.
 5. If no `OPENAI_API_KEY` is set, search still works by keyword alone — just without the AI matching.
 6. To limit cost, each visitor can ask up to 15 questions per minute.
 
