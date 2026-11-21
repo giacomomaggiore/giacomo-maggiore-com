@@ -55,3 +55,4 @@ yarn-error.log*
 next-env.d.ts
 
 temp.md
+.neon

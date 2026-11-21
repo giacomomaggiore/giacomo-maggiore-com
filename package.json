@@ -13,6 +13,7 @@
     "prebuild": "tsx scripts/build-wiki-index.ts && tsx scripts/assert-no-private-pages.ts"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.3.14",
     "tsx": "^4.0.0"
   },
   "resolutions": {
@@ -20,6 +21,9 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
+    "@neon/config": "^1.14.6",
+    "@neon/env": "^2.1.9",
+    "@neondatabase/serverless": "^0.10.4",
     "@next/third-parties": "^15.3.5",
     "@tailwindcss/postcss": "4.0.0-alpha.13",
     "@types/node": "20.11.17",

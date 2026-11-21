@@ -2,16 +2,18 @@ import { formatDate } from 'lib/dates'
 import type { Metadata } from 'lib/wiki/frontmatter'
 import { CustomMDX } from './mdx'
 import { PageViews } from './stats'
+import { Comments } from './Comments'
 
 type ArticlePageProps = {
   post: { metadata: Metadata; content: string }
   lang: 'en' | 'it'
   // Page URL whose PostHog events are counted as "Page views"
   viewsUrl: string
+  pageKey: string
 }
 
 // Page body shared by /blog/[slug] and /notes/[slug]
-export function ArticlePage({ post, lang, viewsUrl }: ArticlePageProps) {
+export function ArticlePage({ post, lang, viewsUrl, pageKey }: ArticlePageProps) {
   return (
     <section lang={lang}>
       <h1 className="title font-semibold text-2xl tracking-tighter">
@@ -27,6 +29,7 @@ export function ArticlePage({ post, lang, viewsUrl }: ArticlePageProps) {
       <article className="prose">
         <CustomMDX source={post.content} />
       </article>
+      <Comments pageKey={pageKey} />
     </section>
   )
 }

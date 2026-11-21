@@ -25,5 +25,5 @@ export default async function BlogPage({ params }: { params: { slug: string } })
   if (!post) notFound()
 
   // Views are always counted on the production URL, also when running locally
-  return <ArticlePage post={post} lang={post.lang} viewsUrl={`${PRODUCTION_URL}/blog/${params.slug}`} />
+  return <ArticlePage post={post} lang={post.lang} pageKey={`/blog/${params.slug}`} viewsUrl={`${PRODUCTION_URL}/blog/${params.slug}`} />
 }

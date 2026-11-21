@@ -8,5 +8,9 @@ if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
     api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     // Next.js navigates without reloading, so also count in-site link clicks as page views
     capture_pageview: 'history_change',
+    session_recording: {
+      maskCapturedNetworkRequestFn: (request) =>
+        new URL(request.name, window.location.origin).pathname === '/api/comments' ? null : request,
+    },
   })
 }

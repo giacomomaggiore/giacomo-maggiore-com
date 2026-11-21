@@ -784,8 +784,8 @@ def box_muller(n, rng=np.random.default_rng()):
     r = np.sqrt(-2*np.log(u1))
     theta = 2*np.pi*u2
     z = np.empty(2*m)
-    z[0::2] = r*np.cos(theta)
-    z[1::2] = r*np.sin(theta)
+    z[0::2] = r*np.cos(theta)   # x-coordinates -> even slots
+    z[1::2] = r*np.sin(theta)   # y-coordinates -> odd slots
     return z[:n]
 
 z = box_muller(100_000, rng)
@@ -794,6 +794,10 @@ print("variance ≈", z.var())
 
 #mean ≈ -0.0024074937397393107
 # variance ≈ 1.0033222307341456
+
+_Note that in this specific function, we are sampling $m$ points in $\mathbb{R}^2$ and then "unrolling" their coordinates to get back with $n$ individual numbers in $\mathbb{R}^1$.
+
+_Indeed,_ instead of returning a 2D array of shape $(m, 2)$ (which would represent $m$ points in $\mathbb{R}^2$), the function allocates a 1D array z of length $2 * m$.
 
 ```
 <br/>
@@ -979,10 +983,13 @@ for n in [10, 20, 40, 80]:
 We now proceed with another method for numerical integration _(quadrature)_ in one dimension. We first divide the interval $[a,b]$ into $n$ subintervals of equal width $h = (b-a)/n$, then we can set:
 
 $$
-T_{[a,b]}^n[f] = h \left[ \frac{f(a) + f(b)}{2} + \sum_{i=1}^{n-1} f(a + ih) \right].
+T_{[a,b]}^n[f]
+= h \left[ \frac{f(a) + f(b)}{2} + \sum_{i=1}^{n-1} f(a + ih) \right]
+= \frac{h}{2} \sum_{i=1}^{n} \left[f(x_{i-1}) + f(x_i)\right],
 $$
 
 _Said differently,_ on each interval $[x_i, x_{i+1}]$ we integrate the average of the two endpoint values.
+
 
 ---
 <br/>
@@ -1015,6 +1022,12 @@ $$
 $$
 
 So, if $f'$ is $\alpha$-Hölder continuous, the total error is $O(n^{-(1+\alpha)})$. Thus, for Lipschitz $f'$ (that is, $\alpha = 1$), this gives the familiar $O(n^{-2})$ <b>quadratic convergence</b>.
+
+_Furthermore,_ whenever $f \in C^2([a, b])$ (i.e., $f$ is twice continuously differentiable on the closed interval $[a, b]$), for some point $\xi \in (a, b)$, we have:
+
+$$
+E_n = \int_a^b f(x)\,\mathrm{d}x - T_{[a,b]}^n[f] = -\frac{(b-a)^3}{12n^2} f''(\xi)
+$$
 
 In Python, we can nicely see the convergence by coding:
 

@@ -49,7 +49,7 @@ lib/wiki/          # shared code: reading notes, search, AI answers
 lib/               # shared helpers: site URLs, dates, rate limit, PostHog, newsletter
 scripts/           # search index builder, safety checks, UI snapshot tool, chart scripts
 app/               # pages and components (blog, notes, books, resources, /ask, ...)
-app/api/           # server endpoints: /api/ask, /api/posthog, /api/newsletter
+app/api/           # server endpoints: /api/ask, /api/posthog, /api/newsletter, /api/comments
 ```
 
 The economy and AI article includes a desktop-only interactive distribution chart. Its fixed illustrative scenario and calculations live in `lib/economy-chart.ts`; the MDX component is `app/components/EconomyChart.tsx`.
@@ -97,6 +97,7 @@ RESEND_AUDIENCE_ID=...             # newsletter list
 NEWSLETTER_FROM_EMAIL=...          # sender of confirmation emails (a verified Resend domain)
 NEWSLETTER_UNSUBSCRIBE_SECRET=...  # signs confirmation and unsubscribe links
 NEXT_PUBLIC_SITE_URL=...           # public site address, used in email links
+DATABASE_URL=...                   # server-only Neon runtime role for public comments
 
 # Optional overrides — leave commented out to use the default
 # POST_HOG_PROJECT_ID=...          # PostHog project used for the counters
@@ -121,3 +122,26 @@ Typical flow: edit or add a note → `pnpm index` → `pnpm build` → `git push
 Vercel builds with the search index stored in git, so always commit the rebuilt index (`lib/wiki-index.generated.json`) together with your notes.
 
 The reuse mode requires a compatible existing index and stops if private notes need new embeddings. Blog files marked `draft: true` or without a title and valid publication date are excluded from the site, feed, sitemap, and index. Public page previews use author-written excerpts and the site icon.
+
+## Public comments
+
+Each published article has a single public thread; blog translations share it. Comments are plain text, published immediately, and not indexed by `/ask`. The browser remembers only the last successfully posted display name. PostHog autocapture and replay exclude the comments subtree and API requests. The best-effort limit is 10 submissions per IP per 10 minutes per serverless instance; it is not a global spam guarantee. Names are NFKC-normalized, trimmed and lowercased; comparison also removes spaces, dots, underscores, hyphens and common zero-width characters. Names containing `giacomo` or `maggiore`, plus `jackmaggiore` and `gmag`, are reserved. This may reject unrelated names containing those sequences and does not catch every impersonation.
+
+Before launch, review the privacy page with the owner for public submissions, local name storage, Neon, transient abuse controls, moderation and backups. Verify current Neon Free quotas, restore limits, region and residency. Use separate empty databases or branches for production and non-production; never copy production comments into previews. Provisioning and production migration require separate approval.
+
+`neon.ts` contains the Neon CLI policy; `.neon` is an ignored local project link. The current Neon CLI requires Node 20.19 or newer. Check `neon config plan` before `neon deploy`: deployment can modify the linked branch and, by default, replace local Neon variables. Use `--no-env-pull` when local credentials must stay unchanged. Neon CLI setup does not configure Vercel environment variables. Never use a privileged migration connection as the application runtime role.
+
+The production `comments_runtime` role has `SELECT` and `INSERT` on `public.comments`, but no update, delete, schema-creation or Neon administrator privileges. Its sensitive `DATABASE_URL` is configured for the Vercel Production environment only; a new deployment is needed to pick up changes. The local `.env.local` currently contains a separate privileged production connection from Neon CLI initialization: remove its Neon database variables before using the app locally, and use a separate empty database for development if needed.
+
+Apply `migrations/001_comments.sql` once through a privileged connection, first in a disposable test database. Give the application's `DATABASE_URL` a separate role with only schema usage and `SELECT` and `INSERT` on `comments`; revoke any broader inherited or public privileges. Verify it cannot update, delete, or alter the table. Never apply migrations from a build or request. To roll back the feature, remove `DATABASE_URL` or revert the application code while keeping the table and data; comments will be unavailable, not deleted.
+
+Moderate in the Neon SQL Editor with one atomic update, using the actual comment ID:
+
+```sql
+UPDATE comments SET deleted_at = now(), display_name = NULL, body = NULL
+WHERE id = '00000000-0000-0000-0000-000000000000';
+```
+
+Do not hard-delete comments. Keep periodic manual exports outside the repository in a private location, test recovery, and reconcile all subsequent deletions before reopening a restored backup. Backups may retain removed content.
+
+Run the isolated PostgreSQL and API tests with `pnpm exec tsx --test tests/comments.test.ts`. No external database is used by these tests.
