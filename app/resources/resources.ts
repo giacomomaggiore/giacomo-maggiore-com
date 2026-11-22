@@ -34,9 +34,7 @@ English
 - <a href="https://pages.stern.nyu.edu/~adamodar/" target="_blank">Aswath Damodaran</a>'s website and blog. _Not directly related to my main interests,_ but sometimes it's good to remember ourselves what is behind the stock market: balance sheets and <b>company valuation</b>.
 - <a href="https://portfoliocharts.com/" target="_blank">Portfolio Charts' blog</a>. Maybe you've used some of the tools to optimize or backtest your portfolio, it also writes good stories around the topic.
 - <a href="https://www.theallocatorslens.com/" target="_blank">The Allocator's Lens</a> by <a href="https://www.linkedin.com/in/juhuilee/" target="_blank">Juhui Lee</a>. I randomly ended up in this <a href="https://www.theallocatorslens.com/2026/10/portfolio-construction-is-exercise-in.html" target="_blank">nice piece about tradeoffs</a>, but the whole blog looks interesting: asset allocation and <b>portfolio construction </b>beyond the mean-variance framework.
-
-
-<b>STEM, Tech and related</b>
+- <a href="https://www.linkedin.com/company/the-kobeissi-letter/posts/"> target="_blank">The Kobeissi Letter</a>. Everything relevant happening in the financial world with multiple-one-paragraph posts per day. 
 
 Ok... I'm studying economics and working in finance, but my engineering roots _(thanks, <a href="https://www.polimi.it/" target="_blank">Politecnico di Milano</a>!)_ are still alive:
 
