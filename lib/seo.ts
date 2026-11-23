@@ -55,9 +55,21 @@ export function articleDescription(meta: Metadata, content: string, isNote: bool
   return end >= 100 ? shortened.slice(0, end + 1) : `${shortened.slice(0, shortened.lastIndexOf(' '))}…`
 }
 
+export function articleImage(meta: Metadata): { url: string; alt: string; width?: number; height?: number } {
+  if (!meta.image) {
+    return { url: socialImage, width: 1000, height: 1000, alt: 'Giacomo Maggiore' }
+  }
+
+  const url = /^https?:\/\//i.test(meta.image)
+    ? meta.image
+    : new URL(meta.image.startsWith('/') ? meta.image : `/${meta.image}`, baseUrl).toString()
+  return { url, alt: meta.title }
+}
+
 export function articleMetadata(pagePath: string, meta: Metadata, content: string, lang: 'en' | 'it', isNote = false): NextMetadata {
   const url = `${baseUrl}${pagePath}`
   const description = articleDescription(meta, content, isNote)
+  const openGraphImage = articleImage(meta)
   return {
     title: meta.title,
     description,
@@ -70,8 +82,8 @@ export function articleMetadata(pagePath: string, meta: Metadata, content: strin
       locale: lang === 'it' ? 'it_IT' : 'en_US',
       type: 'article',
       publishedTime: meta.publishedAt,
-      images: [{ url: socialImage, width: 1000, height: 1000, alt: 'Giacomo Maggiore' }],
+      images: [openGraphImage],
     },
-    twitter: { card: 'summary_large_image', images: [socialImage] },
+    twitter: { card: 'summary_large_image', images: [openGraphImage.url] },
   }
 }

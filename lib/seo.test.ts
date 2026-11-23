@@ -31,3 +31,32 @@ test('page and article previews use the site icon', () => {
     assert.deepEqual(result.twitter?.images, [image.url])
   }
 })
+
+test('articles use an explicit relative image', () => {
+  const metadata = { title: 'Finance', publishedAt: '2026-01-01', summary: '', image: '/images/blog/meme-msci-world.png' }
+  const article = articleMetadata('/blog/finance', metadata, 'Finance article', 'en')
+  assert.deepEqual(article.openGraph?.images, [{
+    url: 'http://localhost:3000/images/blog/meme-msci-world.png',
+    alt: 'Finance',
+  }])
+  assert.deepEqual(article.twitter?.images, ['http://localhost:3000/images/blog/meme-msci-world.png'])
+})
+
+test('articles use an explicit absolute external image', () => {
+  const metadata = { title: 'Finance', publishedAt: '2026-01-01', summary: '', image: 'https://example.com/preview.png' }
+  const article = articleMetadata('/blog/finance', metadata, 'Finance article', 'en')
+  assert.deepEqual(article.openGraph?.images, [{ url: 'https://example.com/preview.png', alt: 'Finance' }])
+  assert.deepEqual(article.twitter?.images, ['https://example.com/preview.png'])
+})
+
+test('articles without an explicit image fall back to the site icon', () => {
+  const metadata = { title: 'Finance', publishedAt: '2026-01-01', summary: '' }
+  const article = articleMetadata('/blog/finance', metadata, 'Finance article', 'en')
+  assert.deepEqual(article.openGraph?.images, [{
+    url: 'http://localhost:3000/icon.png',
+    width: 1000,
+    height: 1000,
+    alt: 'Giacomo Maggiore',
+  }])
+  assert.deepEqual(article.twitter?.images, ['http://localhost:3000/icon.png'])
+})

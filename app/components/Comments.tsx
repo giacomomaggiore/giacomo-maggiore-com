@@ -76,8 +76,8 @@ function Composer({ pageKey, parentId, label, name, onNameChange, disabled, onPo
   }
 
   return (
-    <form className="mt-3" onSubmit={event => { event.preventDefault(); void submit() }}>
-      <div className="flex items-center rounded border border-neutral-300 dark:border-neutral-700">
+    <form className="mt-2" onSubmit={event => { event.preventDefault(); void submit() }}>
+      <div className="flex items-center rounded border border-neutral-300 py-2 dark:border-neutral-700">
         <div className="flex min-w-0 flex-1 items-center">
           <input type="text" aria-label="Display name" placeholder="Name" value={name}
             onChange={event => onNameChange(event.target.value.normalize('NFKC').toLowerCase())} disabled={disabled || posting}
@@ -107,7 +107,7 @@ function CommentView({ comment, onReply }: { comment: Comment; onReply?: () => v
       <span aria-hidden="true" className="text-xl font-bold leading-none text-neutral-500">•</span>
       <time className="whitespace-nowrap text-sm text-neutral-600 dark:text-neutral-400" dateTime={comment.createdAt}>{localDate(comment.createdAt)}</time>
       {onReply && <><span aria-hidden="true" className="text-xl font-bold leading-none text-neutral-500">•</span>
-        <button type="button" className="relative -my-2 inline-block py-2 text-sm underline underline-offset-2 focus-visible:outline focus-visible:outline-offset-2" onClick={onReply} aria-label={`Reply to ${comment.deletedAt ? 'a deleted comment' : comment.displayName}`}>reply</button>
+        <button type="button" className="inline-flex min-h-6 items-center text-sm underline underline-offset-2 focus-visible:outline focus-visible:outline-offset-2" onClick={onReply} aria-label={`Reply to ${comment.deletedAt ? 'a deleted comment' : comment.displayName}`}>reply</button>
       </>}
     </div>
   </div>
@@ -178,17 +178,17 @@ export function Comments({ pageKey }: { pageKey: string }) {
   return <section ref={section} className="ph-no-capture mt-8 border-t border-neutral-200 pt-3 pb-8 dark:border-neutral-800" aria-labelledby="comments-heading">
     <h2 id="comments-heading" className="text-xl font-bold">Comments</h2>
     {state === 'ready' && <Composer pageKey={pageKey} parentId={null} name={name} onNameChange={setName} disabled={submitting} onPosted={posted} onBusyChange={setSubmitting} />}
-    <div role="status" aria-live="polite" className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+    <div role="status" aria-live="polite" className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
       {(state === 'waiting' || state === 'loading') && 'Loading comments…'}
       {state === 'error' && <>Comments are temporarily unavailable. <button type="button" className={buttonStyle} onClick={load}>Retry</button></>}
       {state === 'ready' && !thread.comments.length && 'No comments yet.'}
       {loadError}
     </div>
-    {state === 'ready' && <div className="mt-7 space-y-4">
+    {state === 'ready' && <div className="mt-2">
       {thread.comments.map(comment => <div key={comment.id}>
         <CommentView comment={comment} onReply={submitting ? undefined : () => setActiveReply(activeReply === comment.id ? null : comment.id)} />
         {activeReply === comment.id && <div className="ml-4"><Composer pageKey={pageKey} parentId={comment.id} label={`Replying to ${comment.deletedAt ? 'a deleted comment' : comment.displayName}`} name={name} onNameChange={setName} disabled={submitting} onPosted={posted} onBusyChange={setSubmitting} /></div>}
-        <div className="ml-4 mt-2 space-y-3">
+        <div className="ml-4">
           {thread.replies[comment.id]?.comments.map(reply => <CommentView key={reply.id} comment={reply} />)}
           {thread.replies[comment.id]?.nextCursor && <button type="button" className={buttonStyle} disabled={loadingMore} onClick={() => more(comment.id)}>Load more replies</button>}
         </div>
