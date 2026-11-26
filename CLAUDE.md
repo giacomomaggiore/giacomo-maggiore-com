@@ -11,3 +11,5 @@
 Claude Code's [Stop hook](.claude/settings.json) is advisory. It checks working-tree status and reminds you about applicable approval or verification requirements; it is not a test or permission check.
 
 The [existing skills](README.md#skills-automated-helpers) remain in place. Use `check-markdown-latex` only for a specifically requested file; skill use never bypasses the private-vault approval rule.
+
+Private notes are unpublished, not inherently sensitive. The owner authorizes their use by `/ask` and by OpenAI embeddings during an explicitly requested index refresh; see [Data and services](docs/agent/data-and-services.md). Never include secrets or sensitive data in those requests. `/update-links` still requires approval before changing private notes.

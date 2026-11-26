@@ -64,6 +64,8 @@ Four helpers live in `.github/skills/`. In clients that discover that directory,
 
 `/update-links` and `/clean-markdown` never touch published blog posts or notes. No helper commits or pushes changes without asking first.
 
+The owner uses "private" for notes that are not published as pages, not necessarily sensitive notes. A requested `/update-embeddings` refresh can send eligible private-note text to OpenAI; `/update-links` still previews changes and requires approval before editing. Keep secrets and sensitive data out of indexed notes.
+
 ---
 
 ## How `/ask` works

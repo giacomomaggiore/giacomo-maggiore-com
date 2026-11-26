@@ -6,7 +6,7 @@ argument-hint: "Optional reason, such as a newly added note or blog post"
 
 # Update Embeddings
 
-Use the existing wiki indexer. It indexes public notes, blog posts, and private notes. When `OPENAI_API_KEY` is configured, it recreates all note embeddings with `text-embedding-3-small`; otherwise it deliberately produces a BM25-only index.
+Use the existing wiki indexer. It indexes public notes, blog posts, and private notes. Private means unpublished, not inherently sensitive: the owner authorizes eligible private-note text to be sent to OpenAI for an explicitly requested refresh. Never send secrets or sensitive data. The indexer does not screen note contents. When `OPENAI_API_KEY` is configured, it recreates all note embeddings with `text-embedding-3-small`; otherwise it deliberately produces a BM25-only index.
 
 ## Procedure
 
