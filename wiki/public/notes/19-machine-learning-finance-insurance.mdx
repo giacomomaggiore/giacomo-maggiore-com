@@ -1045,7 +1045,7 @@ Imagine you are lost on a foggy mountain and you have to reach the lowest valley
 
 <b>The Grid Method</b>
 
-Suppose we have a function h we want to minimize and suppose $h : [0,1]^d \to \mathbb{R} $ is a <b>L-Lipschitz</b> function, i.e. for some constants $L \geq 0$:
+Suppose we have a function h we want to minimize and suppose $h : [0,1]^d \to \mathbb{R} $ is a <b>L-Lipschitz</b> function, i.e. for some constant $L \geq 0$:
 
 $$
 | h(x) - h(y) | \leq L \| x - y \|_2
@@ -1745,7 +1745,7 @@ $$
 \qquad\text{for all }n,\ x_1,\ldots,x_n\in\mathcal X,\ a_1,\ldots,a_n\in\mathbb R.
 $$
 
-We now provide some examples of kernel functions on R^d:
+We now provide some examples of kernel functions on $\mathbb{R}^d$:
 - <b>linear kernel</b> $k(x,x')=\langle x,x'\rangle$
 - <b>polynomial kernel</b> $k(x,x')=(\langle x,x'\rangle+c)^p$ for all $p\in\mathbb N$ and $c\in\mathbb R_+$
 - <b>Gaussian kernel</b> $k(x,x')=\exp(-\|x-x'\|_2^2/\gamma^2)$ for all $\gamma>0$
@@ -3659,8 +3659,223 @@ _To sum up...._ here a nice comparison about each architecture:
 
 ---
 
-## <a id="8"><b>8 Bagging and Random Forests</b></a>
+## <a id="8"><b>8 Generative AI</b></a>
 
+<b>Autoencoders</b>
+
+An autoencoder consists of an <b>encoder</b> $E_\Phi : \mathbb{R}^d \to \mathbb{R}^k$ and a <b>decoder</b> $G_\Psi : \mathbb{R}^k \to \mathbb{R}^d$ _(that are both neural networks)_ with a <b>bottleneck</b> $k < d$. It is trained without labels to reconstruct its input using least squares, _i.e. by minimizing:_
+
+$$
+\min_{\Phi,\Psi} \frac{1}{m} \sum_{i=1}^m \|x_i - G_\Psi(E_\Phi(x_i))\|_2^2
+$$
+
+where $E_\Phi(x) \in \mathbb{R}^k$ is a <b>low-dimensional representation</b> _(latent factors)_ of $x$.
+
+_Consider for example_ yield-curve factors.
+
+Assume $P_t(\tau)$ is the price on day $t$ of a zero-coupon rate, then $y_\tau = -\frac{1}{\tau}\log P_\tau$. Consider now the daily data from the US Treasury zero-coupon yields from 1990 to 2026. The yield curve on day $t$ is then a vector $y_t = (y_t(1),\ldots,y_t(30)) \in \mathbb{R}^{30}$ of the yield for the different maturities $\tau = 1,\ldots,30$ years.
+
+We consider as input the daily change of the curve $y_x = y_t - y_{t-1} \in \mathbb{R}^{30}$ in basis points.
+
+_In this case_ the <b>optimal linear</b> encoder is <b>PCA</b> even if its mean square reconstruction error is the variance unexplained. _However,_ <b>level, slope</b> and <b>curvature</b> explain 98% of the daily movements.
+
+A nonlinear autoencoder (30-32-k-32-30, tanh, trained with Adam) can represent PCA. It does equally well, but not better: the movements are almost linear in the factors. PCA is exact (an SVD), fast and interpretable.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/encoder.png)
+</div>
+
+---
+<br/>
+<b>Generative Models</b>
+
+So far, we've seen <b>supervised learning</b> of a label $Y$ from feature $X$, _i.e._ regression of $\mathbb{E}[Y \mid X]$ and classification of $\mathbb{P}[Y \mid X]$: these models are called <b>discriminative</b> since they only model how $Y$ depends on $X$, not how $X$ itself is distributed.
+
+_On the other hand,_ a <b>generative model</b> learns the distribution $p_{\mathrm{data}}$ of the data themselves from samples $x_1,\ldots,x_m$ without labels, such that we can obtain new data $x \sim p_\theta \approx p_{\mathrm{data}}$. _Note that_ there's no single correct output, only plausible and implausible ones.
+
+_For example,_ in finance they can be used for:
+- <b>sampling</b> scenarios for risk management and stress tests
+- <b>density evaluation</b> to understand how likely an observation is under $p_\theta$
+- <b>conditional generation</b> of $p_\theta(x \mid c)$ given a macroeconomic scenario $c$
+
+<br/>
+---
+<b>Latent-Variable Models</b>
+
+A latent-variable model generates complex data from a small set of hidden factors. _For example,_ as we have seen before, a yield curve may contain interest rates for many maturities, but much of its shape can be described by three factors: level, slope, and curvature.
+
+_In particular,_ the model starts with a latent vector $z \sim \mathcal{N}(0, I_k)$ containing $k$ factors, then uses a neural network to generate a data vector $x \approx G_\theta(z)$ with $d$ values, where $G_\theta$ is the generator.
+
+To calculate the probability of an observed $x$, the model considers all possible latent vectors that could have produced it, _i.e._ by calculating the <b>likelihood</b>:
+
+$$
+p_\theta(x)=\int p_\theta(x\mid z)p(z)\,dz.
+$$
+
+_However,_ this integral is generally difficult to compute for a neural-network generator, so there are two common ways to solve this:
+- <b>VAE</b>: optimizes a computable lower bound on the log-likelihood
+- <b>GAN</b>: avoids computing the likelihood by using a second network that learns to distinguish real from generated samples.
+<br/>
+
+<b>Variational Autoencoders (VAE): an autoencoder that can generate</b>
+
+_However,_ autoencoders cannot generate data, since the codes $E_\Phi$ of the training data form separate clusters with <b>empty space</b> between them, so if we generate a random code that falls into the gap between clusters, the decoder was never trained there and so that sample is decoded as nonsense.
+
+A <b>variational autoencoder </b> makes this map more adapted and useful for sampling.
+
+_Suppose that_ for an input image $x$ the encoder does not return one point, but it returns the parameters of a distribution:
+
+$$
+q_\phi(z\mid x)=\mathcal{N}(\mu_\phi(x),\operatorname{diag}(\sigma_\phi^2(x)))
+$$
+
+This can be thought of as a <b>cloud</b> of possible codes around the image, where $\mu$ is the center and $\sigma$ controls its spread.
+
+During training, the model picks a point $z$ from that cloud and asks the decoder to reconstruct $x$. This encourages the decoder to produce a sensible image for a region, NOT just one point.
+
+---
+<br/>
+<b>Generative Adversarial Networks (GAN)</b>
+
+A GAN learns to generate realistic data through a competition between two networks:
+- the generator $G_\theta$ creates fake data from sample noise
+- the discriminator $D_\phi$ tries to distinguish real data from the fakes.
+
+_In particular,_ $D_\phi$ outputs a score interpreted as the probability that $x$ is real; its objective is indeed:
+
+$$
+V(\theta,\phi) =
+\underbrace{\mathbb{E}_{x\sim p_{\mathrm{data}}}[\log D_\phi(x)]}_{\text{score real data as real}}
++ \underbrace{\mathbb{E}_{z\sim\mathcal{N}(0,I_k)}[\log(1-D_\phi(G_\theta(z)))]}_{\text{score generated data as fake}}.
+$$
+
+_Note that_ this is the same idea as in the <b>binary classification log-likelihood</b> in logistic regression.
+
+_Given this,_ $D_\phi$ maximizes its objective, while the generator tries to minimize it by changing its outputs so that the discriminator scores them as real, so we have:
+
+$$
+\min_\theta \max_\phi V(\theta,\phi).
+$$
+
+_In practice,_ training alternates between updating the discriminator on batches of real and fake data, and updating the generator using feedback from the discriminator.
+
+For a fixed generator, _assuming equally likely real and fake examples,_ the <b>ideal discriminator</b> is:
+
+$$
+D^*(x)=\frac{p_{\mathrm{data}}(x)}{p_{\mathrm{data}}(x)+p_G(x)}.
+$$
+
+_In the idealized theory,_ substituting $D^*$ into the objective gives:
+
+$$
+V(\theta,D^*)=-\log 4+2\operatorname{JS}(p_{\mathrm{data}}\|p_G).
+$$
+
+where the Jensen–Shannon divergence measures how different the two distributions are. It is zero when they match. Thus, with an optimal discriminator and ideal training, the generator aims for $p_G=p_{\mathrm{data}}$; then the discriminator cannot do better than guessing, so $D^*(x)=1/2$.
+
+---
+<br/>
+<b>Normalizing Flows</b>
+
+A normalizing flow learns an <b>invertible transformation</b> between simple random noise and complex data:
+
+$$
+z\sim\mathcal{N}(0,I_d) \xrightarrow{f_\theta} x=f_\theta(z)
+$$
+
+Since $f_\theta$ is invertible, we can also go backward: $z = f_\theta^{-1}(x)$.
+
+_In the yield-curve example,_ an observation $x\in\mathbb{R}^{30}$ represents daily changes in yields at 30 maturities. A flow could:
+
+Generate a new curve change: sample $z\in\mathbb{R}^{30}$ and calculate $x=f_\theta(z)$.
+Evaluate an observed curve change: calculate its density $p_\theta(x)$ by transforming it back to $z$.
+Unlike the three-factor autoencoder in the notes, an invertible flow has the same dimension on both sides: here, $d=30$ _(note that it does not compress the data into three factors)_.
+
+Consider now the simple <b>1-D</b> case, for an increasing $f=f_\theta$: $x\leq a$ if and only if $z\leq f^{-1}(a)$, so $\mathbb{P}(x\leq a)=\mathbb{P}(z\leq f^{-1}(a))$. Differentiating with respect to $a$ (chain rule):
+
+$$
+p_\theta(a)=p_z(f^{-1}(a))(f^{-1})'(a)=\frac{p_z(z)}{f'(z)},\qquad z=f^{-1}(a).
+$$
+
+For a decreasing $f$, use $|f'(z)|$. The mass is conserved: where $f$ is steep, a short interval of $z$ is stretched over a long one of $x$, so the same mass is spread thinner.
+
+_On the other hand,_ in $d$ dimensions, there are $d$ input and $d$ output coordinates, so the <b>Jacobian</b> $J_f(z)=(\partial f_i(z)/\partial z_j)_{i,j=1}^d$ records how each output responds to each input.
+
+The same conservation-of-probability idea becomes:
+
+$$
+p_\theta(x)=\frac{p_z(z)}{|\det J_{f_\theta}(z)|},\qquad z=f_\theta^{-1}(x).
+$$
+
+For training, we take logs:
+
+$$
+\log p_\theta(x)=\log p_z(f_\theta^{-1}(x))-\log|\det J_{f_\theta}(f_\theta^{-1}(x))|.
+$$
+
+So we can train the flow by maximizing the log-density of historical observations.
+
+We now try to understand how to make this implementation cheaper to do.
+_Note indeed_ that an arbitrary neural network may be hard to invert, and computing a general determinant can be expensive. A flow instead composes layers:
+
+Therefore, a flow composes layers as:
+
+$$
+z=h_0\xrightarrow{f_1}h_1\xrightarrow{f_2}\cdots\xrightarrow{f_K}h_K=x
+$$
+
+where each layer is designed to be <b>easily invertible</b> and to have a <b>"cheap determinant"</b>, so that the total log-determinant is the sum of the layer log-determinants.
+
+Another way to make invertible layers cheaper is to use <b>affine coupling</b>. _In this case,_ we split $z = (z_a, z_b)$ with $z_a \in \mathbb{R}^{d_a}$ and $z_b \in \mathbb{R}^{d-d_a}$ and use $z_a$ to determine how we should scale and shift $z_b$, with
+
+$$
+x_a=z_a,\qquad x_b=z_b\odot e^{a(z_a)}+b(z_a).
+$$
+
+Then the networks $a, b$ compute the scale and shift, so we can recover $z_b$ as $z_b=(x_b-b(x_a))\odot e^{-a(x_a)}$.
+
+_In this way,_ we do <b>not need to invert</b> the networks $a, b$. _Furthermore,_ the layer's Jacobian is triangular and thus cheaper to calculate.
+
+---
+<br/>
+<b>Diffusion Models</b>
+
+The starting idea behind diffusion models is <b>"destroy the data, then learn to repair it"</b>. To do that, we start from data and we add a little noise many times _(forward process)_.
+
+Similarly, undoing all the noise at once is hard, but undoing <b>one small step</b> at a time is a simple denoising problem which a network can learn by least-squares regression. These models are called <b>denoising diffusion probabilistic models (DDPM)</b>.
+
+_In particular,_ a <b>Markov Chain</b> adds noise to $x_0 \sim p_{\mathrm{data}}$ for $t = 1,\ldots,T$ such that we have
+
+$$
+x_t = \sqrt{1 - \beta}x_{t-1} + \sqrt{\beta}\,\epsilon_t
+$$
+
+with $\epsilon_t \sim \mathcal{N}(0,1)$ and $\beta$ noise schedule from $10e{-4}$ to $0.02$ with $T = 1000$. _Note that_ for standardized data the factor $\sqrt{1-\beta}$ keeps the variance at 1.
+
+_Note also_ that with $\bar\alpha_t = \sum_{s=1}^t (1 -\eta_s)$ the sums of independent Gaussians give $x_t = \sqrt{\bar\alpha_t}\,x_0 + \sqrt{1 - \bar\alpha_t}\,\epsilon$.
+
+The weight of the data shrinks and the weight of the noise grows (right), so $x_T \approx \mathcal{N}(0,I)$, whatever $x_0$ was. In each coordinate $i$, since $x_0$ and $\epsilon$ are independent, $\operatorname{Var}(x_{t,i}) = \bar\alpha_t \operatorname{Var}(x_{0,i}) + (1 - \bar\alpha_t) \cdot 1$, which tends to 1 as $\bar\alpha_t \to 0$, and equals 1 for all $t$ if $\operatorname{Var}(x_{0,i}) = 1$.
+
+_On the other hand,_ to predict the noise, we can consider the following algorithm (<b>training a diffusion model</b>):
+- draw a training sample $x_0$ at time $t \sim \operatorname{Uniform}\{1,\ldots,T\}$ and noise $\epsilon \sim \mathcal{N}(0,1)$
+- set `x_\ <- \dqrt(\bar \alpha) x_0 + \sqrt(1 - \bar alpha_t) epsilon`
+- take a gradient step on $\|\epsilon-\epsilon_\theta(t,x_t)\|_2$ _(using mini batches and Adam in practice)_
+- repeat until converged
+
+_Therefore,_ knowing the noise means knowing the clean data: `ˆx0=(xt− 1−α ̄tεθ(t,xt))/ α ̄t`.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/noise-ho.png)
+</div>
+
+_On the other hand,_ to denoise step by step we can consider the following algorithm (<b>sampling</b>)
+- draw $x_T \sim \mathcal{N}(0,1)$
+- for $t = T,\ldots,1$ do:
+    - draw $\epsilon \sim \mathcal{N}(0,1)$ if $t > 1$, else $\epsilon = 0$
+    - assign `x<← √ 1 (︂xt − √ βt εθ(t,xt))︂+√βt ξ`;
+- return $x_0$
+
+In this case, the update  reverses one forward step: it removes the part of the predicted noise that this step added, and undoes the shrinking of the data. The fresh noise accounts for what the network cannot know: which of the many possible earlier points led to the current one.
 
 ## <a id="9"><b>9 Gradient Boosted Trees</b></a>
 
