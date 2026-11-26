@@ -1,0 +1,213 @@
+---
+image: '/images/blog/point-break-2.png'
+title: 'Problemi e sensibilità del trend following'
+publishedAt: '2026-11-24'
+summary: ''
+---
+
+<b>Il trend following è molto semplice</b>: esposizione long per gli asset che hanno performato bene nel passato e short per quelli che hanno fatto <s>schifo</s> meno bene.
+
+_In un mercato ideale,_ il loro ruolo nell'asset allocation è ormai ampiamente documentato in accademia e altrettanto semplice: ulteriore <b>diversificazione</b> verso stocks e bonds e fonte di rendimento in <b>regimimi di bassa crescita.</b>
+
+Quando però si introducono tutti gli attriti dei mercati finanziari...  la questione si complica. _In primis,_ l'investitore retail _(a seconda del paese di residenza)_ ha spesso a disposizione pochi prodotti che replicano la strategia a costi relativamente alti e poca trasparenza sul sottostante.
+
+Non esiste infatti una <b>definizione biunivoca</b> di trend following: ogni fondo ha la propria metodologia, la propria implementazione, il proprio universo investibile, la propria struttura di costi etc etc..._di conseguenza_ è sempre stato difficile <b>1)</b> trovare un benchmark unico e <b>2)</b> capire esattamente che cosa stesse succedendo a _position-level._
+
+_La curiosità tuttavia resta:_ come si traduce <b>"compro chi va bene, shorto il contrario"</b> sul mercato?
+
+Per rispondermi, ho simulato una strategia liberamente inspirata dal libro <a href="https://www.wiley.com/en-us/Following+the+Trend%3A+Diversified+Managed+Futures+Trading%2C+2nd+Edition-p-9781119908982" target="_blank"> "Following the Trend: Diversified Managed Futures Trading" di Clenow</a>, implementando la stessa logica long/short su un universo di contratti futures ridotto e facendo le solite analisi del caso.
+
+In particolare, non avendo <s>un terminale Bloomberg</s> accesso illimitato a tutte le serie unadjusted, ho dovuto restringere l'analisi alle serie adjusted, _dal 2000 al 2024,_ dei seguenti contratti futures. _(Per ogni contratto, si riportano il settore, l'underlying, l'unità di quotazione, la valuta e il point value, i.e. la variazione in valore del contratto a fronte di un movimento di un 1bp):_
+
+| Contratto | Underlying | Unità di quotazione | Valuta | Valore per bp |
+| --- | --- | --- | --- | ---: |
+| <a href="https://www.tradingview.com/symbols/CME_MINI-ES1%21/" target="_blank">ES</a> | azioni, S&P 500 | Punti indice | USD | 50 |
+| <a href="https://www.eurex.com/ex-en/markets/idx/stx/euro-stoxx-50-derivatives/products/EURO-STOXX-50-Index-Futures-160088" target="_blank">FESX</a> | azioni, Euro Stoxx 50 | Punti indice | EUR | 10 |
+| <a href="https://www.tradingview.com/symbols/CBOT-ZT1%21/" target="_blank">ZT</a> | titoli di stato, Treasury USA a 2 anni | % del nominale | USD | 2.000 |
+| <a href="https://www.tradingview.com/symbols/CBOT-ZN1%21/" target="_blank">ZN</a> | titoli di stato, Treasury USA a 10 anni | % del nominale | USD | 1.000 |
+| <a href="https://www.eurex.com/ex-en/markets/int/long-term-interest-rates/fix/government-bonds/Euro-Bund-Futures-137298" target="_blank">FGBL</a> | titoli di stato, Bund tedesco | % del nominale | EUR | 1.000 |
+| <a href="https://www.tradingview.com/symbols/CME-6E1%21/" target="_blank">6E</a> | valute, euro | USD per EUR | USD | 125.000 |
+| <a href="https://www.tradingview.com/symbols/CME-6J1%21/" target="_blank">6J</a> | valute, yen giapponese | USD per JPY | USD | 12.500.000 |
+| <a href="https://www.tradingview.com/symbols/CME-6B1%21/" target="_blank">6B</a> | valute, sterlina britannica | USD per GBP | USD | 62.500 |
+| <a href="https://www.tradingview.com/symbols/NYMEX-CL1%21/" target="_blank">CL</a> | energia, petrolio WTI (catena invernale) | USD/barile | USD | 1.000 |
+| <a href="https://www.tradingview.com/symbols/NYMEX-NG1%21/" target="_blank">NG</a> | energia, gas naturale Henry Hub | USD/MMBtu | USD | 10.000 |
+| <a href="https://www.tradingview.com/symbols/COMEX-GC1%21/" target="_blank">GC</a> | metalli, oro | USD/oncia troy | USD | 100 |
+| <a href="https://www.tradingview.com/symbols/COMEX-HG1%21/" target="_blank">HG</a> | metalli, rame | USD/libbra | USD | 25.000 |
+| <a href="https://www.tradingview.com/symbols/CBOT-ZS1%21/" target="_blank">ZS</a> | agricoltura, soia | Centesimi di USD/bushel | USD | 50 |
+| <a href="https://www.ice.com/products/15/Coffee-C-Futures" target="_blank">KC</a> | agricoltura, caffè C | Centesimi di USD/libbra | USD | 375 |
+| <a href="https://www.tradingview.com/symbols/CME-LE1%21/" target="_blank">LE</a> | agricoltura, bovini vivi | Centesimi di USD/libbra | USD | 400 |
+<br/>
+
+## <b>Surfing in the USA</b>
+La strategia in sé combina due segnali diversi per costruire posizioni long e short. 
+_In primis,_ un <b>filtro basato su medie mobile esponenziali </b> definisce se lo strumento è in trend positivo o negativo. 
+
+_Successivamente,_ in caso di trend positivo si entra in una <b>posizione long </b> se il prezzo raggiunge o supera il massimo delle $l$ chiusure precedenti. _Al contrario,_ in caso di trend negativo, si entra in una posizione <b>short</b> se il prezzo raggiunge o scende sotto il minimo locale sulla stessa finestra. In assenza di segnali di ingresso o di uscita, si mantiene la posizione corrente _(si noti quindi che la strategia può rimanere non-investita)._ <br/>L'esposizione _(sizing)_ per ogni strumento è successivamente determinata dalla sua volatilità storica in relazione alla volatilità target del portafoglio.
+
+In formule, sia $A_t$ il prezzo di chiusura <a href="https://www.quantconnect.com/docs/v2/writing-algorithms/universes/futures#12-Continous-Contracts" target="_blank">Panama-adjusted </a> al tempo $t$. Indichiamo con $\mathrm{EMA}_{m,t}$ la media mobile esponenziale lunga e con $\mathrm{EMA}_{n,t}$ quella corta, con $m>n$. Il segno del trend è $T_t$:
+
+$$
+T_t = \begin{cases}
++1, & \mathrm{EMA}_{n,t} > \mathrm{EMA}_{m,t}, \\
+-1, & \text{altrimenti}.
+\end{cases}
+$$
+
+Per una finestra di $w$ sedute ($w=l$ per l'ingresso, $w=s$ per l'uscita), il massimo e il minimo escludono la chiusura corrente:
+
+$$
+H_t^{(w)} = \max_{1 \le k \le w} A_{t-k}, \qquad
+L_t^{(w)} = \min_{1 \le k \le w} A_{t-k}.
+$$
+
+La posizione alla prima chiusura disponibile è quindi:
+
+$$
+p_{t+1} = \begin{cases}
++1, & p_t = 0,\ T_t = +1,\ A_t \ge H_t^{(l)}, \\
+-1, & p_t = 0,\ T_t = -1,\ A_t \le L_t^{(l)}, \\
+0, & p_t = +1,\ A_t \le L_t^{(s)}, \\
+0, & p_t = -1,\ A_t \ge H_t^{(s)}, \\
+p_t, & \text{altrimenti}.
+\end{cases}
+$$
+
+
+_Successivamente,_ per ogni contratto $j$, la variazione di valore $D_{j,t}$ si ottiene moltiplicando la variazione della chiusura adjusted per il valore per punto espresso in USD _(per i contratti non in altre valute, il prezzo viene prima convertito in USD)_.
+
+$$
+D_{j,t} = (A_{j,t}-A_{j,t-1})\,\mathrm{PV}^{\mathrm{USD}}_{j,t}.
+$$
+
+Alla chiusura $t$, il peso preliminare $u_{j,t}$ è la direzione da eseguire divisa per $\sigma_{j,t-1}$ _(deviazione standard stimata con i dati fino alla chiusura precedente)_. 
+
+Il rischio complessivo di tutti i contratti a mercato _(prima di fissare le quantità dei contratti)_ $\sigma_{B,t}$ si stima quindi applicando i pesi correnti alle $v$ sedute precedenti:
+
+$$
+u_{j,t} = \frac{p_{j,t}}{\sigma_{j,t-1}}, \qquad
+B_{\tau;t} = \sum_j u_{j,t} D_{j,\tau}, \qquad
+\sigma_{B,t} = \operatorname{sd}(B_{t-v;t},\ldots,B_{t-1;t}).
+$$
+
+Quando il rischio è positivo e quello del benchmark è disponibile, il <b>numero di contratti target</b> si ottien quindi tramite:
+
+$$
+N^*_{j,t} = u_{j,t}\,
+\frac{\mathrm{NAV}_{t-1}\,\sigma_{\mathrm{benchmark},t-1}}{\sigma_{B,t}}.
+$$
+
+Dove $\sigma_{\mathrm{benchmark},t-1}$ è la deviazione standard dei rendimenti giornalieri del benchmark _(MSCI World in questo caso)_ sulle ultime $v$ sedute disponibili alla chiusura precedente moltiplicato per una costante di scala _($=1$ nel caso base)_.
+
+Dettagli e implementazione in python della strategia alla <a href ="https://github.com/giacomomaggiore/financial-analyses/blob/main/05_trend_following_futures.ipynb" target="_blank">repo GitHub del progetto.</a>
+
+---
+
+## <b>Può il battito d'ali di una farfalla in Brasile provocare un tornado in Texas?</b>
+
+
+In primis, ho eseguito un backtest utilizzando i seguenti parametri:
+- medie mobili esponenziali a $m=100$ sedute (lunga) e $n=50$ sedute (corta)
+- massimi e minimi locali su $l=100$ sedute per l'ingresso e $s=50$ sedute per l'uscita
+- volatilità giornaliera target pari a quella dell'MSCI World stimata su $v=63$ sedute
+- interessi sul cash pari al 100% del tasso effettivo del Fed Fund Rate
+- drag sul nozionale dei futures pari allo 0,20% annuo come proxy del costo di rolling a scadenza
+- transaction costs uniformi pari a 5 bp del nozionale negoziato
+- ribilanciamento giornaliero e sizing basato sulla volatilità giornaliera a 63 sedute
+
+Come benchmark, è stato utilizzato l’indice <a href="https://app2.msci.com/products/index-data-search/" target="_blank">MSCI World Net Return USD</a> _(dividendi reinvestiti al netto delle ritenute fiscali)_. Di conseguenza, per entrambi i portafogli non sono modellati costi di gestione _(TER)_.
+
+![Performance del trend following e dell’indice MSCI World Net Return USD con correlazione mobile ed eventi storici](/images/blog/trend-performance-correlation.png)
+
+*Crescita di 100 USD e correlazione mobile dei rendimenti giornalieri su 252 sedute.*
+| Metrica | Trend following  | MSCI World Net Return USD |
+| --- | ---: | ---: |
+| CAGR | 9,39% | 7,20% |
+| Volatilità annualizzata | 17,00% | 16,26% |
+| Sharpe Raio | 0,51 | 0,40 |
+| Sortino Ratio | 0,73 | 0,56 |
+| Drawdown massimo | −36,30% | −57,82% |
+| Durata media dei drawdown (giorni) | 73,17 | 37,47 |
+
+
+_Oltre ai maggiori Sharpe e CAGR..._ le cose maggiormente interessanti sono altre. 
+
+_In primis,_ la <b>forte decorrelazione</b> con il mercato azionario soprattutto in momenti in cui le azioni hanno _sucato:_ durante la dot-com bubble, la GFC e il downgrade del credito US la strategia si è comportata. 
+
+Dal 2016 al 2020, _al contrario,_ non vi è stata particolare overperformance; durante il rally azionario post-Covid non ha retto minimamente il colpo e, _non sorprendentemente, data la presenza di futures sulle commodity e su asset class alternative,_ durante la crisi di offerta dopo la guerra Russia-Ucraina ha registrato ritorni estremamente positivi.
+
+Dall'altro, si noti come la strategia abbia subito in media <b>drawdown più duraturi </b> rispetto a un portafoglio azionario _(a maggior ragione rispetto a uno diversificato azioni e obbligazioni),_ a ulteriore supporto del fatto che, _al di là dell'implementazione specifica,_ entrambe le strategie non andrebbero analizzate come portafogli standalone e mutualmente esclusivi ma, _come ampiamente suggerito dalla ricerca,_ come esposizioni a <b>fattori di rischio differenti </b> in grado di compensarsi a e lavorare bene insieme.
+
+_Nota a margine:_ leggendo un po' in giro, al contrario, sembra invece che detenere strategie sistematiche o totalmente passive _(recitando l'affascinante <a href="https://en.wikipedia.org/wiki/Efficient-market_hypothesis">teoria dei mercati efficienti... </a>a cui credo fortemente!)_ sia diventata una <b>questione più identitaria</b> e binaria che dettata da ragionamenti razionali e basati sui numeri e serie storiche _(potremmo ora discutere del valore esplicativo dei backtest, ma si entra in un terreno pericoloso tra statistica, macroeconomia e filosofia)._
+
+![Drawdown e rendimenti cumulati mobili del trend following e dell’indice MSCI World Net Return USD](/images/blog/trend-drawdowns-rolling-returns.png)
+
+*Drawdown dai massimi precedenti (in alto) e rendimenti cumulati su finestre mobili di cinque anni (in basso).*
+
+_Come accennato prima,_ non essendoci una definizione di trend biunivoca, la strategia è ampiamente<b> sensibile alle assunzioni </b>fatte durante il backtest e, _in caso di trading live,_ alle <b>condizioni e gli attriti </b> dei mercati finanziari. _A differenza di una strategia buy and hold su stocks e bonds,_ le leve con cui poter giocare in questo caso sono molteplici, anche tralasciando la durata delle medie mobili e le finestre per i massimi e i minimi, restano infatti molti altri parametri da calibrare.
+
+![Sensibilità di CAGR, volatilità e Sharpe ai parametri del backtest](/images/blog/trend-sensitivity.png)
+
+*Sensibilità di CAGR, volatilità e Sharpe a costo di roll, tasso sul cash, rischio target e frequenza di ribilanciamento, variando un parametro alla volta.*
+
+_In primis, e non sorprendentemente,_ la <b>volatilità target</b> è in grado di muovere in misura notevole il rapporto di rischio/rendimento del portafoglio seguendo la solita regola rischio $\implies$ rendimento.
+<br/>La frequenza di ribilanciamento, _al contrario,_ produce effetti <b>non lineari sulla performance</b> del portafoglio, soprattutto se associata a costi di transazione non nulli: _ceteris paribus,_ il CAGR e lo Sharpe raggiungono il picco con un ribilanciamento circa settimanale, mentre la volatilità segna un profilo abbastanza costante.<br/>
+_Allo stesso modo,_ <b>costi di transazione </b>e soprattutto<b> drag annuale </b> influiscono pesantemente sulle performance, risultato non sorprendente ma particolarmente rilevante per l'investitore retail, dato che si traducono in un'implementazione a mercato "imperfetta" e in costi di gestione non nulli.
+
+<TrendFollowingDashboard language="en" />
+
+## <b>Puzza di Yen carry trade</b>
+
+Decomponendo la performance per settore ed esposizione long/short, si nota anche come contratti diversi contribuiscano diversamente al portafoglio.
+
+![Contributo netto dei futures per mercato e direzione della posizione](/images/blog/trend-market-attribution.png)
+
+*Contributo netto al rendimento cumulato, in punti percentuali, per mercato e direzione long o short.*
+
+Futures sull'S&P 500, _per esempio,_ fanno particolarmente bene con esposizioni long per il comportamento rialzista degli ultimi anni, così come, _in generale,_  futures che hanno subito un forte rialzo che la strategia è riuscita a catturare. _Viceversa,_ posizioni short su yen, natural gas e pound hanno beneficato di mercati in rosso.
+
+Interessante anche vedere che, sommando contributi short e long su tutti i contratti futures, le posizioni long contribuiscono _(al netto dei costi di transazione)_ a più della metà del ritorno totale del portafoglio, mentre posizioni short e ritorno sugli interessi maturati hanno un<b> ruolo più marginale</b>. 
+
+_Ciò nonostante,_ queste rimangono la baseline del portafoglio in quanto <b>1)</b> permettono di avere <b>decorrelazione dal mercato azionario</b> e <b>2)</b> permettono alle posizioni long di fare profitto quando vi è la possibilità. <br/>Senza le esposizioni short infatti, la strategia collasserebbe in un<b> market timing long-only</b> maggiormente esposto al beta di mercato, perdendo la sua proprietà di diversificazione da stock e bonds.
+
+| Posizione | P&L futures | Costi di transazione | Costi di roll | Interessi sul cash | Contributo netto |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Long | 629,71 | −209,31 | −59,28 | 0,00 | 361,11 |
+| Short | 341,73 | −111,81 | −29,76 | 0,00 | 200,15 |
+| Cash | 0,00 | 0,00 | 0,00 | 127,46 | 127,46 |
+| **Totale** | **971,43** | **−321,13** | **−89,05** | **127,46** | **688,72** |
+
+*Contributi al rendimento cumulato in punti percentuali del NAV iniziale.*
+
+_Tirando un po' le somme..._ ci sarebbero mille modi per migliorare la strategia proposta e renderla più <b>robusta</b>, ad esempio riducendo il turnover degli asset, stimando la volatilità in modi più accurati o semplicemente calibrando i parametri dei segnali o il position sizing; eppure penso sia molto più utile, in caso di implementazione diretta, capire prima il <b>ruolo</b> che si vuole attribuire al trend following all'interno allocazione complessiva.
+
+Invece di modellarla come strategia standalone, bisognerebbe piuttosto effettuare ogni modifica mantenendo una <b>visione più olistica del portafoglio</b>, _i.e._ ottimizzando la strategia considerando esclusivamente il suo valore aggiunto all'interno di un portafoglio già diversificato, non valutando $\alpha$ e volatilità esclusivamente della parte trend.
+
+Questo tuttavia resta difficile in quanto <b>estremamente individuale</b>: _almeno in via teorica,_ richiederebbe infatti di partire dall'asset allocation personale di lunghissimo periodo e, _una volta determinate avversione al rischio, necessità e obiettivi del patrimonio,_ studiare una strategia trend che includa stock, bond, trend e _[asset class a piacimenti]_ coerentemente con le proprie prospettive.
+
+Cheers!
+
+<div align = "center">
+![Cene no ai!](/images/blog/point-break-1.png)
+</div>
+<small><i>Futures su S&P 500 e EURO Stoxx 50 prima di cavalcare l'onda rialzista</i> </small>
+
+
+
+## <b>Reference</b>
+
+- Andreas F. Clenow, [*Following the Trend: Diversified Managed Futures Trading*, seconda edizione](https://www.wiley.com/en-us/Following+the+Trend%3A+Diversified+Managed+Futures+Trading%2C+2nd+Edition-p-9781119908982), Wiley, e [*Core Trend Following Rules*](https://www.followingthetrend.com/the-trading-system/trading-system-rules/), sito dell’autore.
+- Tobias J. Moskowitz, Yao Hua Ooi e Lasse H. Pedersen (2012), [*Time Series Momentum*](https://www.aqr.com/Insights/Research/Journal-Article/Time-Series-Momentum) ([testo integrale](https://w4.stern.nyu.edu/facdir/lpederse/papers/TimeSeriesMomentum.pdf)).
+- Brian K. Hurst, Yao Hua Ooi e Lasse H. Pedersen (2017), [*A Century of Evidence on Trend-Following Investing*](https://www.aqr.com/Insights/Research/Journal-Article/A-Century-of-Evidence-on-Trend-Following-Investing) ([testo integrale](https://www.aqr.com/-/media/AQR/Documents/Insights/Journal-Article/AQR-JPM-Fall-2017.pdf)).
+- Abby Y. Kim, Yiuman Tse e John K. Wald (2016), [*Time series momentum and volatility scaling*](https://doi.org/10.1016/j.finmar.2016.05.003).
+- Abhilash Babu, Ari Levine, Yao Hua Ooi, Sarah Schroeder ed Erik Stamelos (2020), [*You Can't Always Trend When You Want*](https://www.aqr.com/Insights/Research/Journal-Article/You-Cant-Always-Trend-When-You-Want).
+
+### <b>Market data</b>
+
+- Société Générale, [*SG Trend Index Construction Methodology*](https://wholesale.banking.societegenerale.com/fileadmin/indices_feeds/SG_Trend_Index_Methodology.pdf); BarclayHedge, [*SG Prime Services Indices: serie storiche*](https://portal.barclayhedge.com/cgi-bin/indices/displayIndices.cgi?indexID=sg).
+- iM Global Partner, [*iMGP DBi Managed Futures Strategy ETF (DBMF)*](https://www.imgp.com/us/dbmf/) e [scheda del fondo](https://www.imgp.com/uploads/factsheets/DBMF_FACTSHEETS_EN.pdf); Yahoo Finance, [*DBMF: Historical Data*](https://finance.yahoo.com/quote/DBMF/history/).
+- KraneShares, [*KraneShares Mount Lucas Managed Futures Index Strategy ETF (KMLM)*](https://kraneshares.com/etf/kmlm/) e [*KMLM Achieves a Three-Year Track Record, Continues to Provide Consistent Uncorrelated Returns*](https://kraneshares.com/kmlm-achieves-a-three-year-track-record-continues-to-provide-consistent-uncorrelated-returns/).
+- iM Global Partner, [*iMGP DBi Managed Futures Fund I USD (UCITS)*](https://www.imgp.com/fund/lu2529946613-imgp-dbi-managed-futures-fund-i-usd/); Man Group, [*Man Trend Alternative*](https://www.man.com/products/man-trend-alternative).
+- MSCI, [*MSCI World Index: livelli giornalieri net total return in USD*](https://app2.msci.com/products/service/index/indexmaster/getLevelDataForGraph?index_codes=990100&currency_symbol=USD&index_variant=NETR&data_frequency=DAILY&start_date=20240327&end_date=20240328); BlackRock, [*iShares MSCI World ETF (URTH)*](https://www.ishares.com/us/products/239696/ishares-msci-world-etf).
+- Robert Carver e collaboratori di `pysystemtrade`, [*Futures instrument configuration*](https://github.com/pst-group/pysystemtrade/blob/bbf5cf823e16be1cca27493a94099eb8cf33f6e7/data/futures/csvconfig/instrumentconfig.csv), [*Futures roll configuration*](https://github.com/pst-group/pysystemtrade/blob/bbf5cf823e16be1cca27493a94099eb8cf33f6e7/data/futures/csvconfig/rollconfig.csv) e [*Adjusted prices*](https://github.com/pst-group/pysystemtrade/blob/bbf5cf823e16be1cca27493a94099eb8cf33f6e7/sysobjects/adjusted_prices.py), revisione `bbf5cf8`.
+- Board of Governors of the Federal Reserve System, via FRED, [*Federal Funds Effective Rate (DFF)*](https://fred.stlouisfed.org/series/DFF) e [*U.S. Dollars to Euro Spot Exchange Rate (DEXUSEU)*](https://fred.stlouisfed.org/series/DEXUSEU).
+- FTSE Russell e Curvo, [*FTSE World Government Bond Index – Developed Markets: serie mensile*](https://curvo.eu/backtest/fingerprinted-data/ftse-world-government-bond-developed-markets.1d146a9e.json); Curvo, [*EUR/USD: serie di conversione*](https://curvo.eu/backtest/fingerprinted-data/eur-usd.c5fd8750.json).

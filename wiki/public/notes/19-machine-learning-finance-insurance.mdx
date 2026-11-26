@@ -1017,7 +1017,7 @@ _(note the position of the 1s in the vector!)_
 
 Sometimes the performance of a linear regression can be improved significantly by transforming and combining features.<br/>Suppose we have the original features $x_1,\ldots,x_d \in \mathbb{R}$.
 
-Given this initial data set, there are operations we can perform, i.e. many $f(x)$ we can apply to the original $x_1,\ldots,x_d$ _(e.g. $e^{\lambda x}$, $x_1x_2$, $|x_2-m|$, $(x_2-m)^2$), but note that these operations often require <b>expert knowledge</b>.
+Given this initial data set, there are operations we can perform, i.e. many $f(x)$ we can apply to the original $x_1,\ldots,x_d$ _(e.g. $e^{\lambda x}$, $x_1x_2$, $|x_2-m|$, $(x_2-m)^2$)_, but note that these operations often require <b>expert knowledge</b>.
 
 ---
 <br/>
@@ -2018,7 +2018,7 @@ $$
 where $W^\dagger$ is the <b>pseudoinverse</b> of $W$.
 
 
-_Secondly,_ we can opt for <b>preconditioning methods</b>. A popular method is called <b>FALKON</b> (see <a href="https://arxiv.org/abs/1705.10958" target="_Blank" rel="noopener noreferrer">Rudi et al.</a>). To illustrate preconditioning, let $A = K_m + \lambda m I_m$ and consider an ideal preconditioner $B$ and a vector $z$ such that:
+_Secondly,_ we can opt for <b>preconditioning methods</b>. A popular method is called <b>FALKON</b> (see <a href="https://arxiv.org/abs/1705.10958" target="_Blank" rel="noopener noreferrer">FALKON: An Optimal Large Scale Kernel Method</a>, Rudi et al.). To illustrate preconditioning, let $A = K_m + \lambda m I_m$ and consider an ideal preconditioner $B$ and a vector $z$ such that:
 
 $$
 BB^T = A^{-1}, \qquad B^TABz = B^Ty.
@@ -2205,7 +2205,7 @@ We now provide some examples of neural network applications in finance:
 <br/>
 <b>Universal Approximation Property</b>
 
-The first proof of the UAP is credited to Cybenko in his 1989 paper. Four years later, Leshno et al. gave a necessary and sufficient condition on the activation function $\rho$ for the UAP to hold for shallow neural networks.
+The first proof of the UAP is credited to Cybenko in his 1989 paper <a href="https://doi.org/10.1007/BF02551274" target="_blank">Approximation by Superpositions of a Sigmoidal Function</a>. Four years later, Leshno et al. gave a necessary and sufficient condition on the activation function $\rho$ for the UAP to hold for shallow neural networks in <a href="https://doi.org/10.1016/S0893-6080(05)80131-5" target="_blank">Multilayer Feedforward Networks with a Nonpolynomial Activation Function Can Approximate Any Function</a>.
 
 In particular, we can state the <b>UAP for shallow FNNs</b> as follows.
 
@@ -2517,7 +2517,7 @@ $$
 
 _In this case,_ coordinates with large (small) gradients get small (large) steps; the update is (almost) invariant to rescaling individual parameters, which helps with badly scaled problems.
 
-<b>Adam Optimizer, from <a href="https://arxiv.org/abs/1412.6980" target="_blank">Kingma and Ba, 2015</a></b>
+<b>Adam Optimizer, from <a href="https://arxiv.org/abs/1412.6980" target="_blank">Adam: A Method for Stochastic Optimization</a>, Kingma and Ba, 2015</b>
 
 The idea behind this is that it combines momentum, RMSProp, and bias correction in a single optimizer: we consider a momentum step $\hat m_t$ divided in each coordinate by the typical size of the gradients in that coordinate, $\sqrt{\hat s_t}$. To understand it better, we start from the algorithm in pseudocode:
 
@@ -2635,7 +2635,7 @@ We can use random initialization, but if $\theta_0$ is too small:
 If $\theta_0$ is too big:
 - gradients explode (in the chain rule, we multiply weights that are on average larger than one).
 
-An initializer that works well is the Xavier (Glorot) initialization [<a href="https://proceedings.mlr.press/v9/glorot10a.html" target="_blank">Glorot and Bengio, 2010</a>]:
+An initializer that works well is the Xavier (Glorot) initialization [<a href="https://proceedings.mlr.press/v9/glorot10a.html" target="_blank">Understanding the Difficulty of Training Deep Feedforward Neural Networks</a>, Glorot and Bengio, 2010]:
 
 $$
 W_{ij}^{(k)} \overset{\mathrm{iid}}{\sim} \mathcal{N}\left(0, \frac{2}{N_{k-1}+N_k}\right),
@@ -2652,7 +2652,7 @@ $$
 
 If $\rho(x) \approx x$ near 0 (e.g. $\rho(x) = \tanh(x)$), then $\mathbb{E}[(a_j^{(k-1)})^2] \approx \operatorname{Var}(\tilde{a}_j^{(k-1)})$. Thus, the variance neither vanishes nor explodes across layers if $\operatorname{Var}(W_{ij}^{(k)}) = 1/N_{k-1}$. The same argument for the backward pass (a sum over the $N_k$ neurons of layer $k$) gives $1/N_k$; Xavier takes a compromise between the two.
 
-ReLU sets about half of the pre-activations to 0, so $\mathbb{E}[(a_j^{(k)})^2] \approx \frac{1}{2}\operatorname{Var}(\tilde{a}_j^{(k)})$. He initialization, $W_{ij}^{(k)} \overset{\mathrm{iid}}{\sim} \mathcal{N}(0,2/N_{k-1})$ [<a href="https://arxiv.org/abs/1502.01852" target="_blank">He et al., 2015</a>], compensates with the factor 2.
+ReLU sets about half of the pre-activations to 0, so $\mathbb{E}[(a_j^{(k)})^2] \approx \frac{1}{2}\operatorname{Var}(\tilde{a}_j^{(k)})$. He initialization, $W_{ij}^{(k)} \overset{\mathrm{iid}}{\sim} \mathcal{N}(0,2/N_{k-1})$ [<a href="https://arxiv.org/abs/1502.01852" target="_blank">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</a>, He et al., 2015], compensates with the factor 2.
 
 Other initializers can also be used (see, e.g., `torch.nn.init` and `tf.keras.initializers`). Typically, one repeats the training for different sampled values of $\theta_0$.
 ---
@@ -2714,7 +2714,7 @@ _Secondly,_ note that <b>training techniques</b> can be regularizers too. _For e
 - <b>dropout</b>: before each gradient step, we set each neuron to zero with probability $q$ _(independently of all others)_, then perform backpropagation as usual. This encourages sparse and redundant representations _(this can be viewed equivalently as training exponentially many neural networks)_.
 
 
-To see this in practice, we now present a dropout method, proposed by <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" target="_blank">Srivastava et al. in 2014</a>, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_
+To see this in practice, we now present a dropout method, proposed by Srivastava et al. in 2014 in <a href="https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf" target="_blank">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</a>, in the <b>inverted form</b>: during training, we multiply the activations of each hidden layer by a random mask, _that is:_
 
 $$
 a^{(k)} \leftarrow \frac{1}{1-q}\,\xi^{(k)} \odot a^{(k)},
@@ -2955,7 +2955,7 @@ _Indeed,_ this means that if an object moves slightly within an image, the pooli
 <br/>
 <b>Example: Architecture LeNet-5</b>
 
-<a href="https://doi.org/10.1109/5.726791" target="_blank">LeNet-5</a> is one of the earliest convolutional networks, from the paper by LeCun et al. in 1998.
+<a href="https://doi.org/10.1109/5.726791" target="_blank">LeNet-5</a> is one of the earliest convolutional networks, from the paper <a href="https://doi.org/10.1109/5.726791" target="_blank">Gradient-Based Learning Applied to Document Recognition</a> by LeCun et al. in 1998.
 
 It was trained on the <a href="https://www.yannlecun.com/exdb/mnist/" target="_blank">MNIST dataset</a>, which contains 70,000 pictures of handwritten digits.
 
@@ -3095,6 +3095,10 @@ We now spend some time to deep dive into the GARCH(1,1) model (<b>Generalized Au
 
 The motivation behind this is that stock returns are often nearly uncorrelated, while squared returns can be autocorrelated and their autocorrelation can decay slowly _(i.e. large moves follow large moves, so the sizes of tomorrow's returns and their variance given the past can be predictable)_. Therefore, we can model variance $\sigma_t^2$ as a function of past squared returns.
 
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/garch.png)
+</div>
+
 _Specifically,_ for daily returns $r_t$ we can define:
 
 $$
@@ -3120,7 +3124,543 @@ Neural RNNs likewise start from $h_0 = 0$ or a learned $h_0$.
 
 _Note that_ we could replace the linear recursion with a <b>learned nonlinearity</b> using a neural RNN.
 
+---
+<br/>
+<b>RNNs: Back Propagation through Time (BPTT)</b>
+
+If we consider it <b>unrolled in time</b>, an RNN is a deep network with one layer per time step and the same parameters $W, U, b, V, c$ in every layer.
+
+_In this case,_ we define the loss as $\mathcal{L} = \sum_{t=1}^T \ell_t(\hat y_t, y_t)$ with output $\hat y_t = V h_t + c$ and $h_t = \rho(a_t)$ and $a_t = W h_{t-1} + U x_t + b$.
+
+_Then:_ we define the errors $\delta_t = \nabla_{a_t} \mathcal{L}$ as $\delta^{(k)}$. Backward in time, we can set $\delta_{T+1} = 0$ and:
+
+$$
+\delta_t = \operatorname{diag}(\rho'(a_t))(V^T \nabla_{\hat y_t} \ell_t + W^T \delta_{t+1})
+$$
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/bptt.png)
+</div>
+
+_Indeed,_ each parameter is used at every time step, as if there were one copy $\theta_t$ per step. The gradient of $\mathcal{L}$ w.r.t. $\theta$ is therefore the sum of the gradients w.r.t. the copies.
+
+$$
+\nabla_W \mathcal{L} = \sum_t \delta_t h_{t-1}^{\top},
+\quad
+\nabla_U \mathcal{L} = \sum_t \delta_t x_t^{\top},
+\quad
+\nabla_b \mathcal{L} = \sum_t \delta_t,
+\quad
+\nabla_V \mathcal{L} = \sum_t \nabla_{\hat{y}_t} \ell_t h_t^{\top},
+\quad
+\nabla_c \mathcal{L} = \sum_t \nabla_{\hat{y}_t} \ell_t.
+$$
+
+_Note that_ this algorithm grows linearly in $T$, therefore for long sequences it may be useful to use <b>truncated BPTT</b> that propagates up to the last $K$ steps.
+
+---
+<br/>
+<b>Deep RNN</b>
+
+Deep RNNs allow us to stack recurrent layers to create a deeper architecture, _i.e._ layer $l$ takes the hidden states of layer $l-1$ as its input.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/deep-rnn.png)
+</div>
+
+---
+<br/>
+
+<b>The Vanishing-Exploding Gradient Problem</b>
+
+In practice, training RNNs is difficult because of the vanishing/exploding gradient problem.
+
+The gradient of a shared parameter $\theta$ <b>increases/decreases exponentially</b> through time. By the chain rule, we indeed have:
+
+$$
+\frac{\partial \ell_t}{\partial \theta}
+= \sum_{k=1}^{t} \frac{\partial \ell_t}{\partial h_t}
+\frac{\partial h_t}{\partial h_k}
+\frac{\partial h_k}{\partial \theta_k},
+\qquad
+\frac{\partial h_t}{\partial h_k}
+= \frac{\partial h_t}{\partial h_{t-1}} \cdots
+\frac{\partial h_{k+1}}{\partial h_k},
+\qquad
+\frac{\partial h_i}{\partial h_{i-1}}
+= \operatorname{diag}(\rho'(a_i))W.
+$$
+
+The product is the identity when $k=t$.
+
+Therefore:
+- If $\|\partial h_i / \partial h_{i-1}\| > 1$ the gradient may grow exponentially in $t-k$ _(exploding)_
+- If $\|\partial h_i / \partial h_{i-1}\| < 1$, then the gradient vanishes exponentially in $t-k$ _(vanishing)_
+
+An exploding gradient is problematic because large gradient updates make learning unstable and can "bring us" into suboptimal regions of the parameter space. This can be fixed by <b>gradient clipping</b>, _i.e._ by clipping the gradient at each step to $K$ if the norm is larger than or equal to the same threshold $K$. _In formulas:_
+
+$$
+\nabla_\theta \mathcal{L} \leftarrow
+\begin{cases}
+\nabla_\theta \mathcal{L}
+& \text{if } \|\nabla_\theta \mathcal{L}\| < K, \\[4pt]
+K \dfrac{\nabla_\theta \mathcal{L}}{\|\nabla_\theta \mathcal{L}\|}
+& \text{if } \|\nabla_\theta \mathcal{L}\| \geq K.
+\end{cases}
+$$
+
+_Note that_ the direction is kept and the threshold $K$ can be seen as a hyperparameter.
+
+_On the other hand,_ the vanishing gradient problem is more difficult to solve. If, for all $i$,
+
+$$
+\left\|\frac{\partial h_i}{\partial h_{i-1}}\right\|_2
+= \|\operatorname{diag}(\rho'(a_i))W\|_2
+\leq \|\operatorname{diag}(\rho'(a_i))\|_2\|W\|_2
+\leq \eta < 1,
+$$
+
+we have that
+
+$$
+\left\|\frac{\partial \ell_t}{\partial \theta}\right\|_2
+\leq \left\|\frac{\partial \ell_t}{\partial h_t}\right\|_2
+\sum_{k=1}^{t} \eta^{t-k}
+\left\|\frac{\partial h_k}{\partial \theta_k}\right\|_2.
+$$
+
+This means that long-term contributions with $k \ll t$ <b>vanish</b> exponentially in $t-k$, and so learning long-term dependencies takes more iterations and the gradient is submerged by the <b>short-term noise</b>.
+
+This problem arises if the same $W$ is used at every time step, so the product of Jacobians contains the same $W$ exactly $t-k$ times, which gives the geometric bound $\eta^{t-k}$ above. In an FNN, each layer has its own weight matrix.
+
+_Therefore,_ the problem cannot be easily fixed as before but it can be addressed by designing more advanced recurrent units (GRUs) or changing the architecture.
+
+---
+<br/>
+<b>The Gated Recurrent Unit (GRU)</b>
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/gru.png)
+</div>
+
+A GRU processes a sequence one observation at a time. At time $t$, it combines the new input $x_t$ with its previous memory $h_{t-1}$ to produce an updated memory $h_t$, where $\sigma$ is the sigmoid function and $W$, $U$ and $b$ are the learned weights.
+
+_Then,_ the <b>reset gate</b> controls how much of the previous memory is used to construct a candidate new memory.
+
+$$
+\Gamma_r = \sigma(W^r h_{t-1} + U^r x_t + b_r)
+$$
+
+_Intuition: $\Gamma_r \approx 0$, the old memory is largely ignored._
+
+_Then,_ the update gate controls the balance between keeping the old memory and adopting the candidate with:
+
+$$
+\Gamma_u = \sigma(W^u h_{t-1} + U^u x_t + b_u)
+$$
+
+The candidate memory is built from the inputs and the filtered previous memory:
+
+$$
+\tilde h_t = \tanh(W^{\mathrm{in}}(\Gamma_r \odot h_{t-1}) + U^{\mathrm{in}}x_t + b)
+$$
+
+_(Note that the $\tanh$ function keeps each candidate in $[-1,1]$.)_
+
+_Finally,_ the updated memory and the output are:
+
+$$
+h_t = (1-\Gamma_u) \odot h_{t-1} + \Gamma_u \odot \tilde h_t,
+\qquad y_t = W^{\mathrm{out}}h_t.
+$$
+
+
+<b>The Long Short-Term (LSTM) Unit</b>
+
+_In contrast,_ an LSTM maintains two states:
+- the cell state $c_t$, used to carry memory through time
+- the hidden state $h_t$ used for the output and gate calculation.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/lstm.png)
+</div>
+
+To control the cells, three gates are used _(forget, input and output gates)_:
+
+$$
+\begin{aligned}
+\Gamma_f &= \sigma(W^f h_{t-1} + U^f x_t + b_f), \\
+\Gamma_i &= \sigma(W^i h_{t-1} + U^i x_t + b_i), \\
+\Gamma_o &= \sigma(W^o h_{t-1} + U^o x_t + b_o).
+\end{aligned}
+$$
+
+where the forget gate represents how much memory from the old cell to retain, the input how much of the candidate info to write and the output one how much cell information to expose through $h_t$.
+
+_Then_ $\tilde c_t$ is the proposed information to add to the cell; the input gate decides how much $c_t$ is actually written.
+
+$$
+\tilde c_t = \tanh(W^c h_{t-1} + U^c x_t + b_c).
+$$
+
+$$
+c_t = \Gamma_f \odot c_{t-1} + \Gamma_i \odot \tilde c_t,
+\qquad h_t = \Gamma_o \odot \tanh(c_t)
+$$
+
+
+---
+<br/>
+<b>Temporal Convolutional Neural Networks (TCN)</b>
+
+They were firstly introduced by Waibel et al. in 1989 in their paper <a href="https://doi.org/10.1109/29.21701" target="_blank">Phoneme Recognition Using Time-Delay Neural Networks</a>, but they only became popular in 2018 thanks to Bai et al. in their paper <a href="https://arxiv.org/abs/1803.01271" target="_blank">An Empirical Evaluation of Generic Convolutional and Recurrent Networks for Sequence Modeling</a> when more computational power became available.
+
+_The main idea_ behind temporal convolutional neural networks is to <b>stack causal, dilated convolutional layers</b> $(x *_d K)_t = \sum_{n=0}^{m-1} x_{t-dn} K_n$.
+The index runs from $n=0$
+backwards in time _(convolution)_: with the flipped kernel, it is the cross-correlation $\circledast$  on the inputs $x_{t-(m-1)d}, \ldots, x_{t-d}, x_t$, so for a learned $K$ both give the same layer
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/temp-conv.png)
+</div>
+
+The network is called <b>causal</b> because the output is a function only of the past, <b>dilated</b> because the kernel skips $d-1$ inputs between its taps, so if the kernel size is $m$ and has $L$ layers, $y_t$ depends on the last $1 + (m-1)(2^L - 1)$ inputs.
+
+_However,_ the problem in TCN is that <b>long-memory tasks</b> require very deep TCNs and so this may lead to <b>unstable training</b>. The solution is to stabilize learning using a <b>residual connection</b>.
+
+_In this way,_ the output is given by $z = x + F(x)$, where $F$ is the convolutional layer. $\Rightarrow$ $F$ only needs to learn “residuals” of the identity transformation.
+If the shapes of $x$ and $z$ do not match, use a suitable $1 \times 1$ convolution.
+
+_In practice,_ TCNs perform well and require less computation and memory:
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/tcn.png)
+</div>
+
+The advantages of TCNs are:
+- <b>parallelism</b>: in each layer the output at time $t$ depends only on the layer below, not on the output at time $t-1$ $\implies$ for a given input sequence, the same kernel is applied at all time steps at once
+- <b>lightweight model</b>: no need to store intermediate cell/gate values.
+- <b>flexible history length</b> adjustable in many ways (model depth, dilation, kernel size).
+<br/>
+_However,_ they also come with disadvantages:
+- <b>no recurrent hidden state</b> $\implies$ no sequence summarization
+- <b>poor transfer learning</b> $\implies$ the effective history length is tied to the specific architecture.
+
+<br/>
+---
+<br/>
+<b>Tokens and Word Embeddings</b>
+
+Much financial information is made out of text but... networks compute with vectors, therefore before an RNN or a transformer can read a text, the text must be turned into a sequence of vectors.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/token.png)
+</div>
+
+The idea behind <b>tokenization</b> is to split the text into <b>tokens</b> _(i.e. pieces from a fixed vocabulary $\mathcal{V}$)_ and then replace each token by its index in $\mathcal{V}$, called the <b>token id</b>.
+Then, with <b>embeddings</b>, we map each id to a learned vector $x \in \mathbb{R}^d$, such that tokens with similar meaning get similar vectors.
+
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/token-2.png)
+</div>
+
+_Note that_ there are different options to tokenize a word, so often there's the need of a compromise.
+
+_Indeed,_ each token in $\mathcal{V}$ needs its own embedding vector, learned from the texts in which it occurs: a huge vocabulary has many rare tokens with few examples. And the cost of the network grows with the number of tokens per text: very short tokens make long sequences. Subwords lie in between and are used by modern language models.
+
+<b>Byte-Pair Encoding (BPE)</b>
+
+In byte-pair encoding, from Sennrich et al. in the 2016 paper <a href="https://aclanthology.org/P16-1162/" target="_blank">Neural Machine Translation of Rare Words with Subword Units</a>, the vocabulary of subwords is chosen by learning it from a training corpus. _Indeed,_ the algorithm:
+- starts with the single characters
+- counts how often each pair of adjacent tokens occurs in the corpus
+- adds the most frequent pair as a new token and merges it everywhere
+- repeats steps 2–3 until the vocabulary has the desired size $|\mathcal{V}|$ _(defined as a hyperparameter)_.
+
+_Example:_ for the corpus `low low lower`, BPE can merge `l` and `o` into `lo`, then `lo` and `w` into `low`. The result is `low low low e r`. Common sequences become tokens, while rarer words can be split into smaller pieces. The learned merges are then used to tokenize new text.
+
+GPT-2 starts from the $2^8 = 256$ possible bytes _(a byte has 8 bits)_ instead of characters, so every text can be tokenized: in UTF-8, a is one byte and ü two, so Zürich has 7 bytes. With 50,000 merges on web text, $|\mathcal{V}| = 256 + 50,000 + 1 = 50,257$ _(one special end-of-text token)._
+
+<b>One-Hot Vectors and the Embedding Layer</b>
+
+Token id $i \in \{1,\ldots,V\}$ as a one-hot vector $e_i \in \{0,1\}^V$ (a 1 in position $i$): $V \approx 50,000$ dimensions, and all tokens are equally far apart, $\|e_i-e_j\|_2 = \sqrt{2}$ for $i \neq j$.
+
+The model stores an embedding matrix $E \in \mathbb{R}^{V \times d}$: one row per token, with $d$ numbers per row.
+
+_Then,_ for token $i$, multiplying by its one-hot vector selects row $i$:
+
+$$
+x = E^\top e_i = (E_{i1},\ldots,E_{id})^\top \in \mathbb{R}^d.
+$$
+
+_In practice,_ the model simply looks up the row rather than performing the multiplication.
+
+The entries of $E$ are learned during training, or loaded from pretrained embeddings. Tokens used in similar contexts can acquire related representations, though similarity is not guaranteed.
+
+These are the <b>initial token embeddings</b>; later network layers can produce context-dependent representations.
+
+---
+<br/>
+<b>Where do good embeddings come from?</b>
+
+The <b>distributional hypothesis</b> tells that "we shall know a word by the company it keeps", therefore words that appear in similar contexts have similar meanings.
+
+_For example,_ <b>word2vec</b> from Mikolov et al. in the 2013 paper <a href="https://arxiv.org/abs/1310.4546" target="_blank">Distributed Representations of Words and Phrases and their Compositionality</a> slides a window over a large corpus of text and, _for each center word $w$, each context word $c$ and $k$ random words $n_1,\ldots,n_k$,_ maximizes the following:
+
+$$
+\log \sigma(u_c^\top v_w) + \sum_{j=1}^k \log \sigma(-u_{n_j}^\top v_w),
+\qquad \sigma(z) = \frac{1}{1+e^{-z}}.
+$$
+
+
+_The idea is that_ we do <b>logistic regression</b> for "is $c$ a real neighbour of $w$": real pairs get large scores $u_c^T v_w$, so words with similar neighbours get similar vectors $v_w$. _Also note that_ this is <b>self-supervised</b> since the model gets raw text _without_ labels.
+
+<b>The Geometry of Word Embeddings</b>
+
+
+GloVe (Global Vectors)
+[<a href="https://aclanthology.org/D14-1162/" target="_blank">Pennington et al., 2014: GloVe: Global Vectors for Word Representation</a>]: $d = 50$, trained on Wikipedia and news (6 billion tokens). Left: projection on the first two principal components; words of the same kind form clusters.
+
+They measured the similarity of two words with <b>cosine similarity</b>, i.e. by computing for each $x, y$:
+
+$$
+\cos(x, y) = \frac{x^\top y}{\|x\|_2\|y\|_2}
+$$
+
+In this way the direction of the cosine carries the meaning of each word.
+
+---
+<br/>
+<b>Embeddings in Finance</b>
+
+- <b>Text as features</b>: sentiment of news and earnings calls (FinBERT, <a href="https://arxiv.org/abs/1908.10063" target="_blank">FinBERT: Financial Sentiment Analysis with Pre-trained Language Models</a>, Araci, 2019); the words in news articles help to predict stock returns (<a href="https://doi.org/10.3386/w26186" target="_blank">Predicting Returns With Text Data</a>, Ke et al., 2019).
+- <b>Similar firms</b>: Hoberg and Phillips, 2016, <a href="https://doi.org/10.1086/688176" target="_blank">Text-Based Network Industries and Endogenous Product Differentiation</a>, define industries by the similarity of the product descriptions in 10-K filings: firms whose descriptions are close are competitors.
+- <b>Categorical features</b>, e.g. the sector of a stock ($K$ sectors): instead of a one-hot vector $e_k \in \{0,1\}^K$ for sector $k$, the network gets row $k$ of a table $E \in \mathbb{R}^{K \times d}$, exactly as for tokens (entity embeddings, <a href="https://arxiv.org/abs/1604.06737" target="_blank">Entity Embeddings of Categorical Variables</a>, Guo and Berkhahn, 2016).
+    - Example: the $K = 11$ sectors of GICS (Global Industry Classification Standard, by MSCI and S&P), $d = 3$. Apple and Microsoft are both in IT, so both get the same row $E_{\mathrm{IT}} \in \mathbb{R}^3$; ExxonMobil gets $E_{\mathrm{Energy}}$. Each stock's input: its other features and its sector's row.
+    - $E$ is learned with the rest of the network, e.g. for return prediction, so sectors with a similar effect on returns get similar rows; with one-hot vectors, all sectors are equally far apart.
+- <b>Time series as tokens</b>: short patches of a time series (e.g. 16 consecutive values) serve as the tokens of a Transformer (<a href="https://arxiv.org/abs/2211.14730" target="_blank">A Time Series is Worth 64 Words: Long-term Forecasting with Transformers</a>, Nie et al., 2023).
+- <b>Caveats</b>: general-purpose embeddings miss finance-specific meanings (“liability”, “bull”, “short”), and pre-trained models have read texts written after the forecast date: a source of look-ahead bias in backtests.
+<br/>
+<b>Attention</b>
+
+Recall that an RNN processes a sequence one element at a time, updating a hidden state:
+
+$$
+h_t = f_\theta(h_{t-1}, x_t)
+$$
+
+Without attention, a sequence-to-sequence model relies on the final state $h_T$ to represent the entire input, and therefore information from early elements can be lost along the way.
+In <a href="https://arxiv.org/abs/1409.0473" target="_blank">Neural Machine Translation by Jointly Learning to Align and Translate</a> (Bahdanau et al., 2015), <b>attention</b> lets the decoder look back at all hidden states when producing the output. In particular, at time $t$, a <b>context vector</b> is computed as the weighted average $\sum_s \alpha_{t,s} h_s$ with large weights $\alpha_{t,s}$ for states $h_s$ that are relevant for the current state $h_t$.
+
+In this case, we can consider the current state $h_t$ as the query $q$ (what is the output looking for?), and each $h_s$ as both key $k_s$ (what does it contain?) and value $v_s$ (what does it pass on?). Transformers drop the RNN and compute separate $q$, $k_s$, $v_s$ from the inputs $x_t$, $x_s$ with learned matrices.
+
+Then, from an intuition of Vaswani et al. in 2017, we can measure how well each key $k_s$ matches the query $q$ by a scaled dot product for $q \in \mathbb{R}^{d_k}$ and pairs $(k_s, v_s)_{s=1}^T$:
+
+$$
+\operatorname{Att}(q, (k_s, v_s)_s)
+= \sum_{s=1}^{T} \alpha_s v_s,
+\qquad
+\alpha_s =
+\frac{\exp(q^\top k_s / \sqrt{d_k})}
+{\sum_{u=1}^{T} \exp(q^\top k_u / \sqrt{d_k})}.
+$$
+
+_Furthermore,_ <b>self-attention</b> lets each time step look at other time steps in the same sequence and combine their information.
+
+For each input $x_t$ the model learns three representations:
+- Query $q_t$: what this time step is looking for.
+- Key $k_s$: what time step $s$ offers for matching.
+- Value $v_s$: the information contributed by time step $s$.
+
+The model compares $q_t$ with each $k_s$, converts the scores into weights $\alpha_{t,s}$ using softmax, and takes a weighted average of the values:
+
+$$
+\mathrm{output}_t = \sum_s \alpha_{t,s} v_s
+$$
+
+_Recall that_ <b>softmax</b> converts a set of scores into positive weights that sum to 1 such that:
+
+$$
+\alpha_i = \frac{e^{z_i}}{\sum_j e^{z_j}}
+$$
+
+where a higher score $z_i$ produces a higher weight $\alpha_i$.
+
+The <b>causal mask</b> prevents a time step from attending to the future, by setting future scores to $-\infty$ before softmax, giving zero weight.
+
+_Unlike an RNN,_ self-attention can connect distant time steps directly and process the sequence in parallel. Its trade-off is that comparing all pairs of time steps requires roughly $O(T^2d)$ computation.
+
+
+
+In contrast with one attention head that computes one weighted average per time step, <b>multi-head attention</b> runs $H$ heads with separate projections in parallel and concatenates them:
+
+$$
+\mathrm{head}_h = \operatorname{Att}(XW_h^Q,XW_h^K,XW_h^V), \qquad \operatorname{MHA}(X) = [\mathrm{head}_1,\ldots,\mathrm{head}_H]W^O \in \mathbb{R}^{T\times d},
+$$
+
+with $W_h^Q$, $W_h^K$, $W_h^V$ in $\mathbb{R}^{d\times d/H}$, so we have $4d^2$ parameters independent of $T$.
+
+
+Different heads can attend to different patterns, e.g. for daily returns: the last few days (short-term reversal), days with large absolute returns (volatility regimes), the same weekday or month ends (calendar effects).
+Both are learned, but at inference a CNN applies the same kernel to every input, while the weights $\alpha_{t,s}$ are recomputed from each input, so we have a <b>data-dependent</b> kernel.
+
+---
+<br/>
+<b>Transformers: the transformer block</b>
+
+A transformer is a stack of $L$ blocks $\mathbb{R}^{T\times d} \to \mathbb{R}^{T\times d}$ such that:
+
+$$
+Z = X + \operatorname{MHA}(\operatorname{LN}(X)), \qquad Y = Z + \operatorname{FFN}(\operatorname{LN}(Z)),
+$$
+with the position-wise feedforward network (applied to each row) $\operatorname{FFN}(z) = W_2\rho(W_1z + b_1) + b_2$, $W_1 \in \mathbb{R}^{4d\times d}$, $W_2 \in \mathbb{R}^{d\times 4d}$.
+
+
+_(where MHA stands for multi-head attention, FFN for feedforward network)_.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trans-1.png)
+</div>
+
+For an input of shape (batch, time, feature) the blue entries share one mean and one variance. So we can distinguish between:
+- <b>batch normalization</b>: for each feature $j$ over the mini-batch, the normalization depends on the other samples and needs running averages at test time; unstable for small batches.
+- <b>layer normalization</b>: for each sample and time step over $d$ features $z_1,\ldots,z_d$ we have the following computation that is computed in both training and testing independently of the batch _(note that it is the standard choice in transformers)_:
+
+$$
+\operatorname{LN}(z) = \gamma \odot
+\frac{z - \mu(z)}{\sqrt{\sigma^2(z) + \varepsilon}} + \beta,
+\qquad
+\mu(z) = \frac{1}{d}\sum_{j=1}^{d} z_j,
+\qquad
+\sigma^2(z) = \frac{1}{d}\sum_{j=1}^{d}(z_j - \mu(z))^2
+$$
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trans-2.png)
+</div>
+
+With transformers, we prefer <b>layer normalization</b> because:
+- it is independent of the batch since each time step is normalized on its own.
+- for language data, the batch mean and variance of the token representations fluctuate strongly during training, and Transformers with BN perform clearly worse than with LN.
+- with residual connections, the representation after $l$ layers is the sum $X_l = X_0 + F_1 + \cdots + F_l$ of the outputs of all previous layers, so its size typically grows with $l$. The attention scores $q^\top k_s$ are quadratic in the input scale ($q$ and $k_s$ are both linear in the input), so large inputs would make the softmax saturate. _However,_ LN rescales the input to mean 0 and variance 1.
+- with LN inside the residual branches _(pre-LN),_ the gradients at initialization are well behaved.
+<br/>
+<b>Transformers: positional encodings and language models</b>
+
+With positional encoding we add a vector $p_t$ in $\mathbb{R}^d$ to the input at position $t$, _for example_ with sinusoidal encoding, such that we have:
+
+$$
+p_{t,2i} = \sin\left(t / 10000^{2i/d}\right),
+\qquad
+p_{t,2i+1} = \cos\left(t / 10000^{2i/d}\right),
+\qquad
+i = 0, \ldots, d/2 - 1
+$$
+
+_(note that we could also use a learned vector per position or some calendar features, for example for financial time series)_.
+
+<b>Autoregressive (decoder-only) transformers </b> model sequences of tokens $w_1,\ldots,w_T$ from a vocabulary $\mathcal{V}$:
+
+$$
+p_\theta(w_1, \ldots, w_T)
+= \prod_{t=1}^{T} p_\theta(w_t \mid w_{<t}),
+\qquad
+p_\theta(\cdot \mid w_{<t})
+= \operatorname{softmax}(W_{\mathrm{out}}y_{t-1})
+$$
+
+So we have a probability vector over $\mathcal{V}$ and with training we can therefore minimize the cross-entropy $-\sum_t \log p_\theta(w_t \mid w_{<t})$, i.e. doing next token prediction.
+
+<b>Large language models </b> (GPT [Brown et al., 2020]) are such Transformers with $10^9$ to $10^{12}$ parameters; encoder models (BERT [Devlin et al., 2019]) use no causal mask, so every position attends to the whole text, past and future.
+
+We list now some applications of transformers in finance:
+- <b>time-series forecasting</b>: with input $X \in \mathbb{R}^{T\times d}$ with past returns, volatilities, volumes, macro and calendar features; causal self-attention; output: next-period return, volatility or quantiles. The Temporal Fusion Transformer [Lim et al., 2021] combines LSTMs, gating and interpretable attention for multi-horizon forecasts.
+- <b>cross-sectional attention</b>: treat the $N$ assets at date $t$ as the “sequence” (no positional encoding, no mask): the prediction for one stock can use information from related stocks, and permutation equivariance is now a desirable property.
+- <b>financial text</b>: sentiment of news, earnings calls and filings, e.g. FinBERT [Araci, 2019] or BloombergGPT [Wu et al., 2023] $\implies$ text-based features and trading signals.
+
+Below is an example of <b>forecasting intraday trading volume</b> with PyTorch. In particular, we consider simulated log-volume of 5-minute intervals with $V_{d,i} = 8 + s(i) + a_d + \mu_{d,i}$ with an intraday U-shape $s$ and a persistent daily level $a_d$ and AR(1) fluctuations.
+
+The following illustrative models take an input of shape `(batch, time, 3)` and predict the next log-volume. The snippet defines the models; it does not reproduce the simulation, training, or chart below.
+
+```python
+import torch
+from torch import nn
+from torch.nn import functional as F
+
+
+class LSTMModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.lstm = nn.LSTM(3, 32, batch_first=True)
+        self.head = nn.Linear(32, 1)
+
+    def forward(self, x):
+        h, _ = self.lstm(x)
+        return self.head(h[:, -1])
+
+
+class CNNModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.dilations = (1, 2, 4, 8)
+        self.convs = nn.ModuleList([
+            nn.Conv1d(3 if i == 0 else 32, 32, kernel_size=3, dilation=dilation)
+            for i, dilation in enumerate(self.dilations)
+        ])
+        self.head = nn.Linear(32, 1)
+
+    def forward(self, x):
+        h = x.transpose(1, 2)
+        for conv, dilation in zip(self.convs, self.dilations):
+            h = F.relu(conv(F.pad(h, (2 * dilation, 0))))
+        return self.head(h[:, :, -1])
+
+
+class TransformerModel(nn.Module):
+    def __init__(self, max_length):
+        super().__init__()
+        self.embed = nn.Linear(3, 32)
+        self.pos = nn.Parameter(torch.zeros(1, max_length, 32))
+        layer = nn.TransformerEncoderLayer(
+            d_model=32, nhead=4, batch_first=True, norm_first=True
+        )
+        self.encoder = nn.TransformerEncoder(layer, num_layers=2)
+        self.head = nn.Linear(32, 1)
+
+    def forward(self, x):
+        length = x.shape[1]
+        if length > self.pos.shape[1]:
+            raise ValueError("Input sequence exceeds max_length")
+        mask = torch.triu(
+            torch.ones(length, length, dtype=torch.bool, device=x.device), diagonal=1
+        )
+        h = self.encoder(self.embed(x) + self.pos[:, :length], mask=mask)
+        return self.head(h[:, -1])
+```
+
+All three models are trained with the same loop as in Chapter 6: Adam, MSE loss, early stopping on a validation period; the training, validation and test periods are 350, 75 and 75 days.
+
+<div align = "center">
+![Bias variance tradeoff](/images/notes/third-semester/trans-3.png)
+</div>
+
+For the benchmarks, the last value and the seasonal mean were used. All three models learn the intraday pattern and the short-term dynamics and beat both benchmarks on test RMSE.
+
+_To sum up...._ here a nice comparison about each architecture:
+
+| Architecture | Data prior | Finance examples |
+| --- | --- | --- |
+| FNN | None (tabular features) | Pricing functions, characteristics → returns |
+| CNN | Locality, translation equivariance | Limit order books, volatility surfaces |
+| RNN, LSTM | Sequential, Markovian state | Volatility (GARCH), sequential data |
+| TCN | Causal, long memory via dilation | Return and volume forecasting |
+| Embeddings | Similar contexts, similar meanings | Text features, similar firms |
+| Transformer | Content-based pairwise interactions | Time series, cross-sections, text |
+
+---
+
 ## <a id="8"><b>8 Bagging and Random Forests</b></a>
+
 
 ## <a id="9"><b>9 Gradient Boosted Trees</b></a>
 

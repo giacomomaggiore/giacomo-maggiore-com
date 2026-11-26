@@ -1,0 +1,85 @@
+.dashboard {
+  --line: #d4d4d4;
+  --accent: #8c591d;
+  margin: .85rem 0;
+  font-size: .875rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dashboard { --line: #404040; --accent: #e0aa61; }
+}
+
+.dashboard button, .control select {
+  border: 1px solid var(--line);
+  border-radius: .25rem;
+  min-height: 1.5rem;
+  padding: .05rem .35rem;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+}
+.dashboard button { cursor: pointer; }
+.dashboard :is(button, select, input):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: .3rem .6rem;
+}
+.groups fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: .25rem;
+  margin: 0;
+  padding: .15rem .45rem .25rem;
+}
+@media (360px <= width <= 520px) {
+  .groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .groups fieldset:nth-child(n + 3) { grid-column: 1 / -1; }
+}
+.groups legend { padding: 0 .25rem; font-weight: 600; }
+.control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 .25rem;
+  font-size: .8125rem;
+  line-height: 1.25;
+}
+.control + .control { margin-top: .15rem; }
+.control output, .table td { font-variant-numeric: tabular-nums; }
+.control output { white-space: nowrap; font-weight: 600; }
+.control input {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 1.5rem;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.costControls {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .6rem;
+}
+.costControls .control {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto;
+  align-items: start;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+.status { min-height: 1.25rem; margin: .15rem 0; font-size: .8125rem; }
+.status button { margin-inline-start: .5rem; }
+.dashboard .table { width: 100%; margin: .65rem 0 0; white-space: normal; }
+.dashboard .table :is(th, td) {
+  padding: .3rem .25rem;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.table thead th:not(:first-child), .table td { text-align: end; }
+.table th:first-child { text-align: start; }
+.table tbody th { font-weight: 400; }

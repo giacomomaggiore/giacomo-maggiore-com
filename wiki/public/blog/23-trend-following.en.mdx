@@ -1,0 +1,213 @@
+---
+image: '/images/blog/point-break-2.png'
+title: 'Challenges and sensitivities of trend following'
+publishedAt: '2026-11-24'
+summary: ''
+---
+
+<b>Trend following is very simple</b>: long exposure to assets that have performed well in the past and short exposure to those that have <s>sucked</<s>performed less well.
+
+_In an ideal market,_ its role in asset allocation is well documented in academic research and equally simple: further <b>diversification</b> away from stocks and bonds and a source of returns in <b>low-growth regimes.</b>
+
+Once all the frictions of financial markets are introduced, however... things get more complicated. _First of all,_ retail investors _(depending on their country of residence)_ often have limited access to products that replicate the strategy at _relatively high_ costs and with little transparency about their underlying holdings.
+
+There is no <b>single, unambiguous definition</b> of trend following: every fund has its own methodology, implementation, investment universe, cost structure and so on... _as a result,_ it has always been difficult to <b>1)</b> find a single benchmark and <b>2)</b> understand exactly what was happening at the _position level._
+
+_The curiosity remains, however:_ how does <b>"buy what is doing well, short the opposite"</b> translate into actual trades?
+
+To answer that, I simulated a strategy loosely inspired by Clenow's book <a href="https://www.wiley.com/en-us/Following+the+Trend%3A+Diversified+Managed+Futures+Trading%2C+2nd+Edition-p-9781119908982" target="_blank"> "Following the Trend: Diversified Managed Futures Trading"</a>, implementing the same long/short logic across a smaller universe of futures contracts and running the usual analyses.
+
+In particular, without <s>a Bloomberg terminal</s> unlimited access to all unadjusted series, I had to restrict the analysis to the adjusted series, _from 2000 to 2024,_ for the following futures contracts. _(For each contract, the table shows the sector, underlying, quotation unit, currency, and point value, i.e. the change in contract value for a 1 bp move):_
+
+| Contract | Underlying | Quotation unit | Currency | Value per bp |
+| --- | --- | --- | --- | ---: |
+| <a href="https://www.tradingview.com/symbols/CME_MINI-ES1%21/" target="_blank">ES</a> | equities, S&P 500 | Index points | USD | 50 |
+| <a href="https://www.eurex.com/ex-en/markets/idx/stx/euro-stoxx-50-derivatives/products/EURO-STOXX-50-Index-Futures-160088" target="_blank">FESX</a> | equities, Euro Stoxx 50 | Index points | EUR | 10 |
+| <a href="https://www.tradingview.com/symbols/CBOT-ZT1%21/" target="_blank">ZT</a> | government bonds, 2-year US Treasury | % of face value | USD | 2,000 |
+| <a href="https://www.tradingview.com/symbols/CBOT-ZN1%21/" target="_blank">ZN</a> | government bonds, 10-year US Treasury | % of face value | USD | 1,000 |
+| <a href="https://www.eurex.com/ex-en/markets/int/long-term-interest-rates/fix/government-bonds/Euro-Bund-Futures-137298" target="_blank">FGBL</a> | government bonds, German Bund | % of face value | EUR | 1,000 |
+| <a href="https://www.tradingview.com/symbols/CME-6E1%21/" target="_blank">6E</a> | currencies, euro | USD per EUR | USD | 125,000 |
+| <a href="https://www.tradingview.com/symbols/CME-6J1%21/" target="_blank">6J</a> | currencies, Japanese yen | USD per JPY | USD | 12,500,000 |
+| <a href="https://www.tradingview.com/symbols/CME-6B1%21/" target="_blank">6B</a> | currencies, British pound | USD per GBP | USD | 62,500 |
+| <a href="https://www.tradingview.com/symbols/NYMEX-CL1%21/" target="_blank">CL</a> | energy, WTI crude oil (winter chain) | USD/barrel | USD | 1,000 |
+| <a href="https://www.tradingview.com/symbols/NYMEX-NG1%21/" target="_blank">NG</a> | energy, Henry Hub natural gas | USD/MMBtu | USD | 10,000 |
+| <a href="https://www.tradingview.com/symbols/COMEX-GC1%21/" target="_blank">GC</a> | metals, gold | USD/troy ounce | USD | 100 |
+| <a href="https://www.tradingview.com/symbols/COMEX-HG1%21/" target="_blank">HG</a> | metals, copper | USD/pound | USD | 25,000 |
+| <a href="https://www.tradingview.com/symbols/CBOT-ZS1%21/" target="_blank">ZS</a> | agriculture, soybeans | US cents/bushel | USD | 50 |
+| <a href="https://www.ice.com/products/15/Coffee-C-Futures" target="_blank">KC</a> | agriculture, Coffee C | US cents/pound | USD | 375 |
+| <a href="https://www.tradingview.com/symbols/CME-LE1%21/" target="_blank">LE</a> | agriculture, live cattle | US cents/pound | USD | 400 |
+<br/>
+
+## <b>Surfing in the USA</b>
+The strategy itself combines two different signals to build long and short positions. 
+_First,_ a <b>filter based on exponential moving averages </b> determines whether the instrument is in an upward or downward trend. 
+
+_Next,_ in an upward trend, a <b>long position </b> is entered if the price reaches or exceeds the highest of the previous $l$ closing prices. _Conversely,_ in a downward trend, a <b>short</b> position is entered if the price reaches or falls below the local low over the same window. If there are no entry or exit signals, the current position is maintained _(note that the strategy can therefore remain uninvested)._ <br/>The exposure _(sizing)_ for each instrument is then determined by its historical realized volatility relative to the portfolio's target volatility.
+
+In formulas, let $A_t$ be the <a href="https://www.quantconnect.com/docs/v2/writing-algorithms/universes/futures#12-Continous-Contracts" target="_blank">Panama-adjusted </a> closing price at time $t$. Let $\mathrm{EMA}_{m,t}$ denote the long exponential moving average and $\mathrm{EMA}_{n,t}$ the short one, with $m>n$. The trend direction is $T_t$:
+
+$$
+T_t = \begin{cases}
++1, & \mathrm{EMA}_{n,t} > \mathrm{EMA}_{m,t}, \\
+-1, & \text{otherwise}.
+\end{cases}
+$$
+
+For a window of $w$ trading sessions ($w=l$ for entry, $w=s$ for exit), the high and low exclude the current close:
+
+$$
+H_t^{(w)} = \max_{1 \le k \le w} A_{t-k}, \qquad
+L_t^{(w)} = \min_{1 \le k \le w} A_{t-k}.
+$$
+
+The position at the next available close is therefore:
+
+$$
+p_{t+1} = \begin{cases}
++1, & p_t = 0,\ T_t = +1,\ A_t \ge H_t^{(l)}, \\
+-1, & p_t = 0,\ T_t = -1,\ A_t \le L_t^{(l)}, \\
+0, & p_t = +1,\ A_t \le L_t^{(s)}, \\
+0, & p_t = -1,\ A_t \ge H_t^{(s)}, \\
+p_t, & \text{otherwise}.
+\end{cases}
+$$
+
+
+_Next,_ for each contract $j$, the change in value $D_{j,t}$ is obtained by multiplying the change in the adjusted closing price by the point value expressed in USD _(for contracts in other currencies, the price is first converted to USD)_.
+
+$$
+D_{j,t} = (A_{j,t}-A_{j,t-1})\,\mathrm{PV}^{\mathrm{USD}}_{j,t}.
+$$
+
+At close $t$, the preliminary weight $u_{j,t}$ is the direction to be executed divided by $\sigma_{j,t-1}$ _(standard deviation estimated up to the previous close)_. 
+
+The overall risk $\sigma_{B,t}$ of all contracts in the market _(before setting contract quantities)_ is then estimated by applying the current weights to the previous $v$ trading sessions:
+
+$$
+u_{j,t} = \frac{p_{j,t}}{\sigma_{j,t-1}}, \qquad
+B_{\tau;t} = \sum_j u_{j,t} D_{j,\tau}, \qquad
+\sigma_{B,t} = \operatorname{sd}(B_{t-v;t},\ldots,B_{t-1;t}).
+$$
+
+When risk is positive and the benchmark risk is available, the <b>target number of contracts</b> is then obtained as follows:
+
+$$
+N^*_{j,t} = u_{j,t}\,
+\frac{\mathrm{NAV}_{t-1}\,\sigma_{\mathrm{benchmark},t-1}}{\sigma_{B,t}}.
+$$
+
+Here, $\sigma_{\mathrm{benchmark},t-1}$ is the standard deviation of the benchmark's daily returns _(MSCI World in this case)_ over the last $v$ sessions available at the previous close, multiplied by a scaling constant _($=1$ in the base case)_.
+
+Details and a Python implementation of the strategy are available in the <a href ="https://github.com/giacomomaggiore/financial-analyses/blob/main/05_trend_following_futures.ipynb" target="_blank">project's GitHub repo.</a>
+
+---
+
+## <b>Can the flap of a butterfly's wings in Brazil cause a tornado in Texas?</b>
+
+
+First, I ran a backtest using the following parameters:
+- exponential moving averages of $m=100$ sessions (long) and $n=50$ sessions (short)
+- local highs and lows over $l=100$ sessions for entry and $s=50$ sessions for exit
+- target daily volatility equal to that of the MSCI World, estimated over $v=63$ sessions
+- interest on cash equal to 100% of the effective federal funds rate
+- drag on futures notional of 0.20% per year as a proxy for the cost of rolling at expiry
+- uniform transaction costs of 5 bp of traded notional
+- daily rebalancing and sizing based on daily volatility over 63 sessions
+
+The <a href="https://app2.msci.com/products/index-data-search/" target="_blank">MSCI World Net Return USD</a> index was used as the benchmark _(dividends reinvested net of withholding taxes)_. Accordingly, management fees _(TER)_ are not modeled for either portfolio.
+
+![Performance of trend following and the MSCI World Net Return USD index with rolling correlation and historical events](/images/blog/trend-performance-correlation.png)
+
+*Growth of USD 100 and 252-session rolling correlation of daily returns.*
+| Metric | Trend following  | MSCI World Net Return USD |
+| --- | ---: | ---: |
+| CAGR | 9.39% | 7.20% |
+| Annualized volatility | 17.00% | 16.26% |
+| Sharpe Ratio | 0.51 | 0.40 |
+| Sortino Ratio | 0.73 | 0.56 |
+| Maximum drawdown | −36.30% | −57.82% |
+| Average drawdown duration (days) | 73.17 | 37.47 |
+
+
+_Beyond the higher Sharpe and CAGR..._ the most interesting things lie elsewhere. 
+
+_First,_ there is the <b>strong lack of correlation</b> with the equity market, especially when stocks _sucked:_ during the dot-com bubble, the GFC, and the US credit downgrade, the strategy held up. 
+
+From 2016 to 2020, _by contrast,_ there was no particular outperformance; during the post-Covid equity rally it could not keep up at all and, _unsurprisingly, given the inclusion of commodity and alternative asset class futures,_ it posted extremely positive returns during the supply crisis following the Russia-Ukraine war.
+
+On the other hand, note that the strategy experienced <b>longer-lasting drawdowns </b> on average than an equity portfolio _(and even more so than a diversified stock and bond portfolio),_ further supporting the idea that, _regardless of the specific implementation,_ the two strategies should not be analyzed as standalone, mutually exclusive portfolios but, _as research widely suggests,_ as exposures to <b>different risk factors </b> that can offset each other and work well together.
+
+_A side note:_ reading around, it seems instead that holding systematic or entirely passive strategies _(invoking the fascinating <a href="https://en.wikipedia.org/wiki/Efficient-market_hypothesis">efficient market hypothesis... </a>which I strongly believe in!)_ has become a <b>matter of identity</b> and binary choices rather than rational reasoning based on numbers and historical data _(we could now discuss the explanatory value of backtests, but that enters dangerous territory between statistics, macroeconomics, and philosophy)._
+
+![Drawdowns and rolling cumulative returns of trend following and the MSCI World Net Return USD index](/images/blog/trend-drawdowns-rolling-returns.png)
+
+*Drawdowns from previous highs (top) and cumulative returns over rolling five-year windows (bottom).*
+
+_As mentioned earlier,_ since there is no unambiguous definition of a trend, the strategy is highly<b> sensitive to the assumptions </b>made during the backtest and, _in live trading,_ to the <b>conditions and frictions </b> of financial markets. _Unlike a buy-and-hold strategy in stocks and bonds,_ there are many levers to play with here: even setting aside the length of the moving averages and the windows for highs and lows, many other parameters remain to be calibrated.
+
+![Sensitivity of CAGR, volatility, and Sharpe to backtest parameters](/images/blog/trend-sensitivity.png)
+
+*Sensitivity of CAGR, volatility, and Sharpe to roll cost, cash interest rate, target risk, and rebalancing frequency varying one parameter at a time.*
+
+_First, and unsurprisingly,_ <b>target volatility</b> can significantly change the portfolio's risk/return profile, following the usual rule that risk $\implies$ return.
+<br/>Rebalancing frequency, _by contrast,_ has <b>nonlinear effects on the performance</b> of the portfolio, especially when combined with nonzero transaction costs: _ceteris paribus,_ CAGR and Sharpe peak with approximately weekly rebalancing, while volatility remains fairly constant.<br/>
+_Similarly,_ <b>transaction costs </b>and especially<b> annual drag </b> have a significant impact on performance, an unsurprising result but one that is particularly relevant to retail investors, given that they translate into "imperfect" market implementation and nonzero management costs.
+
+<TrendFollowingDashboard language="en" />
+
+## <b>Smells like a yen carry trade</b>
+
+Breaking down performance by sector and long/short exposure also shows how different contracts contribute differently to the portfolio.
+
+![Net contribution of futures by market and position direction](/images/blog/trend-market-attribution.png)
+
+*Net contribution to cumulative return, in percentage points, by market and long or short direction.*
+
+S&P 500 futures, _for example,_ do particularly well with long exposure because of their upward trajectory in recent years, as do, _in general,_ futures that experienced strong rallies the strategy was able to capture. _Conversely,_ short positions in the yen, natural gas, and the pound benefited from falling markets.
+
+It is also interesting to see that, adding up short and long contributions across all futures contracts, long positions contribute _(net of transaction costs)_ more than half of the portfolio's total return, while short positions and interest earned play a<b> more marginal role</b>. 
+
+_Nevertheless,_ these remain the baseline of the portfolio because <b>1)</b> they provide <b>diversification away from the equity market</b> and <b>2)</b> allow long positions to profit when the opportunity arises. <br/>Without short exposures, the strategy would collapse into<b> long-only market timing</b> with greater exposure to market beta, losing its ability to diversify away from stocks and bonds.
+
+| Position | Futures P&L | Transaction costs | Roll costs | Interest on cash | Net contribution |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Long | 629.71 | −209.31 | −59.28 | 0.00 | 361.11 |
+| Short | 341.73 | −111.81 | −29.76 | 0.00 | 200.15 |
+| Cash | 0.00 | 0.00 | 0.00 | 127.46 | 127.46 |
+| **Total** | **971.43** | **−321.13** | **−89.05** | **127.46** | **688.72** |
+
+*Contributions to cumulative return in percentage points of initial NAV.*
+
+_To sum up..._ there are a thousand ways to improve the proposed strategy and make it more <b>robust</b>, for example by reducing asset turnover, estimating volatility more accurately, or simply calibrating signal parameters or position sizing; yet I think that, when implementing it directly, it is much more useful to first understand the <b>role</b> one wants trend following to play within the overall allocation.
+
+Instead of modeling it as a standalone strategy, each change should be made with a <b>more holistic view of the portfolio</b>, _i.e._ optimizing the strategy by considering only its added value within an already diversified portfolio, rather than evaluating $\alpha$ and volatility solely for the trend component.
+
+This remains difficult, however, because it is <b>extremely individual</b>: _at least in theory,_ it would require starting from one's personal, very long-term asset allocation and, _once risk aversion, needs, and wealth objectives have been determined,_ developing a trend strategy that includes stocks, bonds, trend, and _[asset classes of choice]_ in line with one's outlook.
+
+Cheers!
+
+<div align = "center">
+![No AI dinners!](/images/blog/point-break-1.png)
+</div>
+<small><i>S&P 500 and EURO Stoxx 50 futures before riding the upward wave</i> </small>
+
+
+
+## <b>Reference</b>
+
+- Andreas F. Clenow, [*Following the Trend: Diversified Managed Futures Trading*, seconda edizione](https://www.wiley.com/en-us/Following+the+Trend%3A+Diversified+Managed+Futures+Trading%2C+2nd+Edition-p-9781119908982), Wiley, e [*Core Trend Following Rules*](https://www.followingthetrend.com/the-trading-system/trading-system-rules/), sito dell’autore.
+- Tobias J. Moskowitz, Yao Hua Ooi e Lasse H. Pedersen (2012), [*Time Series Momentum*](https://www.aqr.com/Insights/Research/Journal-Article/Time-Series-Momentum) ([testo integrale](https://w4.stern.nyu.edu/facdir/lpederse/papers/TimeSeriesMomentum.pdf)).
+- Brian K. Hurst, Yao Hua Ooi e Lasse H. Pedersen (2017), [*A Century of Evidence on Trend-Following Investing*](https://www.aqr.com/Insights/Research/Journal-Article/A-Century-of-Evidence-on-Trend-Following-Investing) ([testo integrale](https://www.aqr.com/-/media/AQR/Documents/Insights/Journal-Article/AQR-JPM-Fall-2017.pdf)).
+- Abby Y. Kim, Yiuman Tse e John K. Wald (2016), [*Time series momentum and volatility scaling*](https://doi.org/10.1016/j.finmar.2016.05.003).
+- Abhilash Babu, Ari Levine, Yao Hua Ooi, Sarah Schroeder ed Erik Stamelos (2020), [*You Can't Always Trend When You Want*](https://www.aqr.com/Insights/Research/Journal-Article/You-Cant-Always-Trend-When-You-Want).
+
+### <b>Market data</b>
+
+- Société Générale, [*SG Trend Index Construction Methodology*](https://wholesale.banking.societegenerale.com/fileadmin/indices_feeds/SG_Trend_Index_Methodology.pdf); BarclayHedge, [*SG Prime Services Indices: serie storiche*](https://portal.barclayhedge.com/cgi-bin/indices/displayIndices.cgi?indexID=sg).
+- iM Global Partner, [*iMGP DBi Managed Futures Strategy ETF (DBMF)*](https://www.imgp.com/us/dbmf/) e [scheda del fondo](https://www.imgp.com/uploads/factsheets/DBMF_FACTSHEETS_EN.pdf); Yahoo Finance, [*DBMF: Historical Data*](https://finance.yahoo.com/quote/DBMF/history/).
+- KraneShares, [*KraneShares Mount Lucas Managed Futures Index Strategy ETF (KMLM)*](https://kraneshares.com/etf/kmlm/) e [*KMLM Achieves a Three-Year Track Record, Continues to Provide Consistent Uncorrelated Returns*](https://kraneshares.com/kmlm-achieves-a-three-year-track-record-continues-to-provide-consistent-uncorrelated-returns/).
+- iM Global Partner, [*iMGP DBi Managed Futures Fund I USD (UCITS)*](https://www.imgp.com/fund/lu2529946613-imgp-dbi-managed-futures-fund-i-usd/); Man Group, [*Man Trend Alternative*](https://www.man.com/products/man-trend-alternative).
+- MSCI, [*MSCI World Index: livelli giornalieri net total return in USD*](https://app2.msci.com/products/service/index/indexmaster/getLevelDataForGraph?index_codes=990100&currency_symbol=USD&index_variant=NETR&data_frequency=DAILY&start_date=20240327&end_date=20240328); BlackRock, [*iShares MSCI World ETF (URTH)*](https://www.ishares.com/us/products/239696/ishares-msci-world-etf).
+- Robert Carver e collaboratori di `pysystemtrade`, [*Futures instrument configuration*](https://github.com/pst-group/pysystemtrade/blob/bbf5cf823e16be1cca27493a94099eb8cf33f6e7/data/futures/csvconfig/instrumentconfig.csv), [*Futures roll configuration*](https://github.com/pst-group/pysystemtrade/blob/bbf5cf823e16be1cca27493a94099eb8cf33f6e7/data/futures/csvconfig/rollconfig.csv) e [*Adjusted prices*](https://github.com/pst-group/pysystemtrade/blob/bbf5cf823e16be1cca27493a94099eb8cf33f6e7/sysobjects/adjusted_prices.py), revisione `bbf5cf8`.
+- Board of Governors of the Federal Reserve System, via FRED, [*Federal Funds Effective Rate (DFF)*](https://fred.stlouisfed.org/series/DFF) e [*U.S. Dollars to Euro Spot Exchange Rate (DEXUSEU)*](https://fred.stlouisfed.org/series/DEXUSEU).
+- FTSE Russell e Curvo, [*FTSE World Government Bond Index – Developed Markets: serie mensile*](https://curvo.eu/backtest/fingerprinted-data/ftse-world-government-bond-developed-markets.1d146a9e.json); Curvo, [*EUR/USD: serie di conversione*](https://curvo.eu/backtest/fingerprinted-data/eur-usd.c5fd8750.json).

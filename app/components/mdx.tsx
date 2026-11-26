@@ -5,6 +5,7 @@ import React from 'react'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import katex from 'katex'
 import { EconomyChart, EconomyWelfare } from './EconomyChart'
+import { TrendFollowingDashboard } from './TrendFollowingDashboardEmbed'
 
 function Table({ data }) {
   // Safety check for undefined data
@@ -251,6 +252,7 @@ const components = {
   Quote,
   EconomyChart,
   EconomyWelfare,
+  TrendFollowingDashboard,
 }
 
 interface CustomMDXProps {

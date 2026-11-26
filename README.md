@@ -14,7 +14,7 @@
 
 ## What the repository does
 
-- **Public website.** The blog and notes are rendered from human-authored MDX. Blog posts can be available in English, Italian, or both. The site also has a books list, resources, a CV, an RSS feed, and a sitemap. The blog and notes have searchable listings and view counters.
+- **Public website.** The blog and notes are rendered from human-authored MDX. Blog posts can be available in English, Italian, or both. The site also has a books list, resources, a CV, an RSS feed, and a sitemap. The blog and notes have searchable listings and view counters. Inline math has no scrollbars; wide display equations scroll horizontally.
 - **Comments and newsletter.** Published blog posts have public, plain-text threads with one level of replies; note pages do not show comments. Newsletter signup is double opt-in: the email link must be opened before the address joins the list.
 - **Private reading vault.** Obsidian organizes local Markdown files. Private notes do not have public pages and are excluded from public listings, the feed, and the sitemap. Their information can still appear in answers from the public `/ask` page, so this is not a place to store secrets.
 - **JackGPT.** The [/ask](https://giacomomaggiore.com/ask) assistant searches the generated index of eligible public and private notes and answers with sources. Public sources have links; private sources are cited by title only.
@@ -49,7 +49,7 @@ The production build uses the checked-in index. **Keep the GitHub repository pri
 
 This README is the overview for people. [AGENTS.md](AGENTS.md) is the shared source of instructions for coding agents. [CLAUDE.md](CLAUDE.md) is still useful: it is Claude Code's entry point, imports the shared instructions, and describes the Claude-only advisory hook. [GitHub Copilot](.github/copilot-instructions.md) has its own short entry point. Detailed procedures stay in [the agent reference docs](docs/agent/), rather than being duplicated here.
 
-Keep article-supporting notebooks, analysis inputs, and outputs under the ignored `wiki/notebooks/` directory. See the [local notebook procedure](docs/agent/notebooks.md) for safe execution and approval boundaries.
+Keep article-supporting notebooks, analysis inputs, and outputs under the ignored `wiki/notebooks/` directory. See the [local notebook procedure](docs/agent/notebooks.md) for safe execution and approval boundaries. The [trend-following dashboard export](docs/agent/notebooks.md#trend-following-dashboard-export) documents the separately approved browser dataset and Python parity checks.
 
 ---
 
